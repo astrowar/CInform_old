@@ -406,6 +406,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		//Executa este bloco !
 		PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry);
 		ListOfNamedValue getValuesFromMatch(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlock resolve_argument(HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlockActionCall ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack* stk);
 		PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack *stk);

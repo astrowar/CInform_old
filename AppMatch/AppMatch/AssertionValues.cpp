@@ -203,8 +203,6 @@ bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBloc
 
 		if (HBlockNoum nbase = asHBlockNoum(obj))
 		{
-
-
 			 
 			this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, act));
 			return true;
