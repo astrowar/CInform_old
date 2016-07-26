@@ -6,6 +6,7 @@
 #include "CBase.h"
 #include <vector>
 #include <map>
+#include "EqualsResult.h"
 
 
 using  MTermSet = std::vector<HTerm>;

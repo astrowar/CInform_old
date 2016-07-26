@@ -7,12 +7,14 @@
 #include <memory>
 
 
+class CKind;
+using HKind = std::shared_ptr<CKind>;
 class CKind
 {
 public:
-	CKind* previous;
+	HKind  previous;
 	std::string name;
-	CKind(std::string named, CKind *prev);
+	CKind(std::string named, HKind prev);
 
 };
 using HKind = std::shared_ptr<CKind>;
@@ -21,13 +23,13 @@ class CInstance
 {
 
 public:
-	CInstance(CKind* kind, const std::string& name)
+	CInstance(HKind kind, const std::string& name)
 		: kind(kind),
 		name(name)
 	{
 	}
 
-	CKind* kind;
+	HKind kind;
 	std::string name;
 };
 
@@ -39,14 +41,15 @@ using HInstance = std::shared_ptr<CInstance>;
 
 class CKindProperty
 {
-	CKindProperty(const std::string& name, CKind* inst)
+public:
+	CKindProperty(const std::string& name, HKind _kind)
 		: name(name),
-		inst(inst)
+		kind(_kind)
 	{
 	}
 
 	std::string name;
-	CKind* inst;
+	HKind kind;
 
 };
 
@@ -56,7 +59,9 @@ class CValueKind
 public:
 	std::string name;
 	CValueKind(std::string _name);
-	virtual ~CValueKind() {};
+	virtual ~CValueKind() {}
+
+	 
 };
 
 using HValueKind = std::shared_ptr<CValueKind>;
@@ -66,13 +71,14 @@ using HValueKind = std::shared_ptr<CValueKind>;
 class CInstanceProperty
 {
 public:
-	CInstanceProperty(const std::string& name, HInstance inst, HValueKind vkind)
-		: name(name),
-		inst(inst),
-		vkind(vkind)
+	CInstanceProperty(const std::string& _name, HInstance _inst, HValueKind _vkind)
+		: name(_name),
+		inst(_inst),
+		vkind(_vkind)
 	{
 	}
 
+	 
 	std::string name;
 	HInstance inst;
 	HValueKind vkind;
@@ -92,6 +98,9 @@ public:
 
 
 };
+using HValue  = std::shared_ptr<CValue>;
+ 
+
 
 
 
@@ -99,19 +108,23 @@ class CValueKindEnum : public CValueKind
 {
 
 public:
-	CValueKindEnum(const std::string& _name, const std::string& name, const std::list<CValue*>& c_values)
-		: CValueKind(_name),
-		name(name),
-		values(c_values)
+	CValueKindEnum(const std::string& _name, HValueKind _valuesKind,  const std::list<HValue>& posiblesValues)
+		: CValueKind(_name),		 
+		values(posiblesValues),
+		valuesKind(_valuesKind)
 	{
-	}
-
-	std::string name;
-	std::list<CValue*> values;
+	} 
+	std::list<HValue> values;
+	HValueKind valuesKind;
 
 
 
 };
+
+ 
+extern HValueKind  HValueKindString;
+extern HValueKind  HValueKindText;
+extern HValueKind  HValueKindList;
 
 
 
@@ -119,8 +132,22 @@ public:
 
 class CValueText : public CValue
 {
-	CValueText(HValueKind vkind, const std::string& cs)
-		: CValue(vkind),
+public:
+	CValueText(  const std::string& cs)
+		: CValue(HValueKindText),
+		_text(cs)
+	{
+	}
+
+	std::string _text;
+
+};
+
+class CValueString : public CValue
+{
+public :
+	CValueString(  const std::string& cs)
+		: CValue(HValueKindString),
 		_text(cs)
 	{
 	}
@@ -132,8 +159,9 @@ class CValueText : public CValue
 
 class CValueList : public CValue
 {
-	CValueList(HValueKind vkind, const std::list<CValue*>& c_values)
-		: CValue(vkind),
+public:
+	CValueList(  const std::list<CValue*>& c_values)
+		: CValue(HValueKindList),
 		values(c_values)
 	{
 	}
@@ -143,31 +171,33 @@ class CValueList : public CValue
 
 
 
-
+bool can_set_value(HValueKind vkind,  HValue val);
 
 class CKindPropertyAssert
 {
-	CKindPropertyAssert(CKindProperty* property, CValue*  value)
+	public:
+	CKindPropertyAssert(CKindProperty* property, HValue  value)
 		: property(property),
 		value(value)
 	{
 	}
 
 	CKindProperty *property;
-	CValue *value;
+	HValue value;
 
 };
 
 class CInstancePropertyAssert
 {
-	CInstancePropertyAssert(CInstanceProperty* property, CValue* value)
+public:
+	CInstancePropertyAssert(CInstanceProperty* property, HValue  value)
 		: property(property),
 		value(value)
 	{
 	}
 
 	CInstanceProperty *property;
-	CValue* value;
+	HValue value;
 
 };
 
@@ -189,6 +219,10 @@ public:
 	std::list<HInstance> instances;
 	std::list<HKind> kinds;
 
+	std::list<CInstanceProperty> instance_properties;
+	std::list<CInstancePropertyAssert > instance_properties_asserts;
+	std::list<CKindPropertyAssert> kind_properties_asserts; 
+
 };
 
 
@@ -196,5 +230,23 @@ HKind make_kind(FEnviroment *env, std::string name);
 HInstance make_instance(FEnviroment *env, std::string name, HKind k);
 HKind make_derivade_kind(FEnviroment* env, std::string name, HKind base);
 
+
+HKind get_kind(FEnviroment* env, std::string name);
+HInstance get_instance(FEnviroment* env, std::string name);
+
+void  set_property(FEnviroment* env, CInstanceProperty&  prop);
+CInstanceProperty*  get_property(FEnviroment* env, HInstance obj , std::string name);
+
+
+HValue  get_property_value(FEnviroment* env, CInstanceProperty* c_instance_property);
+void  set_property_value(FEnviroment* env, CInstanceProperty* c_instance_property , HValue val);
+
+
+HValue make_string_value(std::string v);
+HValue make_text_value(std::string v);
+
+
+std::string  toString(HValue val);
+std::string  toString(CValue* val);
 
 #endif;

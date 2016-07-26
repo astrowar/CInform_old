@@ -3,9 +3,10 @@
 
 #include "stdafx.h"
 #include "CMatch.h"
-#include <iterator>
+ 
 #include <sstream>
 #include "FEnviroment.h"
+#include <iostream>
 
 
 void teste_1()
@@ -70,6 +71,8 @@ void teste_match()
 
 }
 
+ 
+
 void teste_kinds()
 {
 
@@ -77,6 +80,26 @@ void teste_kinds()
 	auto thing = make_kind(env, "thing");
 	auto book = make_derivade_kind(env, "book", thing);
 	auto redbook = make_instance(env,"red book",book);
+
+	CValueKindEnum *colors = new  CValueKindEnum("color", HValueKindString,  { make_string_value("red"),make_string_value("blue")});
+	HValueKind colorKind = HValueKind(colors);
+	CInstanceProperty colorProp = CInstanceProperty("color", redbook, colorKind);
+	set_property(env, colorProp);
+
+
+
+	auto red_book_color =  get_property(env,   redbook ,"color" );
+	HValue red_book_color_value =   get_property_value(env, red_book_color);
+	std::cout << toString(red_book_color_value) << std::endl;
+
+	set_property_value(env, red_book_color, make_string_value("blue"));
+	  red_book_color_value = get_property_value(env, red_book_color);
+	std::cout << toString(red_book_color_value) << std::endl;
+
+
+	set_property_value(env, red_book_color, make_string_value("green"));
+	red_book_color_value = get_property_value(env, red_book_color);
+	std::cout << toString(red_book_color_value) << std::endl;
 
 }
 

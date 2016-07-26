@@ -33,6 +33,9 @@
     <ClInclude Include="FEnviroment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EqualsResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

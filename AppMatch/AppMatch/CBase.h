@@ -8,6 +8,8 @@
 #include <memory>
 #include <vector>
 
+enum EqualsResul;
+
 class CTerm
 {
 public:
@@ -59,8 +61,7 @@ public:
 	virtual std::string repr() override;
 
 };
-
-enum EqualsResul { Undefined = -1 , Equals =1 , NotEquals= 0};
+ 
 
  
 
