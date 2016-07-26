@@ -5,7 +5,7 @@
 
 #include "CBase.h"
 #include <vector>
-#include "CMatch.h"
+#include <map>
 
 
 using  MTermSet = std::vector<HTerm>;
@@ -29,9 +29,11 @@ std::string get_repr(MTermSetCombinatoriaList lst);
 class CPred: public CAtom
 {
 public:
+	std::string repr() override;
+	 
 	std::string named;
 	CPred(std::string _named) :named(_named) {};
-	virtual EqualsResul match(HTerm h) = 0;
+	virtual EqualsResul match(MTermSet h) = 0;
 };
  
 using HPred = std::shared_ptr<CPred>;
@@ -42,7 +44,7 @@ class CPredAtom : public CPred
 public:
 	HTerm h;
 	CPredAtom(std::string _named, HTerm atom);
-	virtual EqualsResul match(HTerm _h) override;
+	virtual EqualsResul match(MTermSet _h) override;
 };
 
 
@@ -50,17 +52,21 @@ class CPredAny : public CPred
 {
 public:
 	CPredAny(std::string _named);;
-	virtual EqualsResul match(HTerm _h) override;
+	virtual EqualsResul match(MTermSet _h) override;
+
 };
 
 class CPredBoolean : public CPred
 {
 public:
-	explicit CPredBoolean(const std::string& _named);
+	  CPredBoolean(const std::string& _named);
 };
 
 class CPredBooleanAnd : public CPredBoolean
 {
+public:
+	EqualsResul match(MTermSet h) override;
+ 
 	CPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 
 public:
@@ -70,12 +76,37 @@ public:
 
 class CPredBooleanOr : public CPredBoolean
 {
+public:
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
-
+	EqualsResul match(MTermSet h) override;
 public:
 	HPred b1, b2;
 	 
 };
+
+
+
+
+
+
+class MatchResult
+{
+public:
+	MatchResult(): result(Undefined)
+	{
+	}
+
+	std::map<std::string, HTerm> matchs;
+	EqualsResul result;
+
+	void setValue(std::string named, HTerm value);
+	HTerm getValue(std::string named);
+
+	void insert(MatchResult &other);
+};
+
+
+MatchResult makeMatch(std::string named, HTerm value);
 
 
 #endif

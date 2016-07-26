@@ -121,11 +121,16 @@ std::string get_repr(MTermSetCombinatoriaList lst )
 	return q;
 }
 
+std::string CPred::repr()
+{
+	return "Pred";
+}
+
 CPredAtom::CPredAtom(std::string _named, HTerm atom): CPred(_named), h(atom)
 {
 }
 
-EqualsResul CPredAtom::match(HTerm _h) 
+EqualsResul CPredAtom::match(MTermSet _h)
 {
 	return equals(this->h.get(), _h.get());
 }
@@ -133,13 +138,20 @@ EqualsResul CPredAtom::match(HTerm _h)
 CPredAny::CPredAny(std::string _named): CPred(_named)
 {}
 
-EqualsResul CPredAny::match(HTerm _h)
+EqualsResul CPredAny::match(MTermSet _h)
 {
 	return Equals;
 }
 
 CPredBoolean::CPredBoolean(const std::string& _named): CPred(_named)
 {
+}
+
+EqualsResul CPredBooleanAnd::match(MTermSet h)
+{
+	if ((this->b1->match(h) == Equals) && (this->b2->match(h) == Equals)) return Equals;
+	return NotEquals;
+	
 }
 
 CPredBooleanAnd::CPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1): CPredBoolean(_named),
@@ -154,8 +166,90 @@ CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, c
 {
 }
 
-EqualsResul CMatch(std::vector<HTerm> lst , std::vector<HPred> precadtes )
+EqualsResul CPredBooleanOr::match(MTermSet h)
 {
+	if ((this->b1->match(h) == Equals) || (this->b2->match(h) == Equals)) return Equals;
+	return NotEquals;
 
-	return Undefined;
+}
+
+void MatchResult::setValue(std::string named, HTerm value)
+{
+	this->matchs[named] = value;
+
+}
+
+HTerm MatchResult::getValue(std::string named)
+{
+	return this->matchs[named];
+}
+
+void MatchResult::insert(MatchResult& other)
+{
+	for(auto kv = other.matchs.begin() ; kv!= other.matchs.end();++kv)
+	{
+		this->setValue(kv->first, kv->second);
+	}
+
+}
+
+MatchResult makeMatch(std::string named, HTerm value)
+{
+	MatchResult m;
+	m.result = Equals;
+	m.setValue(named, value);
+	return m;
+}
+
+MatchResult CMatch_j(MTermSet  termo,  HPred  predicate)
+{
+	if (termo.size() == 1 )
+	{
+		if (predicate->match( termo[0]))
+		{
+			return makeMatch(predicate->named, termo[0]);
+		}
+	}
+	return MatchResult();
+
+}
+
+MatchResult CMatch_i(MTermSetCombinatoria &termos, std::vector<HPred> predicates)
+{
+ 
+	int n = predicates.size();
+	if (termos.size() != n)
+	{
+		return MatchResult();
+	}
+	MatchResult mm;
+	mm.result = Equals; // inicia com tudo OK
+	for (auto i = 0; i < n; ++i)
+	{
+		MatchResult mj =  CMatch_j( termos[i],  predicates[i]);
+		if (mj.result != Equals ) return MatchResult();
+		mm.insert(mj);
+
+	}
+	return mm;
+
+}
+
+
+MatchResult CMatch(std::vector<HTerm> lst , std::vector<HPred> predicates )
+{
+	int npred = predicates.size();
+
+	MTermSetCombinatoriaList comb =  getCombinatorias(lst, npred);
+	for (auto it = comb.begin(); it != comb.end(); ++it)
+	{
+		MatchResult mm = CMatch_i(*it, predicates);
+		if (mm.result == Equals )
+		{
+			return mm;
+		}
+		
+	}
+
+	return MatchResult();
 };
