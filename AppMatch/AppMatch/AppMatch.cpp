@@ -3,9 +3,11 @@
 
 #include "stdafx.h"
 #include "CMatch.h"
+#include <iterator>
+#include <sstream>
+#include "FEnviroment.h"
 
 
- 
 void teste_1()
 {
 
@@ -34,12 +36,25 @@ void teste_2()
 }
 
 
+std::vector<HTerm>  decompose(std::string phase)
+{
+	std::stringstream test(phase);
+	std::string segment;
+	std::vector<HTerm> seglist;
+
+	while (std::getline(test, segment, ' '))
+	{
+		seglist.push_back(make_string(segment));
+	}
+	return seglist;
+}
 void teste_match()
 {
 	
 	std::vector<HTerm> lst = { make_string("book"), make_string("is") ,make_string("small"),  make_string("and") , make_string("portable") };
 	std::vector<HPred> predList;
 
+	lst = decompose("a book is a thing");
 	
 	predList.push_back(std::make_shared<CPredAny>("Noum"));
 	predList.push_back(std::make_shared<CPredAtom>("Verb", make_string("is")));
@@ -55,11 +70,23 @@ void teste_match()
 
 }
 
+void teste_kinds()
+{
+
+	FEnviroment *env = new FEnviroment();
+	auto thing = make_kind(env, "thing");
+	auto book = make_derivade_kind(env, "book", thing);
+	auto redbook = make_instance(env,"red book",book);
+
+}
+
+
 int main()
 {
 	teste_1();
 	teste_2();
 	teste_match();
+	teste_kinds();
     return 0;
 }
 
