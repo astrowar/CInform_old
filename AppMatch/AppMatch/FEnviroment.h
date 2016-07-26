@@ -39,19 +39,7 @@ using HInstance = std::shared_ptr<CInstance>;
 
 
 
-class CKindProperty
-{
-public:
-	CKindProperty(const std::string& name, HKind _kind)
-		: name(name),
-		kind(_kind)
-	{
-	}
 
-	std::string name;
-	HKind kind;
-
-};
 
 
 class CValueKind
@@ -66,7 +54,21 @@ public:
 
 using HValueKind = std::shared_ptr<CValueKind>;
  
+class CKindProperty
+{
+public:
+	CKindProperty(const std::string& name, HKind _kind, HValueKind _vkind)
+		: name(name),
+		kind(_kind),
+		vkind(_vkind)
+	{
+	}
 
+	std::string name;
+	HKind kind;
+	HValueKind vkind;
+
+};
 
 class CInstanceProperty
 {
@@ -113,7 +115,9 @@ public:
 		values(posiblesValues),
 		valuesKind(_valuesKind)
 	{
-	} 
+	}
+
+	
 	std::list<HValue> values;
 	HValueKind valuesKind;
 
@@ -170,20 +174,47 @@ public:
 };
 
 
+class AssertConstraint
+{
+public:
+	  AssertConstraint(float lk)
+		: LK(lk)
+	{
+	}
+
+	float LK;
+	 
+};
+
+
+class HValueAssert //class que define os parametros de contorno de um dado valor em um Kind
+{
+public:
+	HValueAssert(const HValue& c_value, float constraint);
+
+	HValue value;
+	AssertConstraint constraint;
+};
+
+
+HValueAssert Usually_Value(const HValue& c_value);
+HValueAssert Always_Value(const HValue& c_value);
+
+
 
 bool can_set_value(HValueKind vkind,  HValue val);
 
 class CKindPropertyAssert
 {
 	public:
-	CKindPropertyAssert(CKindProperty* property, HValue  value)
+	CKindPropertyAssert(CKindProperty property, HValueAssert  value)
 		: property(property),
 		value(value)
 	{
 	}
 
-	CKindProperty *property;
-	HValue value;
+	CKindProperty property;
+	HValueAssert value;
 
 };
 
@@ -235,6 +266,8 @@ HKind get_kind(FEnviroment* env, std::string name);
 HInstance get_instance(FEnviroment* env, std::string name);
 
 void  set_property(FEnviroment* env, CInstanceProperty&  prop);
+void  set_property(FEnviroment* env, CKindPropertyAssert&  prop);
+
 CInstanceProperty*  get_property(FEnviroment* env, HInstance obj , std::string name);
 
 
@@ -248,5 +281,9 @@ HValue make_text_value(std::string v);
 
 std::string  toString(HValue val);
 std::string  toString(CValue* val);
+
+
+
+HValueKind  makeValueKindEnum(FEnviroment* env, const std::string& _name, HValueKind _valuesKind, const std::list<HValue>& posiblesValues);
 
 #endif;

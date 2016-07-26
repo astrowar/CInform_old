@@ -78,12 +78,21 @@ void teste_kinds()
 
 	FEnviroment *env = new FEnviroment();
 	auto thing = make_kind(env, "thing");
-	auto book = make_derivade_kind(env, "book", thing);
-	auto redbook = make_instance(env,"red book",book);
 
-	CValueKindEnum *colors = new  CValueKindEnum("color", HValueKindString,  { make_string_value("red"),make_string_value("blue")});
-	HValueKind colorKind = HValueKind(colors);
-	CInstanceProperty colorProp = CInstanceProperty("color", redbook, colorKind);
+	// A thing can be hot or cold. A thing is usually cold.
+	{
+		auto thing_hot_cold = CKindProperty("", thing, makeValueKindEnum(env, "", HValueKindString, { make_string_value("hot"),make_string_value("cold") }));
+		auto thing_hot_cold_assertion = CKindPropertyAssert(thing_hot_cold, Usually_Value(make_string_value("cold")));
+		set_property(env, thing_hot_cold_assertion);
+	}
+
+
+	auto book = make_derivade_kind(env, "book", thing); //book is a kind of thing
+	auto redbook = make_instance(env,"red book",book); //red book is a book
+
+	 
+	auto colorsKind = makeValueKindEnum(env, "colors", HValueKindString, { make_string_value("red"),make_string_value("blue") }); //Colors is a kind of value. The Colors are red and blue.
+	CInstanceProperty colorProp = CInstanceProperty("color", redbook, colorsKind); //  red book has a Colors called color.
 	set_property(env, colorProp);
 
 

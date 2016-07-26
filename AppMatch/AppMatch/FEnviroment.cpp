@@ -77,6 +77,21 @@ bool can_set_value(CValueKindEnum* kenum, HValue val)
 
 }
 
+HValueAssert::HValueAssert(const HValue& c_value, float constraint): value(c_value),
+                                                                     constraint(constraint)
+{
+}
+
+HValueAssert Usually_Value(const HValue& c_value)
+{
+	return HValueAssert(c_value, 0.3f);
+}
+
+HValueAssert Always_Value(const HValue& c_value)
+{
+	return HValueAssert(c_value, 1.0f);
+}
+
 bool can_set_value(HValueKind vkind, HValue val)
 {
 	
@@ -166,6 +181,12 @@ HInstance get_instance(FEnviroment* env, std::string name)
 void set_property(FEnviroment* env,   CInstanceProperty& prop)
 {
 	env->instance_properties.push_back(prop);
+}
+
+void set_property(FEnviroment* env, CKindPropertyAssert& prop)
+{
+
+	env->kind_properties_asserts.push_back(prop);
 }
 
 CInstanceProperty* get_property(FEnviroment* env, HInstance obj, std::string name)
@@ -284,6 +305,17 @@ std::string toString(CValue *val)
 
 	return "ERROR";
 }
+
+HValueKind makeValueKindEnum(FEnviroment* env, const std::string& _name, HValueKind _valuesKind, const std::list<HValue>& posiblesValues)
+{
+
+	std::shared_ptr<CValueKindEnum> cc = std::make_shared<CValueKindEnum>(_name, _valuesKind, posiblesValues);
+	 
+	return cc;
+
+
+}
+
 std::string toString(HValue val)
 {
 	return toString(val.get());
