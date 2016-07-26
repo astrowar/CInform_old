@@ -85,6 +85,8 @@ void teste_kinds()
 		auto thing_hot_cold_assertion = CKindPropertyAssert(thing_hot_cold, Usually_Value(make_string_value("cold")));
 		set_property(env, thing_hot_cold_assertion);
 	}
+	makeValueKindEnum(env, "Temperature", HValueKindString, {});
+
 
 
 	auto book = make_derivade_kind(env, "book", thing); //book is a kind of thing
