@@ -53,7 +53,7 @@ MTermSetCombinatoriaList getCombinatoriasGroup(std::vector<HTerm> terms)
 }
 
 
-MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, int n ) //num termos que restam
+MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n ) //num termos que restam
 {
 	if (n == 1)   
 	{
@@ -68,7 +68,7 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, int n ) /
 	//particiona de 1 a (n-1)
 	
 	MTermSetCombinatoriaList accTerms;
-	for(int j = 1 ; j<= lsize - n +1  ;++j)
+	for(size_t j = 1 ; j<= lsize - n +1  ;++j)
 	{
 		MTermSet  head(terms.begin() , terms.begin()  + j );		 
 		std::vector<HTerm>  tail(terms.begin()+j, terms.end());
@@ -86,7 +86,7 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, int n ) /
 }
 
 
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, int n)
+MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n)
 {
 	if (lst.size() < n)
 	{
@@ -132,7 +132,28 @@ CPredAtom::CPredAtom(std::string _named, HTerm atom): CPred(_named), h(atom)
 
 EqualsResul CPredAtom::match(MTermSet _h)
 {
-	return equals(this->h.get(), _h.get());
+	if (_h.size() != 1) return NotEquals;
+	return equals(this->h.get(), _h[0].get() );
+}
+
+CPredList::CPredList(std::string _named, std::initializer_list<HPred> _plist):CPred(_named), plist(_plist)
+{
+
+}
+
+EqualsResul CPredList::match(MTermSet _h)
+{
+	if (_h.size() != plist.size()) return NotEquals;
+	int n = plist.size();
+	for(int j =0 ; j> n;++j)
+	{
+		if (equals(this->plist[j].get() , _h[j].get()) != Equals)
+		{
+			return NotEquals;
+		}
+	}
+	return Equals;
+	
 }
 
 CPredAny::CPredAny(std::string _named): CPred(_named)
@@ -193,6 +214,21 @@ void MatchResult::insert(MatchResult& other)
 
 }
 
+
+HTerm  convertToTerm( MTermSet m)
+{
+	if (m.size() == 1 )
+	{
+		return m[0];
+	}
+	else
+	{
+		CList *lst_ptr = new CList(  );
+		lst_ptr->lst.insert(lst_ptr->lst.end(), m.begin(), m.end());
+		return   HTerm(lst_ptr);		
+	}
+}
+
 MatchResult makeMatch(std::string named, HTerm value)
 {
 	MatchResult m;
@@ -203,13 +239,14 @@ MatchResult makeMatch(std::string named, HTerm value)
 
 MatchResult CMatch_j(MTermSet  termo,  HPred  predicate)
 {
-	if (termo.size() == 1 )
-	{
-		if (predicate->match( termo[0]))
+ 
+	 
+		if (predicate->match( termo ))
 		{
-			return makeMatch(predicate->named, termo[0]);
+
+			return makeMatch(predicate->named, convertToTerm( termo) );
 		}
-	}
+	 
 	return MatchResult();
 
 }
@@ -252,4 +289,17 @@ MatchResult CMatch(std::vector<HTerm> lst , std::vector<HPred> predicates )
 	}
 
 	return MatchResult();
+}
+
+std::string get_repr(MatchResult r)
+{
+	std::string s;
+	for (auto kv = r.matchs.begin(); kv != r.matchs.end(); ++kv)
+	{
+		s += kv->first + ":";
+		s +=  kv->second->repr();
+		s += "\n";
+	}
+	return s;
+
 };

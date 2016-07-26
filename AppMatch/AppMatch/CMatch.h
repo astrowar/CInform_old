@@ -14,7 +14,7 @@ using  MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
 
 
 
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, int n);
+MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n);
 std::string get_repr(MTermSetCombinatoriaList lst);
 
 
@@ -47,6 +47,14 @@ public:
 	virtual EqualsResul match(MTermSet _h) override;
 };
 
+class CPredList : public CPred
+{
+public:
+ 
+	std::vector<HPred> plist;
+	CPredList(std::string _named,  std::initializer_list<HPred> plist);
+	virtual EqualsResul match(MTermSet _h) override;
+};
 
 class CPredAny : public CPred
 {
@@ -108,5 +116,9 @@ public:
 
 MatchResult makeMatch(std::string named, HTerm value);
 
+
+MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates);
+
+std::string get_repr(MatchResult r);
 
 #endif

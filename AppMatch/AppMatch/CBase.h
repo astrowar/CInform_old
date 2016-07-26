@@ -52,6 +52,7 @@ public:
 	std::list<HTerm>  lst;
 	CList( );
 	CList(std::initializer_list<HTerm>);
+	 
 	void push_back(HTerm x);
 	void push_front(HTerm x); 
 	std::vector<HTerm> asVector();

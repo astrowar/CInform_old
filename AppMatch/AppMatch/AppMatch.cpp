@@ -34,10 +34,32 @@ void teste_2()
 }
 
 
+void teste_match()
+{
+	
+	std::vector<HTerm> lst = { make_string("book"), make_string("is") ,make_string("small"),  make_string("and") , make_string("portable") };
+	std::vector<HPred> predList;
+
+	
+	predList.push_back(std::make_shared<CPredAny>("Noum"));
+	predList.push_back(std::make_shared<CPredAtom>("Verb", make_string("is")));
+	predList.push_back(std::make_shared<CPredAny>("JJ"));
+	
+	
+
+	MatchResult res =  CMatch(lst, predList);
+	std::string s = get_repr(res);
+	printf("result:\n %s \n", s.c_str());
+	return;
+
+
+}
+
 int main()
 {
 	teste_1();
 	teste_2();
+	teste_match();
     return 0;
 }
 
