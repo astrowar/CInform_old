@@ -59,11 +59,14 @@ public:
 	virtual ~CValueKind() {};
 };
 
+using HValueKind = std::shared_ptr<CValueKind>;
+ 
+
 
 class CInstanceProperty
 {
 public:
-	CInstanceProperty(const std::string& name, CInstance* inst, CValueKind* vkind)
+	CInstanceProperty(const std::string& name, HInstance inst, HValueKind vkind)
 		: name(name),
 		inst(inst),
 		vkind(vkind)
@@ -71,8 +74,8 @@ public:
 	}
 
 	std::string name;
-	CInstance* inst;
-	CValueKind* vkind;
+	HInstance inst;
+	HValueKind vkind;
 
 };
 
@@ -80,12 +83,12 @@ public:
 class CValue
 {
 public:
-	CValue(CValueKind* vkind)
+	CValue(HValueKind vkind)
 		: vkind(vkind)
 	{
 	}
 	virtual ~CValue() {};
-	CValueKind* vkind;
+	HValueKind vkind;
 
 
 };
@@ -116,7 +119,7 @@ public:
 
 class CValueText : public CValue
 {
-	CValueText(CValueKind* vkind, const std::string& cs)
+	CValueText(HValueKind vkind, const std::string& cs)
 		: CValue(vkind),
 		_text(cs)
 	{
@@ -129,7 +132,7 @@ class CValueText : public CValue
 
 class CValueList : public CValue
 {
-	CValueList(CValueKind* vkind, const std::list<CValue*>& c_values)
+	CValueList(HValueKind vkind, const std::list<CValue*>& c_values)
 		: CValue(vkind),
 		values(c_values)
 	{
@@ -177,19 +180,12 @@ class FEnviroment
 {
 public:
 	FEnviroment();
-
 	FEnviroment* copy() const;
-
 	virtual ~FEnviroment();
-
-
 	void addKind(HKind _k);
-	void addInstance(HInstance _k);
-
-
+	void addInstance(HInstance _k); 
 
 	//Listas 
-
 	std::list<HInstance> instances;
 	std::list<HKind> kinds;
 
