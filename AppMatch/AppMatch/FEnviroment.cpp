@@ -1,5 +1,6 @@
 #include "FEnviroment.h"
 #include "EqualsResult.h"
+#include <iostream>
 
 
 CKind::CKind(std::string named, HKind prev):previous(prev), name(named)
@@ -66,7 +67,7 @@ EqualsResul isEqual(CValue *c1, CValue *c2)
 
 }
 
-bool can_set_value(CValueKindEnum* kenum, HValue val)
+bool can_set_value_enum(CValueKindEnum* kenum, HValue val)
 {
 	//o val eh algum desses valores porriveis ?
 	for (auto it = kenum->values.begin(); it != kenum->values.end(); ++it)
@@ -74,6 +75,11 @@ bool can_set_value(CValueKindEnum* kenum, HValue val)
 		if (isEqual((*it).get(), val.get()) == Equals) return true;
 	}
 	return false;
+
+}
+
+CValueInstance::CValueInstance(const std::string& _named, HValueKind vkind): CValue(vkind), named(_named)
+{
 
 }
 
@@ -94,21 +100,38 @@ HValueAssert Always_Value(const HValue& c_value)
 
 bool can_set_value(HValueKind vkind, HValue val)
 {
-	
+	 
 	CValueKindEnum* kenum  = dynamic_cast<CValueKindEnum*>(vkind.get());
 	if (kenum != nullptr )
 	{
-		return can_set_value(kenum, val);
+		bool cans =  can_set_value_enum(kenum, val);
+
+		return cans;
 		
 	}
 
-	if (val->vkind == vkind) return true;
+	if (val->vkind == vkind)
+	{
+		return true;
+	}
 	return false;
 
 }
 
+HValueKind  HValueKindBoolean;
+HValueKind  HValueKindString;
+HValueKind  HValueKindText;
+HValueKind  HValueKindList;
+HValueKind  HValueKindNumber;
+
 FEnviroment::FEnviroment()
 {
+	HValueKindBoolean = std::make_shared<CValueKind>("bool");
+	HValueKindString = std::make_shared<CValueKind>("string");
+	HValueKindText = std::make_shared<CValueKind>("text");
+	HValueKindList = std::make_shared<CValueKind>("list");
+	HValueKindNumber = std::make_shared<CValueKind>("number");
+
 }
 
 FEnviroment* FEnviroment::copy() const
@@ -122,16 +145,11 @@ FEnviroment* FEnviroment::copy() const
 	return c;
 }
 
-
-  HValueKind  HValueKindString;
-  HValueKind  HValueKindText;
-  HValueKind  HValueKindList;
+ 
 
 FEnviroment::~FEnviroment()
 {
-	   HValueKindString = std::make_shared<CValueKind>("string");
-	   HValueKindText = std::make_shared<CValueKind>("text");
-	   HValueKindList = std::make_shared<CValueKind>("list");
+	 
 
 }
 
@@ -178,24 +196,62 @@ HInstance get_instance(FEnviroment* env, std::string name)
 	return nullptr;
 }
 
-void set_property(FEnviroment* env,   CInstanceProperty& prop)
+void assign_property(FEnviroment* env,   CInstanceProperty& prop)
 {
 	env->instance_properties.push_back(prop);
 }
 
-void set_property(FEnviroment* env, CKindPropertyAssert& prop)
+void assign_property(FEnviroment* env, CKindPropertyAssert& prop)
 {
 
 	env->kind_properties_asserts.push_back(prop);
+}
+
+CInstanceProperty   instanceProperty(CKindProperty  kprop , HInstance _inst)
+{
+	CInstanceProperty   c =    CInstanceProperty(kprop.name, _inst, kprop.vkind);
+	return c;
+
+}
+
+HInstanceProperty  get_property_default_from_kind(FEnviroment* env, HInstance obj,  HKind c_kind, std::string propName)
+{
+	for (auto it = env->kind_properties_asserts.begin(); it != env->kind_properties_asserts.end(); ++it)
+	{
+		if ((*it).property.kind == c_kind)
+			if ((*it).property.name == propName)
+			{
+				CInstanceProperty *cprop  = new  CInstanceProperty(  (*it).property.name , obj , (*it).property.vkind );
+				return HInstanceProperty(cprop);
+			}
+	}
+	if (c_kind->previous != nullptr)
+	{
+		return get_property_default_from_kind(env, obj , c_kind->previous, propName);
+	}
+	return nullptr;
 }
 
 CInstanceProperty* get_property(FEnviroment* env, HInstance obj, std::string name)
 {
 	for (auto it = env->instance_properties.begin(); it != env->instance_properties.end(); ++it)
 	{
-		if ((*it).inst == obj)
+		if ((*it).name == name)
 		{
-			return &(*it);
+			if ((*it).inst == obj)
+			{
+				return &(*it);
+			}
+		}
+	}
+	{
+		//nao tem na instancia .. verifica se tem alguma herdada do seu Kind
+		HInstanceProperty  pKind = get_property_default_from_kind(env, obj, obj->kind, name);
+		// Ok .. agora associa esse valor na instancia
+		if (pKind != nullptr)
+		{
+			env->instance_properties.push_back(*pKind);			 
+			return &(env->instance_properties.back());
 		}
 	}
 	return nullptr;
@@ -206,10 +262,10 @@ HValue get_property_value(FEnviroment* env, HKind c_kind , std::string  propName
 {
 	for (auto it = env->kind_properties_asserts.begin(); it != env->kind_properties_asserts.end(); ++it)
 	{
-		if ((*it).property->kind   == c_kind)
-			if ((*it).property->name  == propName)
+		if ((*it).property.kind   == c_kind)
+			if ((*it).property.name  == propName)
 			{
-				return (*it).value;
+				return (*it).valueAssertion.value;
 			}
 	}
 	if( c_kind->previous != nullptr )
@@ -225,8 +281,8 @@ HValue get_property_value(FEnviroment* env, HInstance c_instance, std::string  p
 
 	for (auto it = env->instance_properties_asserts.begin(); it != env->instance_properties_asserts.end(); ++it)
 	{
-		if ((*it).property->inst == c_instance)
-			if ((*it).property->name == propName)
+		if ((*it).property.inst == c_instance)
+			if ((*it).property.name == propName)
 			{
 				return (*it).value;
 			}
@@ -237,19 +293,24 @@ HValue get_property_value(FEnviroment* env, HInstance c_instance, std::string  p
 
 void  set_property_value(FEnviroment* env, CInstanceProperty* c_instance_property, HValue val)
 {
+	//std::cout << "Try set " << val->vkind->name << " to " << c_instance_property->vkind->name << std::endl;
 	if ( can_set_value(c_instance_property->vkind , val))
 	{
 		for (auto it = env->instance_properties_asserts.begin(); it != env->instance_properties_asserts.end(); ++it)
 		{
-			if ((*it).property->inst == c_instance_property->inst)
-				if ((*it).property->name == c_instance_property->name)
+			if ((*it).property.inst == c_instance_property->inst)
+				if ((*it).property.name == c_instance_property->name)
 				{
 					(*it).value = val;
 					return;
 				}
 		}
-		CInstancePropertyAssert cval = CInstancePropertyAssert(c_instance_property, val);
+		CInstancePropertyAssert cval = CInstancePropertyAssert(*c_instance_property, val);
 		env->instance_properties_asserts.push_back(cval);
+	}
+	else
+	{
+		throw "unable to set value";
 	}
 }
 
@@ -275,6 +336,19 @@ HValue make_text_value(std::string v)
 {
 	return std::static_pointer_cast<CValue>(std::make_shared<CValueText>(v));
 }
+
+
+HValue make_bool_value(bool  v) 
+{
+	return std::static_pointer_cast<CValue>(std::make_shared<CValueBoolean>(v));
+}
+
+
+HValue make_number_value(int  v)
+{
+	return std::static_pointer_cast<CValue>(std::make_shared<CValueNumber>(v));
+}
+
 
 std::string toString(CValue *val)
 {
@@ -303,11 +377,32 @@ std::string toString(CValue *val)
 		}
 	}
 
+	{
+		CValueBoolean* v = dynamic_cast<CValueBoolean*>(val);
+		if (v != nullptr)
+		{
+			if (v->val) { return "true"; }
+			else { return "false";  }
+		}
+	}
+
+	{
+		CValueNumber* v = dynamic_cast<CValueNumber*>(val);
+		if (v != nullptr)
+		{
+			return  std::to_string(v->value);
+		}
+	}
+
 	return "ERROR";
 }
 
-HValueKind makeValueKindEnum(FEnviroment* env, const std::string& _name, HValueKind _valuesKind, const std::list<HValue>& posiblesValues)
+HValueKind makeValueKindEnum(FEnviroment* env, std::string  _name, HValueKind _valuesKind, std::list<HValue>  posiblesValues)
 {
+	if (_valuesKind == nullptr)
+	{
+		throw "unable to set value kind";
+	}
 
 	std::shared_ptr<CValueKindEnum> cc = std::make_shared<CValueKindEnum>(_name, _valuesKind, posiblesValues);
 	 
@@ -315,6 +410,22 @@ HValueKind makeValueKindEnum(FEnviroment* env, const std::string& _name, HValueK
 
 
 }
+
+HValueKind makeValueKind(FEnviroment* env, const std::string& _name)
+{
+	std::shared_ptr<CValueKind> cc = std::make_shared<CValueKind>(_name);
+	return cc;
+}
+
+HValue  makeValueInstance(FEnviroment* env, const std::string& _name , HValueKind vkind )
+{
+
+	HValueInstance  val = 	std::make_shared<CValueInstance>(_name, vkind);
+	env->value_instances.push_back(val);	 
+	return val;
+}
+
+
 
 std::string toString(HValue val)
 {
