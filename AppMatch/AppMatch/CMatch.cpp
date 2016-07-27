@@ -1,12 +1,6 @@
-
 #include "CBase.h"
-
- 
 #include <vector>
 #include "CMatch.h"
-
- 
-
 std::string get_repr(MTermSet lst)
 {
 	std::string q;
@@ -18,12 +12,7 @@ std::string get_repr(MTermSet lst)
 	q += " ] ";
 	return q;
 }
-
-
-
 //Obtem uma lista de M termos e quebra ela em Combinacoes de Sets de tamanho N
-
-
 MTermSetCombinatoria cons(MTermSet &head, MTermSetCombinatoria &tail)
 {
 	MTermSetCombinatoria accTerms;
@@ -34,7 +23,6 @@ MTermSetCombinatoria cons(MTermSet &head, MTermSetCombinatoria &tail)
 	}
 	return accTerms; 
 }
-
 //cada termo eh um MTermSet
 MTermSetCombinatoriaList getCombinatoriasUnitary(std::vector<HTerm> terms )
 {
@@ -45,14 +33,11 @@ MTermSetCombinatoriaList getCombinatoriasUnitary(std::vector<HTerm> terms )
 	}
 	return MTermSetCombinatoriaList({ uniq });
 }
-
 //todos os termos formam um MTermSet que forma um MTermSetCombinatoria que forma um MTermSetCombinatoriaList 
 MTermSetCombinatoriaList getCombinatoriasGroup(std::vector<HTerm> terms)
 {
 	return MTermSetCombinatoriaList({ MTermSetCombinatoria({ terms }) });
 }
-
-
 MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n ) //num termos que restam
 {
 	if (n == 1)   
@@ -64,15 +49,12 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n 
 	{
 		return getCombinatoriasUnitary(terms); //Agiliza o processamento
 	}
-
 	//particiona de 1 a (n-1)
-	
 	MTermSetCombinatoriaList accTerms;
 	for(size_t j = 1 ; j<= lsize - n +1  ;++j)
 	{
 		MTermSet  head(terms.begin() , terms.begin()  + j );		 
 		std::vector<HTerm>  tail(terms.begin()+j, terms.end());
-
 		auto tails = getCombinatoriasRec(tail, n - 1); 
 		for (auto c = tails.begin(); c != tails.end(); ++c)
 		{
@@ -81,11 +63,7 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n 
 		} 
 	}
 	return accTerms;
-
-
 }
-
-
 MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n)
 {
 	if (lst.size() < n)
@@ -98,8 +76,6 @@ MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n)
 	}
 	return getCombinatoriasRec(lst, n);
 }
-
-
 std::string get_repr(MTermSetCombinatoriaList lst )
 {
 	std::string q = "{ ";
@@ -117,30 +93,23 @@ std::string get_repr(MTermSetCombinatoriaList lst )
 		q += "\n";
 	}
 	q += "}";
-	
 	return q;
 }
-
 std::string CPred::repr()
 {
 	return "Pred";
 }
-
 CPredAtom::CPredAtom(std::string _named, HTerm atom): CPred(_named), h(atom)
 {
 }
-
 EqualsResul CPredAtom::match(MTermSet _h)
 {
 	if (_h.size() != 1) return NotEquals;
 	return equals(this->h.get(), _h[0].get() );
 }
-
 CPredList::CPredList(std::string _named, std::initializer_list<HPred> _plist):CPred(_named), plist(_plist)
 {
-
 }
-
 EqualsResul CPredList::match(MTermSet _h)
 {
 	if (_h.size() != plist.size()) return NotEquals;
@@ -153,68 +122,51 @@ EqualsResul CPredList::match(MTermSet _h)
 		}
 	}
 	return Equals;
-	
 }
-
 CPredAny::CPredAny(std::string _named): CPred(_named)
 {}
-
 EqualsResul CPredAny::match(MTermSet _h)
 {
 	return Equals;
 }
-
 CPredBoolean::CPredBoolean(const std::string& _named): CPred(_named)
 {
 }
-
 EqualsResul CPredBooleanAnd::match(MTermSet h)
 {
 	if ((this->b1->match(h) == Equals) && (this->b2->match(h) == Equals)) return Equals;
 	return NotEquals;
-	
 }
-
 CPredBooleanAnd::CPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1): CPredBoolean(_named),
                                                                                                         b1(c_pred),
                                                                                                         b2(c_pred1)
 {
 }
-
 CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1): CPredBoolean(_named),
                                                                                                       b1(c_pred),
                                                                                                       b2(c_pred1)
 {
 }
-
 EqualsResul CPredBooleanOr::match(MTermSet h)
 {
 	if ((this->b1->match(h) == Equals) || (this->b2->match(h) == Equals)) return Equals;
 	return NotEquals;
-
 }
-
 void MatchResult::setValue(std::string named, HTerm value)
 {
 	this->matchs[named] = value;
-
 }
-
 HTerm MatchResult::getValue(std::string named)
 {
 	return this->matchs[named];
 }
-
 void MatchResult::insert(MatchResult& other)
 {
 	for(auto kv = other.matchs.begin() ; kv!= other.matchs.end();++kv)
 	{
 		this->setValue(kv->first, kv->second);
 	}
-
 }
-
-
 HTerm  convertToTerm( MTermSet m)
 {
 	if (m.size() == 1 )
@@ -228,7 +180,6 @@ HTerm  convertToTerm( MTermSet m)
 		return   HTerm(lst_ptr);		
 	}
 }
-
 MatchResult makeMatch(std::string named, HTerm value)
 {
 	MatchResult m;
@@ -236,24 +187,16 @@ MatchResult makeMatch(std::string named, HTerm value)
 	m.setValue(named, value);
 	return m;
 }
-
 MatchResult CMatch_j(MTermSet  termo,  HPred  predicate)
 {
- 
-	 
 		if (predicate->match( termo ))
 		{
-
 			return makeMatch(predicate->named, convertToTerm( termo) );
 		}
-	 
 	return MatchResult();
-
 }
-
 MatchResult CMatch_i(MTermSetCombinatoria &termos, std::vector<HPred> predicates)
 {
- 
 	int n = predicates.size();
 	if (termos.size() != n)
 	{
@@ -266,17 +209,12 @@ MatchResult CMatch_i(MTermSetCombinatoria &termos, std::vector<HPred> predicates
 		MatchResult mj =  CMatch_j( termos[i],  predicates[i]);
 		if (mj.result != Equals ) return MatchResult();
 		mm.insert(mj);
-
 	}
 	return mm;
-
 }
-
-
 MatchResult CMatch(std::vector<HTerm> lst , std::vector<HPred> predicates )
 {
 	int npred = predicates.size();
-
 	MTermSetCombinatoriaList comb =  getCombinatorias(lst, npred);
 	for (auto it = comb.begin(); it != comb.end(); ++it)
 	{
@@ -285,12 +223,9 @@ MatchResult CMatch(std::vector<HTerm> lst , std::vector<HPred> predicates )
 		{
 			return mm;
 		}
-		
 	}
-
 	return MatchResult();
 }
-
 std::string get_repr(MatchResult r)
 {
 	std::string s;
@@ -301,5 +236,4 @@ std::string get_repr(MatchResult r)
 		s += "\n";
 	}
 	return s;
-
 };
