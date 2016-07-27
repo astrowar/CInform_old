@@ -546,17 +546,137 @@ CRelationDescription* get_relation_description(FEnviroment* envb, std::string na
 	return nullptr;
 }
 
-void add_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+bool isAlowedToNode(FEnviroment* envb, HRelationDescriptionNode node, HInstance val )
+{
+	CRelationDescriptionNodeMany* nodeMany =  dynamic_cast<CRelationDescriptionNodeMany*>(node.get());
+	if (nodeMany)
+	{
+		// TODO 
+	}
+	return (node->kind == val->kind);
+		
+
+}
+
+
+CRelationInstance* find_relation_1(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1)
 {
 	FEnviromentBase* env = envb->getBase();
-	if (relation_description->node1->kind == val1->kind)
-		if (relation_description->node2->kind == val2->kind)
+	for (auto it = env->relation_instances .begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named  == relation_description->named)
 		{
+			if( it->item1 == val1 )
+			{
+				return &(*it);
+			}				 
+		}
+	}
+	return nullptr;
+}
+
+
+CRelationInstance* find_relation_2(FEnviroment* envb, CRelationDescription* relation_description, HInstance val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named == relation_description->named)
+		{
+			if (it->item2 == val2)
+			{
+				return &(*it);
+			}
+		}
+	}
+	return nullptr;
+}
+
+
+CRelationInstance* find_relation_any(FEnviroment* envb, CRelationDescription* relation_description, HInstance val)
+{
+	CRelationInstance* p = find_relation_1(envb, relation_description, val);
+	if (p == nullptr) p =  find_relation_2(envb, relation_description, val);
+	return p;
+}
+
+CRelationInstance* find_relation (FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named == relation_description->named)
+		{
+			if (it->item1 == val1)
+				if (it->item2 == val2)
+			{
+				return &(*it);
+			}
+		}
+	}
+	return nullptr;
+}
+
+
+
+
+void delete_relation(FEnviroment* envb, CRelationInstance* inst)
+{
+	if (inst == nullptr) return;
+	FEnviromentBase* env = envb->getBase();
+	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named == inst->relDesc->named)
+		{
+			if (&(*it) == inst)
+			{
+				it = env->relation_instances.erase(it);
+				break;
+			}
+		}
+	}
+}
+
+ 
+
+void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	//Acha a relacao corrent
+	auto p = find_relation(envb, relation_description, val1, val2);
+	delete_relation(env, p); 
+}
+
+
+
+void set_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	if (isAlowedToNode(env, relation_description->node1  , val1 ))
+		if (isAlowedToNode(env, relation_description->node2, val2))
+		{
+
+			if ( relation_description->node1->isMany() == false  )
+			{
+				auto p = find_relation_1(envb, relation_description, val1 );
+				delete_relation(env, p);
+			}
+
+			if (relation_description->node2->isMany() == false)
+			{
+				auto p = find_relation_2(envb, relation_description, val2);
+				delete_relation(env, p);
+			}
+
 			env->relation_instances.push_back(CRelationInstance(relation_description, val1, val2));
 			return;
 		}
 	throw "unable to create relation instance";
 }
+
+
+
+
 
 HValue makeValueInstance(FEnviroment* envb, const std::string& _name, HValueKind vkind)
 {

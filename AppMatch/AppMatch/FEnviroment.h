@@ -265,6 +265,9 @@ class CRelationDescriptionNode
 {
 public:
 	CRelationDescriptionNode(std::string _named, HKind _kind);
+	virtual ~CRelationDescriptionNode(){}
+	virtual bool isMany() { return false; };
+	virtual bool isGroup() { return false; };
 	std::string named;
 	HKind kind;
 };
@@ -275,13 +278,20 @@ class CRelationDescriptionNodeGroup : public CRelationDescriptionNode
 {
 public:
 	CRelationDescriptionNodeGroup(std::string _named, HKind _kind);
+	virtual bool isMany() override { return false; };
+	virtual bool isGroup() override { return true ; }
 };
 
 class CRelationDescriptionNodeMany : public CRelationDescriptionNode
 {
 public:
 	CRelationDescriptionNodeMany(std::string _named, HKind _kind);
+	virtual bool isMany() override  { return true ; } ;
+    virtual bool isGroup() override  {	return false;}
 };
+
+
+// Relations per Se
 
 class CRelationDescription
 {
@@ -383,6 +393,10 @@ HRelationDescriptionNode make_relation_node(std::string _name, HKind _kind);
 HRelationDescriptionNode make_relation_node_various(std::string _name, HKind _kind);
 CRelationDescription* get_relation_description(FEnviroment* env, std::string named);
 void add_relation_description(FEnviroment* envb, CRelationDescription rel_description);
-void add_relation(FEnviroment* env, CRelationDescription* relation_description, HInstance val1, HInstance val2);
+void set_relation(FEnviroment* env, CRelationDescription* relation_description, HInstance val1, HInstance val2);
+void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2);
+
+CRelationInstance* find_relation_1(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1);
+CRelationInstance* find_relation_2(FEnviroment* envb, CRelationDescription* relation_description, HInstance val2);
 #endif;
 

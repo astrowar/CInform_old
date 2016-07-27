@@ -194,7 +194,7 @@ void teste_relations1()
 	//A room is a kind.
 	HKind Room = make_kind(env, "room");
 	//Meeting relates people to each other.
-	auto Meeting = CRelationDescription("Meeting", make_relation_node("", Person), make_relation_node("", Person), true);
+	auto Meeting = CRelationDescription("Meeting", make_relation_node("", Person), make_relation_node("", Person), true );
 	add_relation_description(env, Meeting);
 	// Marriage relates one person to another(called the spouse).
 	auto Marriage = CRelationDescription("Marriage", make_relation_node("", Person), make_relation_node("spouse", Person));
@@ -209,8 +209,16 @@ void teste_relations1()
 		// Bob meeting John.
 		HInstance bob = make_instance(env, "bob", Person);
 		HInstance john = make_instance(env, "John", Person);
+		HInstance paul = make_instance(env, "Paul", Person);
 		auto Meeting_desc = get_relation_description(env, "Meeting");
-		add_relation(env, Meeting_desc, bob, john);
+		set_relation(env, Meeting_desc, bob, john);
+		auto rel_instance = find_relation_1(env, Meeting_desc, bob);
+		std::cout << " bob Meeting : " <<  (rel_instance->item2->name) << std::endl;
+
+
+		set_relation(env, Meeting_desc, bob,paul);
+		rel_instance = find_relation_2(env, Meeting_desc, john);
+		std::cout << " john is Meeting by : " << (rel_instance->item1->name) << std::endl;
 	}
 }
 
