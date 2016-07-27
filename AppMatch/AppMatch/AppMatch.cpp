@@ -243,6 +243,32 @@ void teste_kindValue1()
 
 }
 
+ 
+
+void teste_variables1()
+{
+	//The target is a number variable. The target is 23.
+	FEnviroment *env = new FEnviroment();
+	 
+	//The target is a number variable. The target is 23.
+	auto target = make_variable(env, "target", HValueKindNumber);
+	
+	set_variable_value(env, target, make_number_value(23));
+
+	HValue val  = get_variable_value(env, target);
+
+
+	std::cout << "target is  == " << toString(val) << std::endl;
+
+
+	//============================================================
+
+	//Colour is a kind of value.The fashionable shade is a colour that varies.
+	HValueKind  Colour = makeValueKind(env, "Colour"); 
+	auto fashionable_shade = make_variable(env, "fashionable_shade", Colour);
+
+}
+
 int main()
 {
 	 teste_1();
@@ -256,6 +282,9 @@ int main()
 
 
 	teste_kindValue1();
+
+
+	teste_variables1();
 
     return 0;
 }

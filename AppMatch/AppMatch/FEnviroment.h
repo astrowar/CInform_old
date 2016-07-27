@@ -38,6 +38,7 @@ using HInstance = std::shared_ptr<CInstance>;
 
 
 
+ 
 
 
 
@@ -54,6 +55,13 @@ public:
 
 using HValueKind = std::shared_ptr<CValueKind>;
  
+
+
+
+ 
+
+
+
 class CKindProperty
 {
 public:
@@ -104,10 +112,25 @@ public:
 	HValueKind vkind;
 
 
+	virtual CValue* clone() =0  ;
 };
 using HValue  = std::shared_ptr<CValue>;
  
 
+
+
+class CVariable
+{
+
+public:
+	CVariable(const std::string& name, HValueKind _vkind);
+
+	HValueKind vkind;
+	HValue  value;
+	std::string name;
+};
+
+using HVariable = std::shared_ptr<CVariable>;
 
 
 
@@ -141,6 +164,8 @@ extern HValueKind  HValueKindNumber;
 class CValueBoolean : public CValue
 {
 public:
+	CValue* clone() override;
+
 	CValueBoolean(bool v )
 		: CValue(HValueKindBoolean),
 		val(v)
@@ -155,6 +180,8 @@ public:
 class CValueText : public CValue
 {
 public:
+	CValue* clone() override;
+
 	CValueText(  const std::string& cs)
 		: CValue(HValueKindText),
 		_text(cs)
@@ -167,7 +194,9 @@ public:
 
 class CValueString : public CValue
 {
-public :
+public:
+	CValue* clone() override;
+
 	CValueString(  const std::string& cs)
 		: CValue(HValueKindString),
 		_text(cs)
@@ -182,6 +211,8 @@ public :
 class CValueList : public CValue
 {
 public:
+	CValue* clone() override;
+
 	CValueList(  const std::list<CValue*>& c_values)
 		: CValue(HValueKindList),
 		values(c_values)
@@ -196,6 +227,9 @@ public:
 class CValueNumber : public CValue
 {
 public:
+
+	CValue* clone() override;
+
 	CValueNumber(int  c_value)
 		: CValue(HValueKindNumber),
 		value(c_value)
@@ -208,9 +242,10 @@ public:
 
 
 
-class CValueInstance : public CValue 
+class CValueInstance : public CValue   // Value instance eh o valor dos HValueKind customizados
 {
 public:
+	CValue* clone() override;
 	CValueInstance(const std::string& _named, HValueKind vkind);
 
 	std::string  named;
@@ -218,6 +253,17 @@ public:
 
 
 using HValueInstance = std::shared_ptr<CValueInstance>;
+
+
+
+
+
+
+
+
+
+
+
 
 //========================================
 class AssertConstraint
@@ -287,27 +333,70 @@ class FEnviroment
 {
 public:
 	FEnviroment();
-	FEnviroment* copy() const;
+	virtual FEnviroment* copy()  = 0;
 	virtual ~FEnviroment();
-	void addKind(HKind _k);
-	void addInstance(HInstance _k); 
+	virtual void addKind(HKind _k) = 0;
+	virtual void addInstance(HInstance _k) = 0;
+	virtual void addVariable(HVariable _k) = 0; 
+
+};
+
+
+
+class FEnviromentBase :public FEnviroment
+{
+public:
+	void addKind(HKind _k) override;
+	void addInstance(HInstance _k) override;
+	void addVariable(HVariable _k) override;
+	FEnviromentBase();
+	virtual FEnviroment* copy()   override;
 
 	//Listas 
 	std::list<HInstance> instances;
-	std::list<HValueInstance> value_instances;
 	std::list<HKind> kinds;
+
+
+	std::list<HValueInstance> value_instances;
+	std::list<HVariable> variables;
+
 
 	std::list<CInstanceProperty> instance_properties;
 	std::list<CInstancePropertyAssert > instance_properties_asserts;
-	std::list<CKindPropertyAssert> kind_properties_asserts; 
+	std::list<CKindPropertyAssert> kind_properties_asserts;
 
 };
+
+// um env para as variaveis locais LET
+class SubFEnviroment :public FEnviroment
+{
+public:
+	FEnviroment* copy() override;
+
+	void addKind(HKind _k) override;
+
+	void addInstance(HInstance _k) override;
+
+	void addVariable(HVariable _k) override;
+
+private:
+	SubFEnviroment(FEnviroment* parent  )
+		: parent(parent)		  
+	{
+	}
+
+
+	FEnviroment *parent;
+	std::list<HVariable> variables;
+};
+
+
 
 
 HKind make_kind(FEnviroment *env, std::string name);
 HInstance make_instance(FEnviroment *env, std::string name, HKind k);
 HKind make_derivade_kind(FEnviroment* env, std::string name, HKind base);
-
+HVariable  make_variable(FEnviroment *env, std::string name, HValueKind vkind);
 
 HKind get_kind(FEnviroment* env, std::string name);
 HInstance get_instance(FEnviroment* env, std::string name);
@@ -322,6 +411,9 @@ HValue  get_property_value(FEnviroment* env, CInstanceProperty* c_instance_prope
 void  set_property_value(FEnviroment* env, CInstanceProperty* c_instance_property , HValue val);
 
 
+void set_variable_value(FEnviroment* env, HVariable var, HValue c_value);
+HValue get_variable_value(FEnviroment* env, HVariable var);
+
 HValue make_string_value(std::string v);
 HValue make_text_value(std::string v);
 HValue make_bool_value(bool  v);
@@ -332,8 +424,6 @@ HValue  makeValueInstance(FEnviroment* env, const std::string& _name, HValueKind
 
 std::string  toString(HValue val);
 std::string  toString(CValue* val);
-
-
 
 HValueKind  makeValueKindEnum(FEnviroment* env,   std::string  _name, HValueKind _valuesKind,   std::list<HValue>  posiblesValues);
 HValueKind makeValueKind(FEnviroment* env, const std::string& _name  );
