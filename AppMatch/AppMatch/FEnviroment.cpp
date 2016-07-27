@@ -102,6 +102,11 @@ CValue* CValueNumber::clone()
 	return new CValueNumber(this->value);
 }
 
+CValue* CValueObjectInstance::clone()
+{
+	return new CValueObjectInstance(  this->value ) ;
+}
+
 CValue* CValueInstance::clone()
 {
 	return new CValueInstance(this->named, this->vkind);
@@ -151,6 +156,7 @@ HValueKind HValueKindString;
 HValueKind HValueKindText;
 HValueKind HValueKindList;
 HValueKind HValueKindNumber;
+HValueKind HValueKindObjectInstance;
 
 CRelationDescriptionNode::CRelationDescriptionNode(std::string _named, HKind _kind): named(_named), kind(_kind)
 {
@@ -202,6 +208,7 @@ FEnviromentBase::FEnviromentBase()
 	HValueKindText = std::make_shared<CValueKind>("text");
 	HValueKindList = std::make_shared<CValueKind>("list");
 	HValueKindNumber = std::make_shared<CValueKind>("number");
+	HValueKindObjectInstance = std::make_shared<CValueKind>("instance");
 }
 
 FEnviroment* FEnviromentBase::copy()
@@ -492,6 +499,14 @@ std::string toString(CValue* val)
 			return std::to_string(v->value);
 		}
 	}
+
+	{
+		CValueObjectInstance * v = dynamic_cast<CValueObjectInstance*>(val);
+		if (v != nullptr)
+		{
+			return v->value->name;
+		}
+	}
 	return "ERROR";
 }
 
@@ -559,7 +574,7 @@ bool isAlowedToNode(FEnviroment* envb, HRelationDescriptionNode node, HInstance 
 }
 
 
-CRelationInstance* find_relation_1(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1)
+CRelationInstance* find_relation_i_1(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1)
 {
 	FEnviromentBase* env = envb->getBase();
 	for (auto it = env->relation_instances .begin(); it != env->relation_instances.end(); ++it)
@@ -576,7 +591,7 @@ CRelationInstance* find_relation_1(FEnviroment* envb, CRelationDescription* rela
 }
 
 
-CRelationInstance* find_relation_2(FEnviroment* envb, CRelationDescription* relation_description, HInstance val2)
+CRelationInstance* find_relation_i_2(FEnviroment* envb, CRelationDescription* relation_description, HInstance val2)
 {
 	FEnviromentBase* env = envb->getBase();
 	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
@@ -593,14 +608,14 @@ CRelationInstance* find_relation_2(FEnviroment* envb, CRelationDescription* rela
 }
 
 
-CRelationInstance* find_relation_any(FEnviroment* envb, CRelationDescription* relation_description, HInstance val)
+CRelationInstance* find_relation_i_any(FEnviroment* envb, CRelationDescription* relation_description, HInstance val)
 {
-	CRelationInstance* p = find_relation_1(envb, relation_description, val);
-	if (p == nullptr) p =  find_relation_2(envb, relation_description, val);
+	CRelationInstance* p = find_relation_i_1(envb, relation_description, val);
+	if (p == nullptr) p =  find_relation_i_2(envb, relation_description, val);
 	return p;
 }
 
-CRelationInstance* find_relation (FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+CRelationInstance* find_relation_i (FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
 {
 	FEnviromentBase* env = envb->getBase();
 	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
@@ -643,10 +658,35 @@ void unset_relation(FEnviroment* envb, CRelationDescription* relation_descriptio
 {
 	FEnviromentBase* env = envb->getBase();
 	//Acha a relacao corrent
-	auto p = find_relation(envb, relation_description, val1, val2);
+	auto p = find_relation_i(envb, relation_description, val1, val2);
 	delete_relation(env, p); 
 }
 
+HValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HInstance from_val)
+{
+
+	FEnviromentBase* env = envb->getBase();
+	//Acha a relacao corrent
+	auto p = find_relation_i_1(envb, relation_description, from_val);
+	if (p == nullptr) return nullptr;
+	return std::make_shared<CValueObjectInstance >(p->item2);
+
+}
+
+
+HValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HInstance  to_val)
+{
+
+	FEnviromentBase* env = envb->getBase();
+	//Acha a relacao corrent
+	auto p = find_relation_i_2(envb, relation_description, to_val);
+	if (p == nullptr)
+	{
+		return nullptr;
+	}
+	return std::make_shared<CValueObjectInstance >(p->item1);
+
+}
 
 
 void set_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
@@ -658,13 +698,13 @@ void set_relation(FEnviroment* envb, CRelationDescription* relation_description,
 
 			if ( relation_description->node1->isMany() == false  )
 			{
-				auto p = find_relation_1(envb, relation_description, val1 );
+				auto p = find_relation_i_1(envb, relation_description, val1 );
 				delete_relation(env, p);
 			}
 
 			if (relation_description->node2->isMany() == false)
 			{
-				auto p = find_relation_2(envb, relation_description, val2);
+				auto p = find_relation_i_2(envb, relation_description, val2);
 				delete_relation(env, p);
 			}
 

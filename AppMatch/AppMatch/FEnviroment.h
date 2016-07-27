@@ -130,6 +130,9 @@ extern HValueKind HValueKindText;
 extern HValueKind HValueKindList;
 extern HValueKind HValueKindNumber;
 
+extern HValueKind HValueKindObjectInstance;
+extern HValueKind HValueKindObjectKind;
+
 class CValueBoolean : public CValue
 {
 public:
@@ -199,6 +202,26 @@ public:
 
 	int value;
 };
+
+
+
+class CValueObjectInstance : public CValue //um  HInstancia 
+{
+public:
+	CValue* clone() override;
+
+	CValueObjectInstance(HInstance c_value)
+		: CValue(HValueKindObjectInstance ),
+		value(c_value)
+	{
+	}
+
+	HInstance value;
+};
+
+
+
+
 
 class CValueInstance : public CValue // Value instance eh o valor dos HValueKind customizados
 {
@@ -389,14 +412,20 @@ std::string toString(HValue val);
 std::string toString(CValue* val);
 HValueKind makeValueKindEnum(FEnviroment* env, std::string _name, HValueKind _valuesKind, std::list<HValue> posiblesValues);
 HValueKind makeValueKind(FEnviroment* env, const std::string& _name);
+
+
 HRelationDescriptionNode make_relation_node(std::string _name, HKind _kind);
 HRelationDescriptionNode make_relation_node_various(std::string _name, HKind _kind);
 CRelationDescription* get_relation_description(FEnviroment* env, std::string named);
 void add_relation_description(FEnviroment* envb, CRelationDescription rel_description);
+
+
 void set_relation(FEnviroment* env, CRelationDescription* relation_description, HInstance val1, HInstance val2);
 void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2);
 
-CRelationInstance* find_relation_1(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1);
-CRelationInstance* find_relation_2(FEnviroment* envb, CRelationDescription* relation_description, HInstance val2);
+HValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HInstance from_val);
+HValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HInstance to_val);
+
+ 
 #endif;
 
