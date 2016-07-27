@@ -38,11 +38,6 @@ using HInstance = std::shared_ptr<CInstance>;
 
 
 
- 
-
-
-
-
 class CValueKind
 {
 public:
@@ -325,9 +320,72 @@ public:
 };
 
 
+//Complex thing RELATIONS
+
+class CRelationDescriptionNode 
+{
+public:
+	CRelationDescriptionNode(std::string _named, HKind _kind);
+	std::string named;
+	HKind kind;
+};
+
+using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
+
+class CRelationDescriptionNodeGroup : public CRelationDescriptionNode
+{
+public:
+	CRelationDescriptionNodeGroup(std::string _named, HKind _kind);
+ 
+
+};
+
+
+class CRelationDescriptionNodeMany : public CRelationDescriptionNode
+{
+public:
+	CRelationDescriptionNodeMany(std::string _named,  HKind _kind);
+
+
+};
+
+
+ 
+
+
+
+class CRelationDescription
+{
+public:
+	CRelationDescription(std::string _named, HRelationDescriptionNode _node1, HRelationDescriptionNode  _node2 , bool _symmetric = false  );
+
+	HRelationDescriptionNode node1, node2;
+	std::string named;
+	bool symmetric; 
+	 
+
+		
+};
+ 
+ 
+
+
+class CRelationInstance
+{
+public:
+	CRelationInstance(CRelationDescription* _relDesc, HInstance val, HInstance val2);
+	CRelationDescription* relDesc;
+	HInstance item1;
+	HInstance item2;
+};
+ 
+
+
+//=====================================
 
 
 //No env , tudo eh HANDLE 
+class FEnviromentBase;
 
 class FEnviroment
 {
@@ -337,8 +395,9 @@ public:
 	virtual ~FEnviroment();
 	virtual void addKind(HKind _k) = 0;
 	virtual void addInstance(HInstance _k) = 0;
-	virtual void addVariable(HVariable _k) = 0; 
-
+	virtual void addVariable(HVariable _k) = 0;  
+	virtual FEnviromentBase* getBase() = 0;
+	 
 };
 
 
@@ -351,6 +410,7 @@ public:
 	void addVariable(HVariable _k) override;
 	FEnviromentBase();
 	virtual FEnviroment* copy()   override;
+	virtual FEnviromentBase* getBase() override; 
 
 	//Listas 
 	std::list<HInstance> instances;
@@ -362,9 +422,10 @@ public:
 
 
 	std::list<CInstanceProperty> instance_properties;
-	std::list<CInstancePropertyAssert > instance_properties_asserts;
+	std::list<CInstancePropertyAssert > instance_properties_values;
 	std::list<CKindPropertyAssert> kind_properties_asserts;
-
+	std::list<CRelationDescription> relations_description;
+	std::list<CRelationInstance> relation_instances;
 };
 
 // um env para as variaveis locais LET
@@ -378,6 +439,8 @@ public:
 	void addInstance(HInstance _k) override;
 
 	void addVariable(HVariable _k) override;
+
+	virtual FEnviromentBase* getBase() override;
 
 private:
 	SubFEnviroment(FEnviroment* parent  )
@@ -429,6 +492,18 @@ HValueKind  makeValueKindEnum(FEnviroment* env,   std::string  _name, HValueKind
 HValueKind makeValueKind(FEnviroment* env, const std::string& _name  );
 
  
+
+HRelationDescriptionNode make_relation_node(  std::string  _name, HKind _kind);
+HRelationDescriptionNode make_relation_node_various(std::string  _name, HKind _kind);
+
+
+
+
+CRelationDescription* get_relation_description(FEnviroment* env, std::string named);
+
+
+void add_relation_description(FEnviroment* envb, CRelationDescription rel_description);
+void add_relation(FEnviroment* env, CRelationDescription* relation_description , HInstance val1, HInstance val2 );
 
 
 #endif;

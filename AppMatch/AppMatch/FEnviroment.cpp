@@ -14,7 +14,7 @@ CValueKind::CValueKind(std::string _name): name(_name)
 
  
 
-CVariable::CVariable(const std::string& name, HValueKind _vkind): vkind(_vkind), name(name) , value( nullptr)
+CVariable::CVariable(const std::string& name, HValueKind _vkind): vkind(_vkind), value( nullptr) , name(name)
 {
  
 }
@@ -58,7 +58,7 @@ EqualsResul isEqual(CValueList *c1, CValueList *c2)
 
 EqualsResul isEqual(CValue *c1, CValue *c2)
 {
-	EqualsResul q = Undefined;
+	EqualsResul q;
 	{
 		 
 		q = isEqual(dynamic_cast<CValueString*>(c1), dynamic_cast<CValueString*>(c2));
@@ -181,6 +181,29 @@ HValueKind  HValueKindText;
 HValueKind  HValueKindList;
 HValueKind  HValueKindNumber;
 
+CRelationDescriptionNode::CRelationDescriptionNode(std::string _named, HKind _kind): named(_named), kind(_kind)
+{
+}
+
+CRelationDescriptionNodeGroup::CRelationDescriptionNodeGroup(std::string _named, HKind _kind): CRelationDescriptionNode(_named,_kind)
+{
+}
+
+CRelationDescriptionNodeMany::CRelationDescriptionNodeMany(std::string _named, HKind _kind): CRelationDescriptionNode(_named,_kind)
+{
+}
+
+CRelationDescription::CRelationDescription(std::string _named, HRelationDescriptionNode _node1, HRelationDescriptionNode _node2, bool _symmetric   ):node1(_node1), node2(_node2), named(_named),symmetric(_symmetric)
+{
+
+}
+
+ 
+
+CRelationInstance::CRelationInstance(CRelationDescription* _relDesc, HInstance val, HInstance val2): relDesc(_relDesc), item1(val), item2(val2)
+{
+}
+
 FEnviroment::FEnviroment()
 {
 	 
@@ -236,11 +259,16 @@ FEnviroment* FEnviromentBase::copy()
 	return static_cast<FEnviroment*>(c)  ;
 }
 
+FEnviromentBase* FEnviromentBase::getBase()
+{
+	return  (this);
+}
+
+ 
 
 FEnviroment* SubFEnviroment::copy()
 {
 	throw "unable to copy";
-	return nullptr;
 }
 
 void SubFEnviroment::addKind(HKind _k)
@@ -257,6 +285,13 @@ void SubFEnviroment::addVariable(HVariable _k)
 {
 	this->variables.push_back(_k);
 }
+
+FEnviromentBase* SubFEnviroment::getBase()
+{
+	return this->parent->getBase();
+}
+
+
 
 HKind make_kind(FEnviroment *env,  std::string name)
 {
@@ -282,7 +317,7 @@ HVariable make_variable(FEnviroment* env, std::string name, HValueKind vkind)
 HKind get_kind(FEnviroment* envb, std::string name)
 {	
 	FEnviromentBase* env  = dynamic_cast<FEnviromentBase*>(envb);
-	if (env  != nullptr)
+	 
 	{
 
 		for (auto it = env->kinds.begin(); it != env->kinds.end(); ++it)
@@ -296,8 +331,8 @@ HKind get_kind(FEnviroment* envb, std::string name)
 
 HInstance get_instance(FEnviroment* envb, std::string name)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
+	 
 	{
 		for (auto it = env->instances.begin(); it != env->instances.end(); ++it)
 		{
@@ -305,12 +340,13 @@ HInstance get_instance(FEnviroment* envb, std::string name)
 		}
 		return nullptr;
 	}
+	 
 }
 
-void assign_property(FEnviroment* envb,   CInstanceProperty& prop)
+void assign_property(FEnviroment* envb, CInstanceProperty& prop)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
+	 
 	{
 		env->instance_properties.push_back(prop);
 	}
@@ -318,11 +354,12 @@ void assign_property(FEnviroment* envb,   CInstanceProperty& prop)
 
 void assign_property(FEnviroment* envb, CKindPropertyAssert& prop)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
+	 
 	{
 		env->kind_properties_asserts.push_back(prop);
 	}
+	 
 }
 
 CInstanceProperty   instanceProperty(CKindProperty  kprop , HInstance _inst)
@@ -334,8 +371,8 @@ CInstanceProperty   instanceProperty(CKindProperty  kprop , HInstance _inst)
 
 HInstanceProperty  get_property_default_from_kind(FEnviroment* envb, HInstance obj,  HKind c_kind, std::string propName)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
+	 
 	{
 		for (auto it = env->kind_properties_asserts.begin(); it != env->kind_properties_asserts.end(); ++it)
 		{
@@ -356,8 +393,8 @@ HInstanceProperty  get_property_default_from_kind(FEnviroment* envb, HInstance o
 
 CInstanceProperty* get_property(FEnviroment* envb, HInstance obj, std::string name)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
+	 
 	{
 		for (auto it = env->instance_properties.begin(); it != env->instance_properties.end(); ++it)
 		{
@@ -386,9 +423,9 @@ CInstanceProperty* get_property(FEnviroment* envb, HInstance obj, std::string na
 
 HValue get_property_value(FEnviroment* envb, HKind c_kind , std::string  propName)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
-	{
+	FEnviromentBase* env = envb->getBase();
+	 
+	 
 		for (auto it = env->kind_properties_asserts.begin(); it != env->kind_properties_asserts.end(); ++it)
 		{
 			if ((*it).property.kind == c_kind)
@@ -402,16 +439,15 @@ HValue get_property_value(FEnviroment* envb, HKind c_kind , std::string  propNam
 			return get_property_value(env, c_kind->previous, propName);
 		}
 		return nullptr;
-	}
+	 
 }
 
 
 HValue get_property_value(FEnviroment* envb, HInstance c_instance, std::string  propName)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
 	{
-		for (auto it = env->instance_properties_asserts.begin(); it != env->instance_properties_asserts.end(); ++it)
+		for (auto it = env->instance_properties_values.begin(); it != env->instance_properties_values.end(); ++it)
 		{
 			if ((*it).property.inst == c_instance)
 				if ((*it).property.name == propName)
@@ -426,13 +462,12 @@ HValue get_property_value(FEnviroment* envb, HInstance c_instance, std::string  
 
 void  set_property_value(FEnviroment* envb, CInstanceProperty* c_instance_property, HValue val)
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
 	{
 		//std::cout << "Try set " << val->vkind->name << " to " << c_instance_property->vkind->name << std::endl;
 		if (can_set_value(c_instance_property->vkind, val))
 		{
-			for (auto it = env->instance_properties_asserts.begin(); it != env->instance_properties_asserts.end(); ++it)
+			for (auto it = env->instance_properties_values.begin(); it != env->instance_properties_values.end(); ++it)
 			{
 				if ((*it).property.inst == c_instance_property->inst)
 					if ((*it).property.name == c_instance_property->name)
@@ -442,7 +477,7 @@ void  set_property_value(FEnviroment* envb, CInstanceProperty* c_instance_proper
 					}
 			}
 			CInstancePropertyAssert cval = CInstancePropertyAssert(*c_instance_property, val);
-			env->instance_properties_asserts.push_back(cval);
+			env->instance_properties_values.push_back(cval);
 		}
 		else
 		{
@@ -460,8 +495,6 @@ HValue get_property_value(FEnviroment* env, CInstanceProperty* c_instance_proper
 	if (v != nullptr) return v;
 
 	return  get_property_value(env, c_instance_property->inst->kind , c_instance_property->name);
-
-	return nullptr;
 }
 
 HValue make_string_value(std::string v)
@@ -507,7 +540,7 @@ std::string toString(CValue *val)
 			std::string s;
 			for(auto it = lst->values.begin() ; it != lst->values.end(); it)
 			{
-				CValue* hit = (*it);
+				//CValue* hit = (*it);
 				s += toString(*it) + " ";
 			}
 			return s;
@@ -556,15 +589,70 @@ HValueKind makeValueKind(FEnviroment* env, const std::string& _name)
 	return cc;
 }
 
+HRelationDescriptionNode make_relation_node(  std::string _name, HKind _kind)
+{ 
+		HRelationDescriptionNode  val = std::make_shared<CRelationDescriptionNode>(_name, _kind);	 
+		return val; 
+}
+
+HRelationDescriptionNode make_relation_node_various(std::string _name,  HKind _kind)
+{
+	HRelationDescriptionNode  val = std::make_shared<CRelationDescriptionNodeMany>(_name,  _kind);
+	return val;
+
+}
+
+void add_relation_description(FEnviroment* envb, CRelationDescription rel_description)
+{
+	FEnviromentBase* env = envb->getBase();
+	{ 
+		env->relations_description.push_back(rel_description); 
+	}
+}
+
+CRelationDescription*   get_relation_description(FEnviroment* envb, std::string named)
+{
+	FEnviromentBase* env = envb->getBase();
+	{
+		for (auto it = env->relations_description.begin(); it != env->relations_description.end(); ++it)
+		{
+			if (it->named == named)
+			{
+				  return &(*it);
+			}
+		}
+	}
+	return nullptr;
+}
+
+
+ 
+
+void add_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	 if (relation_description->node1->kind == val1->kind )
+		 if (relation_description->node2->kind == val2->kind)
+		 {
+			 env->relation_instances.push_back(CRelationInstance( relation_description, val1,val2 ) );
+			 return;
+
+		 }
+
+	 throw "unable to create relation instance";
+
+}
+
+
 HValue   makeValueInstance(FEnviroment* envb, const std::string& _name , HValueKind vkind )
 {
-	FEnviromentBase* env = dynamic_cast<FEnviromentBase*>(envb);
-	if (env != nullptr)
+	FEnviromentBase* env = envb->getBase();
 	{
 		HValueInstance  val = std::make_shared<CValueInstance>(_name, vkind);
 		env->value_instances.push_back(val);
 		return val;
 	}
+	 
 }
 
 
