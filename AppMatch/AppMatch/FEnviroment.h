@@ -5,153 +5,14 @@
 #include <list>
 #include <memory>
 #include "EqualsResult.h"
+#include "ConstDefinitions.h"
+#include "CObjectDefinitions.h"
+#include "CValueDefinitions.h"
+#include "CProperties.h"
+#include "CRelations.h"
+#include "CVariableDefinition.h"
+#include "CAssertionDefinition.h"
 
-
- // Classes  abstradas .. que servem como protocolos
-class CGenericKind abstract
-{
-public:
-	virtual ~CGenericKind()
-	{
-	}
-
-	virtual void some() {};
-
- };
-
-using HGenericKind = std::shared_ptr<CGenericKind>;
-
-class CGenericValue abstract
-{
-public:
-	virtual ~CGenericValue()
-	{
-	}
-
-	virtual void some() {};
-}; 
-using HGenericValue = std::shared_ptr<CGenericValue>;
-
-
-
-//Classes concretas
-
-class CObjectKind;
-using HObjectKind = std::shared_ptr<CObjectKind>;
-
-
-class CObjectKind: public  CGenericKind
-{	 
-public:
-	HObjectKind previous;
-	std::string name;
-	CObjectKind(std::string named, HObjectKind prev);
-};
-
-using HObjectKind = std::shared_ptr<CObjectKind>;
-
-class CObjectInstance: public  CGenericValue
-{
-public:
-	CObjectInstance(HObjectKind kind, const std::string& name)
-		: kind(kind),
-		  name(name)
-	{
-	}
-
-	HObjectKind kind;
-	std::string name;
-};
-
-using HInstance = std::shared_ptr<CObjectInstance>;
-
-class CValueKind :public CGenericKind
-{
-public:
-	std::string name;
-	CValueKind(std::string _name);
-
-	 
-};
-
-using HValueKind = std::shared_ptr<CValueKind>;
-
-class CObjectKindProperty
-{
-public:
-	CObjectKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
-		: name(name),
-		  kind(_kind),
-		  vkind(_vkind)
-	{
-	}
-
-	std::string name;
-	HObjectKind kind;
-	HValueKind vkind;
-};
-
-class CInstanceProperty
-{
-public:
-	CInstanceProperty(const std::string& _name, HInstance _inst, HValueKind _vkind)
-		: name(_name),
-		  inst(_inst),
-		  vkind(_vkind)
-	{
-		if (_vkind == nullptr)
-		{
-			throw "unable";
-		}
-	}
-
-	std::string name;
-	HInstance inst;
-	HValueKind vkind;
-};
-
-using HInstanceProperty = std::shared_ptr<CInstanceProperty>;
-
-
-class CValue;
-using  HValue = std::shared_ptr<CValue>;
-class CValue : public CGenericValue
-{
-public:
-	CValue(HValueKind vkind)
-		: vkind(vkind)
-	{
-	} 
-	HValueKind vkind;
-	virtual HValue  clone() =0;
-};
-
- 
-
-class CVariable
-{
-public:
-	CVariable(const std::string& name, HGenericKind  _vkind);
-	HGenericKind vkind;
-	HGenericValue value;
-	std::string name;
-};
-
-using HVariable = std::shared_ptr<CVariable>;
-
-class CValueKindEnum : public CValueKind
-{
-public:
-	CValueKindEnum(const std::string& _name, HValueKind _valuesKind, const std::list<HValue>& posiblesValues)
-		: CValueKind(_name),
-		  values(posiblesValues),
-		  valuesKind(_valuesKind)
-	{
-	}
-
-	std::list<HValue> values;
-	HValueKind valuesKind;
-};
 
 extern HValueKind HValueKindBoolean;
 extern HValueKind HValueKindString;
@@ -163,80 +24,6 @@ extern HValueKind HValueKindObjectInstance;
 extern HValueKind HValueKindObjectKind;
 
 
-class CValueBoolean : public CValue
-{
-public:
-	HValue clone() override;
-
-	CValueBoolean(bool v)
-		: CValue(HValueKindBoolean),
-		  val(v)
-	{
-	}
-
-	bool val;
-};
-
-class CValueText : public CValue
-{
-public:
-	HValue clone() override;
-
-	CValueText(const std::string& cs)
-		: CValue(HValueKindText),
-		  _text(cs)
-	{
-	}
-
-	std::string _text;
-};
-
-class CValueString : public CValue
-{
-public:
-	HValue clone() override;
-
-	CValueString(const std::string& cs)
-		: CValue(HValueKindString),
-		  _text(cs)
-	{
-	}
-
-	std::string _text;
-};
-
-class CValueList : public CValue
-{
-public:
-	HValue clone() override;
-
-	CValueList(  std::list<HGenericValue>  c_values)
-		: CValue(HValueKindList),
-		  values(c_values)
-	{
-	}
-
-	std::list<HGenericValue> values;
-};
-
-
- 
-
-
-
-class CValueNumber : public CValue
-{
-public:
-	HValue clone() override;
-
-	CValueNumber(int c_value)
-		: CValue(HValueKindNumber),
-		  value(c_value)
-	{
-	}
-
-	int value;
-};
 
 
 #ifdef oldCode 
@@ -274,112 +61,12 @@ using HValueObjectKind = std::shared_ptr<CValueObjectKind>;
 #endif
 
 
-class CValueInstance : public CValue // Value instance eh o valor dos HValueKind customizados
-{
-public:
-	HValue clone() override;
-	CValueInstance(const std::string& _named, HValueKind vkind);
-	std::string named;
-};
 
-using HValueInstance = std::shared_ptr<CValueInstance>;
+
+
 
 //========================================
-class AssertConstraint
-{
-public:
-	AssertConstraint(float lk)
-		: LK(lk)
-	{
-	}
 
-	float LK;
-};
-
-class HValueAssert //class que define os parametros de contorno de um dado valor em um Kind
-{
-public:
-	HValueAssert(const HValue& c_value, float constraint);
-	HValue value;
-	AssertConstraint constraint;
-};
-
-HValueAssert Usually_Value(const HValue& c_value);
-HValueAssert Always_Value(const HValue& c_value);
-bool can_set_value(HValueKind vkind, HValue val);
-
-class CKindPropertyAssert
-{
-public:
-	CKindPropertyAssert(CObjectKindProperty property, HValueAssert value);
-
-	CObjectKindProperty property;
-	HValueAssert valueAssertion;
-};
-
-class CInstancePropertyAssert
-{
-public:
-	CInstancePropertyAssert(CInstanceProperty property, HValue value)
-		: property(property),
-		  value(value)
-	{
-	}
-
-	CInstanceProperty property;
-	HValue value;
-};
-
-//Complex thing RELATIONS
-class CRelationDescriptionNode
-{
-public:
-	CRelationDescriptionNode(std::string _named, HGenericKind _kind);
-	virtual ~CRelationDescriptionNode(){}
-	virtual bool isMany() { return false; };
-	virtual bool isGroup() { return false; };
-	std::string named;
-	HGenericKind vkind;
-};
-
-using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
-
-class CRelationDescriptionNodeGroup : public CRelationDescriptionNode
-{
-public:
-	CRelationDescriptionNodeGroup(std::string _named, HGenericKind _kind);
-	virtual bool isMany() override { return false; };
-	virtual bool isGroup() override { return true ; }
-};
-
-class CRelationDescriptionNodeMany : public CRelationDescriptionNode
-{
-public:
-	CRelationDescriptionNodeMany(std::string _named, HGenericKind _kind);
-	virtual bool isMany() override  { return true ; } ;
-    virtual bool isGroup() override  {	return false;}
-};
-
-
-// Relations per Se
-
-class CRelationDescription
-{
-public:
-	CRelationDescription(std::string _named, HRelationDescriptionNode _node1, HRelationDescriptionNode _node2, bool _symmetric = false);
-	HRelationDescriptionNode node1, node2;
-	std::string named;
-	bool symmetric;
-};
-
-class CRelationInstance
-{
-public:
-	CRelationInstance(CRelationDescription* _relDesc, HGenericValue  val, HGenericValue val2);
-	CRelationDescription* relDesc;
-	HGenericValue item1;
-	HGenericValue item2;
-};
 
 //=====================================
 //No env , tudo eh HANDLE 
@@ -411,7 +98,7 @@ public:
 	//Listas 
 	std::list<HInstance> instances;
 	std::list<HObjectKind> kinds;
-	std::list<HValueInstance> value_instances;
+	 std::list<HValueInstance> value_instances;
 	std::list<HVariable> variables;
 	std::list<CInstanceProperty> instance_properties;
 	std::list<CInstancePropertyAssert> instance_properties_values;

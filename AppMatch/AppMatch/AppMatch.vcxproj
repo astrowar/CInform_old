@@ -145,8 +145,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CMatch.h" />
+    <ClInclude Include="CObjectDefinitions.h" />
+    <ClInclude Include="ConstDefinitions.h" />
+    <ClInclude Include="CProperties.h" />
+    <ClInclude Include="CRelations.h" />
+    <ClInclude Include="CValueDefinitions.h" />
+    <ClInclude Include="CVariableDefinition.h" />
     <ClInclude Include="EqualsResult.h" />
     <ClInclude Include="FEnviroment.h" />
     <ClInclude Include="stdafx.h" />
@@ -156,6 +163,8 @@
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="CBase.cpp" />
     <ClCompile Include="CMatch.cpp" />
+    <ClCompile Include="CRelations.cpp" />
+    <ClCompile Include="Equality.cpp" />
     <ClCompile Include="FEnviroment.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
