@@ -137,6 +137,9 @@ namespace Interpreter
 		// inicia pelas coisas mais simples
 
 
+		VM::HGenericKind interpret_as_actionApplying(ITerm* noumkind);
+		bool   interpret_as_valuekind(ITerm* noumkind);
+		VM::HValueKind interpret_as_valuekind_derivade(ITerm* noumkind);
 		void   setAssertion(ItermAssertion  *s);
 
 

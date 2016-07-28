@@ -107,15 +107,65 @@ namespace Interpreter
 		return "noum";
 	}
 
+	VM::HGenericKind CInterpreter::interpret_as_actionApplying(ITerm* noumkind)
+	{
+		return {};
+	}
+
+	bool  CInterpreter::interpret_as_valuekind(ITerm* noumkind)
+	{
+		// noumkind = a kind of value 
+		return {};
+	}
+
+	VM::HValueKind CInterpreter::interpret_as_valuekind_derivade(ITerm* noumkind)
+	{
+		// noumkind = a kind of XXX -> return XXX
+		return{};
+	}
+
 	void CInterpreter::setAssertion(ItermAssertion* s)
 	{
 		//Asertion Simples ou nao ...
 		
-		// o que eh o segundo termo ???
-		VM::HObjectKind  kind = interpret_as_objectkind(s->noumkind);
-		if (kind != nullptr)
+		//Set an action
+		VM::HGenericKind  action_kind = interpret_as_actionApplying(s->noumkind);
+		if (action_kind != nullptr)
 		{
-			VM::HInstance inst = make_instance(env,  term_to_string(s->noum), kind);
+			return;
+		}
+
+
+		// Multiple Value Instances Definitins !
+		// The textures are rough, stubbly and smooth. 
+
+
+
+
+
+		// o que eh o segundo termo ???
+		VM::HObjectKind  objectKind = interpret_as_objectkind(s->noumkind);
+		if (objectKind != nullptr)
+		{
+			VM::HInstance inst = make_instance(env, term_to_string(s->noum), objectKind);
+			return;
+		}
+
+
+		// Cria um novo tipo de Value
+		bool valueKindBase  = interpret_as_valuekind (s->noumkind);
+		if (valueKindBase  )
+		{
+			VM::HValueKind  inst = makeValueKind(env, term_to_string(s->noum) );
+			return;
+		}
+
+
+		// Cria um novo tipo de Value derivado de outro 
+		VM::HValueKind  valueKind = interpret_as_valuekind_derivade (s->noumkind);
+		if (valueKind != nullptr)
+		{
+			VM::HValue  inst = makeValueInstance(env,  term_to_string(s->noum), valueKind);
 			return;
 		}
 		
