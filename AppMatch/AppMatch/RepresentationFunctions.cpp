@@ -1,93 +1,98 @@
-
 #include "CObjectDefinitions.h"
 #include "CValueDefinitions.h"
 #include "CRelations.h"
-std::string toString(CGenericValue* val);
- 
-std::string toString(HGenericValue val);
 
 
-std::string toString(HValue val)
+namespace VM
 {
-	return toString(val.get());
-}
+
+	std::string toString(CGenericValue* val);
+
+	std::string toString(HGenericValue val);
 
 
-std::string toString_val(CValue* val)
-{
-	if (val == nullptr) return "NIL??";
+	std::string toString(HValue val)
 	{
-		CValueString* v = dynamic_cast<CValueString*>(val);
-		if (v != nullptr) return v->_text;
+		return toString(val.get());
 	}
+
+
+	std::string toString_val(CValue* val)
 	{
-		CValueText* txt = dynamic_cast<CValueText*>(val);
-		if (txt != nullptr) return txt->_text;
-	}
-	{
-		CValueList* lst = dynamic_cast<CValueList*>(val);
-		if (lst != nullptr)
+		if (val == nullptr) return "NIL??";
 		{
-			std::string s;
-			for (auto it = lst->values.begin(); it != lst->values.end(); ++it)
-			{
-				//CValue* hit = (*it);
-				s += toString(*it) + " ";
-			}
-			return s;
+			CValueString* v = dynamic_cast<CValueString*>(val);
+			if (v != nullptr) return v->_text;
 		}
-	}
-	{
-		CValueBoolean* v = dynamic_cast<CValueBoolean*>(val);
-		if (v != nullptr)
 		{
-			if (v->val)
+			CValueText* txt = dynamic_cast<CValueText*>(val);
+			if (txt != nullptr) return txt->_text;
+		}
+		{
+			CValueList* lst = dynamic_cast<CValueList*>(val);
+			if (lst != nullptr)
 			{
-				return "true";
-			}
-			else
-			{
-				return "false";
+				std::string s;
+				for (auto it = lst->values.begin(); it != lst->values.end(); ++it)
+				{
+					//CValue* hit = (*it);
+					s += toString(*it) + " ";
+				}
+				return s;
 			}
 		}
-	}
-	{
-		CValueNumber* v = dynamic_cast<CValueNumber*>(val);
-		if (v != nullptr)
 		{
-			return std::to_string(v->value);
+			CValueBoolean* v = dynamic_cast<CValueBoolean*>(val);
+			if (v != nullptr)
+			{
+				if (v->val)
+				{
+					return "true";
+				}
+				else
+				{
+					return "false";
+				}
+			}
 		}
+		{
+			CValueNumber* v = dynamic_cast<CValueNumber*>(val);
+			if (v != nullptr)
+			{
+				return std::to_string(v->value);
+			}
+		}
+
+
+		return "ERROR";
 	}
 
-	 
-	return "ERROR";
-}
-  
-std::string toString_inst(CObjectInstance* val)
-{
-	return val->name;
-}
-
-std::string toString(CGenericValue* val)
-{
+	std::string toString_inst(CObjectInstance* val)
 	{
-		CValue* v = dynamic_cast<CValue*>(val);
-		if (v != nullptr) return toString_val(v);
+		return val->name;
 	}
+
+	std::string toString(CGenericValue* val)
 	{
-		CObjectInstance* h = dynamic_cast<CObjectInstance*>(val);
-		if (h != nullptr) return toString_inst(h);
+		{
+			CValue* v = dynamic_cast<CValue*>(val);
+			if (v != nullptr) return toString_val(v);
+		}
+		{
+			CObjectInstance* h = dynamic_cast<CObjectInstance*>(val);
+			if (h != nullptr) return toString_inst(h);
+		}
+		return "Nil";
 	}
-	return "Nil";
-}
 
-std::string toString(HGenericValue val)
-{
-	return toString(val.get());
-}
+	std::string toString(HGenericValue val)
+	{
+		return toString(val.get());
+	}
 
-std::string toString (CRelationInstance* val)
-{
-	return toString( val->item1.get()) + "->" + val->relDesc->named + " ->" + toString(val->item2.get())  ;
+	std::string toString(CRelationInstance* val)
+	{
+		return toString(val->item1.get()) + "->" + val->relDesc->named + " ->" + toString(val->item2.get());
+	}
 
 }

@@ -5,43 +5,44 @@
 #include "CObjectDefinitions.h"
 #include "CValueDefinitions.h"
 
-
-class CObjectKindProperty
+namespace VM
 {
-public:
-	CObjectKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
-		: name(name),
-		  kind(_kind),
-		  vkind(_vkind)
+	class CObjectKindProperty
 	{
-	}
-
-	std::string name;
-	HObjectKind kind;
-	HValueKind vkind;
-};
-
-class CInstanceProperty
-{
-public:
-	CInstanceProperty(const std::string& _name, HInstance _inst, HValueKind _vkind)
-		: name(_name),
-		  inst(_inst),
-		  vkind(_vkind)
-	{
-		if (_vkind == nullptr)
+	public:
+		CObjectKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
+			: name(name),
+			kind(_kind),
+			vkind(_vkind)
 		{
-			throw "unable";
 		}
-	}
 
-	std::string name;
-	HInstance inst;
-	HValueKind vkind;
-};
+		std::string name;
+		HObjectKind kind;
+		HValueKind vkind;
+	};
 
-using HInstanceProperty = std::shared_ptr<CInstanceProperty>;
+	class CInstanceProperty
+	{
+	public:
+		CInstanceProperty(const std::string& _name, HInstance _inst, HValueKind _vkind)
+			: name(_name),
+			inst(_inst),
+			vkind(_vkind)
+		{
+			if (_vkind == nullptr)
+			{
+				throw "unable";
+			}
+		}
 
+		std::string name;
+		HInstance inst;
+		HValueKind vkind;
+	};
 
+	using HInstanceProperty = std::shared_ptr<CInstanceProperty>;
+
+}
 
 #endif

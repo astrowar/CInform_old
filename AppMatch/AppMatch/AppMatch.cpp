@@ -6,6 +6,9 @@
 #include "FEnviroment.h"
 #include <iostream>
 
+
+using namespace VM;
+
 void teste_1()
 {
 	auto lst1 = make_list({make_number(2), make_number(4)});

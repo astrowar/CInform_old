@@ -5,34 +5,36 @@
 #include <string>
  
 
-// Classes  abstradas .. que servem como protocolos
-class CGenericKind abstract
+namespace VM
 {
-public:
-	virtual ~CGenericKind()
+	// Classes  abstradas .. que servem como protocolos
+	class CGenericKind abstract
 	{
-	}
+	public:
+		virtual ~CGenericKind()
+		{
+		}
 
-	virtual void some() {};
+		virtual void some() {};
 
- };
+	};
 
-using HGenericKind = std::shared_ptr<CGenericKind>;
+	using HGenericKind = std::shared_ptr<CGenericKind>;
 
-class CGenericValue abstract
-{
-public:
-	virtual ~CGenericValue()
+	class CGenericValue abstract
 	{
-	}
+	public:
+		virtual ~CGenericValue()
+		{
+		}
 
-	virtual void some() {};
-}; 
-using HGenericValue = std::shared_ptr<CGenericValue>;
+		virtual void some() {};
+	};
+	using HGenericValue = std::shared_ptr<CGenericValue>;
 
 
 
-
+}
 
 
 

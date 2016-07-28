@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
+    <ClInclude Include="CInterpreter.h" />
     <ClInclude Include="CMatch.h" />
     <ClInclude Include="CObjectDefinitions.h" />
     <ClInclude Include="ConstDefinitions.h" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="CBase.cpp" />
+    <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CMatch.cpp" />
     <ClCompile Include="CpropertiesFunctions.cpp" />
     <ClCompile Include="CRelations.cpp" />
