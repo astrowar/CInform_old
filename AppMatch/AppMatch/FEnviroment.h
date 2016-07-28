@@ -76,10 +76,10 @@ public:
 
 using HValueKind = std::shared_ptr<CValueKind>;
 
-class CKindProperty
+class CObjectKindProperty
 {
 public:
-	CKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
+	CObjectKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
 		: name(name),
 		  kind(_kind),
 		  vkind(_vkind)
@@ -311,13 +311,9 @@ bool can_set_value(HValueKind vkind, HValue val);
 class CKindPropertyAssert
 {
 public:
-	CKindPropertyAssert(CKindProperty property, HValueAssert value)
-		: property(property),
-		  valueAssertion(value)
-	{
-	}
+	CKindPropertyAssert(CObjectKindProperty property, HValueAssert value);
 
-	CKindProperty property;
+	CObjectKindProperty property;
 	HValueAssert valueAssertion;
 };
 

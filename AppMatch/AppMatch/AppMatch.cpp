@@ -69,7 +69,7 @@ void teste_properties1()
 	auto thing = make_kind(env, "thing");
 	// A thing can be hot or cold. A thing is usually cold.
 	{
-		auto thing_hot_cold = CKindProperty("", thing, makeValueKindEnum(env, "", HValueKindString, {make_string_value("hot"),make_string_value("cold")}));
+		auto thing_hot_cold = CObjectKindProperty("", thing, makeValueKindEnum(env, "", HValueKindString, {make_string_value("hot"),make_string_value("cold")}));
 		auto thing_hot_cold_assertion = CKindPropertyAssert(thing_hot_cold, Usually_Value(make_string_value("cold")));
 		assign_property(env, thing_hot_cold_assertion);
 	}
@@ -126,7 +126,7 @@ void teste_properties3()
 		auto room = make_kind(env, "room");
 		auto deadEnd = make_derivade_kind(env, "dead end", room); //umbrella is a thing
 		//A dead end has a property called river sound
-		auto deadEnd_riverSong = CKindProperty("river sound", deadEnd, HValueKindText);
+		auto deadEnd_riverSong = CObjectKindProperty("river sound", deadEnd, HValueKindText);
 		//The river sound of a dead end is usually "a faint whispering of running water".
 		auto deadEnd_riverSong_text = CKindPropertyAssert(deadEnd_riverSong, Usually_Value(make_text_value("a faint whispering of running water")));
 		assign_property(env, deadEnd_riverSong_text);
@@ -144,6 +144,29 @@ void teste_properties3()
 		std::cout << "river Song == " << toString(TortuousAlcove_riverSong_value) << std::endl;
 	}
 }
+
+
+void teste_properties4()
+{	
+	//Testa as codicoes de heranca de valores
+	FEnviromentBase* env = new FEnviromentBase();
+	auto thing = make_kind(env, "thing");
+	auto book_kind = make_derivade_kind(env, "book", thing); //book  is a kind of thing
+	auto book = make_instance(env, "red book", thing); //red book  is a book
+
+
+	auto thing_color = CObjectKindProperty("color", thing, HValueKindString );
+	auto thing_color_prop = CKindPropertyAssert(thing_color, Usually_Value(make_string_value("white")));
+	assign_property(env, thing_color_prop);
+
+
+	auto book_instance_color = get_property(env, book, "color");
+	std::cout << "book color  : " << toString(get_property_value(env, book_instance_color)) << std::endl;
+	set_property_value(env, book_instance_color, make_string_value("red") );
+	std::cout << "book color  : " << toString(get_property_value(env, book_instance_color)) << std::endl;
+
+}
+
 
 void teste_kindValue1()
 {
@@ -262,13 +285,12 @@ void teste_relations2()
 }
 void teste_relations3()
 {
-	FEnviromentBase* env = new FEnviromentBase();
-
+	FEnviromentBase* env = new FEnviromentBase(); 
 	// A memory is a kind of thing. 
 	HObjectKind thing = make_kind(env, "thing");
 	HObjectKind memory = make_derivade_kind(env, "memory" , thing);
 	// A memory can be retrieved or buried.A memory is usually buried.
-	auto memory_prop = CKindProperty("", memory, makeValueKindEnum(env, "", HValueKindString, { make_string_value("retrieved"),make_string_value("buried") }));
+	auto memory_prop = CObjectKindProperty("", memory, makeValueKindEnum(env, "", HValueKindString, { make_string_value("retrieved"),make_string_value("buried") }));
 	auto memory_prop_assertion = CKindPropertyAssert(memory_prop, Usually_Value(make_string_value("buried")));
 	assign_property(env, memory_prop_assertion);
 
@@ -291,7 +313,7 @@ void teste_relations3()
 }
 
 
-
+ 
 
 int main()
 {
@@ -303,6 +325,7 @@ int main()
 	teste_properties1();
 	teste_properties2();
 	teste_properties3();
+	teste_properties4();
 	teste_kindValue1();
 	teste_variables1(); 
 	teste_relations1();

@@ -342,6 +342,17 @@ bool can_set_value(HValueKind vkind, HValue val)
 	return can_set_value_ptr(vkind, val.get());
 }
 
+CKindPropertyAssert::CKindPropertyAssert(CObjectKindProperty _property, HValueAssert value): property(_property),
+                                                                                      valueAssertion(value)
+{
+	
+	if ( can_set_value (property.vkind ,  valueAssertion.value ) ==false )
+	{
+		throw "unable to set value";
+	}
+
+}
+
 HValueKind HValueKindBoolean;
 HValueKind HValueKindString;
 HValueKind HValueKindText;
@@ -513,7 +524,7 @@ void assign_property(FEnviroment* envb, CKindPropertyAssert& prop)
 	}
 }
 
-CInstanceProperty instanceProperty(CKindProperty kprop, HInstance _inst)
+CInstanceProperty instanceProperty(CObjectKindProperty kprop, HInstance _inst)
 {
 	CInstanceProperty c = CInstanceProperty(kprop.name, _inst, kprop.vkind);
 	return c;
