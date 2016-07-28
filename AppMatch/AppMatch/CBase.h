@@ -5,7 +5,7 @@
 #include <list>
 #include <memory>
 #include <vector>
-enum EqualsResul;
+#include "EqualsResult.h"
 
 class CTerm
 {
@@ -57,5 +57,7 @@ EqualsResul equals(HTerm c1, HTerm c2);
 HTerm make_number(int x);
 HTerm make_string(std::string x);
 HTerm make_list(std::initializer_list<HTerm> x);
-#endif;
+#endif
+
+
 

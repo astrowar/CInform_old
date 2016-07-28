@@ -4,10 +4,21 @@
 #include <string>
 #include <list>
 #include <memory>
+
+
+class CKindGeneric
+{
+    virtual void some() {} ;
+ };
+
+using HKindGeneric = std::shared_ptr<CKindGeneric>;
+
+
 class CKind;
 using HKind = std::shared_ptr<CKind>;
 
-class CKind
+
+class CKind: public  CKindGeneric
 {
 public:
 	HKind previous;
@@ -32,7 +43,7 @@ public:
 
 using HInstance = std::shared_ptr<CInstance>;
 
-class CValueKind
+class CValueKind :public CKindGeneric
 {
 public:
 	std::string name;
@@ -133,6 +144,7 @@ extern HValueKind HValueKindNumber;
 extern HValueKind HValueKindObjectInstance;
 extern HValueKind HValueKindObjectKind;
 
+
 class CValueBoolean : public CValue
 {
 public:
@@ -219,7 +231,23 @@ public:
 	HInstance value;
 };
 
+using HValueObjectInstance = std::shared_ptr<CValueObjectInstance>;
 
+class CValueObjectKind : public CValue //um  HKind
+{
+public:
+    CValue* clone() override;
+    
+    CValueObjectKind(HKind c_value)
+    : CValue(HValueKindObjectKind ),
+    value(c_value)
+    {
+    }
+    
+    HKind value;
+};
+
+using HValueObjectKind = std::shared_ptr<CValueObjectKind>;
 
 
 
@@ -287,12 +315,12 @@ public:
 class CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNode(std::string _named, HKind _kind);
+	CRelationDescriptionNode(std::string _named, HKindGeneric _kind);
 	virtual ~CRelationDescriptionNode(){}
 	virtual bool isMany() { return false; };
 	virtual bool isGroup() { return false; };
 	std::string named;
-	HKind kind;
+	HKindGeneric vkind;
 };
 
 using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
@@ -300,7 +328,7 @@ using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
 class CRelationDescriptionNodeGroup : public CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNodeGroup(std::string _named, HKind _kind);
+	CRelationDescriptionNodeGroup(std::string _named, HKindGeneric _kind);
 	virtual bool isMany() override { return false; };
 	virtual bool isGroup() override { return true ; }
 };
@@ -308,7 +336,7 @@ public:
 class CRelationDescriptionNodeMany : public CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNodeMany(std::string _named, HKind _kind);
+	CRelationDescriptionNodeMany(std::string _named, HKindGeneric _kind);
 	virtual bool isMany() override  { return true ; } ;
     virtual bool isGroup() override  {	return false;}
 };
@@ -328,10 +356,10 @@ public:
 class CRelationInstance
 {
 public:
-	CRelationInstance(CRelationDescription* _relDesc, HInstance val, HInstance val2);
+	CRelationInstance(CRelationDescription* _relDesc, HValue  val, HValue val2);
 	CRelationDescription* relDesc;
-	HInstance item1;
-	HInstance item2;
+	HValue item1;
+	HValue item2;
 };
 
 //=====================================
@@ -407,6 +435,9 @@ HValue make_string_value(std::string v);
 HValue make_text_value(std::string v);
 HValue make_bool_value(bool v);
 HValue make_number_value(int v);
+HValue make_obj_instance_value(HInstance v);
+HValue make_obj_kind_value(HKind v);
+
 HValue makeValueInstance(FEnviroment* env, const std::string& _name, HValueKind vkind);
 std::string toString(HValue val);
 std::string toString(CValue* val);
@@ -414,18 +445,24 @@ HValueKind makeValueKindEnum(FEnviroment* env, std::string _name, HValueKind _va
 HValueKind makeValueKind(FEnviroment* env, const std::string& _name);
 
 
-HRelationDescriptionNode make_relation_node(std::string _name, HKind _kind);
-HRelationDescriptionNode make_relation_node_various(std::string _name, HKind _kind);
+HRelationDescriptionNode make_relation_node(std::string _name, HKind  _vkind);
+HRelationDescriptionNode make_relation_node_various(std::string _name, HKind  _vkind);
+HRelationDescriptionNode make_relation_node(std::string _name, HValueKind _vkind);
+HRelationDescriptionNode make_relation_node_various(std::string _name, HValueKind _vkind);
+
+
 CRelationDescription* get_relation_description(FEnviroment* env, std::string named);
 void add_relation_description(FEnviroment* envb, CRelationDescription rel_description);
 
 
-void set_relation(FEnviroment* env, CRelationDescription* relation_description, HInstance val1, HInstance val2);
-void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HInstance val1, HInstance val2);
+void set_relation(FEnviroment* env, CRelationDescription* relation_description, HValue val1, HValue val2);
+void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HValue val1, HValue val2);
 
-HValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HInstance from_val);
-HValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HInstance to_val);
+HValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HValue from_val);
+HValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HValue to_val);
 
  
-#endif;
+#endif
+
+
 

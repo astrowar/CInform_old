@@ -49,7 +49,7 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n)
 	{
 		return getCombinatoriasGroup(terms); // apenas uma combinacao eh possivel 
 	}
-	int lsize = terms.size();
+	size_t lsize = terms.size();
 	if (n == lsize)
 	{
 		return getCombinatoriasUnitary(terms); //Agiliza o processamento
@@ -125,7 +125,7 @@ CPredList::CPredList(std::string _named, std::initializer_list<HPred> _plist): C
 EqualsResul CPredList::match(MTermSet _h)
 {
 	if (_h.size() != plist.size()) return NotEquals;
-	int n = plist.size();
+	size_t n = plist.size();
 	for (int j = 0; j > n; ++j)
 	{
 		if (equals(this->plist[j].get(), _h[j].get()) != Equals)
@@ -224,7 +224,7 @@ MatchResult CMatch_j(MTermSet termo, HPred predicate)
 
 MatchResult CMatch_i(MTermSetCombinatoria& termos, std::vector<HPred> predicates)
 {
-	int n = predicates.size();
+	size_t n = predicates.size();
 	if (termos.size() != n)
 	{
 		return MatchResult();
@@ -242,7 +242,7 @@ MatchResult CMatch_i(MTermSetCombinatoria& termos, std::vector<HPred> predicates
 
 MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates)
 {
-	int npred = predicates.size();
+	size_t npred = predicates.size();
 	MTermSetCombinatoriaList comb = getCombinatorias(lst, npred);
 	for (auto it = comb.begin(); it != comb.end(); ++it)
 	{

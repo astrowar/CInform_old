@@ -211,13 +211,13 @@ void teste_relations1()
 		HInstance john = make_instance(env, "John", Person);
 		HInstance paul = make_instance(env, "Paul", Person);
 		auto Meeting_desc = get_relation_description(env, "Meeting");
-		set_relation(env, Meeting_desc, bob, john);
-		auto rel_instance = get_relation_to(env, Meeting_desc, bob);
+		set_relation(env, Meeting_desc, make_obj_instance_value(bob), make_obj_instance_value( john ) );
+		auto rel_instance = get_relation_to(env, Meeting_desc, make_obj_instance_value(bob) );
 		std::cout << " bob Meeting : " << toString( rel_instance ) << std::endl;
 
 
-		set_relation(env, Meeting_desc, bob,paul);
-		rel_instance = get_relation_from(env, Meeting_desc, john);
+		set_relation(env, Meeting_desc, make_obj_instance_value(bob), make_obj_instance_value(paul));
+		rel_instance = get_relation_from(env, Meeting_desc, make_obj_instance_value(john));
 		std::cout << " john is Meeting by : " << toString( rel_instance) << std::endl;
 	}
 }
