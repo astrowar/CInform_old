@@ -176,7 +176,7 @@ void teste_variables1()
 	//The target is a number variable. The target is 23.
 	auto target = make_variable(env, "target", HValueKindNumber);
 	set_variable_value(env, target, make_number_value(23));
-	HValue val = get_variable_value(env, target);
+	HGenericValue val = get_variable_value(env, target);
 	std::cout << "target is  == " << toString(val) << std::endl;
 	//============================================================
 	//Colour is a kind of value.The fashionable shade is a colour that varies.
@@ -221,9 +221,77 @@ void teste_relations1()
 		set_relation(env, Meeting_desc,  bob,  paul); 
 
 		auto rel_instance_2 = get_relation_from(env, Meeting_desc,  john );
-		std::cout << " john is Meeting by : " << toString( rel_instance_2) << "  "<< std::endl;
+		std::cout << " john is Meeting by : " << toString( rel_instance_2) << " [ Nil ] "<< std::endl;
 	}
 }
+
+void teste_relations2()
+{
+
+	// Testa relacoes multiplas
+
+	FEnviromentBase* env = new FEnviromentBase();
+	HObjectKind thing = make_kind(env, "thing");
+	HObjectKind Person = make_kind(env, "person");
+
+	auto Meeting = CRelationDescription("Meeting", make_relation_node_various ("", Person), make_relation_node_various("", Person), true);
+	add_relation_description(env, Meeting);
+
+
+
+	HInstance bob = make_instance(env, "bob", Person);
+	HInstance john = make_instance(env, "John", Person);
+	HInstance paul = make_instance(env, "Paul", Person);
+	HInstance mary = make_instance(env, "Mary", Person);
+	auto Meeting_desc = get_relation_description(env, "Meeting");
+
+
+	// testa relacoes simetricas
+
+	set_relation(env, Meeting_desc, bob, john);
+	set_relation(env, Meeting_desc, bob, paul);
+	set_relation(env, Meeting_desc, bob, mary);
+	set_relation(env, Meeting_desc, paul, mary);
+	auto rel_instance_bob= get_relation_to(env, Meeting_desc, bob );
+	std::cout << " Bob Meeting : " << toString(rel_instance_bob) << "[ john paul mary ]" << std::endl;
+
+
+	auto rel_instance_mary = get_relation_to(env, Meeting_desc, mary);
+	std::cout << " Mary Meeting : " << toString(rel_instance_mary) << "[ bob  paul  ]" << std::endl;
+
+}
+void teste_relations3()
+{
+	FEnviromentBase* env = new FEnviromentBase();
+
+	// A memory is a kind of thing. 
+	HObjectKind thing = make_kind(env, "thing");
+	HObjectKind memory = make_derivade_kind(env, "memory" , thing);
+	// A memory can be retrieved or buried.A memory is usually buried.
+	auto memory_prop = CKindProperty("", memory, makeValueKindEnum(env, "", HValueKindString, { make_string_value("retrieved"),make_string_value("buried") }));
+	auto memory_prop_assertion = CKindPropertyAssert(memory_prop, Usually_Value(make_string_value("buried")));
+	assign_property(env, memory_prop_assertion);
+
+
+	//Suggestion relates various things to one memory.
+	auto Suggestion = CRelationDescription("Suggestion", make_relation_node_various("", thing), make_relation_node("", memory)  );
+	add_relation_description(env, Suggestion);
+
+	//The last day of high school is a memory.It is suggested by the tumbleweed.
+	HInstance   last_day_of_high_school = make_instance (env,"last day of high school", memory);
+	HInstance   tumbleweed = make_instance(env, "tumbleweed", thing);
+
+	auto Suggestion_desc = get_relation_description(env, "Suggestion");
+	set_relation(env, Suggestion_desc, tumbleweed , last_day_of_high_school    );
+
+	//Who sugest last_day_of_high_school ??
+
+	auto thigs_to_sugest = get_relation_from(env, Suggestion_desc, last_day_of_high_school);
+	std::cout << "Who sugest: " << toString(thigs_to_sugest) << " " << std::endl;
+}
+
+
+
 
 int main()
 {
@@ -238,6 +306,8 @@ int main()
 	teste_kindValue1();
 	teste_variables1(); 
 	teste_relations1();
+	teste_relations2();
+	teste_relations3();
 	return 0;
 }
 

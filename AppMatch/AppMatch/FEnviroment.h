@@ -112,28 +112,28 @@ public:
 
 using HInstanceProperty = std::shared_ptr<CInstanceProperty>;
 
+
+class CValue;
+using  HValue = std::shared_ptr<CValue>;
 class CValue : public CGenericValue
 {
 public:
 	CValue(HValueKind vkind)
 		: vkind(vkind)
 	{
-	}
-
- 
-
+	} 
 	HValueKind vkind;
-	virtual CValue* clone() =0;
+	virtual HValue  clone() =0;
 };
 
-using  HValue = std::shared_ptr<CValue>;
+ 
 
 class CVariable
 {
 public:
-	CVariable(const std::string& name, HValueKind _vkind);
-	HValueKind vkind;
-	HValue value;
+	CVariable(const std::string& name, HGenericKind  _vkind);
+	HGenericKind vkind;
+	HGenericValue value;
 	std::string name;
 };
 
@@ -166,7 +166,7 @@ extern HValueKind HValueKindObjectKind;
 class CValueBoolean : public CValue
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
 	CValueBoolean(bool v)
 		: CValue(HValueKindBoolean),
@@ -180,7 +180,7 @@ public:
 class CValueText : public CValue
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
 	CValueText(const std::string& cs)
 		: CValue(HValueKindText),
@@ -194,7 +194,7 @@ public:
 class CValueString : public CValue
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
 	CValueString(const std::string& cs)
 		: CValue(HValueKindString),
@@ -208,21 +208,26 @@ public:
 class CValueList : public CValue
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
-	CValueList(const std::list<CValue*>& c_values)
+	CValueList(  std::list<HGenericValue>  c_values)
 		: CValue(HValueKindList),
 		  values(c_values)
 	{
 	}
 
-	std::list<CValue*> values;
+	std::list<HGenericValue> values;
 };
+
+
+ 
+
+
 
 class CValueNumber : public CValue
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
 	CValueNumber(int c_value)
 		: CValue(HValueKindNumber),
@@ -234,11 +239,11 @@ public:
 };
 
 
-
+#ifdef oldCode 
 class CValueObjectInstance : public CValue //um  HInstancia 
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 
 	CValueObjectInstance(HInstance c_value)
 		: CValue(HValueKindObjectInstance ),
@@ -254,7 +259,7 @@ using HValueObjectInstance = std::shared_ptr<CValueObjectInstance>;
 class CValueObjectKind : public CValue //um  HObjectKind
 {
 public:
-    CValue* clone() override;
+	HValue clone() override;
     
     CValueObjectKind(HObjectKind c_value)
     : CValue(HValueKindObjectKind ),
@@ -266,13 +271,13 @@ public:
 };
 
 using HValueObjectKind = std::shared_ptr<CValueObjectKind>;
-
+#endif
 
 
 class CValueInstance : public CValue // Value instance eh o valor dos HValueKind customizados
 {
 public:
-	CValue* clone() override;
+	HValue clone() override;
 	CValueInstance(const std::string& _named, HValueKind vkind);
 	std::string named;
 };
@@ -459,12 +464,14 @@ void assign_property(FEnviroment* env, CKindPropertyAssert& prop);
 CInstanceProperty* get_property(FEnviroment* env, HInstance obj, std::string name);
 HValue get_property_value(FEnviroment* env, CInstanceProperty* c_instance_property);
 void set_property_value(FEnviroment* env, CInstanceProperty* c_instance_property, HValue val);
-void set_variable_value(FEnviroment* env, HVariable var, HValue c_value);
-HValue get_variable_value(FEnviroment* env, HVariable var);
+void set_variable_value(FEnviroment* env, HVariable var, HGenericValue c_value);
+HGenericValue get_variable_value(FEnviroment* env, HVariable var);
 HValue make_string_value(std::string v);
 HValue make_text_value(std::string v);
 HValue make_bool_value(bool v);
 HValue make_number_value(int v);
+HValue make_list_value( std::list<HGenericValue> glist);
+
 HGenericValue make_obj_instance_value(HInstance v);
 HGenericKind make_obj_kind_value(HObjectKind v);
 

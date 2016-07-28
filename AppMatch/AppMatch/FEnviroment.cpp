@@ -42,7 +42,7 @@ CValueKind::CValueKind(std::string _name): name(_name)
 {
 }
 
-CVariable::CVariable(const std::string& name, HValueKind _vkind): vkind(_vkind), value(nullptr) , name(name)
+CVariable::CVariable(const std::string& name, HGenericKind _vkind): vkind(_vkind), value(nullptr) , name(name)
 {
 }
 
@@ -65,13 +65,7 @@ EqualsResul isEqual(CValueInstance * c1, CValueInstance* c2)
 }
 
 
-EqualsResul isEqual(CValueObjectInstance   * c1, CValueObjectInstance* c2)
-{
-	if (c1 == nullptr || c2 == nullptr) return Undefined;	
-	if (c1->value->kind  != c2->value->kind) return NotEquals;
-	if (c1->value->name == c2->value->name) return Equals;
-	return NotEquals;
-}
+ 
 
 EqualsResul isEqual(CValueBoolean* c1, CValueBoolean* c2)
 {
@@ -111,7 +105,7 @@ EqualsResul isEqual(CValueList* c1, CValueList* c2)
 	auto it2 = c2->values.begin();
 	while (it1 != c1->values.end())
 	{
-		EqualsResul q = isEqual((*it1), (*it2));
+		EqualsResul q = isEqual((*it1).get(), (*it2).get());
 		if (q != Equals) return NotEquals;
 		++it1;
 		++it2;
@@ -148,8 +142,7 @@ EqualsResul isEqual_val(CValue* c1, CValue* c2)
 		q = isEqual(dynamic_cast<CValueBoolean *>(c1), dynamic_cast<CValueBoolean*>(c2));
 		if (q != Undefined) return q;
 
-		q = isEqual(dynamic_cast<CValueObjectInstance  *>(c1), dynamic_cast<CValueObjectInstance*>(c2));
-		if (q != Undefined) return q;
+		 
 
 		return Undefined;
 	}
@@ -165,7 +158,20 @@ EqualsResul isEqual_inst(CObjectInstance * c1, CObjectInstance* c2)
 }
 
 
- 
+EqualsResul isEqual_valkind(CValueKind * c1, CValueKind* c2)
+{
+	 
+ if (c1->name == c2->name) return Equals;
+	 
+	return NotEquals;
+}
+
+EqualsResul isEqual_instkind(CObjectKind * c1, CObjectKind * c2)
+{
+ if (c1->name == c2->name) return Equals;
+	 
+	return NotEquals;
+}
 
 EqualsResul isEqual(CGenericValue * c1, CGenericValue* c2)
 {
@@ -195,6 +201,35 @@ EqualsResul isEqual(CGenericValue * c1, CGenericValue* c2)
 
 
 
+EqualsResul isEqual(CGenericKind * c1, CGenericKind* c2)
+{
+	if (c1 == nullptr || c2 == nullptr) return Undefined;
+	{
+		CValueKind * v1 = dynamic_cast<CValueKind*>(c1);
+		if (v1 != nullptr)
+		{
+			CValueKind * v2 = dynamic_cast<CValueKind*>(c2);
+			if (v2 != nullptr)
+				return isEqual_valkind(v1, v2);
+			return NotEquals;
+		}
+	}
+	{
+		CObjectKind  * h1 = dynamic_cast<CObjectKind*>(c1);
+		if (h1 != nullptr)
+		{
+			CObjectKind * h2 = dynamic_cast<CObjectKind*>(c2);
+			if (h2 != nullptr)
+				return isEqual_instkind(h1, h2);
+			return NotEquals;
+		}
+	}
+	return Undefined;
+}
+
+
+
+
 bool can_set_value_enum(CValueKindEnum* kenum, CValue* val)
 {
 	//o val eh algum desses valores porriveis ?
@@ -205,52 +240,67 @@ bool can_set_value_enum(CValueKindEnum* kenum, CValue* val)
 	return false;
 }
 
-CValue* CValueBoolean::clone()
+HValue CValueBoolean::clone()
 {
-	return new CValueBoolean(this->val);
+	return std::static_pointer_cast<CValue>(std::make_shared<CValueBoolean>(this->val));
 }
 
-CValue* CValueText::clone()
+HValue CValueText::clone()
 {
-	return new CValueText(this->_text);
+	return std::static_pointer_cast<CValue>(std::make_shared<CValueText>(this->_text));
 }
 
-CValue* CValueString::clone()
+HValue CValueString::clone()
 {
-	return new CValueString(this->_text);
+	return std::static_pointer_cast<CValue>(std::make_shared<CValueString>(this->_text));
 }
 
-CValue* CValueList::clone()
+
+HGenericValue copyValue(HGenericValue val)
+{
+	CValue * aValue = dynamic_cast<CValue*>(val.get());
+	if (aValue != nullptr) return aValue->clone();
+	//CObjectInstance * aInstance = dynamic_cast<CObjectInstance*>(val.get());	
+	return val; //pass the reference
+
+}
+
+
+HValue CValueList::clone()
 {
 	auto nlist = new CValueList({});
 	for (auto it = this->values.begin(); it != this->values.end(); ++it)
 	{
-		nlist->values.push_back((*it)->clone());
+		//CValue * aValue = dynamic_cast<CValue*>( (*it).get() );
+		//if (aValue != nullptr)
+		//{
+		//	nlist->values.push_back( aValue->clone()  ); // clone the value
+		//}
+		//else
+		
+			nlist->values.push_back(copyValue( *it)) ; // just copy the pointer 
+		
 	}
 	nlist->vkind = this->vkind;
-	return nlist;
+	return std::shared_ptr<CValue>(nlist);
 }
 
-CValue* CValueNumber::clone()
+HValue CValueNumber::clone()
 {
-	return new CValueNumber(this->value);
+	return std::make_shared<  CValueNumber>(this->value);
 }
 
-CValue* CValueObjectInstance::clone()
+ 
+
+
+HValue CValueInstance::clone()
 {
-	return new CValueObjectInstance(  this->value ) ;
+	return  std::make_shared<CValueInstance>(this->named, this->vkind);
 }
 
-CValue* CValueObjectKind::clone()
-{
-    return new CValueObjectKind(  this->value ) ;
-}
+ 
+ 
 
-
-CValue* CValueInstance::clone()
-{
-	return new CValueInstance(this->named, this->vkind);
-}
 
 CValueInstance::CValueInstance(const std::string& _named, HValueKind vkind): CValue(vkind), named(_named)
 {
@@ -288,6 +338,7 @@ bool can_set_value_ptr(HValueKind vkind, CValue* val)
 
 bool can_set_value(HValueKind vkind, HValue val)
 {
+	 
 	return can_set_value_ptr(vkind, val.get());
 }
 
@@ -313,6 +364,14 @@ CRelationDescriptionNodeMany::CRelationDescriptionNodeMany(std::string _named, H
 
 CRelationDescription::CRelationDescription(std::string _named, HRelationDescriptionNode _node1, HRelationDescriptionNode _node2, bool _symmetric): node1(_node1), node2(_node2), named(_named), symmetric(_symmetric)
 {
+	if (_symmetric)
+	{
+		if ((_node1->isMany() !=  _node2->isMany()) || ( isEqual(_node1->vkind.get()  , _node2->vkind.get() ) != Equals ))
+		{
+			std::cout << "unable to make assimetric relations Symetric" << std::endl;
+			throw "Symetric Error ";
+		}		
+	}
 }
 
 CRelationInstance::CRelationInstance(CRelationDescription* _relDesc, HGenericValue val, HGenericValue val2): relDesc(_relDesc), item1(val), item2(val2)
@@ -598,6 +657,21 @@ HValue make_number_value(int v)
 	return std::static_pointer_cast<CValue>(std::make_shared<CValueNumber>(v));
 }
 
+HValue make_list_value(std::list<HGenericValue > glist)
+{
+	 return  std::static_pointer_cast<CValue>(std::make_shared<CValueList>(glist));
+}
+
+HValue make_joined_list(std::list<HGenericValue >& list1 , std::list<HGenericValue >& list2)
+{
+	 
+	std::list<HGenericValue > values(list1 .begin(), list1 .end());
+	values.insert(values.end(), list2 .begin(), list2 .end());
+	
+	return  std::static_pointer_cast<CValue>(std::make_shared<CValueList>(values));
+}
+
+ 
 
 HGenericValue make_obj_instance_value(HInstance v)
 {
@@ -609,6 +683,10 @@ HGenericKind make_obj_kind_value(HObjectKind v)
 	return std::static_pointer_cast<CGenericKind>( v );
     //return std::static_pointer_cast<CValue>(std::make_shared<CValueObjectKind>(v));
 }
+
+
+std::string toString(CGenericValue* val);
+
 
 std::string toString_val(CValue* val)
 {
@@ -629,7 +707,7 @@ std::string toString_val(CValue* val)
 			for (auto it = lst->values.begin(); it != lst->values.end(); ++it)
 			{
 				//CValue* hit = (*it);
-				s += toString_val(*it) + " ";
+				s += toString(*it) + " ";
 			}
 			return s;
 		}
@@ -656,18 +734,10 @@ std::string toString_val(CValue* val)
 		}
 	}
 
-	{
-		CValueObjectInstance * v = dynamic_cast<CValueObjectInstance*>(val);
-		if (v != nullptr)
-		{
-			return v->value->name;
-		}
-		 
-
-	}
+	 
 	return "ERROR";
 }
-std::string toString(CGenericValue* val);
+ 
 
 
 
@@ -799,6 +869,45 @@ CRelationInstance* find_relation_i_1(FEnviroment* envb, CRelationDescription* re
 }
 
 
+std::list<HGenericValue> find_relation_list_1(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue val1)
+{
+	FEnviromentBase* env = envb->getBase();
+	std::list<HGenericValue> values;
+	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named == relation_description->named)
+		{
+
+			if (isEqual(it->item1.get(), val1.get()) == Equals)
+			{
+				values.push_back(it->item2); 
+			}
+			 
+		}
+	}
+	return values;
+}
+
+
+std::list<HGenericValue> find_relation_list_2(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue val2)
+{
+	FEnviromentBase* env = envb->getBase();
+	std::list<HGenericValue> values;
+	for (auto it = env->relation_instances.begin(); it != env->relation_instances.end(); ++it)
+	{
+		if (it->relDesc->named == relation_description->named)
+		{
+			if (isEqual(it->item2.get(), val2.get()) == Equals)
+			{
+				values.push_back(it->item1);
+			}
+		}
+	}
+	return values;
+}
+
+
+
 CRelationInstance* find_relation_i_2(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue val2)
 {
 	FEnviromentBase* env = envb->getBase();
@@ -872,13 +981,28 @@ void unset_relation(FEnviroment* envb, CRelationDescription* relation_descriptio
 
 HGenericValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue from_val)
 {
-
-	//FEnviromentBase* env = envb->getBase();
-	//Acha a relacao corrent
+	if (relation_description->node1->isMany())
+	{
+		auto plist = find_relation_list_1(envb, relation_description, from_val);
+		if (relation_description->symmetric)
+		{
+			auto plist_2 = find_relation_list_2(envb, relation_description, from_val);
+			return make_joined_list(plist, plist_2);
+		}
+		return make_list_value(plist);
+	}
+ 
+	 
 	auto p = find_relation_i_1(envb, relation_description, from_val);
-	if (p == nullptr) return nullptr;
-    return p->item2;
-	//return std::make_shared<CValueObjectInstance >(p->item2);
+	if (p != nullptr) return p->item2;
+
+	if( relation_description->symmetric )
+	{
+		p = find_relation_i_2(envb, relation_description, from_val);
+		if (p != nullptr) return p->item1;
+	}
+	return nullptr;
+	
 
 }
 
@@ -891,19 +1015,19 @@ HGenericValue get_relation_from(FEnviroment* envb, CRelationDescription* relatio
 	
     if (relation_description->node1->isMany() )
     {
-        
+		auto plist = find_relation_list_2(envb, relation_description, to_val);
+		return make_list_value(plist);
     }
     //Acha a relacao corrent
 	auto p = find_relation_i_2(envb, relation_description, to_val);
-	if (p == nullptr) return nullptr;	 
-
-	//std::cout << "     Find Relation Instance :  " << toString( p) << "  " <<  toString(to_val) << std::endl;
-	return p->item1;
-	 
+	if (p != nullptr) return p->item1 ;	 
+	if (relation_description->symmetric)
+	{
+		p = find_relation_i_2(envb, relation_description, to_val);
+		if (p != nullptr) return p->item2;
+	}
+	return nullptr;
     
-  
-	//return std::make_shared<CValueObjectInstance >(p->item1);
-
 }
 
 
@@ -958,15 +1082,18 @@ HInstance make_instance(FEnviroment* env, std::string name, HObjectKind k)
 	return c;
 }
 
-void set_variable_value(FEnviroment* env, HVariable var, HValue c_value)
+
+ 
+
+void set_variable_value(FEnviroment* env, HVariable var, HGenericValue  c_value)
 {
 	if (c_value == nullptr)
 	{
 		throw "nill ??? ";
 	}
-	if (can_set_value(var->vkind, c_value))
+	if (isInstanceOf ( c_value.get() , var->vkind.get() ))
 	{
-		var->value = std::shared_ptr<CValue>(c_value->clone());
+		var->value =  copyValue( c_value );
 	}
 	else
 	{
@@ -974,9 +1101,9 @@ void set_variable_value(FEnviroment* env, HVariable var, HValue c_value)
 	}
 }
 
-HValue get_variable_value(FEnviroment* env, HVariable var)
+HGenericValue get_variable_value(FEnviroment* env, HVariable var)
 {
-	return std::shared_ptr<CValue>(var->value->clone());
+	return  copyValue(var->value );
 }
 
 EqualsResul isEqual(HValue c1, HValue  c2)
