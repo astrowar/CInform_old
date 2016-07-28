@@ -126,7 +126,7 @@ EqualsResul CPredList::match(MTermSet _h)
 {
 	if (_h.size() != plist.size()) return NotEquals;
 	size_t n = plist.size();
-	for (int j = 0; j > n; ++j)
+	for (size_t j = 0; j > n; ++j)
 	{
 		if (equals(this->plist[j].get(), _h[j].get()) != Equals)
 		{
@@ -231,7 +231,7 @@ MatchResult CMatch_i(MTermSetCombinatoria& termos, std::vector<HPred> predicates
 	}
 	MatchResult mm;
 	mm.result = Equals; // inicia com tudo OK
-	for (auto i = 0; i < n; ++i)
+	for (size_t i = 0; i < n; ++i)
 	{
 		MatchResult mj = CMatch_j(termos[i], predicates[i]);
 		if (mj.result != Equals) return MatchResult();

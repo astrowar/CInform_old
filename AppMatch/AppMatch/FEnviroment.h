@@ -4,54 +4,74 @@
 #include <string>
 #include <list>
 #include <memory>
+#include "EqualsResult.h"
 
 
-class CKindGeneric
+ // Classes  abstradas .. que servem como protocolos
+class CGenericKind abstract
 {
-    virtual void some() {} ;
+public:
+	virtual ~CGenericKind()
+	{
+	}
+
+	virtual void some() {};
+
  };
 
-using HKindGeneric = std::shared_ptr<CKindGeneric>;
+using HGenericKind = std::shared_ptr<CGenericKind>;
 
-
-class CKind;
-using HKind = std::shared_ptr<CKind>;
-
-
-class CKind: public  CKindGeneric
+class CGenericValue abstract
 {
 public:
-	HKind previous;
+	virtual ~CGenericValue()
+	{
+	}
+
+	virtual void some() {};
+}; 
+using HGenericValue = std::shared_ptr<CGenericValue>;
+
+
+
+//Classes concretas
+
+class CObjectKind;
+using HObjectKind = std::shared_ptr<CObjectKind>;
+
+
+class CObjectKind: public  CGenericKind
+{	 
+public:
+	HObjectKind previous;
 	std::string name;
-	CKind(std::string named, HKind prev);
+	CObjectKind(std::string named, HObjectKind prev);
 };
 
-using HKind = std::shared_ptr<CKind>;
+using HObjectKind = std::shared_ptr<CObjectKind>;
 
-class CInstance
+class CObjectInstance: public  CGenericValue
 {
 public:
-	CInstance(HKind kind, const std::string& name)
+	CObjectInstance(HObjectKind kind, const std::string& name)
 		: kind(kind),
 		  name(name)
 	{
 	}
 
-	HKind kind;
+	HObjectKind kind;
 	std::string name;
 };
 
-using HInstance = std::shared_ptr<CInstance>;
+using HInstance = std::shared_ptr<CObjectInstance>;
 
-class CValueKind :public CKindGeneric
+class CValueKind :public CGenericKind
 {
 public:
 	std::string name;
 	CValueKind(std::string _name);
 
-	virtual ~CValueKind()
-	{
-	}
+	 
 };
 
 using HValueKind = std::shared_ptr<CValueKind>;
@@ -59,7 +79,7 @@ using HValueKind = std::shared_ptr<CValueKind>;
 class CKindProperty
 {
 public:
-	CKindProperty(const std::string& name, HKind _kind, HValueKind _vkind)
+	CKindProperty(const std::string& name, HObjectKind _kind, HValueKind _vkind)
 		: name(name),
 		  kind(_kind),
 		  vkind(_vkind)
@@ -67,7 +87,7 @@ public:
 	}
 
 	std::string name;
-	HKind kind;
+	HObjectKind kind;
 	HValueKind vkind;
 };
 
@@ -92,7 +112,7 @@ public:
 
 using HInstanceProperty = std::shared_ptr<CInstanceProperty>;
 
-class CValue
+class CValue : public CGenericValue
 {
 public:
 	CValue(HValueKind vkind)
@@ -100,15 +120,13 @@ public:
 	{
 	}
 
-	virtual ~CValue()
-	{
-	};
+ 
 
 	HValueKind vkind;
 	virtual CValue* clone() =0;
 };
 
-using HValue = std::shared_ptr<CValue>;
+using  HValue = std::shared_ptr<CValue>;
 
 class CVariable
 {
@@ -233,18 +251,18 @@ public:
 
 using HValueObjectInstance = std::shared_ptr<CValueObjectInstance>;
 
-class CValueObjectKind : public CValue //um  HKind
+class CValueObjectKind : public CValue //um  HObjectKind
 {
 public:
     CValue* clone() override;
     
-    CValueObjectKind(HKind c_value)
+    CValueObjectKind(HObjectKind c_value)
     : CValue(HValueKindObjectKind ),
     value(c_value)
     {
     }
     
-    HKind value;
+    HObjectKind value;
 };
 
 using HValueObjectKind = std::shared_ptr<CValueObjectKind>;
@@ -315,12 +333,12 @@ public:
 class CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNode(std::string _named, HKindGeneric _kind);
+	CRelationDescriptionNode(std::string _named, HGenericKind _kind);
 	virtual ~CRelationDescriptionNode(){}
 	virtual bool isMany() { return false; };
 	virtual bool isGroup() { return false; };
 	std::string named;
-	HKindGeneric vkind;
+	HGenericKind vkind;
 };
 
 using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
@@ -328,7 +346,7 @@ using HRelationDescriptionNode = std::shared_ptr<CRelationDescriptionNode>;
 class CRelationDescriptionNodeGroup : public CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNodeGroup(std::string _named, HKindGeneric _kind);
+	CRelationDescriptionNodeGroup(std::string _named, HGenericKind _kind);
 	virtual bool isMany() override { return false; };
 	virtual bool isGroup() override { return true ; }
 };
@@ -336,7 +354,7 @@ public:
 class CRelationDescriptionNodeMany : public CRelationDescriptionNode
 {
 public:
-	CRelationDescriptionNodeMany(std::string _named, HKindGeneric _kind);
+	CRelationDescriptionNodeMany(std::string _named, HGenericKind _kind);
 	virtual bool isMany() override  { return true ; } ;
     virtual bool isGroup() override  {	return false;}
 };
@@ -356,10 +374,10 @@ public:
 class CRelationInstance
 {
 public:
-	CRelationInstance(CRelationDescription* _relDesc, HValue  val, HValue val2);
+	CRelationInstance(CRelationDescription* _relDesc, HGenericValue  val, HGenericValue val2);
 	CRelationDescription* relDesc;
-	HValue item1;
-	HValue item2;
+	HGenericValue item1;
+	HGenericValue item2;
 };
 
 //=====================================
@@ -372,16 +390,18 @@ public:
 	FEnviroment();
 	virtual FEnviroment* copy() = 0;
 	virtual ~FEnviroment();
-	virtual void addKind(HKind _k) = 0;
+	virtual void addKind(HObjectKind _k) = 0;
 	virtual void addInstance(HInstance _k) = 0;
 	virtual void addVariable(HVariable _k) = 0;
 	virtual FEnviromentBase* getBase() = 0;
+
+	virtual void dump_relations()   ;
 };
 
 class FEnviromentBase :public FEnviroment
 {
 public:
-	void addKind(HKind _k) override;
+	void addKind(HObjectKind _k) override;
 	void addInstance(HInstance _k) override;
 	void addVariable(HVariable _k) override;
 	FEnviromentBase();
@@ -389,7 +409,7 @@ public:
 	virtual FEnviromentBase* getBase() override;
 	//Listas 
 	std::list<HInstance> instances;
-	std::list<HKind> kinds;
+	std::list<HObjectKind> kinds;
 	std::list<HValueInstance> value_instances;
 	std::list<HVariable> variables;
 	std::list<CInstanceProperty> instance_properties;
@@ -397,6 +417,8 @@ public:
 	std::list<CKindPropertyAssert> kind_properties_asserts;
 	std::list<CRelationDescription> relations_description;
 	std::list<CRelationInstance> relation_instances;
+
+	 
 };
 
 // um env para as variaveis locais LET
@@ -404,10 +426,13 @@ class SubFEnviroment :public FEnviroment
 {
 public:
 	FEnviroment* copy() override;
-	void addKind(HKind _k) override;
+	void addKind(HObjectKind _k) override;
 	void addInstance(HInstance _k) override;
 	void addVariable(HVariable _k) override;
 	virtual FEnviromentBase* getBase() override;
+
+	 
+
 private:
 	SubFEnviroment(FEnviroment* parent)
 		: parent(parent)
@@ -418,11 +443,16 @@ private:
 	std::list<HVariable> variables;
 };
 
-HKind make_kind(FEnviroment* env, std::string name);
-HInstance make_instance(FEnviroment* env, std::string name, HKind k);
-HKind make_derivade_kind(FEnviroment* env, std::string name, HKind base);
+
+bool isInstanceOf(CGenericValue *val, CGenericKind *kind);
+
+EqualsResul isEqual(HValue c1, HValue  c2);
+
+HObjectKind make_kind(FEnviroment* env, std::string name);
+HInstance make_instance(FEnviroment* env, std::string name, HObjectKind k);
+HObjectKind make_derivade_kind(FEnviroment* env, std::string name, HObjectKind base);
 HVariable make_variable(FEnviroment* env, std::string name, HValueKind vkind);
-HKind get_kind(FEnviroment* env, std::string name);
+HObjectKind get_kind(FEnviroment* env, std::string name);
 HInstance get_instance(FEnviroment* env, std::string name);
 void assign_property(FEnviroment* env, CInstanceProperty& prop);
 void assign_property(FEnviroment* env, CKindPropertyAssert& prop);
@@ -435,18 +465,19 @@ HValue make_string_value(std::string v);
 HValue make_text_value(std::string v);
 HValue make_bool_value(bool v);
 HValue make_number_value(int v);
-HValue make_obj_instance_value(HInstance v);
-HValue make_obj_kind_value(HKind v);
+HGenericValue make_obj_instance_value(HInstance v);
+HGenericKind make_obj_kind_value(HObjectKind v);
 
 HValue makeValueInstance(FEnviroment* env, const std::string& _name, HValueKind vkind);
+std::string toString(HGenericValue val);
 std::string toString(HValue val);
-std::string toString(CValue* val);
+ 
 HValueKind makeValueKindEnum(FEnviroment* env, std::string _name, HValueKind _valuesKind, std::list<HValue> posiblesValues);
 HValueKind makeValueKind(FEnviroment* env, const std::string& _name);
 
 
-HRelationDescriptionNode make_relation_node(std::string _name, HKind  _vkind);
-HRelationDescriptionNode make_relation_node_various(std::string _name, HKind  _vkind);
+HRelationDescriptionNode make_relation_node(std::string _name, HObjectKind  _vkind);
+HRelationDescriptionNode make_relation_node_various(std::string _name, HObjectKind  _vkind);
 HRelationDescriptionNode make_relation_node(std::string _name, HValueKind _vkind);
 HRelationDescriptionNode make_relation_node_various(std::string _name, HValueKind _vkind);
 
@@ -455,11 +486,11 @@ CRelationDescription* get_relation_description(FEnviroment* env, std::string nam
 void add_relation_description(FEnviroment* envb, CRelationDescription rel_description);
 
 
-void set_relation(FEnviroment* env, CRelationDescription* relation_description, HValue val1, HValue val2);
-void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HValue val1, HValue val2);
+void set_relation(FEnviroment* env, CRelationDescription* relation_description, HGenericValue val1, HGenericValue val2);
+void unset_relation(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue val1, HGenericValue val2);
 
-HValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HValue from_val);
-HValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HValue to_val);
+HGenericValue get_relation_to(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue from_val);
+HGenericValue get_relation_from(FEnviroment* envb, CRelationDescription* relation_description, HGenericValue to_val);
 
  
 #endif

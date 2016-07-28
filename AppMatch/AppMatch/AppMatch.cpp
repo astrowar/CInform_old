@@ -187,12 +187,12 @@ void teste_variables1()
 void teste_relations1()
 {
 	FEnviromentBase* env = new FEnviromentBase();
-	HKind thing = make_kind(env, "thing");
-	HKind Person = make_kind(env, "person");
+	HObjectKind thing = make_kind(env, "thing");
+	HObjectKind Person = make_kind(env, "person");
 	//A door is a kind of thing.
-	HKind Door = make_derivade_kind(env, "door", thing);
+	HObjectKind Door = make_derivade_kind(env, "door", thing);
 	//A room is a kind.
-	HKind Room = make_kind(env, "room");
+	HObjectKind Room = make_kind(env, "room");
 	//Meeting relates people to each other.
 	auto Meeting = CRelationDescription("Meeting", make_relation_node("", Person), make_relation_node("", Person), true );
 	add_relation_description(env, Meeting);
@@ -211,20 +211,23 @@ void teste_relations1()
 		HInstance john = make_instance(env, "John", Person);
 		HInstance paul = make_instance(env, "Paul", Person);
 		auto Meeting_desc = get_relation_description(env, "Meeting");
-		set_relation(env, Meeting_desc, make_obj_instance_value(bob), make_obj_instance_value( john ) );
-		auto rel_instance = get_relation_to(env, Meeting_desc, make_obj_instance_value(bob) );
-		std::cout << " bob Meeting : " << toString( rel_instance ) << std::endl;
 
 
-		set_relation(env, Meeting_desc, make_obj_instance_value(bob), make_obj_instance_value(paul));
-		rel_instance = get_relation_from(env, Meeting_desc, make_obj_instance_value(john));
-		std::cout << " john is Meeting by : " << toString( rel_instance) << std::endl;
+		set_relation(env, Meeting_desc,   bob ,   john   );
+		auto rel_instance = get_relation_to(env, Meeting_desc,  bob );
+		std::cout << " bob Meeting : " << toString( rel_instance ) << std::endl; 
+ 
+		std::cout << " Now bob will   Meeting paul  " << std::endl;
+		set_relation(env, Meeting_desc,  bob,  paul); 
+
+		auto rel_instance_2 = get_relation_from(env, Meeting_desc,  john );
+		std::cout << " john is Meeting by : " << toString( rel_instance_2) << "  "<< std::endl;
 	}
 }
 
 int main()
 {
-	teste_1();
+	 teste_1();
 	teste_2();
 	teste_match();
 	teste_kinds();
@@ -233,7 +236,7 @@ int main()
 	teste_properties2();
 	teste_properties3();
 	teste_kindValue1();
-	teste_variables1();
+	teste_variables1(); 
 	teste_relations1();
 	return 0;
 }
