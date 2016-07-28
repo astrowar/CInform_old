@@ -175,3 +175,7 @@ EqualsResul isEqual(CGenericKind * c1, CGenericKind* c2)
 }
 
 
+EqualsResul isEqual(HValue c1, HValue  c2)
+{
+	return isEqual(c1.get(), c2.get());
+}

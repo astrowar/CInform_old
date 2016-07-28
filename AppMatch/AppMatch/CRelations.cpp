@@ -2,8 +2,12 @@
 #include "CRelations.h"
 #include "CObjectDefinitions.h"
 #include "CValueDefinitions.h"
+ 
+#include <iostream>
 #include "FEnviroment.h"
 
+
+std::string toString(CRelationInstance* val);
 
 EqualsResul isEqual_val(CValue* c1, CValue* c2);
 EqualsResul isEqual(CGenericValue* c1, CGenericValue* c2);
@@ -275,3 +279,20 @@ void set_relation(FEnviroment* envb, CRelationDescription* relation_description,
 		}
 	throw "unable to create relation instance";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

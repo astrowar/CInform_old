@@ -80,5 +80,11 @@
     <ClCompile Include="CRelations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CpropertiesFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RepresentationFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
