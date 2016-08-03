@@ -27,6 +27,7 @@ public:
 	};
 
 	virtual EqualsResul match(MTermSet h) = 0;
+	virtual EqualsResul match(HTerm h) = 0;
 };
 
 using HPred = std::shared_ptr<CPred>;
@@ -35,23 +36,29 @@ class CPredAtom : public CPred
 {
 public:
 	HTerm h;
+	std::string repr() override;
 	CPredAtom(std::string _named, HTerm atom);
 	virtual EqualsResul match(MTermSet _h) override;
+	virtual EqualsResul match(HTerm h) override;
 };
 
 class CPredList : public CPred
 {
 public:
+	std::string repr() override;
 	std::vector<HPred> plist;
 	CPredList(std::string _named, std::initializer_list<HPred> plist);
 	virtual EqualsResul match(MTermSet _h) override;
+	virtual EqualsResul match(HTerm h) override;
 };
 
 class CPredAny : public CPred
 {
 public:
+	std::string repr() override;
 	CPredAny(std::string _named);;
 	virtual EqualsResul match(MTermSet _h) override;
+	virtual EqualsResul match(HTerm h) override;
 };
 
 class CPredBoolean : public CPred
@@ -63,7 +70,9 @@ public:
 class CPredBooleanAnd : public CPredBoolean
 {
 public:
-	EqualsResul match(MTermSet h) override;
+	std::string repr() override;
+	virtual EqualsResul match(MTermSet h) override;
+	virtual EqualsResul match(HTerm h) override;
 	CPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 public:
 	HPred b1, b2;
@@ -72,9 +81,11 @@ public:
 class CPredBooleanOr : public CPredBoolean
 {
 public:
+	std::string repr() override;
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 	CPredBooleanOr(const std::string& _named, std::list<HPred> plist );
-	EqualsResul match(MTermSet h) override;
+	virtual EqualsResul match(MTermSet h) override;
+	virtual EqualsResul match(HTerm h) override;
 public:
 	std::vector<HPred> blist;
 };
@@ -109,6 +120,7 @@ public:
 
 MatchResult makeMatch(std::string named, HTerm value);
 MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates);
+MatchResult CMatch( HTerm  term, std::vector<HPred> predicates);
 std::string get_repr(MatchResult r);
 #endif
 

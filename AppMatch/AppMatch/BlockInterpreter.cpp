@@ -1,6 +1,11 @@
 #include "BlockInterpreter.h"
+#include <iostream>
 
 
+CBlockActionApply::CBlockActionApply(std::string noum1, std::string noum2 )
+{
+	std::cout << noum1 << " " << noum2  << std::endl;
+}
 
 CBlockInterpreter::CBlockInterpreter()
 {

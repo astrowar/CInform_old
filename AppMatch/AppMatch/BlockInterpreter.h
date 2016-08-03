@@ -22,7 +22,8 @@ class CBlockBooleanResult   // um tipo de bloco que retorna true ou false
 
 class CBlockValue : public CBlock //retorna um valor generico 
 {
-	
+public:
+	CBlockValue(std::string value){}
 };
 
 class CBlockList : public CBlock //retorna um valor generico 
@@ -34,6 +35,7 @@ class CBlockAssertion : public CBlock //retorna uma declaracao
 {
 public:
 	CBlockAssertion(HTerm obj, HTerm thing){};
+	CBlockAssertion(CBlock* obj, CBlock* definition) {};
 
 };
 
@@ -78,6 +80,13 @@ class CBlockMatchWith : public  CBlockMatch // um bloco que serve para dar Match
 class CBlockAction : public  CBlock  // um bloco que representa uma atividade
 {
 	CBlock* input;
+};
+
+class CBlockActionApply: public  CBlock
+{
+public:
+	CBlockActionApply(std::string noum1, std::string noum2 );
+
 };
 
 //  eating something in the presence of Lady Bracknell

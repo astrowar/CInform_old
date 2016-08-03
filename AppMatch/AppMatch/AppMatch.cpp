@@ -31,10 +31,14 @@ void teste_2()
 
  std::string  decompose_bracket(std::string phase, std::string dlm )
 {	
+	
 	size_t b = phase.find(dlm);
 	if (b != std::string::npos ) 
 	{		
-		return  phase.substr(0, b) + " "+ dlm+  " " + phase.substr(b + 1, phase.size() - b - 1);
+		std::string sa = phase.substr(0, b)  ;
+		std::string sb = phase.substr(b + 1, phase.size() - b - 1);
+		sb = decompose_bracket(sb, dlm );
+		return  sa + " "+ dlm+  " " + sb;
 	}
 	return phase;
 }
@@ -46,7 +50,14 @@ std::vector<HTerm> decompose(std::string phase)
 	std::vector<HTerm> seglist;
 	while (std::getline(test, segment, ' '))
 	{
-		seglist.push_back(make_string(segment));
+		
+		if (segment.length() > 0 )
+		{ 
+			if (segment[0] != ' ')
+			{
+				seglist.push_back(make_string(segment));
+			}
+		}
 	}
 	return seglist;
 }

@@ -53,7 +53,11 @@ class CParser
 public:
 	CParser();
 	virtual ~CParser();
+	ParserResult parser_AssertionAction(std::vector<HTerm> lst);
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
+	CBlock* parseAssertionActionDeclare(HTerm term);
+	CBlock* parseAssertionSecondTerm(HTerm match);
+	CBlock* parseAssertionFirstTerm(HTerm match);
 	ParserResult parser_SingleAssertion(std::vector<HTerm> lst);
 	ParserResult parserAssertion(std::vector<HTerm> lst);
 	CBlock* parser(std::string str);
