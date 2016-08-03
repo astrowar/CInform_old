@@ -28,6 +28,17 @@ void teste_2()
 	printf("Comb:\n %s \n", s.c_str());
 }
 
+
+ std::string  decompose_bracket(std::string phase, std::string dlm )
+{	
+	size_t b = phase.find(dlm);
+	if (b != std::string::npos ) 
+	{		
+		return  phase.substr(0, b) + " "+ dlm+  " " + phase.substr(b + 1, phase.size() - b - 1);
+	}
+	return phase;
+}
+
 std::vector<HTerm> decompose(std::string phase)
 {
 	std::stringstream test(phase);
@@ -315,11 +326,14 @@ void teste_relations3()
 	std::cout << "Who sugest: " << toString(thigs_to_sugest) << " " << std::endl;
 }
 
+void testeParser();
 
  
 
 int main()
 {
+	 testeParser();
+	 return 0;
 	 teste_1();
 	teste_2();
 	teste_match();

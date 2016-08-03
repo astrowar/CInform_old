@@ -161,17 +161,39 @@ CPredBooleanAnd::CPredBooleanAnd(const std::string& _named, const HPred& c_pred,
 {
 }
 
-CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1): CPredBoolean(_named),
-                                                                                                      b1(c_pred),
-                                                                                                      b2(c_pred1)
+CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1): CPredBoolean(_named),blist({ c_pred ,c_pred1 })
+                                                                                                      
+{
+}
+
+CPredBooleanOr::CPredBooleanOr(const std::string& _named, std::list<HPred> plist): CPredBoolean(_named), blist(plist.begin(),plist.end())
 {
 }
 
 EqualsResul CPredBooleanOr::match(MTermSet h)
 {
-	if ((this->b1->match(h) == Equals) || (this->b2->match(h) == Equals)) return Equals;
+	for(auto it = blist.begin(); it != blist.end();++it)
+	{
+		if ((*it)->match(h) == Equals) return Equals;
+	}
 	return NotEquals;
+	
 }
+
+//===============================================
+//Makes 
+ 
+
+
+HPred mkHPredAtom(std::string _named, HTerm atom) {  return std::make_shared<CPredAtom>(_named, atom); };
+HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist) { return std::make_shared<CPredList>(_named, plist); };
+HPred mkHPredAny(std::string _named) { return std::make_shared<CPredAny>(_named ); };
+HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanAnd>(_named, c_pred, c_pred1); };
+HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1); };
+
+
+//======================================
+
 
 void MatchResult::setValue(std::string named, HTerm value)
 {

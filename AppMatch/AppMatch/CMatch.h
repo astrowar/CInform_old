@@ -73,11 +73,26 @@ class CPredBooleanOr : public CPredBoolean
 {
 public:
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
+	CPredBooleanOr(const std::string& _named, std::list<HPred> plist );
 	EqualsResul match(MTermSet h) override;
 public:
-	HPred b1, b2;
+	std::vector<HPred> blist;
 };
 
+
+ 
+
+
+//==========================================
+
+//make hPreds
+HPred mkHPredAtom(std::string _named, HTerm atom);
+HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist);
+HPred mkHPredAny(std::string _named);
+HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
+HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
+
+//==========================================
 class MatchResult
 {
 public:
