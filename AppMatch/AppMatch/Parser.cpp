@@ -95,7 +95,7 @@ CBlock* CParser::parseAssertionActionDeclare(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockActionApply(new CBlockValue( res.matchs["Noum1"]->repr() ),new  CBlockValue(res.matchs["Noum2"]->repr() ));
+			return  new CBlockActionApply(new CBlockNoum( res.matchs["Noum1"]->repr() ),new  CBlockNoum(res.matchs["Noum2"]->repr() ));
 		}
 	}
 	{
@@ -107,7 +107,7 @@ CBlock* CParser::parseAssertionActionDeclare(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockActionApply(new CBlockValue(res.matchs["Noum1"]->repr()) , new CBlockValue("Nothing" ));
+			return  new CBlockActionApply(new CBlockNoum(res.matchs["Noum1"]->repr()) , new CBlockNoum("Nothing" ));
 		}
 	}
 
@@ -142,6 +142,22 @@ CBlock* CParser::parseAssertionSecondTerm(HTerm term)
 	{
 		// is a kind definition ??
 		std::vector<HPred> predList;
+		auto L_a_kind_of = mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") ,mk_HPredLiteral("value") });
+	 
+
+		predList.push_back(L_a_kind_of);
+		predList.push_back(mkHPredAny("KindBase"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return  new CBlockKindValue("");
+		}
+	}
+
+	//Derivade Kind
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
 		auto L_a_kind_of = mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") });		
 		auto L_kinds_of = mkHPredList("kindpart", {  mk_HPredLiteral("kinds"), mk_HPredLiteral("of") });
 
@@ -150,7 +166,7 @@ CBlock* CParser::parseAssertionSecondTerm(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockValue(res.matchs["KindBase"]->repr());
+			return  new CBlockKind(res.matchs["KindBase"]->repr());
 		}
 	}
 
@@ -163,38 +179,46 @@ CBlock* CParser::parseAssertionSecondTerm(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockValue( "Kind" );
+			return  new CBlockKind( "" );
 		}
 	}
 
 
-	return  new CBlockValue(term->repr()); //default return
+	return  new CBlockNoum(term->repr()); //default return
 
 }
 
-
- 
-CBlockList* CParser::parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList *CList )
+CBlockList* CParser::parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlockList *CList)
 {
-	std::vector<HPred> predList;	 
+	std::vector<HPred> predList;
 	predList.push_back(mkHPredAny("N1"));
-	predList.push_back(mkHPredBooleanOr( "sep", mk_HPredLiteral(",") , mk_HPredLiteral("and")));
+	predList.push_back(mkHPredBooleanOr("sep", mk_HPredLiteral(","), sep));
 	predList.push_back(mkHPredAny("N2"));
 
-	 
+
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
 	{
-		 
-		CList = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["N1"], CList);
-		CList = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["N2"], CList);
-		
+
+		CList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, CList);
+		CList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep,CList);
+
 		return CList;
 	}
-	 
-	 
-	CList->push_back(new CBlockValue(term->repr())  );
+
+
+	CList->push_back(new CBlockNoum(term->repr()));
 	return CList;
+}
+ 
+CBlockList* CParser::parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList *CList )
+{
+	return parseAssertionFirstTerm_COMMA_Supl(term, mk_HPredLiteral("and"), CList);
+}
+
+CBlockList* CParser::parseAssertionFirstTerm_COMMA_OR(HTerm term, CBlockList *CList)
+{
+	return parseAssertionFirstTerm_COMMA_Supl(term, mk_HPredLiteral("or"), CList); 
 }
 
 
@@ -220,6 +244,20 @@ CBlock* CParser::parseAssertionFirstTerm(HTerm term)
 }
 
 
+CBlock* CParser::parseAssertionEnumSecondTerm(HTerm term)
+{
+	CBlockList *c_list = new CBlockList();
+	c_list = CParser::parseAssertionFirstTerm_COMMA_OR(term, c_list);
+	if (c_list->lista.size() == 1)
+	{
+		CBlock  *rt;
+		std::swap(rt, c_list->lista.front());
+		delete c_list;
+		return rt;
+	}
+	return c_list;
+}
+
 ParserResult CParser::parser_SingleAssertion(std::vector<HTerm> lst)
 {
 	std::vector<HPred> predList;
@@ -235,20 +273,33 @@ ParserResult CParser::parser_SingleAssertion(std::vector<HTerm> lst)
 	if (definitionSecond == nullptr) return ParserResult(res);
 	CBlock *defintionFirst = parseAssertionFirstTerm(res.matchs["Object"]);
 	if (defintionFirst == nullptr) return ParserResult(res);
-	CBlock *b = new CBlockAssertion(defintionFirst, definitionSecond );
+	CBlock *b = new CBlockAssertion_is(defintionFirst, definitionSecond );
 	return ParserResult(res, b); 
+}
+
+
+ParserResult CParser::parser_PropertyAssertion(std::vector<HTerm> lst)
+{
+	std::vector<HPred> predList;
+	predList.push_back(mkHPredAny("Target")); 
+	predList.push_back(mk_HPredLiteral("can"));
+	predList.push_back(mk_HPredLiteral("be"));
+	predList.push_back(mkHPredAny("EnumValues"));
+	MatchResult res = CMatch(lst, predList);
+
+	if (res.result != Equals) return ParserResult(res);
+
+	CBlock *definitionSecond = parseAssertionEnumSecondTerm(res.matchs["EnumValues"]);
+	if (definitionSecond == nullptr) return ParserResult(res);
+	CBlock *defintionFirst = parseAssertionFirstTerm(res.matchs["Target"]);
+	if (defintionFirst == nullptr) return ParserResult(res);
+	CBlock *b = new CBlockAssertion_is(defintionFirst, definitionSecond);
+	return ParserResult(res, b);
 }
 
 ParserResult CParser::parserAssertion(std::vector<HTerm> lst)
 {
-	/*{
-		ParserResult rs_action = parser_AssertionAction(lst);
-		if (rs_action.block != nullptr)  return rs_action;
-	}
-	{
-		ParserResult rs1 = parser_AssertionKind(lst);
-		if (rs1.block != nullptr)  return rs1;
-	}*/
+	 
 	{
 		ParserResult rs2 = parser_SingleAssertion(lst);
 		if (rs2.block != nullptr)
@@ -259,6 +310,50 @@ ParserResult CParser::parserAssertion(std::vector<HTerm> lst)
 	return ParserResult(MatchResult());
 }
 
+
+ParserResult CParser::parserAssertion_property(std::vector<HTerm> lst)
+{
+
+	{
+		ParserResult rs2 = parser_PropertyAssertion(lst);
+		if (rs2.block != nullptr)
+		{
+			return rs2;
+		}
+	}
+	return ParserResult(MatchResult());
+}
+
+CBlock* CParser::parserAssertion_Level( std::vector<HTerm>  lst )
+{
+	ParserResult res = parserAssertion(lst);
+	if (res.block == nullptr)
+	{
+		return nullptr;
+	}
+	std::string s = get_repr(res.result);
+	printf("result:\n %s \n", s.c_str());
+	CBlock* retBlock = nullptr;
+	std::swap(res.block, retBlock);
+	return retBlock;
+
+}
+
+CBlock* CParser::parserAssertion_Property(std::vector<HTerm>  lst)
+{
+	ParserResult res = parserAssertion_property(lst);
+	if (res.block == nullptr)
+	{
+		return nullptr;
+	}
+	std::string s = get_repr(res.result);
+	printf("result:\n %s \n", s.c_str());
+	CBlock* retBlock = nullptr;
+	std::swap(res.block, retBlock);
+	return retBlock;
+
+}
+
   
 CBlock* CParser::parser(std::string str)
 {
@@ -267,14 +362,17 @@ CBlock* CParser::parser(std::string str)
 	str = decompose_bracket(str, ",");
 	
 
+
 	std::vector<HTerm>  lst = decompose(str);
-	ParserResult res = parserAssertion( lst );
-	
-	std::string s = get_repr(res.result);
-	printf("result:\n %s \n", s.c_str());
-	CBlock* retBlock = nullptr;
-	std::swap(res.block, retBlock);
-	return retBlock;
+
+	CBlock *rblock_assert_1 = (parserAssertion_Level(lst));
+	if (rblock_assert_1 != nullptr) return rblock_assert_1;
+
+	CBlock *rblock_assert_2 = (parserAssertion_Property(lst));
+	if (rblock_assert_2 != nullptr) return rblock_assert_2;
+
+	return nullptr;
+ 
 }
 
 void testeParser_1()
@@ -339,8 +437,16 @@ void testeParser_3()
 void testeParser_4()
 {
 	CParser parse;
-	std::string phase_1 = "define one as a number";
+	std::string phase_1 = "A thing can be discovered or secret";
 	auto res = parse.parser(phase_1);
+	res->dump("");
+
+
+	//"Brightness is a kind of value";
+	//"The brightnesses are guttering, weak, radiant and blazing";
+	//"The torch has a brightness";
+	//	"The torch	is blazing";
+	//"The torch is lit";
 	return;
 }
 
@@ -348,7 +454,7 @@ void testeParser_4()
 void testeParser ()
 {
 	// testeParser_1();
-	 testeParser_2();
-	testeParser_3();
-	//testeParser_4();
+	// testeParser_2();
+	//testeParser_3();
+	 testeParser_4();
 }

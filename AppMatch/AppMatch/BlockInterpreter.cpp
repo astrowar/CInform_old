@@ -3,15 +3,46 @@
 
 using namespace std;
 
-void CBlockValue::dump(std::string ident)
+void CBlockNoum::dump(std::string ident)
 {
-	cout << ident << this->value  << endl;
+	cout << ident << this->named << endl;
 }
 
-CBlockValue::CBlockValue(std::string _value)
+CBlockNoum::CBlockNoum(std::string _value)
 {
-	value = _value;
+	named = _value;
 }
+
+ 
+void CBlockEnums::dump(std::string ident)
+{
+}
+
+CBlockEnums::CBlockEnums(std::vector<CBlockNoum*> _values): values(_values)
+{
+
+}
+
+void CBlockKind::dump(std::string ident)
+{
+	cout << ident << "Kind: "<< named << endl;
+}
+
+void CBlockKindValue::dump(std::string ident)
+{
+	cout << ident << "Kind Value: " << named << endl;
+}
+
+void CBlockInstance::dump(std::string ident)
+{
+	cout << ident << "Instance: " << named << endl;
+}
+
+CBlockInstance::CBlockInstance(string _named)
+{
+}
+
+ 
 
 void  CBlockList::dump(std::string  ident)
 { 
@@ -22,21 +53,22 @@ void  CBlockList::dump(std::string  ident)
 	 }
 }
 
-void CBlockList::push_back(CBlockValue* c_block_value)
+void CBlockList::push_back(CBlockNoum* c_block_value)
 {
 	lista.push_back(c_block_value);
 }
 
-void CBlockAssertion::dump(std::string ident)
+void CBlockAssertion_is::dump(std::string ident)
 {
-	cout << ident << "Assert: " << endl;	
-	
-		this->obj->dump(ident + "     ");
+	cout << ident << "Assert: " << endl;
+
+	this->obj->dump(ident + "     ");
 	cout << ident << "is_____ " << endl;
-		this->definition->dump(ident + "     ");
-		
-	
+	this->definition->dump(ident + "     ");
 }
+ 
+
+ 
 
 
 void CBlockActionApply::dump(std::string ident)
@@ -56,6 +88,7 @@ CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_nou
 
 CBlockInterpreter::CBlockInterpreter()
 {
+	 
 }
 
 
@@ -63,6 +96,7 @@ CBlockInterpreter::~CBlockInterpreter()
 {
 }
 
+ 
 
 
 //  define  ((Person:A) eat (thing:B)) is a Action.  -> first noum, second noum
@@ -71,13 +105,13 @@ CBlockInterpreter::~CBlockInterpreter()
 
 void eatExample()
 {
-	/*CBlockAssertion(CBlockAction( CBlockValue("Person"), "eat", CBlockValue("Thing")));
+	/*CBlockAssertion(CBlockAction( CBlockNoum("Person"), "eat", CBlockNoum("Thing")));
 
-	CBlockAssertionCond(CBlockAssertion(CBlockAction("Action","A"), "in presence of", CBlockValue("Person", "other")),
-	CBlockSame(CBlockProp(CBlockValue("location"), CBlockProp(CBlockValue("first noum"), CBlockValue("A")),
-	CBlockProp(CBlockValue("location"), CBlockValue("other")))));
+	CBlockAssertionCond(CBlockAssertion(CBlockAction("Action","A"), "in presence of", CBlockNoum("Person", "other")),
+	CBlockSame(CBlockProp(CBlockNoum("location"), CBlockProp(CBlockNoum("first noum"), CBlockNoum("A")),
+	CBlockProp(CBlockNoum("location"), CBlockNoum("other")))));
 
-	CBlockMatchAction((CBlockAction("eat"), CBlockValue("something")), "in presence of", CBlockValue("Lady Bracknell"));
+	CBlockMatchAction((CBlockAction("eat"), CBlockNoum("something")), "in presence of", CBlockNoum("Lady Bracknell"));
 	*/
 
 

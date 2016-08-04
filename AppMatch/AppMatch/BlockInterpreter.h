@@ -3,6 +3,7 @@
 
 using std::string;
 class CBlock;
+class CBlockKind;
 
 class CBlock
 {
@@ -29,12 +30,48 @@ public:
 
 
 
-class CBlockValue : public CBlock //retorna um valor generico 
+class CBlockNoum : public CBlock //retorna um valor generico 
 {
 public:
 	void dump(std::string ident) override;
-	CBlockValue(string value);
-	string value;
+	CBlockNoum(string named);
+	string named;
+};
+
+
+ 
+
+
+ 
+class CBlockKind : public CBlock  //retorna um valor generico 
+{
+public:
+	void dump(std::string ident) override;
+	CBlockKind(string _named):named(_named){ };
+	string named;
+};
+
+
+
+
+
+class CBlockKindValue : public CBlockKind //retorna um valor generico 
+{
+public:
+	void dump(std::string ident) override;
+	CBlockKindValue(string _named) :CBlockKind(_named) { };
+ 
+};
+
+ 
+
+class CBlockInstance : public CBlock //retorna um valor generico 
+{
+public:
+	void dump(std::string ident) override;
+	CBlockInstance(string _named  );
+	string named;
+ 
 };
 
 class CBlockList : public CBlock //retorna um valor generico 
@@ -42,23 +79,38 @@ class CBlockList : public CBlock //retorna um valor generico
 public:
 	virtual void  dump(std::string  ident) override;
 	std::list<CBlock*> lista;
-	void push_back(CBlockValue* c_block_value);
+	void push_back(CBlockNoum* c_block_value);
 };
-
-class CBlockAssertion : public CBlock //retorna uma declaracao 
+class CBlockEnums : public CBlock //retorna um valor generico 
 {
 public:
-	virtual void dump(std::string ident) override;
-
-	CBlock* obj;  CBlock* definition;
-
-	//CBlockAssertion(HTerm obj, HTerm thing){};
-	CBlockAssertion(CBlock* _obj, CBlock* _definition): obj(_obj),definition(_definition)	{};
-
+	std::vector<CBlockNoum*> values;
+	void dump(std::string ident) override;
+	  CBlockEnums(std::vector<CBlockNoum*>  _values);
+	string value;
+};
+class CBlockAssertionBase : public CBlock //retorna uma declaracao 
+{
+public:
+	CBlock* obj;
+	//CBlockAssertion(HTerm obj, HTerm thing){};	
+	CBlockAssertionBase(CBlock* _obj): obj(_obj) {};
 };
 
+
+class CBlockAssertion_is : public CBlockAssertionBase //retorna uma declaracao 
+{
+public:
+	void dump(std::string ident) override;
+
+	CBlock* definition;
+	//CBlockAssertion(HTerm obj, HTerm thing){};	
+	CBlockAssertion_is(CBlock* _obj,   CBlock * _definition ) :CBlockAssertionBase(_obj), definition(_definition) {};
+};
+
+
 class CBlockAssertionCond: public CBlock // assertion com condicao 
-{	
+{	public:
 	CBlockBooleanResult* cond;
 };
 
@@ -158,9 +210,21 @@ class CBlockProp : public  CBlock  // um bloco que especifica uma propiedade ( c
 
 class CBlockInterpreter
 {
+	std::vector<CBlockAssertionBase*> assertions;
+	std::vector<CBlockAssertionBase*> dynamic_assertions;
 public:
 	CBlockInterpreter();
 	~CBlockInterpreter();
+	 
+ 
+	CBlockKind* getKindOf(CBlockInstance* obj);
+ 
+	bool query_is(CBlock* c_block, CBlock* c_block1);
+	bool query(CBlockAssertion_is* base, CBlockAssertion_is* q);
+	bool query(CBlockAssertion_is* query);
+	CBlockInstance* getInstance(std::string named);
+	HTerm executeAssertion(CBlockAssertionBase* b);
+	HTerm execute(CBlock *b);
 };
 
  
