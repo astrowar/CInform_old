@@ -1,11 +1,15 @@
 #pragma once
 #include "CBase.h"
 
+using std::string;
 class CBlock;
 
 class CBlock
 {
+
 public:
+	virtual void dump(std::string  ident  ) = 0;
+
 	virtual ~CBlock()
 	{
 	}
@@ -15,6 +19,11 @@ public:
 
 class CBlockBooleanResult   // um tipo de bloco que retorna true ou false 
 {
+public:
+	virtual ~CBlockBooleanResult()
+	{
+	}
+
 	virtual bool result() = 0;
 };
 
@@ -23,19 +32,28 @@ class CBlockBooleanResult   // um tipo de bloco que retorna true ou false
 class CBlockValue : public CBlock //retorna um valor generico 
 {
 public:
-	CBlockValue(std::string value){}
+	void dump(std::string ident) override;
+	CBlockValue(string value);
+	string value;
 };
 
 class CBlockList : public CBlock //retorna um valor generico 
 {
-
+public:
+	virtual void  dump(std::string  ident) override;
+	std::list<CBlock*> lista;
+	void push_back(CBlockValue* c_block_value);
 };
 
 class CBlockAssertion : public CBlock //retorna uma declaracao 
 {
 public:
-	CBlockAssertion(HTerm obj, HTerm thing){};
-	CBlockAssertion(CBlock* obj, CBlock* definition) {};
+	virtual void dump(std::string ident) override;
+
+	CBlock* obj;  CBlock* definition;
+
+	//CBlockAssertion(HTerm obj, HTerm thing){};
+	CBlockAssertion(CBlock* _obj, CBlock* _definition): obj(_obj),definition(_definition)	{};
 
 };
 
@@ -79,13 +97,22 @@ class CBlockMatchWith : public  CBlockMatch // um bloco que serve para dar Match
 
 class CBlockAction : public  CBlock  // um bloco que representa uma atividade
 {
+	explicit CBlockAction(CBlock* input)
+		: input(input)
+	{
+	}
+
 	CBlock* input;
 };
 
 class CBlockActionApply: public  CBlock
 {
 public:
-	CBlockActionApply(std::string noum1, std::string noum2 );
+	void dump(std::string ident) override;
+	CBlock* noum1;
+	CBlock* noum2;
+	CBlockActionApply(CBlock* _noum1, CBlock* _noum2 );
+
 
 };
 

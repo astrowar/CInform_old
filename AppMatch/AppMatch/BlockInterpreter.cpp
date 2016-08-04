@@ -1,10 +1,57 @@
 #include "BlockInterpreter.h"
 #include <iostream>
 
+using namespace std;
 
-CBlockActionApply::CBlockActionApply(std::string noum1, std::string noum2 )
+void CBlockValue::dump(std::string ident)
 {
-	std::cout << noum1 << " " << noum2  << std::endl;
+	cout << ident << this->value  << endl;
+}
+
+CBlockValue::CBlockValue(std::string _value)
+{
+	value = _value;
+}
+
+void  CBlockList::dump(std::string  ident)
+{ 
+	cout <<ident << "List: " << endl;
+	 for(auto e = lista.begin() ; e!= lista.end();++e)
+	 {
+		 (*e)->dump(ident + "   ");
+	 }
+}
+
+void CBlockList::push_back(CBlockValue* c_block_value)
+{
+	lista.push_back(c_block_value);
+}
+
+void CBlockAssertion::dump(std::string ident)
+{
+	cout << ident << "Assert: " << endl;	
+	
+		this->obj->dump(ident + "     ");
+	cout << ident << "is_____ " << endl;
+		this->definition->dump(ident + "     ");
+		
+	
+}
+
+
+void CBlockActionApply::dump(std::string ident)
+{
+	cout << ident << "Action applyTo " << endl;	
+	{
+		this->noum1->dump(ident + "       ");
+		cout << ident << "With " << endl;
+		this->noum2->dump(ident + "       ");
+
+	}
+}
+
+CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_noum1), noum2(_noum2)
+{
 }
 
 CBlockInterpreter::CBlockInterpreter()

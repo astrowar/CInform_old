@@ -54,8 +54,9 @@ ParserResult CParser::parser_AssertionAction(std::vector<HTerm> lst)
 	{
 		return  ParserResult(res);
 	}
-	CBlock *b = new CBlockAssertion( res.matchs["ActionDescr"] , mk_HPredLiteral("Action") );
-	return std::move(ParserResult(res, b));
+	//CBlock *b = new CBlockAssertion( res.matchs["ActionDescr"] , mk_HPredLiteral("Action") );
+	//return std::move(ParserResult(res, b));
+	return ParserResult(res);
 }
 
 ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst)
@@ -73,8 +74,8 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst)
 	{
 		return  ParserResult(res) ;
 	}
-	CBlock *b = new CBlockAssertion(res.matchs["Object"], res.matchs["Kind"]);
-	return std::move(ParserResult(res, b));
+	//CBlock *b = new CBlockAssertion(res.matchs["Object"], res.matchs["Kind"]);
+	return std::move(ParserResult(res));
 }
 
 CBlock* CParser::parseAssertionActionDeclare(HTerm term)
@@ -94,7 +95,7 @@ CBlock* CParser::parseAssertionActionDeclare(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockActionApply(res.matchs["Noum1"]->repr() , res.matchs["Noum2"]->repr() );
+			return  new CBlockActionApply(new CBlockValue( res.matchs["Noum1"]->repr() ),new  CBlockValue(res.matchs["Noum2"]->repr() ));
 		}
 	}
 	{
@@ -106,7 +107,7 @@ CBlock* CParser::parseAssertionActionDeclare(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockActionApply(res.matchs["Noum1"]->repr() ,"Nothing" );
+			return  new CBlockActionApply(new CBlockValue(res.matchs["Noum1"]->repr()) , new CBlockValue("Nothing" ));
 		}
 	}
 
@@ -114,41 +115,110 @@ CBlock* CParser::parseAssertionActionDeclare(HTerm term)
 
 }
 
+HPred undefinedArticle()
+{
+	return mkHPredBooleanOr("_", mk_HPredLiteral("a"), mk_HPredLiteral("an"));
+}
+
 CBlock* CParser::parseAssertionSecondTerm(HTerm term)
 {
-	{
-		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredList("kindpart", { mk_HPredLiteral("a"), mk_HPredLiteral("kind"), mk_HPredLiteral("of") }));
-		predList.push_back(mkHPredAny("Kind"));
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
-		{
-			return  new CBlockValue(res.matchs["Kind"]->repr());
-		}		
-	}
+
 
 
 	{
 		// is a kind definition ??
 		std::vector<HPred> predList;
-		predList.push_back(mkHPredList("actionpart", { mk_HPredLiteral("an"), mk_HPredLiteral("action")  }));
+		predList.push_back(mkHPredList("actionpart", { undefinedArticle(), mk_HPredLiteral("action") }));
 		predList.push_back(mkHPredAny("ActionApply"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return    parseAssertionActionDeclare(res.matchs["ActionApply"] );
+			return    parseAssertionActionDeclare(res.matchs["ActionApply"]);
 		}
-		 
+
 	}
+
+	//Derivade Kind
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+		auto L_a_kind_of = mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") });		
+		auto L_kinds_of = mkHPredList("kindpart", {  mk_HPredLiteral("kinds"), mk_HPredLiteral("of") });
+
+		predList.push_back(mkHPredBooleanOr("kindpart",  L_a_kind_of , L_kinds_of ));
+		predList.push_back(mkHPredAny("KindBase"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return  new CBlockValue(res.matchs["KindBase"]->repr());
+		}
+	}
+
+	//Base Kind
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind")  }));
+		 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return  new CBlockValue( "Kind" );
+		}
+	}
+
+
 	return  new CBlockValue(term->repr()); //default return
-	 
+
 }
+
+
+ 
+CBlockList* CParser::parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList *CList )
+{
+	std::vector<HPred> predList;	 
+	predList.push_back(mkHPredAny("N1"));
+	predList.push_back(mkHPredBooleanOr( "sep", mk_HPredLiteral(",") , mk_HPredLiteral("and")));
+	predList.push_back(mkHPredAny("N2"));
+
+	 
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		 
+		CList = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["N1"], CList);
+		CList = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["N2"], CList);
+		
+		return CList;
+	}
+	 
+	 
+	CList->push_back(new CBlockValue(term->repr())  );
+	return CList;
+}
+
+
+
+CBlock* CParser::parseAssertionFirstTerm_Compose(HTerm term )
+{
+	CBlockList *c_list = new CBlockList();
+	c_list = CParser::parseAssertionFirstTerm_COMMA_AND(term, c_list);
+	if ( c_list->lista.size() == 1 )
+	{
+		CBlock  *rt;
+		std::swap(rt, c_list->lista.front());
+		delete c_list;
+		return rt;
+	}
+	return c_list;
+}
+
 
 CBlock* CParser::parseAssertionFirstTerm(HTerm term)
 {
-	return new CBlockValue(term->repr());
+	return parseAssertionFirstTerm_Compose(term);
 }
+
 
 ParserResult CParser::parser_SingleAssertion(std::vector<HTerm> lst)
 {
@@ -181,7 +251,10 @@ ParserResult CParser::parserAssertion(std::vector<HTerm> lst)
 	}*/
 	{
 		ParserResult rs2 = parser_SingleAssertion(lst);
-		if (rs2.block != nullptr)  return rs2;
+		if (rs2.block != nullptr)
+		{
+			return rs2;
+		}
 	}
 	return ParserResult(MatchResult());
 }
@@ -191,13 +264,17 @@ CBlock* CParser::parser(std::string str)
 {
 	str = decompose_bracket(str, "(");
 	str = decompose_bracket(str, ")");
+	str = decompose_bracket(str, ",");
+	
+
 	std::vector<HTerm>  lst = decompose(str);
 	ParserResult res = parserAssertion( lst );
 	
 	std::string s = get_repr(res.result);
 	printf("result:\n %s \n", s.c_str());
-
-	return res.block;
+	CBlock* retBlock = nullptr;
+	std::swap(res.block, retBlock);
+	return retBlock;
 }
 
 void testeParser_1()
@@ -217,9 +294,29 @@ void testeParser_1()
 
 void testeParser_2()
 {
-	CParser parse;	
-	std::string phase_1 = "(  book  stone   ( metal bird))  are   things  "; 
-	auto res = parse.parser(phase_1); 
+	{
+		CParser parse;
+		std::string phase_1 = "( book,  stone and  ( metal bird))  are   things  ";
+		//auto res = parse.parser(phase_1);
+		//res->dump("");
+	}
+
+	 
+
+	{
+		CParser parse;
+		std::string phase_1 = "( iron, silver, chopper)  are kinds of metal  ";
+		 auto res = parse.parser(phase_1);
+		 res->dump("");
+	}
+
+	{
+		CParser parse;
+		std::string phase_1 = "metal  is a kind   ";
+		auto res = parse.parser(phase_1);
+		res->dump("");
+	}
+
 	return;
 }
 
@@ -227,12 +324,14 @@ void testeParser_3()
 {
 	CParser parse;
 	{
-		std::string phase_1 = "eat  is an action  applying to one thing ";
-	//	auto res = parse.parser(phase_1);
+		std::string phase_1 = "eat  is (an action  applying to (one thing ))";
+	 	auto res = parse.parser(phase_1);
+		res->dump("");
 	}
 	{
-		std::string           phase_1 = "cut  is (an action  applying to one thing and a Cutter) ";
+		std::string           phase_1 = "(cut ) is    an action   applying to (one thing) and (a Cutter)   ";
 		auto  res = parse.parser(phase_1);
+		res->dump("");
 	}
 	return;
 }
@@ -248,8 +347,8 @@ void testeParser_4()
 
 void testeParser ()
 {
-	 testeParser_1();
-	testeParser_2();
+	// testeParser_1();
+	 testeParser_2();
 	testeParser_3();
-	testeParser_4();
+	//testeParser_4();
 }

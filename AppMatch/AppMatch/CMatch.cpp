@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 
+#define CMLOG false
 std::string get_repr(MTermSet lst)
 {
 	std::string q;
@@ -14,6 +15,19 @@ std::string get_repr(MTermSet lst)
 		q += tr->get()->repr() ;
 	}
 	q += " ] ";
+	return q;
+}
+
+std::string get_repr(MTermSetCombinatoria  lst)
+{
+	
+	std::string q;
+	q += " { ";
+	for (auto tr = lst.begin(); tr != lst.end(); ++tr)
+	{
+		q += get_repr(*tr)+ " ";
+	}
+	q += " } ";
 	return q;
 }
 
@@ -132,6 +146,15 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> terms, size_t n)
 	}
 	return accTerms;
 }
+MTermSetCombinatoria getUnicCombination(std::vector<HTerm> lst)
+{
+	MTermSetCombinatoria comb;
+	for(auto it = lst.begin() ; it != lst.end() ;++it)
+	{
+		comb.push_back({ *it });
+	}
+	return comb;
+}
 
 MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n)
 {
@@ -141,7 +164,8 @@ MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n)
 	}
 	if (lst.size() == n)
 	{
-		return MTermSetCombinatoriaList({MTermSetCombinatoria({lst})}); // apenas uma combinacao eh possivel 
+				
+		return MTermSetCombinatoriaList({ getUnicCombination(lst)}); // apenas uma combinacao eh possivel 
 	}
 	return getCombinatoriasRec(lst, n);
 }
@@ -270,7 +294,7 @@ EqualsResul CPredList::match(MTermSet _h)
 
 		if (_h.size() != plist.size())
 		{
-			//std::cout << _h.size() << " !=  " << plist.size() << std::endl;
+            if( CMLOG )  std::cout << _h.size() << " !=  " << plist.size() << std::endl;
 			return NotEquals;
 		}
 		size_t n = plist.size();
@@ -278,7 +302,7 @@ EqualsResul CPredList::match(MTermSet _h)
 		{
 			if ( this->plist[j]->match( _h[j]  ) != Equals)
 			{
-				//std::cout << "Diff   "<< this->plist[j]->repr() << " !=  " << _h[j]->repr()  << std::endl;
+				if (CMLOG) std::cout << "Diff   "<< this->plist[j]->repr() << " !=  " << _h[j]->repr()  << std::endl;
 				return NotEquals;
 			}
 		}
@@ -416,19 +440,27 @@ bool isFullListBracket(MTermSet m)
 	//alista so tem 1 par de () e eles estao nas bordas ?
 	int cc_open = 0;
 	int cc_close = 0;
+	int level = 0;
 	if (m.front()->repr() != "(") return false;
 	if (m.back()->repr() != ")") return false;
 
-	for(auto it = m.begin() ; it!= m.end();++it)
+	bool isFullEnclose = true ;
+
+	int slen = m.size();
+
+	for(int i = 0 ; i< slen; ++i)
 	{
-		if ((*it)->repr() == "(") cc_open++;
-		if ((*it)->repr() == ")") cc_close++;
+		
+		if ( m[i]->repr() == ")") level--;
+		if ( m[i]->repr() == "(") level++;
+		if ( level ==0 && i!= (slen-1) )
+		{
+			isFullEnclose = false;
+		}
+		
 	}
-	if (cc_open == 1 && cc_close == 1)
-	{
-		return  true;
-	}
-	return false;
+
+	return isFullEnclose;
 }
 
 MTermSet remove_boundaryListMark(MTermSet m)
@@ -474,15 +506,15 @@ MatchResult makeMatch(std::string named, HTerm value)
 
 MatchResult CMatch_j(MTermSet termo, HPred predicate)
 {
-	//std::cout << "Query              " << predicate->repr() << " >> " << get_repr(termo) << std::endl;
+	if (CMLOG) std::cout << "Query|   " << predicate->repr() << " >> " << get_repr(termo)  ;
 	bool has_match = (predicate->match(termo) == Equals);
 	if (has_match ) 
 	{
-	//	std::cout << "   " << predicate->repr() << " == " << get_repr(termo) << std::endl;
+		if (CMLOG) 	std::cout << "   TRUE"  << std::endl;
 	}
 	else
 	{
-	//	std::cout << "   " << predicate->repr() << " !! " << get_repr(termo) << std::endl;
+		if (CMLOG) 	std::cout << "   FALSE"  <<std::endl;
 	}
 	if (has_match )
 	{
@@ -494,19 +526,52 @@ MatchResult CMatch_j(MTermSet termo, HPred predicate)
 	return MatchResult();
 }
 
-MatchResult CMatch_i(MTermSetCombinatoria& termos, std::vector<HPred> predicates)
+
+MatchResult CMatch_LI(std::vector<HTerm>  term, HPred predicate)
+{
+	CPredList* plst = dynamic_cast<CPredList* >(predicate.get());
+	if (plst != nullptr)
+	{
+		return  CMatch(term, plst->plist);
+
+	}
+	return MatchResult();
+}
+
+MatchResult CMatch_IL(HTerm term, std::vector<HPred> predicate)
+{
+	CList* lst = dynamic_cast<CList* >(term.get());
+	if (lst != nullptr)
+	{
+		return  CMatch(lst->asVector(), predicate);
+	}
+	return MatchResult();
+}
+
+
+MatchResult CMatch_combinacao(MTermSetCombinatoria& combinacao, std::vector<HPred> predicates)
 {
 	size_t n = predicates.size();
-	if (termos.size() != n)
+	size_t tn = combinacao.size();
+
+	 
+	 
+	if(tn != n) //numero de MTerset nao eh igual aos de predicates
 	{
+		std::cout << get_repr(combinacao) << std::endl;
 		return MatchResult();
 	}
+	 
 	MatchResult mm;
 	mm.result = Equals; // inicia com tudo OK
-	for (size_t i = 0; i < n; ++i)
+	for (size_t i = 0; i < tn; ++i)
 	{
-		MatchResult mj = CMatch_j(termos[i], predicates[i]);		 
-		if (mj.result != Equals) return MatchResult();
+		MTermSet &termGroup = combinacao[i];
+		MatchResult mj = CMatch_j(termGroup, predicates[i] );
+		if (mj.result != Equals)
+		{
+			return MatchResult();
+		}
 		mm.insert(mj);
 	}
 	return mm;
@@ -516,14 +581,45 @@ MatchResult CMatch_i(MTermSetCombinatoria& termos, std::vector<HPred> predicates
 
 
 
+  
+
 MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates)
 {
 	size_t npred = predicates.size();
-	MTermSetCombinatoriaList comb = getCombinatorias(lst, npred);
+	int a = lst.size();
+
+
+	if (a == npred)
+	{
+		if (CMLOG) std::cout << get_repr(lst) << std::endl;
+
+	}
+	 
+
+	MTermSet expandContents = remove_boundaryListMark(lst);
+
+	int b = expandContents.size();
+
+	if (b == npred)
+	{
+		if (CMLOG) std::cout << get_repr(lst ) <<  std::endl;
+
+	}
+	if (a!=b)
+	{
+		if (CMLOG) std::cout << "??" << std::endl;
+	}
+
+	//std::cout << get_repr(lst) << std::endl;
+	//std::cout << get_repr(remove_boundaryListMark(lst)) << std::endl;
+
+	
+	MTermSetCombinatoriaList comb = getCombinatorias(expandContents, npred);
+	size_t comSize = comb.size();
 	for (auto it = comb.begin(); it != comb.end(); ++it)
 	{
-		//std::cout <<  std::endl;
-		MatchResult mm = CMatch_i(*it, predicates);
+		if (CMLOG) std::cout <<  std::endl;
+		MatchResult mm = CMatch_combinacao (*it, predicates);
 		if (mm.result == Equals)
 		{
 			return mm;
@@ -541,9 +637,7 @@ MatchResult CMatch(HTerm term, std::vector<HPred> predicates)
 			return makeMatch(predicates.front()->named,  term);
 		}
 		return  MatchResult();
-	}
-
-
+	} 
 
 	CList* lst = dynamic_cast<CList* >(term.get());
 	if (lst != nullptr)

@@ -30,8 +30,7 @@ public:
 		// pilfer other’s resource
 		std::swap(result , other.result);
 		std::swap(block, other.block);
-		other.block = nullptr;
-		 
+		other.block = nullptr; 
 	}
 
 
@@ -57,6 +56,8 @@ public:
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	CBlock* parseAssertionActionDeclare(HTerm term);
 	CBlock* parseAssertionSecondTerm(HTerm match);
+	CBlockList* parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList* CList);
+	CBlock* parseAssertionFirstTerm_Compose(HTerm term);
 	CBlock* parseAssertionFirstTerm(HTerm match);
 	ParserResult parser_SingleAssertion(std::vector<HTerm> lst);
 	ParserResult parserAssertion(std::vector<HTerm> lst);
