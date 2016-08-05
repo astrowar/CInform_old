@@ -54,20 +54,30 @@ public:
 	virtual ~CParser();
 	ParserResult parser_AssertionAction(std::vector<HTerm> lst);
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
-	CBlock* parseAssertionActionDeclare(HTerm term);
-	CBlock* parseAssertionSecondTerm(HTerm match);
+	CBlockActionApply* parseAssertionActionDeclare( HTerm  term);
+ 
+ 
+	CBlockAssertion_isActionOf* parseAssertion_isAction(std::vector<HTerm> term);
+	CBlockAssertion_isKindOf* parseAssertion_isKindOf(std::vector<HTerm> term);
+	CBlockAssertion_isInstanceOf* parseAssertion_isInstanceOf(std::vector<HTerm> term) const;
 	CBlockList* parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlockList* CList);
 	CBlockList* parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList* CList);
 	CBlockList* parseAssertionFirstTerm_COMMA_OR(HTerm term, CBlockList* CList);
 	CBlock* parseAssertionFirstTerm_Compose(HTerm term);
 	CBlock* parseAssertionFirstTerm(HTerm match);
 	CBlock* parseAssertionEnumSecondTerm(HTerm term);
-	ParserResult parser_SingleAssertion(std::vector<HTerm> lst);
-	ParserResult parser_PropertyAssertion(std::vector<HTerm> lst);
-	ParserResult parserAssertion(std::vector<HTerm> lst);
-	ParserResult parserAssertion_property(std::vector<HTerm> lst);
-	CBlock* parserAssertion_Level(std::vector<HTerm> lst);
-	CBlock* parserAssertion_Property(std::vector<HTerm> lst);
+	
+
+	CBlockProperty * parseAssertion_PropertyFirstTerm(   HTerm  term);
+	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);	
+
+
+	CBlock* parser_Declaration_Assertion(std::vector<HTerm> lst);
+	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
+	CBlock* CProperty_called(HTerm term);
+	CBlock* parser_hasAn_Assertion(std::vector<HTerm> lst);
+
+
 	CBlock* parser(std::string str);
 };
 

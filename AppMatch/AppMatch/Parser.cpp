@@ -1,6 +1,7 @@
 #include "Parser.h"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
@@ -78,7 +79,7 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst)
 	return std::move(ParserResult(res));
 }
 
-CBlock* CParser::parseAssertionActionDeclare(HTerm term)
+CBlockActionApply* CParser::parseAssertionActionDeclare( HTerm   term)
 {
 	
 	{
@@ -119,74 +120,89 @@ HPred undefinedArticle()
 {
 	return mkHPredBooleanOr("_", mk_HPredLiteral("a"), mk_HPredLiteral("an"));
 }
-
-CBlock* CParser::parseAssertionSecondTerm(HTerm term)
+HPred verb_IS()
 {
+	return mkHPredBooleanOr("is", mk_HPredLiteral("are"), mk_HPredLiteral("is"));
+}
 
-
+CBlockAssertion_isActionOf* CParser::parseAssertion_isAction(std::vector<HTerm> term)
+{
 
 	{
 		// is a kind definition ??
 		std::vector<HPred> predList;
-		predList.push_back(mkHPredList("actionpart", { undefinedArticle(), mk_HPredLiteral("action") }));
+		predList.push_back(mkHPredAny("Noum"));
+		predList.push_back(mkHPredList("actionpart", { verb_IS(),  undefinedArticle(), mk_HPredLiteral("action") }));
 		predList.push_back(mkHPredAny("ActionApply"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return    parseAssertionActionDeclare(res.matchs["ActionApply"]);
+			CBlockNoum  *noumAction = new CBlockNoum(res.matchs["Noum"]->repr());
+			CBlockAction  *anAction = new CBlockAction(noumAction);
+			CBlockActionApply* act_apply = CParser::parseAssertionActionDeclare(res.matchs["ActionApply"]);
+			return  new CBlockAssertion_isActionOf(noumAction, anAction, act_apply);
 		}
 
 	}
 
+	return nullptr;
+}
+ 
+
+
+CBlockAssertion_isKindOf * CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
+{
 	//Derivade Kind
 	{
 		// is a kind definition ??
 		std::vector<HPred> predList;
-		auto L_a_kind_of = mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") ,mk_HPredLiteral("value") });
-	 
+		predList.push_back(mkHPredAny("Noum"));
 
-		predList.push_back(L_a_kind_of);
+		auto L_a_kind_of = mkHPredList("kindpart", { verb_IS(),undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") });
+		auto L_kinds_of = mkHPredList("kindpart", { verb_IS(),mk_HPredLiteral("kinds"), mk_HPredLiteral("of") });
+
+		predList.push_back(mkHPredBooleanOr("kindpart", L_a_kind_of, L_kinds_of));
 		predList.push_back(mkHPredAny("KindBase"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return  new CBlockKindValue("");
+			CBlockKind *noumKind = new CBlockKind(res.matchs["Noum"]->repr());
+			CBlockKind *baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
+			return  new CBlockAssertion_isKindOf(noumKind, baseKind);
 		}
 	}
-
-	//Derivade Kind
-	{
-		// is a kind definition ??
-		std::vector<HPred> predList;
-		auto L_a_kind_of = mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") });		
-		auto L_kinds_of = mkHPredList("kindpart", {  mk_HPredLiteral("kinds"), mk_HPredLiteral("of") });
-
-		predList.push_back(mkHPredBooleanOr("kindpart",  L_a_kind_of , L_kinds_of ));
-		predList.push_back(mkHPredAny("KindBase"));
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
-		{
-			return  new CBlockKind(res.matchs["KindBase"]->repr());
-		}
-	}
-
-	//Base Kind
-	{
-		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredList("kindpart", { undefinedArticle(), mk_HPredLiteral("kind")  }));
-		 
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
-		{
-			return  new CBlockKind( "" );
-		}
-	}
-
-
-	return  new CBlockNoum(term->repr()); //default return
+	return nullptr;
 
 }
+
+CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector<HTerm> term) const
+{
+	//Derivade Kind
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Noum"));
+
+		auto L_a_kind_of = mkHPredList("kindpart", { verb_IS(),undefinedArticle(), mk_HPredLiteral("kind"), mk_HPredLiteral("of") });
+		auto L_kinds_of = mkHPredList("kindpart", { verb_IS(),mk_HPredLiteral("kinds"), mk_HPredLiteral("of") });
+
+		predList.push_back(mkHPredBooleanOr("kindpart", L_a_kind_of, L_kinds_of));
+		predList.push_back(mkHPredAny("KindBase"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockInstance* noumInstance = new CBlockInstance (res.matchs["Noum"]->repr());
+			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
+			return  new CBlockAssertion_isInstanceOf(noumInstance, baseKind);
+		}
+	}
+	return nullptr;
+
+}
+ 
+ 
+
+
 
 CBlockList* CParser::parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlockList *CList)
 {
@@ -258,27 +274,69 @@ CBlock* CParser::parseAssertionEnumSecondTerm(HTerm term)
 	return c_list;
 }
 
-ParserResult CParser::parser_SingleAssertion(std::vector<HTerm> lst)
+CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
+{
+	 
+
+	CBlock* assert_action = CParser::parseAssertion_isAction(lst);
+	if (assert_action!= nullptr )
+	{
+		 return assert_action;
+	}
+
+	CBlock* assert_kindof= CParser::parseAssertion_isKindOf(lst);
+	if (assert_kindof != nullptr)
+	{
+		return assert_kindof;
+	}
+
+
+	CBlock* assert_Instance = CParser::parseAssertion_isInstanceOf(lst);
+	if (assert_Instance != nullptr)
+	{
+		return assert_Instance;
+	}
+
+	return nullptr;
+	 
+}
+
+CBlockProperty* CParser::parseAssertion_PropertyFirstTerm(HTerm term)
 {
 	std::vector<HPred> predList;
-	predList.push_back(mkHPredAny("Object"));
-	//predList.push_back(mkHPredAtom("Verb", make_string("is")));
-	predList.push_back(mk_HPredLiteral_OR("Verb", { "is","are" }));
-	predList.push_back(mkHPredAny("Asserion"));
-	MatchResult res = CMatch(lst, predList);	 
-	
-	if (res.result != Equals) return ParserResult(res);
+	predList.push_back(mkHPredAny("property"));
+	predList.push_back(mk_HPredLiteral("of"));	
+	predList.push_back(mkHPredAny("obj"));
+	MatchResult res = CMatch(term, predList);
+	if (res.result != Equals)
+	{
+		return nullptr;
+	}
 
-	CBlock *definitionSecond = parseAssertionSecondTerm(res.matchs["Asserion"]);
-	if (definitionSecond == nullptr) return ParserResult(res);
-	CBlock *defintionFirst = parseAssertionFirstTerm(res.matchs["Object"]);
-	if (defintionFirst == nullptr) return ParserResult(res);
-	CBlock *b = new CBlockAssertion_is(defintionFirst, definitionSecond );
-	return ParserResult(res, b); 
+
+	CBlockNoum* object_Name = new CBlockNoum(res.matchs["obj"]->repr());
+	return new CBlockProperty(res.matchs["property"]->repr(), object_Name);
 }
 
 
-ParserResult CParser::parser_PropertyAssertion(std::vector<HTerm> lst)
+
+CBlockEnums* CParser::parseAssertion_EnumTerms( HTerm  enumList )
+{
+
+	CBlockList*  elist = new CBlockList();
+	elist = parseAssertionFirstTerm_COMMA_OR(enumList, elist );
+	if (elist->lista.empty())
+	{
+		return nullptr;
+	}
+
+	std::vector<CBlockNoum*> nlist;
+	std::for_each(elist->lista.begin(), elist->lista.end(),   [&nlist](CBlock* c) { nlist.push_back( dynamic_cast<CBlockNoum*>(c)); });
+	return new CBlockEnums(nlist);
+
+}
+
+CBlock* CParser::parser_canBe_Assertion(std::vector<HTerm> lst)
 {
 	std::vector<HPred> predList;
 	predList.push_back(mkHPredAny("Target")); 
@@ -287,72 +345,70 @@ ParserResult CParser::parser_PropertyAssertion(std::vector<HTerm> lst)
 	predList.push_back(mkHPredAny("EnumValues"));
 	MatchResult res = CMatch(lst, predList);
 
-	if (res.result != Equals) return ParserResult(res);
+	if (res.result != Equals) return nullptr ;
 
-	CBlock *definitionSecond = parseAssertionEnumSecondTerm(res.matchs["EnumValues"]);
-	if (definitionSecond == nullptr) return ParserResult(res);
-	CBlock *defintionFirst = parseAssertionFirstTerm(res.matchs["Target"]);
-	if (defintionFirst == nullptr) return ParserResult(res);
-	CBlock *b = new CBlockAssertion_is(defintionFirst, definitionSecond);
-	return ParserResult(res, b);
+	CBlockEnums *definitionSecond = parseAssertion_EnumTerms(res.matchs["EnumValues"]);
+	if (definitionSecond == nullptr)
+	{
+		return nullptr;
+	}
+
+	CBlockProperty  *defintionFirst_property = parseAssertion_PropertyFirstTerm(res.matchs["Target"]);
+	if (defintionFirst_property != nullptr)
+	{
+		return  new CBlockAssertion_property_canBe(defintionFirst_property, definitionSecond);
+	}
+
+	CBlockNoum  *defintionFirst_Noum = new CBlockNoum(res.matchs["Target"]->repr());
+	if (defintionFirst_Noum != nullptr)
+	{
+		return   new CBlockAssertion_Noum_canBe(defintionFirst_Noum, definitionSecond);
+	}
+
+	return nullptr;
 }
 
-ParserResult CParser::parserAssertion(std::vector<HTerm> lst)
+CBlock* CParser::CProperty_called(HTerm term)
 {
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kindName"));
+		predList.push_back(mk_HPredLiteral("called"));
+		predList.push_back(mkHPredAny("propName"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) return nullptr;
+		{
+			return new CBlockInstanceVariable(res.matchs["KindAndName"]->repr(), res.matchs["propName"]->repr());
+		}
+	}
+
 	 
-	{
-		ParserResult rs2 = parser_SingleAssertion(lst);
-		if (rs2.block != nullptr)
-		{
-			return rs2;
-		}
-	}
-	return ParserResult(MatchResult());
+		return new CBlockInstanceVariable(term->repr(), term->repr());
+	 
+
+
 }
 
 
-ParserResult CParser::parserAssertion_property(std::vector<HTerm> lst)
+CBlock* CParser::parser_hasAn_Assertion(std::vector<HTerm> lst)
 {
+	std::vector<HPred> predList;
+	predList.push_back(mkHPredAny("Target"));	
+	predList.push_back(mk_HPredLiteral("has"));
+	predList.push_back(undefinedArticle() );
+	predList.push_back(mkHPredAny("KindAndName"));
+	MatchResult res = CMatch(lst, predList);
 
-	{
-		ParserResult rs2 = parser_PropertyAssertion(lst);
-		if (rs2.block != nullptr)
-		{
-			return rs2;
-		}
-	}
-	return ParserResult(MatchResult());
+	if (res.result != Equals) return nullptr;
+
+	CBlock  *  definitionProperty_kindAndName = CProperty_called(res.matchs["KindAndName"]);
+	if (definitionProperty_kindAndName == nullptr) return nullptr;
+	 
+	CBlockNoum  *defintionFirst_KindOrInstance = new CBlockNoum(res.matchs["Target"]->repr());
+	return  new CBlockAssertion_InstanceVariable (defintionFirst_KindOrInstance,  definitionProperty_kindAndName);
 }
 
-CBlock* CParser::parserAssertion_Level( std::vector<HTerm>  lst )
-{
-	ParserResult res = parserAssertion(lst);
-	if (res.block == nullptr)
-	{
-		return nullptr;
-	}
-	std::string s = get_repr(res.result);
-	printf("result:\n %s \n", s.c_str());
-	CBlock* retBlock = nullptr;
-	std::swap(res.block, retBlock);
-	return retBlock;
-
-}
-
-CBlock* CParser::parserAssertion_Property(std::vector<HTerm>  lst)
-{
-	ParserResult res = parserAssertion_property(lst);
-	if (res.block == nullptr)
-	{
-		return nullptr;
-	}
-	std::string s = get_repr(res.result);
-	printf("result:\n %s \n", s.c_str());
-	CBlock* retBlock = nullptr;
-	std::swap(res.block, retBlock);
-	return retBlock;
-
-}
+ 
 
   
 CBlock* CParser::parser(std::string str)
@@ -365,10 +421,10 @@ CBlock* CParser::parser(std::string str)
 
 	std::vector<HTerm>  lst = decompose(str);
 
-	CBlock *rblock_assert_1 = (parserAssertion_Level(lst));
+	CBlock *rblock_assert_1 = (parser_Declaration_Assertion (lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
-	CBlock *rblock_assert_2 = (parserAssertion_Property(lst));
+	CBlock *rblock_assert_2 = (parser_canBe_Assertion(lst));
 	if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
 	return nullptr;
@@ -437,10 +493,19 @@ void testeParser_3()
 void testeParser_4()
 {
 	CParser parse;
-	std::string phase_1 = "A thing can be discovered or secret";
-	auto res = parse.parser(phase_1);
-	res->dump("");
+	{
+		std::string phase_1 = "A thing can be discovered or secret";
+		auto res = parse.parser(phase_1);
+		res->dump("");
+	}
 
+	{
+		std::string phase_1 = "(size of Book ) can be normal , huge or  small";
+		auto res = parse.parser(phase_1);
+		res->dump("");
+	}
+
+	
 
 	//"Brightness is a kind of value";
 	//"The brightnesses are guttering, weak, radiant and blazing";

@@ -16,11 +16,16 @@ CBlockNoum::CBlockNoum(std::string _value)
  
 void CBlockEnums::dump(std::string ident)
 {
+	cout << ident << "Enum:" << endl;
+	for (auto e =  values.begin(); e != values.end(); ++e)
+	{
+		(*e)->dump(ident + "   ");
+	}
 }
 
 CBlockEnums::CBlockEnums(std::vector<CBlockNoum*> _values): values(_values)
 {
-
+	 
 }
 
 void CBlockKind::dump(std::string ident)
@@ -42,7 +47,33 @@ CBlockInstance::CBlockInstance(string _named)
 {
 }
 
+void CBlockProperty::dump(std::string ident)
+{
+	cout  << ident << "Property:" << endl;
+	cout  << ident << "         " << property_name << endl;
+	cout  << ident << "      of:" << endl; 	
+	obj->dump(ident + "          ");
+}
+
  
+
+CBlockProperty::CBlockProperty(string _property_name, CBlockNoum* _obj): property_name(_property_name), obj(_obj)
+{
+	
+}
+
+void CBlockInstanceVariable::dump(std::string ident)
+{
+
+	cout << ident << "Property:" << endl;
+	kind_name->dump(ident + "          ");
+	cout << ident << "   called:" << endl;
+   property_name->dump(ident + "          ");
+}
+
+CBlockInstanceVariable::CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called): property_name(_called), kind_name(_kind_name)
+{
+}
 
 void  CBlockList::dump(std::string  ident)
 { 
@@ -66,10 +97,29 @@ void CBlockAssertion_is::dump(std::string ident)
 	cout << ident << "is_____ " << endl;
 	this->definition->dump(ident + "     ");
 }
- 
 
- 
+void CBlockAssertion_property_canBe::dump(std::string ident)
+{
+	cout << ident << "Can Be " << endl;
+	{
+		this->obj->dump(ident + "       ");
+		cout << ident << "values " << endl;
+		this->definition->dump(ident + "       ");
 
+	}
+
+}
+
+void CBlockAssertion_Noum_canBe::dump(std::string ident)
+{
+	cout << ident << "Can Be " << endl;
+	{
+		this->obj->dump(ident + "       ");
+		cout << ident << "Values: " << endl;
+		this->definition->dump(ident + "       ");
+
+	}
+}
 
 void CBlockActionApply::dump(std::string ident)
 {
@@ -86,6 +136,10 @@ CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_nou
 {
 }
 
+void CBlockAction::dump(std::string ident)
+{
+}
+
 CBlockInterpreter::CBlockInterpreter()
 {
 	 
@@ -96,7 +150,11 @@ CBlockInterpreter::~CBlockInterpreter()
 {
 }
 
- 
+ void CBlockAssertion_isActionOf::dump(std::string ident)
+{
+	cout << ident << "Action " << endl;
+}
+
 
 
 //  define  ((Person:A) eat (thing:B)) is a Action.  -> first noum, second noum
@@ -114,5 +172,35 @@ void eatExample()
 	CBlockMatchAction((CBlockAction("eat"), CBlockNoum("something")), "in presence of", CBlockNoum("Lady Bracknell"));
 	*/
 
+
+}
+
+CBlockAssertion_Noum_canBe::CBlockAssertion_Noum_canBe(CBlockNoum* _obj, CBlockEnums* _definition):CBlockAssertionBase(_obj), definition(_definition)
+{
+	 
+}
+
+void CBlockAssertion_isKindOf::dump(std::string ident)
+{
+	cout << ident << "is Kind Of " << endl;
+	this->noum->dump(ident + "       ");
+	cout << ident << "Kind " << endl;
+	this->baseKind->dump(ident + "       ");
+}
+
+void CBlockAssertion_isInstanceOf::dump(std::string ident)
+{
+	cout << ident << "is Instance Of " << endl;
+	this->noum->dump(ident + "       ");
+	cout << ident << "Kind " << endl;
+	this->baseKind->dump(ident + "       ");
+}
+
+void CBlockAssertion_InstanceVariable::dump(std::string ident)
+{
+	cout << ident << "Instance  " << endl;
+	this->noum->dump(ident + "       ");
+	cout << ident << "Has " << endl;
+	this->instance_variable->dump(ident + "       ");
 
 }

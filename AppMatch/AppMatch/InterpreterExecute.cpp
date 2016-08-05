@@ -77,11 +77,10 @@ bool CBlockInterpreter::query( CBlockAssertion_is* q , CBlockAssertion_is* base 
 
 bool CBlockInterpreter::query(CBlockAssertion_is* q)
 {
-
 	for (auto it = assertions.begin(); it != assertions.end(); ++it)
 	{
 	  auto &base = *it;
-	  if (CBlockAssertion_is *qdef = dynamic_cast<CBlockAssertion_is*>(base))
+	  if (CBlockAssertion_is  *qdef = dynamic_cast<CBlockAssertion_is*>(base))
 		{		 
 			if (CBlockInterpreter::query_is(q->obj, qdef->obj))
 			{
@@ -98,6 +97,8 @@ bool CBlockInterpreter::query(CBlockAssertion_is* q)
 
 HTerm CBlockInterpreter::executeAssertion(CBlockAssertionBase *b )
 {
+  
+
 	assertions.push_back(b);
 	return nullptr;
 }
