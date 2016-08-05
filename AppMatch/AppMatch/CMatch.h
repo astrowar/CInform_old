@@ -8,7 +8,7 @@
 using MTermSet = std::vector<HTerm>;
 using MTermSetCombinatoria = std::vector<MTermSet>;
 using MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> lst, size_t n);
+MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n);
 std::string get_repr(MTermSetCombinatoriaList lst);
 
 //predicado do match

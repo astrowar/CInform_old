@@ -15,6 +15,9 @@ public:
 	}
 
 	virtual std::string repr() = 0;
+	virtual bool is_openBracket() { return false; };
+	virtual bool is_closeBracket() { return false; };
+
 };
 
 using HTerm = std::shared_ptr<CTerm>;
@@ -29,6 +32,11 @@ public :
 	std::string s;
 	CString(std::string _s);
 	virtual std::string repr() override;
+
+	virtual bool is_openBracket() override
+	{ return s=="(" ; };
+	virtual bool is_closeBracket() override
+	{ return s==")"; };
 };
 
 class CNumber : public CAtom

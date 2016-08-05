@@ -69,12 +69,13 @@ public:
 	
 
 	CBlockProperty * parseAssertion_PropertyFirstTerm(   HTerm  term);
-	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);	
+	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);
 
 
+	CBlock* parseAssertion_isVariable(std::vector<HTerm> lst);
 	CBlock* parser_Declaration_Assertion(std::vector<HTerm> lst);
 	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
-	CBlock* CProperty_called(HTerm term);
+	CBlockInstanceVariable* CProperty_called(HTerm term);
 	CBlock* parser_hasAn_Assertion(std::vector<HTerm> lst);
 
 

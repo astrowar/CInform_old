@@ -43,8 +43,18 @@ void CBlockInstance::dump(std::string ident)
 	cout << ident << "Instance: " << named << endl;
 }
 
-CBlockInstance::CBlockInstance(string _named)
+CBlockInstance::CBlockInstance(string _named) : named(_named)
 {
+}
+
+void CBlockVariable::dump(std::string ident)
+{
+	cout << ident << "Variable: " << named << endl;
+}
+
+CBlockVariable::CBlockVariable(string _named) : named(_named)
+{
+	 
 }
 
 void CBlockProperty::dump(std::string ident)
@@ -192,6 +202,14 @@ void CBlockAssertion_isInstanceOf::dump(std::string ident)
 {
 	cout << ident << "is Instance Of " << endl;
 	this->noum->dump(ident + "       ");
+	cout << ident << "Kind " << endl;
+	this->baseKind->dump(ident + "       ");
+}
+
+void CBlockAssertion_isVariable::dump(std::string ident)
+{
+	cout << ident << "is Variable Of  " << endl;
+	this->variable->dump(ident + "       ");
 	cout << ident << "Kind " << endl;
 	this->baseKind->dump(ident + "       ");
 }

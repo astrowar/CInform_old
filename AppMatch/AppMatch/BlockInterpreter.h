@@ -68,13 +68,23 @@ public:
 class CBlockInstance : public CBlock //retorna um valor generico 
 {
 public:
-	void dump(std::string ident) override;
+	virtual void dump(std::string ident) override;
 	CBlockInstance(string _named  );
 	string named;
  
 };
 
  
+class CBlockVariable : public CBlock //retorna um valor generico 
+{
+public:
+	virtual void dump(std::string ident) override;
+	CBlockVariable(string _named);
+	string named;
+
+};
+
+
 
 class CBlockProperty : public CBlock //retorna um valor generico 
 {
@@ -165,22 +175,31 @@ public:
 
 	CBlockKind * noum;
 	CBlockKind * baseKind;
-	CBlockAssertion_isKindOf(CBlockKind* _noum, CBlockKind * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(noum) , baseKind(_baseKind){};
+	CBlockAssertion_isKindOf(CBlockKind* _noum, CBlockKind * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(_noum) , baseKind(_baseKind){};
 };
 
 
 class CBlockAssertion_isInstanceOf : public CBlockAssertion_is //retorna uma declaracao 
 {
 public:
-	void dump(std::string ident) override;
+	virtual void dump(std::string ident) override;
 
 	CBlockInstance * noum;
 	CBlockKind * baseKind;
-	CBlockAssertion_isInstanceOf(CBlockInstance* _noum, CBlockKind * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(noum), baseKind(_baseKind) {};
+	CBlockAssertion_isInstanceOf(CBlockInstance* _noum, CBlockKind * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(_noum), baseKind(_baseKind) {};
 };
 
  
- 
+class CBlockAssertion_isVariable : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlockVariable * variable;
+	CBlockKind * baseKind;
+	CBlockAssertion_isVariable(CBlockVariable * _variable, CBlockKind * _baseKind) :CBlockAssertion_is(_variable, _baseKind), variable(_variable), baseKind(_baseKind) {};
+};
+
 
 class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao 
 {
@@ -189,7 +208,7 @@ public:
 
 	CBlockNoum * noum;
 	CBlockInstanceVariable *  instance_variable;
-	CBlockAssertion_InstanceVariable(CBlockNoum* _noum,  CBlockInstanceVariable * _instance_variable) :  noum(noum), instance_variable(_instance_variable) {};
+	CBlockAssertion_InstanceVariable(CBlockNoum* _noum,  CBlockInstanceVariable * _instance_variable) :  noum(_noum), instance_variable(_instance_variable) {};
 };
 
 
@@ -270,7 +289,7 @@ public:
 	CBlockNoum* noum;
 	CBlockAction* action;
 	CBlockActionApply* application;
-	CBlockAssertion_isActionOf(CBlockNoum* _noum, CBlockAction * _action , CBlockActionApply* _application) :CBlockAssertion_is(_noum, _action), noum(noum), action(_action), application(_application) {};
+	CBlockAssertion_isActionOf(CBlockNoum* _noum, CBlockAction * _action , CBlockActionApply* _application) :CBlockAssertion_is(_noum, _action), noum(_noum), action(_action), application(_application) {};
 };
 
 
