@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include <cassert>
 
 using std::string;
 class CBlock;
@@ -69,7 +70,7 @@ class CBlockKind : public CBlock  //retorna um valor generico
 {
 public:
 	void dump(std::string ident) override;
-	CBlockKind(string _named):named(_named){ };
+	CBlockKind(string _named) :named(_named) {   };
 	string named;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
@@ -82,7 +83,7 @@ class CBlockKindValue : public CBlockKind //retorna um valor generico
 {
 public:
 	void dump(std::string ident) override;
-	CBlockKindValue(string _named) :CBlockKind(_named) { };
+	CBlockKindValue(string _named) :CBlockKind(_named) {   };
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
  
 };
@@ -451,18 +452,27 @@ public:
 
 class CBlockInterpreter
 {
+	std::vector<CBlockInstance*> instancias;
+	std::vector<CBlockInstanceVariable*> instancias_vars;
+	std::vector<CBlockAssertionBase*>    assertions_functional; //To define and others
+
+
+	std::vector<NoumDefinition> nregisters;
 	std::vector<CBlockAssertionBase*> assertions;
 	std::vector<CBlockAssertionBase*> dynamic_assertions;
+
 public:
 	CBlockInterpreter();
 	~CBlockInterpreter();
 	 
  
 	CBlockKind* getKindOf(CBlockInstance* obj);
- 
+
+	bool query_is_same(CBlock* c_block, CBlock* c_block1);
 	bool query_is(CBlock* c_block, CBlock* c_block1);
 	bool query(CBlockAssertion_is* base, CBlockAssertion_is* q);
-	bool query(CBlockAssertion_is* query);	 
+	bool query(CBlockAssertion_is* query);
+	HTerm executeAssertion_is(CBlockAssertion_is* b);
 	HTerm executeAssertion(CBlockAssertionBase* b);
 	HTerm execute(CBlock *b);
 };

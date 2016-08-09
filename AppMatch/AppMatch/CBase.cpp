@@ -84,6 +84,22 @@ std::string CList::repr()
 	return q;
 }
 
+CTerm* CList::removeArticle()
+{
+	if (this->lst.size()> 0 )
+	{
+		if ((this->lst.front()->repr() == "a") || (this->lst.front()->repr() == "the")|| (this->lst.front()->repr() == "an"))
+		{
+			CList* r = new CList();
+			r->lst = this->lst;
+			r->lst.pop_front();
+			if (r->lst.size() == 1) return r->lst.front().get();
+			return r;
+		}
+	}
+	return this;
+}
+
 EqualsResul equals(CTerm* c1, CTerm* c2)
 {
 	EqualsResul q = Undefined;

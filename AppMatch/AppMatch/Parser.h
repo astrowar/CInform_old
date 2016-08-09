@@ -54,7 +54,7 @@ class CParser
 {
 
 	std::vector<NoumDefinition> nregisters;
-
+	
 public:
 	CParser();
 	virtual ~CParser();
@@ -92,7 +92,7 @@ public:
 	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
 	CBlockInstanceVariable* CProperty_called(HTerm term);
 	CBlock* parser_hasAn_Assertion(std::vector<HTerm> lst);
-	CBlock* parser_findBlock(std::string str);
+	CBlock* parser_only(std::string str);
 
 	CBlock* parser(std::string str);
 };

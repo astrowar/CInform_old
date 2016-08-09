@@ -28,6 +28,7 @@ void CBlockNoum::dump(std::string ident)
 CBlockNoum::CBlockNoum(std::string _value)
 {
 	named = _value;
+	assert(named[0] != '[');
 }
 
  
@@ -62,6 +63,7 @@ void CBlockInstance::dump(std::string ident)
 
 CBlockInstance::CBlockInstance(string _named) : named(_named)
 {
+	assert(_named[0] != '[');
 }
 
 void CBlockNamedValue::dump(std::string ident)
@@ -71,6 +73,7 @@ void CBlockNamedValue::dump(std::string ident)
 
 CBlockNamedValue::CBlockNamedValue(string _named) : named(_named)
 {
+	assert(_named[0] != '[');
 }
 
 void CBlockVariable::dump(std::string ident)
@@ -80,7 +83,7 @@ void CBlockVariable::dump(std::string ident)
 
 CBlockVariable::CBlockVariable(string _named) : named(_named)
 {
-	 
+	assert(_named[0] != '[');
 }
 
 void CBlockProperty::dump(std::string ident)
@@ -95,7 +98,7 @@ void CBlockProperty::dump(std::string ident)
 
 CBlockProperty::CBlockProperty(string _property_name, CBlockNoum* _obj): property_name(_property_name), obj(_obj)
 {
-	
+	 
 }
 
 void CBlockInstanceVariable::dump(std::string ident)
@@ -109,6 +112,7 @@ void CBlockInstanceVariable::dump(std::string ident)
 
 CBlockInstanceVariable::CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called): property_name(_called), kind_name(_kind_name)
 {
+
 }
 
 void  CBlockList::dump(std::string  ident)

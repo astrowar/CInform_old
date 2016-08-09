@@ -15,7 +15,10 @@ public:
 	}
 
 	virtual std::string repr() = 0;
-	virtual bool is_openBracket() { return false; };
+	virtual bool is_openBracket() { return false; }
+
+	virtual CTerm* removeArticle() { return this;}
+ 
 	virtual bool is_closeBracket() { return false; };
 
 };
@@ -58,6 +61,7 @@ public:
 	void push_front(HTerm x);
 	std::vector<HTerm> asVector();
 	virtual std::string repr() override;
+	virtual CTerm* removeArticle() override;
 };
 
 EqualsResul equals(CTerm* c1, CTerm* c2);

@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="AssertionsKinds.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,7 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="testesParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
