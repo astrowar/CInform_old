@@ -77,16 +77,17 @@ std::string BlockNoum(CBlock* c_block)
 //
 //}
 
-bool CBlockInterpreter::query_is_same(CBlock* c_block, CBlock* c_block1)
+QueryResul CBlockInterpreter::query_is_same(CBlock* c_block, CBlock* c_block1)
 {
 	std::string name1 = BlockNoum(c_block);
 	std::string name2 = BlockNoum(c_block1);
-	if (name1 == "" || name2 == "") return false;
+	if (name1 == "" || name2 == "") return QUndefined;
 	std::cout << name1 << "  " << name2 << std::endl;
-	return  (name1 == name2);
+	if (name1 == name2) return QEquals;
+	return QNotEquals;
 }
 
-bool CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
+QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 {
 	for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it)
 	{
@@ -98,7 +99,7 @@ bool CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
  
 	if (CBlockInterpreter::query_is_same(c_block, c_block1))
 	{
-		return true;
+		return QEquals;
 	}
 
 	for (auto it = assertions.begin(); it != assertions.end(); ++it)
@@ -109,29 +110,29 @@ bool CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 			{
 				if (CBlockInterpreter::query_is(qdef->definition, c_block1))
 				{
-					return true;
+					return QEquals;
 				}
 			}
 		}
 	}
-	return false;
+	return QUndefined;
 
 }
 
-bool CBlockInterpreter::query( CBlockAssertion_is* q , CBlockAssertion_is* base ) //Compara as duas queries e retorna true se base valida q
+QueryResul CBlockInterpreter::query( CBlockAssertion_is* q , CBlockAssertion_is* base ) //Compara as duas queries e retorna true se base valida q
 {
 	if (CBlockInterpreter::query_is(  q->obj,base->obj) && CBlockInterpreter::query_is(  q->definition,base->definition))
 	{
-		return true;
+		return QEquals;
 	}
-	return false;
+	return QUndefined;
 
 }
  
-bool CBlockInterpreter::query(CBlockAssertion_is* q)
+QueryResul CBlockInterpreter::query(CBlockAssertion_is* q)
 {
 	return query_is(q->obj, q->definition);
-	return false;
+	return QUndefined;
 
 }
 
@@ -155,7 +156,7 @@ HTerm CBlockInterpreter::executeAssertion_is(CBlockAssertion_is *b)
 	{
 
 	}
-
+	return nullptr;
 
 }
 

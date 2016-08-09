@@ -88,6 +88,7 @@ public:
 
 
 	CBlock* parseAssertion_isVariable(std::vector<HTerm> lst);
+	CBlockAssertion_isDirectAssign* parseAssertion_DirectAssign(std::vector<HTerm> term);
 	CBlock* parser_Declaration_Assertion(std::vector<HTerm> lst);
 	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
 	CBlockInstanceVariable* CProperty_called(HTerm term);

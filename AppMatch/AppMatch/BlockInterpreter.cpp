@@ -288,6 +288,14 @@ void CBlockAssertion_isVariable::dump(std::string ident)
 	this->baseKind->dump(ident + "       ");
 }
 
+void CBlockAssertion_isDirectAssign::dump(std::string ident)
+{
+	cout << ident << "Assign  " << endl;
+	this->variable->dump(ident + "       ");
+	cout << ident << "Is " << endl;
+	this->value->dump(ident + "       ");
+}
+
 void CBlockAssertion_InstanceVariable::dump(std::string ident)
 {
 	cout << ident << "Instance  " << endl;

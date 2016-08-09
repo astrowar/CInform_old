@@ -34,6 +34,7 @@ void testeParser_2()
 		interpreter->execute(parse.parser("  book is a thing "));
 		interpreter->execute(parse.parser("diary are an book "));
 		interpreter->execute(parse.parser("book is small "));
+		parse.parser("book is small ")->dump("");
  
 		 //res->dump("");
 		 //std::cout << std::endl;

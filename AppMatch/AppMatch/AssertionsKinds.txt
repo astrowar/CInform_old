@@ -1,0 +1,66 @@
+
+
+Assertions e suas gramaticas
+
+
+isAction:
+	X is an action Y
+	Whistling is an action applying to nothing.
+
+
+
+CanBe
+  X can be [Ylist]
+  X is either [Ylist]
+  The cask is either customs sealed, liable to tax or stolen goods.
+
+IsInstance
+  X is a K
+  The basket is a container
+
+IsKind
+  X is a kind
+
+IsKindOf
+  X is a kind of K
+
+IsKindOfValue
+  X is a kind of Value Kv
+
+
+PropertyIs
+	X of Y is Z
+	The description of the statue is "A statue of George Washington watches over you."
+
+
+GlobalVariable
+   X is Y that varies
+   The turn card image is a figure-name that varies.
+
+
+InstanceVariable
+   X has a Y called Z
+   X has a Y  ( implies Z = Y )
+   The battery has some indexed text called the brand name
+   paper has a texture
+
+
+NamedValue
+   Kv is Xlist
+   X is Kv
+   The colors are blue, green, yellow, and red. 
+
+Relation
+  X is Verb Y
+  X Verb Y
+  Hercule Poirot suspects Colonel Hotchkiss. 
+
+
+AttributeAssign
+   Instance is Y    // Requires "can be"
+   The book is small
+
+
+LValue : values que podem ser aasigneds
+
+LValue: Instancia , se RValue for um atributo , ou can_be  

@@ -7,6 +7,8 @@ class CBlock;
 class CBlockKind;
 
 
+ 
+
 
 
 class NoumDefinition
@@ -257,6 +259,18 @@ public:
 };
 
 
+class CBlockAssertion_isDirectAssign : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock  * variable;
+	CBlock  * value;
+	CBlockAssertion_isDirectAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
+};
+
+
+
 class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao 
 {
 public:
@@ -468,10 +482,10 @@ public:
  
 	CBlockKind* getKindOf(CBlockInstance* obj);
 
-	bool query_is_same(CBlock* c_block, CBlock* c_block1);
-	bool query_is(CBlock* c_block, CBlock* c_block1);
-	bool query(CBlockAssertion_is* base, CBlockAssertion_is* q);
-	bool query(CBlockAssertion_is* query);
+	QueryResul query_is_same(CBlock* c_block, CBlock* c_block1);
+	QueryResul query_is(CBlock* c_block, CBlock* c_block1);
+	QueryResul query(CBlockAssertion_is* base, CBlockAssertion_is* q);
+	QueryResul query(CBlockAssertion_is* query);
 	HTerm executeAssertion_is(CBlockAssertion_is* b);
 	HTerm executeAssertion(CBlockAssertionBase* b);
 	HTerm execute(CBlock *b);

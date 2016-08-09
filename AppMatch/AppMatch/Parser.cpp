@@ -480,6 +480,30 @@ CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 
 }
 
+ 
+CBlockAssertion_isDirectAssign   * CParser::parseAssertion_DirectAssign(std::vector<HTerm> term)
+{
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Noum"));
+		auto L_a_an_kind = mkHPredList("verb", { verb_IS()  });  
+		predList.push_back(L_a_an_kind);
+		predList.push_back(mkHPredAny("Value"));
+
+
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{			 
+			CBlock* noumInstance = new CBlockNoum(res.matchs["Noum"]->removeArticle()->repr());
+			CBlock* baseKind = new CBlockNoum(res.matchs["Value"]->removeArticle()->repr());
+			return  new CBlockAssertion_isDirectAssign(noumInstance, baseKind);
+		}
+	}
+	return nullptr;
+
+}
 
 CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector<HTerm> term)  
 {
@@ -492,7 +516,8 @@ CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector
 		auto L_a_an_kind = mkHPredList("kindpart", { verb_IS(), undefinedArticle()  });	
 		auto L_are_kinds = mkHPredList("kindpart", { verb_IS() });
 
-		predList.push_back(mkHPredBooleanOr("kindpart", L_a_an_kind, L_are_kinds));
+		//predList.push_back(mkHPredBooleanOr("kindpart", L_a_an_kind, L_are_kinds));
+		predList.push_back(L_a_an_kind);
 
 		predList.push_back(mkHPredAny("KindBase"));
 		 
@@ -507,8 +532,6 @@ CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector
 				return nullptr;
 			}
 			*/
-
-
 			CBlockInstance* noumInstance = new CBlockInstance (res.matchs["Noum"]->removeArticle()->repr());
 			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindBase"]->removeArticle()->repr());
 		 
@@ -634,6 +657,14 @@ CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 	{
 		return assert_Instance;
 	}
+
+	CBlock* assert_Assign = CParser::parseAssertion_DirectAssign(lst);
+	if (assert_Assign != nullptr)
+	{
+		return assert_Assign;
+	}
+
+
 
 	return nullptr;
 	 
