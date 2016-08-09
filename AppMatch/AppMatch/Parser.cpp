@@ -45,6 +45,26 @@ CParser::~CParser()
 {
 }
 
+
+ 
+CBlock* CParser::get_Noum(string named) const
+{
+	auto kv =  std::find_if(nregisters.begin(), nregisters.end(), [&](const NoumDefinition &a) {return   a.noum == named; });
+ 
+	if (kv == nregisters.end()) return nullptr;
+	return kv->definition ;
+}
+
+void CParser::set_Noum(NoumDefinition ndef)
+{
+	nregisters.push_back(ndef);
+}
+
+void CParser::set_Noum(NoumDefinitions ndef)
+{
+	nregisters.insert(nregisters.end(), ndef.begin(), ndef.end());
+}
+
 ParserResult CParser::parser_AssertionAction(std::vector<HTerm> lst)
 {
 	std::vector<HPred> predList;
@@ -127,6 +147,11 @@ HPred verb_IS()
 	return mkHPredBooleanOr("is", mk_HPredLiteral("are"), mk_HPredLiteral("is"));
 }
 
+HPred mk_What_Which()
+{
+	return mkHPredBooleanOr("what_TERM", mk_HPredLiteral("what"), mk_HPredLiteral("which"), mk_HPredLiteral("whether")  );
+}
+
 CBlockAssertion_isActionOf* CParser::parseAssertion_isAction(std::vector<HTerm> term)
 {
 
@@ -139,9 +164,23 @@ CBlockAssertion_isActionOf* CParser::parseAssertion_isAction(std::vector<HTerm> 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
+			if (get_Noum(res.matchs["Noum"]->repr()) != nullptr)
+			{
+				throw res.matchs["Noum"]->repr() + " ja existe ";
+				return nullptr;
+			}
+			
+
+
 			CBlockNoum  *noumAction = new CBlockNoum(res.matchs["Noum"]->repr());
+
+
+
 			CBlockAction  *anAction = new CBlockAction(noumAction);
 			CBlockActionApply* act_apply = CParser::parseAssertionActionDeclare(res.matchs["ActionApply"]);
+
+
+			 
 			return  new CBlockAssertion_isActionOf(noumAction, anAction, act_apply);
 		}
 
@@ -152,8 +191,48 @@ CBlockAssertion_isActionOf* CParser::parseAssertion_isAction(std::vector<HTerm> 
  
 
 
-CBlockAssertion_isKindOf * CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
+CBlock* CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 {
+
+	//Derivade Kind Value
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Noum"));
+		auto L_a_kind = mkHPredList("kindpart", { verb_IS(),undefinedArticle(), mk_HPredLiteral("kind") , mk_HPredLiteral("of"),mk_HPredLiteral("value") });		 
+		
+		predList.push_back(L_a_kind);
+
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			//Noum is a compound list by Commas ???
+
+			CBlockList *firstTerm = new CBlockList();
+			firstTerm = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["Noum"], firstTerm);
+
+			CBlockList* blcReturn = new CBlockList();
+
+			for (auto cnoum : firstTerm->lista)
+			{
+				CBlockKindValue *noumKind = new CBlockKindValue(static_cast<CBlockNoum*>(cnoum)->named);
+				if (get_Noum(res.matchs["Noum"]->repr()) != nullptr)
+				{
+					throw res.matchs["Noum"]->repr() + " ja existe ";
+					return nullptr;
+				}
+
+				blcReturn->push_back(new CBlockAssertion_isKindOf(noumKind, new CBlockKindValue("Nothing")));
+			}
+			delete firstTerm;
+			if (blcReturn->lista.size() == 1) return blcReturn->lista.front();
+			return blcReturn;
+		}
+	}
+
+
+
 	//Derivade Kind
 	{
 		// is a kind definition ??
@@ -168,9 +247,26 @@ CBlockAssertion_isKindOf * CParser::parseAssertion_isKindOf(std::vector<HTerm> t
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlockKind *noumKind = new CBlockKind(res.matchs["Noum"]->repr());
-			CBlockKind *baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
-			return  new CBlockAssertion_isKindOf(noumKind, baseKind);
+			CBlockList* blcReturn = new CBlockList();
+			//Noum is a compound list by Commas ???
+			CBlockList *firstTerm = new CBlockList();
+			firstTerm = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["Noum"], firstTerm);
+
+			for (auto cnoum : firstTerm->lista  )
+			{
+
+				CBlockKind *noumKind = new CBlockKind( static_cast<CBlockNoum*>(cnoum)->named );
+				if (get_Noum(res.matchs["Noum"]->repr()) != nullptr)
+				{
+					throw res.matchs["Noum"]->repr() + " ja existe ";
+					return nullptr;
+				}
+				CBlockKind *baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
+				blcReturn->push_back( new CBlockAssertion_isKindOf(noumKind, baseKind) );
+			}
+			delete firstTerm;
+			if (blcReturn->lista.size() == 1) return blcReturn->lista.front();
+			return blcReturn;
 		}
 	}
 
@@ -189,8 +285,27 @@ CBlockAssertion_isKindOf * CParser::parseAssertion_isKindOf(std::vector<HTerm> t
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlockKind *noumKind = new CBlockKind(res.matchs["Noum"]->repr());			
-			return  new CBlockAssertion_isKindOf(noumKind, new CBlockKind("Nothing"));
+			//Noum is a compound list by Commas ???
+			 
+			CBlockList *firstTerm = new CBlockList();
+			firstTerm = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["Noum"], firstTerm);
+
+			CBlockList* blcReturn = new CBlockList();
+
+			for (auto cnoum : firstTerm->lista)
+			{
+				CBlockKind *noumKind = new CBlockKind(static_cast<CBlockNoum*>(cnoum)->named);
+				if (get_Noum(res.matchs["Noum"]->repr()) != nullptr)
+				{
+					throw res.matchs["Noum"]->repr() + " ja existe ";
+					return nullptr;
+				}
+
+				blcReturn->push_back(new CBlockAssertion_isKindOf(noumKind, new CBlockKind("Nothing")));
+			}
+			delete firstTerm;
+			if (blcReturn->lista.size() == 1) return blcReturn->lista.front();
+			return blcReturn;
 		}
 	}
 
@@ -198,6 +313,134 @@ CBlockAssertion_isKindOf * CParser::parseAssertion_isKindOf(std::vector<HTerm> t
 
 }
 
+
+
+
+
+CBlock* CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
+{
+	
+	// The colors are blue, green, yellow, and red.
+	// The textures are rough, stubbly and smooth. 
+	// Price is a kind of value.  $1.99 specifies a price.
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("valueKind"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("valueNames"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+			//KindValue must exist
+			CBlock *valueKind = get_Noum(res.matchs["valueKind"]->repr());
+			if (CBlockKindValue* kindValue = dynamic_cast<CBlockKindValue*>(valueKind))
+			{
+				CBlockList *firstTerm = new CBlockList();
+				firstTerm = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["valueNames"], firstTerm);
+
+				CBlockList* blcReturn = new CBlockList();
+
+				for (auto cnoum : firstTerm->lista)
+				{
+					CBlockNamedValue  *noumValue = new CBlockNamedValue(static_cast<CBlockNoum*>(cnoum)->named);
+					blcReturn->lista.push_back(new CBlockAssertion_isNamedValueOf(noumValue, kindValue));
+				}
+				if (blcReturn->lista.size() == 1) return blcReturn->lista.front();
+				return blcReturn;
+			}
+
+
+		}
+	}
+
+
+	// $1.99 specifies a price.
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("valueName")); 
+
+		auto L_single = mkHPredList("spc", { mk_HPredLiteral("specifies"), undefinedArticle() });
+		auto L_plural = mkHPredList("spc", { mk_HPredLiteral("specifies") });		 
+
+		predList.push_back(mkHPredBooleanOr("spc_part", L_single , L_plural));
+
+		predList.push_back(mkHPredAny("valueKind"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+			//KindValue must exist
+			CBlock *valueKind = get_Noum(res.matchs["valueName"]->repr());
+			if (CBlockKindValue* kindValue = dynamic_cast<CBlockKindValue*>(valueKind))
+			{
+				CBlockList *firstTerm = new CBlockList();
+				firstTerm = CParser::parseAssertionFirstTerm_COMMA_AND(res.matchs["valueName"], firstTerm);
+
+				CBlockList* blcReturn = new CBlockList();
+
+				for (auto cnoum : firstTerm->lista)
+				{
+					CBlockNamedValue  *noumValue = new CBlockNamedValue(static_cast<CBlockNoum*>(cnoum)->named);
+					blcReturn->lista.push_back(new CBlockAssertion_isNamedValueOf(noumValue, kindValue));
+				}
+				if (blcReturn->lista.size() == 1) return blcReturn->lista.front();
+				return blcReturn;
+			}
+
+
+		}
+	}
+	return nullptr;
+}
+
+
+
+
+
+CBlock* CParser::parseAssertion_DecideWhat( HTerm  term)
+{
+	return new CBlockNoum(term->repr());
+}
+
+CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
+{
+	
+	{
+		// is a kind definition ??
+		std::vector<HPred> predList;
+
+
+		//predList.push_back(mkHPredList("initial_part", { mk_HPredLiteral("to") , mk_HPredLiteral("decide") , mk_What_Which() }));
+
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mk_HPredLiteral("decide"));
+		predList.push_back(mk_What_Which());		
+		
+		predList.push_back(mkHPredAny("KindToReturn"));
+
+
+		   auto L_is_the = mkHPredList("verb", { verb_IS(), mk_HPredLiteral("the") });
+		   auto L_is = mkHPredList("verb", { verb_IS() });
+		
+		   predList.push_back(mkHPredBooleanOr("verb_part", verb_IS(), L_is_the));
+		predList.push_back(mkHPredAny("ValueToDecide"));	
+		predList.push_back(mk_HPredLiteral(":"));
+		predList.push_back(mkHPredAny("RemainBody"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+			CBlockMatch * noumVariable = new CBlockMatch(parseAssertion_DecideWhat( res.matchs["ValueToDecide"] ) );
+			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindToReturn"]->repr());
+
+			CBlock *   body =   new CBlockNoum(res.matchs["RemainBody"]->repr());
+
+			return  new CBlockToDefine(baseKind, noumVariable , body);
+		}
+	}
+	return nullptr;
+}
 
 CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 {
@@ -219,8 +462,17 @@ CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 
 		if (res.result == Equals)
 		{
+			if (get_Noum(res.matchs["VariableNoum"]->repr()) != nullptr)
+			{
+				throw res.matchs["VariableNoum"]->repr() + " ja existe ";
+				return nullptr;
+			}
 			CBlockVariable * noumVariable = new CBlockVariable(res.matchs["VariableNoum"]->repr());
 			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
+
+		 
+
+
 			return  new CBlockAssertion_isVariable(noumVariable, baseKind);
 		}
 	}
@@ -229,7 +481,7 @@ CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 }
 
 
-CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector<HTerm> term) const
+CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector<HTerm> term)  
 {
 	//Injstance is Alwares derivadefrom a Kind
 	{
@@ -249,8 +501,17 @@ CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector
 
 		if (res.result == Equals)
 		{
+			if (get_Noum(res.matchs["Noum"]->repr()) != nullptr)
+			{
+				throw res.matchs["Noum"]->repr() + " ja existe ";
+				return nullptr;
+			}
+			
+
+
 			CBlockInstance* noumInstance = new CBlockInstance (res.matchs["Noum"]->repr());
 			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindBase"]->repr());
+		 
 			return  new CBlockAssertion_isInstanceOf(noumInstance, baseKind);
 		}
 	}
@@ -331,7 +592,16 @@ CBlock* CParser::parseAssertionEnumSecondTerm(HTerm term)
 	}
 	return c_list;
 }
+CBlock* CParser::parser_Decide_Assertion(std::vector<HTerm> lst)
+{
+	CBlock* assert_decide = CParser::parseAssertion_isDecide(lst);
+	if (assert_decide != nullptr)
+	{
+		return assert_decide;
+	}
+	return nullptr;
 
+}
 CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 {
 	CBlock* assert_variable = CParser::parseAssertion_isVariable(lst);
@@ -350,6 +620,12 @@ CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 	if (assert_kindof != nullptr)
 	{
 		return assert_kindof;
+	}
+
+	CBlock* assert_values = CParser::parseAssertion_valuesOf(lst);
+	if (assert_values != nullptr)
+	{
+		return assert_values;
 	}
 
 
@@ -480,7 +756,7 @@ CBlock* CParser::parser_hasAn_Assertion(std::vector<HTerm> lst)
  
 
   
-CBlock* CParser::parser(std::string str)
+CBlock* CParser::parser_findBlock(std::string str)
 {
 	str = decompose_bracket(str, "(");
 	str = decompose_bracket(str, ")");
@@ -489,6 +765,10 @@ CBlock* CParser::parser(std::string str)
 
 
 	std::vector<HTerm>  lst = decompose(str);
+
+	CBlock *rblock_decide_1 = (parser_Decide_Assertion(lst));
+	if (rblock_decide_1 != nullptr) return rblock_decide_1;
+	 
 
 	CBlock *rblock_assert_1 = (parser_Declaration_Assertion (lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
@@ -503,10 +783,27 @@ CBlock* CParser::parser(std::string str)
  
 }
 
+CBlock* CParser::parser(std::string str)
+{
+	CBlock* block = parser_findBlock(str);
+	if (block == nullptr) return nullptr;
+
+	auto nlist = block->noumDefinitions();
+	for(auto n : nlist)
+	{
+		std::cout <<"NOUM :" << n.noum << std::endl;
+	}
+	set_Noum(nlist);
+
+	return block;
+
+}
+
+
 void testeParser_1()
 {
 	std::string phase_1 = "(red  book)    is a kind of    thing  ";
-	phase_1 = "(  book stone and ( metal bird ) )  is    a  thing  ";
+	phase_1 = "( book,  stone and  ( metal bird))  are  some things ";
 	phase_1 = decompose_bracket(phase_1, "(");
 	phase_1 = decompose_bracket(phase_1, ")");
 	std::cout << phase_1 << std::endl;
@@ -514,15 +811,20 @@ void testeParser_1()
 	std::vector<HTerm>  lst = decompose(phase_1);
 	CList* lst_ptr = mk_CList_Literal(lst);
 	std::cout << lst_ptr->repr() << std::endl;
-	MTermSetCombinatoriaList mlist = getCombinatorias(lst_ptr->asVector(), 3);
-	std::cout << get_repr(mlist) <<std::endl;
+	//MTermSetCombinatoriaList mlist = getCombinatorias(lst_ptr->asVector(), 3);
+
+
+	FuncCombinatoria f_disp = [](MTermSetCombinatoria& x) { std::cout << get_repr(x) << std::endl; return false; };
+	applyCombinatorias(lst_ptr->asVector(), 3 , f_disp );
+
+	  std::cout << "..." << std::endl;
 }
 
 void testeParser_2()
 {
 	{
 		CParser parse;
-		std::string phase_1 = "( book,  stone and  ( metal bird))  are   things  ";
+		std::string phase_1 = "book  are  a thing   ";
 		 auto res = parse.parser(phase_1);
 		 if (res == nullptr) throw "parse error";
 		 //res->dump("");
@@ -536,8 +838,8 @@ void testeParser_2()
 		std::string phase_1 = "( iron, silver, chopper)  are kinds of metal  ";
 		 auto res = parse.parser(phase_1);
 		 if (res == nullptr) throw "parse error";
-		 //res->dump("");
-		 //std::cout << std::endl;
+		 res->dump("");
+		 std::cout << std::endl;
 	}
 
 	{
@@ -592,16 +894,16 @@ void testeParser_4()
 		std::string phase_1 = "(A person) has a (table-name) called (the opinion-table)";		
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
-		//res->dump("");
-		//std::cout << std::endl;
+		 res->dump("");
+		 std::cout << std::endl;
 	}
 
 	{
 		std::string phase_1 = "The (singing action) has a (text) called the lyric sung";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
-		res->dump("");
-		std::cout << std::endl;
+		//res->dump("");
+		//std::cout << std::endl;
 	}
 
 	//"Brightness is a kind of value";
@@ -609,20 +911,105 @@ void testeParser_4()
 	//"The torch has a brightness";
 	//	"The torch	is blazing";
 	//"The torch is lit";
-	std::cout << std::endl;
+	//std::cout << std::endl;
 	return;
 }
 
 
+void testeParser_5()
+{
+	CParser parse;
+	{
+		std::string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		 res->dump("");
+	}
+	{
+		std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
 
+	{
+		std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+}
+
+
+void testeParser_6()//kind of value
+{
+	CParser parse;
+	{
+		std::string phase_1 = "A limb is a kind of value";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+	{
+		std::string phase_1 = "color is a kind of value  ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+
+	{
+		std::string phase_1 = "An aspect ratio is a kind of value";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+	 
+
+	{
+		std::string phase_1 = "  color  are blue, green, yellow  and red ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+
+	{
+		std::string phase_1 = "  black  specifies an color ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+}
+
+void testeParser_20() //custrom rlacions
+{
+	 
+	CParser parse;
+	{
+		std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+	
+	{
+		std::string phase_1 = "let L be the (list of ( things fancier than/of/in/on 20 ) ) )";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		res->dump("");
+	}
+}
 
 void testeParser ()
 {
-	// testeParser_1();
-	for (int k = 0; k < 400; ++k)
+	 // testeParser_1();
+	  
+	//for (int k = 0; k < 400; ++k)
 	{
-		testeParser_2();
-		testeParser_3();
-		testeParser_4();
+		// testeParser_2();
+		//testeParser_3();
+		//testeParser_4();
+		 testeParser_6();
+		std::cout << ".";
 	}
+	std::cout << std::endl;
 }

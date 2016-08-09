@@ -5,6 +5,26 @@ using std::string;
 class CBlock;
 class CBlockKind;
 
+
+
+
+class NoumDefinition
+{
+public:
+	string noum;
+	CBlock* definition;
+	NoumDefinition(string _noum, CBlock* _definition) : noum(_noum), definition(_definition)
+	{}
+};
+
+using NoumDefinitions = std::vector<NoumDefinition>;
+
+NoumDefinitions noum_nothing();
+
+NoumDefinitions single_definitions(string noun, CBlock* block);
+
+NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b);
+
 class CBlock
 {
 
@@ -15,7 +35,7 @@ public:
 	{
 	}
 
- 
+	virtual NoumDefinitions noumDefinitions() {return  noum_nothing( );  };
 };
 
 class CBlockBooleanResult   // um tipo de bloco que retorna true ou false 
@@ -36,6 +56,8 @@ public:
 	void dump(std::string ident) override;
 	CBlockNoum(string named);
 	string named;
+	virtual NoumDefinitions noumDefinitions() override
+	{ return single_definitions(named,this); };
 };
 
 
@@ -49,6 +71,7 @@ public:
 	void dump(std::string ident) override;
 	CBlockKind(string _named):named(_named){ };
 	string named;
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
 
 
@@ -60,6 +83,7 @@ class CBlockKindValue : public CBlockKind //retorna um valor generico
 public:
 	void dump(std::string ident) override;
 	CBlockKindValue(string _named) :CBlockKind(_named) { };
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
  
 };
 
@@ -71,9 +95,19 @@ public:
 	virtual void dump(std::string ident) override;
 	CBlockInstance(string _named  );
 	string named;
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
  
 };
 
+
+class CBlockNamedValue : public CBlock //retorna um valor generico 
+{
+public:
+	virtual void dump(std::string ident) override;
+	CBlockNamedValue(string _named);
+	string named;
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); }; 
+};
  
 class CBlockVariable : public CBlock //retorna um valor generico 
 {
@@ -81,6 +115,7 @@ public:
 	virtual void dump(std::string ident) override;
 	CBlockVariable(string _named);
 	string named;
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 
 };
 
@@ -93,6 +128,7 @@ public:
 	CBlockProperty(string _property_name , CBlockNoum* obj);
 	string property_name;
 	CBlockNoum* obj;
+	 
 }; 
 
 
@@ -103,6 +139,7 @@ public:
 	CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called);
 	CBlockNoum* property_name;
 	CBlockNoum* kind_name;
+	 
 };
 
 
@@ -113,7 +150,9 @@ class CBlockList : public CBlock //retorna um valor generico
 public:
 	virtual void  dump(std::string  ident) override;
 	std::list<CBlock*> lista;
-	void push_back(CBlockNoum* c_block_value);
+	void push_back(CBlock* c_block_value);
+	virtual NoumDefinitions noumDefinitions() override;
+
 };
 class CBlockEnums : public CBlock //retorna um valor generico 
 {
@@ -131,6 +170,7 @@ public:
 	CBlock* obj;
 	//CBlockAssertion(HTerm obj, HTerm thing){};	
 	CBlockAssertionBase(CBlock* _obj): obj(_obj) {};
+	virtual NoumDefinitions noumDefinitions() override { return obj->noumDefinitions(); };
 };
 
 
@@ -142,6 +182,7 @@ public:
 	CBlock* definition;
 	//CBlockAssertion(HTerm obj, HTerm thing){};	
 	CBlockAssertion_is(CBlock* _obj,   CBlock * _definition ) :CBlockAssertionBase(_obj), definition(_definition) {};
+ 
 };
 
 
@@ -153,6 +194,7 @@ public:
 	CBlockEnums* definition;
 	//CBlockAssertion(HTerm obj, HTerm thing){};	
 	CBlockAssertion_property_canBe(CBlockProperty* _obj, CBlockEnums* _definition) :CBlockAssertionBase(_obj), definition(_definition) {};
+	virtual NoumDefinitions noumDefinitions() override { return obj->noumDefinitions(); };
 };
 
 
@@ -171,6 +213,7 @@ public:
 class CBlockAssertion_isKindOf : public CBlockAssertion_is //retorna uma declaracao 
 {
 public:
+	NoumDefinitions noumDefinitions() override;
 	void dump(std::string ident) override;
 
 	CBlockKind * noum;
@@ -188,6 +231,18 @@ public:
 	CBlockKind * baseKind;
 	CBlockAssertion_isInstanceOf(CBlockInstance* _noum, CBlockKind * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(_noum), baseKind(_baseKind) {};
 };
+
+
+class CBlockAssertion_isNamedValueOf : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlockNamedValue * noum;
+	CBlockKindValue * baseKind;
+	CBlockAssertion_isNamedValueOf(CBlockNamedValue* _noum, CBlockKindValue * _baseKind) :CBlockAssertion_is(_noum, _baseKind), noum(_noum), baseKind(_baseKind) {};
+};
+
 
  
 class CBlockAssertion_isVariable : public CBlockAssertion_is //retorna uma declaracao 
@@ -242,10 +297,21 @@ class CBlockFilterList : public  CBlockFilter
 };
 
 
-class CBlockMatch : public  CBlock // um bloco que serve para dar Match em um value , retorna true ou false 
+
+class CBlockMatch : public  CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 {
-	virtual bool  match() = 0;
+public:
+	void dump(std::string ident) override;
+	// CBlockMatc(CBlockKind("book")) -> filtra kinds do tipo block 
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+	virtual bool  match() { return false; };
+	CBlock* matchInner;
+	CBlockMatch(CBlock* _matchInner  ): matchInner(_matchInner)
+	{};
 };
+
+
+ 
 
 
 
@@ -297,8 +363,9 @@ public:
 //  eating something in the presence of Lady Bracknell
 class CBlockMatchAction : public  CBlockMatch // um bloco que serve para dar Match em uma Acao
 {
-	explicit CBlockMatchAction(CBlockAction* input)
-		: input(input)
+public :
+	  CBlockMatchAction(CBlockAction* input)
+		: CBlockMatch(input), input(input)
 	{
 	}
 
@@ -361,7 +428,26 @@ class CBlockProp : public  CBlock  // um bloco que especifica uma propiedade ( c
 	virtual HTerm eval() = 0;
 };
 
+class CBlockToDefine : public  CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
+{
+ 
+	
 
+public:
+	CBlockToDefine(CBlockKind * _kind, CBlock* _queryToMatch, CBlock* _decideBody)
+		: kind(_kind), queryToMatch(_queryToMatch),
+		decideBody(_decideBody)
+	{
+	}
+
+	CBlockKind * kind;
+	CBlock* queryToMatch;
+	CBlock* decideBody;
+	virtual HTerm eval() { return nullptr; }
+   void dump(std::string ident) override;
+};
+
+ 
 
 class CBlockInterpreter
 {

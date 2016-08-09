@@ -3,6 +3,23 @@
 
 using namespace std;
 
+NoumDefinitions noum_nothing()
+{
+	return NoumDefinitions();
+}
+
+NoumDefinitions single_definitions(string noun, CBlock* block)
+{
+	return 	NoumDefinitions({ NoumDefinition(noun, block) });
+}
+
+NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b)
+{
+	NoumDefinitions ab(a.begin(), a.end());
+	ab.insert(ab.end(), b.begin(), b.end());
+	return ab;
+}
+
 void CBlockNoum::dump(std::string ident)
 {
 	cout << ident << this->named << endl;
@@ -44,6 +61,15 @@ void CBlockInstance::dump(std::string ident)
 }
 
 CBlockInstance::CBlockInstance(string _named) : named(_named)
+{
+}
+
+void CBlockNamedValue::dump(std::string ident)
+{
+	cout << ident << "Named Value: " << named << endl;
+}
+
+CBlockNamedValue::CBlockNamedValue(string _named) : named(_named)
 {
 }
 
@@ -94,9 +120,19 @@ void  CBlockList::dump(std::string  ident)
 	 }
 }
 
-void CBlockList::push_back(CBlockNoum* c_block_value)
+void CBlockList::push_back(CBlock * c_block_value)
 {
 	lista.push_back(c_block_value);
+}
+
+NoumDefinitions CBlockList::noumDefinitions()
+{
+	NoumDefinitions nd = noum_nothing();
+	for(auto i : lista)
+	{
+		nd = join_definitions(nd, i->noumDefinitions());
+	}
+	return nd;
 }
 
 void CBlockAssertion_is::dump(std::string ident)
@@ -131,6 +167,14 @@ void CBlockAssertion_Noum_canBe::dump(std::string ident)
 	}
 }
 
+void CBlockMatch::dump(std::string ident)
+{
+	cout << ident << "Match " << endl;
+	{
+		this->matchInner->dump(ident + "       ");
+	}
+}
+
 void CBlockActionApply::dump(std::string ident)
 {
 	cout << ident << "Action applyTo " << endl;	
@@ -148,6 +192,19 @@ CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_nou
 
 void CBlockAction::dump(std::string ident)
 {
+}
+
+void CBlockToDefine::dump(std::string ident)
+{
+	cout << ident << "To Define " << endl;
+	{
+		this->kind->dump(ident + "       ");
+		cout << ident << "is " << endl;
+		this->queryToMatch->dump(ident + "       ");
+
+		cout << ident << "Decide for " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
 }
 
 CBlockInterpreter::CBlockInterpreter()
@@ -190,6 +247,11 @@ CBlockAssertion_Noum_canBe::CBlockAssertion_Noum_canBe(CBlockNoum* _obj, CBlockE
 	 
 }
 
+NoumDefinitions CBlockAssertion_isKindOf::noumDefinitions()
+{	
+	return  single_definitions(this->noum->named, this->definition);	
+}
+
 void CBlockAssertion_isKindOf::dump(std::string ident)
 {
 	cout << ident << "is Kind Of " << endl;
@@ -201,6 +263,14 @@ void CBlockAssertion_isKindOf::dump(std::string ident)
 void CBlockAssertion_isInstanceOf::dump(std::string ident)
 {
 	cout << ident << "is Instance Of " << endl;
+	this->noum->dump(ident + "       ");
+	cout << ident << "Kind " << endl;
+	this->baseKind->dump(ident + "       ");
+}
+
+void CBlockAssertion_isNamedValueOf::dump(std::string ident)
+{
+	cout << ident << "is Named Value Of " << endl;
 	this->noum->dump(ident + "       ");
 	cout << ident << "Kind " << endl;
 	this->baseKind->dump(ident + "       ");
