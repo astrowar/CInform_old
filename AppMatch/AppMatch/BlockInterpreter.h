@@ -28,6 +28,10 @@ NoumDefinitions single_definitions(string noun, CBlock* block);
 
 NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b);
 
+
+
+ 
+
 class CBlock
 {
 
@@ -37,8 +41,19 @@ public:
 	virtual ~CBlock()
 	{
 	}
-
 	virtual NoumDefinitions noumDefinitions() {return  noum_nothing( );  };
+};
+
+class CUnresolved : public CBlock
+{
+	void dump(std::string ident) override;
+	  CUnresolved(string named);
+	string contents;
+	virtual NoumDefinitions noumDefinitions() override
+	{
+		return noum_nothing();  // define nada
+	};
+
 };
 
 class CBlockBooleanResult   // um tipo de bloco que retorna true ou false 
@@ -189,16 +204,16 @@ public:
 };
 
 
-class CBlockAssertion_property_canBe : public CBlockAssertionBase //retorna uma declaracao 
-{
-public:
-	void dump(std::string ident) override;
-
-	CBlockEnums* definition;
-	//CBlockAssertion(HTerm obj, HTerm thing){};	
-	CBlockAssertion_property_canBe(CBlockProperty* _obj, CBlockEnums* _definition) :CBlockAssertionBase(_obj), definition(_definition) {};
-	virtual NoumDefinitions noumDefinitions() override { return obj->noumDefinitions(); };
-};
+//class CBlockAssertion_property_canBe : public CBlockAssertionBase //retorna uma declaracao 
+//{
+//public:
+//	void dump(std::string ident) override;
+//
+//	CBlockEnums* definition;
+//	//CBlockAssertion(HTerm obj, HTerm thing){};	
+//	CBlockAssertion_property_canBe(CBlockProperty* _obj, CBlockEnums* _definition) :CBlockAssertionBase(_obj), definition(_definition) {};
+//	virtual NoumDefinitions noumDefinitions() override { return obj->noumDefinitions(); };
+//};
 
 
 class CBlockAssertion_Noum_canBe : public CBlockAssertionBase //retorna uma declaracao 
@@ -489,6 +504,7 @@ public:
 	HTerm executeAssertion_is(CBlockAssertion_is* b);
 	HTerm executeAssertion(CBlockAssertionBase* b);
 	HTerm execute(CBlock *b);
+	CBlock* resolve(CUnresolved* b);
 };
 
  

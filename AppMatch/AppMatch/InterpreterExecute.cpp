@@ -180,9 +180,7 @@ HTerm CBlockInterpreter::execute(CBlock* b)
 	if (b == nullptr)
 	{
 		throw "parse error";
-	}
-
-	 
+	}	 
 
 	if (dynamic_cast<CBlockAssertionBase*>(b) != nullptr) return executeAssertion(dynamic_cast<CBlockAssertionBase*>(b));
 
@@ -190,4 +188,10 @@ HTerm CBlockInterpreter::execute(CBlock* b)
 	return nullptr;
 }
 
+CBlock* CBlockInterpreter::resolve(CUnresolved * b)
+{
+	 
 
+	return nullptr;
+
+}

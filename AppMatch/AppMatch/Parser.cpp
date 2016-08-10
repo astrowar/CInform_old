@@ -724,11 +724,11 @@ CBlock* CParser::parser_canBe_Assertion(std::vector<HTerm> lst)
 		return nullptr;
 	}
 
-	CBlockProperty  *defintionFirst_property = parseAssertion_PropertyFirstTerm(res.matchs["Target"]);
+	/*CBlockProperty  *defintionFirst_property = parseAssertion_PropertyFirstTerm(res.matchs["Target"]);
 	if (defintionFirst_property != nullptr)
 	{
 		return  new CBlockAssertion_property_canBe(defintionFirst_property, definitionSecond);
-	}
+	}*/
 
 	CBlockNoum  *defintionFirst_Noum = new CBlockNoum(res.matchs["Target"]->removeArticle()->repr());
 	if (defintionFirst_Noum != nullptr)

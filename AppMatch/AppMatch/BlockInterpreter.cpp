@@ -20,6 +20,15 @@ NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b)
 	return ab;
 }
 
+void CUnresolved::dump(std::string ident)
+{
+	cout << ident << "UNRESOLVED: " << this->contents << endl;
+}
+
+CUnresolved::CUnresolved(string _contents): contents(_contents)
+{
+}
+
 void CBlockNoum::dump(std::string ident)
 {
 	cout << ident << this->named << endl;

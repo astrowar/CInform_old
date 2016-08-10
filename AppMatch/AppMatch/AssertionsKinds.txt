@@ -3,49 +3,53 @@
 Assertions e suas gramaticas
 
 
-isAction:
+isAction: CBlockAssertion_isKindOf
 	X is an action Y
 	Whistling is an action applying to nothing.
 
 
 
-CanBe
+CanBe,  CBlockAssertion_Noum_canBe
   X can be [Ylist]
   X is either [Ylist]
   The cask is either customs sealed, liable to tax or stolen goods.
 
-IsInstance
+IsInstance , CBlockAssertion_isInstanceOf
   X is a K
   The basket is a container
 
-IsKind
+IsKind , CBlockAssertion_isKindOf
   X is a kind
 
-IsKindOf
+IsKindOf , CBlockAssertion_isKindOf
   X is a kind of K
 
-IsKindOfValue
+IsKindOfValue , CBlockAssertion_isKindOf
   X is a kind of Value Kv
 
 
-PropertyIs
+PropertyIs -> direct Assign
 	X of Y is Z
 	The description of the statue is "A statue of George Washington watches over you."
+	Criado como InstanceVariable 
+
+	
 
 
-GlobalVariable
+
+GlobalVariable , CBlockAssertion_isVariable
    X is Y that varies
    The turn card image is a figure-name that varies.
 
 
-InstanceVariable
+InstanceVariable , CBlockAssertion_InstanceVariable
    X has a Y called Z
-   X has a Y  ( implies Z = Y )
+   X has a Y ( implies Z = Y )
    The battery has some indexed text called the brand name
    paper has a texture
 
 
-NamedValue
+NamedValue , CBlockAssertion_isNamedValueOf
    Kv is Xlist
    X is Kv
    The colors are blue, green, yellow, and red. 
@@ -55,12 +59,61 @@ Relation
   X Verb Y
   Hercule Poirot suspects Colonel Hotchkiss. 
 
+DefaultValue
+  X is usually Z
 
-AttributeAssign
-   Instance is Y    // Requires "can be"
-   The book is small
+ConstantValue
+   X is always Z
+
+ForbidenValue
+   X is never Z
+
+
+DirectAssing , CBlockAssertion_isDirectAssign
+   X is Y   
+   The book is small 
+
+
+   Direct Assign eh um desafio. pois eh muito relativo
+
+
+
+	DirectAssing Pode ser aplicado nas situacoes:
+	  Mary is happy ->  mary is a Instance, happy eh um valorde CanBe atribuido a mary ou as classes de Mary
+	  Se mary for uma classe, raise um erro
+
+  
+  
+	DirectAssign tambem pode ser parte de um MatchTerm 
+	  block waking rule is listed in the check waking rules
+
+	No caso tambem pode ser definido a uma variavel:
+	the angry person is Linda -> Angry person eh uma variavel e Linda eh o valor a ser armazenado  
+
+	//vamos ordenar
+	LValue is RValue
+
+	LValue: Property -> RValue: value for property Kind*
+	LValue: Instance -> RValue value for Atribute of Instance or Kind* 
+	LValue: Kind -> RValue value for Atribute Kind*
+	LValue: Variable -> RValue value for variable Kind*
+	LValue: Match -> Spawn Matchs and aplly for each
+	LValue: Match -> RValue value for Match Kind*
+
 
 
 LValue : values que podem ser aasigneds
-
 LValue: Instancia , se RValue for um atributo , ou can_be  
+
+
+
+// conditions
+if K are Mt
+if no K are Mt
+if any K are Mt
+if every K are Mt
+if all K are Mt
+if (one K) are Mt
+if (two K) are Mt
+if ((four or more) K ) are Mt
+if ((more than six) K ) are Mt
