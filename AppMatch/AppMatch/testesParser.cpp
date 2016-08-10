@@ -195,7 +195,7 @@ void testeParser_5()
 		}
 	}
 	{
-		std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on) ";
+		std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on (son of ( fater of sibling) )  ) ";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -206,7 +206,41 @@ void testeParser_5()
 	}
 
 	{
-		std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on) ";
+		std::string phase_1 = "to decide if X is greater than Y : (decide on ( X > Y) )    ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+	{
+		std::string phase_1 = "to decide if X is sucessor of Y : (decide on ( X   == Y + 1) )    ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+	{
+		std::string phase_1 = "to decide what number  is sucessor of Y : (decide on (  Y + 1) )    ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+
+	{
+		std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on T T ) ";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)

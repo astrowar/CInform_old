@@ -264,8 +264,52 @@ CBlock* CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
 }
 
 
+ 
+CBlock* CParser::parser_What_Assertion(std::vector<HTerm> term)
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_What_Which() ); 
+		predList.push_back(mkHPredAny("kindReturn"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("RemainderQuery"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{	 
+			CBlock* body = parser(res.matchs["RemainderQuery"]);
+			if (body != nullptr)
+			{
+				return  new CBlockMatch(body);
+			}
+		}
+	}
 
 
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("if"));
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("BValue"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlock* AValue = parser(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			CBlock* BValue = parser(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+			 
+			return  new CBlockMatch(new CBlockAssertion_isDirectAssign(AValue, BValue));
+		}
+	}
+	 
+	return nullptr;
+
+}
 
 CBlock* CParser::parseAssertion_DecideWhat( HTerm  term)
 {
@@ -449,7 +493,11 @@ CBlock*  CParser::parse_List_AND(std::vector<HTerm> term)
 CBlock*  CParser::parse_noum(std::vector<HTerm> term)
 {
 	std::vector<HPred> predList;
-	 
+	
+	
+
+
+
 	//predList.push_back(undefinedArticle());
 	predList.push_back(mkHPredAny("Noum"));
 	MatchResult res = CMatch(term, predList);

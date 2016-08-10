@@ -75,6 +75,7 @@ public:
  
 	CBlock* parseAssertion_isKindOf(std::vector<HTerm> term);
 	CBlock* parseAssertion_valuesOf(std::vector<HTerm> term);
+	CBlock* parser_What_Assertion(std::vector<HTerm> term);
 	CBlock* parseAssertion_DecideWhat( HTerm  term);
 	CBlock* parseAssertion_isDecide(std::vector<HTerm> term);
 	CBlockAssertion_isInstanceOf* parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
