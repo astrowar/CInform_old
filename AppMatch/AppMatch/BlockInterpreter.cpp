@@ -200,12 +200,11 @@ void CBlockAction::dump(std::string ident)
 {
 }
 
-void CBlockToDefine::dump(std::string ident)
+void CBlockToDecide::dump(std::string ident)
 {
 	cout << ident << "To Define " << endl;
 	{
-		this->kind->dump(ident + "       ");
-		cout << ident << "is " << endl;
+		 
 		this->queryToMatch->dump(ident + "       ");
 
 		cout << ident << "Decide for " << endl;

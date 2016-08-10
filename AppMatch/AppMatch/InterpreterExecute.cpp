@@ -91,7 +91,7 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 {
 	for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it)
 	{
-		if (CBlockToDefine  *tdef = dynamic_cast<CBlockToDefine*>(*it))
+		if (CBlockToDecide  *tdef = dynamic_cast<CBlockToDecide*>(*it))
 		{
 			 
 		}

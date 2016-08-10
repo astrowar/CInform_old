@@ -274,40 +274,61 @@ CBlock* CParser::parseAssertion_DecideWhat( HTerm  term)
 
 CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 {
-	
+
+	//{
+	//	// is a kind definition ??
+	//	std::vector<HPred> predList;
+
+
+	//	//predList.push_back(mkHPredList("initial_part", { mk_HPredLiteral("to") , mk_HPredLiteral("decide") , mk_What_Which() }));
+
+	//	predList.push_back(mk_HPredLiteral("to"));
+	//	predList.push_back(mk_HPredLiteral("decide"));
+	//	predList.push_back(mk_What_Which());		
+	//	
+	//	predList.push_back(mkHPredAny("KindToReturn"));
+
+
+	//	   auto L_is_the = mkHPredList("verb", { verb_IS(), mk_HPredLiteral("the") });
+	//	   auto L_is = mkHPredList("verb", { verb_IS() });		
+	//	   predList.push_back(mkHPredBooleanOr("verb_part", verb_IS(), L_is_the));
+
+
+	//	predList.push_back(mkHPredAny("ValueToDecide"));	
+	//	predList.push_back(mk_HPredLiteral(":"));
+	//	predList.push_back(mkHPredAny("RemainBody"));
+	//	MatchResult res = CMatch(term, predList);
+
+	//	if (res.result == Equals)
+	//	{
+	//		CBlockMatch * noumVariable = new CBlockMatch(parseAssertion_DecideWhat( res.matchs["ValueToDecide"] ) );
+	//		CBlockKind*         baseKind = new CBlockKind(res.matchs["KindToReturn"]->removeArticle()->repr());
+
+	//		CBlock *   body =   new CBlockNoum(res.matchs["RemainBody"]->removeArticle()->repr());
+
+	//		return  new CBlockToDefine(baseKind, noumVariable , body);
+	//	}
+	//}
+
 	{
-		// is a kind definition ??
 		std::vector<HPred> predList;
-
-
-		//predList.push_back(mkHPredList("initial_part", { mk_HPredLiteral("to") , mk_HPredLiteral("decide") , mk_What_Which() }));
-
 		predList.push_back(mk_HPredLiteral("to"));
 		predList.push_back(mk_HPredLiteral("decide"));
-		predList.push_back(mk_What_Which());		
-		
-		predList.push_back(mkHPredAny("KindToReturn"));
-
-
-		   auto L_is_the = mkHPredList("verb", { verb_IS(), mk_HPredLiteral("the") });
-		   auto L_is = mkHPredList("verb", { verb_IS() });
-		
-		   predList.push_back(mkHPredBooleanOr("verb_part", verb_IS(), L_is_the));
-		predList.push_back(mkHPredAny("ValueToDecide"));	
+		predList.push_back(mkHPredAny("Match"));
 		predList.push_back(mk_HPredLiteral(":"));
 		predList.push_back(mkHPredAny("RemainBody"));
-		MatchResult res = CMatch(term, predList);
 
+		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlockMatch * noumVariable = new CBlockMatch(parseAssertion_DecideWhat( res.matchs["ValueToDecide"] ) );
-			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindToReturn"]->removeArticle()->repr());
+			CBlock* a_match =  parser(res.matchs["Match"]);
+			CBlock* body = parser(res.matchs["RemainBody"] );
 
-			CBlock *   body =   new CBlockNoum(res.matchs["RemainBody"]->removeArticle()->repr());
-
-			return  new CBlockToDefine(baseKind, noumVariable , body);
+			return  new CBlockToDecide(a_match, body);
 		}
 	}
+
+
 	return nullptr;
 }
 
@@ -775,7 +796,8 @@ CBlock* CParser::parser_only(std::vector<HTerm> lst)
 	CBlock *rblock_decide_1 = (parser_Decide_Assertion(lst));
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 	 
-	 
+	CBlock *rblock_what_1 = (parser_What_Assertion(lst));
+	if (rblock_what_1 != nullptr) return rblock_what_1;
 
 
 	CBlock *rblock_assert_1 = (parser_Declaration_Assertion (lst));

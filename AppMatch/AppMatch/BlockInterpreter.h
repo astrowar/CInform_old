@@ -474,19 +474,19 @@ class CBlockProp : public  CBlock  // um bloco que especifica uma propiedade ( c
 	virtual HTerm eval() = 0;
 };
 
-class CBlockToDefine : public  CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
+class CBlockToDecide : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
  
 	
 
 public:
-	CBlockToDefine(CBlockKind * _kind, CBlock* _queryToMatch, CBlock* _decideBody)
-		: kind(_kind), queryToMatch(_queryToMatch),
+	CBlockToDecide(  CBlock* _queryToMatch, CBlock* _decideBody)
+		:   queryToMatch(_queryToMatch),
 		decideBody(_decideBody)
 	{
 	}
 
-	CBlockKind * kind;
+	 
 	CBlock* queryToMatch;
 	CBlock* decideBody;
 	virtual HTerm eval() { return nullptr; }

@@ -179,33 +179,45 @@ void testeParser_4()
 	 std::cout << std::endl;
 	return;
 }
-//
-//
-//void testeParser_5()
-//{
-//	CParser parse;
-//	{
-//		std::string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
-//		auto res = parse.parser(phase_1);
-//		if (res == nullptr) throw "parse error";
-//		 res->dump("");
-//	}
-//	{
-//		std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on) ";
-//		auto res = parse.parser(phase_1);
-//		if (res == nullptr) throw "parse error";
-//		res->dump("");
-//	}
-//
-//	{
-//		std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on) ";
-//		auto res = parse.parser(phase_1);
-//		if (res == nullptr) throw "parse error";
-//		res->dump("");
-//	}
-//}
-//
-//
+
+
+void testeParser_5()
+{
+	CParser parse(new CBlockInterpreter());
+	{
+		std::string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+	{
+		std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+	{
+		std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on) ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+}
+
+
 void testeParser_6()//kind of value
 {
 	CParser parse(new CBlockInterpreter());
@@ -302,10 +314,11 @@ void testeParser ()
 	  
 	 // for (int k = 0; k < 400; ++k)
 	{
-	  testeParser_2();
-	  testeParser_3();
-	  testeParser_4();
-	  testeParser_6();
+	 // testeParser_2();
+	 // testeParser_3();
+	  //testeParser_4();
+	  testeParser_5();
+	 // testeParser_6();
 	  std::cout << ".";
 	}
 	std::cout << std::endl;
