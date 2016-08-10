@@ -54,47 +54,58 @@ class CParser
 {
 
 	std::vector<NoumDefinition> nregisters;
+	CBlockInterpreter *interpreter;
 	
 public:
-	CParser();
+	CParser(CBlockInterpreter *_interpreter);
 	virtual ~CParser();
 
-	CBlock*  get_Noum(string named) const;
+ 
 	void set_Noum(NoumDefinition ndef);
 	void set_Noum(NoumDefinitions ndef);
 
 
-	ParserResult parser_AssertionAction(std::vector<HTerm> lst);
+	 
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
-	CBlockActionApply* parseAssertionActionDeclare( HTerm  term);
+	CBlock* parse_AssertionAction_ApplyngTo(HTerm term);
+	CBlock * parse_AssertionAction(std::vector<HTerm> term);
+	 
  
  
-	CBlockAssertion_isActionOf* parseAssertion_isAction(std::vector<HTerm> term);
+ 
 	CBlock* parseAssertion_isKindOf(std::vector<HTerm> term);
 	CBlock* parseAssertion_valuesOf(std::vector<HTerm> term);
 	CBlock* parseAssertion_DecideWhat( HTerm  term);
 	CBlock* parseAssertion_isDecide(std::vector<HTerm> term);
 	CBlockAssertion_isInstanceOf* parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
+	CBlockList* parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep );
 	CBlockList* parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlockList* CList);
 	CBlockList* parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlockList* CList);
 	CBlockList* parseAssertionFirstTerm_COMMA_OR(HTerm term, CBlockList* CList);
+	CBlockList* parse_Strict_COMMA_AND(HTerm term );
+	CBlockList* parse_Strict_COMMA_OR(HTerm term );
 	CBlock* parseAssertionFirstTerm_Compose(HTerm term);
 	CBlock* parseAssertionFirstTerm(HTerm match);
 	CBlock* parseAssertionEnumSecondTerm(HTerm term);
 	CBlock* parser_Decide_Assertion(std::vector<HTerm> lst);
 
-	CBlockProperty * parseAssertion_PropertyFirstTerm(   HTerm  term);
+	 
 	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);
 
 
 	CBlock* parseAssertion_isVariable(std::vector<HTerm> lst);
 	CBlockAssertion_isDirectAssign* parseAssertion_DirectAssign(std::vector<HTerm> term);
+	CBlock* parse_List_AND(std::vector<HTerm> term);
+	CBlock* parse_noum(std::vector<HTerm> term);
 	CBlock* parser_Declaration_Assertion(std::vector<HTerm> lst);
+	CBlockProperty* parse_PropertyOf(std::vector<HTerm> term);
+ 
 	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
 	CBlockInstanceVariable* CProperty_called(HTerm term);
 	CBlock* parser_hasAn_Assertion(std::vector<HTerm> lst);
-	CBlock* parser_only(std::string str);
-
+ 
+	CBlock* parser_only(std::vector<HTerm> lst);
+	CBlock*  parser(HTerm term);
 	CBlock* parser(std::string str);
 };
 

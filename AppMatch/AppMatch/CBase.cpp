@@ -90,10 +90,18 @@ CTerm* CList::removeArticle()
 	{
 		if ((this->lst.front()->repr() == "a") || (this->lst.front()->repr() == "the")|| (this->lst.front()->repr() == "an"))
 		{
+
+			if (this->lst.size() ==2 )
+			{
+				//restou apenas o outro termo
+				auto it = this->lst.begin();
+				++it; // pula o artigo
+				return it->get()->removeArticle();				
+			}
+
 			CList* r = new CList();
 			r->lst = this->lst;
-			r->lst.pop_front();
-			if (r->lst.size() == 1) return r->lst.front().get();
+			r->lst.pop_front();			 
 			return r;
 		}
 	}

@@ -147,7 +147,7 @@ HTerm CBlockInterpreter::executeAssertion_is(CBlockAssertion_is *b)
 
 	}
 
-	if (CBlockAssertion_Noum_canBe * noum_canBe = dynamic_cast<CBlockAssertion_Noum_canBe*>(b->definition))
+	if (CBlockAssertion_canBe * noum_canBe = dynamic_cast<CBlockAssertion_canBe*>(b->definition))
 	{
 		
 	}
@@ -188,10 +188,12 @@ HTerm CBlockInterpreter::execute(CBlock* b)
 	return nullptr;
 }
 
-CBlock* CBlockInterpreter::resolve(CUnresolved * b)
+ 
+CBlock* CBlockInterpreter::resolve(CTerm  *b)
 {
-	 
-
-	return nullptr;
-
+	return new CBlockNoum(b->repr());
+}
+CBlock* CBlockInterpreter::resolve_of(CBlock  *b, CBlock *a)
+{
+	return new CBlockProperty(b, a);
 }
