@@ -528,6 +528,10 @@ CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, c
 }
 
 CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2) : CPredBoolean(_named), blist({ c_pred ,c_pred1, c_pred2 })
+{
+	
+}
+CPredBooleanOr::CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2, const HPred& c_pred3) : CPredBoolean(_named), blist({ c_pred ,c_pred1, c_pred2, c_pred3 })
 
 {
 }
@@ -566,6 +570,7 @@ HPred mkHPredAny(std::string _named) { return std::make_shared<CPredAny>(_named 
 HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanAnd>(_named, c_pred, c_pred1); };
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1); };
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2); };
+HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2,const HPred& c_pred3) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3); };
 
 
 //======================================

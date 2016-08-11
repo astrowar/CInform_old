@@ -290,6 +290,43 @@ public:
 };
 
 
+
+
+
+
+
+ 
+class CBlockAssertion_isDefaultAssign : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock  * variable;
+	CBlock  * value;
+	CBlockAssertion_isDefaultAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
+};
+
+class CBlockAssertion_isConstantAssign : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock  * variable;
+	CBlock  * value;
+	CBlockAssertion_isConstantAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
+};
+
+
+class CBlockAssertion_isForbiddenAssign : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock  * variable;
+	CBlock  * value;
+	CBlockAssertion_isForbiddenAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
+};
+
 class CBlockAssertion_isDirectAssign : public CBlockAssertion_is //retorna uma declaracao 
 {
 public:
@@ -298,6 +335,16 @@ public:
 	CBlock  * variable;
 	CBlock  * value;
 	CBlockAssertion_isDirectAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
+};
+
+class CBlockAssertion_isNotDirectAssign : public CBlockAssertion_is //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock  * variable;
+	CBlock  * value;
+	CBlockAssertion_isNotDirectAssign(CBlock * _variable, CBlock * _value) :CBlockAssertion_is(_variable, _value), variable(_variable), value(_value) {};
 };
 
 
@@ -318,7 +365,40 @@ class CBlockAssertionCond: public CBlock // assertion com condicao
 	CBlockBooleanResult* cond;
 };
 
+ 
+class CBlockIsVerb : public CBlock    //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
 
+	string verb;
+	CBlock*  n1;
+	CBlock*  n2;
+	CBlockIsVerb(std::string _verb, CBlock* _n1, CBlock * _n2) : verb(_verb), n1(_n1), n2(_n2) {};
+};
+
+class CBlockIsNotVerb : public CBlock    //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	string verb;
+	CBlock*  n1;
+	CBlock*  n2;
+	CBlockIsNotVerb(std::string _verb, CBlock* _n1, CBlock * _n2) : verb(_verb), n1(_n1), n2(_n2) {};
+};
+ 
+class CBlockVerbRelation : public CBlock    //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock* verbNoum; // Pode ser simples ou com a preposicao
+	CBlock*  relation;
+	CBlockVerbRelation(CBlock* _noum, CBlock * _relation) : verbNoum(_noum), relation(_relation) {};
+};
+
+//===================================================================
 class CBlockFilter: public CBlock   // filtra um valor para outro valor 
 {
 	virtual HTerm  filter() = 0;
@@ -475,18 +555,13 @@ class CBlockProp : public  CBlock  // um bloco que especifica uma propiedade ( c
 };
 
 class CBlockToDecide : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
- 
-	
-
+{ 
 public:
 	CBlockToDecide(  CBlock* _queryToMatch, CBlock* _decideBody)
 		:   queryToMatch(_queryToMatch),
 		decideBody(_decideBody)
 	{
-	}
-
-	 
+	}	 
 	CBlock* queryToMatch;
 	CBlock* decideBody;
 	virtual HTerm eval() { return nullptr; }
@@ -494,6 +569,60 @@ public:
 };
 
  
+class CBlockToDecideIf : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockToDecideIf(CBlock* _queryToMatch, CBlock* _decideBody)
+		: queryToMatch(_queryToMatch),
+		decideBody(_decideBody)
+	{
+	}
+	CBlock* queryToMatch;
+	CBlock* decideBody;
+	virtual HTerm eval() { return nullptr; }
+	void dump(std::string ident) override;
+};
+
+
+class CBlockBooleanAND : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockBooleanAND(CBlock* input_a, CBlock* input_b)
+		: input_A(input_a),
+		input_B(input_b)
+	{
+	}
+
+	CBlock* input_A;
+	CBlock* input_B;
+	void dump(std::string ident) override;
+};
+
+class CBlockBooleanOR : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockBooleanOR(CBlock* input_a, CBlock* input_b)
+		: input_A(input_a),
+		input_B(input_b)
+	{
+	}
+
+	CBlock* input_A;
+	CBlock* input_B;
+	void dump(std::string ident) override;
+};
+
+class CBlockBooleanNOT : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockBooleanNOT(CBlock* input_a )
+		: input_A(input_a) {}
+
+	CBlock* input_A;
+	 
+	void dump(std::string ident) override;
+};
+
 
 class CBlockInterpreter
 {

@@ -202,7 +202,7 @@ void CBlockAction::dump(std::string ident)
 
 void CBlockToDecide::dump(std::string ident)
 {
-	cout << ident << "To Define " << endl;
+	cout << ident << "To Decide " << endl;
 	{
 		 
 		this->queryToMatch->dump(ident + "       ");
@@ -210,6 +210,41 @@ void CBlockToDecide::dump(std::string ident)
 		cout << ident << "Decide for " << endl;
 		this->decideBody->dump(ident + "       ");
 	}
+}
+
+void CBlockToDecideIf::dump(std::string ident)
+{
+	cout << ident << "Define " << endl;
+	{
+
+		this->queryToMatch->dump(ident + "       ");
+
+		cout << ident << "IF " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
+}
+
+void CBlockBooleanAND::dump(std::string ident)
+{
+	cout << ident << "Boolean " << endl;
+	{
+		this->input_A->dump(ident + "       ");
+		cout << ident << "AND " << endl;
+		this->input_B->dump(ident + "       ");
+	}
+
+}
+
+void CBlockBooleanOR::dump(std::string ident)
+{
+	cout << ident << "Boolean NOT" << endl;
+	{
+		this->input_A->dump(ident + "       ");		 
+	}
+}
+
+void CBlockBooleanNOT::dump(std::string ident)
+{
 }
 
 CBlockInterpreter::CBlockInterpreter()
@@ -300,11 +335,43 @@ void CBlockAssertion_isVariable::dump(std::string ident)
 	this->baseKind->dump(ident + "       ");
 }
 
+void CBlockAssertion_isDefaultAssign::dump(std::string ident)
+{
+	cout << ident << "Assign  " << endl;
+	this->variable->dump(ident + "       ");
+	cout << ident << "Is Usually " << endl;
+	this->value->dump(ident + "       ");
+}
+
+void CBlockAssertion_isConstantAssign::dump(std::string ident)
+{
+	cout << ident << "Assign  " << endl;
+	this->variable->dump(ident + "       ");
+	cout << ident << "Is Always " << endl;
+	this->value->dump(ident + "       ");
+}
+
+void CBlockAssertion_isForbiddenAssign::dump(std::string ident)
+{
+	cout << ident << "Assign  " << endl;
+	this->variable->dump(ident + "       ");
+	cout << ident << "Is Never " << endl;
+	this->value->dump(ident + "       ");
+}
+
 void CBlockAssertion_isDirectAssign::dump(std::string ident)
 {
 	cout << ident << "Assign  " << endl;
 	this->variable->dump(ident + "       ");
 	cout << ident << "Is " << endl;
+	this->value->dump(ident + "       ");
+}
+
+void CBlockAssertion_isNotDirectAssign::dump(std::string ident)
+{
+	cout << ident << "Assign  " << endl;
+	this->variable->dump(ident + "       ");
+	cout << ident << "Is NOT" << endl;
 	this->value->dump(ident + "       ");
 }
 
@@ -315,4 +382,28 @@ void CBlockAssertion_InstanceVariable::dump(std::string ident)
 	cout << ident << "Has " << endl;
 	this->instance_variable->dump(ident + "       ");
 
+}
+
+void CBlockIsVerb::dump(std::string ident)
+{
+	cout << ident << "Is     " << verb << endl;
+	this->n1->dump(ident + "       ");
+	cout << ident << "related " << endl;
+	this->n2->dump(ident + "       "); 
+}
+
+void CBlockIsNotVerb::dump(std::string ident)
+{
+	cout << ident << "Is  NOT " << verb << endl;
+	this->n1->dump(ident + "       ");
+	cout << ident << "related " << endl;
+	this->n2->dump(ident + "       ");
+}
+
+void CBlockVerbRelation::dump(std::string ident)
+{
+	cout << ident << "Verb  " << endl;
+	this->verbNoum->dump(ident + "       ");
+	cout << ident << "Implies " << endl;
+	this->relation->dump(ident + "       ");
 }

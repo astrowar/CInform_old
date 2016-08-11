@@ -59,13 +59,13 @@ Relation
   X Verb Y
   Hercule Poirot suspects Colonel Hotchkiss. 
 
-DefaultValue
+DefaultValue  
   X is usually Z
 
-ConstantValue
+ConstantValue 
    X is always Z
 
-ForbidenValue
+ForbidenValue 
    X is never Z
 
 

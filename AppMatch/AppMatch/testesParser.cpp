@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <iostream>
 
-#define ISLOG true 
+#define ISLOG false 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
 CList*  mk_CList_Literal(std::vector<HTerm> strList);
@@ -85,6 +85,44 @@ void testeParser_2()
 	return;
 }
 
+void testeParser_2a()
+{
+	CParser parse(new CBlockInterpreter());
+	/*{
+		std::string phase_1 = "book  is usually small ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+	{
+		std::string phase_1 = "color of book is usually white ";
+		auto  res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}*/
+	{
+		std::string phase_1 = "the (length of internal description of a container) is usually  lenght of (Its cramped in here.)";
+		auto  res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+	 
+	//std::cout << "Done" << std::endl;
+	return;
+}
 void testeParser_3()
 {
 	CParser parse(new CBlockInterpreter());
@@ -176,7 +214,7 @@ void testeParser_4()
 	//"The torch has a brightness";
 	//	"The torch	is blazing";
 	//"The torch is lit";
-	 std::cout << std::endl;
+	// std::cout << std::endl;
 	return;
 }
 
@@ -320,40 +358,150 @@ void testeParser_6()//kind of value
 			 std::cout << std::endl;
 		 }
 	 }
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 void testeParser_20() //custrom rlacions
 {
 	 
 	CParser parse(new CBlockInterpreter());
-	{
+	/*{
 		std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
-		res->dump("");
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+	 */
+
+	{
+		std::string phase_1 = "the verb inside of implies a reverse container relation";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+	{
+		std::string phase_1 = "the verb contains implies a container relation";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}
+
+
+	{
+		std::string phase_1 = "book contains text";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
 	}
 	
-	{
+	/*{
 		std::string phase_1 = "let L be the (list of ( things fancier than/of/in/on 20 ) ) )";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
-		res->dump("");
-	}
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+	}*/
 }
+
+void testeParser_21()
+{
+	CParser parse(new CBlockInterpreter());
+	{
+		{
+			std::string phase_1 = "the verb stuck to implies a stuking relation";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "the verb visible by implies a visibility relation";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "definition : (a thing is hindering) if ( ( it is stuck to the noun) and (it is not within the location ) )";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "definition : (a thing is in same room ) if ( ( location of it  ) is ( location of player ) )";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "definition : (a thing is hide ) if ( it is not visible by player ) and ( it is in same room )";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+
+	}
+ 
+}
+
 
 void testeParser ()
 {
 	 // testeParser_1();
 	  
-	 // for (int k = 0; k < 400; ++k)
+	 for (int k = 0; k < 400; ++k)
 	{
-	 // testeParser_2();
-	 // testeParser_3();
-	  //testeParser_4();
-	  testeParser_5();
-	 // testeParser_6();
-	  std::cout << ".";
+	   //testeParser_2();
+	  // testeParser_2a();
+	  // testeParser_3();
+	  // testeParser_4();
+	  // testeParser_5();
+	 //  testeParser_6();
+	   testeParser_21();
+	   std::cout << ".";
 	}
 	std::cout << std::endl;
 }

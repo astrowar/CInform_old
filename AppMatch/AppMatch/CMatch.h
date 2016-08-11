@@ -89,6 +89,7 @@ class CPredBooleanOr : public CPredBoolean
 {
 public:
 	std::string repr() override;
+	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2, const HPred& c_pred3);
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2 );
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 	CPredBooleanOr(const std::string& _named, std::list<HPred> plist );
@@ -111,6 +112,7 @@ HPred mkHPredAny(std::string _named);
 HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2);
+HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2,const HPred& c_pred3);
 //==========================================
 class MatchResult
 {

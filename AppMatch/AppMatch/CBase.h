@@ -64,6 +64,8 @@ public:
 	virtual CTerm* removeArticle() override;
 };
 
+
+
 EqualsResul equals(CTerm* c1, CTerm* c2);
 EqualsResul equals(HTerm c1, HTerm c2);
 HTerm make_number(int x);
