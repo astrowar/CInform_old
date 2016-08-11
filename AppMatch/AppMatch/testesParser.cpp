@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <iostream>
 
-#define ISLOG false 
+#define ISLOG true 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
 CList*  mk_CList_Literal(std::vector<HTerm> strList);
@@ -88,7 +88,7 @@ void testeParser_2()
 void testeParser_2a()
 {
 	CParser parse(new CBlockInterpreter());
-	/*{
+	 {
 		std::string phase_1 = "book  is usually small ";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
@@ -107,9 +107,9 @@ void testeParser_2a()
 			res->dump("");
 			std::cout << std::endl;
 		}
-	}*/
+	} 
 	{
-		std::string phase_1 = "the (length of internal description of a container) is usually  lenght of (Its cramped in here.)";
+		std::string phase_1 = "the (length of (internal description of  a container )) is usually ( lenght of ( Its cramped in here))";
 		auto  res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -127,7 +127,7 @@ void testeParser_3()
 {
 	CParser parse(new CBlockInterpreter());
 	{
-		std::string phase_1 = "eat  is (an action  applying to (one thing ))";
+		std::string phase_1 = "eat  is (an action  applying to (an thing ) )";
 	 	auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -137,7 +137,7 @@ void testeParser_3()
 		}
 	}
 	{
-		std::string           phase_1 = "(cut ) is    an action   applying to (one thing) and (a Cutter)   ";
+		std::string           phase_1 = "(cut ) is    an action   applying to (an thing ) and (a Cutter)   ";
 		auto  res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -481,7 +481,41 @@ void testeParser_21()
 				std::cout << std::endl;
 			}
 		}
+		{
+			std::string phase_1 = "definition : (a thing is in ( place : location )  ) if ( location of it is place ) ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
 
+	 
+
+
+		{
+			std::string phase_1 = "the verb made of implies the materiality relation ";
+
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+		{
+			std::string phase_1 = "coin is made of golden";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
 
 	}
  
@@ -492,11 +526,11 @@ void testeParser ()
 {
 	 // testeParser_1();
 	  
-	 for (int k = 0; k < 400; ++k)
+	// for (int k = 0; k < 100; ++k)
 	{
 	   //testeParser_2();
-	  // testeParser_2a();
-	  // testeParser_3();
+	  //  testeParser_2a();
+	  //  testeParser_3();
 	  // testeParser_4();
 	  // testeParser_5();
 	 //  testeParser_6();

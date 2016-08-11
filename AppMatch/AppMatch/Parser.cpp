@@ -157,7 +157,7 @@ CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("one"));
+		//predList.push_back(mk_HPredLiteral("one"));
 		predList.push_back(mkHPredAny("kind1"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -575,7 +575,7 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 		predList.push_back(mkHPredAny("Aux"));
  
 		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
-        predList.push_back(L_the_verb_1);
+		predList.push_back(L_the_verb_1);
 		predList.push_back(mkHPredAny("Relation"));
 		predList.push_back(mk_HPredLiteral("relation"));
 		MatchResult res = CMatch(term, predList);
@@ -626,7 +626,7 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
 
 			auto verbMatch = (mkHPredList("VerbMatch", {
-				        mk_HPredLiteral(res.matchs["Verb"]->repr()), 
+						mk_HPredLiteral(res.matchs["Verb"]->repr()), 
 						mk_HPredLiteral(res.matchs["Aux"]->repr()),
 						}));
 
