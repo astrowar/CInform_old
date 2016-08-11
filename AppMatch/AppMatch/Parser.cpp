@@ -5,6 +5,7 @@
 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
+MTermSet remove_boundaryListMark(MTermSet& m);
 HPred mk_HPredLiteral( std::string str )
 {
 	return mkHPredAtom("_", make_string(str ));
@@ -563,17 +564,17 @@ CBlock* CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 {
 
-	auto L_the_verb = mkHPredList("vinitial", { mk_HPredLiteral("the") , mk_HPredLiteral("verb")  });
+	auto L_the_verb = mkHPredList("vinitial", { mk_HPredLiteral("the") , mk_HPredLiteral("verb") });
 	auto L_verb = mk_HPredLiteral("verb");
-	
+
 
 	{
-		 
+
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
 		predList.push_back(mkHPredAny("Verb"));
 		predList.push_back(mkHPredAny("Aux"));
- 
+
 		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
 		predList.push_back(L_the_verb_1);
 		predList.push_back(mkHPredAny("Relation"));
@@ -603,12 +604,12 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 	}
 
 
-	{		
-		 
+	{
+
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-		predList.push_back(mkHPredAny("Verb"));	
-		predList.push_back(mkHPredAny("Aux"));		
+		predList.push_back(mkHPredAny("Verb"));
+		predList.push_back(mkHPredAny("Aux"));
 		predList.push_back(mk_HPredLiteral("implies"));
 		predList.push_back(mkHPredAny("Relation"));
 		predList.push_back(mk_HPredLiteral("relation"));
@@ -616,19 +617,19 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 
 		if (res.result == Equals)
 		{
-			 
+
 
 			CBlockList* clist = new CBlockList();
-			clist->push_back( new  CBlockNoum(  res.matchs["Verb"]->repr() ) );
+			clist->push_back(new  CBlockNoum(res.matchs["Verb"]->repr()));
 			clist->push_back(new  CBlockNoum(res.matchs["Aux"]->repr()));
 
 			CBlock* a_verb = clist;
 			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
 
 			auto verbMatch = (mkHPredList("VerbMatch", {
-						mk_HPredLiteral(res.matchs["Verb"]->repr()), 
+						mk_HPredLiteral(res.matchs["Verb"]->repr()),
 						mk_HPredLiteral(res.matchs["Aux"]->repr()),
-						}));
+			}));
 
 			verbList->blist.push_back(verbMatch);
 			return  new CBlockVerbRelation(a_verb, a_relation);
@@ -637,23 +638,70 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 	}
 
 
+	 
+ 
+
+
+
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
 		predList.push_back(mkHPredAny("Verb"));
 		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
-	 
-		predList.push_back(  L_the_verb_1 );
+
+		predList.push_back(L_the_verb_1);
 		predList.push_back(mkHPredAny("Relation"));
 		predList.push_back(mk_HPredLiteral("relation"));
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals)
-		{			
-			CBlock* a_verb = new  CBlockNoum(res.matchs["Verb"]->repr());
-			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
-			verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));			
-			return  new CBlockVerbRelation(a_verb, a_relation);
+		{
+			if (CList* cverb = dynamic_cast<CList*>(res.matchs["Verb"].get()))
+			{
+				CBlock* a_verb = nullptr;
+				HPred verbMatch = nullptr;
+				MTermSet inList(cverb->lst.begin(), cverb->lst.end());
+				inList= remove_boundaryListMark(inList);
+				if (inList.size() == 2)
+				{
+					CBlockList* clist = new CBlockList();
+					clist->push_back(new  CBlockNoum(inList.front()->repr()));
+					clist->push_back(new  CBlockNoum(inList.back()->repr()));
+					a_verb = clist;
+
+					  verbMatch = (mkHPredList("VerbMatch", {
+						mk_HPredLiteral(inList.front()->repr()),
+						mk_HPredLiteral(inList.back()->repr()),
+					}));
+
+
+				}
+				else if (inList.size() == 1)
+				{
+					a_verb = new  CBlockNoum(inList.front()->repr());
+					verbMatch = mk_HPredLiteral(inList.front()->repr());
+				}
+
+				int nv = inList.size();
+
+				std::cout << res.matchs["Verb"]->repr() << std::endl;
+				if (a_verb != nullptr)
+				{
+					 
+
+					CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+					verbList->blist.push_back(verbMatch);
+					return  new CBlockVerbRelation(a_verb, a_relation);
+				}
+			}
+			else
+			{
+
+				CBlock* a_verb = new  CBlockNoum(res.matchs["Verb"]->repr());
+				CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+				verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
+				return  new CBlockVerbRelation(a_verb, a_relation);
+			}
 		}
 
 	}
@@ -663,19 +711,54 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
 		predList.push_back(mkHPredAny("Verb"));
-		
 		auto L_the_verb_4 = mk_HPredLiteral("implies");
-		predList.push_back(  L_the_verb_4);
+		predList.push_back(L_the_verb_4);
 		predList.push_back(mkHPredAny("Relation"));
 		predList.push_back(mk_HPredLiteral("relation"));
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals)
 		{
-			CBlock* a_verb = new  CBlockNoum(res.matchs["Verb"]->repr());
-			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
-			verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
-			return  new CBlockVerbRelation(a_verb, a_relation);
+			if (CList* cverb = dynamic_cast<CList*>(res.matchs["Verb"].get()))
+			{
+				CBlock* a_verb = nullptr;
+				HPred verbMatch = nullptr;
+				MTermSet inList(cverb->lst.begin(), cverb->lst.end());
+				inList = remove_boundaryListMark(inList);
+				if (inList.size() == 2)
+				{
+					CBlockList* clist = new CBlockList();
+					clist->push_back(new  CBlockNoum(inList.front()->repr()));
+					clist->push_back(new  CBlockNoum(inList.back()->repr()));
+					a_verb = clist;
+
+					verbMatch = (mkHPredList("VerbMatch", {
+						mk_HPredLiteral(inList.front()->repr()),
+						mk_HPredLiteral(inList.back()->repr()),
+					}));
+
+
+				}
+				else if (inList.size() == 1)
+				{
+					a_verb = new  CBlockNoum(inList.front()->repr());
+					verbMatch = mk_HPredLiteral(inList.front()->repr());
+				}
+
+				if (a_verb != nullptr)
+				{
+					CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+					verbList->blist.push_back(verbMatch);
+					return  new CBlockVerbRelation(a_verb, a_relation);
+				}
+			}
+			else
+			{
+				CBlock* a_verb = new  CBlockNoum(res.matchs["Verb"]->repr());
+				CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+				verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
+				return  new CBlockVerbRelation(a_verb, a_relation);
+			}
 		}
 
 	}

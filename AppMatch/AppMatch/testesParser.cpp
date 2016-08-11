@@ -428,7 +428,7 @@ void testeParser_21()
 	CParser parse(new CBlockInterpreter());
 	{
 		{
-			std::string phase_1 = "the verb stuck to implies a stuking relation";
+			std::string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
 			auto res = parse.parser(phase_1);
 			if (res == nullptr) throw "parse error";
 			if (ISLOG)
@@ -437,6 +437,19 @@ void testeParser_21()
 				std::cout << std::endl;
 			}
 		}
+
+		{
+			std::string phase_1 = "coin is stuck to box";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+	 
 
 		{
 			std::string phase_1 = "the verb visible by implies a visibility relation";
