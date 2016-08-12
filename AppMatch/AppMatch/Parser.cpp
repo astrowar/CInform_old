@@ -13,6 +13,37 @@ HPred mk_HPredLiteral( std::string str )
 
 std::string get_repr(MTermSet lst);
 
+
+std::string get_repr(std::vector<HPred> plist)
+{
+	std::string ret = "";
+	for (auto p : plist)
+	{
+		ret += p->repr();
+	}
+	return ret;
+}
+
+HTerm expandBract(HTerm term)
+{
+	if (CList* clist = dynamic_cast<CList*>(term.get()))
+	{
+		if (clist->lst.front()->is_openBracket() && clist->lst.back()->is_closeBracket())
+		{
+			auto vlist = clist->asVector();
+			vlist = remove_boundaryListMark(vlist);
+			CList* cnew = new CList();
+			cnew->lst = std::list<HTerm>(vlist.begin(), vlist.end());
+			return std::shared_ptr<CList>(cnew);
+		}
+		else
+		{
+			return term;
+		}
+	}
+	return term;
+}
+
 std::vector<HTerm> get_tail(std::vector<HTerm>& qlist)
 {
 	std::vector<HTerm> v;
@@ -71,9 +102,18 @@ HPred mk_What_Which()
 CParser::CParser(CBlockInterpreter* _interpreter)
 {
 	interpreter = _interpreter;
-	std::list<HPred> alist;
-	verbList =  std::make_shared<CPredBooleanOr>("verbList", alist);
-	verbList->blist.push_back(mk_HPredLiteral("contains"));
+	{
+		std::list<HPred> alist;
+		verbList = std::make_shared<CPredBooleanOr>("verbList", alist);
+		verbList->blist.push_back(mk_HPredLiteral("contains"));
+	}
+
+	{
+		std::list<HPred> alist;
+		actionPredList = std::make_shared<CPredBooleanOr>("actionList", alist);
+		actionPredList->blist.push_back(mk_HPredLiteral("getting"));
+	}
+
 
 	
 }
@@ -561,6 +601,247 @@ CBlock* CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 }
 
 
+
+std::pair<CBlock* , HPred>   getVerbAndAux(   HTerm  term)
+{
+	 
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Verb"));
+		predList.push_back(mkHPredAny("Aux"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockList* clist = new CBlockList();
+			clist->push_back(new  CBlockNoum(res.matchs["Verb"]->repr()));
+			clist->push_back(new  CBlockNoum(res.matchs["Aux"]->repr()));
+
+
+			HPred verbMatch = (mkHPredList("VerbMatch", {
+				mk_HPredLiteral(res.matchs["Verb"]->repr()),
+				mk_HPredLiteral(res.matchs["Aux"]->repr()),
+			}));
+			return std::pair<CBlock*, HPred>(clist, verbMatch);
+		}
+	}
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Verb"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlock* clist = new  CBlockNoum(res.matchs["Verb"]->repr());
+			HPred verbMatch = mk_HPredLiteral(res.matchs["Verb"]->repr());
+
+			return std::pair<CBlock*, HPred>(clist, verbMatch);
+		}
+
+	}
+	return std::pair<CBlock*, HPred>(nullptr, nullptr);
+}
+
+
+std::pair<CBlock*, std::vector<HPred> >  CParser::parser_buildMatchBlock_actionInput(HTerm term)
+{
+	if (CList* cterm = dynamic_cast<CList*>(term.get()))
+	{
+		std::vector<HTerm> vterm(cterm->lst.begin(), cterm->lst.end());
+		auto kv =   parser_buildMatchBlock_actionInput(vterm);
+		return std::pair<CBlock*, std::vector<HPred> >(kv.first, kv.second);
+	}	
+
+	std::vector<HPred> replcList;
+	replcList.push_back(mk_HPredLiteral(term->repr()));
+
+	//return new CBlockMatch(new CBlockNoum(term->repr()));
+	return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatch(new CBlockNoum(term->repr())) , replcList);
+}
+
+std::pair<CBlock* , std::vector<HPred> >  CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm> term)
+{
+	 
+	 
+	{  
+		std::vector<HPred> predList;
+		
+		predList.push_back(mkHPredAny("verb"));
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind1"));
+		predList.push_back(mk_HPredLiteral("]"));
+		predList.push_back(mkHPredAny("with_word"));
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind2"));
+		predList.push_back(mk_HPredLiteral("]"));
+		
+		
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
+			CBlockMatch* c2 = new CBlockMatch(new CBlockKind(res.matchs["kind1"]->removeArticle()->repr()));
+			CBlockMatch* c3 = new CBlockMatch(new CBlockNoum(res.matchs["with_word"]->repr()));
+			CBlockMatch* c4 = new CBlockMatch(new CBlockKind(res.matchs["kind2"]->removeArticle()->repr()));
+
+
+			std::vector<HPred> replcList;
+			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
+			replcList.push_back(mkHPredAny("noum1"));
+			replcList.push_back(mk_HPredLiteral(res.matchs["with_word"]->repr()));
+			replcList.push_back(mkHPredAny("noum2"));
+
+
+			return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatchList({ c1,c2,c3,c4 }), replcList);
+			//return new CBlockMatchList({c1,c2,c3,c4});
+		}
+	}
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("verb"));
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind1"));
+		predList.push_back(mk_HPredLiteral("]"));		
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+
+			std::cout << "matched " << res.matchs["kind1"]->repr()  <<   std::endl;
+
+
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
+			CBlockMatch* c2= new CBlockMatch (new CBlockKind(res.matchs["kind1"]->repr()));
+
+			std::vector<HPred> replcList;
+			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
+			replcList.push_back(mkHPredAny("noum1"));
+
+			return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatchList({ c1,c2  }), replcList);
+			//return new CBlockMatchList({ c1,c2 });
+		}
+	}
+	 
+	return std::pair<CBlock*, std::vector<HPred> >(nullptr , std::vector<HPred>());
+}
+
+CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
+{
+	 
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("understand"));
+		predList.push_back(mk_HPredLiteral(":"));
+		predList.push_back(mkHPredAny("What"));
+		predList.push_back(mk_HPredLiteral("as"));
+		predList.push_back(mkHPredAny("Subst"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+
+			//auto input_noum =  new  CBlockNoum(res.matchs["What"]->repr());
+
+			// existe uma action que Match com o Subst ???
+			CBlock* output_noum = nullptr;
+			CBlock* input_noum = nullptr;
+			{
+				auto sTerm = res.matchs["Subst"];				 
+				{
+					sTerm = expandBract(sTerm);
+				}				
+				std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl; 
+				std::vector<HPred> actionList;
+				actionList.push_back(actionPredList);
+				MatchResult res_action = CMatch(sTerm, actionList);
+				if (res_action.result == Equals)
+				{
+					CBlockAction * output_action = new CBlockAction(new CBlockNoum( (sTerm)->repr()));
+					output_noum = output_action;
+					auto match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
+					input_noum = match_predicate.first;
+					
+					std::cout << "predicate  " << get_repr( match_predicate.second ) << std::endl;
+					
+					actionUndestands.push_back(  UnderstandAction(match_predicate.second, output_action) );
+
+					return  new CBlockUnderstand(input_noum, output_noum);
+				} 
+			} 
+		} 
+	}
+	return nullptr;
+}
+
+
+
+//Uma das rotinas mais importantes. Ela altera  o proprio parser
+CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term) 
+{
+	
+	//replace assertions 
+
+	for(auto e : actionUndestands)
+	{
+		MatchResult res_action = CMatch(term, e.matchPhase);
+		if (res_action.result == Equals)
+		{
+			CBlock * n1 = parser(res_action.matchs["noum1"]);
+			CBlock*   n2 = nullptr;
+			if (res_action.matchs.find("noum2") != res_action.matchs.end())
+			{
+				 n2 = parser(res_action.matchs["noum2"]);
+			}
+			else
+			{
+				n2 = new CBlockNoum("Nothing");
+			}
+			return new CBlockActionCall(e.matchAction, n1,n2 );			
+		}
+	}
+
+	auto p_action = parser_understand_Action_Assertion(term);
+	if (p_action != nullptr) return p_action;
+
+	return nullptr;
+}
+
+HPred convert_to_predicate( CTerm* termo )
+{
+
+	if (CList* clist = dynamic_cast<CList*>(termo))
+	{
+		auto vlist = clist->asVector();
+		vlist = remove_boundaryListMark( vlist );
+		
+		auto hpr = mkHPredList("predListing", {});		
+		CPredList* predList = dynamic_cast<CPredList*>(hpr.get());
+
+
+		
+		for ( auto k : vlist )
+		{
+			predList->plist.push_back(convert_to_predicate(k.get()));
+		}
+		return hpr;
+	}
+	else
+	{
+		if (CString* css = dynamic_cast<CString*>(termo))
+		{
+			
+			return mk_HPredLiteral(css->s);
+		}
+
+	}
+
+	return mk_HPredLiteral( termo->repr());
+}
+
+
+
 CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 {
 
@@ -637,10 +918,60 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 
 	}
 
+	{
+		//Teste de carga
 
-	 
- 
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+		predList.push_back(mkHPredAny("Verb"));
+		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
 
+		predList.push_back(L_the_verb_1);
+		predList.push_back(mkHPredAny("Relation"));
+		predList.push_back(mk_HPredLiteral("relation"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+
+			auto vaux  = getVerbAndAux(res.matchs["Verb"]);
+			CBlock* a_verb = vaux.first;
+			HPred verbMatch = vaux.second;
+			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+			verbList->blist.push_back(verbMatch);
+			return  new CBlockVerbRelation(a_verb, a_relation);
+
+		}
+
+	}
+
+
+	{
+		//Teste de carga
+
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+		predList.push_back(mkHPredAny("Verb"));
+		predList.push_back(mk_HPredLiteral("implies"));
+		predList.push_back(mkHPredAny("Relation"));
+		predList.push_back(mk_HPredLiteral("relation"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+
+			auto vaux = getVerbAndAux(res.matchs["Verb"]);
+			CBlock* a_verb = vaux.first;
+			HPred verbMatch = vaux.second;
+			CBlock* a_relation = new  CBlockNoum(res.matchs["Relation"]->repr());
+			verbList->blist.push_back(verbMatch);
+			return  new CBlockVerbRelation(a_verb, a_relation);
+
+		}
+
+	}
+
+	
 
 
 	{
@@ -899,11 +1230,30 @@ CBlockAssertion_is     * CParser::parseAssertion_DirectAssign(std::vector<HTerm>
 
 		if (res.result == Equals)
 		{			 
-			CBlock* noum = parser(res.matchs["Noum"] );
-			if (noum == nullptr) return nullptr;
+			 
 			CBlock* value = parser(res.matchs["Value"] );
 			if (value == nullptr) return nullptr;
-			return  new CBlockAssertion_isDirectAssign(noum, value);
+
+			if (CBlockActionKind* action = dynamic_cast<CBlockActionKind*>(value) )
+			{
+				auto sterm = expandBract(res.matchs["Noum"]);
+				CBlock* _naction =  new CBlockAction( new CBlockNoum(sterm->repr()));
+				 
+				 
+				HPred actionMatch = convert_to_predicate(sterm.get() );
+				std::cout << "found " << actionMatch->repr()  << std::endl;
+				actionPredList->blist.push_back(actionMatch);
+
+				return  new CBlockAssertion_isDirectAssign(_naction, value);
+
+			}
+			else
+			{
+				CBlock* noum = parser(res.matchs["Noum"]);
+				if (noum == nullptr) return nullptr;
+				return  new CBlockAssertion_isDirectAssign(noum, value);
+			}
+
 		}
 	} 
 
@@ -1370,6 +1720,9 @@ CBlock* CParser::parser_only(std::vector<HTerm> lst)
 	// 
 	//std::vector<HTerm>  lst = decompose(str);
 
+
+	CBlock *rblock_understand_1 = (parser_understand_Assertion(lst));
+	if (rblock_understand_1 != nullptr) return rblock_understand_1;
 	 
 	CBlock *rblock_verb_1 = (parser_verb_Assertion(lst));
 	if (rblock_verb_1 != nullptr) return rblock_verb_1;

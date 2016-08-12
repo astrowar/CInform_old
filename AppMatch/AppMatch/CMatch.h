@@ -26,7 +26,7 @@ std::string get_repr(MTermSetCombinatoria lst);
 class CPred: public CAtom
 {
 public:
-	std::string repr() override;
+	std::string repr() override;	
 	std::string named;
 
 	CPred(std::string _named) : named(_named)
@@ -64,6 +64,15 @@ class CPredAny : public CPred
 public:
 	std::string repr() override;
 	CPredAny(std::string _named);;
+	virtual EqualsResul match(MTermSet& _h) override;
+	virtual EqualsResul match(HTerm h) override;
+};
+
+class CPredWord : public CPred
+{
+public:
+	std::string repr() override;
+	CPredWord(std::string _named);;
 	virtual EqualsResul match(MTermSet& _h) override;
 	virtual EqualsResul match(HTerm h) override;
 };
@@ -109,6 +118,8 @@ public:
 HPred mkHPredAtom(std::string _named, HTerm atom);
 HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist);
 HPred mkHPredAny(std::string _named);
+HPred mkHPredWord(std::string _named);
+ 
 HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1);
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2);

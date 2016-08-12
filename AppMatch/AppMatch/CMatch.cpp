@@ -492,6 +492,30 @@ EqualsResul CPredAny::match(HTerm h)
 	return Equals;
 }
 
+std::string CPredWord::repr()
+{
+	return "Pred(\\W)";
+}
+
+CPredWord::CPredWord(std::string _named):CPred(_named)
+{
+}
+
+EqualsResul CPredWord::match(MTermSet& _h)
+{
+	return NotEquals;
+	
+}
+
+EqualsResul CPredWord::match(HTerm h)
+{
+	if (CString *v = dynamic_cast<CString*>(h.get()))
+	{
+		return Equals;
+	}
+	return NotEquals;
+}
+
 CPredBoolean::CPredBoolean(const std::string& _named): CPred(_named)
 {
 }
@@ -571,6 +595,7 @@ EqualsResul CPredBooleanOr::match(HTerm h)
 HPred mkHPredAtom(std::string _named, HTerm atom) {  return std::make_shared<CPredAtom>(_named, atom); };
 HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist) { return std::make_shared<CPredList>(_named, plist); };
 HPred mkHPredAny(std::string _named) { return std::make_shared<CPredAny>(_named ); };
+HPred mkHPredWord(std::string _named) { return std::make_shared<CPredWord>(_named); };
 HPred mkHPredBooleanAnd(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanAnd>(_named, c_pred, c_pred1); };
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1); };
 HPred mkHPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2) { return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2); };
@@ -866,7 +891,7 @@ MatchResult CMatch(HTerm term, std::vector<HPred> predicates)
 
 	CList* lst = dynamic_cast<CList* >(term.get());
 	if (lst != nullptr)
-	{		 
+	{	
 		return CMatch(lst->asVector() , predicates ); // trata como uma lista
 	}
 	return MatchResult();;

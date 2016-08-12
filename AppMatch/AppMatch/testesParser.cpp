@@ -535,6 +535,70 @@ void testeParser_21()
 }
 
 
+void testeParser_22()
+{
+	CParser parse(new CBlockInterpreter());
+	{
+		{
+			std::string phase_1 = " taking is an action applying to (one thing)  ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+		{
+			std::string phase_1 = " a mistake is an action applying to ( nothing )  ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "understand : take [ something ]  as  taking ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		{
+			std::string phase_1 = "understand : take [ a person ]  as a mistake ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+		 
+		{
+			std::string phase_1 = "take the book";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
+
+		 
+
+	}
+}
+
+
 void testeParser ()
 {
 	 // testeParser_1();
@@ -547,7 +611,7 @@ void testeParser ()
 	  // testeParser_4();
 	  // testeParser_5();
 	 //  testeParser_6();
-	   testeParser_21();
+	   testeParser_22();
 	   std::cout << ".";
 	}
 	std::cout << std::endl;

@@ -181,6 +181,26 @@ void CBlockMatch::dump(std::string ident)
 	}
 }
 
+void CBlockMatchKind::dump(std::string ident)
+{
+	cout << ident << "Match Kind: " << endl;
+	{
+		this->kind->dump(ident + "       ");
+	}
+}
+
+void CBlockMatchList::dump(std::string ident)
+{
+	cout << ident << "Match List [" << endl;
+	{
+		for (auto i : matchList)
+		{
+			i->dump(ident + "       ");
+		} 
+	}
+	cout << ident << "          ]" << endl;
+}
+
 void CBlockActionApply::dump(std::string ident)
 {
 	cout << ident << "Action applyTo " << endl;	
@@ -198,6 +218,11 @@ CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_nou
 
 void CBlockAction::dump(std::string ident)
 {
+	cout << ident << "Action " << endl;
+	{
+		this->input->dump(ident + "       ");
+	}
+
 }
 
 void CBlockToDecide::dump(std::string ident)
@@ -257,7 +282,19 @@ CBlockInterpreter::~CBlockInterpreter()
 {
 }
 
- void CBlockAssertion_isActionOf::dump(std::string ident)
+void CBlockActionCall::dump(std::string ident)
+{
+	cout << ident << "Call " << endl;
+	{
+		this->action->dump(ident + "       ");
+		cout << ident << "Args: " << endl;
+		this->noum1->dump(ident + "       ");
+		this->noum2->dump(ident + "       ");
+
+	}
+}
+
+void CBlockAssertion_isActionOf::dump(std::string ident)
 {
 	cout << ident << "Action " << endl;
 }
@@ -406,4 +443,13 @@ void CBlockVerbRelation::dump(std::string ident)
 	this->verbNoum->dump(ident + "       ");
 	cout << ident << "Implies " << endl;
 	this->relation->dump(ident + "       ");
+}
+
+void CBlockUnderstand::dump(std::string ident)
+{
+	cout << ident << "Understand  " << endl;
+	this->input_n->dump(ident + "       ");
+	cout << ident << "As " << endl;
+	this->output_n->dump(ident + "       ");
+
 }

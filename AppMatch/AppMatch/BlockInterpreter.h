@@ -398,6 +398,22 @@ public:
 	CBlockVerbRelation(CBlock* _noum, CBlock * _relation) : verbNoum(_noum), relation(_relation) {};
 };
 
+
+class CBlockUnderstand : public CBlock    //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	CBlock* input_n; // Pode ser simples ou com a preposicao
+	CBlock* output_n;
+	CBlockUnderstand(CBlock* _input_n, CBlock * _output_n) : input_n(_input_n), output_n(_output_n) {};
+};
+
+ 
+
+
+
+
 //===================================================================
 class CBlockFilter: public CBlock   // filtra um valor para outro valor 
 {
@@ -427,8 +443,8 @@ class CBlockFilterList : public  CBlockFilter
 class CBlockMatch : public  CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 {
 public:
-	void dump(std::string ident) override;
-	// CBlockMatc(CBlockKind("book")) -> filtra kinds do tipo block 
+	virtual void dump(std::string ident) override;
+	 
 	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
 	virtual bool  match() { return false; };
 	CBlock* matchInner;
@@ -438,7 +454,20 @@ public:
 
 
  
+ 
 
+class CBlockMatchKind : public  CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(std::string ident) override;
+	// CBlockMatc(CBlockKind("book")) -> filtra kinds do tipo block 
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+	virtual bool  match() override
+	{ return false; };
+	CBlockKind* kind;
+	CBlockMatchKind(CBlockKind* _kindInnter) : CBlockMatch(nullptr), kind(_kindInnter)
+	{};
+};
 
 
 class CBlockMatchWith : public  CBlockMatch // um bloco que serve para dar Match  no match anterior
@@ -447,14 +476,27 @@ class CBlockMatchWith : public  CBlockMatch // um bloco que serve para dar Match
 };
 
 
+class CBlockMatchList : public  CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+	virtual bool  match() override
+	{ return false; };
+	std::list<CBlockMatch*>  matchList;
+	CBlockMatchList(std::list<CBlockMatch*> _matchList) : CBlockMatch(nullptr), matchList(_matchList)
+	{};
+};
+
 
 
 class CBlockActionApply: public  CBlock
 {
 public:
-	void dump(std::string ident) override;
+	virtual void dump(std::string ident) override;
 	CBlock* noum1;
-	CBlock* noum2;
+	CBlock* noum2;	
 	CBlockActionApply(CBlock* _noum1, CBlock* _noum2 ); 
 };
 
@@ -462,7 +504,7 @@ public:
 class CBlockAction : public  CBlock  // um bloco que representa uma atividade
 {
 public:
-	void dump(std::string ident) override;
+	virtual void dump(std::string ident) override;
 
 	CBlockAction(CBlock* input)
 		: input(input)
@@ -472,6 +514,16 @@ public:
 	CBlock* input;
 };
 
+
+class CBlockActionCall : public  CBlock
+{
+public :
+	CBlockAction *action;
+	CBlock *noum1;
+	CBlock *noum2;
+	CBlockActionCall(CBlockAction* _action, CBlock* _noum1, CBlock* _noum2):action(_action), noum1(_noum1), noum2(_noum2){}
+	void dump(std::string ident) override;
+};
 
 class CBlockAssertion_isActionOf : public CBlockAssertion_is //retorna uma declaracao 
 {

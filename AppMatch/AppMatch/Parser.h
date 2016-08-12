@@ -48,7 +48,13 @@ public:
  
 
 
- 
+ class UnderstandAction
+ {
+ public:
+	 std::vector<HPred> matchPhase;
+	  CBlockAction*  matchAction;
+	 UnderstandAction(std::vector<HPred> _matching , CBlockAction*  _Action):matchPhase(_matching),  matchAction(_Action) {}
+ };
 
 class CParser
 {
@@ -58,6 +64,9 @@ class CParser
 
 	std::map<string, CBlock* > verbToRelation;
 	std::shared_ptr<CPredBooleanOr>  verbList;
+	std::shared_ptr<CPredBooleanOr>  actionPredList;
+ 
+	std::list< UnderstandAction > actionUndestands;
 	
 public:
 	CParser(CBlockInterpreter *_interpreter);
@@ -95,6 +104,10 @@ public:
 	CBlock* parseAssertionFirstTerm(HTerm match);
 	CBlock* parseAssertionEnumSecondTerm(HTerm term);
 	CBlock* parser_Decide_Assertion(std::vector<HTerm> lst);
+	std::pair<CBlock*, std::vector<HPred> >  parser_buildMatchBlock_actionInput(HTerm term);
+	std::pair<CBlock*, std::vector<HPred> >  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
+	CBlock* parser_understand_Action_Assertion(std::vector<HTerm> term);
+	CBlock* parser_understand_Assertion(std::vector<HTerm> term);
 	CBlock* parser_verb_Assertion(std::vector<HTerm> lst);
 
 	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);
