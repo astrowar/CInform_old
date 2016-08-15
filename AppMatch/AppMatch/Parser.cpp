@@ -96,8 +96,23 @@ HPred mk_What_Which()
 {
 	return mkHPredBooleanOr("what_TERM", mk_HPredLiteral("what"), mk_HPredLiteral("which"), mk_HPredLiteral("whether")  );
 }
+
+
+staticDispatchEntry::staticDispatchEntry(CBlockMatchList* _argumentsMatch, CBlock* _action): entryArguments (_argumentsMatch), action(_action)
+{
+
+}
+staticDispatchEntry::staticDispatchEntry( ) : entryArguments(nullptr), action(nullptr)
+{
+
+}
+
  
 
+SentenceDispatchPredicate::SentenceDispatchPredicate(std::vector<HPred> _matchPhase, CBlockMatch* _matchPhaseDynamic, int _entryId): matchPhase(_matchPhase), _matchPhaseDynamic(_matchPhaseDynamic),  entryId(_entryId)
+{
+
+}
 
 CParser::CParser(CBlockInterpreter* _interpreter)
 {
@@ -115,7 +130,11 @@ CParser::CParser(CBlockInterpreter* _interpreter)
 	}
 
 
-	
+	{
+		std::list<HPred> alist;
+		//actionDinamicDispatch = std::make_shared<CPredBooleanOr>("actionList", alist);
+		//actionDinamicDispatch->blist.push_back(mk_HPredLiteral("getting"));
+	}
 }
 
 CParser::~CParser()
@@ -142,7 +161,53 @@ void CParser::set_Noum(NoumDefinitions ndef)
 	nregisters.insert(nregisters.end(), ndef.begin(), ndef.end());
 }
 
+int CParser::registerStaticDispatch(int entry, CBlockMatchList* argumentMatch, CBlock* body)
+{
+	for (auto it = staticDispatch.begin(); it != staticDispatch.end(); ++it)
+	{
+		if (it->entryId == entry)
+		{
+			staticDispatchEntry sEntry(argumentMatch, body);
+			it->entries.push_back(sEntry);
+			return entry;
+		}
+	}
+	//nao achei nenhum que ja existe 
  
+	StaticDispatchArgument  sdisp( entry);
+	sdisp.entries.push_back(staticDispatchEntry(argumentMatch, body));
+	staticDispatch.push_back(sdisp);
+	return entry;
+}
+ 
+
+
+int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlockMatch * entry  )
+{
+
+	//Verifica se ja tem a sentenceDispatch
+	int maxID = 0;
+	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it)
+	{
+		maxID = std::max(maxID, it->entryId);
+		if (isSamePred(it->matchPhase, _matchPhase))
+		{			
+			return it->entryId;
+		}
+	}
+
+	//nao tem nenhum ... Cria um novo
+	SentenceDispatchPredicate sdisp(_matchPhase , entry , maxID +1 );
+	sentenceDispatch.push_back(sdisp);
+
+	sentenceDispatch.sort([](const SentenceDispatchPredicate & a, const SentenceDispatchPredicate & b) -> bool {return a.matchPhase.size()  > b.matchPhase.size();	});
+
+	 
+	std::cout << "Dynamic Registed " <<   std::endl;
+	entry->dump("    ");
+	 
+	return  maxID + 1;
+}
 
 ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst)
 {
@@ -601,6 +666,26 @@ CBlock* CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 }
 
 
+CBlockStaticDispatch* CParser::getStaticDispatchResolve( HTerm term ) //Determina se este termo esta na lista de dispatchs dynamicos
+{
+
+	 
+	//Verifica se ja tem a matchPhase
+	int maxID = 0;
+	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it)
+	{
+		MatchResult res = CMatch(    term, it->matchPhase);
+		if (res.result == Equals)
+		{
+			return  new CBlockStaticDispatch(it->entryId, new CBlockNoum(res.matchs["noum1"]->repr()), new CBlockNoum(res.matchs["noum2"]->repr()));
+		}
+	}
+	return nullptr;
+
+
+}
+
+
 
 std::pair<CBlock* , HPred>   getVerbAndAux(   HTerm  term)
 {
@@ -641,30 +726,67 @@ std::pair<CBlock* , HPred>   getVerbAndAux(   HTerm  term)
 	return std::pair<CBlock*, HPred>(nullptr, nullptr);
 }
 
-
-std::pair<CBlock*, std::vector<HPred> >  CParser::parser_buildMatchBlock_actionInput(HTerm term)
+DispatchArguments  CParser::parser_buildMatchBlock_actionInput(HTerm term)
 {
 	if (CList* cterm = dynamic_cast<CList*>(term.get()))
 	{
 		std::vector<HTerm> vterm(cterm->lst.begin(), cterm->lst.end());
 		auto kv =   parser_buildMatchBlock_actionInput(vterm);
-		return std::pair<CBlock*, std::vector<HPred> >(kv.first, kv.second);
+		return kv;
 	}	
 
 	std::vector<HPred> replcList;
 	replcList.push_back(mk_HPredLiteral(term->repr()));
 
 	//return new CBlockMatch(new CBlockNoum(term->repr()));
-	return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatch(new CBlockNoum(term->repr())) , replcList);
+	return DispatchArguments(replcList , nullptr ,  new CBlockMatch(new CBlockNoum(term->repr())) );
 }
 
-std::pair<CBlock* , std::vector<HPred> >  CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm> term)
+CBlockMatch* CParser::parser_MatchArgument(HTerm term)
 {
-	 
-	 
-	{  
+
+	{
 		std::vector<HPred> predList;
-		
+		predList.push_back(mkHPredAny("kind"));
+		predList.push_back(mk_HPredLiteral("called"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["kind"]->removeArticle()->repr()));
+			CBlockMatchNamed* n1 = new CBlockMatchNamed(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+
+	}
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind"));
+		predList.push_back(mk_HPredLiteral("-"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["kind"]->removeArticle()->repr()));
+			CBlockMatchNamed* n1 = new CBlockMatchNamed(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+
+	}
+    return  new CBlockMatch(new CBlockKind(term->removeArticle()->repr()));
+	return nullptr;
+}
+
+
+DispatchArguments  CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm> term)
+{
+
+	std::cout << "what:  " << get_repr(term) << std::endl;
+	{
+		std::vector<HPred> predList;
+
 		predList.push_back(mkHPredAny("verb"));
 		predList.push_back(mk_HPredLiteral("["));
 		predList.push_back(mkHPredAny("kind1"));
@@ -673,16 +795,17 @@ std::pair<CBlock* , std::vector<HPred> >  CParser::parser_buildMatchBlock_action
 		predList.push_back(mk_HPredLiteral("["));
 		predList.push_back(mkHPredAny("kind2"));
 		predList.push_back(mk_HPredLiteral("]"));
-		
-		
+
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
-			CBlockMatch* c2 = new CBlockMatch(new CBlockKind(res.matchs["kind1"]->removeArticle()->repr()));
-			CBlockMatch* c3 = new CBlockMatch(new CBlockNoum(res.matchs["with_word"]->repr()));
-			CBlockMatch* c4 = new CBlockMatch(new CBlockKind(res.matchs["kind2"]->removeArticle()->repr()));
-
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));			 
+			CBlockMatch* c2 = parser_MatchArgument(res.matchs["kind1"]);
+			CBlockMatch* c3 = new CBlockMatch(new CBlockNoum(res.matchs["with_word"]->repr()));			 
+			CBlockMatch* c4 = parser_MatchArgument(res.matchs["kind2"]);
+			CBlockMatch* arg1 = new CBlockMatchNamed("noum1", new CBlockMatchAny());
+			CBlockMatch* arg2 = new CBlockMatchNamed("noum2", new CBlockMatchAny());
 
 			std::vector<HPred> replcList;
 			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
@@ -691,8 +814,41 @@ std::pair<CBlock* , std::vector<HPred> >  CParser::parser_buildMatchBlock_action
 			replcList.push_back(mkHPredAny("noum2"));
 
 
-			return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatchList({ c1,c2,c3,c4 }), replcList);
-			//return new CBlockMatchList({c1,c2,c3,c4});
+			return  DispatchArguments(replcList, new CBlockMatchList({ c2, c4 }), new CBlockMatchList({ c1,arg1,c3,arg2 }));
+
+		}
+	}
+	{
+		std::vector<HPred> predList;
+
+		predList.push_back(mkHPredAny("verb"));
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind1"));
+		predList.push_back(mk_HPredLiteral("]"));		 
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind2"));
+		predList.push_back(mk_HPredLiteral("]"));
+
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
+			CBlockMatch* c2 = parser_MatchArgument(res.matchs["kind1"]);
+			CBlockMatch* c3 = new CBlockMatch(new CBlockNoum(res.matchs["with_word"]->repr()));
+			CBlockMatch* c4 = parser_MatchArgument(res.matchs["kind2"]);
+			CBlockMatch* arg1 = new CBlockMatchNamed("noum1", new CBlockMatchAny());
+			CBlockMatch* arg2 = new CBlockMatchNamed("noum2", new CBlockMatchAny());
+
+			std::vector<HPred> replcList;
+			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
+			replcList.push_back(mkHPredAny("noum1"));
+			replcList.push_back(mk_HPredLiteral(res.matchs["with_word"]->repr()));
+			replcList.push_back(mkHPredAny("noum2"));
+
+
+			return  DispatchArguments(replcList, new CBlockMatchList({ c2, c4 }), new CBlockMatchList({ c1,arg1,c3,arg2 }));
+
 		}
 	}
 
@@ -702,28 +858,23 @@ std::pair<CBlock* , std::vector<HPred> >  CParser::parser_buildMatchBlock_action
 		predList.push_back(mkHPredAny("verb"));
 		predList.push_back(mk_HPredLiteral("["));
 		predList.push_back(mkHPredAny("kind1"));
-		predList.push_back(mk_HPredLiteral("]"));		
+		predList.push_back(mk_HPredLiteral("]"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-
-			std::cout << "matched " << res.matchs["kind1"]->repr()  <<   std::endl;
-
-
 			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
-			CBlockMatch* c2= new CBlockMatch (new CBlockKind(res.matchs["kind1"]->repr()));
-
+			CBlockMatch* c2 = new CBlockMatch(new CBlockKind(res.matchs["kind1"]->repr()));
 			std::vector<HPred> replcList;
 			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
 			replcList.push_back(mkHPredAny("noum1"));
-
-			return std::pair<CBlock*, std::vector<HPred> >(new CBlockMatchList({ c1,c2  }), replcList);
-			//return new CBlockMatchList({ c1,c2 });
+			return  DispatchArguments(replcList, new CBlockMatchList({ c2 }), new CBlockMatchList({ c1,c2 }));
+			 
 		}
 	}
-	 
-	return std::pair<CBlock*, std::vector<HPred> >(nullptr , std::vector<HPred>());
+
+	return DispatchArguments(std::vector<HPred>(), nullptr, nullptr);
 }
+
 
 CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 {
@@ -746,13 +897,13 @@ CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 
 			// existe uma action que Match com o Subst ???
 			CBlock* output_noum = nullptr;
-			CBlock* input_noum = nullptr;
+			CBlockMatch* sentence_match = nullptr;
 			{
 				auto sTerm = res.matchs["Subst"];				 
 				{
 					sTerm = expandBract(sTerm);
 				}				
-				std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl; 
+				//std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl; 
 				std::vector<HPred> actionList;
 				actionList.push_back(actionPredList);
 				MatchResult res_action = CMatch(sTerm, actionList);
@@ -760,15 +911,44 @@ CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 				{
 					CBlockAction * output_action = new CBlockAction(new CBlockNoum( (sTerm)->repr()));
 					output_noum = output_action;
-					auto match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
-					input_noum = match_predicate.first;
+					DispatchArguments match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
+					sentence_match = match_predicate.sentenceMatch  ;
 					
-					std::cout << "predicate  " << get_repr( match_predicate.second ) << std::endl;
+					//std::cout << "predicate  " << get_repr( match_predicate.second ) << std::endl;
 					
-					actionUndestands.push_back(  UnderstandAction(match_predicate.second, output_action) );
+					actionUndestands.push_back(  UnderstandAction(match_predicate.staticPredicade , output_action) );
+					
+					CBlockUnderstandStatic *retBlock = new CBlockUnderstandStatic(  match_predicate.staticArgumentMatch, output_noum);
 
-					return  new CBlockUnderstand(input_noum, output_noum);
+					int entryID = registerDynamicDispatch(match_predicate.staticPredicade, match_predicate.sentenceMatch );
+					registerStaticDispatch( entryID,  match_predicate.staticArgumentMatch   , retBlock );
+					 
+					return retBlock;
 				} 
+
+				//is not a action registed
+				{
+					std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl;
+
+					CBlockStaticDispatch* s_action = getStaticDispatchResolve(sTerm);
+					if (s_action != nullptr )
+					{
+						 
+						output_noum = s_action;
+						auto match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
+						sentence_match = match_predicate.sentenceMatch;
+						
+						actionUndestands.push_back(UnderstandAction(match_predicate.staticPredicade, s_action));
+						
+						CBlockUnderstandStatic *retBlock = new CBlockUnderstandStatic(match_predicate.staticArgumentMatch,  s_action);
+
+						int entryID = registerDynamicDispatch(match_predicate.staticPredicade, match_predicate.sentenceMatch);
+						registerStaticDispatch(entryID, match_predicate.staticArgumentMatch, retBlock);
+
+						return retBlock;
+					}
+
+				}
 			} 
 		} 
 	}
@@ -781,9 +961,33 @@ CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term) 
 {
 	
+	for(auto it = sentenceDispatch.begin() ; it != sentenceDispatch.end();++it)
+	{
+		
+		MatchResult res_action = CMatch(term, it->matchPhase );
+		if (res_action.result == Equals)
+		{
+			CBlock * n1 = parser(res_action.matchs["noum1"]);
+			CBlock*   n2 = nullptr;
+			if (res_action.matchs.find("noum2") != res_action.matchs.end())
+			{
+				n2 = parser(res_action.matchs["noum2"]);
+			}
+			else
+			{
+				n2 = new CBlockNoum("Nothing");
+			}
+			return new CBlockStaticDispatch(it->entryId , n1, n2);
+
+
+		}
+
+	}
+	//return nullptr;
+
 	//replace assertions 
 
-	for(auto e : actionUndestands)
+	/*for(auto e : actionUndestands)
 	{
 		MatchResult res_action = CMatch(term, e.matchPhase);
 		if (res_action.result == Equals)
@@ -800,7 +1004,7 @@ CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term)
 			}
 			return new CBlockActionCall(e.matchAction, n1,n2 );			
 		}
-	}
+	}*/
 
 	auto p_action = parser_understand_Action_Assertion(term);
 	if (p_action != nullptr) return p_action;
@@ -1015,7 +1219,7 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 
 				int nv = inList.size();
 
-				std::cout << res.matchs["Verb"]->repr() << std::endl;
+				//std::cout << res.matchs["Verb"]->repr() << std::endl;
 				if (a_verb != nullptr)
 				{
 					 
@@ -1241,7 +1445,7 @@ CBlockAssertion_is     * CParser::parseAssertion_DirectAssign(std::vector<HTerm>
 				 
 				 
 				HPred actionMatch = convert_to_predicate(sterm.get() );
-				std::cout << "found " << actionMatch->repr()  << std::endl;
+			//	std::cout << "found " << actionMatch->repr()  << std::endl;
 				actionPredList->blist.push_back(actionMatch);
 
 				return  new CBlockAssertion_isDirectAssign(_naction, value);
@@ -1782,8 +1986,8 @@ CBlock* CParser::parser(HTerm term)
 	if (CList  * vlist = dynamic_cast<CList*>(term.get()))
 	{
 		auto r =  parser_only(vlist->asVector());
-		if (r == nullptr)
-			std::cout << term->repr() << std::endl;
+		/*if (r == nullptr)
+			std::cout << term->repr() << std::endl;*/
 
 		return r;
 	}

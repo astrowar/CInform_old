@@ -52,9 +52,59 @@ public:
  {
  public:
 	 std::vector<HPred> matchPhase;
-	  CBlockAction*  matchAction;
+	 CBlockAction *  matchAction;
 	 UnderstandAction(std::vector<HPred> _matching , CBlockAction*  _Action):matchPhase(_matching),  matchAction(_Action) {}
  };
+
+
+ //resolve as chamadas em tempo de execucao
+ class staticDispatchEntry
+ {
+ public:	 
+	 staticDispatchEntry(CBlockMatchList* _argumentsMatch, CBlock* _action);
+	 staticDispatchEntry();
+	 CBlockMatchList* entryArguments;
+	 CBlock * action;  //actions TO call
+ };
+
+
+ // Class que determina quais frases sao direcionados a quais dynamicDispatchs.. estes sao resolvidos em tempo de compilacao
+ class StaticDispatchArgument
+ {
+ public:
+	 StaticDispatchArgument( int _entryId ):entryId(_entryId){};	 
+	 std::list<staticDispatchEntry> entries;
+	 int  entryId;
+ };
+
+
+ 
+class SentenceDispatchPredicate
+ {
+ public:
+	 SentenceDispatchPredicate(std::vector<HPred> _matchPhase , CBlockMatch* _matchPhaseDynamic, int _entryId);
+	 std::vector<HPred> matchPhase;	 
+	 CBlockMatch* _matchPhaseDynamic;
+	 int  entryId;
+ };
+
+
+ class DispatchArguments
+ {
+ public:
+	 DispatchArguments(std::vector<HPred> _sentencePredicade , CBlockMatchList* static_argument_match, CBlockMatch* sentence_match)
+		 : staticPredicade(_sentencePredicade),
+		 staticArgumentMatch(static_argument_match),
+		 sentenceMatch(sentence_match)
+	 {
+	 }
+
+	 std::vector<HPred> staticPredicade;
+	 CBlockMatchList*   staticArgumentMatch; // Only the arguments
+	 CBlockMatch*   sentenceMatch; //Full Sentence
+	 
+ };
+
 
 class CParser
 {
@@ -67,6 +117,9 @@ class CParser
 	std::shared_ptr<CPredBooleanOr>  actionPredList;
  
 	std::list< UnderstandAction > actionUndestands;
+	std::list<StaticDispatchArgument> staticDispatch;
+	std::list<SentenceDispatchPredicate> sentenceDispatch;
+
 	
 public:
 	CParser(CBlockInterpreter *_interpreter);
@@ -75,9 +128,11 @@ public:
  
 	void set_Noum(NoumDefinition ndef);
 	void set_Noum(NoumDefinitions ndef);
+	int registerStaticDispatch(int entryId, CBlockMatchList *argumentMatch, CBlock* body );
 
 
-	 
+	int registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlockMatch* entryMatch );
+
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	CBlock* parse_AssertionAction_ApplyngTo(HTerm term);
 	CBlock* parse_AssertionVerb(std::vector<HTerm> term);
@@ -93,6 +148,7 @@ public:
 	CBlock* parseAssertion_isDecide(std::vector<HTerm> term);
 	CBlock* parserBoolean(  HTerm  term);
 	CBlock* parser_Definition_Assertion(std::vector<HTerm> term);
+	CBlockStaticDispatch* getStaticDispatchResolve(HTerm tem);
 	CBlockAssertion_isInstanceOf* parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
 	CBlockList* parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep );
 	CBlockList* parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlockList* CList);
@@ -104,8 +160,10 @@ public:
 	CBlock* parseAssertionFirstTerm(HTerm match);
 	CBlock* parseAssertionEnumSecondTerm(HTerm term);
 	CBlock* parser_Decide_Assertion(std::vector<HTerm> lst);
-	std::pair<CBlock*, std::vector<HPred> >  parser_buildMatchBlock_actionInput(HTerm term);
-	std::pair<CBlock*, std::vector<HPred> >  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
+	
+	CBlockMatch* parser_MatchArgument(HTerm term);
+	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
+	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
 	CBlock* parser_understand_Action_Assertion(std::vector<HTerm> term);
 	CBlock* parser_understand_Assertion(std::vector<HTerm> term);
 	CBlock* parser_verb_Assertion(std::vector<HTerm> lst);

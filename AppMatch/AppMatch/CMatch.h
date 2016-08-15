@@ -7,7 +7,7 @@
 #include "EqualsResult.h"
 #include <functional>
 using MTermSet = std::vector<HTerm>;
-using MTermSetCombinatoria = std::vector<MTermSet>;
+using  MTermSetCombinatoria = std::vector<MTermSet>;
 using MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
 MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n);
 
@@ -35,6 +35,7 @@ public:
 
 	virtual EqualsResul match(MTermSet& h) = 0;
 	virtual EqualsResul match(HTerm h) = 0;
+	virtual bool isSame(HTerm b) = 0;
 };
 
 using HPred = std::shared_ptr<CPred>;
@@ -42,6 +43,8 @@ using HPred = std::shared_ptr<CPred>;
 class CPredAtom : public CPred
 {
 public:
+	bool isSame(HTerm b) override;
+
 	HTerm h;
 	std::string repr() override;
 	CPredAtom(std::string _named, HTerm atom);
@@ -52,6 +55,7 @@ public:
 class CPredList : public CPred
 {
 public:
+	bool isSame(HTerm b) override;
 	std::string repr() override;
 	std::vector<HPred> plist;
 	CPredList(std::string _named, std::initializer_list<HPred> plist);
@@ -62,6 +66,7 @@ public:
 class CPredAny : public CPred
 {
 public:
+	bool isSame(HTerm b) override;
 	std::string repr() override;
 	CPredAny(std::string _named);;
 	virtual EqualsResul match(MTermSet& _h) override;
@@ -71,6 +76,7 @@ public:
 class CPredWord : public CPred
 {
 public:
+	bool isSame(HTerm b) override;
 	std::string repr() override;
 	CPredWord(std::string _named);;
 	virtual EqualsResul match(MTermSet& _h) override;
@@ -86,6 +92,7 @@ public:
 class CPredBooleanAnd : public CPredBoolean
 {
 public:
+	bool isSame(HTerm b) override;
 	std::string repr() override;
 	virtual EqualsResul match(MTermSet& h) override;
 	virtual EqualsResul match(HTerm h) override;
@@ -97,6 +104,7 @@ public:
 class CPredBooleanOr : public CPredBoolean
 {
 public:
+	bool isSame(HTerm b) override;
 	std::string repr() override;
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2, const HPred& c_pred3);
 	CPredBooleanOr(const std::string& _named, const HPred& c_pred, const HPred& c_pred1, const HPred& c_pred2 );
@@ -109,7 +117,7 @@ public:
 };
 
 
- 
+bool isSamePred(std::vector<HPred> a, std::vector<HPred> b);
 
 
 //==========================================

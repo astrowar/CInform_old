@@ -308,14 +308,99 @@ void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria& fun
 	if (lst.size() == n)
 	{
 
-		  func({ getUnicCombination(lst) }); // apenas uma combinacao eh possivel 
-		  return;
+		MTermSetCombinatoria unip = { getUnicCombination(lst) };
+		func(unip); // apenas uma combinacao eh possivel 
+		return;
 	}
 	MTermSetCombinatoria partial;
 	applyCombinatoriasRec(partial,lst, n, func);
 }
 
+//======================================================================
 
+
+bool  applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, std::vector<CPred*> &preds, int pos, FuncCombinatoria& func)
+{
+	if (preds[pos]->match(terms) != NotEquals)
+	{
+		if (isListValid(terms) == false) return false;
+		partial_in.push_back(terms);
+		bool hasFound = func(partial_in);
+		partial_in.pop_back();
+		return hasFound;
+	}
+	return false;
+}
+
+bool applyCombinatoriasRecSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, size_t n, std::vector<CPred*> &preds,int pos, FuncCombinatoria& func) //num termos que restam
+{
+
+	if (n == 1)
+	{
+		return  applyCombinatoriasGroup(partial_in, terms, func); // apenas uma combinacao eh possivel 
+
+	}
+	size_t lsize = terms.size();
+	if (n == lsize)
+	{
+		return  applyCombinatoriasUnitary(partial_in, terms, func); //Agiliza o processamento
+
+	}
+
+	MTermSetCombinatoria partial = partial_in;//copy
+
+											  //particiona de 1 a (n-1)
+	MTermSetCombinatoriaList accTerms;
+	for (size_t j = 1; j <= lsize - n + 1; ++j)
+	{
+		MTermSet head(terms.begin(), terms.begin() + j);
+		if (preds[pos]->match(head) != NotEquals)
+		{
+			if (isListValid(head))
+			{
+				std::vector<HTerm> tail(terms.begin() + j, terms.end());
+
+				partial.push_back(head);
+				bool hasFound = false;
+				if (n > 2) hasFound = applyCombinatoriasRecSmart(partial, tail, n - 1, preds,pos+1, func);
+				else if (n == 2)  hasFound = applyCombinatoriasGroupSmart(partial, tail, preds, pos + 1, func);
+				partial.pop_back();
+				if (hasFound)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+
+}
+
+
+void applyCombinatorias_smart(std::vector<HTerm>& lst, size_t n, std::vector<CPred*> preds, FuncCombinatoria& func)
+{
+
+	if (lst.size() < n)
+	{
+		return; // impossivel ..
+	}
+
+	if (lst.size() == n)
+	{
+
+		MTermSetCombinatoria unip = { getUnicCombination(lst) };
+		func(unip); // apenas uma combinacao eh possivel 
+		return;
+	}
+	MTermSetCombinatoria partial;
+	applyCombinatoriasRecSmart(partial, lst, n, preds, 0 , func);
+}
+
+
+
+
+
+//=====================================================================
 
  
 
@@ -372,6 +457,15 @@ std::string CPred::repr()
 	return "Pred";
 }
 
+bool CPredAtom::isSame(HTerm b)
+{
+	if (CPredAtom* hlist = dynamic_cast<CPredAtom*>(b.get()))
+	{
+		return (equals(this->h.get(), hlist->h.get()) == Equals);
+	}
+	return false;
+}
+
 std::string CPredAtom::repr()
 {
 	return "Pred(" +this->h->repr() +")";
@@ -403,6 +497,24 @@ EqualsResul CPredAtom::match(HTerm h)
 {
 	
 	return equals(this->h.get(), h.get());
+}
+
+bool CPredList::isSame(HTerm h)
+{
+	if (CPredList* hlist = dynamic_cast<CPredList*>(h.get()) )
+	{
+		if (this->plist.size() != hlist->plist.size()) return false;
+		for(int i =0 ; i< this->plist.size();++i)
+		{
+			if (this->plist[i]->isSame( hlist->plist[i]) ==false )
+			{
+				return false;
+			}
+		}
+		return true;
+
+	}
+	return false;
 }
 
 std::string CPredList::repr()
@@ -473,6 +585,16 @@ EqualsResul CPredList::match(HTerm h)
 	return NotEquals;
 }
 
+bool CPredAny::isSame(HTerm h)
+{
+
+	if (CPredAny* hlist = dynamic_cast<CPredAny*>(h.get()))
+	{
+		return true;
+	}
+	return false;
+}
+
 std::string CPredAny::repr()
 {
 	return "Pred(_)";
@@ -490,6 +612,15 @@ EqualsResul CPredAny::match(MTermSet& _h)
 EqualsResul CPredAny::match(HTerm h)
 {
 	return Equals;
+}
+
+bool CPredWord::isSame(HTerm b)
+{
+	if (CPredWord* hlist = dynamic_cast<CPredWord*>(b.get()))
+	{
+		return true;
+	}
+	return false;
 }
 
 std::string CPredWord::repr()
@@ -520,6 +651,17 @@ CPredBoolean::CPredBoolean(const std::string& _named): CPred(_named)
 {
 }
 
+bool CPredBooleanAnd::isSame(HTerm b)
+{
+	if (CPredBooleanAnd *v = dynamic_cast<CPredBooleanAnd*>(b.get()))
+	{
+		if (this->b1->isSame(v->b1) == false) return false;
+		if (this->b2->isSame(v->b2) == false) return false;
+		return true;
+	}
+	return false;
+}
+
 std::string CPredBooleanAnd::repr()
 {
 	 
@@ -543,6 +685,24 @@ CPredBooleanAnd::CPredBooleanAnd(const std::string& _named, const HPred& c_pred,
 																										b1(c_pred),
 																										b2(c_pred1)
 {
+}
+
+bool CPredBooleanOr::isSame(HTerm b)
+{
+
+	if (CPredBooleanOr *v = dynamic_cast<CPredBooleanOr*>(b.get()))
+	{
+		int n = blist.size();
+		if (v->blist.size() != n) return false;
+
+		for (int i = 0 ; i< n;++i )
+		{
+			if (blist[i]->isSame(v->blist[i]) == false) return false;
+		}
+		return true;
+	}
+	return false;
+
 }
 
 std::string CPredBooleanOr::repr()
@@ -589,8 +749,19 @@ EqualsResul CPredBooleanOr::match(HTerm h)
 
 //===============================================
 //Makes 
- 
 
+
+bool isSamePred(std::vector<HPred> a, std::vector<HPred> b)
+{
+	int n = a.size();
+	if (n != b.size()) return false;
+	for(int i =0 ; i< n;++i)
+	{
+		if (a[i]->isSame(b[i]) == false) return false;
+	}
+	return true;
+
+}
 
 HPred mkHPredAtom(std::string _named, HTerm atom) {  return std::make_shared<CPredAtom>(_named, atom); };
 HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist) { return std::make_shared<CPredList>(_named, plist); };
@@ -857,7 +1028,8 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates)
 
 		};
 
-		applyCombinatorias(expandContents, npred, f_disp);
+		//applyCombinatorias(expandContents, npred, f_disp);
+		applyCombinatorias_smart (expandContents, npred, predicates_ptr, f_disp);
 		return mmResultMatch;
 
 	}

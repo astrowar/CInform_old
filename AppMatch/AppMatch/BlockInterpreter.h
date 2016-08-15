@@ -398,19 +398,28 @@ public:
 	CBlockVerbRelation(CBlock* _noum, CBlock * _relation) : verbNoum(_noum), relation(_relation) {};
 };
 
+class CBlockMatch;
 
 class CBlockUnderstand : public CBlock    //retorna uma declaracao 
 {
 public:
 	virtual void dump(std::string ident) override;
 
-	CBlock* input_n; // Pode ser simples ou com a preposicao
+	CBlockMatch * input_n; // Pode ser simples ou com a preposicao
 	CBlock* output_n;
-	CBlockUnderstand(CBlock* _input_n, CBlock * _output_n) : input_n(_input_n), output_n(_output_n) {};
+	CBlockUnderstand(CBlockMatch * _input_n, CBlock * _output_n) : input_n(_input_n), output_n(_output_n) {};
 };
 
- 
+class CBlockMatchList;
+class CBlockUnderstandStatic : public CBlock    //retorna uma declaracao 
+{
+public:
+	virtual void dump(std::string ident) override;
 
+	CBlockMatchList * argument_match; // Pode ser simples ou com a preposicao
+	CBlock* output_n;
+	CBlockUnderstandStatic(CBlockMatchList * _argument_match, CBlock * _output_n) : argument_match(_argument_match), output_n(_output_n) {};
+};
 
 
 
@@ -452,8 +461,32 @@ public:
 	{};
 };
 
+class CBlockMatchAny : public  CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(std::string ident) override;
 
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+	virtual bool  match() { return true; };
+	 
+	CBlockMatchAny( ) : CBlockMatch(nullptr)
+	{};
+};
  
+
+
+class CBlockMatchNamed : public  CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(std::string ident) override;
+
+	virtual bool match() override;;
+	CBlockMatch* matchInner;
+	std::string named;
+	CBlockMatchNamed(std::string _named, CBlockMatch* _matchInner) : named(_named), CBlockMatch(nullptr), matchInner(_matchInner)
+	{};
+};
+
  
 
 class CBlockMatchKind : public  CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
@@ -549,6 +582,31 @@ public :
 
 	CBlockAction* input;
 };
+
+
+
+ 
+
+class CBlockDinamicDispatch : public  CBlockAction
+{
+public:
+ 
+	string  command;
+	CBlockDinamicDispatch( string _command ) : CBlockAction(  new CBlockNoum(_command) ), command(_command)  {}
+	void dump(std::string ident) override;
+};
+
+
+class CBlockStaticDispatch : public  CBlockAction
+{
+public:
+	int staticEntryTable;	 
+	CBlock *noum1;
+	CBlock *noum2;
+	CBlockStaticDispatch(int _staticEntryTable,   CBlock* _noum1, CBlock* _noum2) : CBlockAction(new CBlockNoum("static "+ std::to_string( _staticEntryTable) )), staticEntryTable(_staticEntryTable),  noum1(_noum1), noum2(_noum2) {}
+	void dump(std::string ident) override;
+};
+
 
 
 class CBlockTransform  : public  CBlock  // um bloco que trasnforma um valor em outro

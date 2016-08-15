@@ -181,6 +181,23 @@ void CBlockMatch::dump(std::string ident)
 	}
 }
 
+void CBlockMatchAny::dump(std::string ident)
+{
+	cout << ident << "Match Any " << endl;
+	
+}
+
+void CBlockMatchNamed::dump(std::string ident)
+{
+	cout << ident << "Match As " << named << endl;
+	{
+		this->matchInner->dump(ident + "       ");
+	}
+}
+
+bool CBlockMatchNamed::match()
+{ return matchInner->match(); }
+
 void CBlockMatchKind::dump(std::string ident)
 {
 	cout << ident << "Match Kind: " << endl;
@@ -299,6 +316,25 @@ void CBlockAssertion_isActionOf::dump(std::string ident)
 	cout << ident << "Action " << endl;
 }
 
+void CBlockDinamicDispatch::dump(std::string ident)
+{
+	cout << ident << "DinamicDispatch " << endl;
+	{
+		this->input->dump(ident + "       ");	 
+	}
+}
+
+void CBlockStaticDispatch::dump(std::string ident)
+{
+	cout << ident << "StaticDispatch Entry:  " << this->staticEntryTable << endl;
+	{	
+	 
+		cout << ident << "Args: " << endl;
+		this->noum1->dump(ident + "       ");
+		this->noum2->dump(ident + "       ");
+
+	}
+}
 
 
 //  define  ((Person:A) eat (thing:B)) is a Action.  -> first noum, second noum
@@ -452,4 +488,12 @@ void CBlockUnderstand::dump(std::string ident)
 	cout << ident << "As " << endl;
 	this->output_n->dump(ident + "       ");
 
+}
+
+void CBlockUnderstandStatic::dump(std::string ident)
+{
+	cout << ident << "Understand Static " << endl;
+	this->argument_match->dump(ident + "       ");
+	cout << ident << "As " << endl;
+	this->output_n->dump(ident + "       ");
 }

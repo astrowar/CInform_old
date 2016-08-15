@@ -540,7 +540,7 @@ void testeParser_22()
 	CParser parse(new CBlockInterpreter());
 	{
 		{
-			std::string phase_1 = " taking is an action applying to (one thing)  ";
+			std::string phase_1 = " use_with is an action applying to (one thing) and (a thing)  ";
 			auto res = parse.parser(phase_1);
 			if (res == nullptr) throw "parse error";
 			if (ISLOG)
@@ -549,30 +549,10 @@ void testeParser_22()
 				std::cout << std::endl;
 			}
 		}
-		{
-			std::string phase_1 = " a mistake is an action applying to ( nothing )  ";
-			auto res = parse.parser(phase_1);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG)
-			{
-				res->dump("");
-				std::cout << std::endl;
-			}
-		}
+		 
 
 		{
-			std::string phase_1 = "understand : take [ something ]  as  taking ";
-			auto res = parse.parser(phase_1);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG)
-			{
-				res->dump("");
-				std::cout << std::endl;
-			}
-		}
-
-		{
-			std::string phase_1 = "understand : take [ a person ]  as a mistake ";
+			std::string phase_1 = "understand : use  [ a thing ] as use_with ";
 			auto res = parse.parser(phase_1);
 			if (res == nullptr) throw "parse error";
 			if (ISLOG)
@@ -583,7 +563,7 @@ void testeParser_22()
 		}
 		 
 		{
-			std::string phase_1 = "take the book";
+			std::string phase_1 = "understand : use  [ a thing  - keyer ] with [ a thing ] as use_with ";
 			auto res = parse.parser(phase_1);
 			if (res == nullptr) throw "parse error";
 			if (ISLOG)
@@ -592,8 +572,21 @@ void testeParser_22()
 				std::cout << std::endl;
 			}
 		}
-
 		 
+		 
+
+	 
+
+		{
+			std::string phase_1 = "  use key with box ";
+			auto res = parse.parser(phase_1);
+			if (res == nullptr) throw "parse error";
+			if (ISLOG)
+			{
+				res->dump("");
+				std::cout << std::endl;
+			}
+		}
 
 	}
 }
@@ -603,14 +596,14 @@ void testeParser ()
 {
 	 // testeParser_1();
 	  
-	// for (int k = 0; k < 100; ++k)
+	//  for (int k = 0; k < 100; ++k)
 	{
 	   //testeParser_2();
-	  //  testeParser_2a();
-	  //  testeParser_3();
+	  //   testeParser_2a();
+	  //   testeParser_3();
 	  // testeParser_4();
-	  // testeParser_5();
-	 //  testeParser_6();
+	 //  testeParser_5();
+	  // testeParser_6();
 	   testeParser_22();
 	   std::cout << ".";
 	}
