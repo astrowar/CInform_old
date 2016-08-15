@@ -112,7 +112,7 @@ class CParser
 	std::vector<NoumDefinition> nregisters;
 	CBlockInterpreter *interpreter;
 
-	std::map<string, CBlock* > verbToRelation;
+	std::map<string, UBlock > verbToRelation;
 	std::shared_ptr<CPredBooleanOr>  verbList;
 	std::shared_ptr<CPredBooleanOr>  actionPredList;
  
@@ -134,20 +134,20 @@ public:
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlockMatch* entryMatch );
 
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
-	CBlock* parse_AssertionAction_ApplyngTo(HTerm term);
-	CBlock* parse_AssertionVerb(std::vector<HTerm> term);
-	CBlock * parse_AssertionAction(std::vector<HTerm> term);
+	UBlock parse_AssertionAction_ApplyngTo(HTerm term);
+	UBlock parse_AssertionVerb(std::vector<HTerm> term);
+	UBlock parse_AssertionAction(std::vector<HTerm> term);
 	 
  
  
  
-	CBlock* parseAssertion_isKindOf(std::vector<HTerm> term);
-	CBlock* parseAssertion_valuesOf(std::vector<HTerm> term);
-	CBlock* parser_What_Assertion(std::vector<HTerm> term);
-	CBlock* parseAssertion_DecideWhat( HTerm  term);
-	CBlock* parseAssertion_isDecide(std::vector<HTerm> term);
-	CBlock* parserBoolean(  HTerm  term);
-	CBlock* parser_Definition_Assertion(std::vector<HTerm> term);
+	UBlock parseAssertion_isKindOf(std::vector<HTerm> term);
+	UBlock parseAssertion_valuesOf(std::vector<HTerm> term);
+	UBlock parser_What_Assertion(std::vector<HTerm> term);
+	UBlock parseAssertion_DecideWhat( HTerm  term);
+	UBlock parseAssertion_isDecide(std::vector<HTerm> term);
+	UBlock parserBoolean(  HTerm  term);
+	UBlock parser_Definition_Assertion(std::vector<HTerm> term);
 	CBlockStaticDispatch* getStaticDispatchResolve(HTerm tem);
 	CBlockAssertion_isInstanceOf* parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
 	CBlockList* parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep );
@@ -156,37 +156,37 @@ public:
 	CBlockList* parseAssertionFirstTerm_COMMA_OR(HTerm term, CBlockList* CList);
 	CBlockList* parse_Strict_COMMA_AND(HTerm term );
 	CBlockList* parse_Strict_COMMA_OR(HTerm term );
-	CBlock* parseAssertionFirstTerm_Compose(HTerm term);
-	CBlock* parseAssertionFirstTerm(HTerm match);
-	CBlock* parseAssertionEnumSecondTerm(HTerm term);
-	CBlock* parser_Decide_Assertion(std::vector<HTerm> lst);
+	UBlock parseAssertionFirstTerm_Compose(HTerm term);
+	UBlock parseAssertionFirstTerm(HTerm match);
+	UBlock parseAssertionEnumSecondTerm(HTerm term);
+	UBlock parser_Decide_Assertion(std::vector<HTerm> lst);
 	
 	CBlockMatch* parser_MatchArgument(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
-	CBlock* parser_understand_Action_Assertion(std::vector<HTerm> term);
-	CBlock* parser_understand_Assertion(std::vector<HTerm> term);
-	CBlock* parser_verb_Assertion(std::vector<HTerm> lst);
+	UBlock parser_understand_Action_Assertion(std::vector<HTerm> term);
+	UBlock parser_understand_Assertion(std::vector<HTerm> term);
+	UBlock parser_verb_Assertion(std::vector<HTerm> lst);
 
 	CBlockEnums* parseAssertion_EnumTerms(  HTerm  elist);
 
 
-	CBlock* parseAssertion_isVariable(std::vector<HTerm> lst);
-	CBlock* parseAssertion_DefaultAssign(std::vector<HTerm> term);
+	UBlock parseAssertion_isVariable(std::vector<HTerm> lst);
+	UBlock parseAssertion_DefaultAssign(std::vector<HTerm> term);
 	CBlockAssertion_is * parseAssertion_DirectAssign(std::vector<HTerm> term);
-	CBlock* parse_removeArticle(std::vector<HTerm> term);
-	CBlock* parse_List_AND(std::vector<HTerm> term);
-	CBlock* parse_noum(std::vector<HTerm> term);
-	CBlock* parser_Declaration_Assertion(std::vector<HTerm> lst);
+	UBlock parse_removeArticle(std::vector<HTerm> term);
+	UBlock parse_List_AND(std::vector<HTerm> term);
+	UBlock parse_noum(std::vector<HTerm> term);
+	UBlock parser_Declaration_Assertion(std::vector<HTerm> lst);
 	CBlockProperty* parse_PropertyOf(std::vector<HTerm> term);
  
-	CBlock* parser_canBe_Assertion(std::vector<HTerm> lst);
+	UBlock parser_canBe_Assertion(std::vector<HTerm> lst);
 	CBlockInstanceVariable* CProperty_called(HTerm term);
-	CBlock* parser_hasAn_Assertion(std::vector<HTerm> lst);
+	UBlock parser_hasAn_Assertion(std::vector<HTerm> lst);
  
-	CBlock* parser_only(std::vector<HTerm> lst);
-	CBlock*  parser(HTerm term);
-	CBlock* parserBoolean(std::vector<HTerm> term);
-	CBlock* parser(std::string str);
+	UBlock parser_only(std::vector<HTerm> lst);
+	UBlock  parser(HTerm term);
+	UBlock parserBoolean(std::vector<HTerm> term);
+	UBlock parser(std::string str);
 };
 

@@ -224,11 +224,11 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst)
 	{
 		return  ParserResult(res) ;
 	}
-	//CBlock *b = new CBlockAssertion(res.matchs["Object"], res.matchs["Kind"]);
+	//CBlock* b = new CBlockAssertion(res.matchs["Object"], res.matchs["Kind"]);
 	return std::move(ParserResult(res));
 }
 
-CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
+UBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 {
 	{
 		// and action applying to [one visible thing and requiring light]
@@ -239,9 +239,9 @@ CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock *n1 = parser(res.matchs["kind1"]);
-			CBlock *n2 = parser(res.matchs["kind2"]);
-			return  new CBlockActionApply(n1,n2 );
+			UBlock n1 = parser(res.matchs["kind1"]);
+			UBlock n2 = parser(res.matchs["kind2"]);
+			return  std::make_unique<CBlockActionApply>(n1,n2 );
 		}
 	}
 
@@ -254,8 +254,8 @@ CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock *n1 = parser(res.matchs["kind1"]);			 
-			return  new CBlockActionApply(n1, n1);
+			UBlock n1 = parser(res.matchs["kind1"]);			 
+			return  std::make_unique< CBlockActionApply> (n1, n1);
 		}
 	}
 
@@ -268,7 +268,7 @@ CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock *n1 = parser(res.matchs["kind1"]);
+			UBlock n1 = parser(res.matchs["kind1"]);
 			return  new CBlockActionApply(n1, new CBlockNoum("Nothing") );
 		}
 	}
@@ -278,7 +278,7 @@ CBlock* CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 
 
  
-CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
+UBlock CParser::parse_AssertionVerb(std::vector<HTerm> term)
 {
 	{
 		// and action applying to [one visible thing and requiring light]
@@ -291,10 +291,9 @@ CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock * n1 = parser(res.matchs["N1"]);
-			CBlock*   n2 = parser(res.matchs["N2"]);
+			UBlock  n1 = parser(res.matchs["N1"]);
+			UBlock  n2 = parser(res.matchs["N2"]);
 			return  new CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
-
 		}
 	}
 
@@ -309,8 +308,8 @@ CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock * n1 = parser(res.matchs["N1"]);
-			CBlock*   n2 = parser(res.matchs["N2"]);
+			UBlock  n1 = parser(res.matchs["N1"]);
+			UBlock   n2 = parser(res.matchs["N2"]);
 			return  new CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
 
 		}
@@ -328,8 +327,8 @@ CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock * n1 = parser(res.matchs["N1"]);
-			CBlock*   n2 = parser(res.matchs["N2"]);
+			UBlock n1 = parser(res.matchs["N1"]);
+			UBlock   n2 = parser(res.matchs["N2"]);
 			return  new CBlockIsVerb(res.matchs[verbList->named ]->repr(), n1, n2);
 
 		}
@@ -345,8 +344,8 @@ CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock * n1 = parser(res.matchs["N1"]);
-			CBlock*   n2 = parser(res.matchs["N2"]);
+			UBlock n1 = parser(res.matchs["N1"]);
+			UBlock   n2 = parser(res.matchs["N2"]);
 			return  new CBlockIsVerb(res.matchs[verbList->named]->repr(), n1, n2);
 
 		}
@@ -356,7 +355,7 @@ CBlock* CParser::parse_AssertionVerb(std::vector<HTerm> term)
 }
 
 
-CBlock* CParser::parserBoolean(std::vector<HTerm> term)
+UBlock CParser::parserBoolean(std::vector<HTerm> term)
 {
 	{
 		std::vector<HPred> predList;	
@@ -366,7 +365,7 @@ CBlock* CParser::parserBoolean(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{			
-			CBlock* n2 = parserBoolean(res.matchs["N2"]);
+			UBlock n2 = parserBoolean(res.matchs["N2"]);
 			return new CBlockBooleanNOT( n2);
 		}
 	}
@@ -381,8 +380,8 @@ CBlock* CParser::parserBoolean(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock* n1 = parserBoolean(res.matchs["N1"]);
-			CBlock* n2 = parserBoolean(res.matchs["N2"]);
+			UBlock n1 = parserBoolean(res.matchs["N1"]);
+			UBlock n2 = parserBoolean(res.matchs["N2"]);
 			return new CBlockBooleanAND(n1, n2);		
 		}
 	}
@@ -397,8 +396,8 @@ CBlock* CParser::parserBoolean(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock* n1 = parserBoolean(res.matchs["N1"]);
-			CBlock* n2 = parserBoolean(res.matchs["N2"]);
+			UBlock n1 = parserBoolean(res.matchs["N1"]);
+			UBlock n2 = parserBoolean(res.matchs["N2"]);
 			return new CBlockBooleanOR(n1, n2);
 		}
 	}
@@ -409,7 +408,7 @@ CBlock* CParser::parserBoolean(std::vector<HTerm> term)
 
 
 
-CBlock* CParser::parse_AssertionAction (std::vector<HTerm> term )
+UBlock CParser::parse_AssertionAction (std::vector<HTerm> term )
 {
 	
 	{		 
@@ -424,7 +423,7 @@ CBlock* CParser::parse_AssertionAction (std::vector<HTerm> term )
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock *applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
+			CBlock* applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
 			//return  new CBlockActionApply(new CBlockNoum( res.matchs["Noum1"]->removeArticle()->repr() ),new  CBlockNoum(res.matchs["Noum2"]->removeArticle()->repr() ));
 			return  new CBlockActionKind("", applyTO);
 		
@@ -442,7 +441,7 @@ CBlock* CParser::parse_AssertionAction (std::vector<HTerm> term )
  
 
 
-CBlock* CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
+UBlock CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 {
 	{
 		std::vector<HPred> predList;	 
@@ -482,7 +481,7 @@ CBlock* CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 
 
 
-CBlock* CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
+UBlock CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
 {
 	
 	// The colors are blue, green, yellow, and red.
@@ -511,8 +510,8 @@ CBlock* CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
 			//KindValue must exist
 			
 
-			CBlock *valueName = parser(res.matchs["valueName"] );
-			CBlock *valueKind = parser(res.matchs["valueKind"] );
+			UBlock valueName = parser(res.matchs["valueName"] );
+			UBlock valueKind = parser(res.matchs["valueKind"] );
 			return new CBlockAssertion_isNamedValueOf(valueName, valueKind);
 
 			 
@@ -525,7 +524,7 @@ CBlock* CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
 
 
  
-CBlock* CParser::parser_What_Assertion(std::vector<HTerm> term)
+UBlock CParser::parser_What_Assertion(std::vector<HTerm> term)
 {
 	{
 		std::vector<HPred> predList;
@@ -537,7 +536,7 @@ CBlock* CParser::parser_What_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{	 
-			CBlock* body = parser(res.matchs["RemainderQuery"]);
+			UBlock body = parser(res.matchs["RemainderQuery"]);
 			if (body != nullptr)
 			{
 				return  new CBlockMatch(body);
@@ -557,10 +556,10 @@ CBlock* CParser::parser_What_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock* AValue = parser(res.matchs["AValue"]);
+			UBlock AValue = parser(res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			CBlock* BValue = parser(res.matchs["BValue"]);
+			UBlock BValue = parser(res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 			 
 			return  new CBlockMatch(new CBlockAssertion_isDirectAssign(AValue, BValue));
@@ -571,12 +570,12 @@ CBlock* CParser::parser_What_Assertion(std::vector<HTerm> term)
 
 }
 
-CBlock* CParser::parseAssertion_DecideWhat( HTerm  term)
+UBlock CParser::parseAssertion_DecideWhat( HTerm  term)
 {
 	return new CBlockNoum(term->removeArticle()->repr());
 }
 
-CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
+UBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 {
 
 	//{
@@ -608,7 +607,7 @@ CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 	//		CBlockMatch * noumVariable = new CBlockMatch(parseAssertion_DecideWhat( res.matchs["ValueToDecide"] ) );
 	//		CBlockKind*         baseKind = new CBlockKind(res.matchs["KindToReturn"]->removeArticle()->repr());
 
-	//		CBlock *   body =   new CBlockNoum(res.matchs["RemainBody"]->removeArticle()->repr());
+	//		CBlock*    body =   new CBlockNoum(res.matchs["RemainBody"]->removeArticle()->repr());
 
 	//		return  new CBlockToDefine(baseKind, noumVariable , body);
 	//	}
@@ -625,8 +624,8 @@ CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock* a_match =  parser(res.matchs["Match"]);
-			CBlock* body = parser(res.matchs["RemainBody"] );
+			UBlock a_match =  parser(res.matchs["Match"]);
+			UBlock body = parser(res.matchs["RemainBody"] );
 
 			return  new CBlockToDecide(a_match, body);
 		}
@@ -638,7 +637,7 @@ CBlock* CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 
  
 
-CBlock* CParser::parser_Definition_Assertion(std::vector<HTerm> term)
+UBlock CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 {
 	
 	{
@@ -656,8 +655,8 @@ CBlock* CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock* a_match = parser(res.matchs["Match"]);
-			CBlock* body = parserBoolean(res.matchs["LogicalBody"]);
+			UBlock a_match = parser(res.matchs["Match"]);
+			UBlock body = parserBoolean(res.matchs["LogicalBody"]);
 
 			return  new CBlockToDecideIf(a_match, body);
 		}
@@ -958,7 +957,7 @@ CBlock* CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 
 
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
-CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term) 
+UBlock CParser::parser_understand_Assertion(std::vector<HTerm> term)
 {
 	
 	for(auto it = sentenceDispatch.begin() ; it != sentenceDispatch.end();++it)
@@ -967,8 +966,8 @@ CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term)
 		MatchResult res_action = CMatch(term, it->matchPhase );
 		if (res_action.result == Equals)
 		{
-			CBlock * n1 = parser(res_action.matchs["noum1"]);
-			CBlock*   n2 = nullptr;
+			UBlock  n1 = parser(res_action.matchs["noum1"]);
+			UBlock   n2 = nullptr;
 			if (res_action.matchs.find("noum2") != res_action.matchs.end())
 			{
 				n2 = parser(res_action.matchs["noum2"]);
@@ -992,7 +991,7 @@ CBlock* CParser::parser_understand_Assertion(std::vector<HTerm> term)
 		MatchResult res_action = CMatch(term, e.matchPhase);
 		if (res_action.result == Equals)
 		{
-			CBlock * n1 = parser(res_action.matchs["noum1"]);
+			CBlock*  n1 = parser(res_action.matchs["noum1"]);
 			CBlock*   n2 = nullptr;
 			if (res_action.matchs.find("noum2") != res_action.matchs.end())
 			{
@@ -1046,7 +1045,7 @@ HPred convert_to_predicate( CTerm* termo )
 
 
 
-CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
+UBlock CParser::parser_verb_Assertion(std::vector<HTerm> term)
 {
 
 	auto L_the_verb = mkHPredList("vinitial", { mk_HPredLiteral("the") , mk_HPredLiteral("verb") });
@@ -1304,7 +1303,7 @@ CBlock* CParser::parser_verb_Assertion(std::vector<HTerm> term)
 
 
 
-CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
+UBlock CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 {
 
 	{
@@ -1325,7 +1324,7 @@ CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 		if (res.result == Equals)
 		{
 			 
-			CBlock * noumVariable = parser(res.matchs["VariableNoum"]  );
+			CBlock*  noumVariable = parser(res.matchs["VariableNoum"]  );
 			CBlock*   baseKind = parser(res.matchs["KindBase"]  );
 			return  new CBlockAssertion_isVariable(noumVariable, baseKind);
 		}
@@ -1334,7 +1333,7 @@ CBlock* CParser::parseAssertion_isVariable(std::vector<HTerm> term)
 
 }
  
-CBlock*   CParser::parseAssertion_DefaultAssign(std::vector<HTerm> term)
+UBlock   CParser::parseAssertion_DefaultAssign(std::vector<HTerm> term)
 {
 
 	{
@@ -1464,7 +1463,7 @@ CBlockAssertion_is     * CParser::parseAssertion_DirectAssign(std::vector<HTerm>
 	return nullptr;
 
 }
-CBlock*  CParser::parse_removeArticle(std::vector<HTerm> term)
+UBlock  CParser::parse_removeArticle(std::vector<HTerm> term)
 {
 	if (term.size() > 1)
 	{
@@ -1477,7 +1476,7 @@ CBlock*  CParser::parse_removeArticle(std::vector<HTerm> term)
 	return nullptr;
 }
  
-CBlock*  CParser::parse_List_AND(std::vector<HTerm> term)
+UBlock  CParser::parse_List_AND(std::vector<HTerm> term)
 {
 	{
 		auto sep = mk_HPredLiteral("and");
@@ -1529,7 +1528,7 @@ CBlock*  CParser::parse_List_AND(std::vector<HTerm> term)
 
 }
 
-CBlock*  CParser::parse_noum(std::vector<HTerm> term)
+UBlock  CParser::parse_noum(std::vector<HTerm> term)
 {
 	std::vector<HPred> predList;
 	
@@ -1621,7 +1620,7 @@ CBlockList* CParser::parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, C
 		return cList;
 	}
 
-	CBlock *ret = parser(term);
+	UBlock ret = parser(term);
 	cList->push_back(ret);
 	//cList->push_back(new CBlockNoum(  term->removeArticle()->repr()));
 	return cList;
@@ -1648,13 +1647,13 @@ CBlockList* CParser::parse_Strict_COMMA_OR(HTerm term )
 }
 
 
-CBlock* CParser::parseAssertionFirstTerm_Compose(HTerm term )
+UBlock CParser::parseAssertionFirstTerm_Compose(HTerm term )
 {
 	CBlockList *c_list = new CBlockList();
 	c_list = CParser::parseAssertionFirstTerm_COMMA_AND(term, c_list);
 	if ( c_list->lista.size() == 1 )
 	{
-		CBlock  *rt;
+		CBlock* rt;
 		std::swap(rt, c_list->lista.front());
 		delete c_list;
 		return rt;
@@ -1663,26 +1662,26 @@ CBlock* CParser::parseAssertionFirstTerm_Compose(HTerm term )
 }
 
 
-CBlock* CParser::parseAssertionFirstTerm(HTerm term)
+UBlock CParser::parseAssertionFirstTerm(HTerm term)
 {
 	return parseAssertionFirstTerm_Compose(term);
 }
 
 
-CBlock* CParser::parseAssertionEnumSecondTerm(HTerm term)
+UBlock CParser::parseAssertionEnumSecondTerm(HTerm term)
 {
 	CBlockList *c_list = new CBlockList();
 	c_list = CParser::parseAssertionFirstTerm_COMMA_OR(term, c_list);
 	if (c_list->lista.size() == 1)
 	{
-		CBlock  *rt;
+		CBlock* rt;
 		std::swap(rt, c_list->lista.front());
 		delete c_list;
 		return rt;
 	}
 	return c_list;
 }
-CBlock* CParser::parser_Decide_Assertion(std::vector<HTerm> lst)
+UBlock CParser::parser_Decide_Assertion(std::vector<HTerm> lst)
 {
 	CBlock* assert_decide = CParser::parseAssertion_isDecide(lst);
 	if (assert_decide != nullptr)
@@ -1696,18 +1695,18 @@ CBlock* CParser::parser_Decide_Assertion(std::vector<HTerm> lst)
  
 
 
-CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
+UBlock CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 {
 
 
-	CBlock* verb_Assign = CParser::parse_AssertionVerb(lst);
+	UBlock verb_Assign = CParser::parse_AssertionVerb(lst);
 	if (verb_Assign != nullptr)
 	{
 		return verb_Assign;
 	}
 
 
-	CBlock* action_Assign = CParser::parse_AssertionAction (lst);
+	UBlock action_Assign = CParser::parse_AssertionAction (lst);
 	if (action_Assign != nullptr)
 	{
 		return action_Assign;
@@ -1715,33 +1714,33 @@ CBlock* CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 
 	
 
-	CBlock* assert_variable = CParser::parseAssertion_isVariable(lst);
+	UBlock assert_variable = CParser::parseAssertion_isVariable(lst);
 	if (assert_variable != nullptr)
 	{
 		return assert_variable;
 	}
 	 
 
-	CBlock* assert_kindof= CParser::parseAssertion_isKindOf(lst);
+	UBlock assert_kindof= CParser::parseAssertion_isKindOf(lst);
 	if (assert_kindof != nullptr)
 	{
 		return assert_kindof;
 	}
 
-	CBlock* assert_values = CParser::parseAssertion_valuesOf(lst);
+	UBlock assert_values = CParser::parseAssertion_valuesOf(lst);
 	if (assert_values != nullptr)
 	{
 		return assert_values;
 	}
 
 
-	CBlock* assert_DefaultAssign = CParser::parseAssertion_DefaultAssign(lst);
+	UBlock assert_DefaultAssign = CParser::parseAssertion_DefaultAssign(lst);
 	if (assert_DefaultAssign != nullptr)
 	{
 		return assert_DefaultAssign;
 	}
 
-	CBlock* assert_Assign = CParser::parseAssertion_DirectAssign(lst);
+	UBlock assert_Assign = CParser::parseAssertion_DirectAssign(lst);
 	if (assert_Assign != nullptr)
 	{
 		return assert_Assign;
@@ -1766,10 +1765,10 @@ CBlockProperty* CParser::parse_PropertyOf(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			CBlock *a = parser(res.matchs["property"]);
+			UBlock a = parser(res.matchs["property"]);
 			if (a != nullptr)
 			{
-				CBlock *b = parser(res.matchs["obj"]);
+				UBlock b = parser(res.matchs["obj"]);
 				if (b != nullptr)
 				{
 					//CBlockNoum* object_Name = new CBlockNoum(res.matchs["obj"]->removeArticle()->repr());
@@ -1792,10 +1791,10 @@ CBlockProperty* CParser::parse_PropertyOf(std::vector<HTerm> term)
 	//	MatchResult res = CMatch(term, predList);
 	//	if (res.result == Equals)
 	//	{
-	//		CBlock *a = parser(res.matchs["property"]);
+	//		CBlock* a = parser(res.matchs["property"]);
 	//		if (a != nullptr)
 	//		{
-	//			CBlock *b = parser(res.matchs["obj"]);
+	//			CBlock* b = parser(res.matchs["obj"]);
 	//			if (b != nullptr)
 	//			{
 	//				//CBlockNoum* object_Name = new CBlockNoum(res.matchs["obj"]->removeArticle()->repr());
@@ -1827,7 +1826,7 @@ CBlockEnums* CParser::parseAssertion_EnumTerms( HTerm  enumList )
 
  
 
-CBlock* CParser::parser_canBe_Assertion(std::vector<HTerm> lst)
+UBlock CParser::parser_canBe_Assertion(std::vector<HTerm> lst)
 {
 	std::vector<HPred> predList;
 	predList.push_back(mkHPredAny("Target")); 
@@ -1852,7 +1851,7 @@ CBlock* CParser::parser_canBe_Assertion(std::vector<HTerm> lst)
 
 	//CBlockNoum  *defintionFirst_Noum = new CBlockNoum(res.matchs["Target"]->removeArticle()->repr());
 
-	CBlock* defintionFirst_Noum = parser(res.matchs["Target"]);
+	UBlock defintionFirst_Noum = parser(res.matchs["Target"]);
 	if (defintionFirst_Noum != nullptr)
 	{
 		return   new CBlockAssertion_canBe(defintionFirst_Noum, definitionSecond);
@@ -1872,8 +1871,8 @@ CBlockInstanceVariable* CParser::CProperty_called(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)  
 		{
-			CBlock *a = parser(res.matchs["kindName"]);
-			CBlock *b = parser(res.matchs["propName"]);
+			UBlock a = parser(res.matchs["kindName"]);
+			UBlock b = parser(res.matchs["propName"]);
 			return new CBlockInstanceVariable(a,b );
 		}
 	
@@ -1881,14 +1880,14 @@ CBlockInstanceVariable* CParser::CProperty_called(HTerm term)
 
 
 	// the torch has a brightness   ;  -> called brightness
-	CBlock *a = parser(term);	 
+	UBlock a = parser(term);
 	return new CBlockInstanceVariable(a, a); 
 	 
 
 }
 
 
-CBlock* CParser::parser_hasAn_Assertion(std::vector<HTerm> lst)
+UBlock CParser::parser_hasAn_Assertion(std::vector<HTerm> lst)
 {
 	std::vector<HPred> predList;
 	predList.push_back(mkHPredAny("Target"));	
@@ -1909,14 +1908,14 @@ CBlock* CParser::parser_hasAn_Assertion(std::vector<HTerm> lst)
 	}	
 
 	//CBlockNoum  *defintionFirst_KindOrInstance = new CBlockNoum( res.matchs["Target"]->removeArticle()->repr());
-	CBlock   *defintionFirst_KindOrInstance =  parser(res.matchs["Target"] );
+	UBlock defintionFirst_KindOrInstance =  parser(res.matchs["Target"] );
 
 	return  new CBlockAssertion_InstanceVariable (defintionFirst_KindOrInstance,  definitionProperty_kindAndName);
 }
 
  
  
-CBlock* CParser::parser_only(std::vector<HTerm> lst)
+UBlock CParser::parser_only(std::vector<HTerm> lst)
 {
 	//str = decompose_bracket(str, "(");
 	//str = decompose_bracket(str, ")");
@@ -1925,33 +1924,33 @@ CBlock* CParser::parser_only(std::vector<HTerm> lst)
 	//std::vector<HTerm>  lst = decompose(str);
 
 
-	CBlock *rblock_understand_1 = (parser_understand_Assertion(lst));
+	UBlock rblock_understand_1 = (parser_understand_Assertion(lst));
 	if (rblock_understand_1 != nullptr) return rblock_understand_1;
 	 
-	CBlock *rblock_verb_1 = (parser_verb_Assertion(lst));
+	UBlock rblock_verb_1 = (parser_verb_Assertion(lst));
 	if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
-	CBlock *rblock_definition_1 = (parser_Definition_Assertion(lst));
+	UBlock rblock_definition_1 = (parser_Definition_Assertion(lst));
 	if (rblock_definition_1 != nullptr) return rblock_definition_1;
 
-	CBlock *rblock_decide_1 = (parser_Decide_Assertion(lst));
+	UBlock rblock_decide_1 = (parser_Decide_Assertion(lst));
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 	 
-	CBlock *rblock_what_1 = (parser_What_Assertion(lst));
+	UBlock rblock_what_1 = (parser_What_Assertion(lst));
 	if (rblock_what_1 != nullptr) return rblock_what_1;
 
 
-	CBlock *rblock_assert_1 = (parser_Declaration_Assertion (lst));
+	UBlock rblock_assert_1 = (parser_Declaration_Assertion (lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
-	CBlock *rblock_assert_hasA = (parser_hasAn_Assertion(lst));
+	UBlock rblock_assert_hasA = (parser_hasAn_Assertion(lst));
 	if (rblock_assert_hasA != nullptr) return rblock_assert_hasA;
 
-	CBlock *rblock_assert_2 = (parser_canBe_Assertion(lst));
+	UBlock rblock_assert_2 = (parser_canBe_Assertion(lst));
 	if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
  
-	CBlock* noum_propOF = CParser::parse_PropertyOf(lst);
+	UBlock noum_propOF = CParser::parse_PropertyOf(lst);
 	if (noum_propOF != nullptr)
 	{
 		return noum_propOF;
@@ -1959,19 +1958,19 @@ CBlock* CParser::parser_only(std::vector<HTerm> lst)
 
  
 
-	CBlock* noumList_Assign = CParser::parse_List_AND(lst);
+	UBlock noumList_Assign = CParser::parse_List_AND(lst);
 	if (noumList_Assign != nullptr)
 	{
 		return noumList_Assign;
 	}
 
-	CBlock* detnoum_Assign = CParser::parse_removeArticle(lst);
+	UBlock detnoum_Assign = CParser::parse_removeArticle(lst);
 	if (detnoum_Assign != nullptr)
 	{
 		return detnoum_Assign;
 	}
 
-	CBlock* noum_Assign = CParser::parse_noum(lst);
+	UBlock noum_Assign = CParser::parse_noum(lst);
 	if (noum_Assign != nullptr)
 	{
 		return noum_Assign;
@@ -1981,7 +1980,7 @@ CBlock* CParser::parser_only(std::vector<HTerm> lst)
 	return nullptr;
  
 }
-CBlock* CParser::parser(HTerm term)
+UBlock CParser::parser(HTerm term)
 {
 	if (CList  * vlist = dynamic_cast<CList*>(term.get()))
 	{
@@ -1996,7 +1995,7 @@ CBlock* CParser::parser(HTerm term)
 
  
 
-CBlock* CParser::parserBoolean(HTerm term)
+UBlock CParser::parserBoolean(HTerm term)
 {
 	if (CList  * vlist = dynamic_cast<CList*>(term.get()))
 	{
@@ -2014,7 +2013,7 @@ CBlock* CParser::parserBoolean(HTerm term)
 	return   parser(term);
 }
 
-CBlock* CParser::parser(std::string str)
+UBlock CParser::parser(std::string str)
 {
 	str = decompose_bracket(str, "(");
 	str = decompose_bracket(str, ")");

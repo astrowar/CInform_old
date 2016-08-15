@@ -40,7 +40,7 @@ CBlockNoum::CBlockNoum(std::string _value)
 	//assert(named[0] != '[');
 }
 
- 
+
 void CBlockEnums::dump(std::string ident)
 {
 	cout << ident << "Enum:" << endl;
@@ -52,7 +52,7 @@ void CBlockEnums::dump(std::string ident)
 
 CBlockEnums::CBlockEnums(std::vector<CBlockNoum*> _values): values(_values)
 {
-	 
+
 }
 
 void CBlockKind::dump(std::string ident)
@@ -110,15 +110,15 @@ void CBlockProperty::dump(std::string ident)
 {
 	cout  << ident << "Property:" << endl;
 	prop->dump(ident + "          ");
-	cout  << ident << "      of:" << endl; 	
+	cout  << ident << "      of:" << endl;
 	obj->dump(ident + "          ");
 }
 
- 
 
-CBlockProperty::CBlockProperty(CBlock* _prop, CBlock* _obj): prop(_prop), obj(_obj)
+
+CBlockProperty::CBlockProperty(UBlock _prop, UBlock _obj): prop(std::move( _prop)), obj(std::move( _obj))
 {
-	 
+
 }
 
 void CBlockInstanceVariable::dump(std::string ident)
@@ -130,14 +130,14 @@ void CBlockInstanceVariable::dump(std::string ident)
    property_name->dump(ident + "          ");
 }
 
-CBlockInstanceVariable::CBlockInstanceVariable(CBlock* _kind_name, CBlock* _called) : property_name(_called), kind_name(_kind_name)
+CBlockInstanceVariable::CBlockInstanceVariable(UBlock _kind_name, UBlock _called) : property_name(std::move(_called)), kind_name(std::move(_kind_name))
 {
 }
 
- 
+
 
 void  CBlockList::dump(std::string  ident)
-{ 
+{
 	cout <<ident << "List: " << endl;
 	 for(auto e = lista.begin() ; e!= lista.end();++e)
 	 {
@@ -145,15 +145,15 @@ void  CBlockList::dump(std::string  ident)
 	 }
 }
 
-void CBlockList::push_back(CBlock * c_block_value)
+void CBlockList::push_back(UBlock c_block_value)
 {
-	lista.push_back(c_block_value);
+	lista.push_back( std::move(c_block_value));
 }
 
 NoumDefinitions CBlockList::noumDefinitions()
 {
 	NoumDefinitions nd = noum_nothing();
-	for(auto i : lista)
+	for(auto &i : lista)
 	{
 		nd = join_definitions(nd, i->noumDefinitions());
 	}
@@ -164,14 +164,14 @@ void CBlockAssertion_is::dump(std::string ident)
 {
 	cout << ident << "Assert: " << endl;
 
-	this->obj->dump(ident + "     ");
+	this->get_obj()->dump(ident + "     ");
 	cout << ident << "is_____ " << endl;
-	this->definition->dump(ident + "     ");
+	this->get_definition()->dump(ident + "     ");
 }
 
- 
 
- 
+
+
 
 void CBlockMatch::dump(std::string ident)
 {
@@ -184,7 +184,7 @@ void CBlockMatch::dump(std::string ident)
 void CBlockMatchAny::dump(std::string ident)
 {
 	cout << ident << "Match Any " << endl;
-	
+
 }
 
 void CBlockMatchNamed::dump(std::string ident)
@@ -213,14 +213,14 @@ void CBlockMatchList::dump(std::string ident)
 		for (auto i : matchList)
 		{
 			i->dump(ident + "       ");
-		} 
+		}
 	}
 	cout << ident << "          ]" << endl;
 }
 
 void CBlockActionApply::dump(std::string ident)
 {
-	cout << ident << "Action applyTo " << endl;	
+	cout << ident << "Action applyTo " << endl;
 	{
 		this->noum1->dump(ident + "       ");
 		cout << ident << "With " << endl;
@@ -246,7 +246,7 @@ void CBlockToDecide::dump(std::string ident)
 {
 	cout << ident << "To Decide " << endl;
 	{
-		 
+
 		this->queryToMatch->dump(ident + "       ");
 
 		cout << ident << "Decide for " << endl;
@@ -281,7 +281,7 @@ void CBlockBooleanOR::dump(std::string ident)
 {
 	cout << ident << "Boolean NOT" << endl;
 	{
-		this->input_A->dump(ident + "       ");		 
+		this->input_A->dump(ident + "       ");
 	}
 }
 
@@ -291,7 +291,7 @@ void CBlockBooleanNOT::dump(std::string ident)
 
 CBlockInterpreter::CBlockInterpreter()
 {
-	 
+
 }
 
 
@@ -320,15 +320,15 @@ void CBlockDinamicDispatch::dump(std::string ident)
 {
 	cout << ident << "DinamicDispatch " << endl;
 	{
-		this->input->dump(ident + "       ");	 
+		this->input->dump(ident + "       ");
 	}
 }
 
 void CBlockStaticDispatch::dump(std::string ident)
 {
 	cout << ident << "StaticDispatch Entry:  " << this->staticEntryTable << endl;
-	{	
-	 
+	{
+
 		cout << ident << "Args: " << endl;
 		this->noum1->dump(ident + "       ");
 		this->noum2->dump(ident + "       ");
@@ -360,20 +360,20 @@ void CBlockAssertion_canBe::dump(std::string ident)
 {
 	cout << ident << "Can Be " << endl;
 	{
-		this->obj->dump(ident + "       ");
+		this->get_obj()->dump(ident + "       ");
 		cout << ident << "Values: " << endl;
-		this->definition->dump(ident + "       ");
+		this->get_obj()->dump(ident + "       ");
 
 	}
 }
 
-CBlockAssertion_canBe::CBlockAssertion_canBe(CBlock* _obj, CBlockEnums* _definition) : CBlockAssertionBase(_obj), definition(_definition)
+CBlockAssertion_canBe::CBlockAssertion_canBe(CBlock* _obj, CBlockEnums* _definition) :   definition(_definition)
 {
 }
 
 NoumDefinitions CBlockAssertion_isKindOf::noumDefinitions()
-{	
-	return  single_definitions(this->noum->named, this->definition);	
+{
+	return  single_definitions(this->noum->named, this->get_definition() );
 }
 
 void CBlockAssertion_isKindOf::dump(std::string ident)
@@ -462,7 +462,7 @@ void CBlockIsVerb::dump(std::string ident)
 	cout << ident << "Is     " << verb << endl;
 	this->n1->dump(ident + "       ");
 	cout << ident << "related " << endl;
-	this->n2->dump(ident + "       "); 
+	this->n2->dump(ident + "       ");
 }
 
 void CBlockIsNotVerb::dump(std::string ident)

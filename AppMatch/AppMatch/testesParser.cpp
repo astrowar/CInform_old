@@ -49,7 +49,7 @@ void testeParser_2()
 		
 	 
 
-		CBlock* query = parse.parser("the diary is thing");
+		UBlock query = parse.parser("the diary is thing");
 		//if ( interpreter->query(  static_cast<CBlockAssertion_is*>(query)))
 		//{
 		////	std::cout <<"OK" << std::endl;
@@ -571,10 +571,7 @@ void testeParser_22()
 				res->dump("");
 				std::cout << std::endl;
 			}
-		}
-		 
-		 
-
+		} 
 	 
 
 		{
@@ -601,10 +598,10 @@ void testeParser ()
 	   //testeParser_2();
 	  //   testeParser_2a();
 	  //   testeParser_3();
-	  // testeParser_4();
+	    testeParser_4();
 	 //  testeParser_5();
 	  // testeParser_6();
-	   testeParser_22();
+	 //  testeParser_22();
 	   std::cout << ".";
 	}
 	std::cout << std::endl;

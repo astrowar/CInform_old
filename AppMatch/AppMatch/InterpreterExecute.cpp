@@ -15,9 +15,9 @@ CBlockKind* CBlockInterpreter::getKindOf(CBlockInstance* obj)
 	{
 		if (CBlockAssertion_is * v = dynamic_cast<CBlockAssertion_is*>(*it))
 		{
-			if (v->obj == obj)
+			if (v->get_obj() == obj)
 			{
-				if (CBlockKind * k = dynamic_cast<CBlockKind*>(v->definition))
+				if (CBlockKind * k = dynamic_cast<CBlockKind*>(v->get_definition()))
 				{
 					return k;
 				}
@@ -106,9 +106,9 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 	{
 		if (CBlockAssertion_is  *qdef = dynamic_cast<CBlockAssertion_is*>(*it))
 		{
-			if (CBlockInterpreter::query_is_same(c_block, qdef->obj))
+			if (CBlockInterpreter::query_is_same(c_block, qdef->get_obj()))
 			{
-				if (CBlockInterpreter::query_is(qdef->definition, c_block1))
+				if (CBlockInterpreter::query_is(qdef->get_definition(), c_block1))
 				{
 					return QEquals;
 				}
@@ -121,7 +121,7 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 
 QueryResul CBlockInterpreter::query( CBlockAssertion_is* q , CBlockAssertion_is* base ) //Compara as duas queries e retorna true se base valida q
 {
-	if (CBlockInterpreter::query_is(  q->obj,base->obj) && CBlockInterpreter::query_is(  q->definition,base->definition))
+	if (CBlockInterpreter::query_is(  q->get_obj(),base->get_obj()) && CBlockInterpreter::query_is(  q->get_definition(),base->get_definition()))
 	{
 		return QEquals;
 	}
@@ -131,7 +131,7 @@ QueryResul CBlockInterpreter::query( CBlockAssertion_is* q , CBlockAssertion_is*
  
 QueryResul CBlockInterpreter::query(CBlockAssertion_is* q)
 {
-	return query_is(q->obj, q->definition);
+	return query_is(q->get_obj(), q->get_definition());
 	return QUndefined;
 
 }
@@ -141,18 +141,18 @@ HTerm CBlockInterpreter::executeAssertion_is(CBlockAssertion_is *b)
 	
 	// is what ??
 
-	if (CBlockNamedValue * is_namedValue = dynamic_cast<CBlockNamedValue*>(b->obj))
+	if (CBlockNamedValue * is_namedValue = dynamic_cast<CBlockNamedValue*>(b->get_obj()))
 	{
 
 
 	}
 
-	if (CBlockAssertion_canBe * noum_canBe = dynamic_cast<CBlockAssertion_canBe*>(b->definition))
+	if (CBlockAssertion_canBe * noum_canBe = dynamic_cast<CBlockAssertion_canBe*>(b->get_definition()))
 	{
 		
 	}
 	 
-	if (CBlockKind * is_define_kind = dynamic_cast<CBlockKind*>(b->definition))
+	if (CBlockKind * is_define_kind = dynamic_cast<CBlockKind*>(b->get_definition()))
 	{
 
 	}
@@ -195,5 +195,6 @@ CBlock* CBlockInterpreter::resolve(CTerm  *b)
 }
 CBlock* CBlockInterpreter::resolve_of(CBlock  *b, CBlock *a)
 {
-	return new CBlockProperty(b, a);
+	//return new CBlockProperty( b , a);
+	return nullptr;
 }
