@@ -151,6 +151,10 @@
     <ClInclude Include="BlockInterpreter.h" />
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
+    <ClInclude Include="CblockAssertion.h" />
+    <ClInclude Include="CBlockBoolean.h" />
+    <ClInclude Include="CBlockInterpreterRuntime.h" />
+    <ClInclude Include="CBlockMatch.h" />
     <ClInclude Include="CInterpreter.h" />
     <ClInclude Include="CMatch.h" />
     <ClInclude Include="CObjectDefinitions.h" />
@@ -164,14 +168,17 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UBlock.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppMatch.cpp" />
+    <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="BlockInterpreter.cpp" />
     <ClCompile Include="CBase.cpp" />
     <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CMatch.cpp" />
     <ClCompile Include="CpropertiesFunctions.cpp" />
+    <ClCompile Include="CreateInstanceInterpreter.cpp" />
     <ClCompile Include="CRelations.cpp" />
     <ClCompile Include="Equality.cpp" />
     <ClCompile Include="FEnviroment.cpp" />

@@ -49,18 +49,96 @@ void testeParser_2()
 		
 	 
 
-		UBlock query = parse.parser("the diary is thing");
-		//if ( interpreter->query(  static_cast<CBlockAssertion_is*>(query)))
-		//{
-		////	std::cout <<"OK" << std::endl;
-		//}
+		 
 	}
 
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "thing is a kind ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
 	 
 
 	{
 		CParser parse(interpreter);
-		std::string phase_1 = "( iron, silver , chopper)  are kinds of metal  ";
+		std::string phase_1 = "book is a kind of thing ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
+
+
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "magic object is a kind  ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
+
+
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "special book is a kind of book ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
+
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "special book is a kind of magic object ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
+
+
+
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "diary is a special book ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
+	}
+	 
+
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "(chopper, iron )  are kinds of metal  ";
 		 auto res = parse.parser(phase_1);
 		 if (res == nullptr) throw "parse error";
 		 if (ISLOG)
@@ -68,6 +146,19 @@ void testeParser_2()
 			 res->dump("");
 			 std::cout << std::endl;
 		 }
+		 interpreter->execute_init(res);
+	}
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "(gold, silver )  are kinds of rare metal  ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
 	}
 
 	{
@@ -80,16 +171,12 @@ void testeParser_2()
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	}
-	//std::cout << "Done" << std::endl;
-	return;
-}
 
-void testeParser_2a()
-{
-	CParser parse(new CBlockInterpreter());
-	 {
-		std::string phase_1 = "book  is usually small ";
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "rare metal  is a kind  of metal ";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -97,7 +184,75 @@ void testeParser_2a()
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	}
+
+
+	QueryResul q = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("thing"));
+	bool qclass_k = interpreter->is_derivadeOf(new CBlockKind("silver"), new CBlockKind("metal"));
+	bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKind("thing"));
+	std::cout << "Done" << std::endl;
+	return;
+}
+
+void testeParser_2a()
+{
+	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	CParser parse(interpreter);
+
+	interpreter->execute_init(parse.parser("thing is a kind of kind "));
+	interpreter->execute_init(parse.parser("book is a kind of thing "));
+	interpreter->execute_init(parse.parser("book  can be normal , huge or  small"));
+	 
+
+	  
+
+	 {
+		 std::string phase_1 = "book is usually small ";
+		 auto res = parse.parser(phase_1);
+		 if (res == nullptr) throw "parse error";
+		 if (ISLOG)
+		 {
+			 res->dump("");
+			 std::cout << std::endl;
+		 }
+		 interpreter->execute_init(res);
+	 }
+
+	 interpreter->execute_init(parse.parser("book can be read"));
+	 {
+		 std::string phase_1 = "diary is a book ";
+		 auto res = parse.parser(phase_1);
+		 if (res == nullptr) throw "parse error";
+		 if (ISLOG)
+		 {
+			 res->dump("");
+			 std::cout << std::endl;
+		 }
+		 interpreter->execute_init(res);
+	 }
+	 
+	 {
+		 std::string phase_1 = "diary is not read ";
+		 auto res = parse.parser(phase_1);
+		 if (res == nullptr) throw "parse error";
+		 if (ISLOG)
+		 {
+			 res->dump("");
+			 std::cout << std::endl;
+		 }
+		 interpreter->execute_init(res);
+	 }
+
+	 
+
+	 interpreter->dump_instance("diary");
+
+	 QueryResul q_true = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("read"));
+	 QueryResul q_false = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("huge"));
+	 std::cout << "Done" << std::endl;
+
+
 	{
 		std::string phase_1 = "color of book is usually white ";
 		auto  res = parse.parser(phase_1);
@@ -107,6 +262,7 @@ void testeParser_2a()
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	} 
 	{
 		std::string phase_1 = "the (length of (internal description of  a container )) is usually ( lenght of ( Its cramped in here))";
@@ -120,7 +276,7 @@ void testeParser_2a()
 	}
 
 	 
-	//std::cout << "Done" << std::endl;
+	 std::cout << "Done" << std::endl;
 	return;
 }
 void testeParser_3()
@@ -164,16 +320,7 @@ void testeParser_4()
 		 }
 	}
 
-	{
-		std::string phase_1 = "(size of Book ) can be normal , huge or  small";
-		 auto res = parse.parser(phase_1);
-		 if (res == nullptr) throw "parse error";
-		 if (ISLOG)
-		 {
-			 res->dump("");
-			 std::cout << std::endl;
-		 }
-	}
+	 
 
 	{
 		std::string phase_1 = "( a person ) has a (table-name) called (the opinion-table)";		
@@ -292,9 +439,11 @@ void testeParser_5()
 
 void testeParser_6()//kind of value
 {
-	CParser parse(new CBlockInterpreter());
+	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	CParser parse(interpreter);
+	 
 	 {
-		std::string phase_1 = "A limb is a kind of value";
+		std::string phase_1 = "a limb is a kind of value";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -302,6 +451,7 @@ void testeParser_6()//kind of value
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	}
 	{
 		std::string phase_1 = "color is a kind of value  ";
@@ -312,10 +462,11 @@ void testeParser_6()//kind of value
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	}
 
 	{
-		std::string phase_1 = "An aspect ratio is a kind of value";
+		std::string phase_1 = "an aspect ratio is a kind of value";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -323,6 +474,7 @@ void testeParser_6()//kind of value
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	} 
 	 
 
@@ -335,6 +487,7 @@ void testeParser_6()//kind of value
 			res->dump("");
 			std::cout << std::endl;
 		}
+		interpreter->execute_init(res);
 	}
 
 	 {
@@ -595,12 +748,12 @@ void testeParser ()
 	  
 	//  for (int k = 0; k < 100; ++k)
 	{
-	   //testeParser_2();
-	  //   testeParser_2a();
+	   //  testeParser_2();
+	  //  testeParser_2a();
 	  //   testeParser_3();
-	    testeParser_4();
+	  //  testeParser_4();
 	 //  testeParser_5();
-	  // testeParser_6();
+	   testeParser_6();
 	 //  testeParser_22();
 	   std::cout << ".";
 	}

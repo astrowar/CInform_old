@@ -2,6 +2,11 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include "UBlock.hpp"
+#include "CBlockInterpreterRuntime.h"
+#include "CBlockMatch.h"
+#include "CBlockBoolean.h"
+#include "CblockAssertion.h"
 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
@@ -241,7 +246,7 @@ UBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		{
 			UBlock n1 = parser(res.matchs["kind1"]);
 			UBlock n2 = parser(res.matchs["kind2"]);
-			return  std::make_unique<CBlockActionApply>(n1,n2 );
+			return  new CBlockActionApply(n1,n2 );
 		}
 	}
 
@@ -255,7 +260,7 @@ UBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		if (res.result == Equals)
 		{
 			UBlock n1 = parser(res.matchs["kind1"]);			 
-			return  std::make_unique< CBlockActionApply> (n1, n1);
+			return  new   CBlockActionApply  (n1, n1);
 		}
 	}
 
@@ -269,7 +274,7 @@ UBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term)
 		if (res.result == Equals)
 		{
 			UBlock n1 = parser(res.matchs["kind1"]);
-			return  new CBlockActionApply(n1, new CBlockNoum("Nothing") );
+			return    new CBlockActionApply(n1, new CBlockNoum("Nothing") );
 		}
 	}
 
@@ -293,7 +298,7 @@ UBlock CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		{
 			UBlock  n1 = parser(res.matchs["N1"]);
 			UBlock  n2 = parser(res.matchs["N2"]);
-			return  new CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
+			return   new CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
 		}
 	}
 
@@ -310,7 +315,7 @@ UBlock CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		{
 			UBlock  n1 = parser(res.matchs["N1"]);
 			UBlock   n2 = parser(res.matchs["N2"]);
-			return  new CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
+			return  new   CBlockIsNotVerb(res.matchs[verbList->named]->repr(), n1, n2);
 
 		}
 	}
@@ -329,7 +334,7 @@ UBlock CParser::parse_AssertionVerb(std::vector<HTerm> term)
 		{
 			UBlock n1 = parser(res.matchs["N1"]);
 			UBlock   n2 = parser(res.matchs["N2"]);
-			return  new CBlockIsVerb(res.matchs[verbList->named ]->repr(), n1, n2);
+			return   new CBlockIsVerb(res.matchs[verbList->named ]->repr(), n1, n2);
 
 		}
 	}
@@ -456,7 +461,7 @@ UBlock CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 		if (res.result == Equals)
 		{		 
 
-			return new CBlockKindOf(  res.matchs["kindBase"]->removeArticle()->repr());
+			return new CBlockKindOf(  res.matchs["kindBase"]->removeArticle()->repr() );
 		}
 	}
 
@@ -1542,7 +1547,7 @@ UBlock  CParser::parse_noum(std::vector<HTerm> term)
 
 	if (res.result == Equals)
 	{
-		return new CBlockNoum("*" + res.matchs["Noum"]->removeArticle()->repr());
+		return new CBlockNoum(  res.matchs["Noum"]->removeArticle()->repr());
 	}
 	return nullptr;
 }

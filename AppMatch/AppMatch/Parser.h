@@ -3,7 +3,10 @@
 #include "BlockInterpreter.h"
 #include "CBase.h"
 #include "CMatch.h"
+#include "CBlockInterpreterRuntime.h"
 
+
+class CBlockAssertion_isInstanceOf;
 
 class ParserResult
 {

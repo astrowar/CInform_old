@@ -1,5 +1,8 @@
 #include "BlockInterpreter.h"
 #include <iostream>
+#include "CblockAssertion.h"
+#include "CBlockMatch.h"
+#include "CBlockBoolean.h"
 
 using namespace std;
 
@@ -8,7 +11,9 @@ NoumDefinitions noum_nothing()
 	return NoumDefinitions();
 }
 
-NoumDefinitions single_definitions(string noun, CBlock* block)
+ 
+
+NoumDefinitions single_definitions(string noun, UBlock block)
 {
 	return 	NoumDefinitions({ NoumDefinition(noun, block) });
 }
@@ -55,6 +60,15 @@ CBlockEnums::CBlockEnums(std::vector<CBlockNoum*> _values): values(_values)
 
 }
 
+bool CBlockEnums::contains(string cs)
+{
+	for(auto &n : values)
+	{
+		if (n->named == cs) return true;
+	}
+	return false;
+}
+
 void CBlockKind::dump(std::string ident)
 {
 	cout << ident << "Kind: "<< named << endl;
@@ -76,6 +90,18 @@ void CBlockKindValue::dump(std::string ident)
 	cout << ident << "Kind Value: " << named << endl;
 }
 
+CVariableSlotEnum::CVariableSlotEnum(CBlockEnums* enums)
+{
+	this->valueDefinition = enums;
+	this->value = enums->values.front();
+}
+
+CVariableSlotBool::CVariableSlotBool(CBlockNoum* valueDef)
+{
+	this->valueDefinition = valueDef;
+	this->value = true;
+}
+
 void CBlockInstance::dump(std::string ident)
 {
 	cout << ident << "Instance: " << named << endl;
@@ -83,8 +109,109 @@ void CBlockInstance::dump(std::string ident)
 
 CBlockInstance::CBlockInstance(string _named) : named(_named)
 {
-	assert(_named[0] != '[');
+	//assert(_named[0] != '[');
 }
+
+void CBlockInstance::newEnumVariableSlot(CBlockEnums* definition)
+{
+	this->anomimousSlots.push_back( new  CVariableSlotEnum(definition));
+
+}
+
+void CBlockInstance::newBoolVariableSlot(CBlockNoum * value)
+{
+	this->anomimousSlots.push_back(new CVariableSlotBool (value));
+}
+
+void CBlockInstance::set(CBlockNoum* c_block)
+{
+	//Anonymous SET
+	for(auto &va :	this->anomimousSlots)
+	{
+		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		{
+			if (venum->valueDefinition->contains( c_block->named ))
+			{				
+				venum->value = c_block;
+				return;
+			}
+		}
+		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		{
+			if (vbool->valueDefinition->named == c_block->named )
+			{
+				vbool->value = true;
+				return;
+			}
+		}
+	}
+}
+
+void CBlockInstance::unset(CBlockNoum* c_block)
+{
+	//Anonymous SET
+	for (auto &va : this->anomimousSlots)
+	{
+	 
+		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		{
+			if (vbool->valueDefinition->named == c_block->named)
+			{
+				vbool->value = false;
+				return;
+			}
+		}
+	}
+}
+
+bool CBlockInstance::has_slot(CBlockNoum* value)
+{
+
+	for (auto &va : this->anomimousSlots)
+	{
+		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		{
+			if (venum->valueDefinition->contains(value->named))
+			{				 
+				return true ;
+			}
+		}
+		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		{
+			if (vbool->valueDefinition->named == value->named)
+			{				 
+				return true ;
+			}
+		}
+	}
+	return false;
+}
+
+QueryResul CBlockInstance::is_set(CBlockNoum * value)
+{
+	for (auto &va : this->anomimousSlots)
+	{
+		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		{
+			if (venum->valueDefinition->contains(value->named))
+			{
+				if (venum->value->named == value->named) return QEquals;
+				return QNotEquals;
+			}
+		}
+		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		{
+			if (vbool->valueDefinition->named == value->named)
+			{
+			 
+				if (vbool->value) return QEquals;
+				return QNotEquals;
+			}
+		}
+	}
+	return QUndefined;
+}
+
 
 void CBlockNamedValue::dump(std::string ident)
 {
@@ -229,7 +356,7 @@ void CBlockActionApply::dump(std::string ident)
 	}
 }
 
-CBlockActionApply::CBlockActionApply(CBlock* _noum1, CBlock* _noum2): noum1(_noum1), noum2(_noum2)
+CBlockActionApply::CBlockActionApply(UBlock   _noum1, UBlock  _noum2): noum1(std::move(_noum1)), noum2(std::move(_noum2))
 {
 }
 
@@ -289,15 +416,7 @@ void CBlockBooleanNOT::dump(std::string ident)
 {
 }
 
-CBlockInterpreter::CBlockInterpreter()
-{
-
-}
-
-
-CBlockInterpreter::~CBlockInterpreter()
-{
-}
+ 
 
 void CBlockActionCall::dump(std::string ident)
 {
@@ -356,19 +475,31 @@ void eatExample()
 }
 
 
+CBlock* CBlockAssertion_canBe::get_obj()
+{
+	return obj;
+}
+
 void CBlockAssertion_canBe::dump(std::string ident)
 {
 	cout << ident << "Can Be " << endl;
 	{
 		this->get_obj()->dump(ident + "       ");
 		cout << ident << "Values: " << endl;
-		this->get_obj()->dump(ident + "       ");
+		this->definition->dump(ident + "       ");
 
 	}
 }
 
-CBlockAssertion_canBe::CBlockAssertion_canBe(CBlock* _obj, CBlockEnums* _definition) :   definition(_definition)
+ 
+
+CBlockAssertion_canBe::CBlockAssertion_canBe(UBlock _obj, CBlockEnums* _definition) :   definition(_definition) , obj(_obj)
 {
+}
+
+CBlock* CBlockAssertion_isKindOf::get_obj()
+{
+	return noum;
 }
 
 NoumDefinitions CBlockAssertion_isKindOf::noumDefinitions()
@@ -384,12 +515,35 @@ void CBlockAssertion_isKindOf::dump(std::string ident)
 	this->baseKind->dump(ident + "       ");
 }
 
+CBlock* CBlockAssertion_isKindOf::get_definition()
+{ return baseKind ; }
+
+CBlock* CBlockAssertion_isInstanceOf::get_obj()
+{
+	return noum;
+}
+
+CBlock* CBlockAssertion_isInstanceOf::get_definition()
+{
+	return baseKind;
+}
+
 void CBlockAssertion_isInstanceOf::dump(std::string ident)
 {
 	cout << ident << "is Instance Of " << endl;
 	this->noum->dump(ident + "       ");
 	cout << ident << "Kind " << endl;
 	this->baseKind->dump(ident + "       ");
+}
+
+UBlock CBlockAssertion_isNamedValueOf::get_obj()
+{
+	return this->noum;
+}
+
+UBlock CBlockAssertion_isNamedValueOf::get_definition()
+{
+	return this->baseKind ;
 }
 
 void CBlockAssertion_isNamedValueOf::dump(std::string ident)
@@ -400,12 +554,32 @@ void CBlockAssertion_isNamedValueOf::dump(std::string ident)
 	this->baseKind->dump(ident + "       ");
 }
 
+UBlock CBlockAssertion_isVariable::get_obj()
+{
+	return variable;
+}
+
+UBlock CBlockAssertion_isVariable::get_definition()
+{
+	return baseKind;
+}
+
 void CBlockAssertion_isVariable::dump(std::string ident)
 {
 	cout << ident << "is Variable Of  " << endl;
 	this->variable->dump(ident + "       ");
 	cout << ident << "Kind " << endl;
 	this->baseKind->dump(ident + "       ");
+}
+
+CBlock* CBlockAssertion_isDefaultAssign::get_obj()
+{
+	return variable;
+}
+
+CBlock* CBlockAssertion_isDefaultAssign::get_definition()
+{
+	return value;
 }
 
 void CBlockAssertion_isDefaultAssign::dump(std::string ident)
@@ -416,12 +590,32 @@ void CBlockAssertion_isDefaultAssign::dump(std::string ident)
 	this->value->dump(ident + "       ");
 }
 
+CBlock* CBlockAssertion_isConstantAssign::get_obj()
+{
+	return variable;
+}
+
+CBlock* CBlockAssertion_isConstantAssign::get_definition()
+{
+	return value;
+}
+
 void CBlockAssertion_isConstantAssign::dump(std::string ident)
 {
 	cout << ident << "Assign  " << endl;
 	this->variable->dump(ident + "       ");
 	cout << ident << "Is Always " << endl;
 	this->value->dump(ident + "       ");
+}
+
+CBlock* CBlockAssertion_isForbiddenAssign::get_obj()
+{
+	return value;
+}
+
+CBlock* CBlockAssertion_isForbiddenAssign::get_definition()
+{
+	return variable;
 }
 
 void CBlockAssertion_isForbiddenAssign::dump(std::string ident)
@@ -432,12 +626,32 @@ void CBlockAssertion_isForbiddenAssign::dump(std::string ident)
 	this->value->dump(ident + "       ");
 }
 
+UBlock CBlockAssertion_isDirectAssign::get_obj()
+{
+	return variable;
+}
+
+UBlock CBlockAssertion_isDirectAssign::get_definition()
+{
+	return value;
+}
+
 void CBlockAssertion_isDirectAssign::dump(std::string ident)
 {
 	cout << ident << "Assign  " << endl;
 	this->variable->dump(ident + "       ");
 	cout << ident << "Is " << endl;
 	this->value->dump(ident + "       ");
+}
+
+CBlock* CBlockAssertion_isNotDirectAssign::get_obj()
+{
+	return variable;
+}
+
+CBlock* CBlockAssertion_isNotDirectAssign::get_definition()
+{
+	return value;
 }
 
 void CBlockAssertion_isNotDirectAssign::dump(std::string ident)
