@@ -430,7 +430,7 @@ UBlock CParser::parse_AssertionAction (std::vector<HTerm> term )
 		{
 			CBlock* applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
 			//return  new CBlockActionApply(new CBlockNoum( res.matchs["Noum1"]->removeArticle()->repr() ),new  CBlockNoum(res.matchs["Noum2"]->removeArticle()->repr() ));
-			return  new CBlockActionKind("", applyTO);
+			return  new CBlockKindAction("", applyTO);
 		
 		}
 	}
@@ -461,7 +461,7 @@ UBlock CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 		if (res.result == Equals)
 		{		 
 
-			return new CBlockKindOf(  res.matchs["kindBase"]->removeArticle()->repr() );
+			return new CBlockKindOfName(  res.matchs["kindBase"]->removeArticle()->repr() );
 		}
 	}
 
@@ -473,7 +473,7 @@ UBlock CParser::parseAssertion_isKindOf(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return new CBlockKindOf(""); // no Base
+			return new CBlockKindOfName(""); // no Base
 
 		}
 	}
@@ -779,7 +779,7 @@ CBlockMatch* CParser::parser_MatchArgument(HTerm term)
 		}
 
 	}
-    return  new CBlockMatch(new CBlockKind(term->removeArticle()->repr()));
+    return  new CBlockMatch(new CBlockNoum(term->removeArticle()->repr()));
 	return nullptr;
 }
 
@@ -867,7 +867,7 @@ DispatchArguments  CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm
 		if (res.result == Equals)
 		{
 			CBlockMatch* c1 = new CBlockMatch(new CBlockNoum(res.matchs["verb"]->repr()));
-			CBlockMatch* c2 = new CBlockMatch(new CBlockKind(res.matchs["kind1"]->repr()));
+			CBlockMatch* c2 = new CBlockMatch(new CBlockNoum(res.matchs["kind1"]->repr()));
 			std::vector<HPred> replcList;
 			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
 			replcList.push_back(mkHPredAny("noum1"));
@@ -1442,7 +1442,7 @@ CBlockAssertion_is     * CParser::parseAssertion_DirectAssign(std::vector<HTerm>
 			CBlock* value = parser(res.matchs["Value"] );
 			if (value == nullptr) return nullptr;
 
-			if (CBlockActionKind* action = dynamic_cast<CBlockActionKind*>(value) )
+			if (CBlockKindAction* action = dynamic_cast<CBlockKindAction*>(value) )
 			{
 				auto sterm = expandBract(res.matchs["Noum"]);
 				CBlock* _naction =  new CBlockAction( new CBlockNoum(sterm->repr()));
@@ -1579,10 +1579,10 @@ CBlockAssertion_isInstanceOf  * CParser::parseAssertion_isInstanceOf(std::vector
 				return nullptr;
 			}
 			*/
-			CBlockInstance* noumInstance = new CBlockInstance (res.matchs["Noum"]->removeArticle()->repr());
-			CBlockKind*         baseKind = new CBlockKind(res.matchs["KindBase"]->removeArticle()->repr());
+			//CBlockInstance* noumInstance = new CBlockInstance (res.matchs["Noum"]->removeArticle()->repr());
+			//CBlockNoum *         baseKind = new CBlockNoum(res.matchs["KindBase"]->removeArticle()->repr());
 		 
-			return  new CBlockAssertion_isInstanceOf(noumInstance, baseKind);
+			//return  new CBlockAssertion_isInstanceOf(noumInstance, baseKind);
 		}
 	}
 	return nullptr;
@@ -1876,18 +1876,19 @@ CBlockInstanceVariable* CParser::CProperty_called(HTerm term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)  
 		{
-			UBlock a = parser(res.matchs["kindName"]);
-			UBlock b = parser(res.matchs["propName"]);
+			CBlockNoum* a = new  CBlockNoum(res.matchs["kindName"]->repr());
+			CBlockNoum* b = new  CBlockNoum(  res.matchs["propName"]->repr()  );
 			return new CBlockInstanceVariable(a,b );
 		}
 	
 	}
 
-
-	// the torch has a brightness   ;  -> called brightness
-	UBlock a = parser(term);
-	return new CBlockInstanceVariable(a, a); 
-	 
+	{
+		// the torch has a brightness   ;  -> called brightness
+		CBlockNoum* a = new  CBlockNoum(term->repr());
+		CBlockNoum* b = new  CBlockNoum(term->repr());
+		return new CBlockInstanceVariable(a, b);
+	}
 
 }
 

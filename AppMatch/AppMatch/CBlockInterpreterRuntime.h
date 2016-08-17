@@ -33,6 +33,8 @@ class CBlockInterpreter
 
 
 	QueryResul query_is_instance_valueSet(CBlock* c_block, CBlock* c_block1);
+	QueryResul query_is_propertyOf_value_imp(CBlock* propname, CBlock* propObj, CBlock* c_block1, QueryStack stk);
+	QueryResul query_is_propertyOf_value(CBlock* c_block, CBlock* c_block1, QueryStack stk);
 	QueryResul query_is(CBlock* c_block, CBlock* c_block1, QueryStack stk);
 
 	std::list<CBlockKind*> getUpperKinds(CBlockKind* kind);
@@ -47,9 +49,14 @@ public:
 
 	bool assert_it_valuesDefinitions(UBlock c_block, UBlock value);
 	void execute_init(UBlock p);
+	bool assert_has_variable(UBlock obj, UBlock value);
+	UBlock value_can_be_assign_to(UBlock value, CBlockKind* kind);
+	bool assert_it_property(UBlock propname, UBlock obj, UBlock value);
+	bool assert_it_Value(UBlock obj, UBlock value);
 	bool assert_it_not_Value(UBlock obj, UBlock value);
 	 
 	bool assert_it_defaultValue(UBlock obj, UBlock value);
+	std::pair<CBlockKind*, CBlockKind*>  create_derivadeKind(std::string called, std::string baseName);
 	bool  assert_it_kind(UBlock obj, UBlock value);
 	bool  assert_it_instance (UBlock obj, UBlock value);
 	CBlockKind* getKindOf(CBlockInstance* obj);
@@ -67,6 +74,7 @@ public:
 	CBlock* resolve_of(CBlock  *b , CBlock *a);
 	bool is_derivadeOf(CBlockKind* a, CBlockKind* b);
 	bool is_derivadeOf(CBlockInstance* a, CBlockKind* b);
+	CBlockKind* resolve_kind(std::string n);
 	CBlock* resolve_noum(CBlockNoum  *n);
 	CBlock* resolve_string(std::string n);
 	void dump_instance(std::string str);

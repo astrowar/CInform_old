@@ -91,30 +91,37 @@ public:
 
 
 
-class CBlockKind : public CBlock  //retorna um valor generico
+class CBlockKind : public CBlock  //retorna um valor generico porem Abstrado
 {
 public:
-	void dump(std::string ident) override;
+	virtual bool isValue() = 0;
 	CBlockKind(string _named) :named(_named) {   };
 	string named;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
 
 
-class CBlockKindOf : public CBlock  //Define uma classe derivada de outra
+class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 {
 public:
 	void dump(std::string ident) override;
-	CBlockKindOf(string _baseClasseName) :baseClasseName(_baseClasseName) {   };
+	CBlockKindOfName(string _baseClasseName) :baseClasseName(_baseClasseName) {   };
 	string baseClasseName;
 };
 
-
-class CBlockActionKind : public CBlock  //Define uma tipo de acao   derivada
+class CBlockKindOf  : public CBlock  //Define uma classe derivada de outra
 {
 public:
 	void dump(std::string ident) override;
-	CBlockActionKind(string _baseActionName , CBlock* _applyTo ) :baseClasseName(_baseActionName), applyTo(_applyTo)
+	CBlockKindOf (CBlockKind* _baseClasse) :baseClasse(_baseClasse) {   };
+	CBlockKind* baseClasse ;
+};
+
+class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
+{
+public:
+	void dump(std::string ident) override;
+	CBlockKindAction(string _baseActionName , CBlock* _applyTo ) :baseClasseName(_baseActionName), applyTo(_applyTo)
 	{   };
 	string baseClasseName;
 	UBlock applyTo;
@@ -123,8 +130,19 @@ public:
 class CBlockKindValue : public CBlockKind //retorna um valor generico
 {
 public:
+	virtual bool isValue() override { return true; }
 	void dump(std::string ident) override;
 	CBlockKindValue(string _named) :CBlockKind(_named) {   };
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
+
+};
+
+class CBlockKindThing : public CBlockKind //retorna um valor generico
+{
+public:
+	virtual bool isValue() override { return true; }
+	void dump(std::string ident) override;
+	CBlockKindThing(string _named) :CBlockKind(_named) {   };
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 
 };
@@ -157,6 +175,14 @@ public:
 	CVariableSlotBool(CBlockNoum* valueDef);
 };
 
+class CVariableNamed  
+{
+public:
+	CBlock* value;
+	CBlockKind* kind;
+	CBlockNoum* name;
+	 CVariableNamed(CBlockNoum* _name , CBlockKind* _kind , CBlock* _value );
+};
 
 
 class CBlockInstance : public CBlock //retorna um valor generico
@@ -166,14 +192,20 @@ public:
 	CBlockInstance(string _named  );
 	void newEnumVariableSlot(CBlockEnums* definition);
 	void newBoolVariableSlot(CBlockNoum* value);
+	void newNamedVariable(CBlockNoum* called, CBlockKind *kind);
+
 	void set(CBlockNoum* c_block);
 	void unset(CBlockNoum* c_block);
 	bool has_slot(CBlockNoum* value);
+	CVariableNamed* get_property(string named);
+	void set_property(string cs, UBlock value);
 	QueryResul is_set(CBlockNoum* value);
+	
 	string named;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-	std::vector<CVariableSlot*> anomimousSlots;
 
+	std::vector<CVariableSlot*> anomimousSlots;
+	std::vector<CVariableNamed*> namedSlots;
 
 };
 
@@ -214,9 +246,9 @@ class  CBlockInstanceVariable : public CBlock //retorna um valor generico
 {
 public:
 	void dump(std::string ident) override;
-	CBlockInstanceVariable(UBlock _kind_name, UBlock _called);
-	UBlock property_name;
-	UBlock kind_name;
+	CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called);
+	CBlockNoum* property_name;
+	CBlockNoum* kind_name;
 
 };
 
@@ -251,7 +283,7 @@ public:
 
 	UBlock noum;
 	CBlockInstanceVariable *  instance_variable;
-	CBlockAssertion_InstanceVariable(UBlock _noum,  CBlockInstanceVariable * _instance_variable) :  noum(std::move(_noum)), instance_variable(_instance_variable) {};
+	CBlockAssertion_InstanceVariable(UBlock _noum,  CBlockInstanceVariable * _instance_variable) :  noum((_noum)), instance_variable(_instance_variable) {};
 };
 
 
@@ -269,7 +301,7 @@ public:
 	string verb;
 	UBlock  n1;
 	UBlock  n2;
-	CBlockIsVerb(std::string _verb, UBlock  _n1, UBlock  _n2) : verb((_verb)), n1(std::move(_n1)), n2(std::move(_n2)) {};
+	CBlockIsVerb(std::string _verb, UBlock  _n1, UBlock  _n2) : verb((_verb)), n1((_n1)), n2((_n2)) {};
 };
 
 class CBlockIsNotVerb : public CBlock    //retorna uma declaracao
@@ -280,7 +312,7 @@ public:
 	string verb;
 	UBlock  n1;
 	UBlock  n2;
-	CBlockIsNotVerb(std::string _verb, UBlock  _n1, UBlock  _n2) : verb(_verb), n1(std::move(_n1)), n2(std::move(_n2)) {};
+	CBlockIsNotVerb(std::string _verb, UBlock  _n1, UBlock  _n2) : verb(_verb), n1((_n1)), n2((_n2)) {};
 };
 
 class CBlockVerbRelation : public CBlock    //retorna uma declaracao
@@ -290,7 +322,7 @@ public:
 
 	UBlock verbNoum; // Pode ser simples ou com a preposicao
 	UBlock  relation;
-	CBlockVerbRelation(UBlock _noum, UBlock _relation) : verbNoum(std::move(_noum)), relation(std::move(_relation)) {};
+	CBlockVerbRelation(UBlock _noum, UBlock _relation) : verbNoum((_noum)), relation((_relation)) {};
 };
 
 class CBlockMatch;
@@ -302,7 +334,7 @@ public:
 
 	CBlockMatch * input_n; // Pode ser simples ou com a preposicao
 	UBlock output_n;
-	CBlockUnderstand(CBlockMatch * _input_n, UBlock _output_n) : input_n(_input_n), output_n(std::move(_output_n)) {};
+	CBlockUnderstand(CBlockMatch * _input_n, UBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
 };
 
 class CBlockMatchList;
@@ -313,7 +345,7 @@ public:
 
 	CBlockMatchList * argument_match; // Pode ser simples ou com a preposicao
 	UBlock output_n;
-	CBlockUnderstandStatic(CBlockMatchList * _argument_match, UBlock _output_n) : argument_match(_argument_match), output_n(std::move(_output_n)) {};
+	CBlockUnderstandStatic(CBlockMatchList * _argument_match, UBlock _output_n) : argument_match(_argument_match), output_n((_output_n)) {};
 };
 
 

@@ -159,27 +159,65 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1)
 
 QueryResul CBlockInterpreter::query_is_instance_valueSet(CBlock * c_block, CBlock * c_block1)
 {
-	 
 	if (CBlockInstance * cinst = dynamic_cast<CBlockInstance *>(c_block))
 		if (CBlockNoum * value = dynamic_cast<CBlockNoum *>(c_block1))
-	{
-
-		if (cinst->has_slot(value))
 		{
-
-			std::cout << cinst->named  << "  " << value->named << std::endl;
-
-			if (cinst->is_set(value))
+			if (cinst->has_slot(value))
 			{
-				return QEquals;
+				std::cout << cinst->named << "  " << value->named << std::endl;
+				if (cinst->is_set(value))
+				{
+					return QEquals;
+				}
+				return QNotEquals;
 			}
-			return QNotEquals;
 		}
-
-	}
 	return QUndefined;
 
 }
+
+QueryResul CBlockInterpreter::query_is_propertyOf_value_imp(CBlock * propname, CBlock * propObj, CBlock * c_block1, QueryStack stk)
+{
+	if (CBlockInstance * cinst = dynamic_cast<CBlockInstance *>(propObj))
+	{
+		if (CBlockNoum * property_noum = dynamic_cast<CBlockNoum *>(propname))
+		{
+			CVariableNamed * pvar = cinst->get_property(property_noum->named);
+			if (pvar != nullptr)
+			{
+				return query_is(pvar->value, c_block1, stk);
+			}
+		}
+	}
+	return QUndefined;
+}
+
+
+QueryResul CBlockInterpreter::query_is_propertyOf_value(CBlock * c_block, CBlock * c_block1,   QueryStack stk)
+{
+	if (CBlockProperty * cproperty = dynamic_cast<CBlockProperty *>(c_block))
+	{
+		if (CBlockNoum * cnn = dynamic_cast<CBlockNoum *>(cproperty->obj))
+		{
+			auto resolved = resolve_noum(cnn);
+			if (resolved != nullptr)
+			{
+				return query_is_propertyOf_value_imp(cproperty->prop,  resolved, c_block1, stk);
+			}
+			return QUndefined;
+
+		}
+		// property of What ??
+	 	return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, stk);
+
+		 
+	}
+	 
+	return QUndefined;
+
+}
+
+
 
 QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1, QueryStack stk)
 {
@@ -217,6 +255,11 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1, QueryS
 			return rinst;
 		}
 
+		QueryResul qprop = query_is_propertyOf_value(c_block, c_block1, stk);
+		if (qprop != QUndefined)
+		{
+			return qprop;
+		}
 	}
 
 
@@ -343,21 +386,18 @@ bool CBlockInterpreter::is_derivadeOf(CBlockKind  *a, CBlockKind *b)
 				{
 					if (CBlockKindOf * k = dynamic_cast<CBlockKindOf*>((*it)->get_definition()))
 					{
-						if (k->baseClasseName == b->named)
+						if (k->baseClasse->named  == b->named)
 						{
 							return true;
 						}	
 						else
 						{
-							UBlock bnext = resolve_string(k->baseClasseName);
-							if (CBlockKind *baseClasse = dynamic_cast<CBlockKind*>(bnext))
-							{
-								bool bnn =  is_derivadeOf(baseClasse, b);
+						 bool bnn =  is_derivadeOf(k->baseClasse, b);
 								if (bnn == true)
 								{
 									return true;
 								}
-							}
+							 
 						}
 					}
 				}
@@ -369,29 +409,29 @@ bool CBlockInterpreter::is_derivadeOf(CBlockKind  *a, CBlockKind *b)
 std::list<CBlockKind*> CBlockInterpreter::getUpperKinds(CBlockKind* a  )
 {
 	std::list<CBlockKind*> upperList;
+ 
+	std::cout << "U " << a->named << std::endl;
 	for (auto it = assertions.begin(); it != assertions.end(); ++it)
 	{
 
 		if (CBlockKind * nbase = dynamic_cast<CBlockKind*>((*it)->get_obj()))
-			if (nbase->named == a->named)
+			if (nbase->named == a->named)  //  A -> X
 			{
 				if (CBlockKindOf * k = dynamic_cast<CBlockKindOf*>((*it)->get_definition()))
 				{
-					UBlock bnext = resolve_string(k->baseClasseName);
-					if (CBlockKind *baseClasse = dynamic_cast<CBlockKind*>(bnext))
-					{
-						std::list<CBlockKind*> ap = getUpperKinds(baseClasse);
+ 
+				 
+						std::list<CBlockKind*> ap = getUpperKinds(k->baseClasse);
+						upperList.insert(upperList.end(), ap.begin(), ap.end());						
 
-						upperList.insert(upperList.end(), ap.begin(), ap.end());
-						upperList.push_back(baseClasse);
-
-					}
+				 
 				}
 			}
 
 	}
+	
+	//upperList.erase(unique(upperList.begin(), upperList.end()), upperList.end());
 	upperList.push_back(a);
-	upperList.erase(unique(upperList.begin(), upperList.end()), upperList.end());
 	return upperList;
 }
 
@@ -437,8 +477,22 @@ bool CBlockInterpreter::is_derivadeOf(CBlockInstance  *a, CBlockKind *b)
 	return false;
 }
 
+ 
+CBlockKind* CBlockInterpreter::resolve_kind(std::string n)
+{
+	for (auto &defs : assertions)
+	{
+		if (CBlockKind * nn = dynamic_cast<CBlockKind *>(defs->get_definition()))
+		{			 
+			if (nn->named == n)
+			{
+				return nn;
+			}
+		}
+	}
+	return nullptr;
 
-
+}
 
 CBlock* CBlockInterpreter::resolve_noum(CBlockNoum* n)
 {

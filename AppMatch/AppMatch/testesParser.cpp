@@ -134,10 +134,13 @@ void testeParser_2()
 		}
 		interpreter->execute_init(res);
 	}
+
 	 
 
 	{
 		CParser parse(interpreter);
+		interpreter->execute_init(parse.parser("metal  is a kind ")   );
+
 		std::string phase_1 = "(chopper, iron )  are kinds of metal  ";
 		 auto res = parse.parser(phase_1);
 		 if (res == nullptr) throw "parse error";
@@ -147,6 +150,18 @@ void testeParser_2()
 			 std::cout << std::endl;
 		 }
 		 interpreter->execute_init(res);
+	}
+	{
+		CParser parse(interpreter);
+		std::string phase_1 = "rare metal  is a kind  of metal ";
+		auto res = parse.parser(phase_1);
+		if (res == nullptr) throw "parse error";
+		if (ISLOG)
+		{
+			res->dump("");
+			std::cout << std::endl;
+		}
+		interpreter->execute_init(res);
 	}
 	{
 		CParser parse(interpreter);
@@ -161,36 +176,14 @@ void testeParser_2()
 		interpreter->execute_init(res);
 	}
 
-	{
-		CParser parse(interpreter);
-		std::string phase_1 = "metal  is a kind   ";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
-		interpreter->execute_init(res);
-	}
+	 
 
-	{
-		CParser parse(interpreter);
-		std::string phase_1 = "rare metal  is a kind  of metal ";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
-		interpreter->execute_init(res);
-	}
+	
 
 
 	QueryResul q = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("thing"));
-	bool qclass_k = interpreter->is_derivadeOf(new CBlockKind("silver"), new CBlockKind("metal"));
-	bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKind("thing"));
+	bool qclass_k = interpreter->is_derivadeOf(new CBlockKindThing("silver"), new CBlockKindThing("metal"));
+	bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKindThing("thing"));
 	std::cout << "Done" << std::endl;
 	return;
 }
@@ -453,16 +446,12 @@ void testeParser_6()//kind of value
 		}
 		interpreter->execute_init(res);
 	}
-	{
-		std::string phase_1 = "color is a kind of value  ";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
-		interpreter->execute_init(res);
+
+	{	
+		interpreter->execute_init(parse.parser("color is a kind of value"));
+		interpreter->execute_init(parse.parser("color can be light or dark"));
+		interpreter->execute_init(parse.parser("color can be cold or warm"));
+		interpreter->execute_init(parse.parser("color is usually light"));
 	}
 
 	{
@@ -479,7 +468,7 @@ void testeParser_6()//kind of value
 	 
 
 	{
-		std::string phase_1 = "  color  are blue, green, yellow  and red ";
+		std::string phase_1 = "   blue, green, yellow  and red are color ";
 		auto res = parse.parser(phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
@@ -491,27 +480,46 @@ void testeParser_6()//kind of value
 	}
 
 	 {
-		std::string phase_1 = "  black  specifies an color ";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
-	} 
+		 interpreter->execute_init(parse.parser("black is a color"));
+		 QueryResul q_tru = interpreter->query_is(new CBlockNoum("black"), new CBlockNoum("light"));
+		 interpreter->execute_init(parse.parser("black is dark"));
+		 QueryResul q_fa = interpreter->query_is(new CBlockNoum("black"), new CBlockNoum("light"));
 
+		 std::string phase_1 = " ... "; 
+	} 
 	 {
-		 std::string phase_1 = " red, blue and orange  are colors ";
-		 auto res = parse.parser(phase_1);
-		 if (res == nullptr) throw "parse error";
-		 if (ISLOG)
-		 {
-			 res->dump("");
-			 std::cout << std::endl;
-		 }
+		 interpreter->execute_init(parse.parser("warm color is a  kind of color"));
+		 interpreter->execute_init(parse.parser("warm color is usually warm"));
+
+		 interpreter->execute_init(parse.parser("red is a warm color"));
+		 QueryResul q_fa = interpreter->query_is(new CBlockNoum("red"), new CBlockNoum("warm"));
+		 
+		 std::string phase_1 = " ... ";
 	 }
 	//std::cout << std::endl;
+}
+
+
+void testeParser_6a()//kind of value
+{
+	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	CParser parse(interpreter);
+
+	 
+
+	{
+		interpreter->execute_init(parse.parser("color is a kind of value"));
+		interpreter->execute_init(parse.parser("blue, green, yellow  and red are color"));
+		interpreter->execute_init(parse.parser("thing is a kind "));
+		interpreter->execute_init(parse.parser("book is a thing"));
+		interpreter->execute_init(parse.parser("book has a color called matte"));
+		interpreter->execute_init(parse.parser("color of book is red "));
+	}
+
+	QueryResul q_fa = interpreter->query_is( new CBlockProperty(new CBlockNoum("color") , new CBlockNoum("book")), new CBlockNoum("yellow"));
+	 
+
+	std::cout << std::endl;
 }
 
 void testeParser_20() //custrom rlacions
@@ -753,7 +761,8 @@ void testeParser ()
 	  //   testeParser_3();
 	  //  testeParser_4();
 	 //  testeParser_5();
-	   testeParser_6();
+	  // testeParser_6();
+	  testeParser_6a();
 	 //  testeParser_22();
 	   std::cout << ".";
 	}

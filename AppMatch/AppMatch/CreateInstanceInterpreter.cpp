@@ -12,11 +12,13 @@ CBlockInstance* CBlockInterpreter::new_Instance( std::string named, CBlockKind* 
 	// inicia os fields CAN_BE
 
 	std::list<CBlockKind*> kinds = getUpperKinds(kind);
+	std::cout << "Up Kinds  " << std::endl;
 	for (auto &k : kinds)
 	{
-		std::cout << "Kind  " << k->named << std::endl;
+		std::cout << " ," << k->named;
 
 	}
+	std::cout <<  std::endl;
 	std::cout << " ----------------------------- " << std::endl;
 	for(auto &k : kinds)
 	{

@@ -69,17 +69,19 @@ bool CBlockEnums::contains(string cs)
 	return false;
 }
 
-void CBlockKind::dump(std::string ident)
+
+void CBlockKindOfName::dump(std::string ident)
 {
-	cout << ident << "Kind: "<< named << endl;
+	cout << ident << "Kind Named :  " << baseClasseName << endl;
 }
 
 void CBlockKindOf::dump(std::string ident)
 {
-	cout << ident << "Kind Of:  " << baseClasseName << endl;
+	cout << ident << "Kind Of:  "  << endl;
+	baseClasse->dump(ident + "   ");
 }
 
-void CBlockActionKind::dump(std::string ident)
+void CBlockKindAction::dump(std::string ident)
 {
 	cout << ident << "Action applying to:  " << baseClasseName << endl;
 	this->applyTo->dump(ident + "   ");
@@ -88,6 +90,11 @@ void CBlockActionKind::dump(std::string ident)
 void CBlockKindValue::dump(std::string ident)
 {
 	cout << ident << "Kind Value: " << named << endl;
+}
+
+void CBlockKindThing::dump(std::string ident)
+{
+	cout << ident << "Kind Thing : " << named << endl;
 }
 
 CVariableSlotEnum::CVariableSlotEnum(CBlockEnums* enums)
@@ -100,6 +107,10 @@ CVariableSlotBool::CVariableSlotBool(CBlockNoum* valueDef)
 {
 	this->valueDefinition = valueDef;
 	this->value = true;
+}
+
+CVariableNamed::CVariableNamed(CBlockNoum* _name, CBlockKind* _kind, CBlock* _value):value(_value),kind(_kind), name(_name)
+{
 }
 
 void CBlockInstance::dump(std::string ident)
@@ -121,6 +132,12 @@ void CBlockInstance::newEnumVariableSlot(CBlockEnums* definition)
 void CBlockInstance::newBoolVariableSlot(CBlockNoum * value)
 {
 	this->anomimousSlots.push_back(new CVariableSlotBool (value));
+}
+
+void CBlockInstance::newNamedVariable(CBlockNoum* called, CBlockKind* kind)
+{
+	this->namedSlots.push_back(new CVariableNamed(called, kind, nullptr));
+	
 }
 
 void CBlockInstance::set(CBlockNoum* c_block)
@@ -187,6 +204,30 @@ bool CBlockInstance::has_slot(CBlockNoum* value)
 	return false;
 }
 
+CVariableNamed* CBlockInstance::get_property(string named)
+{
+	for (auto &va : this->namedSlots)
+	{
+		if (va->name->named == named)
+		{
+			return va;
+		}
+	}
+	return nullptr;
+}
+
+void CBlockInstance::set_property(string cs, UBlock value)
+{
+	for (auto &va : this->namedSlots)
+	{
+		if (va->name->named == named)
+		{
+			va->value = value;
+		}
+	}
+	return;
+}
+
 QueryResul CBlockInstance::is_set(CBlockNoum * value)
 {
 	for (auto &va : this->anomimousSlots)
@@ -243,7 +284,7 @@ void CBlockProperty::dump(std::string ident)
 
 
 
-CBlockProperty::CBlockProperty(UBlock _prop, UBlock _obj): prop(std::move( _prop)), obj(std::move( _obj))
+CBlockProperty::CBlockProperty(UBlock _prop, UBlock _obj): prop(( _prop)), obj(( _obj))
 {
 
 }
@@ -257,7 +298,7 @@ void CBlockInstanceVariable::dump(std::string ident)
    property_name->dump(ident + "          ");
 }
 
-CBlockInstanceVariable::CBlockInstanceVariable(UBlock _kind_name, UBlock _called) : property_name(std::move(_called)), kind_name(std::move(_kind_name))
+CBlockInstanceVariable::CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called) : property_name( _called), kind_name( (_kind_name))
 {
 }
 
@@ -274,7 +315,7 @@ void  CBlockList::dump(std::string  ident)
 
 void CBlockList::push_back(UBlock c_block_value)
 {
-	lista.push_back( std::move(c_block_value));
+	lista.push_back( (c_block_value));
 }
 
 NoumDefinitions CBlockList::noumDefinitions()
@@ -356,7 +397,7 @@ void CBlockActionApply::dump(std::string ident)
 	}
 }
 
-CBlockActionApply::CBlockActionApply(UBlock   _noum1, UBlock  _noum2): noum1(std::move(_noum1)), noum2(std::move(_noum2))
+CBlockActionApply::CBlockActionApply(UBlock   _noum1, UBlock  _noum2): noum1((_noum1)), noum2((_noum2))
 {
 }
 
