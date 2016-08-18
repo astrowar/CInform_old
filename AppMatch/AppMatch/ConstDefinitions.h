@@ -8,7 +8,7 @@
 namespace VM
 {
 	// Classes  abstradas .. que servem como protocolos
-	class CGenericKind abstract
+	class CGenericKind
 	{
 	public:
 		virtual ~CGenericKind()
@@ -21,7 +21,7 @@ namespace VM
 
 	using HGenericKind = std::shared_ptr<CGenericKind>;
 
-	class CGenericValue abstract
+	class CGenericValue
 	{
 	public:
 		virtual ~CGenericValue()

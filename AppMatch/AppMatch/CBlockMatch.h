@@ -19,7 +19,7 @@ public:
 	virtual void dump(std::string ident) override;
 
 	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
-	virtual bool  match() { return true; };
+	virtual bool  match() override { return true; };
 
 	CBlockMatchAny( ) : CBlockMatch(nullptr)
 	{};

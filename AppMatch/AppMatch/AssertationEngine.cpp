@@ -158,6 +158,9 @@ UBlock CBlockInterpreter::value_can_be_assign_to(UBlock value, CBlockKind* kind)
 		if (CBlockInstance * cinst = dynamic_cast<CBlockInstance *>(resolved))
 		{
 			if (is_derivadeOf(cinst, kind))
+			{
+
+			}
 		}
 	}
 

@@ -579,7 +579,8 @@ EqualsResul CPredList::match(HTerm h)
 	CList* lst =  dynamic_cast<CList* >(h.get());
 	if (lst != nullptr)
 	{
-		return this->match(lst->asVector()); //chama o termo superior 
+		auto asVector = lst->asVector();
+		return this->match(asVector); //chama o termo superior
 		
 	}
 	return NotEquals;
