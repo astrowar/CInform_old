@@ -185,7 +185,12 @@ QueryResul CBlockInterpreter::query_is_propertyOf_value_imp(CBlock * propname, C
 			CVariableNamed * pvar = cinst->get_property(property_noum->named);
 			if (pvar != nullptr)
 			{
-				return query_is(pvar->value, c_block1, stk);
+				std::cout << "property  is " <<  std::endl;
+				pvar->value->dump("  ");
+				c_block1->dump("  ");
+				auto rprop =  query_is(pvar->value, c_block1, stk);
+				if (rprop == QEquals) return QEquals;
+				return QNotEquals;
 			}
 		}
 	}
@@ -224,6 +229,19 @@ QueryResul CBlockInterpreter::query_is(CBlock* c_block, CBlock* c_block1, QueryS
 	if (stk.isQuery(c_block, c_block1))  return QUndefined;
 	stk.addQuery(c_block, c_block1);
 
+	{
+
+		if (CBlockInstance  * ninst_1 = dynamic_cast<CBlockInstance*>(c_block))
+			if (CBlockInstance  * ninst_2 = dynamic_cast<CBlockInstance*>(c_block1))
+			{
+				if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind)
+				{
+					if (ninst_1 == ninst_2) return QEquals;
+				}
+				
+			}
+
+	}
 	//is scond a kind of anything ??
 	if (CBlockKind * bkind = dynamic_cast<CBlockKind*>(c_block1))
 	{

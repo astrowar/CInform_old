@@ -151,6 +151,11 @@ UBlock CBlockInterpreter::value_can_be_assign_to(UBlock value, CBlockKind* kind)
 	if (value == nullptr) return nullptr;
 
 
+	if (CBlockEnums* enumarate = dynamic_cast<CBlockEnums  *>(kind))
+	{
+		// Acha todas as instancias
+
+	}
 
 	if (CBlockNoum* cnn = dynamic_cast<CBlockNoum *>(value))
 	{
@@ -159,12 +164,12 @@ UBlock CBlockInterpreter::value_can_be_assign_to(UBlock value, CBlockKind* kind)
 		{
 			if (is_derivadeOf(cinst, kind))
 			{
-
+				return cinst;
 			}
 		}
 	}
 
-
+	return nullptr;
 
 }
 
@@ -186,9 +191,10 @@ bool CBlockInterpreter::assert_it_property(UBlock propname,  UBlock obj, UBlock 
 		if (CBlockNoum * property_noum = dynamic_cast<CBlockNoum *>(propname))
 		{
 			CVariableNamed* vv = cinst->get_property(property_noum->named );
-			if (value_can_be_assign_to(value, vv->kind))
+			UBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
+			if (instanceValueRefered)
 			{
-				cinst->set_property(property_noum->named, value);
+				cinst->set_property(property_noum->named, instanceValueRefered);
 			}
 		}
 	}

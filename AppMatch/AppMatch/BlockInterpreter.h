@@ -9,6 +9,7 @@ class CBlockKind;
 
 using UBlock = CBlock*;
 
+//All CBlocks are constant in memory ... ALL ... because this is can be a ROM data 
 
 
 
@@ -45,6 +46,8 @@ public:
 	{
 	}
 	virtual NoumDefinitions noumDefinitions() {return  noum_nothing( );  };
+
+	void* operator new(size_t size);
 };
 
 class CUnresolved : public CBlock
@@ -189,7 +192,7 @@ class CBlockInstance : public CBlock //retorna um valor generico
 {
 public:
 	virtual void dump(std::string ident) override;
-	CBlockInstance(string _named  );
+	CBlockInstance(string _named , CBlockKind *base );
 	void newEnumVariableSlot(CBlockEnums* definition);
 	void newBoolVariableSlot(CBlockNoum* value);
 	void newNamedVariable(CBlockNoum* called, CBlockKind *kind);
@@ -202,6 +205,7 @@ public:
 	QueryResul is_set(CBlockNoum* value);
 	
 	string named;
+	CBlockKind *baseKind;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 
 	std::vector<CVariableSlot*> anomimousSlots;

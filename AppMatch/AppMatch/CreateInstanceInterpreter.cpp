@@ -7,7 +7,7 @@ CBlockInstance* CBlockInterpreter::new_Instance( std::string named, CBlockKind* 
 {	
 	// nova instance e inicializa os fields
 
-	CBlockInstance* c = new CBlockInstance(named);
+	CBlockInstance* c = new CBlockInstance(named , kind);
 
 	// inicia os fields CAN_BE
 

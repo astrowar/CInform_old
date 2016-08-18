@@ -25,6 +25,14 @@ NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b)
 	return ab;
 }
 
+void* CBlock::operator new(size_t size)
+{
+		 
+	std::cout << "    New Block: " <<   '\n';
+	return malloc(size);
+		 
+}
+
 void CUnresolved::dump(std::string ident)
 {
 	cout << ident << "UNRESOLVED: " << this->contents << endl;
@@ -118,12 +126,12 @@ void CBlockInstance::dump(std::string ident)
 	cout << ident << "Instance: " << named << endl;
 }
 
-CBlockInstance::CBlockInstance(string _named) : named(_named)
+CBlockInstance::CBlockInstance(string _named, CBlockKind *_baseKind) : named(_named), baseKind(_baseKind)
 {
 	//assert(_named[0] != '[');
 }
 
-void CBlockInstance::newEnumVariableSlot(CBlockEnums* definition)
+void CBlockInstance::newEnumVariableSlot(CBlockEnums* definition  )
 {
 	this->anomimousSlots.push_back( new  CVariableSlotEnum(definition));
 
@@ -204,24 +212,28 @@ bool CBlockInstance::has_slot(CBlockNoum* value)
 	return false;
 }
 
-CVariableNamed* CBlockInstance::get_property(string named)
+CVariableNamed* CBlockInstance::get_property(string pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
-		if (va->name->named == named)
+		
+		if (va->name->named == pnamed)
 		{
+			cout << pnamed << " has? " << va->name->named << endl;
 			return va;
 		}
 	}
 	return nullptr;
 }
 
-void CBlockInstance::set_property(string cs, UBlock value)
+void CBlockInstance::set_property(string pnamed, UBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
-		if (va->name->named == named)
+		 
+		if (va->name->named == pnamed)
 		{
+			cout << named << " has? " << va->name->named << endl;
 			va->value = value;
 		}
 	}

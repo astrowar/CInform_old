@@ -183,7 +183,7 @@ void testeParser_2()
 
 	QueryResul q = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("thing"));
 	bool qclass_k = interpreter->is_derivadeOf(new CBlockKindThing("silver"), new CBlockKindThing("metal"));
-	bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKindThing("thing"));
+	//bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKindThing("thing"));
 	std::cout << "Done" << std::endl;
 	return;
 }
@@ -512,11 +512,11 @@ void testeParser_6a()//kind of value
 		interpreter->execute_init(parse.parser("blue, green, yellow  and red are color"));
 		interpreter->execute_init(parse.parser("thing is a kind "));
 		interpreter->execute_init(parse.parser("book is a thing"));
-		interpreter->execute_init(parse.parser("book has a color called matte"));
+		interpreter->execute_init(parse.parser("book has a color"));
 		interpreter->execute_init(parse.parser("color of book is red "));
 	}
 
-	QueryResul q_fa = interpreter->query_is( new CBlockProperty(new CBlockNoum("color") , new CBlockNoum("book")), new CBlockNoum("yellow"));
+	 QueryResul q_fa = interpreter->query_is( new CBlockProperty(new CBlockNoum("color") , new CBlockNoum("book")), new CBlockNoum("roxo"));
 	 
 
 	std::cout << std::endl;
