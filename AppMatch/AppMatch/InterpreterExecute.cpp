@@ -4,7 +4,8 @@
 #include <iostream>
 #include "CBlockInterpreterRuntime.h"
 #include "CblockAssertion.h"
-#include <algorithm>
+#include "CInterpreterKindTree.h"
+
 using namespace std;
 
 

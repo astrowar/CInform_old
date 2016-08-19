@@ -195,9 +195,12 @@ bool CBlockInterpreter::assert_it_property(UBlock propname,  UBlock obj, UBlock 
 			if (instanceValueRefered)
 			{
 				cinst->set_property(property_noum->named, instanceValueRefered);
+				return true;
 			}
 		}
 	}
+    return false;
+
 }
 
 bool CBlockInterpreter::assert_it_Value(UBlock obj, UBlock value)
