@@ -2,7 +2,15 @@
 // Created by Eraldo Rangel on 18/08/16.
 //
 
+#include "BlockInterpreter.h"
+#include "CBlockMatch.h"
+#include "CBlockBoolean.h" 
+
 #include "CBlockDumpValues.h"
+
+#include <iostream>
+using namespace std;
+
 
 void CUnresolved::dump(string ident)
 {

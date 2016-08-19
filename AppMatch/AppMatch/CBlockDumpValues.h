@@ -5,6 +5,6 @@
 #ifndef APPMATCH_CBLOCKDUMPVALUES_H
 #define APPMATCH_CBLOCKDUMPVALUES_H
 
-#include "BlockInterpreter.cpp"
+#include "CBlockInterpreterRuntime.h"
 
 #endif //APPMATCH_CBLOCKDUMPVALUES_H

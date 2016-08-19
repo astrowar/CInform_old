@@ -40,6 +40,9 @@ set(SOURCE_FILES
         AppMatch/AppMatch/stdafx.h
         AppMatch/AppMatch/targetver.h
         AppMatch/AppMatch/testesParser.cpp
+        AppMatch/AppMatch/CInterpreterKindTree.cpp
+        AppMatch/AppMatch/CBlockDumpValues.cpp
+
         AppMatch/AppMatch/UBlock.hpp)
 
 add_executable(apx ${SOURCE_FILES})
