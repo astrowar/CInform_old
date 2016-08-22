@@ -1,0 +1,43 @@
+a thing is a kind
+thing has a text called description
+
+a book is a thing
+book has a text called contents
+
+emotion is a kind of value
+love and hate are emotion
+
+opnion relates a emotion to a person
+opnion_about relates a person to a opnion
+
+# outra forma eh criar relacoes excludentes
+
+love_relation relates a (person) to (person)
+hate_relation relates a (person) to (person)
+
+(love_relation , hate_relation) are exclusive relations
+
+# relacoes excludentes sao sempre relacoes que quando ativas, desligam as demais
+
+
+# counter events
+when ( door is open ) at ( second time ): ...
+if ( buuton is pushed ) more than ( five times): ...
+
+estes eventos so passam pelo processamento quando a acao retorna sucessull
+
+
+//Teste
+   Before
+      ( putting
+          ( something which is not
+              (carried by the player)
+          )
+       on something) ):
+   if (the noun is on the second noun), say "Already done." instead;
+   say "(first taking [the noun])[line break]";
+   silently try (taking the noun);
+   if (the player is not (holding the noun)), stop the action.
+
+
+# assign
