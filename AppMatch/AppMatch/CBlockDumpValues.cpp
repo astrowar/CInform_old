@@ -4,7 +4,7 @@
 
 #include "BlockInterpreter.h"
 #include "CBlockMatch.h"
-#include "CBlockBoolean.h" 
+#include "CBlockBoolean.h"
 
 #include "CBlockDumpValues.h"
 
@@ -56,11 +56,6 @@ void CBlockKindValue::dump(string ident)
 void CBlockKindThing::dump(string ident)
 {
 	cout << ident << "Kind Thing : " << named << endl;
-}
-
-void CBlockInstance::dump(string ident)
-{
-	cout << ident << "Instance: " << named << endl;
 }
 
 void CBlockNamedValue::dump(string ident)

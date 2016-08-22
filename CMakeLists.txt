@@ -42,7 +42,8 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testesParser.cpp
         AppMatch/AppMatch/CInterpreterKindTree.cpp
         AppMatch/AppMatch/CBlockDumpValues.cpp
+        AppMatch/AppMatch/BlockInstance.cpp
 
-        AppMatch/AppMatch/UBlock.hpp)
+        AppMatch/AppMatch/UBlock.hpp AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/ParseDictionary.cpp)
 
-add_executable(apx ${SOURCE_FILES})
+add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)

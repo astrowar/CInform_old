@@ -1,11 +1,6 @@
 #pragma once
 #include "BlockInterpreter.h"
-
-
-
-
-
-
+#include "BlockInstance.h"
 
 
 class CBlockAssertionBase : public CBlock //retorna uma declaracao

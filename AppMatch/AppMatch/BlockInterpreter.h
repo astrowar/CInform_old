@@ -151,69 +151,6 @@ public:
 };
 
 
-class CVariableSlot
-{
-public:
-	virtual ~CVariableSlot()
-	{
-	}
-};
-
- 
-
-class CVariableSlotEnum : public CVariableSlot
-{
-public:
-	CBlockNoum* value;
-	CBlockEnums* valueDefinition;
-	CVariableSlotEnum(CBlockEnums* enums);
-};
-
-
-class CVariableSlotBool : public CVariableSlot
-{
-public:
-	bool value;
-	CBlockNoum* valueDefinition;
-	CVariableSlotBool(CBlockNoum* valueDef);
-};
-
-class CVariableNamed  
-{
-public:
-	CBlock* value;
-	CBlockKind* kind;
-	CBlockNoum* name;
-	 CVariableNamed(CBlockNoum* _name , CBlockKind* _kind , CBlock* _value );
-};
-
-
-class CBlockInstance : public CBlock //retorna um valor generico
-{
-public:
-	virtual void dump(std::string ident) override;
-	CBlockInstance(string _named , CBlockKind *base );
-	void newEnumVariableSlot(CBlockEnums* definition);
-	void newBoolVariableSlot(CBlockNoum* value);
-	void newNamedVariable(CBlockNoum* called, CBlockKind *kind);
-
-	void set(CBlockNoum* c_block);
-	void unset(CBlockNoum* c_block);
-	bool has_slot(CBlockNoum* value);
-	CVariableNamed* get_property(string named);
-	void set_property(string cs, UBlock value);
-	QueryResul is_set(CBlockNoum* value);
-	
-	string named;
-	CBlockKind *baseKind;
-	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-
-	std::vector<CVariableSlot*> anomimousSlots;
-	std::vector<CVariableNamed*> namedSlots;
-
-};
-
-
 class CBlockNamedValue : public CBlock //retorna um valor generico
 {
 public:
