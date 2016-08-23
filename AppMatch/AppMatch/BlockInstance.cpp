@@ -34,18 +34,18 @@ CBlockInstance::CBlockInstance( std::string _named, HBlockKind _baseKind) : name
 
 void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )
 {
-	this->anomimousSlots.push_back( new  CVariableSlotEnum(definition));
+	this->anomimousSlots.push_back( std::make_shared<CVariableSlotEnum>(definition));
 
 }
 
 void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
 {
-	this->anomimousSlots.push_back(new CVariableSlotBool (value));
+	this->anomimousSlots.push_back(std::make_shared< CVariableSlotBool> (value));
 }
 
 void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
-	this->namedSlots.push_back(new CVariableNamed(called, kind, nullptr));
+	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
 
 }
 
@@ -54,7 +54,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 	//Anonymous SET
 	for(auto &va :	this->anomimousSlots)
 	{
-		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		if (HVariableSlotEnum   venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
 		{
 			if (venum->valueDefinition->contains( c_block->named ))
 			{
@@ -62,7 +62,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 				return;
 			}
 		}
-		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named )
 			{
@@ -79,7 +79,7 @@ void CBlockInstance::unset(HBlockNoum c_block)
 	for (auto &va : this->anomimousSlots)
 	{
 
-		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		if (HVariableSlotBool  vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named)
 			{
@@ -95,14 +95,14 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 
 	for (auto &va : this->anomimousSlots)
 	{
-		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		if (HVariableSlotEnum   venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
 				return true ;
 			}
 		}
-		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{
@@ -113,7 +113,7 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 	return false;
 }
 
-CVariableNamed* CBlockInstance::get_property( std::string  pnamed)
+HVariableNamed  CBlockInstance::get_property( std::string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -127,7 +127,7 @@ CVariableNamed* CBlockInstance::get_property( std::string  pnamed)
 	return nullptr;
 }
 
-void CBlockInstance::set_property(std::string  pnamed, UBlock value)
+void CBlockInstance::set_property(std::string  pnamed, HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -145,7 +145,7 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
 	for (auto &va : this->anomimousSlots)
 	{
-		if (CVariableSlotEnum * venum = dynamic_cast<CVariableSlotEnum*>(va))
+		if (HVariableSlotEnum  venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
@@ -153,7 +153,7 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 				return QNotEquals;
 			}
 		}
-		if (CVariableSlotBool * vbool = dynamic_cast<CVariableSlotBool*>(va))
+		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{

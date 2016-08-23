@@ -4,38 +4,38 @@
 class CBlockBooleanAND : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockBooleanAND(CBlock* input_a, CBlock* input_b)
+	CBlockBooleanAND(HBlock input_a, HBlock input_b)
 		: input_A(input_a),
 		input_B(input_b)
 	{
 	}
 
-	CBlock* input_A;
-	CBlock* input_B;
+	HBlock input_A;
+	HBlock input_B;
 	void dump(std::string ident) override;
 };
 
 class CBlockBooleanOR : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockBooleanOR(CBlock* input_a, CBlock* input_b)
+	CBlockBooleanOR(HBlock input_a, HBlock input_b)
 		: input_A(input_a),
 		input_B(input_b)
 	{
 	}
 
-	CBlock* input_A;
-	CBlock* input_B;
+	HBlock input_A;
+	HBlock input_B;
 	void dump(std::string ident) override;
 };
 
 class CBlockBooleanNOT : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockBooleanNOT(CBlock* input_a )
+	CBlockBooleanNOT(HBlock input_a )
 		: input_A(input_a) {}
 
-	CBlock* input_A;
+	HBlock input_A;
 
 	void dump(std::string ident) override;
 };

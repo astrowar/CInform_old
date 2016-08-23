@@ -26,6 +26,8 @@ public:
 	HBlockEnums valueDefinition;
 	CVariableSlotEnum(HBlockEnums enums);
 };
+using HVariableSlotEnum = std::shared_ptr<CVariableSlotEnum>;
+
 
 class CVariableSlotBool : public CVariableSlot
 {
@@ -34,6 +36,8 @@ public:
 	HBlockNoum valueDefinition;
 	CVariableSlotBool(HBlockNoum valueDef);
 };
+using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
+
 
 class CVariableNamed
 {
@@ -43,9 +47,9 @@ public:
 	HBlockNoum name;
 	 CVariableNamed(HBlockNoum _name , HBlockKind _kind , HBlock _value );
 };
-
-
 using HVariableNamed = std::shared_ptr<CVariableNamed>;
+
+
 
 class CBlockInstance : public CBlock //retorna um valor generico
 {
@@ -60,7 +64,7 @@ public:
 	void unset(HBlockNoum c_block);
 	bool has_slot(HBlockNoum value);
 	HVariableNamed get_property(std::string named);
-	void set_property(std::string cs, UBlock value);
+	void set_property(std::string cs, HBlock value);
 	QueryResul is_set(HBlockNoum value);
 
 	std::string named;
@@ -71,7 +75,6 @@ public:
 	std::vector<HVariableNamed> namedSlots;
 
 };
-
 using HBlockInstance = std::shared_ptr<CBlockInstance>;
 
 

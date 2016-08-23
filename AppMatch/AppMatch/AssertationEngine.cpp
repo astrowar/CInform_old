@@ -13,43 +13,43 @@ void CBlockInterpreter::initialize()
 
 }
 
-bool CBlockInterpreter::assert_it_canBe(UBlock c_block, CBlockEnums* value)
+bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value)
 {
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(c_block))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(c_block))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_it_canBe(nobj, value);
 		}
 		return false;
 	}
-	else if (CBlockKind * nkind = dynamic_cast<CBlockKind*>(c_block))
+	else if (HBlockKind  nkind = dynamic_pointer_cast<CBlockKind>(c_block))
 	{
-		kind_variables.push_back(new CBlockAssertion_canBe(nkind, value));
+		kind_variables.push_back(make_shared<CBlockAssertion_canBe>(nkind, value));
 		return true;
 	}
-	else if (CBlockInstance * nInst = dynamic_cast<CBlockInstance*>(c_block))
+	else if (HBlockInstance  nInst = dynamic_pointer_cast<CBlockInstance>(c_block))
 	{
-		auto p = new CBlockAssertion_canBe(nInst, value);
-		assign_variable_to_instance(new CBlockAssertion_canBe(nInst, value));
-		delete p;
+		auto p = make_shared<CBlockAssertion_canBe>(nInst, value);
+		assign_variable_to_instance(make_shared<CBlockAssertion_canBe>(nInst, value));
+		 
 		return true;
 	}
 
 	return true;
 }
 
-bool CBlockInterpreter::assert_it_valuesDefinitions(UBlock c_block, UBlock value)
+bool CBlockInterpreter::assert_it_valuesDefinitions(HBlock c_block, HBlock value)
 {
 	// Value Kind , is , list of Noums 
 
-	if (CBlockList  * vlist = dynamic_cast<CBlockList*>(value)) // segundo argumento eh uma lista
-		if (CBlockNoum   * nn = dynamic_cast<CBlockNoum*>(c_block)) //primeiro eh um noum
+	if (HBlockList   vlist = dynamic_pointer_cast<CBlockList>(value)) // segundo argumento eh uma lista
+		if (HBlockNoum    nn = dynamic_pointer_cast<CBlockNoum>(c_block)) //primeiro eh um noum
 		{
 			// nn eh um value Kind ??
-			UBlock nobj = resolve_noum(nn); 
-			if (CBlockKind   *nkind = dynamic_cast<CBlockKind*>(nobj)) //mas na verdade o primeiro eh um kind ja definido
+			HBlock nobj = resolve_noum(nn); 
+			if (HBlockKind   nkind = dynamic_pointer_cast<CBlockKind>(nobj)) //mas na verdade o primeiro eh um kind ja definido
 			{
 				for( auto &v : vlist->lista )
 				{
@@ -62,34 +62,34 @@ bool CBlockInterpreter::assert_it_valuesDefinitions(UBlock c_block, UBlock value
 	return false;
 }
 
-void CBlockInterpreter::execute_init(UBlock p)
+void CBlockInterpreter::execute_init(HBlock p)
 {
  
-	if (CBlockAssertion_isNotDirectAssign  * v = dynamic_cast<CBlockAssertion_isNotDirectAssign*>(p))
+	if (HBlockAssertion_isNotDirectAssign    v = dynamic_pointer_cast<CBlockAssertion_isNotDirectAssign>(p ))
 	{
-		UBlock obj = v->get_obj();
-		UBlock value = v->get_definition();
+		HBlock obj = v->get_obj();
+		HBlock value = v->get_definition();
 		if (assert_it_not_Value(obj, value)) return;
 	}
 
-	if (CBlockAssertion_isDefaultAssign * v = dynamic_cast<CBlockAssertion_isDefaultAssign*>(p))
+	if (HBlockAssertion_isDefaultAssign   v = dynamic_pointer_cast<CBlockAssertion_isDefaultAssign>(p))
 	{
-		UBlock obj = v->get_obj();
-		UBlock value = v->get_definition();
+		HBlock obj = v->get_obj();
+		HBlock value = v->get_definition();
 		if (assert_it_defaultValue(obj, value)) return;
 	}
 
-	else if (CBlockAssertion_canBe * vee = dynamic_cast<CBlockAssertion_canBe*>(p))
+	else if (HBlockAssertion_canBe   vee = dynamic_pointer_cast<CBlockAssertion_canBe>(p))
 	{
-		UBlock obj = vee->get_obj();
-		CBlockEnums* evalue = vee->definition;
+		HBlock obj = vee->get_obj();
+		HBlockEnums evalue = vee->definition;
 		if (assert_it_canBe(obj, evalue)) return;
 	}
 
-	else if (CBlockAssertion_is * vk = dynamic_cast<CBlockAssertion_is*>(p))
+	else if (HBlockAssertion_is   vk = dynamic_pointer_cast<CBlockAssertion_is>(p))
 	{
-		UBlock obj = vk->get_obj();
-		UBlock value = vk->get_definition();
+		HBlock obj = vk->get_obj();
+		HBlock value = vk->get_definition();
 		//Static Definition de uma instancia derivado
 	 	if (assert_it_Value(obj, value)) return;
 		if (assert_it_kind(obj, value)) return;
@@ -98,10 +98,10 @@ void CBlockInterpreter::execute_init(UBlock p)
 
 		throw "undefined block";
 	}
-	else if (CBlockAssertion_InstanceVariable * ivar = dynamic_cast<CBlockAssertion_InstanceVariable*>(p))
+	else if (HBlockAssertion_InstanceVariable   ivar = dynamic_pointer_cast<CBlockAssertion_InstanceVariable>(p))
 	{
-		UBlock obj = ivar->noum  ;
-		UBlock value = ivar->instance_variable ;
+		HBlock obj = ivar->noum  ;
+		HBlock value = ivar->instance_variable ;
 		if (assert_has_variable(obj, value)) return;
 	}
 	 
@@ -113,12 +113,12 @@ void CBlockInterpreter::execute_init(UBlock p)
 
 
  
-bool CBlockInterpreter::assert_has_variable(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value)
 {
 	
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_has_variable(nobj, value);
@@ -126,18 +126,18 @@ bool CBlockInterpreter::assert_has_variable(UBlock obj, UBlock value)
 		return false;
 	}
 
-	if (CBlockInstance * nInst = dynamic_cast<CBlockInstance*>(obj))
+	if (HBlockInstance   nInst = dynamic_pointer_cast<CBlockInstance>(obj))
 	{
 		//name da variavel 
-		if (CBlockInstanceVariable * variable_ = dynamic_cast<CBlockInstanceVariable*>(value))
+		if (HBlockInstanceVariable   variable_ = dynamic_pointer_cast<CBlockInstanceVariable>(value))
 		{		  
-			CBlockKind* nkindBase = resolve_kind (variable_->kind_name->named );			 
+			HBlockKind nkindBase = resolve_kind (variable_->kind_name->named );			 
 			nInst->newNamedVariable(variable_->property_name , nkindBase);
 			return true;
 		}
 		   
 	}
-	else if (CBlockKind * nKind = dynamic_cast<CBlockKind*>(obj))
+	else if (HBlockKind   nKind = dynamic_pointer_cast<CBlockKind>(obj))
 	{		
 		return true;
 	}
@@ -146,21 +146,21 @@ bool CBlockInterpreter::assert_has_variable(UBlock obj, UBlock value)
 
 
 //Forca value a ser Kind
-UBlock CBlockInterpreter::value_can_be_assign_to(UBlock value, CBlockKind* kind)
+HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind)
 {
 	if (value == nullptr) return nullptr;
 
 
-	if (CBlockEnums* enumarate = dynamic_cast<CBlockEnums  *>(kind))
+	if (HBlockEnums enumarate = dynamic_pointer_cast<CBlockEnums>(kind))
 	{
 		// Acha todas as instancias
 
 	}
 
-	if (CBlockNoum* cnn = dynamic_cast<CBlockNoum *>(value))
+	if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum  >(value))
 	{
-		UBlock resolved = resolve_noum(cnn);
-		if (CBlockInstance * cinst = dynamic_cast<CBlockInstance *>(resolved))
+		HBlock resolved = resolve_noum(cnn);
+		if (HBlockInstance   cinst = dynamic_pointer_cast<CBlockInstance>(resolved))
 		{
 			if (is_derivadeOf(cinst, kind))
 			{
@@ -175,23 +175,23 @@ UBlock CBlockInterpreter::value_can_be_assign_to(UBlock value, CBlockKind* kind)
 
 
 
-bool CBlockInterpreter::assert_it_property(UBlock propname,  UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_property(HBlock propname,  HBlock obj, HBlock value)
 {
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_it_property(propname , nobj, value);
 		}
 		return false;
 	}
-	if (CBlockInstance * cinst = dynamic_cast<CBlockInstance *>(obj))
+	if (HBlockInstance   cinst = dynamic_pointer_cast<CBlockInstance  >(obj))
 	{
-		if (CBlockNoum * property_noum = dynamic_cast<CBlockNoum *>(propname))
+		if (HBlockNoum   property_noum = dynamic_pointer_cast<CBlockNoum  >(propname))
 		{
-			CVariableNamed* vv = cinst->get_property(property_noum->named );
-			UBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
+			HVariableNamed vv = cinst->get_property(property_noum->named );
+			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
 			if (instanceValueRefered)
 			{
 				cinst->set_property(property_noum->named, instanceValueRefered);
@@ -203,11 +203,11 @@ bool CBlockInterpreter::assert_it_property(UBlock propname,  UBlock obj, UBlock 
 
 }
 
-bool CBlockInterpreter::assert_it_Value(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value)
 {
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_it_Value(nobj, value);
@@ -215,11 +215,11 @@ bool CBlockInterpreter::assert_it_Value(UBlock obj, UBlock value)
 		return false;
 	}
 
-	if (CBlockInstance * nInst = dynamic_cast<CBlockInstance*>(obj))
+	if (HBlockInstance   nInst = dynamic_pointer_cast<CBlockInstance>(obj))
 	{
-		if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(value))
+		if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(value))
 		{
-			UBlock nobj = resolve_noum(nbase);
+			HBlock nobj = resolve_noum(nbase);
 			if (nobj == nullptr)
 			{
 				nInst->set(nbase);
@@ -228,10 +228,10 @@ bool CBlockInterpreter::assert_it_Value(UBlock obj, UBlock value)
 		}
 	}
 
-	if (CBlockProperty * prop_n = dynamic_cast<CBlockProperty*>(obj))
+	if (HBlockProperty   prop_n = dynamic_pointer_cast<CBlockProperty>(obj))
 	{
-		UBlock  propNamed = prop_n->prop;		
-		UBlock  destination = prop_n->obj;   
+		HBlock  propNamed = prop_n->prop;		
+		HBlock  destination = prop_n->obj;   
 		return assert_it_property(propNamed, destination, value); 
 	}
 
@@ -242,11 +242,11 @@ bool CBlockInterpreter::assert_it_Value(UBlock obj, UBlock value)
 
 
 
-bool CBlockInterpreter::assert_it_not_Value(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_not_Value(HBlock obj, HBlock value)
 {	
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_it_not_Value(nobj, value);
@@ -256,11 +256,11 @@ bool CBlockInterpreter::assert_it_not_Value(UBlock obj, UBlock value)
 
 
  
-	if (CBlockInstance * nInst = dynamic_cast<CBlockInstance*>(obj))
+	if (HBlockInstance   nInst = dynamic_pointer_cast<CBlockInstance>(obj))
 	{
-		if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(value))
+		if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(value))
 		{
-			UBlock nobj = resolve_noum(nbase);
+			HBlock nobj = resolve_noum(nbase);
 			if (nobj == nullptr)
 			{
 				nInst->unset(nbase);
@@ -272,23 +272,23 @@ bool CBlockInterpreter::assert_it_not_Value(UBlock obj, UBlock value)
 	return false;
 }
 
-bool CBlockInterpreter::assert_it_defaultValue(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value)
 {
 	//default value so eh valudi para Kinds
-	if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+	if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 	{
-		UBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase);
 		if (nobj != nullptr)
 		{
 			return assert_it_defaultValue(nobj, value);
 		}
 		return false;
 	}
-	else if (CBlockInstance  * ibase = dynamic_cast<CBlockInstance*>(obj))
+	else if (HBlockInstance    ibase = dynamic_pointer_cast<CBlockInstance>(obj))
 	{
 		throw "cant assign Ususally to Instances";
 	}
-	else if (CBlockProperty   * pbase = dynamic_cast<CBlockProperty*>(obj))
+	else if (HBlockProperty     pbase = dynamic_pointer_cast<CBlockProperty>(obj))
 	{
 		
 		return true;
@@ -296,49 +296,49 @@ bool CBlockInterpreter::assert_it_defaultValue(UBlock obj, UBlock value)
 
 
 	}
-	else if (CBlockKind  * kbase = dynamic_cast<CBlockKind*>(obj))
+	else if (HBlockKind    kbase = dynamic_pointer_cast<CBlockKind>(obj))
 	{		 
-		if (CBlockNoum * nvalue = dynamic_cast<CBlockNoum*>(value))
+		if (HBlockNoum   nvalue = dynamic_pointer_cast<CBlockNoum>(value))
 		{
 			std::cout << kbase->named << "  " << nvalue->named << std::endl;
-			//default_assignments.push_back(new CBlockAssertion_isDefaultAssign(kbase, nvalue));
+			//default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
 		}
 		 
-		default_assignments.push_back(new CBlockAssertion_isDefaultAssign(kbase, value));
+		default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, value));
 	}
 
 	return false;
 }
 
-std::pair<CBlockKind* , CBlockKind*> CBlockInterpreter::create_derivadeKind(std::string called , std::string baseClasseName)
+std::pair<HBlockKind , HBlockKind> CBlockInterpreter::create_derivadeKind(std::string called , std::string baseClasseName)
 {
 
-	CBlockKind* b = nullptr;
-	CBlockKind* bup = nullptr;
+	HBlockKind b = nullptr;
+	HBlockKind bup = nullptr;
 
 	if ( baseClasseName == "value")
 	{
-		b = new CBlockKindValue(called);
+		b = make_shared<CBlockKindValue>(called);
 		
 	}
 	else if ( baseClasseName == "")
 	{
-		b = new CBlockKindThing(called);  //Default
+		b = make_shared<CBlockKindThing>(called);  //Default
 	}
 	else
 	{
 		// o que eh a baseclass ???
-		UBlock r = resolve_string( baseClasseName );
+		HBlock r = resolve_string( baseClasseName );
 
 
-		if (CBlockKindThing* kt = dynamic_cast<CBlockKindThing*>(r))
+		if (HBlockKindThing kt = dynamic_pointer_cast<CBlockKindThing>(r))
 		{
-			b = new CBlockKindThing(called);
+			b = make_shared<CBlockKindThing>(called);
 			bup = kt;
 		}
-		else if (CBlockKindValue* ktv = dynamic_cast<CBlockKindValue*>(r))
+		else if (HBlockKindValue ktv = dynamic_pointer_cast<CBlockKindValue>(r))
 		{
-			b = new CBlockKindValue(called);
+			b = make_shared<CBlockKindValue>(called);
 			bup = ktv;
 		}
 		else
@@ -348,31 +348,31 @@ std::pair<CBlockKind* , CBlockKind*> CBlockInterpreter::create_derivadeKind(std:
 		}
 
 	}
-	return std::pair<CBlockKind*, CBlockKind*>(b, bup);
+	return std::pair<HBlockKind, HBlockKind>(b, bup);
 	
 }
 
-bool CBlockInterpreter::assert_it_kind(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value)
 {
-	if (CBlockKindOfName * k = dynamic_cast<CBlockKindOfName*>(value))
+	if (HBlockKindOfName   k = dynamic_pointer_cast<CBlockKindOfName>(value))
 	{
-		if (CBlockNoum * nbase = dynamic_cast<CBlockNoum*>(obj))
+		if (HBlockNoum   nbase = dynamic_pointer_cast<CBlockNoum>(obj))
 		{
 
 			auto  b_up = create_derivadeKind(nbase->named, k->baseClasseName);
-			CBlockKind* b = b_up.first;
+			HBlockKind b = b_up.first;
 
 			if (b_up.second!= nullptr)
 			{
 				
-				CBlockAssertion_isDirectAssign* newDefi = new CBlockAssertion_isDirectAssign(b, new CBlockKindOf(b_up.second) );
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b, make_shared<CBlockKindOf>(b_up.second) );
 				kindDefinitions.push_back(newDefi);
 				assertions.push_back(newDefi);
 			}
 
 			{
 
-				CBlockAssertion_isDirectAssign* newDefi = new CBlockAssertion_isDirectAssign(nbase, b);
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbase, b);
 				kindDefinitions.push_back(newDefi);
 				assertions.push_back(newDefi);
 			}
@@ -382,25 +382,25 @@ bool CBlockInterpreter::assert_it_kind(UBlock obj, UBlock value)
 		}
 
 		//Processa a lista
-		else if (CBlockList * nList = dynamic_cast<CBlockList*>(obj))
+		else if (HBlockList   nList = dynamic_pointer_cast<CBlockList>(obj))
 		{
 			for (auto nObj : nList->lista)
 			{
-				if (CBlockNoum * nbasei = dynamic_cast<CBlockNoum*>(nObj))
+				if (HBlockNoum   nbasei = dynamic_pointer_cast<CBlockNoum>(nObj))
 				{
-					auto  b_up = create_derivadeKind(nbase->named, k->baseClasseName);
-					CBlockKind* b = b_up.first;
+					auto  b_up = create_derivadeKind(nbasei->named, k->baseClasseName);
+					HBlockKind b = b_up.first;
 					if (b_up.second != nullptr) 
 					{
 
-						CBlockAssertion_isDirectAssign* newDefi = new CBlockAssertion_isDirectAssign(b, new CBlockKindOf(b_up.second));
+						HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b, make_shared<CBlockKindOf>(b_up.second));
 						kindDefinitions.push_back(newDefi);
 						assertions.push_back(newDefi);
 					}
 
 					{
 
-						CBlockAssertion_isDirectAssign* newDefi = new CBlockAssertion_isDirectAssign(nbasei, b);
+						HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbasei, b);
 						kindDefinitions.push_back(newDefi);
 						assertions.push_back(newDefi);
 					}
@@ -416,21 +416,21 @@ bool CBlockInterpreter::assert_it_kind(UBlock obj, UBlock value)
 
 }
 
-bool CBlockInterpreter::assert_it_instance(UBlock obj, UBlock value)
+bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock value)
 {
-	if (CBlockNoum * nvalue = dynamic_cast<CBlockNoum*>(value))
+	if (HBlockNoum   nvalue = dynamic_pointer_cast<CBlockNoum>(value))
 	{
-		if (CBlockNoum * nobj = dynamic_cast<CBlockNoum*>(obj))
+		if (HBlockNoum   nobj = dynamic_pointer_cast<CBlockNoum>(obj))
 		{
-			UBlock nn = resolve_noum(nvalue);
-			if (CBlockKind* k = dynamic_cast<CBlockKind*>(nn))
+			HBlock nn = resolve_noum(nvalue);
+			if (HBlockKind k = dynamic_pointer_cast<CBlockKind>(nn))
 			{
-				//CBlockInstance* binstance = new CBlockInstance(nobj->named);
+				//HBlockInstance binstance = make_shared<CBlockInstance>(nobj->named);
 
-				CBlockInstance* binstance = new_Instance(nobj->named, k);
+				HBlockInstance binstance = new_Instance(nobj->named, k);
 
-				CBlockAssertion_isDirectAssign* newDefi = new CBlockAssertion_isDirectAssign(obj, binstance);
-				CBlockAssertion_isInstanceOf * newInst = new CBlockAssertion_isInstanceOf(binstance, k);
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(obj, binstance);
+				HBlockAssertion_isInstanceOf   newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
 				assertions.push_back(newDefi);
 				assertions.push_back(newInst);
 				std::cout << "new Instance add" << endl;
@@ -440,7 +440,7 @@ bool CBlockInterpreter::assert_it_instance(UBlock obj, UBlock value)
 		}
 
 		//Many instances
-		else if (CBlockList * nobjList = dynamic_cast<CBlockList*>(obj))
+		else if (HBlockList   nobjList = dynamic_pointer_cast<CBlockList>(obj))
 		{
 			for(auto &e : nobjList->lista)
 			{

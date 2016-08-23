@@ -6,12 +6,17 @@
 
 class CBlockAssertionBase;
 class CBlockAssertion_is;
+
+using HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;
+using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
+
+
 class   QueryStack;
 
 class CBlockInterpreter
 {
 
-	std::vector<UBlock> program; // main program .. to run IT
+	std::vector<HBlock> program; // main program .. to run IT
 
 
 	std::vector<HBlockInstance> instancias;
@@ -45,20 +50,20 @@ public:
 	~CBlockInterpreter();
 
 	void initialize();
-	bool assert_it_canBe(UBlock c_block, HBlockEnums value);
+	bool assert_it_canBe(HBlock c_block, HBlockEnums value);
 
-	bool assert_it_valuesDefinitions(UBlock c_block, UBlock value);
-	void execute_init(UBlock p);
-	bool assert_has_variable(UBlock obj, UBlock value);
-	UBlock value_can_be_assign_to(UBlock value, HBlockKind kind);
-	bool assert_it_property(UBlock propname, UBlock obj, UBlock value);
-	bool assert_it_Value(UBlock obj, UBlock value);
-	bool assert_it_not_Value(UBlock obj, UBlock value);
+	bool assert_it_valuesDefinitions(HBlock c_block, HBlock value);
+	void execute_init(HBlock p);
+	bool assert_has_variable(HBlock obj, HBlock value);
+	HBlock value_can_be_assign_to(HBlock value, HBlockKind kind);
+	bool assert_it_property(HBlock propname, HBlock obj, HBlock value);
+	bool assert_it_Value(HBlock obj, HBlock value);
+	bool assert_it_not_Value(HBlock obj, HBlock value);
 	 
-	bool assert_it_defaultValue(UBlock obj, UBlock value);
+	bool assert_it_defaultValue(HBlock obj, HBlock value);
 	std::pair<HBlockKind, HBlockKind>  create_derivadeKind(std::string called, std::string baseName);
-	bool  assert_it_kind(UBlock obj, UBlock value);
-	bool  assert_it_instance (UBlock obj, UBlock value);
+	bool  assert_it_kind(HBlock obj, HBlock value);
+	bool  assert_it_instance (HBlock obj, HBlock value);
 	HBlockKind getKindOf(HBlockInstance obj);
 
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1);
@@ -82,4 +87,4 @@ public:
 
 
 
- 
+using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

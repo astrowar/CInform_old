@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <iostream>
 
-#define ISLOG true 
+#define ISLOG false 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
 CList*  mk_CList_Literal(std::vector<HTerm> strList);
@@ -28,7 +28,7 @@ void testeParser_1()
 
 void testeParser_2()
 {
-	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	HBlockInterpreter  interpreter = std::make_shared<CBlockInterpreter>();
 
 	{
 		CParser parse(interpreter);
@@ -181,19 +181,19 @@ void testeParser_2()
 	
 
 
-	QueryResul q = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("thing"));
-	bool qclass_k = interpreter->is_derivadeOf(new CBlockKindThing("silver"), new CBlockKindThing("metal"));
-	//bool qclass_i = interpreter->is_derivadeOf(new CBlockInstance("diary"), new CBlockKindThing("thing"));
+	QueryResul q = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("thing"));
+	bool qclass_k = interpreter->is_derivadeOf(std::make_shared<CBlockKindThing>("silver"), std::make_shared<CBlockKindThing>("metal"));
+	//bool qclass_i = interpreter->is_derivadeOf(std::make_shared<CBlockInstance>("diary"), std::make_shared<CBlockKindThing>("thing"));
 	std::cout << "Done" << std::endl;
 	return;
 }
 
 void testeParser_2a()
 {
-	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 
-	interpreter->execute_init(parse.parser("thing is a kind of kind "));
+	interpreter->execute_init(parse.parser("thing is a kind  "));
 	interpreter->execute_init(parse.parser("book is a kind of thing "));
 	interpreter->execute_init(parse.parser("book  can be normal , huge or  small"));
 	 
@@ -241,8 +241,8 @@ void testeParser_2a()
 
 	 interpreter->dump_instance("diary");
 
-	 QueryResul q_true = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("read"));
-	 QueryResul q_false = interpreter->query_is(new CBlockNoum("diary"), new CBlockNoum("huge"));
+	 QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("read"));
+	 QueryResul q_false = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("huge"));
 	 std::cout << "Done" << std::endl;
 
 
@@ -274,7 +274,7 @@ void testeParser_2a()
 }
 void testeParser_3()
 {
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	{
 		std::string phase_1 = "eat  is (an action  applying to (an thing ) )";
 	 	auto res = parse.parser(phase_1);
@@ -301,7 +301,7 @@ void testeParser_3()
 
 void testeParser_4()
 {
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	{
 		std::string phase_1 = "a thing can be discovered or secret";
 		 auto res = parse.parser(phase_1);
@@ -361,7 +361,7 @@ void testeParser_4()
 
 void testeParser_5()
 {
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	{
 		std::string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
 		auto res = parse.parser(phase_1);
@@ -432,7 +432,7 @@ void testeParser_5()
 
 void testeParser_6()//kind of value
 {
-	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 	 
 	 {
@@ -481,9 +481,9 @@ void testeParser_6()//kind of value
 
 	 {
 		 interpreter->execute_init(parse.parser("black is a color"));
-		 QueryResul q_tru = interpreter->query_is(new CBlockNoum("black"), new CBlockNoum("light"));
+		 QueryResul q_tru = interpreter->query_is(std::make_shared<CBlockNoum>("black"), std::make_shared<CBlockNoum>("light"));
 		 interpreter->execute_init(parse.parser("black is dark"));
-		 QueryResul q_fa = interpreter->query_is(new CBlockNoum("black"), new CBlockNoum("light"));
+		 QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("black"), std::make_shared<CBlockNoum>("light"));
 
 		 std::string phase_1 = " ... "; 
 	} 
@@ -492,7 +492,7 @@ void testeParser_6()//kind of value
 		 interpreter->execute_init(parse.parser("warm color is usually warm"));
 
 		 interpreter->execute_init(parse.parser("red is a warm color"));
-		 QueryResul q_fa = interpreter->query_is(new CBlockNoum("red"), new CBlockNoum("warm"));
+		 QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("red"), std::make_shared<CBlockNoum>("warm"));
 		 
 		 std::string phase_1 = " ... ";
 	 }
@@ -502,7 +502,7 @@ void testeParser_6()//kind of value
 
 void testeParser_6a()//kind of value
 {
-	CBlockInterpreter *interpreter = new CBlockInterpreter();
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 
 	 
@@ -516,7 +516,7 @@ void testeParser_6a()//kind of value
 		interpreter->execute_init(parse.parser("color of book is red "));
 	}
 
-	 QueryResul q_fa = interpreter->query_is( new CBlockProperty(new CBlockNoum("color") , new CBlockNoum("book")), new CBlockNoum("roxo"));
+	 QueryResul q_fa = interpreter->query_is( std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color") , std::make_shared<CBlockNoum>("book")), std::make_shared<CBlockNoum>("red"));
 	 
 
 	std::cout << std::endl;
@@ -525,7 +525,7 @@ void testeParser_6a()//kind of value
 void testeParser_20() //custrom rlacions
 {
 	 
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	/*{
 		std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
 		auto res = parse.parser(phase_1);
@@ -586,7 +586,7 @@ void testeParser_20() //custrom rlacions
 
 void testeParser_21()
 {
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	{
 		{
 			std::string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
@@ -698,7 +698,7 @@ void testeParser_21()
 
 void testeParser_22()
 {
-	CParser parse(new CBlockInterpreter());
+	CParser parse(std::make_shared<CBlockInterpreter>());
 	{
 		{
 			std::string phase_1 = " use_with is an action applying to (one thing) and (a thing)  ";
@@ -754,14 +754,14 @@ void testeParser ()
 {
 	 // testeParser_1();
 	  
-	//  for (int k = 0; k < 100; ++k)
+	  for (int k = 0; k < 100; ++k)
 	{
-	   //  testeParser_2();
-	  //  testeParser_2a();
-	  //   testeParser_3();
-	  //  testeParser_4();
-	 //  testeParser_5();
-	  // testeParser_6();
+	      testeParser_2();
+	   testeParser_2a();
+	      testeParser_3();
+	     testeParser_4();
+	   testeParser_5();
+	   testeParser_6();
 	  testeParser_6a();
 	 //  testeParser_22();
 	   std::cout << ".";

@@ -148,14 +148,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockInstance.h" />
     <ClInclude Include="BlockInterpreter.h" />
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CblockAssertion.h" />
     <ClInclude Include="CBlockBoolean.h" />
+    <ClInclude Include="CBlockDumpValues.h" />
     <ClInclude Include="CBlockInterpreterRuntime.h" />
     <ClInclude Include="CBlockMatch.h" />
     <ClInclude Include="CInterpreter.h" />
+    <ClInclude Include="CInterpreterKindTree.h" />
     <ClInclude Include="CMatch.h" />
     <ClInclude Include="CObjectDefinitions.h" />
     <ClInclude Include="ConstDefinitions.h" />
@@ -173,9 +176,12 @@
   <ItemGroup>
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="BlockInstance.cpp" />
     <ClCompile Include="BlockInterpreter.cpp" />
     <ClCompile Include="CBase.cpp" />
+    <ClCompile Include="CBlockDumpValues.cpp" />
     <ClCompile Include="CInterpreter.cpp" />
+    <ClCompile Include="CInterpreterKindTree.cpp" />
     <ClCompile Include="CMatch.cpp" />
     <ClCompile Include="CpropertiesFunctions.cpp" />
     <ClCompile Include="CreateInstanceInterpreter.cpp" />

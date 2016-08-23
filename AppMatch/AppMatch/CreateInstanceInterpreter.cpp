@@ -11,7 +11,7 @@ HBlockInstance CBlockInterpreter::new_Instance( std::string named, HBlockKind ki
 
 	// inicia os fields CAN_BE
 
-	std::list<CBlockKind*> kinds = getUpperKinds(kind);
+	std::list<HBlockKind> kinds = getUpperKinds(kind);
 	std::cout << "Up Kinds  " << std::endl;
 	for (auto &k : kinds)
 	{
@@ -24,11 +24,11 @@ HBlockInstance CBlockInterpreter::new_Instance( std::string named, HBlockKind ki
 	{
 		for (auto& kvar : kind_variables )
 		{
-			if (CBlockKind * dkind = dynamic_cast<CBlockKind*>(kvar->get_obj()))
+			if (HBlockKind dkind = dynamic_pointer_cast<CBlockKind>(kvar->get_obj()))
 			{
 				if (dkind->named == k->named)
 				{
-					if (CBlockAssertion_canBe * kvar_enum = dynamic_cast<CBlockAssertion_canBe*>(kvar))
+					if (HBlockAssertion_canBe  kvar_enum = dynamic_pointer_cast<CBlockAssertion_canBe>(kvar))
 					{
 						if (kvar_enum->definition->values.size() > 1)
 						{
@@ -50,12 +50,12 @@ HBlockInstance CBlockInterpreter::new_Instance( std::string named, HBlockKind ki
 	{ 
 		for (auto& kvar : default_assignments )
 		{
-			if (CBlockKind * dkind = dynamic_cast<CBlockKind*>(kvar->get_obj()))
+			if (HBlockKind  dkind = dynamic_pointer_cast<CBlockKind>(kvar->get_obj()))
 			{
 				 
 				if (dkind->named == k->named)
 				{
-					if (CBlockNoum* noumSet = dynamic_cast<CBlockNoum*>(kvar->get_definition()))
+					if (HBlockNoum  noumSet = dynamic_pointer_cast<CBlockNoum>(kvar->get_definition()))
 					{
 						c->set(noumSet);
 					}
@@ -75,10 +75,10 @@ HBlockInstance CBlockInterpreter::new_Instance( std::string named, HBlockKind ki
 
 void CBlockInterpreter::assign_variable_to_instance(HBlockAssertionBase kvar)
 {
-	if (CBlockInstance  * c = dynamic_cast<CBlockInstance*>(kvar->get_obj()))
+	if (HBlockInstance   c = dynamic_pointer_cast<CBlockInstance>(kvar->get_obj()))
 	{		 
 		{
-			if (CBlockAssertion_canBe * kvar_enum = dynamic_cast<CBlockAssertion_canBe*>(kvar))
+			if (HBlockAssertion_canBe  kvar_enum = dynamic_pointer_cast<CBlockAssertion_canBe>(kvar))
 			{
 				if (kvar_enum->definition->values.size() > 1)
 				{

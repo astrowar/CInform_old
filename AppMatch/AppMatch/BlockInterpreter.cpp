@@ -13,9 +13,9 @@ NoumDefinitions noum_nothing()
 
  
 
-NoumDefinitions single_definitions(string noun, UBlock block)
+NoumDefinitions single_definitions(string noun, CBlock* block)
 {
-	return 	NoumDefinitions({ NoumDefinition(noun, block) });
+	return 	NoumDefinitions({ NoumDefinition(noun, block ) });
 }
 
 NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b)
@@ -43,8 +43,9 @@ CBlockNoum::CBlockNoum(std::string _value)
 	//assert(named[0] != '[');
 }
 
+ 
 
-CBlockEnums::CBlockEnums(std::vector<CBlockNoum*> _values): values(_values)
+CBlockEnums::CBlockEnums(std::vector<HBlockNoum> _values): values(_values)
 {
 
 }
@@ -70,17 +71,17 @@ CBlockVariable::CBlockVariable(string _named) : named(_named)
 }
 
 
-CBlockProperty::CBlockProperty(UBlock _prop, UBlock _obj): prop(( _prop)), obj(( _obj))
+CBlockProperty::CBlockProperty(HBlock _prop, HBlock _obj): prop(( _prop)), obj(( _obj))
 {
 
 }
 
-CBlockInstanceVariable::CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called) : property_name( _called), kind_name( (_kind_name))
+CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _called) : property_name( _called), kind_name( (_kind_name))
 {
 }
 
 
-void CBlockList::push_back(UBlock c_block_value)
+void CBlockList::push_back(HBlock  c_block_value)
 {
 	lista.push_back( (c_block_value));
 }
@@ -99,7 +100,7 @@ NoumDefinitions CBlockList::noumDefinitions()
 bool CBlockMatchNamed::match()
 { return matchInner->match(); }
 
-CBlockActionApply::CBlockActionApply(UBlock   _noum1, UBlock  _noum2): noum1((_noum1)), noum2((_noum2))
+CBlockActionApply::CBlockActionApply(HBlock   _noum1, HBlock  _noum2): noum1((_noum1)), noum2((_noum2))
 {
 }
 
@@ -124,105 +125,105 @@ void eatExample()
 }
 
 
-CBlock* CBlockAssertion_canBe::get_obj()
+HBlock CBlockAssertion_canBe::get_obj()
 {
 	return obj;
 }
 
 
-CBlockAssertion_canBe::CBlockAssertion_canBe(UBlock _obj, CBlockEnums* _definition) :   definition(_definition) , obj(_obj)
+CBlockAssertion_canBe::CBlockAssertion_canBe(HBlock _obj, HBlockEnums _definition) :   definition(_definition) , obj(_obj)
 {
 }
 
-CBlock* CBlockAssertion_isKindOf::get_obj()
+HBlock CBlockAssertion_isKindOf::get_obj()
 {
 	return noum;
 }
 
 NoumDefinitions CBlockAssertion_isKindOf::noumDefinitions()
 {
-	return  single_definitions(this->noum->named, this->get_definition() );
+	return  single_definitions(this->noum->named, this->get_definition().get() );
 }
 
-CBlock* CBlockAssertion_isKindOf::get_definition()
+HBlock CBlockAssertion_isKindOf::get_definition()
 { return baseKind ; }
 
-CBlock* CBlockAssertion_isInstanceOf::get_obj()
+HBlock CBlockAssertion_isInstanceOf::get_obj()
 {
 	return noum;
 }
 
-CBlock* CBlockAssertion_isInstanceOf::get_definition()
+HBlock CBlockAssertion_isInstanceOf::get_definition()
 {
 	return baseKind;
 }
 
-UBlock CBlockAssertion_isNamedValueOf::get_obj()
+HBlock CBlockAssertion_isNamedValueOf::get_obj()
 {
 	return this->noum;
 }
 
-UBlock CBlockAssertion_isNamedValueOf::get_definition()
+HBlock CBlockAssertion_isNamedValueOf::get_definition()
 {
 	return this->baseKind ;
 }
 
-UBlock CBlockAssertion_isVariable::get_obj()
+HBlock CBlockAssertion_isVariable::get_obj()
 {
 	return variable;
 }
 
-UBlock CBlockAssertion_isVariable::get_definition()
+HBlock CBlockAssertion_isVariable::get_definition()
 {
 	return baseKind;
 }
 
-CBlock* CBlockAssertion_isDefaultAssign::get_obj()
+HBlock CBlockAssertion_isDefaultAssign::get_obj()
 {
 	return variable;
 }
 
-CBlock* CBlockAssertion_isDefaultAssign::get_definition()
+HBlock CBlockAssertion_isDefaultAssign::get_definition()
 {
 	return value;
 }
 
-CBlock* CBlockAssertion_isConstantAssign::get_obj()
+HBlock CBlockAssertion_isConstantAssign::get_obj()
 {
 	return variable;
 }
 
-CBlock* CBlockAssertion_isConstantAssign::get_definition()
+HBlock CBlockAssertion_isConstantAssign::get_definition()
 {
 	return value;
 }
 
-CBlock* CBlockAssertion_isForbiddenAssign::get_obj()
+HBlock CBlockAssertion_isForbiddenAssign::get_obj()
 {
 	return value;
 }
 
-CBlock* CBlockAssertion_isForbiddenAssign::get_definition()
+HBlock CBlockAssertion_isForbiddenAssign::get_definition()
 {
 	return variable;
 }
 
-UBlock CBlockAssertion_isDirectAssign::get_obj()
+HBlock CBlockAssertion_isDirectAssign::get_obj()
 {
 	return variable;
 }
 
-UBlock CBlockAssertion_isDirectAssign::get_definition()
+HBlock CBlockAssertion_isDirectAssign::get_definition()
 {
 	return value;
 }
 
-CBlock* CBlockAssertion_isNotDirectAssign::get_obj()
+HBlock CBlockAssertion_isNotDirectAssign::get_obj()
 {
 	return variable;
 }
 
-CBlock* CBlockAssertion_isNotDirectAssign::get_definition()
+HBlock CBlockAssertion_isNotDirectAssign::get_definition()
 {
 	return value;
 }
