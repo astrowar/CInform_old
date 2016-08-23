@@ -3,11 +3,11 @@
 using namespace std;
 
 
-CBlockInstance* CBlockInterpreter::new_Instance( std::string named, CBlockKind* kind)
+HBlockInstance CBlockInterpreter::new_Instance( std::string named, HBlockKind kind)
 {	
 	// nova instance e inicializa os fields
 
-	CBlockInstance* c = new CBlockInstance(named , kind);
+	HBlockInstance c = std::make_shared<CBlockInstance>(named , kind);
 
 	// inicia os fields CAN_BE
 
@@ -73,7 +73,7 @@ CBlockInstance* CBlockInterpreter::new_Instance( std::string named, CBlockKind* 
 
 
 
-void CBlockInterpreter::assign_variable_to_instance(CBlockAssertionBase *kvar)
+void CBlockInterpreter::assign_variable_to_instance(HBlockAssertionBase kvar)
 {
 	if (CBlockInstance  * c = dynamic_cast<CBlockInstance*>(kvar->get_obj()))
 	{		 

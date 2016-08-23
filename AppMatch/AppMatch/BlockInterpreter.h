@@ -18,7 +18,7 @@ class NoumDefinition
 public:
 	string noum;
 	CBlock* definition;
-	NoumDefinition(string _noum, CBlock* _definition) : noum(_noum), definition(_definition)
+	NoumDefinition(string _noum, UBlock _definition) : noum(_noum), definition(_definition)
 	{}
 };
 
@@ -50,6 +50,8 @@ public:
 	void* operator new(size_t size);
 };
 
+using HBlock = std::shared_ptr<CBlock>;
+
 class CUnresolved : public CBlock
 {
 	void dump(std::string ident) override;
@@ -76,7 +78,7 @@ public:
 
 	virtual bool result() = 0;
 };
-
+using HBlockBooleanResult = std::shared_ptr<CBlockBooleanResult>;
 
 
 class CBlockNoum : public CBlock //retorna um valor generico
@@ -89,7 +91,7 @@ public:
 	{ return single_definitions(named,this); };
 };
 
-
+using HBlockNoum = std::shared_ptr<CBlockNoum>;
 
 
 
@@ -102,6 +104,7 @@ public:
 	string named;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
+using HBlockKind = std::shared_ptr<CBlockKind>;
 
 
 class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
@@ -116,18 +119,18 @@ class CBlockKindOf  : public CBlock  //Define uma classe derivada de outra
 {
 public:
 	void dump(std::string ident) override;
-	CBlockKindOf (CBlockKind* _baseClasse) :baseClasse(_baseClasse) {   };
-	CBlockKind* baseClasse ;
+	CBlockKindOf (HBlockKind _baseClasse) :baseClasse(_baseClasse) {   };
+	HBlockKind baseClasse ;
 };
 
 class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
 {
 public:
 	void dump(std::string ident) override;
-	CBlockKindAction(string _baseActionName , CBlock* _applyTo ) :baseClasseName(_baseActionName), applyTo(_applyTo)
+	CBlockKindAction(string _baseActionName , HBlock _applyTo ) :baseClasseName(_baseActionName), applyTo(_applyTo)
 	{   };
 	string baseClasseName;
-	UBlock applyTo;
+    HBlock applyTo;
 };
 
 class CBlockKindValue : public CBlockKind //retorna um valor generico
@@ -177,22 +180,22 @@ class CBlockProperty : public CBlock //retorna um valor generico
 public:
 	void dump(std::string ident) override;
 	CBlockProperty(UBlock prop, UBlock b);
-	UBlock prop;
-	UBlock obj;
+	HBlock prop;
+	HBlock obj;
 
 };
-
+using HBlockProperty = std::shared_ptr<CBlockProperty>;
 
 class  CBlockInstanceVariable : public CBlock //retorna um valor generico
 {
 public:
 	void dump(std::string ident) override;
-	CBlockInstanceVariable(CBlockNoum* _kind_name, CBlockNoum* _called);
-	CBlockNoum* property_name;
-	CBlockNoum* kind_name;
+	CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _called);
+	HBlockNoum property_name;
+	HBlockNoum kind_name;
 
 };
-
+using HBlockInstanceVariable = std::shared_ptr<CBlockInstanceVariable>;
 
 
 
@@ -200,21 +203,24 @@ class CBlockList : public CBlock //retorna um valor generico
 {
 public:
 	virtual void  dump(std::string  ident) override;
-	std::list<UBlock> lista;
-	void push_back(UBlock c_block_value);
+	std::list<HBlock> lista;
+	void push_back(HBlock c_block_value);
 	virtual NoumDefinitions noumDefinitions() override;
 
 };
+using HBlockList = std::shared_ptr<CBlockList>;
+
+
 class CBlockEnums : public CBlock //retorna um valor generico
 {
 public:
-	std::vector<CBlockNoum*> values;
+	std::vector<HBlockNoum> values;
 	virtual void dump(std::string ident) override;
-	  CBlockEnums(std::vector<CBlockNoum*>  _values);
+	  CBlockEnums(std::vector<HBlockNoum>  _values);
 	bool contains(string cs);
 	string value;
 };
-
+using HBlockEnums = std::shared_ptr<CBlockEnums>;
 
 
 class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao
@@ -223,14 +229,14 @@ public:
 	virtual void dump(std::string ident) override;
 
 	UBlock noum;
-	CBlockInstanceVariable *  instance_variable;
-	CBlockAssertion_InstanceVariable(UBlock _noum,  CBlockInstanceVariable * _instance_variable) :  noum((_noum)), instance_variable(_instance_variable) {};
+	HBlockInstanceVariable   instance_variable;
+	CBlockAssertion_InstanceVariable(UBlock _noum,  HBlockInstanceVariable  _instance_variable) :  noum((_noum)), instance_variable(_instance_variable) {};
 };
-
+using HBlockAssertion_InstanceVariable = std::shared_ptr<CBlockAssertion_InstanceVariable>;
 
 class CBlockAssertionCond: public CBlock // assertion com condicao
 {	public:
-	CBlockBooleanResult* cond;
+	HBlockBooleanResult cond;
 };
 
 
@@ -268,25 +274,29 @@ public:
 
 class CBlockMatch;
 
+using HBlockMatch = std::shared_ptr<CBlockMatch>;
+
 class CBlockUnderstand : public CBlock    //retorna uma declaracao
 {
 public:
 	virtual void dump(std::string ident) override;
 
-	CBlockMatch * input_n; // Pode ser simples ou com a preposicao
+	HBlockMatch  input_n; // Pode ser simples ou com a preposicao
 	UBlock output_n;
-	CBlockUnderstand(CBlockMatch * _input_n, UBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
+	CBlockUnderstand(HBlockMatch  _input_n, UBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
 };
 
 class CBlockMatchList;
+using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
+
 class CBlockUnderstandStatic : public CBlock    //retorna uma declaracao
 {
 public:
 	virtual void dump(std::string ident) override;
 
-	CBlockMatchList * argument_match; // Pode ser simples ou com a preposicao
+	HBlockMatchList  argument_match; // Pode ser simples ou com a preposicao
 	UBlock output_n;
-	CBlockUnderstandStatic(CBlockMatchList * _argument_match, UBlock _output_n) : argument_match(_argument_match), output_n((_output_n)) {};
+	CBlockUnderstandStatic(HBlockMatchList  _argument_match, UBlock _output_n) : argument_match(_argument_match), output_n((_output_n)) {};
 };
 
 
@@ -300,19 +310,19 @@ class CBlockFilter: public CBlock   // filtra um valor para outro valor
 
 class CBlockFilterAtom: public  CBlockFilter
 {
-	explicit CBlockFilterAtom(CBlock* input)
+	explicit CBlockFilterAtom(HBlock input)
 		: input(input)
 	{
 	}
 
-	CBlock* input;
+	HBlock input;
 	virtual bool filter(HTerm input)  ;
 };
 
 class CBlockFilterList : public  CBlockFilter
 {
  
-	CBlockList* input;
+	HBlockList input;
 	virtual bool filter(HTerm input)  ;
 };
 
@@ -335,22 +345,23 @@ class CBlockAction : public  CBlock  // um bloco que representa uma atividade
 public:
 	virtual void dump(std::string ident) override;
 
-	CBlockAction(CBlock* input)
+	CBlockAction(HBlock input)
 		: input(input)
 	{
 	}
 
-	CBlock* input;
+	HBlock input;
 };
 
+using HBlockAction = std::shared_ptr<CBlockAction>;
 
 class CBlockActionCall : public  CBlock
 {
 public :
-	CBlockAction *action;
-	CBlock *noum1;
-	CBlock *noum2;
-	CBlockActionCall(CBlockAction* _action, CBlock* _noum1, CBlock* _noum2):action(_action), noum1(_noum1), noum2(_noum2){}
+	HBlockAction action;
+	HBlock noum1;
+	HBlock noum2;
+	CBlockActionCall(HBlockAction _action, HBlock _noum1, HBlock _noum2):action(_action), noum1(_noum1), noum2(_noum2){}
 	void dump(std::string ident) override;
 };
 
@@ -364,7 +375,7 @@ class CBlockDinamicDispatch : public  CBlockAction
 public:
 
 	string  command;
-	CBlockDinamicDispatch( string _command ) : CBlockAction(  new CBlockNoum(_command) ), command(_command)  {}
+	CBlockDinamicDispatch( string _command ) : CBlockAction(  std::make_shared<CBlockNoum>(_command) ), command(_command)  {}
 	void dump(std::string ident) override;
 };
 
@@ -373,9 +384,9 @@ class CBlockStaticDispatch : public  CBlockAction
 {
 public:
 	int staticEntryTable;
-	CBlock *noum1;
-	CBlock *noum2;
-	CBlockStaticDispatch(int _staticEntryTable,   CBlock* _noum1, CBlock* _noum2) : CBlockAction(new CBlockNoum("static "+ std::to_string( _staticEntryTable) )), staticEntryTable(_staticEntryTable),  noum1(_noum1), noum2(_noum2) {}
+	HBlock noum1;
+	HBlock noum2;
+	CBlockStaticDispatch(int _staticEntryTable,   HBlock _noum1, HBlock _noum2) : CBlockAction(std::make_shared<CBlockNoum> ("static "+ std::to_string( _staticEntryTable) )), staticEntryTable(_staticEntryTable),  noum1(_noum1), noum2(_noum2) {}
 	void dump(std::string ident) override;
 };
 
@@ -383,12 +394,12 @@ public:
 
 class CBlockTransform  : public  CBlock  // um bloco que trasnforma um valor em outro
 {
-	explicit CBlockTransform(CBlock* input)
+	explicit CBlockTransform(HBlock input)
 		: input(input)
 	{
 	}
 
-	CBlock* input;
+	HBlock input;
 	virtual HTerm transform() = 0 ;
 };
 
@@ -398,54 +409,54 @@ class CBlockTransform  : public  CBlock  // um bloco que trasnforma um valor em 
 
 class CBlockIF : public  CBlock  // um bloco do tipo if then else
 {
-	CBlockIF(CBlockBooleanResult* input_if, CBlock* input_then, CBlock* input_else)
+	CBlockIF(HBlockBooleanResult input_if, HBlock input_then, HBlock input_else)
 		: input_if(input_if),
 		  input_then(input_then),
 		  input_else(input_else)
 	{
 	}
 
-	CBlockBooleanResult* input_if; // o if tem que set True ou False
-	CBlock* input_then;
-	CBlock* input_else;
+	HBlockBooleanResult input_if; // o if tem que set True ou False
+	HBlock input_then;
+	HBlock input_else;
 	virtual HTerm eval() = 0;
 };
 
 class CBlockSame : public  CBlock, CBlockBooleanResult  // um bloco do tipo if then else
 {
-	CBlockSame(CBlock* input_a, CBlock* input_b)
+	CBlockSame(HBlock input_a, HBlock input_b)
 		: input_A(input_a),
 		  input_B(input_b)
 	{
 	}
 
-	CBlock* input_A;
-	CBlock* input_B;
+	HBlock input_A;
+	HBlock input_B;
 };
 
 class CBlockProp : public  CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
 {
-	CBlockProp(CBlock* what, CBlock* prop)
+	CBlockProp(HBlock what, HBlock prop)
 		: what(what),
 		  prop(prop)
 	{
 	}
 
-	CBlock* what;
-	CBlock* prop;
+	HBlock what;
+	HBlock prop;
 	virtual HTerm eval() = 0;
 };
 
 class CBlockToDecide : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockToDecide(  CBlock* _queryToMatch, CBlock* _decideBody)
+	CBlockToDecide(  HBlock _queryToMatch, HBlock _decideBody)
 		:   queryToMatch(_queryToMatch),
 		decideBody(_decideBody)
 	{
 	}
-	CBlock* queryToMatch;
-	CBlock* decideBody;
+	HBlock queryToMatch;
+	HBlock decideBody;
 	virtual HTerm eval() { return nullptr; }
    void dump(std::string ident) override;
 };
@@ -454,13 +465,13 @@ public:
 class CBlockToDecideIf : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockToDecideIf(CBlock* _queryToMatch, CBlock* _decideBody)
+	CBlockToDecideIf(HBlock _queryToMatch, HBlock _decideBody)
 		: queryToMatch(_queryToMatch),
 		decideBody(_decideBody)
 	{
 	}
-	CBlock* queryToMatch;
-	CBlock* decideBody;
+	HBlock queryToMatch;
+	HBlock decideBody;
 	virtual HTerm eval() { return nullptr; }
 	void dump(std::string ident) override;
 };

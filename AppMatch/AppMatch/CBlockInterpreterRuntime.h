@@ -14,69 +14,69 @@ class CBlockInterpreter
 	std::vector<UBlock> program; // main program .. to run IT
 
 
-	std::vector<CBlockInstance*> instancias;
-	std::vector<CBlockInstanceVariable*> instancias_vars;
-	std::vector<CBlockAssertionBase*>    assertions_functional; //To define and others
+	std::vector<HBlockInstance> instancias;
+	std::vector<HBlockInstanceVariable> instancias_vars;
+	std::vector<HBlockAssertionBase>    assertions_functional; //To define and others
 
 
 	std::vector<NoumDefinition> nregisters;
-	std::vector<CBlockAssertion_is *> assertions;
-	std::vector<CBlockAssertionBase*> dynamic_assertions;
+	std::vector<HBlockAssertion_is > assertions;
+	std::vector<HBlockAssertionBase> dynamic_assertions;
 
 
-	std::vector<CBlockAssertion_is*>   kindDefinitions;
+	std::vector<HBlockAssertion_is>   kindDefinitions;
 
 
-	std::vector<CBlockAssertion_isDefaultAssign *> default_assignments;
-	std::vector<CBlockAssertionBase* > instance_variables;
-	std::vector<CBlockAssertionBase* > kind_variables;
+	std::vector<HBlockAssertion_isDefaultAssign > default_assignments;
+	std::vector<HBlockAssertionBase > instance_variables;
+	std::vector<HBlockAssertionBase > kind_variables;
 
 
-	QueryResul query_is_instance_valueSet(CBlock* c_block, CBlock* c_block1);
-	QueryResul query_is_propertyOf_value_imp(CBlock* propname, CBlock* propObj, CBlock* c_block1, QueryStack stk);
-	QueryResul query_is_propertyOf_value(CBlock* c_block, CBlock* c_block1, QueryStack stk);
-	QueryResul query_is(CBlock* c_block, CBlock* c_block1, QueryStack stk);
+	QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1);
+	QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, QueryStack stk);
+	QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResul query_is(HBlock c_block, HBlock c_block1, QueryStack stk);
 
-	std::list<CBlockKind*> getUpperKinds(CBlockKind* kind);
-	CBlockInstance*  new_Instance(std::string named, CBlockKind* kind);
-	void assign_variable_to_instance(CBlockAssertionBase* kvar);
+	std::list<HBlockKind> getUpperKinds(HBlockKind kind);
+	HBlockInstance  new_Instance(std::string named, HBlockKind kind);
+	void assign_variable_to_instance(HBlockAssertionBase kvar);
 public:
 	CBlockInterpreter();
 	~CBlockInterpreter();
 
 	void initialize();
-	bool assert_it_canBe(UBlock c_block, CBlockEnums* value);
+	bool assert_it_canBe(UBlock c_block, HBlockEnums value);
 
 	bool assert_it_valuesDefinitions(UBlock c_block, UBlock value);
 	void execute_init(UBlock p);
 	bool assert_has_variable(UBlock obj, UBlock value);
-	UBlock value_can_be_assign_to(UBlock value, CBlockKind* kind);
+	UBlock value_can_be_assign_to(UBlock value, HBlockKind kind);
 	bool assert_it_property(UBlock propname, UBlock obj, UBlock value);
 	bool assert_it_Value(UBlock obj, UBlock value);
 	bool assert_it_not_Value(UBlock obj, UBlock value);
 	 
 	bool assert_it_defaultValue(UBlock obj, UBlock value);
-	std::pair<CBlockKind*, CBlockKind*>  create_derivadeKind(std::string called, std::string baseName);
+	std::pair<HBlockKind, HBlockKind>  create_derivadeKind(std::string called, std::string baseName);
 	bool  assert_it_kind(UBlock obj, UBlock value);
 	bool  assert_it_instance (UBlock obj, UBlock value);
-	CBlockKind* getKindOf(CBlockInstance* obj);
+	HBlockKind getKindOf(HBlockInstance obj);
 
-	QueryResul query_is_same(CBlock* c_block, CBlock* c_block1);
-	QueryResul query_is(CBlock* c_block, CBlock* c_block1);
+	QueryResul query_is_same(HBlock c_block, HBlock c_block1);
+	QueryResul query_is(HBlock c_block, HBlock c_block1);
 	 
  
-	QueryResul query(CBlockAssertion_is* base, CBlockAssertion_is* q);
-	QueryResul query(CBlockAssertion_is* query);
-	HTerm executeAssertion_is(CBlockAssertion_is* b);
-	HTerm executeAssertion(CBlockAssertionBase* b);
-	HTerm execute(CBlock *b);
-	CBlock* resolve(CTerm  *b);
-	CBlock* resolve_of(CBlock  *b , CBlock *a);
-	bool is_derivadeOf(CBlockKind* a, CBlockKind* b);
-	bool is_derivadeOf(CBlockInstance* a, CBlockKind* b);
-	CBlockKind* resolve_kind(std::string n);
-	CBlock* resolve_noum(CBlockNoum  *n);
-	CBlock* resolve_string(std::string n);
+	QueryResul query(HBlockAssertion_is base, HBlockAssertion_is q);
+	QueryResul query(HBlockAssertion_is query);
+	HTerm executeAssertion_is(HBlockAssertion_is b);
+	HTerm executeAssertion(HBlockAssertionBase b);
+	HTerm execute(HBlock b);
+	HBlock resolve(CTerm  *b);
+	HBlock resolve_of(HBlock  b , HBlock a);
+	bool is_derivadeOf(HBlockKind a, HBlockKind b);
+	bool is_derivadeOf(HBlockInstance a, HBlockKind b);
+	HBlockKind resolve_kind(std::string n);
+	HBlock resolve_noum(HBlockNoum  n);
+	HBlock resolve_string(std::string n);
 	void dump_instance(std::string str);
 };
 

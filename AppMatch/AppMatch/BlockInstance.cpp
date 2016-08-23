@@ -6,19 +6,19 @@
 #include <iostream>
 using  namespace  std   ;
 
-CVariableSlotEnum::CVariableSlotEnum(CBlockEnums* enums)
+CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
 {
 	this->valueDefinition = enums;
 	this->value = enums->values.front();
 }
 
-CVariableSlotBool::CVariableSlotBool(CBlockNoum* valueDef)
+CVariableSlotBool::CVariableSlotBool(HBlockNoum valueDef)
 {
 	this->valueDefinition = valueDef;
 	this->value = true;
 }
 
-CVariableNamed::CVariableNamed(CBlockNoum* _name, CBlockKind* _kind, CBlock* _value): value(_value), kind(_kind), name(_name)
+CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value): value(_value), kind(_kind), name(_name)
 {
 }
 
@@ -27,29 +27,29 @@ void CBlockInstance::dump(std::string ident)
 	cout << ident << "Instance: " << named << endl;
 }
 
-CBlockInstance::CBlockInstance( std::string _named, CBlockKind *_baseKind) : named(_named), baseKind(_baseKind)
+CBlockInstance::CBlockInstance( std::string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
 {
 	//assert(_named[0] != '[');
 }
 
-void CBlockInstance::newEnumVariableSlot(CBlockEnums* definition  )
+void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )
 {
 	this->anomimousSlots.push_back( new  CVariableSlotEnum(definition));
 
 }
 
-void CBlockInstance::newBoolVariableSlot(CBlockNoum * value)
+void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
 {
 	this->anomimousSlots.push_back(new CVariableSlotBool (value));
 }
 
-void CBlockInstance::newNamedVariable(CBlockNoum* called, CBlockKind* kind)
+void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
 	this->namedSlots.push_back(new CVariableNamed(called, kind, nullptr));
 
 }
 
-void CBlockInstance::set(CBlockNoum* c_block)
+void CBlockInstance::set(HBlockNoum c_block)
 {
 	//Anonymous SET
 	for(auto &va :	this->anomimousSlots)
@@ -73,7 +73,7 @@ void CBlockInstance::set(CBlockNoum* c_block)
 	}
 }
 
-void CBlockInstance::unset(CBlockNoum* c_block)
+void CBlockInstance::unset(HBlockNoum c_block)
 {
 	//Anonymous SET
 	for (auto &va : this->anomimousSlots)
@@ -90,7 +90,7 @@ void CBlockInstance::unset(CBlockNoum* c_block)
 	}
 }
 
-bool CBlockInstance::has_slot(CBlockNoum* value)
+bool CBlockInstance::has_slot(HBlockNoum value)
 {
 
 	for (auto &va : this->anomimousSlots)
@@ -141,7 +141,7 @@ void CBlockInstance::set_property(std::string  pnamed, UBlock value)
 	return;
 }
 
-QueryResul CBlockInstance::is_set(CBlockNoum * value)
+QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
 	for (auto &va : this->anomimousSlots)
 	{
