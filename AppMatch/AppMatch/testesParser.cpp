@@ -601,11 +601,16 @@ void testeParser_20() //custrom rlacions
 	//	}
 	//}
 	{
-		auto block = parse.parser("the verb capable to open implies a opening relation");
+		auto block = parse.parser("the verb able to open implies a opening relation");
 		if (ISLOG) { block->dump("");	std::cout << std::endl; }
 	}
 	{
-		auto block = parse.parser("X   capable   to open   Z");
+		auto block = parse.parser("X is  able   to open   Z");
+		if (ISLOG) { block->dump("");	std::cout << std::endl; }
+	} 
+	std::cout <<"----------------------------------------" << std::endl;
+	{
+		auto block = parse.parser("to decide if (X    able   to open   Z) : (decides on true)");
 		if (ISLOG) { block->dump("");	std::cout << std::endl; }
 	}
 

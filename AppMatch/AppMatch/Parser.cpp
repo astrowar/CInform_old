@@ -595,6 +595,24 @@ HBlock CParser::parser_What_Assertion( HTerm   term)
 			return  std::make_shared<CBlockMatch>(std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue));
 		}
 	}
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("if"));
+		predList.push_back(mkHPredAny("AValue"));
+ 
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock AValue = parser(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+ 			
+
+			return  std::make_shared<CBlockMatch>(AValue );
+		}
+	}
 	 
 	return nullptr;
 
