@@ -177,6 +177,16 @@ void CBlockToDecide::dump(string ident)
 	}
 }
 
+void CBlockToDecidewhether::dump(std::string ident)
+{
+	cout << ident << "To Decide Whether (bool)" << endl;
+	{
+		this->queryToMatch->dump(ident + "       ");
+		cout << ident << "Decide for " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
+}
+
 void CBlockToDecideIf::dump(string ident)
 {
 	cout << ident << "Define " << endl;
@@ -185,6 +195,14 @@ void CBlockToDecideIf::dump(string ident)
 		this->queryToMatch->dump(ident + "       ");
 
 		cout << ident << "IF " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
+}
+
+void CBlockToDecideOn::dump(std::string ident)
+{
+	cout << ident << "DecideOn " << endl;
+	{		 
 		this->decideBody->dump(ident + "       ");
 	}
 }

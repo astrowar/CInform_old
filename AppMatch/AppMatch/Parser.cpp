@@ -526,9 +526,35 @@ HBlock CParser::parseAssertion_valuesOf(std::vector<HTerm> term)
 	return nullptr;
 }
 
+HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term)
+{
+	// Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex
+
+
+	{
+		std::vector<HPred> predList;		
+		predList.push_back(mkHPredAny("MatchBody"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("valueToCheck"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock body  = parser_MatchArgument(res.matchs["MatchBody"]);
+			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr)
+			{
+				return  std::make_shared<CBlockAssertion_isDirectAssign>(body, value);				
+			}
+		}
+	}
+	return nullptr;
+
+}
+
 
  
-HBlock CParser::parser_What_Assertion(std::vector<HTerm> term)
+HBlock CParser::parser_What_Assertion( HTerm   term)
 {
 	{
 		std::vector<HPred> predList;
@@ -628,7 +654,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock a_match =  parser(res.matchs["Match"]);
+			HBlock a_match = parser_What_Assertion(res.matchs["Match"]);
 			HBlock body = parser(res.matchs["RemainBody"] );
 
 			return  std::make_shared<CBlockToDecide>(a_match, body);
@@ -659,7 +685,7 @@ HBlock CParser::parser_Definition_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock a_match = parser(res.matchs["Match"]);
+			HBlockAssertion_is a_match = parserMatchIsCondition(res.matchs["Match"]);
 			HBlock body = parserBoolean(res.matchs["LogicalBody"]);
 
 			return  std::make_shared<CBlockToDecideIf>(a_match, body);
@@ -963,7 +989,56 @@ HBlock CParser::parser_understand_Action_Assertion(std::vector<HTerm> term)
 	return nullptr;
 }
 
+HBlock CParser::parse_toDecide_Entry(std::vector<HTerm> term)
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mk_HPredLiteral("decide"));
+		predList.push_back(mk_HPredLiteral(":"));
+		return nullptr;
+	}
+}
 
+HBlock CParser::parse_toDecide_Ret(std::vector<HTerm> term)
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("decide"));
+		predList.push_back(mk_HPredLiteral("on"));	 
+		predList.push_back(mkHPredAny("Subst"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock  n1 = parser(res.matchs["Subst"]);
+			if (n1 == nullptr) return nullptr;			
+			return std::make_shared<CBlockToDecideOn>(n1);
+		}
+	}
+	return nullptr;
+}
+
+HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term)
+{
+	
+	HBlock verb_decideIn = CParser::parse_toDecide_Entry(term);
+	if (verb_decideIn != nullptr)
+	{
+		return verb_decideIn;
+	}
+
+
+	HBlock verb_decideRet = CParser::parse_toDecide_Ret(term);
+	if (verb_decideRet != nullptr)
+	{
+		return verb_decideRet;
+	}
+
+	return nullptr;
+
+
+
+}
 
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
 HBlock CParser::parser_understand_Assertion(std::vector<HTerm> term)
@@ -1052,15 +1127,65 @@ HPred convert_to_predicate( CTerm* termo )
 	return mk_HPredLiteral( termo->repr());
 }
 
+HBlock CParser::parser_verb_Assertion_N(std::vector<HTerm> term)
+{
+	auto L_the_verb = mkHPredList("vinitial", { mk_HPredLiteral("the") , mk_HPredLiteral("verb") });
+	auto L_verb = mk_HPredLiteral("verb");
+	{
 
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+		predList.push_back(mkHPredAny("VerbList"));
+		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
+		predList.push_back(L_the_verb_1);
+		predList.push_back(mkHPredAny("Relation"));
+		predList.push_back(mk_HPredLiteral("relation"));
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals)
+		{
+			HPred verbMatch;
+			HBlock a_verb;
+			HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+
+
+			if (CList* plist = dynamic_cast<CList*>(res.matchs["VerbList"].get()))
+			{
+				//eh uma lista
+
+				HBlockList  clist = std::make_shared<CBlockList>();
+
+				verbMatch = mkHPredList("VerbMatch", {});
+				CPredList* cpList = reinterpret_cast<CPredList*>(verbMatch.get());
+
+				for each(auto ip in plist->lst  )
+				{
+					clist->push_back(std::make_shared<CBlockNoum>(ip->repr()));
+					cpList->plist.push_back(mk_HPredLiteral(ip->repr()));
+				}
+				a_verb = clist;
+
+				verbList->blist.push_back(verbMatch);
+				return  std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
+
+			}
+			else
+			{
+				//nao eh uma lista :-(
+				return nullptr;
+			}
+		}
+
+	}
+	return nullptr;
+
+}
 
 HBlock CParser::parser_verb_Assertion(std::vector<HTerm> term)
 {
 
 	auto L_the_verb = mkHPredList("vinitial", { mk_HPredLiteral("the") , mk_HPredLiteral("verb") });
 	auto L_verb = mk_HPredLiteral("verb");
-
-
 	{
 
 		std::vector<HPred> predList;
@@ -1069,7 +1194,7 @@ HBlock CParser::parser_verb_Assertion(std::vector<HTerm> term)
 		predList.push_back(mkHPredAny("Aux"));
 
 		auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies") ,mkHPredBooleanOr("article", mk_HPredLiteral("a"), mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
-		predList.push_back(L_the_verb_1);
+		predList.push_back(  L_the_verb_1 );
 		predList.push_back(mkHPredAny("Relation"));
 		predList.push_back(mk_HPredLiteral("relation"));
 		MatchResult res = CMatch(term, predList);
@@ -1097,7 +1222,7 @@ HBlock CParser::parser_verb_Assertion(std::vector<HTerm> term)
 	}
 
 
-	{
+ {
 
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
@@ -1933,10 +2058,17 @@ HBlock CParser::parser_only(std::vector<HTerm> lst)
 	// 
 	//std::vector<HTerm>  lst = decompose(str);
 
+	HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
+	if (rblock_decide_blc != nullptr) return rblock_decide_blc;
+
 
 	HBlock rblock_understand_1 = (parser_understand_Assertion(lst));
 	if (rblock_understand_1 != nullptr) return rblock_understand_1;
 	 
+	HBlock rblock_verb_1n = (parser_verb_Assertion_N(lst));
+	if (rblock_verb_1n != nullptr) return rblock_verb_1n;
+
+
 	HBlock rblock_verb_1 = (parser_verb_Assertion(lst));
 	if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
@@ -1946,8 +2078,8 @@ HBlock CParser::parser_only(std::vector<HTerm> lst)
 	HBlock rblock_decide_1 = (parser_Decide_Assertion(lst));
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 	 
-	HBlock rblock_what_1 = (parser_What_Assertion(lst));
-	if (rblock_what_1 != nullptr) return rblock_what_1;
+	//HBlock rblock_what_1 = (parser_What_Assertion(lst));
+	//if (rblock_what_1 != nullptr) return rblock_what_1;
 
 
 	HBlock rblock_assert_1 = (parser_Declaration_Assertion (lst));
@@ -2022,6 +2154,8 @@ HBlock CParser::parserBoolean(HTerm term)
 	}
 	return   parser(term);
 }
+
+ 
 
 HBlock CParser::parser(std::string str)
 {

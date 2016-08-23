@@ -6,12 +6,12 @@ class CBlockEnums;
 using std::string;
 class CBlock;
 class CBlockKind;
-
+class CBlockAssertion_is;
 using UBlock = CBlock*;
 
 //All CBlocks are constant in memory ... ALL ... because this is can be a ROM data 
 
-
+using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
 class NoumDefinition
 {
@@ -477,10 +477,12 @@ using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
 
 
 
-class CBlockToDecideIf : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+
+class CBlockToDecidewhether : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-	CBlockToDecideIf(HBlock _queryToMatch, HBlock _decideBody)
+	CBlockToDecidewhether
+	(HBlock _queryToMatch, HBlock _decideBody)
 		: queryToMatch(_queryToMatch),
 		decideBody(_decideBody)
 	{
@@ -490,6 +492,39 @@ public:
 	virtual HTerm eval() { return nullptr; }
 	void dump(std::string ident) override;
 };
+using HBlockToDecidewhether = std::shared_ptr<CBlockToDecidewhether>;
+
+
+
+ 
+
+
+
+class CBlockToDecideIf : public  CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockToDecideIf(HBlockAssertion_is  _queryToMatch, HBlock _decideBody)
+		: queryToMatch(_queryToMatch),
+		decideBody(_decideBody)
+	{
+	}
+	HBlockAssertion_is queryToMatch;
+	HBlock decideBody;
+	virtual HTerm eval() { return nullptr; }
+	void dump(std::string ident) override;
+};
 using HBlockToDecideIf = std::shared_ptr<CBlockToDecideIf>;
 
+
+class CBlockToDecideOn : public  CBlock  // bloco que equivale a um return no decide
+{
+public:
+	CBlockToDecideOn(HBlock _decideBody):decideBody(_decideBody)
+	{
+	} 
+	HBlock decideBody;
+	virtual HTerm eval() { return nullptr; }
+	void dump(std::string ident) override;
+};
+using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
 

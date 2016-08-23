@@ -1,5 +1,7 @@
 
 #include "CBlockInterpreterRuntime.h"
+
+#include "CBlockMatch.h"
 #include <iostream>
 using namespace std;
 
@@ -104,13 +106,31 @@ void CBlockInterpreter::execute_init(HBlock p)
 		HBlock value = ivar->instance_variable ;
 		if (assert_has_variable(obj, value)) return;
 	}
-	 
+	else if (HBlockToDecide   dcMatch = dynamic_pointer_cast<CBlockToDecide>(p))
+	{
+		if (assert_decideBlock(dcMatch)) return;
+
+	}
 
 	std::cout << "not found block definition " <<   endl;
 	return  ;
 }
 
 
+
+bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct )
+{	
+	if (auto inner = std::dynamic_pointer_cast<CBlockMatch >(dct->queryToMatch ))
+	{
+		if (auto if_inner = std::dynamic_pointer_cast<CBlockAssertion_isDirectAssign >(inner->matchInner))
+		{			 
+				decides_if.push_back( make_shared<CBlockToDecideIf>(if_inner, dct->decideBody ) );
+				return true;			 
+		}
+	}
+	decides_what.push_back(dct);
+	return true;
+}
 
  
 bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value)

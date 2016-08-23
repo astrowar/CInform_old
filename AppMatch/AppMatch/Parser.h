@@ -146,10 +146,11 @@ public:
  
 	HBlock parseAssertion_isKindOf(std::vector<HTerm> term);
 	HBlock parseAssertion_valuesOf(std::vector<HTerm> term);
-	HBlock parser_What_Assertion(std::vector<HTerm> term);
+	HBlock parser_What_Assertion( HTerm  term);
 	HBlock parseAssertion_DecideWhat( HTerm  term);
 	HBlock parseAssertion_isDecide(std::vector<HTerm> term);
 	HBlock parserBoolean(  HTerm  term);
+	HBlockAssertion_is parserMatchIsCondition(HTerm match);
 	HBlock parser_Definition_Assertion(std::vector<HTerm> term);
 	HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
 	HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
@@ -168,7 +169,11 @@ public:
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
 	HBlock parser_understand_Action_Assertion(std::vector<HTerm> term);
+	HBlock parse_toDecide_Entry(std::vector<HTerm> term);
+	HBlock parse_toDecide_Ret(std::vector<HTerm> term);
+	HBlock parser_decides_Assertion(std::vector<HTerm> term);
 	HBlock parser_understand_Assertion(std::vector<HTerm> term);
+	HBlock parser_verb_Assertion_N(std::vector<HTerm> term);
 	HBlock parser_verb_Assertion(std::vector<HTerm> lst);
 
 	HBlockEnums  parseAssertion_EnumTerms(  HTerm  elist);

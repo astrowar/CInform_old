@@ -231,7 +231,6 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 	stk.addQuery(c_block, c_block1);
 
 	{
-
 		if (HBlockInstance   ninst_1 = dynamic_pointer_cast<CBlockInstance>(c_block))
 			if (HBlockInstance   ninst_2 = dynamic_pointer_cast<CBlockInstance>(c_block1))
 			{
@@ -241,8 +240,30 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 				}
 				
 			}
-
 	}
+	 
+
+
+	for each(auto dct in decides_what )
+	{
+		auto dctValueWrap = getDecidedValueOf(c_block, dct);
+		if (dctValueWrap != nullptr)
+		{
+			return  CBlockInterpreter::query_is(dctValueWrap, c_block1, stk); //is not opnional	
+		}
+	}
+
+	for each(auto dct in decides_what)
+	{
+		auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct);
+		if (dctValueWrap_1 != nullptr)
+		{
+			return  CBlockInterpreter::query_is(c_block, dctValueWrap_1, stk);  //is not opnional				 
+		}
+	}
+
+
+
 	//is scond a kind of anything ??
 	if (HBlockKind  bkind = dynamic_pointer_cast<CBlockKind>(c_block1))
 	{

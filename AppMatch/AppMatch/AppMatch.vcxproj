@@ -180,6 +180,7 @@
     <ClCompile Include="BlockInterpreter.cpp" />
     <ClCompile Include="CBase.cpp" />
     <ClCompile Include="CBlockDumpValues.cpp" />
+    <ClCompile Include="CBlockInterpreterDecideBody.cpp" />
     <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CInterpreterKindTree.cpp" />
     <ClCompile Include="CMatch.cpp" />

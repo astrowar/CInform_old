@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <iostream>
 
-#define ISLOG false 
+#define ISLOG true 
 std::vector<HTerm> decompose(std::string phase);;
 std::string  decompose_bracket(std::string phase, std::string dlm);
 CList*  mk_CList_Literal(std::vector<HTerm> strList);
@@ -522,6 +522,35 @@ void testeParser_6a()//kind of value
 	std::cout << std::endl;
 }
 
+
+void testeParser_7a()//dynamic match
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	{
+		interpreter->execute_init(parse.parser("thing is a kind "));
+		interpreter->execute_init(parse.parser("book is a thing "));
+		interpreter->execute_init(parse.parser("diary is a thing "));
+	}
+	{
+		auto block = parse.parser("to decide what (thing) is (the best book) : diary ");
+		if (ISLOG) {	block->dump("");	std::cout << std::endl; }
+		//interpreter->execute_init( block);
+		
+	}
+	{
+		auto block = parse.parser("if X is capable to open a Y ");
+		if (ISLOG) { block->dump("");	std::cout << std::endl; }
+		 interpreter->execute_init(block);
+
+	}
+
+	QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("[ best book ]"), std::make_shared<CBlockNoum>("diary"));
+
+	std::cout << std::endl;
+
+}
 void testeParser_20() //custrom rlacions
 {
 	 
@@ -539,39 +568,48 @@ void testeParser_20() //custrom rlacions
 
 	 */
 
+	//{
+	//	std::string phase_1 = "the verb inside of implies a reverse container relation";
+	//	auto res = parse.parser(phase_1);
+	//	if (res == nullptr) throw "parse error";
+	//	if (ISLOG)
+	//	{
+	//		res->dump("");
+	//		std::cout << std::endl;
+	//	}
+	//}
+	//{
+	//	std::string phase_1 = "the verb contains implies a container relation";
+	//	auto res = parse.parser(phase_1);
+	//	if (res == nullptr) throw "parse error";
+	//	if (ISLOG)
+	//	{
+	//		res->dump("");
+	//		std::cout << std::endl;
+	//	}
+	//}
+
+
+	//{
+	//	std::string phase_1 = "book contains text";
+	//	auto res = parse.parser(phase_1);
+	//	if (res == nullptr) throw "parse error";
+	//	if (ISLOG)
+	//	{
+	//		res->dump("");
+	//		std::cout << std::endl;
+	//	}
+	//}
 	{
-		std::string phase_1 = "the verb inside of implies a reverse container relation";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
+		auto block = parse.parser("the verb capable to open implies a opening relation");
+		if (ISLOG) { block->dump("");	std::cout << std::endl; }
 	}
 	{
-		std::string phase_1 = "the verb contains implies a container relation";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
+		auto block = parse.parser("X   capable   to open   Z");
+		if (ISLOG) { block->dump("");	std::cout << std::endl; }
 	}
 
 
-	{
-		std::string phase_1 = "book contains text";
-		auto res = parse.parser(phase_1);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG)
-		{
-			res->dump("");
-			std::cout << std::endl;
-		}
-	}
-	
 	/*{
 		std::string phase_1 = "let L be the (list of ( things fancier than/of/in/on 20 ) ) )";
 		auto res = parse.parser(phase_1);
@@ -750,21 +788,21 @@ void testeParser_22()
 }
 
 
-void testeParser ()
+void testeParser()
 {
-	 // testeParser_1();
-	  
-	  for (int k = 0; k < 100; ++k)
+	// testeParser_1();
+
+	//for (int k = 0; k < 100; ++k)
 	{
-	      testeParser_2();
-	   testeParser_2a();
-	      testeParser_3();
-	     testeParser_4();
-	   testeParser_5();
-	   testeParser_6();
-	  testeParser_6a();
-	 //  testeParser_22();
-	   std::cout << ".";
+		//testeParser_2();
+		//testeParser_2a();
+		//testeParser_3();
+		//testeParser_4();
+		//testeParser_5();
+		//testeParser_6();
+		// testeParser_7a();
+		   testeParser_20();
+		std::cout << ".";
 	}
 	std::cout << std::endl;
 }
