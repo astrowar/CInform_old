@@ -1176,7 +1176,7 @@ HBlock CParser::parser_verb_Assertion_N(std::vector<HTerm> term)
 				verbMatch = mkHPredList("VerbMatch", {});
 				CPredList* cpList = reinterpret_cast<CPredList*>(verbMatch.get());
 
-				for each(auto ip in plist->lst  )
+				for  (auto ip : plist->lst  )
 				{
 					clist->push_back(std::make_shared<CBlockNoum>(ip->repr()));
 					cpList->plist.push_back(mk_HPredLiteral(ip->repr()));

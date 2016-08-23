@@ -244,7 +244,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 	 
 
 
-	for each(auto dct in decides_what )
+	for  (auto dct : decides_what )
 	{
 		auto dctValueWrap = getDecidedValueOf(c_block, dct);
 		if (dctValueWrap != nullptr)
@@ -253,7 +253,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 		}
 	}
 
-	for each(auto dct in decides_what)
+	for  (auto dct : decides_what)
 	{
 		auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct);
 		if (dctValueWrap_1 != nullptr)

@@ -43,6 +43,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CInterpreterKindTree.cpp
         AppMatch/AppMatch/CBlockDumpValues.cpp
         AppMatch/AppMatch/BlockInstance.cpp
+        AppMatch/AppMatch/CBlockInterpreterDecideBody.cpp
 
         AppMatch/AppMatch/UBlock.hpp AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/ParseDictionary.cpp)
 
