@@ -2,6 +2,7 @@
 
 #include "CBase.h"
 #include <cassert>
+ 
 
 class CBlockEnums;
 
@@ -226,6 +227,23 @@ public:
 
 using HBlockInstanceVariable = std::shared_ptr<CBlockInstanceVariable>;
 
+
+
+
+
+class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
+{
+public:
+	void dump(std::string ident) override;
+	CBlockKind_InstanceVariable(HBlockKind  _kind , HBlockInstanceVariable _variableNamed):variableNamed(_variableNamed), kind(_kind){}
+	HBlockInstanceVariable variableNamed;
+	HBlockKind kind;
+
+};
+using HBlockKind_InstanceVariable = std::shared_ptr<CBlockKind_InstanceVariable>;
+
+
+
 class CBlockList : public CBlock //retorna um valor generico
 {
 public:
@@ -279,29 +297,7 @@ public:
 };
 
 
-class CBlockIsVerb : public CBlock    //retorna uma declaracao
-{
-public:
-    virtual void dump(std::string ident) override;
-
-    string verb;
-    HBlock n1;
-    HBlock n2;
-
-    CBlockIsVerb(std::string _verb, HBlock _n1, HBlock _n2) : verb((_verb)), n1((_n1)), n2((_n2)) {};
-};
-
-class CBlockIsNotVerb : public CBlock    //retorna uma declaracao
-{
-public:
-    virtual void dump(std::string ident) override;
-
-    string verb;
-    HBlock n1;
-    HBlock n2;
-
-    CBlockIsNotVerb(std::string _verb, HBlock _n1, HBlock _n2) : verb(_verb), n1((_n1)), n2((_n2)) {};
-};
+ 
 
 class CBlockVerbRelation : public CBlock    //retorna uma declaracao
 {

@@ -252,10 +252,21 @@ HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockAssertion_is a_match = parserMatchIsCondition(res.matchs["Match"]);
-            HBlock body = parserBoolean(res.matchs["LogicalBody"]);
 
-            return std::make_shared<CBlockToDecideIf>(a_match, body);
+			HBlockIsVerb  v_match = parserMatchIsConditionVerb (res.matchs["Match"]);
+			if (v_match != nullptr)
+			{
+				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
+				return std::make_shared<CBlockToDecideIf>(v_match, body);
+			}
+
+            HBlockAssertion_is a_match = parserMatchIsCondition(res.matchs["Match"]);
+			if (a_match != nullptr)
+			{
+				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
+				return std::make_shared<CBlockToDecideIf>(a_match, body);
+			}
+			return nullptr;
         }
     }
     return nullptr;

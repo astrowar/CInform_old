@@ -167,6 +167,10 @@ void testeParser_2() {
     QueryResul q = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("thing"));
     bool qclass_k = interpreter->is_derivadeOf(std::make_shared<CBlockKindThing>("silver"),
                                                std::make_shared<CBlockKindThing>("metal"));
+
+	assert(q == QEquals);
+	assert(qclass_k);
+
     //bool qclass_i = interpreter->is_derivadeOf(std::make_shared<CBlockInstance>("diary"), std::make_shared<CBlockKindThing>("thing"));
     std::cout << "Done" << std::endl;
     return;
@@ -179,17 +183,13 @@ void testeParser_2a() {
     interpreter->execute_init(parse.parser_stmt("thing is a kind  "));
     interpreter->execute_init(parse.parser_stmt("book is a kind of thing "));
     interpreter->execute_init(parse.parser_stmt("book  can be normal , huge or  small"));
+	interpreter->execute_init(parse.parser_stmt("thing is a kind "));
+	interpreter->execute_init(parse.parser_stmt("book has a thing called color"));
+	interpreter->execute_init(parse.parser_stmt(" color of book is usually white "));
 
-    {
-        std::string phase_1 = "book is usually small ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-            std::cout << std::endl;
-        }
-        interpreter->execute_init(res);
-    }
+    
+
+
 
     interpreter->execute_init(parse.parser_stmt("book can be read"));
     {
@@ -202,6 +202,8 @@ void testeParser_2a() {
         }
         interpreter->execute_init(res);
     }
+	QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
+	assert(q_true == QEquals);
 
     {
         std::string phase_1 = "diary is not read ";
@@ -216,31 +218,24 @@ void testeParser_2a() {
 
     interpreter->dump_instance("diary");
 
-    QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
+    QueryResul q_false_1 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
                                               std::make_shared<CBlockNoum>("read"));
-    QueryResul q_false = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
+    QueryResul q_false_2 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
                                                std::make_shared<CBlockNoum>("huge"));
+
+
+	assert(q_false_1 == QNotEquals);
+	assert(q_false_1 == QNotEquals);
+
     std::cout << "Done" << std::endl;
 
-    {
-        std::string phase_1 = "color of book is usually white ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-            std::cout << std::endl;
-        }
-        interpreter->execute_init(res);
-    }
-    {
-        std::string phase_1 = "the (length of (internal description of  a container )) is usually ( lenght of ( Its cramped in here))";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-            std::cout << std::endl;
-        }
-    }
+    
+
+	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"), std::make_shared<CBlockNoum>("diary"));
+
+	QueryResul q_true_2 = interpreter->query_is(propV,	std::make_shared<CBlockNoum>("white"));
+
+    
 
     std::cout << "Done" << std::endl;
     return;
@@ -622,7 +617,7 @@ void testeParser_21() {
         }
 
         {
-            std::string phase_1 = "the verb visible by implies a visibility relation";
+            std::string phase_1 = "the verb ( visible by ) implies a visibility relation";
             auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
@@ -632,7 +627,7 @@ void testeParser_21() {
         }
 
         {
-            std::string phase_1 = "definition : (a thing is hindering) if ( ( it is stuck to the noun) and (it is not within the location ) )";
+            std::string phase_1 = "definition : (a thing is visible by other) if ( ( it is stuck to the noun) and (it is not within the location ) )";
             auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
@@ -745,16 +740,16 @@ void testeParser_22() {
 void testeParser() {
     // testeParser_1();
 
-    for (int k = 0; k < 100; ++k)
+   // for (int k = 0; k < 100; ++k)
     {
         testeParser_2();
-        //testeParser_2a();
+        testeParser_2a();
         //testeParser_3();
         //testeParser_4();
         //testeParser_5();
         //testeParser_6();
         // testeParser_7a();
-        //testeParser_20();
+      // testeParser_21();
         std::cout << ".";
     }
     std::cout << std::endl;

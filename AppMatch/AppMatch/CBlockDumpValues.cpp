@@ -72,6 +72,14 @@ void CBlockInstanceVariable::dump(string ident) {
     property_name->dump(ident + "          ");
 }
 
+void CBlockKind_InstanceVariable::dump(std::string ident)
+{
+	cout << ident << "Kind Named Variable: " << endl;
+	kind ->dump(ident + "          ");
+	cout << ident << "   has  an:" << endl;
+	variableNamed->dump(ident + "          ");
+}
+
 void CBlockList::dump(string ident) {
     cout << ident << "List: " << endl;
     for (auto e = lista.begin(); e != lista.end(); ++e) {

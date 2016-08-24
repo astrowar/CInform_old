@@ -135,6 +135,7 @@ public:
  
 	void set_Noum(NoumDefinition ndef);
 	void set_Noum(NoumDefinitions ndef);
+	HBlockIsVerb parserMatchIsConditionVerb(HTerm term);
 	int registerStaticDispatch(int entryId, HBlockMatchList  argumentMatch, HBlock body );
 
 

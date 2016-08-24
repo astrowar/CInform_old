@@ -66,6 +66,7 @@ CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum
                                                                                             kind_name((_kind_name)) {
 }
 
+ 
 
 void CBlockList::push_back(HBlock c_block_value) {
     lista.push_back((c_block_value));
@@ -188,3 +189,21 @@ HBlock CBlockAssertion_isNotDirectAssign::get_definition() {
     return value;
 }
 
+HBlock CBlockIsVerb::get_obj()
+{
+	return n1;
+}
+
+HBlock CBlockIsVerb::get_definition()
+{
+	return n2;
+}
+HBlock CBlockIsNotVerb::get_obj()
+{
+	return n1;
+}
+
+HBlock CBlockIsNotVerb::get_definition()
+{
+	return n2;
+}

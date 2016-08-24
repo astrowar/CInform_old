@@ -33,6 +33,7 @@ class CBlockInterpreter {
     std::vector<HBlockAssertion_isDefaultAssign> default_assignments;
     std::vector<HBlockAssertionBase> instance_variables;
     std::vector<HBlockAssertionBase> kind_variables;
+	std::vector<HBlockKind_InstanceVariable> kind_named_variables;
 
     std::vector<HBlockToDecide> decides_what;
     std::vector<HBlockToDecidewhether> decides_whether;
@@ -77,8 +78,8 @@ public:
     bool assert_it_Value(HBlock obj, HBlock value);
 
     bool assert_it_not_Value(HBlock obj, HBlock value);
-
-    bool assert_it_defaultValue(HBlock obj, HBlock value);
+	bool assert_property_defaultValue(HBlockProperty obj, HBlock value);
+	bool assert_it_defaultValue(HBlock obj, HBlock value);
 
     std::pair<HBlockKind, HBlockKind> create_derivadeKind(std::string called, std::string baseName);
 

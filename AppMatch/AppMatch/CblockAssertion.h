@@ -3,6 +3,7 @@
 #include "BlockInterpreter.h"
 #include "BlockInstance.h"
 
+
 class CBlockAssertionBase : public CBlock //retorna uma declaracao
 {
 public:
@@ -232,4 +233,37 @@ public:
                                                                                                          application(
                                                                                                                  _application) {};
 };
+
+
+
+class CBlockIsVerb : public CBlockAssertion_is    //retorna uma declaracao
+{
+public:
+	HBlock get_obj() override;
+	HBlock get_definition() override;
+	virtual void dump(std::string ident) override;
+
+	string verb;
+	HBlock n1;
+	HBlock n2;
+
+	CBlockIsVerb(std::string _verb, HBlock _n1, HBlock _n2) : verb((_verb)), n1((_n1)), n2((_n2)) {};
+};
+using HBlockIsVerb = std::shared_ptr<CBlockIsVerb>;
+
+
+class CBlockIsNotVerb : public CBlockAssertion_is    //retorna uma declaracao
+{
+public:
+	HBlock get_obj() override;
+	HBlock get_definition() override;
+	virtual void dump(std::string ident) override;
+
+	string verb;
+	HBlock n1;
+	HBlock n2;
+
+	CBlockIsNotVerb(std::string _verb, HBlock _n1, HBlock _n2) : verb(_verb), n1((_n1)), n2((_n2)) {};
+};
+using HBlockIsNotVerb = std::shared_ptr<CBlockIsNotVerb>;
 

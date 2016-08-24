@@ -124,8 +124,17 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value) {
             return true;
         }
 
-    } else if (HBlockKind nKind = dynamic_pointer_cast<CBlockKind>(obj)) {
-        return true;
+    } else if (HBlockKind nKind = dynamic_pointer_cast<CBlockKind>(obj)) 	{
+		
+		if (HBlockInstanceVariable iVariableNamed = dynamic_pointer_cast<CBlockInstanceVariable>(value)) {
+			if (HBlockKind_InstanceVariable variable_ = make_shared<CBlockKind_InstanceVariable>(nKind, iVariableNamed)) 
+			{
+			 
+				kind_named_variables.push_back(variable_);
+				return true;
+			}
+		}
+		 
     }
     return false;
 }
@@ -227,7 +236,32 @@ bool CBlockInterpreter::assert_it_not_Value(HBlock obj, HBlock value) {
     }
     return false;
 }
+bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value)
+{
+	if (HBlockNoum prop_obj_noum = dynamic_pointer_cast<CBlockNoum>(prop->obj))
+	{
+		HBlock nobj = resolve_noum(prop_obj_noum);
+		
+		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value);
 
+	}
+	if (HBlockInstance prop_obj_inst = dynamic_pointer_cast<CBlockInstance>(prop->obj))
+	{
+		throw "cant assign Ususally to Instances";
+		return false;
+	}
+
+	if (HBlockKind prop_obj_kind = dynamic_pointer_cast<CBlockKind>(prop->obj))
+	{
+		if (HBlockNoum prop_name_noum = dynamic_pointer_cast<CBlockNoum>(prop->prop))
+		{			 
+			default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(prop_obj_kind, value));
+			return true;
+		}
+	}
+
+	return false;
+}
 bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value) {
     //default value so eh valudi para Kinds
     if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
@@ -240,7 +274,7 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value) {
         throw "cant assign Ususally to Instances";
     } else if (HBlockProperty pbase = dynamic_pointer_cast<CBlockProperty>(obj)) {
 
-        return true;
+		return assert_property_defaultValue(pbase, value);
 
 
     } else if (HBlockKind kbase = dynamic_pointer_cast<CBlockKind>(obj)) {
@@ -309,7 +343,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value) {
                 assertions.push_back(newDefi);
             }
 
-            std::cout << "new Kind add " << endl;
+            std::cout << "new Kind add " << nbase->named <<  endl;
             return true;
         }
 

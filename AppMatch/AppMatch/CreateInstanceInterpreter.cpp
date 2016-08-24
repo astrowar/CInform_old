@@ -50,6 +50,20 @@ HBlockInstance CBlockInterpreter::new_Instance(std::string named, HBlockKind kin
         }
     }
 
+	//named variables
+
+	for (auto &k : kinds) {
+		for (auto &kvar : kind_named_variables) {
+			if (kvar->kind->named == k->named)
+			{
+				HBlockKind_InstanceVariable v = dynamic_pointer_cast<CBlockKind_InstanceVariable>(kvar->variableNamed);
+				HBlockKind nkindBase = resolve_kind(v->variableNamed->kind_name->named);
+				c->newNamedVariable(v->variableNamed->property_name  , nkindBase);
+			}
+		}
+	}
+	
+
     return c;
 
 

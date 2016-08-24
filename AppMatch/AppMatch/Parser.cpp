@@ -51,11 +51,51 @@ void CParser::set_Noum(NoumDefinitions ndef) {
 
 
 
+HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
+{
+	//Tambem pode ser um verbo definido
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("MatchBody"));
+		predList.push_back(verb_IS());
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("valueToCheck"));
 
-HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term) {
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
+			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
+				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
+			}
+		}
+	}
+
+{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("MatchBody"));		
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("valueToCheck"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
+			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
+			}
+		}
+	}
+return nullptr;
+}
+HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term) 
+{
     // Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex
 
+	 
 
+	//Default is a direct Asign
     {
         std::vector<HPred> predList;
         predList.push_back(mkHPredAny("MatchBody"));
@@ -416,6 +456,10 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
 
             if (CList *plist = dynamic_cast<CList *>(res.matchs["VerbList"].get())) {
                 //eh uma lista
+
+				HTerm listExpand =  expandBract(res.matchs["VerbList"]);
+				plist = dynamic_cast<CList*>(listExpand.get());
+
 
                 HBlockList clist = std::make_shared<CBlockList>();
 
