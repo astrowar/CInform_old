@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="AssertationSecondary.cpp" />
     <ClCompile Include="BlockInstance.cpp" />
     <ClCompile Include="BlockInterpreter.cpp" />
     <ClCompile Include="CBase.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CInterpreterKindTree.cpp" />
     <ClCompile Include="CMatch.cpp" />
+    <ClCompile Include="CParseAux.cpp" />
     <ClCompile Include="CpropertiesFunctions.cpp" />
     <ClCompile Include="CreateInstanceInterpreter.cpp" />
     <ClCompile Include="CRelations.cpp" />
@@ -191,7 +193,10 @@
     <ClCompile Include="FEnviroment.cpp" />
     <ClCompile Include="InterpreterExecute.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="ParserStmt.cpp" />
+    <ClCompile Include="Parser_A.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
+    <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="testesParser.cpp" />
   </ItemGroup>

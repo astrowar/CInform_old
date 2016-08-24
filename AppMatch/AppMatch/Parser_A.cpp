@@ -11,75 +11,6 @@
 #include "CBlockBoolean.h"
 #include "CblockAssertion.h"
 
-HBlock CParser::parse_AssertionVerb(std::vector<HTerm> term) {
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(verb_IS_NOT());
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("N2"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["N1"]);
-            HBlock n2 = parser(res.matchs["N2"]);
-            return std::make_shared<CBlockIsNotVerb>(res.matchs[verbList->named]->repr(), n1, n2);
-        }
-    }
-
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(mk_HPredLiteral("not"));
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("N2"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["N1"]);
-            HBlock n2 = parser(res.matchs["N2"]);
-            return std::make_shared<CBlockIsNotVerb>(res.matchs[verbList->named]->repr(), n1, n2);
-
-        }
-    }
-
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(verb_IS());
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("N2"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["N1"]);
-            HBlock n2 = parser(res.matchs["N2"]);
-            return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), n1, n2);
-
-        }
-    }
-
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("N2"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["N1"]);
-            HBlock n2 = parser(res.matchs["N2"]);
-            return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), n1, n2);
-
-        }
-    }
-
-    return nullptr;
-}
 
 
 HBlock CParser::parserBoolean(std::vector<HTerm> term) {
@@ -127,29 +58,6 @@ HBlock CParser::parserBoolean(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {
-
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(undefinedArticle());
-        predList.push_back(mk_HPredLiteral("action"));
-        predList.push_back(mk_HPredLiteral("applying"));
-        predList.push_back(mk_HPredLiteral("to"));
-        predList.push_back(mkHPredAny("ApplyRemainder"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
-            //return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
-            return std::make_shared<CBlockKindAction>("", applyTO);
-
-        }
-    }
-
-    return nullptr;
-
-}
 
 
 ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst) {
@@ -177,8 +85,8 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind2"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["kind1"]);
-            HBlock n2 = parser(res.matchs["kind2"]);
+            HBlock n1 = parser_kind(res.matchs["kind1"]);
+            HBlock n2 = parser_kind(res.matchs["kind2"]);
             return std::make_shared<CBlockActionApply>(n1, n2);
         }
     }
@@ -190,7 +98,7 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind1"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["kind1"]);
+            HBlock n1 = parser_kind(res.matchs["kind1"]);
             return std::make_shared<CBlockActionApply>(n1, n1);
         }
     }
@@ -202,7 +110,7 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind1"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser(res.matchs["kind1"]);
+            HBlock n1 = parser_kind(res.matchs["kind1"]);
             return std::make_shared<CBlockActionApply>(n1, std::make_shared<CBlockNoum>("Nothing"));
         }
     }
@@ -220,7 +128,7 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock body = parser(res.matchs["RemainderQuery"]);
+            HBlock body = parser_expression(res.matchs["RemainderQuery"]);
             if (body != nullptr) {
                 return std::make_shared<CBlockMatch>(body);
             }
@@ -236,10 +144,10 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = parser(res.matchs["AValue"]);
+            HBlock AValue = parser_assertionTarger(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser(res.matchs["BValue"]);
+            HBlock BValue = parser_expression(res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockMatch>(std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue));
@@ -253,7 +161,7 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = parser(res.matchs["AValue"]);
+            HBlock AValue = parser_expression(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockMatch>(AValue);
@@ -316,7 +224,10 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock a_match = parser_What_Assertion(res.matchs["Match"]);
-            HBlock body = parser(res.matchs["RemainBody"]);
+
+			std::cout <<  (res.matchs["RemainBody"]->repr()) << std::endl;
+
+            HBlock body = parser_expression(res.matchs["RemainBody"]);
 
             return std::make_shared<CBlockToDecide>(a_match, body);
         }
@@ -325,7 +236,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
     return nullptr;
 }
 
-HBlock CParser::parser_Definition_Assertion(std::vector<HTerm> term) {
+HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {
 
     {
         std::vector<HPred> predList;

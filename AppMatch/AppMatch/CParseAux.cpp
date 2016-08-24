@@ -111,3 +111,30 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
     }
     return std::pair<HBlock, HPred>(nullptr, nullptr);
 }
+
+
+
+HPred convert_to_predicate(CTerm *termo) {
+
+	if (CList *clist = dynamic_cast<CList *>(termo)) {
+		auto vlist = clist->asVector();
+		vlist = remove_boundaryListMark(vlist);
+
+		auto hpr = mkHPredList("predListing", {});
+		CPredList *predList = dynamic_cast<CPredList *>(hpr.get());
+
+		for (auto k : vlist) {
+			predList->plist.push_back(convert_to_predicate(k.get()));
+		}
+		return hpr;
+	}
+	else {
+		if (CString *css = dynamic_cast<CString *>(termo)) {
+
+			return mk_HPredLiteral(css->s);
+		}
+
+	}
+
+	return mk_HPredLiteral(termo->repr());
+}

@@ -37,18 +37,18 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
 
-        /*interpreter->execute(parse.parser("  book is a kind of thing "));
-        interpreter->execute(parse.parser("diary are an book "));
-        interpreter->execute(parse.parser("book is small "));*/
-        //parse.parser("book is a kind of thing  ")->dump("");
+        /*interpreter->execute(parse.parser_stmt("  book is a kind of thing "));
+        interpreter->execute(parse.parser_stmt("diary are an book "));
+        interpreter->execute(parse.parser_stmt("book is small "));*/
+        //parse.parser_stmt("book is a kind of thing  ")->dump("");
         //std::cout << std::endl;
-        //	parse.parser("diary are an book")->dump("");
+        //	parse.parser_stmt("diary are an book")->dump("");
         //std::cout << std::endl;
-        parse.parser("book is small ")->dump("");
+       // parse.parser_stmt("book is small ")->dump("");
         //std::cout << std::endl;
 
 
-        parse.parser("(iron, silver and chopper)  are ( kinds of metal)")->dump("");
+       // parse.parser_stmt("(iron, silver and chopper)  are ( kinds of metal)")->dump("");
         //std::cout << std::endl;
 
 
@@ -59,19 +59,19 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "thing is a kind ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
             std::cout << std::endl;
         }
-        interpreter->execute_init(res);
+         interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
         std::string phase_1 = "book is a kind of thing ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -83,7 +83,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "magic object is a kind  ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -95,7 +95,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "special book is a kind of book ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -107,7 +107,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "special book is a kind of magic object ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -119,7 +119,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "diary is a special book ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -130,10 +130,10 @@ void testeParser_2() {
 
     {
         CParser parse(interpreter);
-        interpreter->execute_init(parse.parser("metal  is a kind "));
+        interpreter->execute_init(parse.parser_stmt("metal  is a kind "));
 
         std::string phase_1 = "(chopper, iron )  are kinds of metal  ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -144,7 +144,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "rare metal  is a kind  of metal ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -155,7 +155,7 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         std::string phase_1 = "(gold, silver )  are kinds of rare metal  ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -176,13 +176,13 @@ void testeParser_2a() {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
     CParser parse(interpreter);
 
-    interpreter->execute_init(parse.parser("thing is a kind  "));
-    interpreter->execute_init(parse.parser("book is a kind of thing "));
-    interpreter->execute_init(parse.parser("book  can be normal , huge or  small"));
+    interpreter->execute_init(parse.parser_stmt("thing is a kind  "));
+    interpreter->execute_init(parse.parser_stmt("book is a kind of thing "));
+    interpreter->execute_init(parse.parser_stmt("book  can be normal , huge or  small"));
 
     {
         std::string phase_1 = "book is usually small ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -191,10 +191,10 @@ void testeParser_2a() {
         interpreter->execute_init(res);
     }
 
-    interpreter->execute_init(parse.parser("book can be read"));
+    interpreter->execute_init(parse.parser_stmt("book can be read"));
     {
         std::string phase_1 = "diary is a book ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -205,7 +205,7 @@ void testeParser_2a() {
 
     {
         std::string phase_1 = "diary is not read ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -224,7 +224,7 @@ void testeParser_2a() {
 
     {
         std::string phase_1 = "color of book is usually white ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -234,7 +234,7 @@ void testeParser_2a() {
     }
     {
         std::string phase_1 = "the (length of (internal description of  a container )) is usually ( lenght of ( Its cramped in here))";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -250,7 +250,7 @@ void testeParser_3() {
     CParser parse(std::make_shared<CBlockInterpreter>());
     {
         std::string phase_1 = "eat  is (an action  applying to (an thing ) )";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -259,7 +259,7 @@ void testeParser_3() {
     }
     {
         std::string phase_1 = "(cut ) is    an action   applying to (an thing ) and (a Cutter)   ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -274,7 +274,7 @@ void testeParser_4() {
     CParser parse(std::make_shared<CBlockInterpreter>());
     {
         std::string phase_1 = "a thing can be discovered or secret";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -284,7 +284,7 @@ void testeParser_4() {
 
     {
         std::string phase_1 = "( a person ) has a (table-name) called (the opinion-table)";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -294,7 +294,7 @@ void testeParser_4() {
 
     {
         std::string phase_1 = "the (singing action) has a (text) called the (lyric sung)";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -304,7 +304,7 @@ void testeParser_4() {
 
     {
         std::string phase_1 = "the torch has a brightness ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -327,7 +327,7 @@ void testeParser_5() {
     CParser parse(std::make_shared<CBlockInterpreter>());
     {
         std::string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -336,7 +336,7 @@ void testeParser_5() {
     }
     {
         std::string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on (son of ( fater of sibling) )  ) ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -346,7 +346,7 @@ void testeParser_5() {
 
     {
         std::string phase_1 = "to decide if X is greater than Y : (decide on ( X > Y) )    ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -356,7 +356,7 @@ void testeParser_5() {
 
     {
         std::string phase_1 = "to decide if X is sucessor of Y : (decide on ( X   == Y + 1) )    ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -366,7 +366,7 @@ void testeParser_5() {
 
     {
         std::string phase_1 = "to decide what number  is sucessor of Y : (decide on (  Y + 1) )    ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -376,7 +376,7 @@ void testeParser_5() {
 
     {
         std::string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on T T ) ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -393,7 +393,7 @@ void testeParser_6()//kind of value
 
     {
         std::string phase_1 = "a limb is a kind of value";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -403,15 +403,15 @@ void testeParser_6()//kind of value
     }
 
     {
-        interpreter->execute_init(parse.parser("color is a kind of value"));
-        interpreter->execute_init(parse.parser("color can be light or dark"));
-        interpreter->execute_init(parse.parser("color can be cold or warm"));
-        interpreter->execute_init(parse.parser("color is usually light"));
+        interpreter->execute_init(parse.parser_stmt("color is a kind of value"));
+        interpreter->execute_init(parse.parser_stmt("color can be light or dark"));
+        interpreter->execute_init(parse.parser_stmt("color can be cold or warm"));
+        interpreter->execute_init(parse.parser_stmt("color is usually light"));
     }
 
     {
         std::string phase_1 = "an aspect ratio is a kind of value";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -422,7 +422,7 @@ void testeParser_6()//kind of value
 
     {
         std::string phase_1 = "   blue, green, yellow  and red are color ";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -432,20 +432,20 @@ void testeParser_6()//kind of value
     }
 
     {
-        interpreter->execute_init(parse.parser("black is a color"));
+        interpreter->execute_init(parse.parser_stmt("black is a color"));
         QueryResul q_tru = interpreter->query_is(std::make_shared<CBlockNoum>("black"),
                                                  std::make_shared<CBlockNoum>("light"));
-        interpreter->execute_init(parse.parser("black is dark"));
+        interpreter->execute_init(parse.parser_stmt("black is dark"));
         QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("black"),
                                                 std::make_shared<CBlockNoum>("light"));
 
         std::string phase_1 = " ... ";
     }
     {
-        interpreter->execute_init(parse.parser("warm color is a  kind of color"));
-        interpreter->execute_init(parse.parser("warm color is usually warm"));
+        interpreter->execute_init(parse.parser_stmt("warm color is a  kind of color"));
+        interpreter->execute_init(parse.parser_stmt("warm color is usually warm"));
 
-        interpreter->execute_init(parse.parser("red is a warm color"));
+        interpreter->execute_init(parse.parser_stmt("red is a warm color"));
         QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("red"),
                                                 std::make_shared<CBlockNoum>("warm"));
 
@@ -461,12 +461,12 @@ void testeParser_6a()//kind of value
     CParser parse(interpreter);
 
     {
-        interpreter->execute_init(parse.parser("color is a kind of value"));
-        interpreter->execute_init(parse.parser("blue, green, yellow  and red are color"));
-        interpreter->execute_init(parse.parser("thing is a kind "));
-        interpreter->execute_init(parse.parser("book is a thing"));
-        interpreter->execute_init(parse.parser("book has a color"));
-        interpreter->execute_init(parse.parser("color of book is red "));
+        interpreter->execute_init(parse.parser_stmt("color is a kind of value"));
+        interpreter->execute_init(parse.parser_stmt("blue, green, yellow  and red are color"));
+        interpreter->execute_init(parse.parser_stmt("thing is a kind "));
+        interpreter->execute_init(parse.parser_stmt("book is a thing"));
+        interpreter->execute_init(parse.parser_stmt("book has a color"));
+        interpreter->execute_init(parse.parser_stmt("color of book is red "));
     }
 
     QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
@@ -483,12 +483,12 @@ void testeParser_7a()//dynamic match
     CParser parse(interpreter);
 
     {
-        interpreter->execute_init(parse.parser("thing is a kind "));
-        interpreter->execute_init(parse.parser("book is a thing "));
-        interpreter->execute_init(parse.parser("diary is a thing "));
+        interpreter->execute_init(parse.parser_stmt("thing is a kind "));
+        interpreter->execute_init(parse.parser_stmt("book is a thing "));
+        interpreter->execute_init(parse.parser_stmt("diary is a thing "));
     }
     {
-        auto block = parse.parser("to decide what (thing) is (the best book) : diary ");
+        auto block = parse.parser_stmt("to decide what (thing) is (the best book) : diary ");
         if (ISLOG) {
             block->dump("");
             std::cout << std::endl;
@@ -497,12 +497,12 @@ void testeParser_7a()//dynamic match
 
     }
     {
-        auto block = parse.parser("if X is capable to open a Y ");
+        auto block = parse.parser_stmt("if X is capable to open a Y ");
         if (ISLOG) {
             block->dump("");
             std::cout << std::endl;
         }
-        interpreter->execute_init(block);
+       // interpreter->execute_init(block);
 
     }
 
@@ -519,7 +519,7 @@ void testeParser_20() //custrom rlacions
     CParser parse(std::make_shared<CBlockInterpreter>());
     /*{
         std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG)
         {
@@ -532,7 +532,7 @@ void testeParser_20() //custrom rlacions
 
     //{
     //	std::string phase_1 = "the verb inside of implies a reverse container relation";
-    //	auto res = parse.parser(phase_1);
+    //	auto res = parse.parser_stmt(phase_1);
     //	if (res == nullptr) throw "parse error";
     //	if (ISLOG)
     //	{
@@ -542,7 +542,7 @@ void testeParser_20() //custrom rlacions
     //}
     //{
     //	std::string phase_1 = "the verb contains implies a container relation";
-    //	auto res = parse.parser(phase_1);
+    //	auto res = parse.parser_stmt(phase_1);
     //	if (res == nullptr) throw "parse error";
     //	if (ISLOG)
     //	{
@@ -554,7 +554,7 @@ void testeParser_20() //custrom rlacions
 
     //{
     //	std::string phase_1 = "book contains text";
-    //	auto res = parse.parser(phase_1);
+    //	auto res = parse.parser_stmt(phase_1);
     //	if (res == nullptr) throw "parse error";
     //	if (ISLOG)
     //	{
@@ -563,14 +563,14 @@ void testeParser_20() //custrom rlacions
     //	}
     //}
     {
-        auto block = parse.parser("the verb able to open implies a opening relation");
+        auto block = parse.parser_stmt("the verb able to open implies a opening relation");
         if (ISLOG) {
             block->dump("");
             std::cout << std::endl;
         }
     }
     {
-        auto block = parse.parser("X is  able   to open   Z");
+        auto block = parse.parser_stmt("X is  able   to open   Z");
         if (ISLOG) {
             block->dump("");
             std::cout << std::endl;
@@ -578,7 +578,7 @@ void testeParser_20() //custrom rlacions
     }
     std::cout << "----------------------------------------" << std::endl;
     {
-        auto block = parse.parser("to decide if (X    able   to open   Z) : (decides on true)");
+        auto block = parse.parser_stmt("to decide if (X    able   to open   Z) : (decides on true)");
         if (ISLOG) {
             block->dump("");
             std::cout << std::endl;
@@ -588,7 +588,7 @@ void testeParser_20() //custrom rlacions
 
     /*{
         std::string phase_1 = "let L be the (list of ( things fancier than/of/in/on 20 ) ) )";
-        auto res = parse.parser(phase_1);
+        auto res = parse.parser_stmt(phase_1);
         if (res == nullptr) throw "parse error";
         if (ISLOG)
         {
@@ -603,7 +603,7 @@ void testeParser_21() {
     {
         {
             std::string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -613,7 +613,7 @@ void testeParser_21() {
 
         {
             std::string phase_1 = "coin is stuck to box";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -623,7 +623,7 @@ void testeParser_21() {
 
         {
             std::string phase_1 = "the verb visible by implies a visibility relation";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -633,7 +633,7 @@ void testeParser_21() {
 
         {
             std::string phase_1 = "definition : (a thing is hindering) if ( ( it is stuck to the noun) and (it is not within the location ) )";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -643,7 +643,7 @@ void testeParser_21() {
 
         {
             std::string phase_1 = "definition : (a thing is in same room ) if ( ( location of it  ) is ( location of player ) )";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -653,7 +653,7 @@ void testeParser_21() {
 
         {
             std::string phase_1 = "definition : (a thing is hide ) if ( it is not visible by player ) and ( it is in same room )";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -662,7 +662,7 @@ void testeParser_21() {
         }
         {
             std::string phase_1 = "definition : (a thing is in ( place : location )  ) if ( location of it is place ) ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -673,7 +673,7 @@ void testeParser_21() {
         {
             std::string phase_1 = "the verb made of implies the materiality relation ";
 
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -682,7 +682,7 @@ void testeParser_21() {
         }
         {
             std::string phase_1 = "coin is made of golden";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -700,7 +700,7 @@ void testeParser_22() {
     {
         {
             std::string phase_1 = " use_with is an action applying to (one thing) and (a thing)  ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -710,7 +710,7 @@ void testeParser_22() {
 
         {
             std::string phase_1 = "understand : use  [ a thing ] as use_with ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -720,7 +720,7 @@ void testeParser_22() {
 
         {
             std::string phase_1 = "understand : use  [ a thing  - keyer ] with [ a thing ] as use_with ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -730,7 +730,7 @@ void testeParser_22() {
 
         {
             std::string phase_1 = "  use key with box ";
-            auto res = parse.parser(phase_1);
+            auto res = parse.parser_stmt(phase_1);
             if (res == nullptr) throw "parse error";
             if (ISLOG) {
                 res->dump("");
@@ -745,16 +745,16 @@ void testeParser_22() {
 void testeParser() {
     // testeParser_1();
 
-    //for (int k = 0; k < 100; ++k)
+    for (int k = 0; k < 100; ++k)
     {
-        //testeParser_2();
+        testeParser_2();
         //testeParser_2a();
         //testeParser_3();
         //testeParser_4();
         //testeParser_5();
         //testeParser_6();
         // testeParser_7a();
-        testeParser_20();
+        //testeParser_20();
         std::cout << ".";
     }
     std::cout << std::endl;
