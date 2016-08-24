@@ -182,26 +182,26 @@ void testeParser_2a() {
 
     interpreter->execute_init(parse.parser_stmt("thing is a kind  "));
     interpreter->execute_init(parse.parser_stmt("book is a kind of thing "));
-    interpreter->execute_init(parse.parser_stmt("book  can be normal , huge or  small"));
-	interpreter->execute_init(parse.parser_stmt("thing is a kind "));
-	interpreter->execute_init(parse.parser_stmt("book has a thing called color"));
-	interpreter->execute_init(parse.parser_stmt(" color of book is usually white "));
 
-    
+	interpreter->execute_init(parse.parser_stmt("kelement is a kind  "));
+	interpreter->execute_init(parse.parser_stmt("fire is a kelement "));
+	interpreter->execute_init(parse.parser_stmt("air is a kelement "));
 
+    interpreter->execute_init(parse.parser_stmt("book  can be normal , huge or  small")); 
+	interpreter->execute_init(parse.parser_stmt("thing has a thing called element"));	
 
+	interpreter->execute_init(parse.parser_stmt("fire is a kelement "));
+	interpreter->execute_init(parse.parser_stmt("air is a kelement "));
+ 
+	interpreter->execute_init(parse.parser_stmt(" element of thing is usually fire "));
+	interpreter->execute_init(parse.parser_stmt(" element of book is usually air "));
 
     interpreter->execute_init(parse.parser_stmt("book can be read"));
-    {
-        std::string phase_1 = "diary is a book ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-            std::cout << std::endl;
-        }
-        interpreter->execute_init(res);
-    }
+
+	interpreter->execute_init(parse.parser_stmt("diary is a book"));
+	interpreter->execute_init(parse.parser_stmt("rock is a thing"));
+
+  
 	QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
 	assert(q_true == QEquals);
 
@@ -229,13 +229,16 @@ void testeParser_2a() {
 
     std::cout << "Done" << std::endl;
 
+	//interpreter->execute_init(parse.parser_stmt("element of  diary is air "));
+
+	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
+	QueryResul q_true_2 = interpreter->query_is(propV,	std::make_shared<CBlockNoum>("air"));
+
     
-
-	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"), std::make_shared<CBlockNoum>("diary"));
-
-	QueryResul q_true_2 = interpreter->query_is(propV,	std::make_shared<CBlockNoum>("white"));
-
-    
+	auto propT = std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("rock"));
+	QueryResul q_true_3 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("air"));
+	QueryResul q_true_4 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("fire"));
+	QueryResul q_true_5 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("water"));
 
     std::cout << "Done" << std::endl;
     return;

@@ -152,7 +152,15 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
             HVariableNamed pvar = cinst->get_property(property_noum->named);
             if (pvar != nullptr) {
                 std::cout << "property  is " << std::endl;
-                pvar->value->dump("  ");
+				if (pvar->value != nullptr)
+				{
+					pvar->value->dump("  ");
+				}
+				else
+				{
+					std::cout << "     EMPTY" << std::endl;
+				}
+
                 c_block1->dump("  ");
                 auto rprop = query_is(pvar->value, c_block1, stk);
                 if (rprop == QEquals) return QEquals;

@@ -35,33 +35,54 @@ HBlockInstance CBlockInterpreter::new_Instance(std::string named, HBlockKind kin
         }
     }
 
-    // assign the defaults of kinds
-
-    for (auto &k : kinds) {
-        for (auto &kvar : default_assignments) {
-            if (HBlockKind dkind = dynamic_pointer_cast<CBlockKind>(kvar->get_obj())) {
-
-                if (dkind->named == k->named) {
-                    if (HBlockNoum noumSet = dynamic_pointer_cast<CBlockNoum>(kvar->get_definition())) {
-                        c->set(noumSet);
-                    }
-                }
-            }
-        }
-    }
-
 	//named variables
-
 	for (auto &k : kinds) {
 		for (auto &kvar : kind_named_variables) {
 			if (kvar->kind->named == k->named)
 			{
-				HBlockKind_InstanceVariable v = dynamic_pointer_cast<CBlockKind_InstanceVariable>(kvar->variableNamed);
-				HBlockKind nkindBase = resolve_kind(v->variableNamed->kind_name->named);
-				c->newNamedVariable(v->variableNamed->property_name  , nkindBase);
+				HBlockInstanceVariable v = dynamic_pointer_cast<CBlockInstanceVariable>(kvar->variableNamed);
+				HBlockKind nkindBase = resolve_kind(v->kind_name->named);
+				c->newNamedVariable(v->property_name, nkindBase);
 			}
 		}
 	}
+
+
+    // assign the defaults of kinds
+
+	for (auto &k : kinds) {
+		for (auto &kvar : default_assignments) {
+			if (HBlockKind dkind = dynamic_pointer_cast<CBlockKind>(kvar->get_obj())) {
+
+				if (dkind->named == k->named) {
+					if (HBlockNoum noumSet = dynamic_pointer_cast<CBlockNoum>(kvar->get_definition())) {
+						c->set(noumSet);
+					}
+				}
+			}
+
+			if (HBlockProperty  dproperty = dynamic_pointer_cast<CBlockProperty>(kvar->get_obj())) {
+
+				if (HBlockKind  dp_kind = dynamic_pointer_cast<CBlockKind>(dproperty->obj))
+				{
+					if (dp_kind->named == k->named)
+					{
+
+						if (HBlockNoum   dp_propname = dynamic_pointer_cast<CBlockNoum>(dproperty->prop ))
+						{
+							c->set_property(dp_propname->named, kvar->get_definition());
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	 
+
+
+
 	
 
     return c;

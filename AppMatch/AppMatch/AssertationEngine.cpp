@@ -105,7 +105,34 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
     return true;
 }
 
+bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propertyNamed)
+{
+	for (auto &kvar : kind_named_variables)
+	{
+		if (kvar->kind->named == kind->named)
+		{
+			if (kvar->variableNamed->property_name->named == propertyNamed)
+			{
+				return true;
+			}
 
+		}
+	}
+
+	std::list<HBlockKind> kinds = getUpperKinds(kind);
+	for(auto &k : kinds)
+	{
+		if (kind_has_property_called( k, propertyNamed))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+	
+ 
 bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value) {
 
     if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
@@ -127,7 +154,7 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value) {
     } else if (HBlockKind nKind = dynamic_pointer_cast<CBlockKind>(obj)) 	{
 		
 		if (HBlockInstanceVariable iVariableNamed = dynamic_pointer_cast<CBlockInstanceVariable>(value)) {
-			if (HBlockKind_InstanceVariable variable_ = make_shared<CBlockKind_InstanceVariable>(nKind, iVariableNamed)) 
+			if (HBlockKind_InstanceVariable variable_ = make_shared<CBlockKind_InstanceVariable>(nKind, iVariableNamed))
 			{
 			 
 				kind_named_variables.push_back(variable_);
@@ -142,23 +169,37 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value) {
 
 //Forca value a ser Kind
 HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind) {
-    if (value == nullptr) return nullptr;
+	if (value == nullptr) return nullptr;
 
-    if (HBlockEnums enumarate = dynamic_pointer_cast<CBlockEnums>(kind)) {
-        // Acha todas as instancias
+	if (HBlockEnums enumarate = dynamic_pointer_cast<CBlockEnums>(kind)) {
+		// Acha todas as instancias
+		if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(value))
+		{
+			for (auto &ee : enumarate->values)
+			{
+				if (ee->named == cnn->named) return ee;
+			}
+			return nullptr;
+		}
+	}
 
-    }
+	
+	if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(value)) {
+		if (is_derivadeOf(cinst, kind)) {
+			return cinst;
+		}
+	}
 
-    if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(value)) {
-        HBlock resolved = resolve_noum(cnn);
-        if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(resolved)) {
-            if (is_derivadeOf(cinst, kind)) {
-                return cinst;
-            }
-        }
-    }
+	if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(value)) {
+		HBlock resolved = resolve_noum(cnn);
+		if (resolved != nullptr)
+		{
+			return value_can_be_assign_to(resolved, kind);
+		}
+	}
 
-    return nullptr;
+
+	return nullptr;
 
 }
 
@@ -174,6 +215,10 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
     if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(obj)) {
         if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) {
             HVariableNamed vv = cinst->get_property(property_noum->named);
+			if (vv == nullptr)
+			{
+				std::cout << "Obje dont have " << property_noum->named <<  std::endl;
+			}
             HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
             if (instanceValueRefered) {
                 cinst->set_property(property_noum->named, instanceValueRefered);
@@ -254,9 +299,16 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 	if (HBlockKind prop_obj_kind = dynamic_pointer_cast<CBlockKind>(prop->obj))
 	{
 		if (HBlockNoum prop_name_noum = dynamic_pointer_cast<CBlockNoum>(prop->prop))
-		{			 
-			default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(prop_obj_kind, value));
-			return true;
+		{		
+			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
+			{
+				default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(prop, value));
+				return true;
+			}
+			else
+			{
+				std::cout << "Kind " << prop_obj_kind->named << " Dont have a property called " << prop_name_noum->named << endl;
+			}
 		}
 	}
 

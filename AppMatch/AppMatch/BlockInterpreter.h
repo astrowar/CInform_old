@@ -270,7 +270,7 @@ public:
 
     bool contains(string cs);
 
-    string value;
+    string value_x;
 };
 
 using HBlockEnums = std::shared_ptr<CBlockEnums>;

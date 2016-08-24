@@ -68,8 +68,8 @@ public:
     void execute_init(HBlock p);
 
     bool assert_decideBlock(HBlockToDecide dct);
-
-    bool assert_has_variable(HBlock obj, HBlock value);
+	bool kind_has_property_called(HBlockKind kind, string propertyNamed);
+	bool assert_has_variable(HBlock obj, HBlock value);
 
     HBlock value_can_be_assign_to(HBlock value, HBlockKind kind);
 
