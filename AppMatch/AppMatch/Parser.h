@@ -8,6 +8,10 @@
 
 class CBlockAssertion_isInstanceOf;
 
+
+
+
+
 class ParserResult
 {
  
@@ -30,7 +34,7 @@ public:
 
 	ParserResult(ParserResult&& other) 
 	{
-		// pilfer other’s resource
+		// pilfer otherï¿½s resource
 		std::swap(result , other.result);
 		std::swap(block, other.block);
 		other.block = nullptr; 
@@ -197,4 +201,21 @@ public:
 	HBlock parserBoolean(std::vector<HTerm> term);
 	HBlock parser(std::string str);
 };
+
+
+
+std::vector<HTerm> decompose(std::string phase);;
+std::string  decompose_bracket(std::string phase, std::string dlm);
+MTermSet remove_boundaryListMark(MTermSet& m);
+
+std::string get_repr(MTermSet lst);
+HPred verb_IS_NOT();
+HPred mk_HPredLiteral( std::string str );
+HPred verb_IS();
+HPred undefinedArticle();
+HPred mk_HPredLiteral_OR(std::string _named , std::initializer_list<std::string> alist );
+HPred mk_What_Which();
+HTerm expandBract(HTerm term);
+std::vector<HTerm> get_tail(std::vector<HTerm>& qlist);
+std::pair<HBlock , HPred>   getVerbAndAux(   HTerm  term);
 

@@ -45,6 +45,6 @@ set(SOURCE_FILES
         AppMatch/AppMatch/BlockInstance.cpp
         AppMatch/AppMatch/CBlockInterpreterDecideBody.cpp
 
-        AppMatch/AppMatch/UBlock.hpp AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/ParseDictionary.cpp)
+        AppMatch/AppMatch/UBlock.hpp AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)
 
 add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)

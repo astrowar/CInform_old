@@ -1,43 +1,34 @@
 #pragma once
 #ifndef _CDEFINITIONS_H
 #define _CDEFINITIONS_H
+
 #include <memory>
 #include <string>
- 
 
-namespace VM
-{
-	// Classes  abstradas .. que servem como protocolos
-	class CGenericKind
-	{
-	public:
-		virtual ~CGenericKind()
-		{
-		}
+namespace VM {
+    // Classes  abstradas .. que servem como protocolos
+    class CGenericKind {
+    public:
+        virtual ~CGenericKind() {
+        }
 
-		virtual void some() {};
+        virtual void some() {};
 
-	};
+    };
 
-	using HGenericKind = std::shared_ptr<CGenericKind>;
+    using HGenericKind = std::shared_ptr<CGenericKind>;
 
-	class CGenericValue
-	{
-	public:
-		virtual ~CGenericValue()
-		{
-		}
+    class CGenericValue {
+    public:
+        virtual ~CGenericValue() {
+        }
 
-		virtual void some() {};
-	};
-	using HGenericValue = std::shared_ptr<CGenericValue>;
+        virtual void some() {};
+    };
 
+    using HGenericValue = std::shared_ptr<CGenericValue>;
 
 
 }
-
-
-
-
 
 #endif

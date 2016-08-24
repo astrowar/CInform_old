@@ -7,32 +7,24 @@
 
 #include "BlockInterpreter.h"
 #include <iostream>
+
 using namespace std;
 
-
-bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b)
-{
+bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
     if (a->named == "" || b->named == "") return false;
-    if (a->named ==  b->named ) return true;
+    if (a->named == b->named) return true;
 
-    for (auto it = assertions.begin(); it != assertions.end(); ++it)
-    {
+    for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
-            if (HBlockKind  nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
+            if (HBlockKind nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
 
-                if (nbase->named == a->named)
-                {
-                    if (HBlockKindOf  k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition()))
-                    {
-                        if (k->baseClasse->named  == b->named)
-                        {
+                if (nbase->named == a->named) {
+                    if (HBlockKindOf k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition())) {
+                        if (k->baseClasse->named == b->named) {
                             return true;
-                        }
-                        else
-                        {
-                            bool bnn =  is_derivadeOf(k->baseClasse, b);
-                            if (bnn == true)
-                            {
+                        } else {
+                            bool bnn = is_derivadeOf(k->baseClasse, b);
+                            if (bnn == true) {
                                 return true;
                             }
 
@@ -44,20 +36,16 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b)
     return false;
 }
 
-std::list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a  )
-{
+std::list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     std::list<HBlockKind> upperList;
 
     std::cout << "U " << a->named << std::endl;
-    for (auto it = assertions.begin(); it != assertions.end(); ++it)
-    {
+    for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
-        if (HBlockKind  nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
+        if (HBlockKind nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
             if (nbase->named == a->named)  //  A -> X
             {
-                if (HBlockKindOf  k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition()))
-                {
-
+                if (HBlockKindOf k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition())) {
 
                     std::list<HBlockKind> ap = getUpperKinds(k->baseClasse);
                     upperList.insert(upperList.end(), ap.begin(), ap.end());
@@ -73,37 +61,27 @@ std::list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a  )
     return upperList;
 }
 
-bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b)
-{
-    if (a->named == "" || b->named == "")
-    {
+bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b) {
+    if (a->named == "" || b->named == "") {
         return false;
     }
-    if (a->named == b->named)
-    {
+    if (a->named == b->named) {
         return true;
     }
 
-    for (auto it = assertions.begin(); it != assertions.end(); ++it)
-    {
-        {if (HBlockInstance   nbase = dynamic_pointer_cast<CBlockInstance>((*it)->get_obj()))
+    for (auto it = assertions.begin(); it != assertions.end(); ++it) {
+        {
+            if (HBlockInstance nbase = dynamic_pointer_cast<CBlockInstance>((*it)->get_obj()))
 
-                if (nbase->named == a->named)
-                {
-                    if (HBlockKind   k = dynamic_pointer_cast<CBlockKind >((*it)->get_definition()))
-                    {
-                        if (k->named  == b->named)
-                        {
+                if (nbase->named == a->named) {
+                    if (HBlockKind k = dynamic_pointer_cast<CBlockKind>((*it)->get_definition())) {
+                        if (k->named == b->named) {
                             return true;
-                        }
-                        else
-                        {
+                        } else {
                             HBlock bnext = resolve_string(k->named);
-                            if (HBlockKind baseClasse = dynamic_pointer_cast<CBlockKind>(bnext))
-                            {
+                            if (HBlockKind baseClasse = dynamic_pointer_cast<CBlockKind>(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
-                                if (bnn == true)
-                                {
+                                if (bnn == true) {
                                     return true;
                                 }
                             }

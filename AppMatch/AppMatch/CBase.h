@@ -15,7 +15,7 @@ public:
 	}
 
 	virtual std::string repr() = 0;
-	virtual int nterms() = 0;
+	virtual size_t nterms() = 0;
 	virtual bool is_openBracket() { return false; }
 
 	virtual CTerm* removeArticle() { return this;}
@@ -28,7 +28,7 @@ using HTerm = std::shared_ptr<CTerm>;
 
 class CAtom :public CTerm
 {
-	virtual int nterms() override { return -1; }
+	virtual size_t nterms() override { return 0; }
 };
 
 class CString : public CAtom
@@ -38,7 +38,7 @@ public:
 	CString(std::string _s);
 	virtual std::string repr() override;
 	
-	virtual int nterms() override 	{ return 1; }
+	virtual size_t nterms() override 	{ return 1; }
 	
 
 
@@ -55,7 +55,7 @@ public:
 	int val;
 	CNumber(int _val);
 	virtual std::string repr() override;
-	virtual int nterms() override { return 1; }
+	virtual size_t nterms() override { return 1; }
 };
 
 //typedef TermList = std::list<CTerm*>;
@@ -71,7 +71,7 @@ public:
 	virtual std::string repr() override;
 	virtual CTerm* removeArticle() override;
 
-	virtual int nterms() override { return  lst.size(); }
+	virtual size_t nterms() override { return  lst.size(); }
 };
 
 
