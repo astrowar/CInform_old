@@ -1,7 +1,13 @@
 #pragma once
 
+#ifndef CBLOCKRUNTIME_H
+#define CBLOCKRUNTIME_H
+
+
 #include "BlockInterpreter.h"
 #include "CblockAssertion.h"
+#include "CBlockMatch.h"
+#include <map>
 
 class CBlockAssertionBase;
 
@@ -24,6 +30,10 @@ class CBlockInterpreter {
 
     std::vector<NoumDefinition> nregisters;
     std::vector<HBlockAssertion_is> assertions;
+
+	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
+ 
+
     std::vector<HBlockAssertionBase> dynamic_assertions;
 
 
@@ -50,10 +60,12 @@ class CBlockInterpreter {
 
     std::list<HBlockKind> getUpperKinds(HBlockKind kind);
 
-    HBlockInstance new_Instance(std::string named, HBlockKind kind);
+    HBlockInstance new_Instance(string named, HBlockKind kind);
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
-
+	bool setVerb(string cs, HBlock c_block, HBlock value);
+	QueryResul getVerb(string vb, HBlock c_block, HBlock value);
+	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value);
 public:
     CBlockInterpreter();
 
@@ -81,14 +93,14 @@ public:
 	bool assert_property_defaultValue(HBlockProperty obj, HBlock value);
 	bool assert_it_defaultValue(HBlock obj, HBlock value);
 
-    std::pair<HBlockKind, HBlockKind> create_derivadeKind(std::string called, std::string baseName);
+    std::pair<HBlockKind, HBlockKind> create_derivadeKind(string called, string baseName);
 
     bool assert_it_kind(HBlock obj, HBlock value);
 
     bool assert_it_instance(HBlock obj, HBlock value);
 
     HBlockKind getKindOf(HBlockInstance obj);
-	std::string BlockNoum(HBlock c_block);
+	string BlockNoum(HBlock c_block);
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1);
 
     QueryResul query_is(HBlock c_block, HBlock c_block1);
@@ -102,10 +114,12 @@ public:
 
 
     QueryResul query(HBlockAssertion_is base, HBlockAssertion_is q);
+	QueryResul query(HBlock  vquery);
 
-    QueryResul query(HBlockAssertion_is query);
+	QueryResul query_verb(HBlockIsVerb is_verb);
+	QueryResul query_not_verb(HBlockIsNotVerb is_verb);
 
-    HTerm executeAssertion_is(HBlockAssertion_is b);
+	HTerm executeAssertion_is(HBlockAssertion_is b);
 
     HTerm executeAssertion(HBlockAssertionBase b);
 
@@ -119,13 +133,16 @@ public:
 
     bool is_derivadeOf(HBlockInstance a, HBlockKind b);
 
-    HBlockKind resolve_kind(std::string n);
+    HBlockKind resolve_kind(string n);
 
     HBlock resolve_noum(HBlockNoum n);
 
-    HBlock resolve_string(std::string n);
+    HBlock resolve_string(string n);
 
-    void dump_instance(std::string str);
+    void dump_instance(string str);
+ 
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;
+
+#endif

@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseTest.h" />
     <ClInclude Include="BlockInstance.h" />
     <ClInclude Include="BlockInterpreter.h" />
     <ClInclude Include="CAssertionDefinition.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="CBlockDumpValues.h" />
     <ClInclude Include="CBlockInterpreterRuntime.h" />
     <ClInclude Include="CBlockMatch.h" />
+    <ClInclude Include="CBlockUndestand.h" />
     <ClInclude Include="CInterpreter.h" />
     <ClInclude Include="CInterpreterKindTree.h" />
     <ClInclude Include="CMatch.h" />
@@ -178,6 +180,7 @@
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="AssertationSecondary.cpp" />
+    <ClCompile Include="AssertationVerbRelation.cpp" />
     <ClCompile Include="AssertionValues.cpp" />
     <ClCompile Include="BlockInstance.cpp" />
     <ClCompile Include="BlockInterpreter.cpp" />
@@ -195,14 +198,19 @@
     <ClCompile Include="Equality.cpp" />
     <ClCompile Include="FEnviroment.cpp" />
     <ClCompile Include="InterpreterExecute.cpp" />
+    <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="Parser_A.cpp" />
+    <ClCompile Include="ParseVerbs.cpp" />
     <ClCompile Include="QueryItem.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="testesParser.cpp" />
+    <ClCompile Include="testes_1.cpp" />
+    <ClCompile Include="testes_2.cpp" />
+    <ClCompile Include="testes_decide.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

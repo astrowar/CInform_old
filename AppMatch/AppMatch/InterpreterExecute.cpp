@@ -37,8 +37,8 @@ CBlockInterpreter::~CBlockInterpreter() {
 //}
 
 QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1) {
-    std::string name1 = BlockNoum(c_block);
-    std::string name2 = BlockNoum(c_block1);
+    string name1 = BlockNoum(c_block);
+    string name2 = BlockNoum(c_block1);
     if (name1 == "" || name2 == "") return QUndefined;
     //std::cout << name1 << "  " << name2 << std::endl;
     if (name1 == name2) {
@@ -65,7 +65,7 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
     if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(c_block))
         if (HBlockNoum value = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
             if (cinst->has_slot(value)) {
-                std::cout << cinst->named << "  " << value->named << std::endl;
+                cout << cinst->named << "  " << value->named << endl;
                 if (cinst->is_set(value)) {
                     return QEquals;
                 }
@@ -82,14 +82,14 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
         if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) {
             HVariableNamed pvar = cinst->get_property(property_noum->named);
             if (pvar != nullptr) {
-                std::cout << "property  is " << std::endl;
+                cout << "property  is " << endl;
 				if (pvar->value != nullptr)
 				{
 					pvar->value->dump("  ");
 				}
 				else
 				{
-					std::cout << "     EMPTY" << std::endl;
+					cout << "     EMPTY" << endl;
 				}
 
                 c_block1->dump("  ");
@@ -141,14 +141,14 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
     for (auto dct : decides_what) {
         auto dctValueWrap = getDecidedValueOf(c_block, dct);
         if (dctValueWrap != nullptr) {
-            return CBlockInterpreter::query_is(dctValueWrap, c_block1, stk); //is not opnional
+            return query_is(dctValueWrap, c_block1, stk); //is not opnional
         }
     }
 
     for (auto dct : decides_what) {
         auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct);
         if (dctValueWrap_1 != nullptr) {
-            return CBlockInterpreter::query_is(c_block, dctValueWrap_1, stk);  //is not opnional
+            return query_is(c_block, dctValueWrap_1, stk);  //is not opnional
         }
     }
 
@@ -172,7 +172,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
     }
 
     {
-        QueryResul rinst = (CBlockInterpreter::query_is_instance_valueSet(c_block, c_block1));
+        QueryResul rinst = (query_is_instance_valueSet(c_block, c_block1));
         if (rinst != QUndefined) {
             return rinst;
         }
@@ -183,15 +183,15 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
         }
     }
 
-    auto r2 = CBlockInterpreter::query_is_same(c_block, c_block1);
+    auto r2 = query_is_same(c_block, c_block1);
     if (r2 == QEquals) {
         return r2;
     }
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         if (HBlockAssertion_is qdef = dynamic_pointer_cast<CBlockAssertion_is>(*it)) {
-            if (CBlockInterpreter::query_is_same(c_block, qdef->get_obj()) == QEquals) {
-                auto r = CBlockInterpreter::query_is(qdef->get_definition(), c_block1, stk);
+            if (query_is_same(c_block, qdef->get_obj()) == QEquals) {
+                auto r = query_is(qdef->get_definition(), c_block1, stk);
                 if (r != QUndefined) {
                     return r;
                 }
@@ -207,19 +207,52 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 QueryResul CBlockInterpreter::query(HBlockAssertion_is q,
                                     HBlockAssertion_is base) //Compara as duas queries e retorna true se base valida q
 {
-    if (CBlockInterpreter::query_is(q->get_obj(), base->get_obj()) &&
-        CBlockInterpreter::query_is(q->get_definition(), base->get_definition())) {
+    if (query_is(q->get_obj(), base->get_obj()) &&
+        query_is(q->get_definition(), base->get_definition())) {
         return QEquals;
     }
     return QUndefined;
 
 }
 
-QueryResul CBlockInterpreter::query(HBlockAssertion_is q) {
-    return query_is(q->get_obj(), q->get_definition());
+QueryResul CBlockInterpreter::query_verb(HBlockIsVerb is_verb)
+{
+	QueryResul rr =  getVerb(is_verb->verb, is_verb->n1, is_verb->n2);
+	return rr; 
+}
+
+QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb)
+{
+	QueryResul rr = getVerb(is_verb->verb, is_verb->n1, is_verb->n2);
+	if (rr == QEquals) return QNotEquals;
+	if (rr == QNotEquals) return QEquals;
+	return rr;
+}
+
+QueryResul CBlockInterpreter::query(HBlock q)
+{
+
+	if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
+	{
+		return  query_not_verb(is_nverb);
+	}
+
+	if (HBlockIsVerb is_verb = dynamic_pointer_cast<CBlockIsVerb>(q) )
+	{
+	return 	query_verb(is_verb);
+
+	}
+	if (HBlockAssertion_is q_assign = dynamic_pointer_cast<CBlockAssertion_is>(q))
+	{
+		return query_is(q_assign->get_obj(), q_assign->get_definition());
+	}
     return QUndefined;
 
 }
+
+ 
+
+
 
 HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 
@@ -264,23 +297,3 @@ HTerm CBlockInterpreter::execute(HBlock b) {
 }
 
 
-void CBlockInterpreter::dump_instance(std::string str) {
-    HBlock n = resolve_string(str);
-    if (HBlockInstance nn = dynamic_pointer_cast<CBlockInstance>(n)) {
-        for (auto &va : nn->anomimousSlots) {
-            std::cout << "====================" << std::endl;
-            if (HVariableSlotEnum venum = dynamic_pointer_cast<CVariableSlotEnum>(va)) {
-
-                venum->valueDefinition->dump("    ");
-                venum->value->dump("    ");
-
-            }
-            if (HVariableSlotBool vbool = dynamic_pointer_cast<CVariableSlotBool>(va)) {
-
-                vbool->valueDefinition->dump("    ");
-                cout << vbool->value << std::endl;
-            }
-        }
-
-    }
-}

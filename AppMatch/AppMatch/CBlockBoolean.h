@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef CBLOCKBOOLEAN_H
+#define CBLOCKBOOLEAN_H
+
 #include "BlockInterpreter.h"
 
 class CBlockBooleanAND
@@ -14,7 +17,7 @@ public:
     HBlock input_A;
     HBlock input_B;
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 class CBlockBooleanOR
@@ -29,7 +32,7 @@ public:
     HBlock input_A;
     HBlock input_B;
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 class CBlockBooleanNOT
@@ -41,7 +44,7 @@ public:
 
     HBlock input_A;
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 
@@ -49,3 +52,4 @@ public:
 
 
 
+#endif

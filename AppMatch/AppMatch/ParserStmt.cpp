@@ -53,22 +53,22 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
 
-	  HBlock noumList_Assign = CParser::parse_List_AND(lst);
+	  HBlock noumList_Assign = parse_List_AND(lst);
     if (noumList_Assign != nullptr) {
         return noumList_Assign;
     }
 
-    HBlock detnoum_Assign = CParser::parse_removeArticle(lst);
+    HBlock detnoum_Assign = parse_removeArticle(lst);
     if (detnoum_Assign != nullptr) {
         return detnoum_Assign;
     }
 
-	HBlock noum_propOF = CParser::parse_PropertyOf(lst);
+	HBlock noum_propOF = parse_PropertyOf(lst);
 	if (noum_propOF != nullptr) {
 		return noum_propOF;
 	}
 
-    HBlock noum_Assign = CParser::parse_noum(lst);
+    HBlock noum_Assign = parse_noum(lst);
     if (noum_Assign != nullptr) {
         return noum_Assign;
     }

@@ -346,37 +346,37 @@ HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm> term)
 HBlock CParser::parser_Declaration_Assertion(std::vector<HTerm> lst)
 {
 
-    HBlock verb_Assign = CParser::parse_AssertionVerb(lst);
+    HBlock verb_Assign = parse_AssertionVerb(lst);
     if (verb_Assign != nullptr) {
         return verb_Assign;
     }
 
-    HBlock action_Assign = CParser::parse_AssertionAction(lst);
+    HBlock action_Assign = parse_AssertionAction(lst);
     if (action_Assign != nullptr) {
         return action_Assign;
     }
 
-    HBlock assert_variable = CParser::parse_AssertionIsVariable(lst);
+    HBlock assert_variable = parse_AssertionIsVariable(lst);
     if (assert_variable != nullptr) {
         return assert_variable;
     }
 
-    HBlock assert_kindof = CParser::parse_AssertionIsKindOf(lst);
+    HBlock assert_kindof = parse_AssertionIsKindOf(lst);
     if (assert_kindof != nullptr) {
         return assert_kindof;
     }
 
-    HBlock assert_values = CParser::parse_AssertionValuesOf(lst);
+    HBlock assert_values = parse_AssertionValuesOf(lst);
     if (assert_values != nullptr) {
         return assert_values;
     }
 
-    HBlock assert_DefaultAssign = CParser::parse_AssertionDefaultAssign(lst);
+    HBlock assert_DefaultAssign = parse_AssertionDefaultAssign(lst);
     if (assert_DefaultAssign != nullptr) {
         return assert_DefaultAssign;
     }
 
-    HBlock assert_Assign = CParser::parse_AssertionDirectAssign(lst);
+    HBlock assert_Assign = parse_AssertionDirectAssign(lst);
     if (assert_Assign != nullptr) {
         return assert_Assign;
     }

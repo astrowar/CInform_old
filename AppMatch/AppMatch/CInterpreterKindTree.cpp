@@ -35,10 +35,10 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
     return false;
 }
 
-std::list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
-    std::list<HBlockKind> upperList;
+list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
+    list<HBlockKind> upperList;
 
-    std::cout << "U " << a->named << std::endl;
+    cout << "U " << a->named << endl;
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
         if (HBlockKind nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
@@ -46,7 +46,7 @@ std::list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
             {
                 if (HBlockKindOf k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition())) {
 
-                    std::list<HBlockKind> ap = getUpperKinds(k->baseClasse);
+                    list<HBlockKind> ap = getUpperKinds(k->baseClasse);
                     upperList.insert(upperList.end(), ap.begin(), ap.end());
 
 

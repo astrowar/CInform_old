@@ -1,15 +1,15 @@
 #pragma once
+#ifndef CPARSER_H
+#define CPARSER_H
 
-#include "BlockInterpreter.h"
 #include "CBase.h"
+#include "BlockInterpreter.h"
+#include "CBlockMatch.h"
 #include "CMatch.h"
 #include "CBlockInterpreterRuntime.h"
 
 
-class CBlockAssertion_isInstanceOf;
-
-
-
+  
 
 
 class ParserResult
@@ -36,7 +36,7 @@ public:
 	{
 		// pilfer other�s resource
 		std::swap(result , other.result);
-		std::swap(block, other.block);
+		swap(block, other.block);
 		other.block = nullptr; 
 	}
 
@@ -209,8 +209,8 @@ public:
 	HBlock parser_stmt(std::vector<HTerm> lst);
 	HBlock parser_stmt(HTerm term);
 	HBlock parserBoolean(std::vector<HTerm> term);
-	HBlock parser_stmt(std::string str);
-
+	HBlock parser_stmt(string str);
+	HBlock parser_stmt(string str, bool dump);
 
 	HBlock parser_kind(HTerm term); 
 	HBlock parser_kind_or_instance(HTerm term);
@@ -223,16 +223,16 @@ public:
 
 
 
-std::vector<HTerm> decompose(std::string phase);;
-std::string  decompose_bracket(std::string phase, std::string dlm);
+std::vector<HTerm> decompose(string phase);;
+string  decompose_bracket(string phase, string dlm);
 MTermSet remove_boundaryListMark(MTermSet& m);
 
-std::string get_repr(MTermSet lst);
+string get_repr(MTermSet lst);
 HPred verb_IS_NOT();
-HPred mk_HPredLiteral( std::string str );
+HPred mk_HPredLiteral( string str );
 HPred verb_IS();
 HPred undefinedArticle();
-HPred mk_HPredLiteral_OR(std::string _named , std::initializer_list<std::string> alist );
+HPred mk_HPredLiteral_OR(string _named , std::initializer_list<string> alist );
 HPred mk_What_Which();
 HTerm expandBract(HTerm term);
 std::vector<HTerm> get_tail(std::vector<HTerm>& qlist);
@@ -241,3 +241,4 @@ HPred convert_to_predicate(CTerm *termo);
 
 
 
+#endif

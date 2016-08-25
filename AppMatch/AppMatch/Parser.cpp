@@ -4,8 +4,9 @@
 
 #include "CBlockInterpreterRuntime.h"
 #include "CBlockMatch.h"
-#include "CBlockBoolean.h"
+ 
 #include "CblockAssertion.h"
+#include "CBlockUndestand.h"
 
 CParser::CParser(HBlockInterpreter _interpreter) {
     interpreter = _interpreter;
@@ -51,44 +52,7 @@ void CParser::set_Noum(NoumDefinitions ndef) {
 
 
 
-HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
-{
-	//Tambem pode ser um verbo definido
-	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("MatchBody"));
-		predList.push_back(verb_IS());
-		predList.push_back(verbList);
-		predList.push_back(mkHPredAny("valueToCheck"));
 
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
-			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
-			if (body != nullptr && value != nullptr) {
-				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
-				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
-			}
-		}
-	}
-
-{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("MatchBody"));		
-		predList.push_back(verbList);
-		predList.push_back(mkHPredAny("valueToCheck"));
-
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
-			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
-			if (body != nullptr && value != nullptr) {
-				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
-			}
-		}
-	}
-return nullptr;
-}
 HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term) 
 {
     // Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex
@@ -389,12 +353,12 @@ HBlock CParser::parse_toDecide_Ret(std::vector<HTerm> term) {
 
 HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term) {
 
-    HBlock verb_decideIn = CParser::parse_toDecide_Entry(term);
+    HBlock verb_decideIn = parse_toDecide_Entry(term);
     if (verb_decideIn != nullptr) {
         return verb_decideIn;
     }
 
-    HBlock verb_decideRet = CParser::parse_toDecide_Ret(term);
+    HBlock verb_decideRet = parse_toDecide_Ret(term);
     if (verb_decideRet != nullptr) {
         return verb_decideRet;
     }
@@ -432,291 +396,6 @@ HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
     return nullptr;
 }
 
- 
-HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
-    auto L_the_verb = mkHPredList("vinitial", {mk_HPredLiteral("the"), mk_HPredLiteral("verb")});
-    auto L_verb = mk_HPredLiteral("verb");
-    {
-
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("VerbList"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-            HPred verbMatch;
-            HBlock a_verb;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-
-            if (CList *plist = dynamic_cast<CList *>(res.matchs["VerbList"].get())) {
-                //eh uma lista
-
-				HTerm listExpand =  expandBract(res.matchs["VerbList"]);
-				plist = dynamic_cast<CList*>(listExpand.get());
-
-
-                HBlockList clist = std::make_shared<CBlockList>();
-
-                verbMatch = mkHPredList("VerbMatch", {});
-                CPredList *cpList = reinterpret_cast<CPredList *>(verbMatch.get());
-
-                for (auto ip : plist->lst) {
-                    clist->push_back(std::make_shared<CBlockNoum>(ip->repr()));
-                    cpList->plist.push_back(mk_HPredLiteral(ip->repr()));
-                }
-                a_verb = clist;
-
-                verbList->blist.push_back(verbMatch);
-                return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-
-            } else {
-                //nao eh uma lista :-(
-                return nullptr;
-            }
-        }
-
-    }
-    return nullptr;
-
-}
-
-HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
-
-    auto L_the_verb = mkHPredList("vinitial", {mk_HPredLiteral("the"), mk_HPredLiteral("verb")});
-    auto L_verb = mk_HPredLiteral("verb");
-    {
-
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mkHPredAny("Aux"));
-
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-
-            HBlockList clist = std::make_shared<CBlockList>();
-            clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
-            clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
-
-            HBlock a_verb = clist;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-
-            auto verbMatch = (mkHPredList("VerbMatch", {
-                    mk_HPredLiteral(res.matchs["Verb"]->repr()),
-                    mk_HPredLiteral(res.matchs["Aux"]->repr()),
-            }));
-
-            verbList->blist.push_back(verbMatch);
-            return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-        }
-
-    }
-
-    {
-
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mkHPredAny("Aux"));
-        predList.push_back(mk_HPredLiteral("implies"));
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-
-            HBlockList clist = std::make_shared<CBlockList>();
-            clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
-            clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
-
-            HBlock a_verb = clist;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-
-            auto verbMatch = (mkHPredList("VerbMatch", {
-                    mk_HPredLiteral(res.matchs["Verb"]->repr()),
-                    mk_HPredLiteral(res.matchs["Aux"]->repr()),
-            }));
-
-            verbList->blist.push_back(verbMatch);
-            return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-        }
-
-    }
-
-    {
-        //Teste de carga
-
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-
-            auto vaux = getVerbAndAux(res.matchs["Verb"]);
-            HBlock a_verb = vaux.first;
-            HPred verbMatch = vaux.second;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-            verbList->blist.push_back(verbMatch);
-            return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-
-        }
-
-    }
-
-    {
-        //Teste de carga
-
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mk_HPredLiteral("implies"));
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-
-            auto vaux = getVerbAndAux(res.matchs["Verb"]);
-            HBlock a_verb = vaux.first;
-            HPred verbMatch = vaux.second;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-            verbList->blist.push_back(verbMatch);
-            return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-
-        }
-
-    }
-
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
-                HBlock a_verb = nullptr;
-                HPred verbMatch = nullptr;
-                MTermSet inList(cverb->lst.begin(), cverb->lst.end());
-                inList = remove_boundaryListMark(inList);
-                if (inList.size() == 2) {
-                    HBlockList clist = std::make_shared<CBlockList>();
-                    clist->push_back(std::make_shared<CBlockNoum>(inList.front()->repr()));
-                    clist->push_back(std::make_shared<CBlockNoum>(inList.back()->repr()));
-                    a_verb = clist;
-
-                    verbMatch = (mkHPredList("VerbMatch", {
-                            mk_HPredLiteral(inList.front()->repr()),
-                            mk_HPredLiteral(inList.back()->repr()),
-                    }));
-
-
-                } else if (inList.size() == 1) {
-                    a_verb = std::make_shared<CBlockNoum>(inList.front()->repr());
-                    verbMatch = mk_HPredLiteral(inList.front()->repr());
-                }
-
-                int nv = inList.size();
-
-                //std::cout << res.matchs["Verb"]->repr() << std::endl;
-                if (a_verb != nullptr) {
-
-                    HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-                    verbList->blist.push_back(verbMatch);
-                    return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                }
-            } else {
-
-                HBlock a_verb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-                HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-                verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
-                return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            }
-        }
-
-    }
-
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_4 = mk_HPredLiteral("implies");
-        predList.push_back(L_the_verb_4);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
-        MatchResult res = CMatch(term, predList);
-
-        if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
-                HBlock a_verb = nullptr;
-                HPred verbMatch = nullptr;
-                MTermSet inList(cverb->lst.begin(), cverb->lst.end());
-                inList = remove_boundaryListMark(inList);
-                if (inList.size() == 2) {
-                    HBlockList clist = std::make_shared<CBlockList>();
-                    clist->push_back(std::make_shared<CBlockNoum>(inList.front()->repr()));
-                    clist->push_back(std::make_shared<CBlockNoum>(inList.back()->repr()));
-                    a_verb = clist;
-
-                    verbMatch = (mkHPredList("VerbMatch", {
-                            mk_HPredLiteral(inList.front()->repr()),
-                            mk_HPredLiteral(inList.back()->repr()),
-                    }));
-
-
-                } else if (inList.size() == 1) {
-                    a_verb = std::make_shared<CBlockNoum>(inList.front()->repr());
-                    verbMatch = mk_HPredLiteral(inList.front()->repr());
-                }
-
-                if (a_verb != nullptr) {
-                    HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-                    verbList->blist.push_back(verbMatch);
-                    return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                }
-            } else {
-                HBlock a_verb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-                HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-                verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
-                return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            }
-        }
-
-    }
-
-    return nullptr;
-
-}
-
-
 
 HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
     if (term.size() > 1) {
@@ -728,51 +407,6 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
     return nullptr;
 }
 
-HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
-    {
-        auto sep = mk_HPredLiteral("and");
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(sep);
-        predList.push_back(mkHPredAny("N2"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockList cList = std::make_shared<CBlockList>();
-            cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
-            cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
-            return cList;
-        }
-    }
-
-    {
-        auto sep = mk_HPredLiteral("or");
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(sep);
-        predList.push_back(mkHPredAny("N2"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            return nullptr;
-        }
-    }
-    {
-        auto sep = mk_HPredLiteral(",");
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(sep);
-        predList.push_back(mkHPredAny("N2"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockList cList = std::make_shared<CBlockList>();
-            cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
-            cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
-            return cList;
-        }
-    }
-
-    return nullptr;
-
-}
 
 HBlock CParser::parse_noum(std::vector<HTerm> term) {
     std::vector<HPred> predList;
@@ -826,64 +460,14 @@ HBlockAssertion_isInstanceOf CParser::parseAssertion_isInstanceOf(std::vector<HT
 }
 
 
-HBlockList CParser::parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep) {
-
-    std::vector<HPred> predList;
-    predList.push_back(mkHPredAny("N1"));
-    predList.push_back(sep);
-    predList.push_back(mkHPredAny("N2"));
-    MatchResult res = CMatch(term, predList);
-    if (res.result == Equals) {
-        HBlockList cList = std::make_shared<CBlockList>();
-        cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
-        cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
-        return cList;
-    }
-    return nullptr;
-}
-
-HBlockList CParser::parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, HBlockList cList) {
-    std::vector<HPred> predList;
-    predList.push_back(mkHPredAny("N1"));
-    predList.push_back(mkHPredBooleanOr("sep", mk_HPredLiteral(","), sep));
-    predList.push_back(mkHPredAny("N2"));
-
-    MatchResult res = CMatch(term, predList);
-    if (res.result == Equals) {
-        cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
-        cList = CParser::parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
-        return cList;
-    }
-
-    HBlock ret = parser_expression(term);
-    cList->push_back(ret);
-    //cList->push_back(std::make_shared<CBlockNoum>(  term->removeArticle()->repr()));
-    return cList;
-}
-
-HBlockList CParser::parseAssertionFirstTerm_COMMA_AND(HTerm term, HBlockList CList) {
-    return parseAssertionFirstTerm_COMMA_Supl(term, mk_HPredLiteral("and"), CList);
-}
-
-HBlockList CParser::parseAssertionFirstTerm_COMMA_OR(HTerm term, HBlockList CList) {
-    return parseAssertionFirstTerm_COMMA_Supl(term, mk_HPredLiteral("or"), CList);
-}
-
-HBlockList CParser::parse_Strict_COMMA_AND(HTerm term) {
-    return parseAssertion_Strict_COMMA_Supl(term, mk_HPredLiteral("and"));
-}
-
-HBlockList CParser::parse_Strict_COMMA_OR(HTerm term) {
-    return parseAssertion_Strict_COMMA_Supl(term, mk_HPredLiteral("or"));
-}
 
 
 HBlock CParser::parseAssertionFirstTerm_Compose(HTerm term) {
     HBlockList c_list = std::make_shared<CBlockList>();
-    c_list = CParser::parseAssertionFirstTerm_COMMA_AND(term, c_list);
+    c_list = parseAssertionFirstTerm_COMMA_AND(term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
-        std::swap(rt, c_list->lista.front());
+        swap(rt, c_list->lista.front());
         //delete c_list;
         return rt;
     }
@@ -898,10 +482,10 @@ HBlock CParser::parseAssertionFirstTerm(HTerm term) {
 
 HBlock CParser::parseAssertionEnumSecondTerm(HTerm term) {
     HBlockList c_list = std::make_shared<CBlockList>();
-    c_list = CParser::parseAssertionFirstTerm_COMMA_OR(term, c_list);
+    c_list = parseAssertionFirstTerm_COMMA_OR(term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
-        std::swap(rt, c_list->lista.front());
+        swap(rt, c_list->lista.front());
         //delete c_list;
         return rt;
     }
@@ -909,7 +493,7 @@ HBlock CParser::parseAssertionEnumSecondTerm(HTerm term) {
 }
 
 HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm> lst) {
-    HBlock assert_decide = CParser::parseAssertion_isDecide(lst);
+    HBlock assert_decide = parseAssertion_isDecide(lst);
     if (assert_decide != nullptr) {
         return assert_decide;
     }
@@ -1087,7 +671,7 @@ HBlock CParser::parserBoolean(HTerm term) {
 }
 
 
-HBlock CParser::parser_stmt(std::string str) {
+HBlock CParser::parser_stmt(string str) {
     str = decompose_bracket(str, "(");
     str = decompose_bracket(str, ")");
     str = decompose_bracket(str, ",");
@@ -1096,4 +680,13 @@ HBlock CParser::parser_stmt(std::string str) {
     return parser_stmt(lst);
 
 
+}
+HBlock CParser::parser_stmt(string str,bool dump)
+{
+	HBlock b =  parser_stmt(str);
+	if (dump)
+	{		
+		b->dump(""); std::cout << std::endl;
+	}
+	return b;
 }

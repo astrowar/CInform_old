@@ -5,12 +5,12 @@
 #include <iostream>
 #include <algorithm>
 
-HPred mk_HPredLiteral(std::string str) {
+HPred mk_HPredLiteral(string str) {
     return mkHPredAtom("_", make_string(str));
 }
 
-std::string get_repr(std::vector<HPred> plist) {
-    std::string ret = "";
+string get_repr(std::vector<HPred> plist) {
+    string ret = "";
     for (auto p : plist) {
         ret += p->repr();
     }
@@ -42,8 +42,8 @@ std::vector<HTerm> get_tail(std::vector<HTerm> &qlist) {
     return v;
 }
 
-HPred mk_HPredLiteral_OR(std::string _named, std::initializer_list<std::string> alist) {
-    std::list<std::string> strList(alist);
+HPred mk_HPredLiteral_OR(string _named, std::initializer_list<string> alist) {
+    std::list<string> strList(alist);
     std::list<std::shared_ptr<CPred> > predlist;
     for (auto it = strList.begin(); it != strList.end(); ++it) {
         predlist.push_back(mkHPredAtom("_", make_string(*it)));

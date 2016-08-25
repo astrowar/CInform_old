@@ -118,12 +118,15 @@
     <ClInclude Include="QueryStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BaseTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockUndestand.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="testesParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssertationEngine.cpp">
@@ -205,6 +208,27 @@
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
     <ClCompile Include="AssertationDefaultValue.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="testesParser.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="testes_1.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="testes_2.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="testes_decide.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseVerbs.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseListAux.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="AssertationVerbRelation.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>

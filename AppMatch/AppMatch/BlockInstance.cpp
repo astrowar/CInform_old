@@ -22,30 +22,30 @@ CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value
 {
 }
 
-void CBlockInstance::dump(std::string ident)
+void CBlockInstance::dump(string ident)
 {
 	cout << ident << "Instance: " << named << endl;
 }
 
-CBlockInstance::CBlockInstance( std::string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
+CBlockInstance::CBlockInstance( string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
 {
 	//assert(_named[0] != '[');
 }
 
 void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )
 {
-	this->anomimousSlots.push_back( std::make_shared<CVariableSlotEnum>(definition));
+	this->anomimousSlots.push_back( make_shared<CVariableSlotEnum>(definition));
 
 }
 
 void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
 {
-	this->anomimousSlots.push_back(std::make_shared< CVariableSlotBool> (value));
+	this->anomimousSlots.push_back(make_shared< CVariableSlotBool> (value));
 }
 
 void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
-	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
+	this->namedSlots.push_back(make_shared< CVariableNamed>(called, kind, nullptr));
 
 }
 
@@ -113,7 +113,7 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 	return false;
 }
 
-HVariableNamed  CBlockInstance::get_property( std::string  pnamed)
+HVariableNamed  CBlockInstance::get_property( string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -127,7 +127,7 @@ HVariableNamed  CBlockInstance::get_property( std::string  pnamed)
 	return nullptr;
 }
 
-void CBlockInstance::set_property(std::string  pnamed, HBlock value)
+void CBlockInstance::set_property(string  pnamed, HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{

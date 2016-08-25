@@ -13,7 +13,7 @@ namespace Interpreter {
     }
 
     OperationResult Sucess() {
-        return OperationResult(ErrorCode::SucessStatusError);
+        return OperationResult(SucessStatusError);
     }
 
     OperationResult Fail(ErrorCode reason_cs) {

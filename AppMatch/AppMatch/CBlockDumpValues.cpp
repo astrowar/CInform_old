@@ -2,13 +2,18 @@
 // Created by Eraldo Rangel on 18/08/16.
 //
 
+
+
 #include "BlockInterpreter.h"
 #include "CBlockMatch.h"
 #include "CBlockBoolean.h"
 
 #include "CBlockDumpValues.h"
+#include "CBlockUndestand.h"
+
 
 #include <iostream>
+
 
 using namespace std;
 
@@ -72,7 +77,7 @@ void CBlockInstanceVariable::dump(string ident) {
     property_name->dump(ident + "          ");
 }
 
-void CBlockKind_InstanceVariable::dump(std::string ident)
+void CBlockKind_InstanceVariable::dump(string ident)
 {
 	cout << ident << "Kind Named Variable: " << endl;
 	kind ->dump(ident + "          ");
@@ -160,7 +165,7 @@ void CBlockToDecide::dump(string ident) {
     }
 }
 
-void CBlockToDecidewhether::dump(std::string ident) {
+void CBlockToDecidewhether::dump(string ident) {
     cout << ident << "To Decide Whether (bool)" << endl;
     {
         this->queryToMatch->dump(ident + "       ");
@@ -180,7 +185,7 @@ void CBlockToDecideIf::dump(string ident) {
     }
 }
 
-void CBlockToDecideOn::dump(std::string ident) {
+void CBlockToDecideOn::dump(string ident) {
     cout << ident << "DecideOn " << endl;
     {
         this->decideBody->dump(ident + "       ");
@@ -356,3 +361,5 @@ void CBlockUnderstandStatic::dump(string ident) {
     cout << ident << "As " << endl;
     this->output_n->dump(ident + "       ");
 }
+
+ 

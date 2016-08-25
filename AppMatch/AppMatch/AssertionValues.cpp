@@ -4,8 +4,8 @@
 using namespace std;
 
 
-std::pair<HBlockKind, HBlockKind>
-CBlockInterpreter::create_derivadeKind(std::string called, std::string baseClasseName) {
+pair<HBlockKind, HBlockKind>
+CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 
     HBlockKind b = nullptr;
     HBlockKind bup = nullptr;
@@ -26,12 +26,12 @@ CBlockInterpreter::create_derivadeKind(std::string called, std::string baseClass
             b = make_shared<CBlockKindValue>(called);
             bup = ktv;
         } else {
-            std::cout << "What ?? " << baseClasseName << endl;
+            cout << "What ?? " << baseClasseName << endl;
             throw "Error on derive a kind";
         }
 
     }
-    return std::pair<HBlockKind, HBlockKind>(b, bup);
+    return pair<HBlockKind, HBlockKind>(b, bup);
 
 }
 
@@ -94,7 +94,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value) {
                 assertions.push_back(newDefi);
             }
 
-            std::cout << "new Kind add " << nbase->named <<  endl;
+            cout << "new Kind add " << nbase->named <<  endl;
             return true;
         }
 
@@ -119,7 +119,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value) {
                         kindDefinitions.push_back(newDefi);
                         assertions.push_back(newDefi);
                     }
-                    std::cout << "new Kind add" << endl;
+                    cout << "new Kind add" << endl;
                 }
             }
             return true;
@@ -146,7 +146,7 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock value) {
                 HBlockAssertion_isInstanceOf newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
-                std::cout << "new Instance add" << endl;
+                cout << "new Instance add" << endl;
                 return true;
             }
             return false;

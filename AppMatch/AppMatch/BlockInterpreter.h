@@ -1,4 +1,6 @@
 #pragma once
+#ifndef BLOCKInterpreter_H
+#define BLOCKInterpreter_H
 
 #include "CBase.h"
 
@@ -38,7 +40,7 @@ NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b);
 class CBlock {
 
 public:
-    virtual void dump(std::string ident) = 0;
+    virtual void dump(string ident) = 0;
 
     virtual ~CBlock() {
     }
@@ -51,7 +53,7 @@ public:
 using HBlock = std::shared_ptr<CBlock>;
 
 class CUnresolved : public CBlock {
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CUnresolved(string named);
 
@@ -81,7 +83,7 @@ using HBlockBooleanResult = std::shared_ptr<CBlockBooleanResult>;
 class CBlockNoum : public CBlock //retorna um valor generico
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockNoum(string named);
 
@@ -108,7 +110,7 @@ using HBlockKind = std::shared_ptr<CBlockKind>;
 class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockKindOfName(string _baseClasseName) : baseClasseName(_baseClasseName) {};
     string baseClasseName;
@@ -119,7 +121,7 @@ using HBlockKindOfName = std::shared_ptr<CBlockKindOfName>;
 class CBlockKindOf : public CBlock  //Define uma classe derivada de outra
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {};
     HBlockKind baseClasse;
@@ -130,7 +132,7 @@ using HBlockKindOf = std::shared_ptr<CBlockKindOf>;
 class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockKindAction(string _baseActionName, HBlock _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {};
     string baseClasseName;
@@ -144,7 +146,7 @@ class CBlockKindValue : public CBlockKind //retorna um valor generico
 public:
     virtual bool isValue() override { return true; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockKindValue(string _named) : CBlockKind(_named) {};
 
@@ -159,7 +161,7 @@ class CBlockKindThing : public CBlockKind //retorna um valor generico
 public:
     virtual bool isValue() override { return true; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockKindThing(string _named) : CBlockKind(_named) {};
 
@@ -172,7 +174,7 @@ using HBlockKindThing = std::shared_ptr<CBlockKindThing>;
 class CBlockNamedValue : public CBlock //retorna um valor generico
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     CBlockNamedValue(string _named);
 
@@ -186,7 +188,7 @@ using HBlockNamedValue = std::shared_ptr<CBlockNamedValue>;
 class CBlockVariable : public CBlock //retorna um valor generico
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     CBlockVariable(string _named);
 
@@ -201,7 +203,7 @@ using HBlockVariable = std::shared_ptr<CBlockVariable>;
 class CBlockProperty : public CBlock //retorna um valor generico
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockProperty(HBlock prop, HBlock b);
 
@@ -215,7 +217,7 @@ using HBlockProperty = std::shared_ptr<CBlockProperty>;
 class CBlockInstanceVariable : public CBlock //retorna um valor generico
 {
 public:
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 
     CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _called);
 
@@ -233,7 +235,7 @@ using HBlockInstanceVariable = std::shared_ptr<CBlockInstanceVariable>;
 class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
 {
 public:
-	void dump(std::string ident) override;
+	void dump(string ident) override;
 	CBlockKind_InstanceVariable(HBlockKind  _kind , HBlockInstanceVariable _variableNamed):variableNamed(_variableNamed), kind(_kind){}
 	HBlockInstanceVariable variableNamed;
 	HBlockKind kind;
@@ -246,7 +248,7 @@ using HBlockKind_InstanceVariable = std::shared_ptr<CBlockKind_InstanceVariable>
 class CBlockList : public CBlock //retorna um valor generico
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     std::list<HBlock> lista;
 
@@ -263,7 +265,7 @@ class CBlockEnums : public CBlock //retorna um valor generico
 public:
     std::vector<HBlockNoum> values;
 
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     CBlockEnums(std::vector<HBlockNoum> _values);
 
@@ -277,7 +279,7 @@ using HBlockEnums = std::shared_ptr<CBlockEnums>;
 class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     HBlock noum;
     HBlockInstanceVariable instance_variable;
@@ -301,46 +303,23 @@ public:
 class CBlockVerbRelation : public CBlock    //retorna uma declaracao
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     HBlock verbNoum; // Pode ser simples ou com a preposicao
     HBlock relation;
 
     CBlockVerbRelation(HBlock _noum, HBlock _relation) : verbNoum((_noum)), relation((_relation)) {};
 };
+using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
 
-class CBlockMatch;
 
-using HBlockMatch = std::shared_ptr<CBlockMatch>;
 
-class CBlockUnderstand : public CBlock    //retorna uma declaracao
-{
-public:
-    virtual void dump(std::string ident) override;
+ 
 
-    HBlockMatch input_n; // Pode ser simples ou com a preposicao
-    HBlock output_n;
 
-    CBlockUnderstand(HBlockMatch _input_n, HBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
-};
 
-class CBlockMatchList;
+ 
 
-using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
-
-class CBlockUnderstandStatic : public CBlock    //retorna uma declaracao
-{
-public:
-    virtual void dump(std::string ident) override;
-
-    HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
-    HBlock output_n;
-
-    CBlockUnderstandStatic(HBlockMatchList _argument_match, HBlock _output_n) : argument_match(_argument_match),
-                                                                                output_n((_output_n)) {};
-};
-
-using HBlockUnderstandStatic = std::shared_ptr<CBlockUnderstandStatic>;
 
 //===================================================================
 class CBlockFilter : public CBlock   // filtra um valor para outro valor
@@ -369,7 +348,7 @@ class CBlockFilterList : public CBlockFilter {
 
 class CBlockActionApply : public CBlock {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     HBlock noum1;
     HBlock noum2;
@@ -382,7 +361,7 @@ using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
 class CBlockAction : public CBlock  // um bloco que representa uma atividade
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
     CBlockAction(HBlock input)
             : input(input) {
@@ -402,7 +381,7 @@ public :
     CBlockActionCall(HBlockAction _action, HBlock _noum1, HBlock _noum2) : action(_action), noum1(_noum1),
                                                                            noum2(_noum2) {}
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
@@ -414,7 +393,7 @@ public:
 
     CBlockDinamicDispatch(string _command) : CBlockAction(std::make_shared<CBlockNoum>(_command)), command(_command) {}
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;
@@ -430,7 +409,7 @@ public:
                                                                                 staticEntryTable(_staticEntryTable),
                                                                                 noum1(_noum1), noum2(_noum2) {}
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockStaticDispatch = std::shared_ptr<CBlockStaticDispatch>;
@@ -502,7 +481,7 @@ public:
 
     virtual HTerm eval() { return nullptr; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
@@ -522,7 +501,7 @@ public:
 
     virtual HTerm eval() { return nullptr; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockToDecidewhether = std::shared_ptr<CBlockToDecidewhether>;
@@ -541,7 +520,7 @@ public:
 
     virtual HTerm eval() { return nullptr; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockToDecideIf = std::shared_ptr<CBlockToDecideIf>;
@@ -556,8 +535,9 @@ public:
 
     virtual HTerm eval() { return nullptr; }
 
-    void dump(std::string ident) override;
+    void dump(string ident) override;
 };
 
 using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
 
+#endif;

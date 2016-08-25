@@ -50,9 +50,9 @@ using HVariableNamed = std::shared_ptr<CVariableNamed>;
 class CBlockInstance : public CBlock //retorna um valor generico
 {
 public:
-    virtual void dump(std::string ident) override;
+    virtual void dump(string ident) override;
 
-    CBlockInstance(std::string _named, HBlockKind base);
+    CBlockInstance(string _named, HBlockKind base);
 
     void newEnumVariableSlot(HBlockEnums definition);
 
@@ -66,13 +66,13 @@ public:
 
     bool has_slot(HBlockNoum value);
 
-    HVariableNamed get_property(std::string named);
+    HVariableNamed get_property(string named);
 
-    void set_property(std::string cs, HBlock value);
+    void set_property(string cs, HBlock value);
 
     QueryResul is_set(HBlockNoum value);
 
-    std::string named;
+    string named;
     HBlockKind baseKind;
 
     virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };

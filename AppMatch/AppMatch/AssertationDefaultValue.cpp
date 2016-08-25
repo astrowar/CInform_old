@@ -20,7 +20,7 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 		}
 	}
 
-	std::list<HBlockKind> kinds = getUpperKinds(kind);
+	list<HBlockKind> kinds = getUpperKinds(kind);
 	for(auto &k : kinds)
 	{
 		if (kind_has_property_called( k, propertyNamed))
@@ -64,7 +64,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 			}
 			else
 			{
-				std::cout << "Kind " << prop_obj_kind->named << " Dont have a property called " << prop_name_noum->named << endl;
+				cout << "Kind " << prop_obj_kind->named << " Dont have a property called " << prop_name_noum->named << endl;
 			}
 		}
 	}
@@ -88,7 +88,7 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value) {
 
     } else if (HBlockKind kbase = dynamic_pointer_cast<CBlockKind>(obj)) {
         if (HBlockNoum nvalue = dynamic_pointer_cast<CBlockNoum>(value)) {
-            std::cout << kbase->named << "  " << nvalue->named << std::endl;
+            cout << kbase->named << "  " << nvalue->named << endl;
             //default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
         }
 

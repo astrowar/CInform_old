@@ -20,7 +20,7 @@ HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
 }
 
 
-std::string CBlockInterpreter::BlockNoum(HBlock c_block) {
+string CBlockInterpreter::BlockNoum(HBlock c_block) {
     if (HBlockKind k0 = dynamic_pointer_cast<CBlockKind>(c_block)) {
         return k0->named;
     }
@@ -58,7 +58,7 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
     return nullptr;
 }
 
-HBlockKind CBlockInterpreter::resolve_kind(std::string n) {
+HBlockKind CBlockInterpreter::resolve_kind(string n) {
     for (auto &defs : assertions) {
         if (HBlockKind nn = dynamic_pointer_cast<CBlockKind>(defs->get_definition())) {
             if (nn->named == n) {
@@ -80,13 +80,13 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n) {
             }
         }
     }
-    std::cout << "Fail to " << n->named << std::endl;
+    cout << "Fail to " << n->named << endl;
     return nullptr;
 
 
 }
 
-HBlock CBlockInterpreter::resolve_string(std::string n) {
+HBlock CBlockInterpreter::resolve_string(string n) {
     for (auto &defs : assertions) {
         if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
             //std::cout << nn->named << std::endl;

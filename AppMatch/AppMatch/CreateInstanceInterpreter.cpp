@@ -6,27 +6,47 @@ using namespace std;
 
 
 
+void CBlockInterpreter::dump_instance(string str) {
+    HBlock n = resolve_string(str);
+    if (HBlockInstance nn = dynamic_pointer_cast<CBlockInstance>(n)) {
+        for (auto &va : nn->anomimousSlots) {
+            cout << "====================" << endl;
+            if (HVariableSlotEnum venum = dynamic_pointer_cast<CVariableSlotEnum>(va)) {
+
+                venum->valueDefinition->dump("    ");
+                venum->value->dump("    ");
+
+            }
+            if (HVariableSlotBool vbool = dynamic_pointer_cast<CVariableSlotBool>(va)) {
+
+                vbool->valueDefinition->dump("    ");
+                cout << vbool->value << endl;
+            }
+        }
+
+    }
+}
 
 
 
 
 
 
-HBlockInstance CBlockInterpreter::new_Instance(std::string named, HBlockKind kind) {
+HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // nova instance e inicializa os fields
 
-    HBlockInstance c = std::make_shared<CBlockInstance>(named, kind);
+    HBlockInstance c = make_shared<CBlockInstance>(named, kind);
 
     // inicia os fields CAN_BE
 
-    std::list<HBlockKind> kinds = getUpperKinds(kind);
-    std::cout << "Up Kinds  " << std::endl;
+    list<HBlockKind> kinds = getUpperKinds(kind);
+    cout << "Up Kinds  " << endl;
     for (auto &k : kinds) {
-        std::cout << " ," << k->named;
+        cout << " ," << k->named;
 
     }
-    std::cout << std::endl;
-    std::cout << " ----------------------------- " << std::endl;
+    cout << endl;
+    cout << " ----------------------------- " << endl;
     for (auto &k : kinds) {
         for (auto &kvar : kind_variables) {
             if (HBlockKind dkind = dynamic_pointer_cast<CBlockKind>(kvar->get_obj())) {

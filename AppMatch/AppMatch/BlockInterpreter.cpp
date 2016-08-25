@@ -2,6 +2,7 @@
 #include <iostream>
 #include "CblockAssertion.h"
 #include "CBlockMatch.h"
+#include <cassert>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b) {
 
 void *CBlock::operator new(size_t size) {
 
-    std::cout << "    New Block: " << '\n';
+    cout << "    New Block: " << '\n';
     return malloc(size);
 
 }
@@ -30,13 +31,13 @@ void *CBlock::operator new(size_t size) {
 CUnresolved::CUnresolved(string _contents) : contents(_contents) {
 }
 
-CBlockNoum::CBlockNoum(std::string _value) {
+CBlockNoum::CBlockNoum(string _value) {
     named = _value;
     //assert(named[0] != '[');
 }
 
 
-CBlockEnums::CBlockEnums(std::vector<HBlockNoum> _values) : values(_values) {
+CBlockEnums::CBlockEnums(vector<HBlockNoum> _values) : values(_values) {
 
 }
 

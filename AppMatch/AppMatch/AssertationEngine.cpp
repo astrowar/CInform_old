@@ -37,8 +37,8 @@ bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value) {
 
 
 bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
-    if (auto inner = std::dynamic_pointer_cast<CBlockMatch>(dct->queryToMatch)) {
-        if (auto if_inner = std::dynamic_pointer_cast<CBlockAssertion_isDirectAssign>(inner->matchInner)) {
+    if (auto inner = dynamic_pointer_cast<CBlockMatch>(dct->queryToMatch)) {
+        if (auto if_inner = dynamic_pointer_cast<CBlockAssertion_isDirectAssign>(inner->matchInner)) {
             decides_if.push_back(make_shared<CBlockToDecideIf>(if_inner, dct->decideBody));
             return true;
         }
@@ -133,7 +133,7 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
             HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv == nullptr)
 			{
-				std::cout << "Obje dont have " << property_noum->named <<  std::endl;
+				cout << "Obje dont have " << property_noum->named <<  endl;
 			}
             HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
             if (instanceValueRefered) {
@@ -174,21 +174,30 @@ bool CBlockInterpreter::assert_it_not_Value(HBlock obj, HBlock value) {
 
 void CBlockInterpreter::execute_init(HBlock p) {
 
-    if (HBlockAssertion_isNotDirectAssign v = dynamic_pointer_cast<CBlockAssertion_isNotDirectAssign>(p)) {
-        HBlock obj = v->get_obj();
-        HBlock value = v->get_definition();
-        if (assert_it_not_Value(obj, value)) return;
-    }
+	if (HBlockAssertion_isNotDirectAssign v = dynamic_pointer_cast<CBlockAssertion_isNotDirectAssign>(p)) {
+		HBlock obj = v->get_obj();
+		HBlock value = v->get_definition();
+		if (assert_it_not_Value(obj, value)) return;
+	}
 
-    if (HBlockAssertion_isDefaultAssign v = dynamic_pointer_cast<CBlockAssertion_isDefaultAssign>(p)) {
-        HBlock obj = v->get_obj();
-        HBlock value = v->get_definition();
-        if (assert_it_defaultValue(obj, value)) return;
-    } else if (HBlockAssertion_canBe vee = dynamic_pointer_cast<CBlockAssertion_canBe>(p)) {
-        HBlock obj = vee->get_obj();
-        HBlockEnums evalue = vee->definition;
-        if (assert_it_canBe(obj, evalue)) return;
-    } else if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
+	if (HBlockAssertion_isDefaultAssign v = dynamic_pointer_cast<CBlockAssertion_isDefaultAssign>(p)) {
+		HBlock obj = v->get_obj();
+		HBlock value = v->get_definition();
+		if (assert_it_defaultValue(obj, value)) return;
+	}
+	else if (HBlockAssertion_canBe vee = dynamic_pointer_cast<CBlockAssertion_canBe>(p)) {
+		HBlock obj = vee->get_obj();
+		HBlockEnums evalue = vee->definition;
+		if (assert_it_canBe(obj, evalue)) return;
+	}
+	else if (HBlockIsVerb  vRelation = dynamic_pointer_cast<CBlockIsVerb>(p)){
+
+		HBlock obj = vRelation->get_obj();
+		HBlock value = vRelation->get_definition();
+		 
+		if (assert_it_verbRelation(vRelation->verb , obj, value)) return;
+    }
+	else if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
         HBlock obj = vk->get_obj();
         HBlock value = vk->get_definition();
         //Static Definition de uma instancia derivado
@@ -196,6 +205,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
         if (assert_it_kind(obj, value)) return;
         if (assert_it_instance(obj, value)) return;
         if (assert_it_valuesDefinitions(obj, value)) return;
+		 
 
         throw "undefined block";
     } else if (HBlockAssertion_InstanceVariable ivar = dynamic_pointer_cast<CBlockAssertion_InstanceVariable>(p)) {
@@ -206,7 +216,15 @@ void CBlockInterpreter::execute_init(HBlock p) {
         if (assert_decideBlock(dcMatch)) return;
 
     }
+	if (HBlockVerbRelation dcverbImpl = dynamic_pointer_cast<CBlockVerbRelation>(p)) 	
+	{
+		return  ;
 
-    std::cout << "not found block definition " << endl;
+	}
+	 
+
+
+
+    cout << "not found block definition " << endl;
     return;
 }
