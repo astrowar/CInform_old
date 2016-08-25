@@ -218,14 +218,14 @@ void testeParser_2a() {
 
     interpreter->dump_instance("diary");
 
-    QueryResul q_false_1 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
-                                              std::make_shared<CBlockNoum>("read"));
-    QueryResul q_false_2 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),
-                                               std::make_shared<CBlockNoum>("huge"));
+    QueryResul q_false_1 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
+    QueryResul q_false_2 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));
+	QueryResul q_false_2n = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("normal"));
 
 
 	assert(q_false_1 == QNotEquals);
-	assert(q_false_1 == QNotEquals);
+	assert(q_false_2 == QNotEquals);
+	assert(q_false_2n == QEquals);
 
     std::cout << "Done" << std::endl;
 
@@ -233,13 +233,16 @@ void testeParser_2a() {
 
 	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
 	QueryResul q_true_2 = interpreter->query_is(propV,	std::make_shared<CBlockNoum>("air"));
-
+	assert(q_true_2 == QEquals);
     
 	auto propT = std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("rock"));
 	QueryResul q_true_3 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("air"));
 	QueryResul q_true_4 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("fire"));
 	QueryResul q_true_5 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("water"));
 
+	assert(q_true_3 == QEquals);
+	assert(q_true_4 == QNotEquals);
+	assert(q_true_5 == QNotEquals);
     std::cout << "Done" << std::endl;
     return;
 }

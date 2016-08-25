@@ -430,7 +430,7 @@ EqualsResul CPredAtom::match(HTerm h) {
 bool CPredList::isSame(HTerm h) {
     if (CPredList *hlist = dynamic_cast<CPredList *>(h.get())) {
         if (this->plist.size() != hlist->plist.size()) return false;
-        for (int i = 0; i < this->plist.size(); ++i) {
+        for (size_t i = 0; i < this->plist.size(); ++i) {
             if (this->plist[i]->isSame(hlist->plist[i]) == false) {
                 return false;
             }
@@ -799,7 +799,7 @@ MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPre
     //Test only the Literals, for early exit
     {
         MatchResult mm;
-        mm.result = Equals; // inicia com tudo OK
+	    // inicia com tudo OK
         for (size_t i = 0; i < tn; ++i) {
             CPred *term_i = predicates_ptr[i];
             if (CPredAtom *v = dynamic_cast<CPredAtom *>(term_i )) {

@@ -169,14 +169,16 @@
     <ClInclude Include="EqualsResult.h" />
     <ClInclude Include="FEnviroment.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="QueryStack.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UBlock.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppMatch.cpp" />
+    <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="AssertationSecondary.cpp" />
+    <ClCompile Include="AssertionValues.cpp" />
     <ClCompile Include="BlockInstance.cpp" />
     <ClCompile Include="BlockInterpreter.cpp" />
     <ClCompile Include="CBase.cpp" />
@@ -184,6 +186,7 @@
     <ClCompile Include="CBlockInterpreterDecideBody.cpp" />
     <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CInterpreterKindTree.cpp" />
+    <ClCompile Include="CInterpreterResolve.cpp" />
     <ClCompile Include="CMatch.cpp" />
     <ClCompile Include="CParseAux.cpp" />
     <ClCompile Include="CpropertiesFunctions.cpp" />
@@ -195,6 +198,7 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="Parser_A.cpp" />
+    <ClCompile Include="QueryItem.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />

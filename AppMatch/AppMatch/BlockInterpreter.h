@@ -1,8 +1,7 @@
 #pragma once
 
 #include "CBase.h"
-#include <cassert>
- 
+
 
 class CBlockEnums;
 

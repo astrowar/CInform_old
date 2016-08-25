@@ -63,7 +63,13 @@ public:
 
 class CBlockMatchWith : public CBlockMatch // um bloco que serve para dar Match  no match anterior
 {
-    HBlockMatch previous_match;
+	CBlockMatchWith(const HBlock& _matchInner, const HBlockMatch& previous_match)
+		: CBlockMatch(_matchInner),
+		  previous_match(previous_match)
+	{
+	}
+
+	HBlockMatch previous_match;
 };
 
 

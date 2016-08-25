@@ -88,8 +88,8 @@ public:
     bool assert_it_instance(HBlock obj, HBlock value);
 
     HBlockKind getKindOf(HBlockInstance obj);
-
-    QueryResul query_is_same(HBlock c_block, HBlock c_block1);
+	std::string BlockNoum(HBlock c_block);
+	QueryResul query_is_same(HBlock c_block, HBlock c_block1);
 
     QueryResul query_is(HBlock c_block, HBlock c_block1);
 
