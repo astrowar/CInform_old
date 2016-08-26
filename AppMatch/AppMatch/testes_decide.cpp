@@ -94,8 +94,28 @@ void testeParser_7c()//dynamic match
 	{
 		std::cout << s << std::endl;
 		auto p = parse.parser_stmt(s, ISLOG);
-
 	}
 
 	std::cout << std::endl;
+}
+
+void testeParser_7d()// relation When
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	std::list< std::string >  slist({
+	"Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X",
+		"Nearness relates (a room called A) to (a room called B) when the number of moves from B to A is less than 3",
+		"Materiality relates (a thing called X) to (a material called Y) when Y is the material of X",
+		"Divisibility relates (a numbercalled N) to (a number called M) when remainder after dividing M by N is 0"
+	});
+	for (auto s : slist)
+	{
+		std::cout << s << std::endl;
+		auto p = parse.parser_stmt(s, ISLOG);
+
+	}
+	std::cout << std::endl;
+
 }

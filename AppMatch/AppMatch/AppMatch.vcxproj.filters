@@ -237,5 +237,8 @@
     <ClCompile Include="ParseRelation.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="ParseRelationWhen.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -202,6 +202,7 @@
     <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParseRelation.cpp" />
+    <ClCompile Include="ParseRelationWhen.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="Parser_A.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />

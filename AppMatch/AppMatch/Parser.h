@@ -220,7 +220,7 @@ public:
 
 	HBlockArgumentInput parser_KindCalled(HTerm term);
 	HBlock STMT_relates_Assertion(std::vector<HTerm> term);
-
+	HBlock STMT_relates_AssertionWhen(std::vector<HTerm> term);
 };
 
 
