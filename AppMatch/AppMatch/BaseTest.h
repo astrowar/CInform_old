@@ -12,6 +12,9 @@ string decompose_bracket(string phase, string dlm);
 CList *mk_CList_Literal(std::vector<HTerm> strList);
 
 
+void testeParser_listA();
+void testeParser_listB();
+
 
 void testeParser_1();
 void testeParser_2();

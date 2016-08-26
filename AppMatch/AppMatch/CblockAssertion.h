@@ -109,8 +109,8 @@ public:
     HBlock noum;
     HBlock baseKind;
 
-    CBlockAssertion_isNamedValueOf(HBlock _noum, HBlock _baseKind) : noum(move(_noum)),
-                                                                     baseKind(move(_baseKind)) {};
+    CBlockAssertion_isNamedValueOf(HBlock _noum, HBlock _baseKind) : noum( (_noum)),
+                                                                     baseKind( (_baseKind)) {};
 };
 
 using HBlockAssertion_isNamedValueOf = std::shared_ptr<CBlockAssertion_isNamedValueOf>;
@@ -127,11 +127,12 @@ public:
     HBlock variable;
     HBlock baseKind;
 
-    CBlockAssertion_isVariable(HBlock _variable, HBlock _baseKind) : variable(move(_variable)),
-                                                                     baseKind(move(_baseKind)) {};
+    CBlockAssertion_isVariable(HBlock _variable, HBlock _baseKind) : variable( (_variable)),
+                                                                     baseKind( (_baseKind)) {};
 };
-
 using HBlockAssertion_isVariable = std::shared_ptr<CBlockAssertion_isVariable>;
+
+
 
 class CBlockAssertion_isDefaultAssign : public CBlockAssertion_is //retorna uma declaracao
 {
@@ -145,8 +146,8 @@ public:
     HBlock variable;
     HBlock value;
 
-    CBlockAssertion_isDefaultAssign(HBlock _variable, HBlock _value) : variable(move(_variable)),
-                                                                       value(move(_value)) {};
+    CBlockAssertion_isDefaultAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
+                                                                       value( (_value)) {};
 };
 
 using HBlockAssertion_isDefaultAssign = std::shared_ptr<CBlockAssertion_isDefaultAssign>;
@@ -163,8 +164,8 @@ public:
     HBlock variable;
     HBlock value;
 
-    CBlockAssertion_isConstantAssign(HBlock _variable, HBlock _value) : variable(move(_variable)),
-                                                                        value(move(_value)) {};
+    CBlockAssertion_isConstantAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
+                                                                        value( (_value)) {};
 };
 
 using HBlockAssertion_isConstantAssign = std::shared_ptr<CBlockAssertion_isConstantAssign>;
@@ -181,8 +182,8 @@ public:
     HBlock variable;
     HBlock value;
 
-    CBlockAssertion_isForbiddenAssign(HBlock _variable, HBlock _value) : variable(move(_variable)),
-                                                                         value(move(_value)) {};
+    CBlockAssertion_isForbiddenAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
+                                                                         value( (_value)) {};
 };
 
 class CBlockAssertion_isDirectAssign : public CBlockAssertion_is //retorna uma declaracao
@@ -197,8 +198,8 @@ public:
     HBlock variable;
     HBlock value;
 
-    CBlockAssertion_isDirectAssign(HBlock _variable, HBlock _value) : variable(move(_variable)),
-                                                                      value(move(_value)) {};
+    CBlockAssertion_isDirectAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
+                                                                      value( (_value)) {};
 };
 
 using HBlockAssertion_isDirectAssign = std::shared_ptr<CBlockAssertion_isDirectAssign>;
@@ -215,8 +216,8 @@ public:
     HBlock variable;
     HBlock value;
 
-    CBlockAssertion_isNotDirectAssign(HBlock _variable, HBlock _value) : variable(move(_variable)),
-                                                                         value(move(_value)) {};
+    CBlockAssertion_isNotDirectAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
+                                                                         value( (_value)) {};
 };
 
 using HBlockAssertion_isNotDirectAssign = std::shared_ptr<CBlockAssertion_isNotDirectAssign>;

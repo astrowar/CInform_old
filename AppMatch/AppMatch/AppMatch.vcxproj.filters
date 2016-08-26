@@ -144,9 +144,6 @@
     <ClCompile Include="CreateInstanceInterpreter.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
-    <ClCompile Include="InterpreterExecute.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
     <ClCompile Include="Parser.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
@@ -157,9 +154,6 @@
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="CParseAux.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="AssertationSecondary.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="StaticDispatchFunctions.cpp">
@@ -239,6 +233,18 @@
     </ClCompile>
     <ClCompile Include="ParseRelationWhen.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="testeLista.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseAssertationSecondary.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CVariableGlobals.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpreterQuery.cpp">
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

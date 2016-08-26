@@ -188,7 +188,7 @@ public:
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
 
 };
-
+using HBlockListOfKind = std::shared_ptr<CBlockListOfKind>;
 
 
 

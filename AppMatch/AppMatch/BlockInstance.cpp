@@ -18,6 +18,8 @@ CVariableSlotBool::CVariableSlotBool(HBlockNoum valueDef)
 	this->value = true;
 }
 
+ 
+
 CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value): value(_value), kind(_kind), name(_name)
 {
 }

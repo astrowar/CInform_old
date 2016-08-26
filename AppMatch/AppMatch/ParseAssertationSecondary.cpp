@@ -28,6 +28,8 @@ HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {
 
 
 HBlock CParser::parse_AssertionIsVariable(std::vector<HTerm> term) {
+	 
+
 
     {
         // is a kind definition ??

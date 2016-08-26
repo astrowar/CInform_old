@@ -180,7 +180,8 @@
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
-    <ClCompile Include="AssertationSecondary.cpp" />
+    <ClCompile Include="CVariableGlobals.cpp" />
+    <ClCompile Include="ParseAssertationSecondary.cpp" />
     <ClCompile Include="AssertationVerbRelation.cpp" />
     <ClCompile Include="AssertionValues.cpp" />
     <ClCompile Include="BlockInstance.cpp" />
@@ -198,7 +199,7 @@
     <ClCompile Include="CRelations.cpp" />
     <ClCompile Include="Equality.cpp" />
     <ClCompile Include="FEnviroment.cpp" />
-    <ClCompile Include="InterpreterExecute.cpp" />
+    <ClCompile Include="InterpreterQuery.cpp" />
     <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParseRelation.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="RepresentationFunctions.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="testeLista.cpp" />
     <ClCompile Include="testesParser.cpp" />
     <ClCompile Include="testes_1.cpp" />
     <ClCompile Include="testes_2.cpp" />

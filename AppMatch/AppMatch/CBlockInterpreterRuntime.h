@@ -41,6 +41,7 @@ class CBlockInterpreter {
 
     std::vector<HBlockAssertion_is> kindDefinitions;
 
+	std::vector<HVariableNamed> global_variables;
 
     std::vector<HBlockAssertion_isDefaultAssign> default_assignments;
     std::vector<HBlockAssertionBase> instance_variables;
@@ -57,8 +58,8 @@ class CBlockInterpreter {
     QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, QueryStack stk);
 
     QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, QueryStack stk);
-
-    QueryResul query_is(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResul query_is_Variable_value(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResul query_is(HBlock c_block, HBlock c_block1, QueryStack stk);
 
     std::list<HBlockKind> getUpperKinds(HBlockKind kind);
 
@@ -69,6 +70,7 @@ class CBlockInterpreter {
 	QueryResul getVerb(string vb, HBlock c_block, HBlock value);
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value);
 	bool assert_newVerb(HBlockVerbRelation value);
+	bool assert_it_variableGlobal(HBlock obj, HBlock value);
 public:
     CBlockInterpreter();
 
@@ -139,8 +141,8 @@ public:
     HBlockKind resolve_kind(string n);
 
     HBlock resolve_noum(HBlockNoum n);
-
-    HBlock resolve_string(string n);
+	HBlock resolve_noum_as_variable(HBlockNoum n);
+	HBlock resolve_string(string n);
 
     void dump_instance(string str);
  

@@ -327,6 +327,8 @@ void testeParser() {
 
    // for (int k = 0; k < 100; ++k)
     {
+		testeParser_listA();
+		testeParser_listB();
        // testeParser_2();
        // testeParser_2a();
         //testeParser_3();
@@ -336,7 +338,7 @@ void testeParser() {
        //testeParser_7a();
 	   //testeParser_7b();
 		//testeParser_7c();
-		testeParser_7d();
+		//testeParser_7d();
       // testeParser_21();
         std::cout << ".";
     }

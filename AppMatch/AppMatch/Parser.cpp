@@ -410,17 +410,14 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
 
 HBlock CParser::parse_noum(std::vector<HTerm> term) {
     std::vector<HPred> predList;
-
-
-
-
-
+	 
     //predList.push_back(undefinedArticle());
     predList.push_back(mkHPredAny("Noum"));
     MatchResult res = CMatch(term, predList);
 
     if (res.result == Equals) {
-        return std::make_shared<CBlockNoum>(res.matchs["Noum"]->removeArticle()->repr());
+		string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
+        return std::make_shared<CBlockNoum>(nstr);
     }
     return nullptr;
 }

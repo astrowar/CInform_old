@@ -45,14 +45,16 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) {
         HBlock nobj = resolve_noum(nbase);
         if (nobj != nullptr) {
             return assert_it_Value(nobj, value);
+		 
         }
-        return false;
+     
     }
 
     if (HBlockInstance nInst = dynamic_pointer_cast<CBlockInstance>(obj)) {
         if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(value)) {
             HBlock nobj = resolve_noum(nbase);
-            if (nobj == nullptr) {
+            if (nobj == nullptr) 
+			{
                 nInst->set(nbase);
                 return true;
             }
@@ -64,6 +66,18 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) {
         HBlock destination = prop_n->obj;
         return assert_it_property(propNamed, destination, value);
     }
+
+	if (HVariableNamed  var_n = dynamic_pointer_cast<CVariableNamed>(obj)) {
+		 
+		HBlock destination = var_n->value;
+		if (value_can_be_assign_to(value , var_n->kind))
+		{
+			var_n->value = value;
+			return true;
+		}
+		//return assert_it_property(propNamed, destination, value);
+	}
+
 
     return false;
 

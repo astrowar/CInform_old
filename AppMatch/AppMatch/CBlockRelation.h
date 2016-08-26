@@ -40,7 +40,7 @@ using HBlockRelation = std::shared_ptr<CBlockRelation>;
 class CBlockSimetricRelation : public CBlockRelation 
 {
 public:
-	void dump(string ident) override;
+	virtual void dump(string ident) override;
 
 	CBlockSimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b) : CBlockRelation(_named, input_a, input_b)
 	{
@@ -56,6 +56,7 @@ using HBlockSimetricRelation = std::shared_ptr<CBlockSimetricRelation>;
 class CBlockASimetricRelation : public CBlockRelation	 
 {
 public:
+	virtual void dump(string ident) override;
 	 CBlockASimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b) : CBlockRelation(_named, input_a, input_b)
 	{
 	}

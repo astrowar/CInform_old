@@ -55,13 +55,18 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1) {
         }
         // pode ser um atributo
         return query_is(c_block, nnoum, QueryStack());
-
     }
+
+	 
+
 
     return query_is(c_block, c_block1, QueryStack());
 }
 
 QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1) {
+
+	
+
     if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(c_block))
         if (HBlockNoum value = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
             if (cinst->has_slot(value)) {
@@ -114,15 +119,45 @@ QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_block, HBlock c
 
         }
         // property of What ??
-        return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, stk);
-
-
+        return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, stk); 
     }
-
     return QUndefined;
 
 }
 
+
+QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_block1, QueryStack stk)
+{
+
+	if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(c_block ))
+	{
+		auto var_1 = resolve_noum_as_variable(cnn);
+		if (var_1 !=nullptr)
+		{
+			return query_is_Variable_value(var_1, c_block1, stk);
+		}
+	}
+
+	if (HVariableNamed nvar1 = dynamic_pointer_cast<CVariableNamed>(c_block))
+	{
+		if (nvar1->value == nullptr) return QUndefined;
+		if (HVariableNamed nvar2 = dynamic_pointer_cast<CVariableNamed>(c_block1))
+		{
+			if (nvar2->value == nullptr) return QUndefined;
+			if (nvar1 == nvar2) return QEquals; //same reference			 
+			return query_is(nvar1->value, nvar2->value, stk);
+		}
+		return query_is(nvar1->value, c_block1, stk);		
+	}
+
+	if (HVariableNamed nvar2 = dynamic_pointer_cast<CVariableNamed>(c_block1))
+	{
+		if (nvar2->value == nullptr) return QUndefined;		 
+		return query_is(c_block , nvar2->value, stk);
+	}
+
+	return QUndefined;
+}
 
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QueryStack stk) {
     if (stk.isQuery(c_block, c_block1)) return QUndefined;
@@ -169,6 +204,14 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
         if (HBlockToDecide tdef = dynamic_pointer_cast<CBlockToDecide>(*it)) {
 
         }
+    }
+
+
+    {
+		QueryResul qprop = query_is_Variable_value(c_block, c_block1, stk);  // Verifica as variaveis globais
+		if (qprop != QUndefined) {
+			return qprop;
+		}
     }
 
     {

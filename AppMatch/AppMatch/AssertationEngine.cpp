@@ -194,9 +194,14 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 		HBlock obj = vRelation->get_obj();
 		HBlock value = vRelation->get_definition();
-		 
 		if (assert_it_verbRelation(vRelation->verb , obj, value)) return;
     }
+	else if (HBlockAssertion_isVariable  vGlobal  = dynamic_pointer_cast<CBlockAssertion_isVariable>(p)) {
+
+
+		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) return;
+	}
+
 	else if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
         HBlock obj = vk->get_obj();
         HBlock value = vk->get_definition();

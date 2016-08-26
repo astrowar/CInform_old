@@ -78,13 +78,41 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n) {
             if (nn->named == n->named) {
                 return defs->get_definition();
             }
-        }
+        } 
     }
+
+	for (auto &defs : global_variables) {
+		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs )) {
+			//std::cout << nn->named << std::endl;
+			if (nnvar->name->named  == n->named)
+			{
+				return nnvar ;
+			}
+		}
+	}
+
+
     cout << "Fail to " << n->named << endl;
     return nullptr;
 
 
 }
+
+HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) {
+	for (auto &defs : global_variables) {
+		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
+			//std::cout << nn->named << std::endl;
+			if (nnvar->name->named == n->named)
+			{
+				return nnvar;
+			}
+		}
+	}
+	return nullptr;
+
+}
+
+
 
 HBlock CBlockInterpreter::resolve_string(string n) {
     for (auto &defs : assertions) {

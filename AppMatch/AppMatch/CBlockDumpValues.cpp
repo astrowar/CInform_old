@@ -51,11 +51,19 @@ void CBlockArgumentInput::dump(string ident)
 
 void CBlockSimetricRelation::dump(string ident)
 {
-	cout << ident << "Relation  :  " << named << endl;
+	cout << ident << "S Relation  :  " << named << endl;
 	input_A->dump(ident + "   ");
 	cout << ident << "To    " <<  endl;
 	input_B->dump(ident + "   ");
 
+}
+
+void CBlockASimetricRelation::dump(string ident)
+{
+	cout << ident << "A Relation  :  " << named << endl;
+	input_A->dump(ident + "   ");
+	cout << ident << "To    " << endl;
+	input_B->dump(ident + "   ");
 }
 
 void CBlockKindAction::dump(string ident) {
@@ -364,10 +372,18 @@ void CBlockIsNotVerb::dump(string ident) {
 }
 
 void CBlockVerbRelation::dump(string ident) {
-    cout << ident << "Verb  " << endl;
-    this->verbNoum->dump(ident + "       ");
-    cout << ident << "Implies " << endl;
-    this->relation->dump(ident + "       ");
+	cout << ident << "Verb  " << endl;
+	this->verbNoum->dump(ident + "       ");
+	cout << ident << "Implies " << endl;
+	this->relation->dump(ident + "       ");
+}
+
+void CVariableNamed::dump(string ident)
+{
+	cout << ident << "VAriable Named  " << name << endl;
+	this->kind->dump(ident + "       ");
+	cout << ident << "values " << endl;
+	this->value->dump(ident + "       ");
 }
 
 string HtoString(HBlockList lst)
@@ -395,6 +411,10 @@ string HtoString(HBlock value)
 	else if (HBlockList verbNoumList = dynamic_pointer_cast<CBlockList>(value))
 	{
 		return HtoString(verbNoumList);
+	}
+	else if (HBlockProperty pNoumList = dynamic_pointer_cast<CBlockProperty>(value))
+	{
+		return HtoString(pNoumList->prop) +" of "+  HtoString(pNoumList->obj);
 	}
 	return "";
 
