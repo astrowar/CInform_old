@@ -13,6 +13,7 @@
 
 
 #include <iostream>
+#include "CBlockRelation.h"
 
 
 using namespace std;
@@ -41,6 +42,22 @@ void CBlockKindOf::dump(string ident) {
     baseClasse->dump(ident + "   ");
 }
 
+
+void CBlockArgumentInput::dump(string ident)
+{
+	cout << ident << "Argument Named :  " << named << endl;
+	kind->dump(ident + "   ");
+}
+
+void CBlockSimetricRelation::dump(string ident)
+{
+	cout << ident << "Relation  :  " << named << endl;
+	input_A->dump(ident + "   ");
+	cout << ident << "To    " <<  endl;
+	input_B->dump(ident + "   ");
+
+}
+
 void CBlockKindAction::dump(string ident) {
     cout << ident << "Action applying to:  " << baseClasseName << endl;
     this->applyTo->dump(ident + "   ");
@@ -52,6 +69,12 @@ void CBlockKindValue::dump(string ident) {
 
 void CBlockKindThing::dump(string ident) {
     cout << ident << "Kind Thing : " << named << endl;
+}
+
+void CBlockListOfKind::dump(string ident)
+{
+	cout << ident << "List Of:  "  << endl;
+	itemKind->dump(ident + "   ");
 }
 
 void CBlockNamedValue::dump(string ident) {
@@ -345,6 +368,36 @@ void CBlockVerbRelation::dump(string ident) {
     this->verbNoum->dump(ident + "       ");
     cout << ident << "Implies " << endl;
     this->relation->dump(ident + "       ");
+}
+
+string HtoString(HBlockList lst)
+{
+
+	if (lst->lista.empty()) return "";
+	if (lst->lista.size() == 1) return HtoString(lst->lista.front());
+	std::string vstr = "";
+	bool fronti = true;
+	for (auto &v : lst->lista)
+	{
+		if (fronti == false) vstr += " ";
+		vstr += HtoString(v);
+		fronti = false;
+	}
+	return vstr;
+
+}
+
+string HtoString(HBlock value)
+{
+	if (HBlockNoum verbNoum = dynamic_pointer_cast<CBlockNoum>(value)) {
+		return verbNoum->named;
+	}
+	else if (HBlockList verbNoumList = dynamic_pointer_cast<CBlockList>(value))
+	{
+		return HtoString(verbNoumList);
+	}
+	return "";
+
 }
 
 void CBlockUnderstand::dump(string ident) {

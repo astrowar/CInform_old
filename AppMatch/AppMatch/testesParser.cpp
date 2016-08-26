@@ -333,8 +333,9 @@ void testeParser() {
         //testeParser_4();
         //testeParser_5();
         //testeParser_6();
-       testeParser_7a();
-	   testeParser_7b();
+       //testeParser_7a();
+	   //testeParser_7b();
+		testeParser_7c();
       // testeParser_21();
         std::cout << ".";
     }

@@ -151,6 +151,7 @@
     <ClInclude Include="BaseTest.h" />
     <ClInclude Include="BlockInstance.h" />
     <ClInclude Include="BlockInterpreter.h" />
+    <ClInclude Include="CBlockRelation.h" />
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CblockAssertion.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="InterpreterExecute.cpp" />
     <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="ParseRelation.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="Parser_A.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />

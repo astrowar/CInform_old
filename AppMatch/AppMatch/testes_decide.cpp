@@ -35,6 +35,10 @@ void testeParser_7b()//dynamic match
 		interpreter->execute_init(parse.parser_stmt("book is a thing "));
 		interpreter->execute_init(parse.parser_stmt("diary is a thing "));
 		interpreter->execute_init(parse.parser_stmt("coin is a thing "));
+
+		interpreter->execute_init(parse.parser_stmt("atom is a kind  "));
+		interpreter->execute_init(parse.parser_stmt("silver is a kind of atom "));
+		interpreter->execute_init(parse.parser_stmt("gold is a kind of atom "));
 	}
 
 	auto p = parse.parser_stmt("to decide what (thing) is (the best book) : diary " , ISLOG);
@@ -48,8 +52,50 @@ void testeParser_7b()//dynamic match
 
 
 	interpreter->execute_init(parse.parser_stmt("the verb made of implies the materiality relation ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("thing is made of atoms ", ISLOG));
-	QueryResul q_qq=  interpreter->query(parse.parser_stmt("coin is made of atoms  ", ISLOG));
+	 
+ 
+	interpreter->execute_init(parse.parser_stmt("coin is made of silver ", ISLOG));
+	QueryResul q_qq=  interpreter->query(parse.parser_stmt("coin is made of gold  ", ISLOG));
 	std::cout << std::endl;
 
+}
+
+
+void testeParser_7c()//dynamic match
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	{
+		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG);
+	}
+	{
+		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to another", ISLOG);
+	}
+	{
+		auto p = parse.parser_stmt("Pet-ownership relates various animals to ( a person called the owner)", ISLOG);
+	}
+	{
+		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to each other in groups", ISLOG);
+	}
+
+
+	std::list< std::string >  slist(	{ 
+		"Marriage relates (a person ) to another",
+		"Marriage relates (a person ) to ( another called the spouse )",
+		"Revenge relates (a person ) to various people",
+		"Pet-ownership relates ( various animals ) to a person",
+		"Pet-ownership relates ( various animals ) to ( a person called the owner)",
+		"Awareness relates (various people ) to various people",
+		"Meeting relates (a people ) to each other",
+		"Nationality relates (a people ) to each other in groups"
+	});
+	for( auto s : slist)
+	{
+		std::cout << s << std::endl;
+		auto p = parse.parser_stmt(s, ISLOG);
+
+	}
+
+	std::cout << std::endl;
 }

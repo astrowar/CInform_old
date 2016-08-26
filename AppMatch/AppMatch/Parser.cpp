@@ -116,7 +116,8 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(HTerm term) {
                              std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->repr())));
 }
 
-HBlockMatch CParser::parser_MatchArgument(HTerm term) {
+HBlockMatch CParser::parser_MatchArgument(HTerm term) 
+{
 
     {
         std::vector<HPred> predList;
@@ -129,8 +130,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term) {
                     std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
             HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
             return n1;
-        }
-
+        } 
     }
 
     {
@@ -145,8 +145,8 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term) {
             HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
             return n1;
         }
-
     }
+
     return std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->removeArticle()->repr()));
     return nullptr;
 }

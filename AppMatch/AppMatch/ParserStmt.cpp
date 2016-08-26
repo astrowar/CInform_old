@@ -86,6 +86,9 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
     HBlock rblock_understand_1 = (STMT_understand_Assertion(lst));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
+	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst));
+	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
+
     HBlock rblock_verb_1n = (STMT_verb_Assertion_N(lst));
     if (rblock_verb_1n != nullptr) return rblock_verb_1n;
 

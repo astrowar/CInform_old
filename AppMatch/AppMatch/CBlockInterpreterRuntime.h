@@ -31,6 +31,8 @@ class CBlockInterpreter {
     std::vector<NoumDefinition> nregisters;
     std::vector<HBlockAssertion_is> assertions;
 
+	
+	std::map<string, HBlock> verbRelationAssoc;
 	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
  
 
@@ -66,6 +68,7 @@ class CBlockInterpreter {
 	bool setVerb(string cs, HBlock c_block, HBlock value);
 	QueryResul getVerb(string vb, HBlock c_block, HBlock value);
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value);
+	bool assert_newVerb(HBlockVerbRelation value);
 public:
     CBlockInterpreter();
 

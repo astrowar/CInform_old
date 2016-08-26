@@ -124,6 +124,9 @@
     <ClInclude Include="CBlockUndestand.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CBlockRelation.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -230,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="AssertationVerbRelation.cpp">
       <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseRelation.cpp">
+      <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,8 +11,8 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 
 	if (alist == verbAssertation.end())
 	{
-		verbAssertation[vb] = std::list<HBlockAssertion_is>();
-		alist = verbAssertation.find(vb);
+		cout << "verb  |"<< vb << "| is not defined" << endl;
+		return false;
 	}
 
 	{
@@ -69,4 +69,20 @@ bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock ob
 	return setVerb(verbNamed, obj, value);
 
 	return false;
+}
+
+
+
+
+bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
+{
+
+	std::string vstr = HtoString(value->verbNoum); 
+	cout << " new Verb |" <<vstr  <<"|"<< endl;
+	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
+
+	verbRelationAssoc[vstr] = value->relation;
+ 
+
+	return true;
 }

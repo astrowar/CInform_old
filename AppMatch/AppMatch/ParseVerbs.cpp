@@ -1,5 +1,83 @@
 #include "Parser.h"
-#include "CBlockMatch.h"
+ 
+#include <iostream>
+
+
+HBlock CParser::parse_AssertionVerb(std::vector<HTerm> term) {
+    {
+        // and action applying to [one visible thing and requiring light]
+        std::vector<HPred> predList;
+        predList.push_back(mkHPredAny("N1"));
+        predList.push_back(verb_IS_NOT());
+        predList.push_back(verbList);
+        predList.push_back(mkHPredAny("N2"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n2 = parser_expression(res.matchs["N2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
+        }
+    }
+
+    {
+        // and action applying to [one visible thing and requiring light]
+        std::vector<HPred> predList;
+        predList.push_back(mkHPredAny("N1"));
+        predList.push_back(mk_HPredLiteral("not"));
+        predList.push_back(verbList);
+        predList.push_back(mkHPredAny("N2"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n2 = parser_expression(res.matchs["N2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
+
+        }
+    }
+
+    {
+        // and action applying to [one visible thing and requiring light]
+        std::vector<HPred> predList;
+        predList.push_back(mkHPredAny("N1"));
+        predList.push_back(verb_IS());
+        predList.push_back(verbList);
+        predList.push_back(mkHPredAny("N2"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n2 = parser_expression(res.matchs["N2"]);
+			auto vrepr = CtoString( expandBract(res.matchs[verbList->named]) );
+	        
+            return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+
+        }
+    }
+
+    {
+        // and action applying to [one visible thing and requiring light]
+        std::vector<HPred> predList;
+        predList.push_back(mkHPredAny("N1"));
+        predList.push_back(verbList);
+        predList.push_back(mkHPredAny("N2"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n2 = parser_expression(res.matchs["N2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+
+        }
+    }
+
+    return nullptr;
+}
+
 
 
 HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
@@ -17,7 +95,8 @@ HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
 			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
-				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
+				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+				return std::make_shared<CBlockIsVerb>(vrepr, body, value);
 				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
 			}
 		}
@@ -34,7 +113,8 @@ HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 			HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
 			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
-				return std::make_shared<CBlockIsVerb>(res.matchs[verbList->named]->repr(), body, value);
+				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+				return std::make_shared<CBlockIsVerb>(vrepr, body, value);
 			}
 		}
 	}

@@ -217,9 +217,9 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
     }
 	if (HBlockVerbRelation dcverbImpl = dynamic_pointer_cast<CBlockVerbRelation>(p)) 	
-	{
-		return  ;
+	{ 
 
+		if (assert_newVerb(dcverbImpl)) return; 
 	}
 	 
 

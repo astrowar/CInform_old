@@ -17,6 +17,42 @@ string get_repr(std::vector<HPred> plist) {
     return ret;
 }
 
+ 
+string CtoString(CList * lst)
+{
+	if (lst->lst.empty()) return "";
+	if (lst->lst.size() == 1) return CtoString(lst->lst.front());
+	std::string vstr = "";
+	bool fronti = true;
+	for (auto &v : lst->lst)
+	{
+		if (fronti == false) vstr += " ";
+		vstr += CtoString(v);
+		fronti = false;
+	}
+	return vstr;
+
+}
+string CtoString(HTerm  value)
+{
+	return CtoString(value.get());
+}
+
+string CtoString(CTerm  *value)
+{
+	if (CString* lstr = dynamic_cast<CString*>(value)) {
+		return lstr->s;
+	}
+	if (CList* lst = dynamic_cast<CList*>(value)) {
+		{
+			return CtoString(lst);
+		}
+	}
+	throw "error on Term";
+
+}
+
+
 HTerm expandBract(HTerm term) {
     if (CList *clist = dynamic_cast<CList *>(term.get())) {
         if (clist->lst.front()->is_openBracket() && clist->lst.back()->is_closeBracket()) {

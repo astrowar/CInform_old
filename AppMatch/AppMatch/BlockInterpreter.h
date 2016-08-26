@@ -107,6 +107,9 @@ public:
 
 using HBlockKind = std::shared_ptr<CBlockKind>;
 
+
+
+
 class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 {
 public:
@@ -170,6 +173,25 @@ public:
 };
 
 using HBlockKindThing = std::shared_ptr<CBlockKindThing>;
+
+
+
+class CBlockListOfKind : public CBlockKind // algo como List<Kind> 
+{
+public:
+	virtual bool isValue() override { return true; }
+
+	void dump(string ident) override;
+
+	CBlockListOfKind(HBlockKind _itemKind  ) : CBlockKind("list@"+ _itemKind->named) , itemKind(_itemKind){};
+	HBlockKind itemKind;
+	virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
+
+};
+
+
+
+
 
 class CBlockNamedValue : public CBlock //retorna um valor generico
 {
@@ -314,9 +336,8 @@ using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
 
 
 
- 
-
-
+string HtoString(HBlockList lst);
+string HtoString(HBlock value);
 
  
 

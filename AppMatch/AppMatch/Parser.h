@@ -7,9 +7,8 @@
 #include "CBlockMatch.h"
 #include "CMatch.h"
 #include "CBlockInterpreterRuntime.h"
-
-
-  
+#include "CBlockRelation.h"
+#include <condition_variable>
 
 
 class ParserResult
@@ -218,7 +217,10 @@ public:
 	HBlock parser_assertionTarger(HTerm term);
 	HBlock parser_expression(HTerm term);
 	HBlock parser_expression(std::vector<HTerm>  term);
-	 
+
+	HBlockArgumentInput parser_KindCalled(HTerm term);
+	HBlock STMT_relates_Assertion(std::vector<HTerm> term);
+
 };
 
 
@@ -238,7 +240,8 @@ HTerm expandBract(HTerm term);
 std::vector<HTerm> get_tail(std::vector<HTerm>& qlist);
 std::pair<HBlock , HPred>   getVerbAndAux(   HTerm  term);
 HPred convert_to_predicate(CTerm *termo);
-
-
+string CtoString(HTerm  value);
+string CtoString(CList * lst);
+string CtoString(CTerm  *value);
 
 #endif
