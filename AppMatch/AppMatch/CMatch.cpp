@@ -133,15 +133,13 @@ bool isListValid_count(MTermSetCombinatoria &listComb) {
 
 bool isListValid(MTermSetCombinatoria &listComb) {
 
-    if (isListValid_bounds(listComb) == false) return false;
-    if (isListValid_count(listComb) == false) return false;
-    return true;
+    if (!isListValid_bounds(listComb)) return false;
+    return isListValid_count(listComb);
 }
 
 bool isListValid(MTermSet &Comb) {
-    if (isListValid_bounds(Comb) == false) return false;
-    if (isListValid_count(Comb) == false) return false;
-    return true;
+    if (!isListValid_bounds(Comb)) return false;
+    return isListValid_count(Comb);
 }
 
 MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> &terms, size_t n) //num termos que restam
@@ -197,7 +195,7 @@ MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> &lst, size_t n) {
 bool applyCombinatoriasUnitary(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, FuncCombinatoria &func) {
     MTermSetCombinatoria uniq(partial_in.begin(), partial_in.end());
     for (auto it = terms.begin(); it != terms.end(); ++it) {
-        if (isListValid(uniq) == false) return false;
+        if (!isListValid(uniq)) return false;
         uniq.push_back({MTermSet({*it})});
     }
     return func(uniq);
@@ -206,7 +204,7 @@ bool applyCombinatoriasUnitary(MTermSetCombinatoria &partial_in, std::vector<HTe
 
 //todos os termos formam um MTermSet que forma um MTermSetCombinatoria que forma um MTermSetCombinatoriaList 
 bool applyCombinatoriasGroup(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, FuncCombinatoria &func) {
-    if (isListValid(terms) == false) return false;
+    if (!isListValid(terms)) return false;
     partial_in.push_back(terms);
     bool hasFound = func(partial_in);
     partial_in.pop_back();
@@ -274,7 +272,7 @@ bool
 applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, std::vector<CPred *> &preds,
                              int pos, FuncCombinatoria &func) {
     if (preds[pos]->match(terms) != NotEquals) {
-        if (isListValid(terms) == false) return false;
+        if (!isListValid(terms)) return false;
         partial_in.push_back(terms);
         bool hasFound = func(partial_in);
         partial_in.pop_back();
@@ -431,7 +429,7 @@ bool CPredList::isSame(HTerm h) {
     if (CPredList *hlist = dynamic_cast<CPredList *>(h.get())) {
         if (this->plist.size() != hlist->plist.size()) return false;
         for (size_t i = 0; i < this->plist.size(); ++i) {
-            if (this->plist[i]->isSame(hlist->plist[i]) == false) {
+            if (!this->plist[i]->isSame(hlist->plist[i])) {
                 return false;
             }
         }
@@ -551,9 +549,8 @@ CPredBoolean::CPredBoolean(const std::string &_named) : CPred(_named) {
 
 bool CPredBooleanAnd::isSame(HTerm b) {
     if (CPredBooleanAnd *v = dynamic_cast<CPredBooleanAnd *>(b.get())) {
-        if (this->b1->isSame(v->b1) == false) return false;
-        if (this->b2->isSame(v->b2) == false) return false;
-        return true;
+        if (!this->b1->isSame(v->b1)) return false;
+        return this->b2->isSame(v->b2);
     }
     return false;
 }
@@ -587,7 +584,7 @@ bool CPredBooleanOr::isSame(HTerm b) {
         if (v->blist.size() != n) return false;
 
         for (int i = 0; i < n; ++i) {
-            if (blist[i]->isSame(v->blist[i]) == false) return false;
+            if (!blist[i]->isSame(v->blist[i])) return false;
         }
         return true;
     }
@@ -641,7 +638,7 @@ bool isSamePred(std::vector<HPred> a, std::vector<HPred> b) {
     int n = a.size();
     if (n != b.size()) return false;
     for (int i = 0; i < n; ++i) {
-        if (a[i]->isSame(b[i]) == false) return false;
+        if (!a[i]->isSame(b[i])) return false;
     }
     return true;
 
@@ -698,8 +695,8 @@ bool isFullListBracket(MTermSet m) {
     //if (m.front()->repr() != "(") return false;
     // if (m.back()->repr() != ")") return false;
 
-    if (m.front()->is_openBracket() == false) return false;
-    if (m.back()->is_closeBracket() == false) return false;
+    if (!m.front()->is_openBracket()) return false;
+    if (!m.back()->is_closeBracket()) return false;
 
     bool isFullEnclose = true;
 
@@ -719,7 +716,7 @@ bool isFullListBracket(MTermSet m) {
 }
 
 MTermSet remove_boundaryListMark(MTermSet &m) {
-    if (isFullListBracket(m) == false)return m;
+    if (!isFullListBracket(m))return m;
 
     MTermSet mnext;
     int n = m.size();
@@ -864,36 +861,20 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates) {
         predicates_ptr.push_back(it->get());
     }
 
-    if (true) {
-        MatchResult mmResultMatch;
-        FuncCombinatoria f_disp = [&](MTermSetCombinatoria &x) {
+    MatchResult mmResultMatch;
+    FuncCombinatoria f_disp = [&](MTermSetCombinatoria &x) {
 
-            if (CMLOG) std::cout << std::endl;
-            MatchResult mm = CMatch_combinacao(x, predicates_ptr);
-            if (mm.result == Equals) {
-                mmResultMatch = mm;
-                return true;
-            }
-            return false;
-
-        };
-
-        //applyCombinatorias(expandContents, npred, f_disp);
-        applyCombinatorias_smart(expandContents, npred, predicates_ptr, f_disp);
-        return mmResultMatch;
-
-    } else {
-        MTermSetCombinatoriaList comb = getCombinatorias(expandContents, npred);
-        size_t comSize = comb.size();
-        for (auto it = comb.begin(); it != comb.end(); ++it) {
-            if (CMLOG) std::cout << std::endl;
-            MatchResult mm = CMatch_combinacao(*it, predicates_ptr);
-            if (mm.result == Equals) {
-                return mm;
-            }
+        if (CMLOG) std::cout << std::endl;
+        MatchResult mm = CMatch_combinacao(x, predicates_ptr);
+        if (mm.result == Equals) {
+            mmResultMatch = mm;
+            return true;
         }
-        return MatchResult();
-    }
+        return false;
+
+    };
+    applyCombinatorias_smart(expandContents, npred, predicates_ptr, f_disp);
+    return mmResultMatch;
 }
 
 MatchResult CMatch(HTerm term, std::vector<HPred> predicates) {

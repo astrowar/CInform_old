@@ -26,7 +26,7 @@ string CtoString(CList * lst)
 	bool fronti = true;
 	for (auto &v : lst->lst)
 	{
-		if (fronti == false) vstr += " ";
+		if (!fronti) vstr += " ";
 		vstr += CtoString(v);
 		fronti = false;
 	}

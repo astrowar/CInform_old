@@ -24,7 +24,9 @@ void testeParser_listA()
 	 assert(q_true_2 == QEquals);
 
 	interpreter->execute_init(parse.parser_stmt("items is a list of object  that varies", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("list of prohibited items is a list of object  that varies", ISLOG));
+
+
+
 	return  ;
 }
 void testeParser_listB()

@@ -23,7 +23,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
                             return true;
                         } else {
                             bool bnn = is_derivadeOf(k->baseClasse, b);
-                            if (bnn == true) {
+                            if (bnn) {
                                 return true;
                             }
 
@@ -80,7 +80,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b) {
                             HBlock bnext = resolve_string(k->named);
                             if (HBlockKind baseClasse = dynamic_pointer_cast<CBlockKind>(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
-                                if (bnn == true) {
+                                if (bnn) {
                                     return true;
                                 }
                             }

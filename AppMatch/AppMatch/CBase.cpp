@@ -91,7 +91,7 @@ CTerm *CList::removeArticle() {
 }
 
 EqualsResul equals(CTerm *c1, CTerm *c2) {
-    EqualsResul q = Undefined;
+    EqualsResul q ;
     q = equals(dynamic_cast<CString *>(c1), dynamic_cast<CString *>(c2));
     if (q != Undefined) return q;
     q = equals(dynamic_cast<CNumber *>(c1), dynamic_cast<CNumber *>(c2));

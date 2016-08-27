@@ -33,4 +33,4 @@ public:
 
 using HBlockUnderstandStatic = std::shared_ptr<CBlockUnderstandStatic>;
 
-#endif;
+#endif

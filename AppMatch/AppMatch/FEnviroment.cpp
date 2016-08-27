@@ -17,10 +17,8 @@ namespace VM {
             CObjectKind *okind = dynamic_cast<CObjectKind *>(kind);
             if (okind != nullptr) {
                 CObjectInstance *oval = dynamic_cast<CObjectInstance *>(val);
-                if (oval != nullptr) {
-                    return (oval->kind->name == okind->name);
-                }
-                return true; // null is always setabble
+                return oval == nullptr || oval->kind->name == okind->name;
+                // null is always setabble
             }
         }
 
@@ -124,10 +122,7 @@ namespace VM {
             bool cans = can_set_value_enum(kenum, val);
             return cans;
         }
-        if (val->vkind == vkind) {
-            return true;
-        }
-        return false;
+        return val->vkind == vkind;
     }
 
     bool can_set_value(HValueKind vkind, HValue val) {

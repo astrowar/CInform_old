@@ -32,10 +32,14 @@ set(SOURCE_FILES
         AppMatch/AppMatch/EqualsResult.h
         AppMatch/AppMatch/FEnviroment.cpp
         AppMatch/AppMatch/FEnviroment.h
-        AppMatch/AppMatch/InterpreterExecute.cpp
+        AppMatch/AppMatch/CInterpreterResolve.cpp
+        AppMatch/AppMatch/AssertionValues.cpp
         AppMatch/AppMatch/Parser.cpp
         AppMatch/AppMatch/Parser.h
         AppMatch/AppMatch/RepresentationFunctions.cpp
+        AppMatch/AppMatch/CVariableGlobals.cpp
+        AppMatch/AppMatch/InterpreterQuery.cpp
+        AppMatch/AppMatch/ParseRelation.cpp
         AppMatch/AppMatch/stdafx.cpp
         AppMatch/AppMatch/stdafx.h
         AppMatch/AppMatch/targetver.h
@@ -44,7 +48,20 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CBlockDumpValues.cpp
         AppMatch/AppMatch/BlockInstance.cpp
         AppMatch/AppMatch/CBlockInterpreterDecideBody.cpp
+        AppMatch/AppMatch/ParseAssertationSecondary.cpp
+        AppMatch/AppMatch/ParseListAux.cpp
+        AppMatch/AppMatch/AssertationDefaultValue.cpp
+        AppMatch/AppMatch/ParseRelationWhen.cpp
+        AppMatch/AppMatch/QueryItem.cpp
+        AppMatch/AppMatch/ParserStmt.cpp
+        AppMatch/AppMatch/ParseVerbs.cpp
+        AppMatch/AppMatch/testeLista.cpp
+        AppMatch/AppMatch/testes_1.cpp
+        AppMatch/AppMatch/testes_2.cpp
+        AppMatch/AppMatch/testes_decide.cpp
+        AppMatch/AppMatch/AssertationVerbRelation.cpp
 
-        AppMatch/AppMatch/UBlock.hpp AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)
+
+        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)
 
 add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)

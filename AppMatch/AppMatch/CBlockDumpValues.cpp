@@ -395,7 +395,7 @@ string HtoString(HBlockList lst)
 	bool fronti = true;
 	for (auto &v : lst->lista)
 	{
-		if (fronti == false) vstr += " ";
+		if (!fronti) vstr += " ";
 		vstr += HtoString(v);
 		fronti = false;
 	}

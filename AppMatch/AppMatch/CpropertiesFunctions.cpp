@@ -123,7 +123,7 @@ namespace VM {
     CKindPropertyAssert::CKindPropertyAssert(CObjectKindProperty _property, HValueAssert value) : property(_property),
                                                                                                   valueAssertion(
                                                                                                           value) {
-        if (can_set_value(property.vkind, valueAssertion.value) == false) {
+        if (!can_set_value(property.vkind, valueAssertion.value)) {
             throw "unable to set value";
         }
     }

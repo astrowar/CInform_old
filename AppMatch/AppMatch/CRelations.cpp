@@ -238,12 +238,12 @@ namespace VM {
         if (isAlowedToNode(env, relation_description->node1, val1))
             if (isAlowedToNode(env, relation_description->node2, val2)) {
 
-                if (relation_description->node1->isMany() == false) {
+                if (!relation_description->node1->isMany()) {
                     auto p = find_relation_i_1(envb, relation_description, val1);
                     delete_relation(env, p);
                 }
 
-                if (relation_description->node2->isMany() == false) {
+                if (!relation_description->node2->isMany()) {
                     auto p = find_relation_i_2(envb, relation_description, val2);
                     delete_relation(env, p);
                 }

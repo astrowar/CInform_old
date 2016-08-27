@@ -561,4 +561,4 @@ public:
 
 using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
 
-#endif;
+#endif
