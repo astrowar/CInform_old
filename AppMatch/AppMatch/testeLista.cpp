@@ -2,6 +2,7 @@
 #include "BaseTest.h"
 #include <cassert>
 
+HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoum>(n); };
 
 void testeParser_listA()
 {
@@ -16,6 +17,7 @@ void testeParser_listA()
 	 interpreter->execute_init(parse.parser_stmt("target is book ", ISLOG));
 	 interpreter->execute_init(parse.parser_stmt("box is a object  ", ISLOG));
 
+    interpreter->execute_init(parse.parser_stmt("the verb listed in implies the listed_in relation", ISLOG));
 
 	 QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("target"), std::make_shared<CBlockNoum>("book"));
 	 assert(q_true == QEquals);
@@ -24,10 +26,17 @@ void testeParser_listA()
 	 assert(q_true_2 == QEquals);
 
 	interpreter->execute_init(parse.parser_stmt("items is a list of object  that varies", ISLOG));
+	//interpreter->execute_init(parse.parser_stmt("list of prohibited items is a list of object  that varies", ISLOG));
+
+    interpreter->execute_init(parse.parser_stmt("items is  ( book and box )", ISLOG));
+
+    std::list<HBlock> alist = {noum("book"), noum("box")};
+    QueryResul q_true_3 = interpreter->query_is(noum("items"), std::make_shared<CBlockList>(  alist));
+   // assert(q_true_3 == QEquals);
 
 
-
-	return  ;
+    QueryResul q_qq=  interpreter->query(parse.parser_stmt("box is listed in items", ISLOG));
+    return  ;
 }
 void testeParser_listB()
 {

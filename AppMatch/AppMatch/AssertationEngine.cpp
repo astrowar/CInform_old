@@ -82,6 +82,17 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value) {
     return false;
 }
 
+bool CBlockInterpreter::is_all_items_of_kind(HBlockList listvalues, HBlockKind kind)
+{
+    for( auto &v : listvalues->lista )
+    {
+        if (value_can_be_assign_to(v,kind) == nullptr  ) return false ;
+
+    }
+    return true;
+
+
+}
 
 //Forca value a ser Kind
 HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind) {
@@ -113,6 +124,20 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind) 
 			return value_can_be_assign_to(resolved, kind);
 		}
 	}
+
+    if (HBlockList clist = dynamic_pointer_cast<CBlockList>(value))
+    {
+        //Kind precisa ser uma lista tambem
+        if (HBlockListOfKind klist = dynamic_pointer_cast<CBlockListOfKind>(kind)) {
+            //tem algum tipo que nao corresponde ?
+            if (is_all_items_of_kind(clist, klist->itemKind) == false)
+            {
+                return nullptr;
+            }
+            return value;
+
+        }
+    }
 
 
 	return nullptr;

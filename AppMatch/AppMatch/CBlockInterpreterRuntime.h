@@ -145,7 +145,10 @@ public:
 	HBlock resolve_string(string n);
 
     void dump_instance(string str);
- 
+
+    bool is_all_items_of_kind(HBlockList listvalues, HBlockKind kind);
+
+	bool query_is_List(CBlock *c_block, CBlock *c_block1);
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

@@ -72,7 +72,17 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) {
 		HBlock destination = var_n->value;
 		if (value_can_be_assign_to(value , var_n->kind))
 		{
-			var_n->value = value;
+            if (HBlockList   val_list = dynamic_pointer_cast<CBlockList>(value))
+            {
+                //list is passed as copy
+                HBlockList lcopy = make_shared<CBlockList> ( );
+                lcopy->lista = val_list->lista;
+                var_n->value = lcopy;
+
+            }
+            else {
+                var_n->value = value;
+            }
 			return true;
 		}
 		//return assert_it_property(propNamed, destination, value);

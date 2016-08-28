@@ -274,6 +274,8 @@ public:
 
     std::list<HBlock> lista;
 
+    CBlockList(){}
+    CBlockList( std::list<HBlock>  _lista ):lista(_lista) {}
     void push_back(HBlock c_block_value);
 
     virtual NoumDefinitions noumDefinitions() override;

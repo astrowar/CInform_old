@@ -51,7 +51,7 @@ void testeParser_7b()//dynamic match
 
 
 
-	interpreter->execute_init(parse.parser_stmt("the verb made of implies the materiality relation ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("he verb made of implies the materiality relation", ISLOG));
 	 
  
 	interpreter->execute_init(parse.parser_stmt("coin is made of silver ", ISLOG));

@@ -36,6 +36,20 @@ CBlockInterpreter::~CBlockInterpreter() {
 //
 //}
 
+bool CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_block1) {
+    if (CBlockList *lst1 = dynamic_cast<CBlockList*>(c_block)) {
+        if (CBlockList *lst2 = dynamic_cast<CBlockList*>(c_block1))
+        {
+            if (lst1->lista.size() != lst2->lista.size()) return QNotEquals;
+
+        }
+
+    }
+    return QUndefined;
+}
+
+
+
 QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1) {
     string name1 = BlockNoum(c_block);
     string name2 = BlockNoum(c_block1);
@@ -260,6 +274,9 @@ QueryResul CBlockInterpreter::query(HBlockAssertion_is q,
 
 QueryResul CBlockInterpreter::query_verb(HBlockIsVerb is_verb)
 {
+    QueryResul rrcstm =  get_custom_verbs(is_verb->verb, is_verb->n1, is_verb->n2); // "listed in" , "size of"
+    if (rrcstm != QUndefined) return rrcstm;
+
 	QueryResul rr =  getVerb(is_verb->verb, is_verb->n1, is_verb->n2);
 	return rr; 
 }
