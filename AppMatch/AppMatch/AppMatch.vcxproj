@@ -181,6 +181,7 @@
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
+    <ClCompile Include="InterpreterListedFunctions.cpp" />
     <ClCompile Include="ParseAssertationSecondary.cpp" />
     <ClCompile Include="AssertationVerbRelation.cpp" />
     <ClCompile Include="AssertionValues.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="ParseRelation.cpp" />
     <ClCompile Include="ParseRelationWhen.cpp" />
+    <ClCompile Include="ParserSelectorFunctional.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="Parser_A.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />

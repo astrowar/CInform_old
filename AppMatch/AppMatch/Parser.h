@@ -197,6 +197,7 @@ public:
 
 	HBlock parse_removeArticle(std::vector<HTerm> term);
 	HBlock parse_List_AND(std::vector<HTerm> term);
+	HBlock parse_List_OR(std::vector<HTerm> term);
 	HBlock parse_noum(std::vector<HTerm> term);
 	HBlock parser_Declaration_Assertion(std::vector<HTerm> lst);
 	HBlockProperty  parse_PropertyOf(std::vector<HTerm> term);
@@ -215,6 +216,8 @@ public:
 	HBlock parser_kind_or_instance(HTerm term);
 	HBlock parser_valueReference(HTerm term);
 	HBlock parser_assertionTarger(HTerm term);
+	HBlockSelector parser_List_selector(std::vector<HTerm> term);
+	HBlockSelector parser_List_selector(HTerm term);
 	HBlock parser_expression(HTerm term);
 	HBlock parser_expression(std::vector<HTerm>  term);
 

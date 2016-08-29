@@ -101,6 +101,43 @@ HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
 }
 
 
+HBlock CParser::parse_List_OR(std::vector<HTerm> term) {
+	{
+		auto sep = mk_HPredLiteral("or");
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(sep);
+		predList.push_back(mkHPredAny("N2"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockList  cList = std::make_shared<CBlockList  >();
+			cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
+			cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
+			HBlockList_OR  or_List = std::make_shared<CBlockList_OR  >();
+			or_List->lista = cList->lista;
+			return or_List;
+		}
+	}
+
+	{
+		auto sep = mk_HPredLiteral("and");
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(sep);
+		predList.push_back(mkHPredAny("N2"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			return nullptr;
+		}
+	}
+ 
+
+	return nullptr;
+
+}
+
+
+
 
 HBlockList CParser::parse_Strict_COMMA_AND(HTerm term) {
     return parseAssertion_Strict_COMMA_Supl(term, mk_HPredLiteral("and"));

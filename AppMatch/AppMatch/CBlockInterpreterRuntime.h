@@ -7,6 +7,7 @@
 #include "BlockInterpreter.h"
 #include "CblockAssertion.h"
 #include "CBlockMatch.h"
+#include <functional>
 #include <map>
 
 class CBlockAssertionBase;
@@ -53,13 +54,13 @@ class CBlockInterpreter {
     std::vector<HBlockToDecideIf> decides_if;
 
 
-    QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1);
-
+    QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
     QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, QueryStack stk);
-
     QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, QueryStack stk);
 	QueryResul query_is_Variable_value(HBlock c_block, HBlock c_block1, QueryStack stk);
-	QueryResul query_is(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, QueryStack stk); 
+    QueryResul queryVerb(string vb, HBlock c_block, HBlock value, QueryStack stk);
+
 
     std::list<HBlockKind> getUpperKinds(HBlockKind kind);
 
@@ -67,10 +68,12 @@ class CBlockInterpreter {
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
 	bool setVerb(string cs, HBlock c_block, HBlock value);
-	QueryResul getVerb(string vb, HBlock c_block, HBlock value);
+	
+ 
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value);
 	bool assert_newVerb(HBlockVerbRelation value);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
+	
 public:
     CBlockInterpreter();
 
@@ -104,25 +107,32 @@ public:
 
     bool assert_it_instance(HBlock obj, HBlock value);
 
-    HBlockKind getKindOf(HBlockInstance obj);
-	string BlockNoum(HBlock c_block);
-	QueryResul query_is_same(HBlock c_block, HBlock c_block1);
-
-    QueryResul query_is(HBlock c_block, HBlock c_block1);
-
-
+	std::list<HBlock> resolve_as_list(HBlock qlist);
+	HBlockKind getKindOf(HBlockInstance obj);
+	string BlockNoum(HBlock c_block); 
     bool Match(HBlock c_block, HBlockMatch m);
-
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecidewhether dct);
-
     HBlock getDecidedValueOf(HBlock c_block, HBlockToDecide dct);
 
 
-    QueryResul query(HBlockAssertion_is base, HBlockAssertion_is q);
+
+
+	QueryResul query_is_same(HBlock c_block, HBlock c_block1, QueryStack stk);
+    QueryResul query_is(HBlock c_block, HBlock c_block1, QueryStack stk);
+    QueryResul query(HBlockAssertion_is base, HBlockAssertion_is q, QueryStack stk);
+	
+	QueryResul get_system_verbs(string cs, HBlock n1, HBlock n2, QueryStack stk);
+	QueryResul query_user_verbs(string cs, HBlock n1, HBlock n2, QueryStack stk);
+	QueryResul query_verb(HBlockIsVerb is_verb, QueryStack stk);
+	QueryResul query_not_verb(HBlockIsNotVerb is_verb, QueryStack stk);
+	QueryResul query(HBlock  vquery, QueryStack stk);
 	QueryResul query(HBlock  vquery);
 
-	QueryResul query_verb(HBlockIsVerb is_verb);
-	QueryResul query_not_verb(HBlockIsNotVerb is_verb);
+ 
+ QueryResul Selector_all(HBlock what, std::function< QueryResul(HBlock) > selector);
+ QueryResul Selector_any(HBlock what, std::function< QueryResul(HBlock) > selector);
+
+
 
 	HTerm executeAssertion_is(HBlockAssertion_is b);
 
@@ -148,7 +158,11 @@ public:
 
     bool is_all_items_of_kind(HBlockList listvalues, HBlockKind kind);
 
-	bool query_is_List(CBlock *c_block, CBlock *c_block1);
+	QueryResul query_is_List(CBlock *c_block, CBlock *c_block1);
+
+
+
+	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

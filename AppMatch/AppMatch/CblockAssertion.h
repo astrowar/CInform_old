@@ -5,15 +5,15 @@
 #include "BlockInterpreter.h"
 #include "BlockInstance.h"
 
+ 
+
 
 class CBlockAssertionBase : public CBlock //retorna uma declaracao
 {
 public:
-    virtual HBlock get_obj() = 0;
-
-    //CBlockAssertion(HTerm obj, HTerm thing){};
+    virtual HBlock get_obj() = 0; 
     CBlockAssertionBase() {}
-    //virtual NoumDefinitions noumDefinitions() override { return obj->noumDefinitions(); };
+  
 };
 
 using HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;

@@ -36,7 +36,7 @@ CBlockInterpreter::~CBlockInterpreter() {
 //
 //}
 
-bool CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_block1) {
+QueryResul CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_block1) {
     if (CBlockList *lst1 = dynamic_cast<CBlockList*>(c_block)) {
         if (CBlockList *lst2 = dynamic_cast<CBlockList*>(c_block1))
         {
@@ -48,9 +48,14 @@ bool CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_block1) {
     return QUndefined;
 }
 
+QueryResul CBlockInterpreter::query_is_extern(HBlock c_block, HBlock c_block1)
+{
+	return  query_is(c_block, c_block1, QueryStack());
+}
 
 
-QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1) {
+
+QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1, QueryStack stk) {
     string name1 = BlockNoum(c_block);
     string name2 = BlockNoum(c_block1);
     if (name1 == "" || name2 == "") return QUndefined;
@@ -61,23 +66,20 @@ QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1) {
     return QNotEquals;
 }
 
-QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1) {
-    if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
-        HBlock resolved = resolve_noum(nnoum);
-        if (resolved) {
-            return query_is(c_block, resolved, QueryStack());
-        }
-        // pode ser um atributo
-        return query_is(c_block, nnoum, QueryStack());
-    }
+//QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QueryStack stk) {
+//    if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
+//        HBlock resolved = resolve_noum(nnoum);
+//        if (resolved) {
+//            return query_is(c_block, resolved, stk);
+//        }
+//        // pode ser um atributo
+//        return query_is(c_block, nnoum, stk);
+//    }
+//	 
+//    return query_is(c_block, c_block1, stk);
+//}
 
-	 
-
-
-    return query_is(c_block, c_block1, QueryStack());
-}
-
-QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1) {
+QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1 , QueryStack stk) {
 
 	
 
@@ -174,10 +176,51 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 }
 
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QueryStack stk) {
-    if (stk.isQuery(c_block, c_block1)) return QUndefined;
-    stk.addQuery(c_block, c_block1);
+    if (stk.isQuery("is", c_block, c_block1 )) return QUndefined;
+    stk.addQuery("is", c_block, c_block1);
 
-    {
+	//resolve It
+	if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block1)) 
+	{
+		HBlock resolved = resolve_noum(nnoum);
+		if (resolved) {
+			return query_is(c_block, resolved, stk);
+		}
+	}
+
+
+	
+	//Resolve List OR
+	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(c_block1))
+	{
+		for (auto &item : orList->lista)
+		{
+			if (query_is(c_block, item, stk) == QEquals) return QEquals;
+		}
+	}
+
+	//Resolve List OR
+	if (HBlockSelector_All  selector_all = dynamic_pointer_cast<CBlockSelector_All>(c_block))
+	{
+		return Selector_all(selector_all->what, [&](HBlock e1)
+		{
+			return query_is( e1, c_block1, stk);
+
+		});
+	}
+
+	if (HBlockSelector_Any  selector_any = dynamic_pointer_cast<CBlockSelector_Any>(c_block))
+	{
+		return Selector_any(selector_any->what, [&](HBlock e1)
+		{
+			return query_is(e1, c_block1, stk);
+
+		});
+	}
+
+
+
+	{
         if (HBlockInstance ninst_1 = dynamic_pointer_cast<CBlockInstance>(c_block))
             if (HBlockInstance ninst_2 = dynamic_pointer_cast<CBlockInstance>(c_block1)) {
                 if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind) {
@@ -229,7 +272,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
     }
 
     {
-        QueryResul rinst = (query_is_instance_valueSet(c_block, c_block1));
+        QueryResul rinst = (query_is_instance_valueSet(c_block, c_block1,stk));
         if (rinst != QUndefined) {
             return rinst;
         }
@@ -240,14 +283,14 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
         }
     }
 
-    auto r2 = query_is_same(c_block, c_block1);
+    auto r2 = query_is_same(c_block, c_block1, stk);
     if (r2 == QEquals) {
         return r2;
     }
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         if (HBlockAssertion_is qdef = dynamic_pointer_cast<CBlockAssertion_is>(*it)) {
-            if (query_is_same(c_block, qdef->get_obj()) == QEquals) {
+            if (query_is_same(c_block, qdef->get_obj(), stk) == QEquals) {
                 auto r = query_is(qdef->get_definition(), c_block1, stk);
                 if (r != QUndefined) {
                     return r;
@@ -262,51 +305,138 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QuerySta
 
 
 QueryResul CBlockInterpreter::query(HBlockAssertion_is q,
-                                    HBlockAssertion_is base) //Compara as duas queries e retorna true se base valida q
+                                    HBlockAssertion_is base, QueryStack stk) //Compara as duas queries e retorna true se base valida q
 {
-    if (query_is(q->get_obj(), base->get_obj()) &&
-        query_is(q->get_definition(), base->get_definition())) {
+    if (query_is(q->get_obj(), base->get_obj(), stk) &&
+        query_is(q->get_definition(), base->get_definition(), stk)) {
         return QEquals;
     }
     return QUndefined;
 
 }
 
-QueryResul CBlockInterpreter::query_verb(HBlockIsVerb is_verb)
+
+QueryResul  CBlockInterpreter::Selector_all(HBlock aList, std::function< QueryResul(HBlock) > selector)
 {
-    QueryResul rrcstm =  get_custom_verbs(is_verb->verb, is_verb->n1, is_verb->n2); // "listed in" , "size of"
+	std::list<HBlock> hlist = resolve_as_list(aList );
+	if (hlist.empty()) return QUndefined;
+	for(HBlock &e : hlist)
+	{
+		if (selector(e) != QEquals)
+		{
+			cout << "fail on |" << endl;
+			e->dump("  ");
+			return  QNotEquals;
+		}
+	}
+	return QEquals;
+}
+
+
+QueryResul  CBlockInterpreter::Selector_any(HBlock aList, std::function< QueryResul(HBlock) > selector)
+{
+	std::list<HBlock> hlist = resolve_as_list(aList);
+	if (hlist.empty()) return QUndefined;
+	for (HBlock &e : hlist)
+	{
+		if (selector(e) == QEquals) return QEquals;		
+	}
+	return QNotEquals;
+}
+
+
+
+QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, QueryStack stk)
+{
+	
+
+	//Resolve List OR
+	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(n2))
+	{
+		for (auto &item : orList->lista)
+		{
+			if (get_system_verbs(cs,n1, item, stk) == QEquals) return QEquals;
+		}
+	}
+
+	//Resolve List OR
+	if (HBlockSelector_All  selector_all = dynamic_pointer_cast<CBlockSelector_All>(n1))
+	{
+		return Selector_all( selector_all->what  ,[&](HBlock e1 )
+		{
+			return get_system_verbs(cs, e1, n2, stk);
+
+		});
+	}
+
+
+	//Resolve List OR
+	if (HBlockSelector_Any  selector_any = dynamic_pointer_cast<CBlockSelector_Any>(n1))
+	{
+		return Selector_any(selector_any->what, [&](HBlock e1)
+		{
+			return get_system_verbs(cs, e1, n2, stk);
+
+		});
+	}
+
+
+	cout << "try verb|" << cs << "|" << endl;
+	if (cs =="listed in")
+	{
+		return queryVerb_ListedIn(n1, n2,stk);
+	}
+	return QueryResul();
+}
+
+ 
+
+QueryResul CBlockInterpreter::query_verb(HBlockIsVerb is_verb, QueryStack stk)
+{
+    QueryResul rrcstm =  get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2,stk); // "listed in" , "size of"
     if (rrcstm != QUndefined) return rrcstm;
 
-	QueryResul rr =  getVerb(is_verb->verb, is_verb->n1, is_verb->n2);
+	QueryResul rr =  query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2,stk);
 	return rr; 
 }
 
-QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb)
+QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, QueryStack stk)
 {
-	QueryResul rr = getVerb(is_verb->verb, is_verb->n1, is_verb->n2);
+	QueryResul rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, stk); // "listed in" , "size of"
+	if (rrcstm == QEquals) return QNotEquals;
+	if (rrcstm == QNotEquals) return QEquals;
+
+
+	QueryResul rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2,stk);
 	if (rr == QEquals) return QNotEquals;
 	if (rr == QNotEquals) return QEquals;
 	return rr;
 }
 
-QueryResul CBlockInterpreter::query(HBlock q)
+QueryResul CBlockInterpreter::query(HBlock q, QueryStack stk)
 {
-
-	if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
+if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
 	{
-		return  query_not_verb(is_nverb);
+		return  query_not_verb(is_nverb, stk);
 	}
 
 	if (HBlockIsVerb is_verb = dynamic_pointer_cast<CBlockIsVerb>(q) )
 	{
-	return 	query_verb(is_verb);
+	return 	query_verb(is_verb, stk);
 
 	}
 	if (HBlockAssertion_is q_assign = dynamic_pointer_cast<CBlockAssertion_is>(q))
 	{
-		return query_is(q_assign->get_obj(), q_assign->get_definition());
+		return query_is(q_assign->get_obj(), q_assign->get_definition(), stk);
 	}
     return QUndefined;
+
+}
+
+QueryResul CBlockInterpreter::query(HBlock q)
+{
+	return query(q,   QueryStack());
+	
 
 }
 

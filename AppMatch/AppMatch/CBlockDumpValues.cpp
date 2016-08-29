@@ -123,6 +123,13 @@ void CBlockList::dump(string ident) {
     }
 }
 
+void CBlockList_OR::dump(string ident) {
+	cout << ident << "List OR: " << endl;
+	for (auto e = lista.begin(); e != lista.end(); ++e) {
+		(*e)->dump(ident + "   ");
+	}
+}
+
 void CBlockAssertion_is::dump(string ident) {
     cout << ident << "Assert: " << endl;
 
@@ -436,3 +443,21 @@ void CBlockUnderstandStatic::dump(string ident) {
 }
 
  
+void CBlockVerb::dump(string ident)
+{
+	cout << ident << "verb "<< named << endl;
+}
+
+ 
+void CBlockSelector_All::dump(string ident)
+{
+	cout << ident << "Select All " <<  endl;
+	this->what->dump(ident + "       ");
+}
+
+
+void CBlockSelector_Any::dump(string ident)
+{
+	cout << ident << "Select Any " << endl;
+	this->what->dump(ident + "       ");
+}

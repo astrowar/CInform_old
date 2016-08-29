@@ -158,7 +158,7 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
             HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv == nullptr)
 			{
-				cout << "Obje dont have " << property_noum->named <<  endl;
+				cout << "Obje dont have " << property_noum->named << "property " <<  endl;
 			}
             HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind));
             if (instanceValueRefered) {

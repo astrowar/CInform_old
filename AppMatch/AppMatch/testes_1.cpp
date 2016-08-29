@@ -139,7 +139,7 @@ void testeParser_2() {
         interpreter->execute_init(res);
     }
 
-    QueryResul q = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("thing"));
+    QueryResul q = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("thing"));
     bool qclass_k = interpreter->is_derivadeOf(std::make_shared<CBlockKindThing>("silver"),
                                                std::make_shared<CBlockKindThing>("metal"));
 
@@ -177,7 +177,7 @@ void testeParser_2a() {
 	interpreter->execute_init(parse.parser_stmt("rock is a thing"));
 
   
-	QueryResul q_true = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
+	QueryResul q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
 	assert(q_true == QEquals);
 
     {
@@ -193,9 +193,9 @@ void testeParser_2a() {
 
     interpreter->dump_instance("diary");
 
-    QueryResul q_false_1 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
-    QueryResul q_false_2 = interpreter->query_is(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));
-	QueryResul q_false_2n = interpreter->query_is(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("normal"));
+    QueryResul q_false_1 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
+    QueryResul q_false_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));
+	QueryResul q_false_2n = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("normal"));
 
 
 	assert(q_false_1 == QNotEquals);
@@ -207,13 +207,13 @@ void testeParser_2a() {
 	//interpreter->execute_init(parse.parser_stmt("element of  diary is air "));
 
 	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
-	QueryResul q_true_2 = interpreter->query_is(propV,	std::make_shared<CBlockNoum>("air"));
+	QueryResul q_true_2 = interpreter->query_is_extern(propV,	std::make_shared<CBlockNoum>("air"));
 	assert(q_true_2 == QEquals);
     
 	auto propT = std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("rock"));
-	QueryResul q_true_3 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("air"));
-	QueryResul q_true_4 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("fire"));
-	QueryResul q_true_5 = interpreter->query_is(propV, std::make_shared<CBlockNoum>("water"));
+	QueryResul q_true_3 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("air"));
+	QueryResul q_true_4 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("fire"));
+	QueryResul q_true_5 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("water"));
 
 	assert(q_true_3 == QEquals);
 	assert(q_true_4 == QNotEquals);

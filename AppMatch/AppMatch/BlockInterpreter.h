@@ -271,18 +271,22 @@ class CBlockList : public CBlock //retorna um valor generico
 {
 public:
     virtual void dump(string ident) override;
-
     std::list<HBlock> lista;
-
     CBlockList(){}
     CBlockList( std::list<HBlock>  _lista ):lista(_lista) {}
     void push_back(HBlock c_block_value);
-
     virtual NoumDefinitions noumDefinitions() override;
-
 };
-
 using HBlockList = std::shared_ptr<CBlockList>;
+
+class CBlockList_OR : public CBlockList //retorna um valor generico
+{
+public:
+	virtual void dump(string ident) override;
+	 
+};
+using HBlockList_OR = std::shared_ptr<CBlockList_OR>;
+
 
 class CBlockEnums : public CBlock //retorna um valor generico
 {
@@ -562,5 +566,57 @@ public:
 };
 
 using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
+
+
+ 
+
+class CBlockVerb : public CBlock //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+	string named;
+private:
+	CBlockVerb(string _named) :named(_named) {};
+	 
+};
+using HBlockVerb = std::shared_ptr<CBlockVerb>;
+
+
+
+//===========================================
+
+
+class CBlockSelector : public CBlock //retorna uma declaracao
+{
+public:	 
+	HBlock what;
+	CBlockSelector(HBlock _what) :what(_what) {};
+
+
+};
+using HBlockSelector = std::shared_ptr<CBlockSelector>;
+
+
+
+class CBlockSelector_All : public CBlockSelector //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+	CBlockSelector_All(HBlock _what) :CBlockSelector(_what) {}
+};
+using HBlockSelector_All = std::shared_ptr<CBlockSelector_All>;
+
+
+
+
+class CBlockSelector_Any : public CBlockSelector //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+	CBlockSelector_Any(HBlock _what) :CBlockSelector(_what) {}
+};
+using HBlockSelector_Any = std::shared_ptr<CBlockSelector_Any>;
+
+
 
 #endif

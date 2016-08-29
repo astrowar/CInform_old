@@ -1,5 +1,6 @@
 #include "CBlockInterpreterRuntime.h"
 #include <iostream>
+#include "QueryStack.h"
 using namespace std; 
 
 
@@ -31,8 +32,12 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 }
 
 
-QueryResul CBlockInterpreter::getVerb(string vb, HBlock c_block, HBlock value)
+QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, QueryStack stk)
 {
+
+	if (stk.isQuery(vb, c_block, value)) return QUndefined;
+	stk.addQuery(vb, c_block, value);
+
 
 	auto alist = verbAssertation.find(vb);
 
@@ -44,10 +49,10 @@ QueryResul CBlockInterpreter::getVerb(string vb, HBlock c_block, HBlock value)
 	std::list<HBlockAssertion_is> &decList = alist->second;
 	for (auto &c_is : decList)
 	{
-		QueryResul a1 = query_is(c_block , c_is->get_obj() );
+		QueryResul a1 = query_is(c_block , c_is->get_obj() ,stk );
 		if (a1 == QEquals)
 		{
-			QueryResul a2 = query_is(c_is->get_definition(), value);
+			QueryResul a2 = query_is(c_is->get_definition(), value,stk);
 			if (a2 == QEquals)
 			{
 				return QEquals;

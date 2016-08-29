@@ -49,10 +49,10 @@ void testeParser_6()//kind of value
 
     {
         interpreter->execute_init(parse.parser_stmt("black is a color"));
-        QueryResul q_tru = interpreter->query_is(std::make_shared<CBlockNoum>("black"),
+        QueryResul q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
                                                  std::make_shared<CBlockNoum>("light"));
         interpreter->execute_init(parse.parser_stmt("black is dark"));
-        QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("black"),
+        QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
                                                 std::make_shared<CBlockNoum>("light"));
 
         string phase_1 = " ... ";
@@ -62,7 +62,7 @@ void testeParser_6()//kind of value
         interpreter->execute_init(parse.parser_stmt("warm color is usually warm"));
 
         interpreter->execute_init(parse.parser_stmt("red is a warm color"));
-        QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("red"),
+        QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("red"),
                                                 std::make_shared<CBlockNoum>("warm"));
 
         string phase_1 = " ... ";
@@ -85,7 +85,7 @@ void testeParser_6a()//kind of value
         interpreter->execute_init(parse.parser_stmt("color of book is red "));
     }
 
-    QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
+    QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
                                                                              std::make_shared<CBlockNoum>("book")),
                                             std::make_shared<CBlockNoum>("red"));
 

@@ -5,16 +5,18 @@
 HBlock CParser::parser_kind(HTerm term) { 	return parser_expression(term);}
 HBlock CParser::parser_kind_or_instance(HTerm term) { return parser_expression(term); }
 HBlock CParser::parser_valueReference(HTerm term) { return parser_expression(term); }
-HBlock CParser::parser_assertionTarger(HTerm term) { return parser_expression(term); }
-
-
-
-
+HBlock CParser::parser_assertionTarger(HTerm term)
+{
+	HBlock pdet =  parser_List_selector(term);
+	if (pdet != nullptr) return pdet;
+	return parser_expression(term);
+}
+ 
 
 
 HBlock   CParser::parser_VerbAssign(std::vector<HTerm> term)
 {
-	
+
 	HBlock aVerb = parse_AssertionVerb(term);
 	if (aVerb != nullptr)
 	{
@@ -31,17 +33,12 @@ HBlock   CParser::parser_VerbAssign(std::vector<HTerm> term)
 }
 
 
-
-
-
-
 HBlock CParser::parser_expression(HTerm  term)
 {
 	if (CList *vlist = dynamic_cast<CList *>(term.get())) {
 		auto r = parser_expression(vlist->asVector());
 		/*if (r == nullptr)
 		std::cout << term->repr() << std::endl;*/
-
 		return r;
 	}
 	return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
@@ -53,10 +50,15 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
 
-	  HBlock noumList_Assign = parse_List_AND(lst);
-    if (noumList_Assign != nullptr) {
-        return noumList_Assign;
+	HBlock noumListAND_Assign = parse_List_AND(lst);
+    if (noumListAND_Assign != nullptr) {
+        return noumListAND_Assign;
     }
+
+	HBlock noumListOR_Assign = parse_List_OR(lst);
+	if (noumListOR_Assign != nullptr) {
+		return noumListOR_Assign;
+	}
 
     HBlock detnoum_Assign = parse_removeArticle(lst);
     if (detnoum_Assign != nullptr) {

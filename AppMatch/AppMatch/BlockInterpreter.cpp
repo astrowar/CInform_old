@@ -106,6 +106,8 @@ void eatExample() {
 }
 
 
+ 
+
 HBlock CBlockAssertion_canBe::get_obj() {
     return obj;
 }

@@ -5,6 +5,43 @@
 using namespace std;
 
 
+std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist)
+{
+	if (HBlockNoum	nn = dynamic_pointer_cast<CBlockNoum >(qlist))
+	{
+		HBlock resolved =  resolve_noum(nn);
+		if (resolved != nullptr)
+		{
+			return resolve_as_list(resolved);
+		}
+	}
+
+	if (HVariableNamed 	nvar  = dynamic_pointer_cast<CVariableNamed >(qlist))
+	{
+		return resolve_as_list(nvar->value);
+	}
+
+	if (HBlockProperty 	nprop = dynamic_pointer_cast<CBlockProperty >(qlist))
+	{
+		auto olist =  resolve_as_list( nprop->obj );
+		// applica as propiedades a cada objeto
+		std::list<HBlock> po_list;
+		for(auto e: olist)
+		{
+			po_list.push_back(make_shared<CBlockProperty>(nprop->prop, e));
+		}
+		return po_list;
+
+	}
+
+	if (HBlockList nlist = dynamic_pointer_cast<CBlockList >(qlist) )
+	{
+		return nlist->lista;
+	}
+
+	return std::list<HBlock>();
+}
+
 
 HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
@@ -25,25 +62,31 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
         return k0->named;
     }
 
-    if (HBlockInstance k0 = dynamic_pointer_cast<CBlockInstance>(c_block)) {
-        return k0->named;
+    if (HBlockInstance k1 = dynamic_pointer_cast<CBlockInstance>(c_block)) {
+        return k1->named;
     }
 
-    if (HBlockKindValue k0 = dynamic_pointer_cast<CBlockKindValue>(c_block)) {
-        return k0->named;
+    if (HBlockKindValue k2 = dynamic_pointer_cast<CBlockKindValue>(c_block)) {
+        return k2->named;
     }
 
-    if (HBlockNamedValue k0 = dynamic_pointer_cast<CBlockNamedValue>(c_block)) {
-        return k0->named;
+    if (HBlockNamedValue k3 = dynamic_pointer_cast<CBlockNamedValue>(c_block)) {
+        return k3->named;
     }
 
-    if (HBlockVariable k0 = dynamic_pointer_cast<CBlockVariable>(c_block)) {
-        return k0->named;
+    if (HBlockVariable k4 = dynamic_pointer_cast<CBlockVariable>(c_block)) {
+        return k4->named;
     }
 
-    if (HBlockNoum k0 = dynamic_pointer_cast<CBlockNoum>(c_block)) {
-        return k0->named;
+    if (HBlockNoum k5 = dynamic_pointer_cast<CBlockNoum>(c_block)) {
+        return k5->named;
     }
+
+	if (HBlockVerb k6 = dynamic_pointer_cast<CBlockVerb>(c_block)) {
+		return k6->named ;
+	}
+
+
     return "";
 }
 

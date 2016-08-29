@@ -17,8 +17,8 @@ void testeParser_7a()//dynamic match
 	if (ISLOG) {p->dump("");std::cout << std::endl;	}
 	interpreter->execute_init(p);
 	 
-    QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("[ best book ]"),
-                                            std::make_shared<CBlockNoum>("diary"));
+    QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
+                                            std::make_shared<CBlockNoum>("diary") );
 
     std::cout << std::endl;
 
@@ -45,8 +45,8 @@ void testeParser_7b()//dynamic match
 	 
 	interpreter->execute_init(p);
 
-	QueryResul q_fa = interpreter->query_is(std::make_shared<CBlockNoum>("[ best book ]"),
-		std::make_shared<CBlockNoum>("diary"));
+	QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
+		std::make_shared<CBlockNoum>("diary") );
 
 
 
