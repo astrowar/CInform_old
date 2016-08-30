@@ -94,6 +94,29 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) {
 }
 
 
+bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value) 
+{
+	if (HBlockKindAction   act = dynamic_pointer_cast<CBlockKindAction>(value)) {
+		if (HBlockAction abase = dynamic_pointer_cast<CBlockAction>(obj)) { 
+			actions_header.push_back(abase);
+			return true;
+		}
+	}
+
+
+	if (HBlockKindAction   act = dynamic_pointer_cast<CBlockKindAction>(value)) {
+		if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
+
+			auto haction = make_shared<CBlockAction >(nbase);
+			//actions_header.push_back(haction);
+			return assert_it_action(haction, value);
+		}
+	}
+
+
+
+	return false;
+}
 
 bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value) {
     if (HBlockKindOfName k = dynamic_pointer_cast<CBlockKindOfName>(value)) {
@@ -151,7 +174,11 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value) {
         }
 
     }
-    return false;
+   
+	
+	
+	
+	return false;
 
 }
 
@@ -210,4 +237,10 @@ bool CBlockInterpreter::assert_it_valuesDefinitions(HBlock c_block, HBlock value
 
         }
     return false;
+}
+
+bool CBlockInterpreter::assert_newUnderstand(HBlockUnderstandDynamic value)
+{
+	dynamic_understand.push_back(value);
+	return true;
 }

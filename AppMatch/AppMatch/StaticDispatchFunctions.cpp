@@ -19,11 +19,13 @@ staticDispatchEntry::staticDispatchEntry() : entryArguments(nullptr), action(nul
 
 }
 
+ 
 
 SentenceDispatchPredicate::SentenceDispatchPredicate(std::vector<HPred> _matchPhase, HBlockMatch _matchPhaseDynamic,
-                                                     int _entryId) : matchPhase(_matchPhase),
-                                                                     _matchPhaseDynamic(_matchPhaseDynamic),
-                                                                     entryId(_entryId) {
+	HBlock _output, int _entryId) : matchPhase(_matchPhase),
+	_matchPhaseDynamic(_matchPhaseDynamic),
+	output(_output),
+	entryId(_entryId) {
 
 }
 
@@ -56,7 +58,7 @@ int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch
     }
 
     //nao tem nenhum ... Cria um novo
-    SentenceDispatchPredicate sdisp(_matchPhase, entry, maxID + 1);
+    SentenceDispatchPredicate sdisp(_matchPhase, entry, nullptr, maxID + 1);
     sentenceDispatch.push_back(sdisp);
 
     sentenceDispatch.sort([](const SentenceDispatchPredicate &a, const SentenceDispatchPredicate &b) -> bool {
@@ -69,3 +71,27 @@ int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch
     return maxID + 1;
 }
 
+int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry , HBlock ret) {
+
+	//Verifica se ja tem a sentenceDispatch
+	int maxID = 0;
+	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it) {
+		maxID = std::max(maxID, it->entryId);
+		if (isSamePred(it->matchPhase, _matchPhase)) {
+			return it->entryId;
+		}
+	}
+
+	//nao tem nenhum ... Cria um novo
+	SentenceDispatchPredicate sdisp(_matchPhase, entry, ret, maxID + 1);
+	sentenceDispatch.push_back(sdisp);
+
+	sentenceDispatch.sort([](const SentenceDispatchPredicate &a, const SentenceDispatchPredicate &b) -> bool {
+		return a.matchPhase.size() > b.matchPhase.size();
+	});
+
+	std::cout << "Dynamic Registed " << std::endl;
+	entry->dump("    ");
+
+	return maxID + 1;
+}

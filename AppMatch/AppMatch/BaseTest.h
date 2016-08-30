@@ -16,6 +16,10 @@ HBlockNoum noum(std::string n) ;
 void testeParser_listA();
 void testeParser_listB();
 
+void testeParser_actionA();
+void testeParser_actionB();
+void testeParser_actionC();
+
 
 void testeParser_1();
 void testeParser_2();

@@ -3,6 +3,7 @@
 
 #include "CBlockMatch.h"
 #include <iostream>
+#include "CBlockUndestand.h"
 
 using namespace std;
 
@@ -235,6 +236,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
         if (assert_it_kind(obj, value)) return;
         if (assert_it_instance(obj, value)) return;
         if (assert_it_valuesDefinitions(obj, value)) return;
+		if (assert_it_action(obj, value)) return;
 		 
 
         throw "undefined block";
@@ -251,7 +253,13 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 		if (assert_newVerb(dcverbImpl)) return; 
 	}
-	 
+	  
+
+	if (HBlockUnderstandDynamic    dn_dispatch = dynamic_pointer_cast<CBlockUnderstandDynamic >(p))
+	{
+		if (assert_newUnderstand(dn_dispatch)) return;
+		
+	}
 
 
 

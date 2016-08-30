@@ -147,6 +147,8 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
         }
     }
 
+	std::cout << "Argument:  " <<  (term)->repr() << std::endl;
+
     return std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->removeArticle()->repr()));
     return nullptr;
 }
@@ -222,6 +224,34 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
         }
     }
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("verb"));
+		predList.push_back(mkHPredAny("aux"));
+		predList.push_back(mk_HPredLiteral("["));
+		predList.push_back(mkHPredAny("kind1"));
+		predList.push_back(mk_HPredLiteral("]"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+		 
+			HBlockMatch c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+			HBlockMatch c1a = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["aux"]->repr()));
+
+
+			//HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
+			HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
+			std::vector<HPred> replcList;
+			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
+			replcList.push_back(mk_HPredLiteral(res.matchs["aux"]->repr()));
+			replcList.push_back(mkHPredAny("noum1"));
+			//return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
+			auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2 }));
+			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c1a, c2 }));
+			return DispatchArguments(replcList, mlist1, mlist2);
+		}
+	}
+
 
     {
         std::vector<HPred> predList;
@@ -230,9 +260,14 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
         predList.push_back(mkHPredAny("kind1"));
         predList.push_back(mk_HPredLiteral("]"));
         MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockMatch c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
-            HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
+        if (res.result == Equals) 
+		{
+			HBlockMatch c1 = nullptr;
+			c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+
+
+            //HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
+			HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
             std::vector<HPred> replcList;
             replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
             replcList.push_back(mkHPredAny("noum1"));
@@ -247,6 +282,17 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 }
 
 
+HBlock CParser::STMT_understand_generic_redirect( HTerm  term, HBlock  output_term) {
+
+	DispatchArguments match_predicate = parser_buildMatchBlock_actionInput( term);
+	if (match_predicate.sentenceMatch == nullptr) return nullptr;
+	HBlockUnderstandDynamic  retBlock = std::make_shared<CBlockUnderstandDynamic >(  match_predicate.sentenceMatch, match_predicate.staticArgumentMatch, output_term);
+	int entryID = registerDynamicDispatch(match_predicate.staticPredicade,	match_predicate.sentenceMatch, output_term);
+
+
+	return retBlock;
+}
+
 HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term) {
 
     {
@@ -260,65 +306,93 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 
+
+			 
+
             //auto input_noum =  std::make_shared<CBlockNoum>(res.matchs["What"]->repr());
 
             // existe uma action que Match com o Subst ???
             HBlock output_noum = nullptr;
             HBlockMatch sentence_match = nullptr;
             {
-                auto sTerm = res.matchs["Subst"];
+
+               auto sTerm = res.matchs["Subst"];
                 {
                     sTerm = expandBract(sTerm);
                 }
+
+				//Rh um action !!
+				std::vector<HPred> actionList;
+				actionList.push_back(actionPredList);
+				MatchResult res_action = CMatch(sTerm, actionList);
+				if (res_action.result == Equals) {
+
+					output_noum = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>((sTerm)->repr())); //An Action !!!
+				}
+				else
+				{
+					output_noum = parser_expression(res.matchs["Subst"]);
+				}
+
+
+				//Nao eh um action               
+				//HBlock value = parser_expression( res.matchs["Subst"]);
+
+				if (output_noum == nullptr) return nullptr;
+				return STMT_understand_generic_redirect(res.matchs["What"], output_noum);
+
                 //std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl;
-                std::vector<HPred> actionList;
-                actionList.push_back(actionPredList);
-                MatchResult res_action = CMatch(sTerm, actionList);
-                if (res_action.result == Equals) {
-                    HBlockAction output_action = std::make_shared<CBlockAction>(
-                            std::make_shared<CBlockNoum>((sTerm)->repr()));
-                    output_noum = output_action;
-                    DispatchArguments match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
-                    sentence_match = match_predicate.sentenceMatch;
 
-                    //std::cout << "predicate  " << get_repr( match_predicate.second ) << std::endl;
+				// Verifica se tem alguma Acao que corresponde ao termo de saida
 
-                    actionUndestands.push_back(UnderstandAction(match_predicate.staticPredicade, output_action));
+                //std::vector<HPred> actionList;
+               // actionList.push_back(actionPredList);
+                //MatchResult res_action = CMatch(sTerm, actionList);
+				if (res_action.result == Equals) {
+					
+					HBlockAction output_action = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>((sTerm)->repr()));
 
-                    HBlockUnderstandStatic retBlock = std::make_shared<CBlockUnderstandStatic>(
-                            match_predicate.staticArgumentMatch, output_noum);
+					output_noum = output_action;
+					DispatchArguments match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
+					sentence_match = match_predicate.sentenceMatch;
 
-                    int entryID = registerDynamicDispatch(match_predicate.staticPredicade,
-                                                          match_predicate.sentenceMatch);
-                    registerStaticDispatch(entryID, match_predicate.staticArgumentMatch, retBlock);
 
-                    return retBlock;
-                }
 
-                //is not a action registed
+					//std::cout << "predicate  " << get_repr( match_predicate.second ) << std::endl;
+
+					actionUndestands.push_back(UnderstandAction(match_predicate.staticPredicade, output_action));
+					int entryID = registerDynamicDispatch(match_predicate.staticPredicade,	match_predicate.sentenceMatch);
+					HBlockUnderstandStatic retBlock = std::make_shared<CBlockUnderstandStatic>(entryID,	match_predicate.staticArgumentMatch, output_noum);
+					registerStaticDispatch(entryID, match_predicate.staticArgumentMatch, retBlock);
+
+					return retBlock;
+				}
+
+                // nao tem acao pre-definida na saida ... tente criar
                 {
-                    std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl;
+                    //std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl;
 
-                    HBlockStaticDispatch s_action = getStaticDispatchResolve(sTerm);
-                    if (s_action != nullptr) {
+                    HBlockStaticDispatch s_action = getStaticDispatchResolve(sTerm); // esse termo corresponde a outro undestand ? ..undestand chain
+					if (s_action != nullptr) 
+					{
+						output_noum = s_action;
+						auto match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
+						sentence_match = match_predicate.sentenceMatch;
 
-                        output_noum = s_action;
-                        auto match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);
-                        sentence_match = match_predicate.sentenceMatch;
+						actionUndestands.push_back(UnderstandAction(match_predicate.staticPredicade, s_action));
+						int entryID = registerDynamicDispatch(match_predicate.staticPredicade,
+							match_predicate.sentenceMatch);
+						HBlockUnderstandStatic retBlock = std::make_shared<CBlockUnderstandStatic>(entryID, match_predicate.staticArgumentMatch, s_action);
+						registerStaticDispatch(entryID, match_predicate.staticArgumentMatch, retBlock);
 
-                        actionUndestands.push_back(UnderstandAction(match_predicate.staticPredicade, s_action));
-
-                        HBlockUnderstandStatic retBlock = std::make_shared<CBlockUnderstandStatic>(
-                                match_predicate.staticArgumentMatch, s_action);
-
-                        int entryID = registerDynamicDispatch(match_predicate.staticPredicade,
-                                                              match_predicate.sentenceMatch);
-                        registerStaticDispatch(entryID, match_predicate.staticArgumentMatch, retBlock);
-
-                        return retBlock;
-                    }
+						return retBlock;
+					}
 
                 }
+
+				//Ok .. nao tem registro de nada analise o que esta na saida
+
+
             }
         }
     }
@@ -368,13 +442,37 @@ HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term) {
 
 }
 
+std::list<HBlock> CParser::ToMatchList( std::vector<HPred> pvector, MatchResult result)
+{
+	std::list<HBlock> vlist;
+	for(int j = 0; j< pvector.size();++j)
+	{
+		if (CPredAtom* vAtom = dynamic_cast < CPredAtom * >(pvector[j].get()))
+		{
+			vlist.push_back(std::make_shared<CBlockNoum>(vAtom->h->repr()));
+		}
+		else if (CPredAny * vAny = dynamic_cast < CPredAny* >(pvector[j].get()))
+		{
+			HBlock n1 = parser_expression(result.matchs[vAny->named]);
+			vlist.push_back(n1);
+		}
+		else
+		{
+			std::cout << "error" << std::endl;
+		}
+	}
+	return vlist;
+
+}
+
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
 HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
 
     for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it) {
 
         MatchResult res_action = CMatch(term, it->matchPhase);
-        if (res_action.result == Equals) {
+        if (res_action.result == Equals) 
+		{
             HBlock n1 = parser_expression(res_action.matchs["noum1"]);
             HBlock n2 = nullptr;
             if (res_action.matchs.find("noum2") != res_action.matchs.end()) {
@@ -382,6 +480,20 @@ HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
             } else {
                 n2 = std::make_shared<CBlockNoum>("Nothing");
             }
+			n1->dump("   ");
+			n2->dump("   ");
+
+			
+			if (HBlockAction vAction = std::dynamic_pointer_cast<CBlockAction >(it->output))
+			{
+				return std::make_shared<CBlockActionCall>(vAction, n1,n2);
+			}
+			std::list<HBlock> resList = ToMatchList(it->matchPhase, res_action);
+			auto clistResults = std::make_shared<CBlockList>(resList);
+
+			
+
+			return 	  std::make_shared<CBlockDinamicDispatch>(clistResults); // it->output;
             return std::make_shared<CBlockStaticDispatch>(it->entryId, n1, n2);
 
 

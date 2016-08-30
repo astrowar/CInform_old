@@ -9,6 +9,8 @@
 #include "CBlockMatch.h"
 #include <functional>
 #include <map>
+#include "CBlockUndestand.h"
+#include <condition_variable>
 
 class CBlockAssertionBase;
 
@@ -54,6 +56,10 @@ class CBlockInterpreter {
     std::vector<HBlockToDecideIf> decides_if;
 
 
+	std::vector<HBlockAction> actions_header;
+	std::vector<HBlockUnderstandDynamic> dynamic_understand;
+
+
     QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
     QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, QueryStack stk);
     QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, QueryStack stk);
@@ -85,7 +91,8 @@ public:
 
     bool assert_it_valuesDefinitions(HBlock c_block, HBlock value);
 
-    void execute_init(HBlock p);
+	bool assert_newUnderstand(HBlockUnderstandDynamic value);
+	void execute_init(HBlock p);
 
     bool assert_decideBlock(HBlockToDecide dct);
 	bool kind_has_property_called(HBlockKind kind, string propertyNamed);
@@ -96,8 +103,8 @@ public:
     bool assert_it_property(HBlock propname, HBlock obj, HBlock value);
 
     bool assert_it_Value(HBlock obj, HBlock value);
-
-    bool assert_it_not_Value(HBlock obj, HBlock value);
+	bool assert_it_action(HBlock obj, HBlock value);
+	bool assert_it_not_Value(HBlock obj, HBlock value);
 	bool assert_property_defaultValue(HBlockProperty obj, HBlock value);
 	bool assert_it_defaultValue(HBlock obj, HBlock value);
 

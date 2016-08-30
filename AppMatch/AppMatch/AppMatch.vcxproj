@@ -171,6 +171,7 @@
     <ClInclude Include="CVariableDefinition.h" />
     <ClInclude Include="EqualsResult.h" />
     <ClInclude Include="FEnviroment.h" />
+    <ClInclude Include="GrammarParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="QueryStack.h" />
     <ClInclude Include="stdafx.h" />
@@ -181,6 +182,8 @@
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
+    <ClCompile Include="GrammarParseEn.cpp" />
+    <ClCompile Include="GrammarParser.cpp" />
     <ClCompile Include="InterpreterListedFunctions.cpp" />
     <ClCompile Include="ParseAssertationSecondary.cpp" />
     <ClCompile Include="AssertationVerbRelation.cpp" />
@@ -218,6 +221,7 @@
     <ClCompile Include="testes_1.cpp" />
     <ClCompile Include="testes_2.cpp" />
     <ClCompile Include="testes_decide.cpp" />
+    <ClCompile Include="teste_action.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -268,7 +268,7 @@ void CBlockAssertion_isActionOf::dump(string ident) {
 void CBlockDinamicDispatch::dump(string ident) {
     cout << ident << "DinamicDispatch " << endl;
     {
-        this->input->dump(ident + "       ");
+        this->commandList->dump(ident + "       ");
     }
 }
 
@@ -436,13 +436,21 @@ void CBlockUnderstand::dump(string ident) {
 }
 
 void CBlockUnderstandStatic::dump(string ident) {
-    cout << ident << "Understand Static " << endl;
+    cout << ident << "Understand Static " << entryID << endl;
     this->argument_match->dump(ident + "       ");
     cout << ident << "As " << endl;
     this->output_n->dump(ident + "       ");
 }
 
- 
+void CBlockUnderstandDynamic::dump(string ident)
+{
+	cout << ident << "Understand Dynamic " <<  endl;
+	this->input_n->dump(ident + "       ");
+	this->argument_n->dump(ident + "       ");
+	cout << ident << "As " << endl;
+	this->output_n->dump(ident + "       ");
+}
+
 void CBlockVerb::dump(string ident)
 {
 	cout << ident << "verb "<< named << endl;

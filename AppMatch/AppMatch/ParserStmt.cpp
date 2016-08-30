@@ -41,7 +41,8 @@ HBlock CParser::parser_expression(HTerm  term)
 		std::cout << term->repr() << std::endl;*/
 		return r;
 	}
-	return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
+	//return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
+	return std::make_shared<CBlockNoum>(CtoString( term));
 }
 
 HBlock CParser::parser_expression(std::vector<HTerm>   lst)
@@ -69,6 +70,8 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 	if (noum_propOF != nullptr) {
 		return noum_propOF;
 	}
+
+ 
 
     HBlock noum_Assign = parse_noum(lst);
     if (noum_Assign != nullptr) {

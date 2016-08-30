@@ -127,6 +127,9 @@
     <ClInclude Include="CBlockRelation.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="GrammarParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -251,6 +254,15 @@
     </ClCompile>
     <ClCompile Include="ParserSelectorFunctional.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="GrammarParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrammarParseEn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="teste_action.cpp">
+      <Filter>Source Files\Testes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

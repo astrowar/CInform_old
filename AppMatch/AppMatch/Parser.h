@@ -88,9 +88,10 @@ public:
 class SentenceDispatchPredicate
  {
  public:
-	 SentenceDispatchPredicate(std::vector<HPred> _matchPhase , HBlockMatch  _matchPhaseDynamic, int _entryId);
+	 SentenceDispatchPredicate(std::vector<HPred> _matchPhase , HBlockMatch  _matchPhaseDynamic, HBlock _output, int _entryId);
 	 std::vector<HPred> matchPhase;	 
 	 HBlockMatch _matchPhaseDynamic;
+	 HBlock output;
 	 int  entryId;
  };
 
@@ -139,7 +140,7 @@ public:
 
 
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entryMatch );
-
+	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry, HBlock ret);
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
  
@@ -170,10 +171,14 @@ public:
 	HBlockMatch  parser_MatchArgument(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
+	HBlock STMT_understand_generic_redirect(HTerm term, HBlock output_term);
+	 
+ 
 	HBlock STMT_understand_Action_Assertion_static(std::vector<HTerm> term);
 	HBlock parse_toDecide_Entry(std::vector<HTerm> term);
 	HBlock parse_toDecide_Ret(std::vector<HTerm> term);
 	HBlock parser_decides_Assertion(std::vector<HTerm> term);
+	std::list<HBlock> ToMatchList(std::vector<HPred> pvector, MatchResult result);
 	HBlock STMT_understand_Assertion(std::vector<HTerm> term);
 	HBlock STMT_verb_Assertion_N(std::vector<HTerm> term);
 	HBlock STMT_verb_Assertion(std::vector<HTerm> lst);
@@ -182,6 +187,7 @@ public:
 
 
 	HBlock parse_AssertionVerb(std::vector<HTerm> term);
+	HBlockKindAction parse_AssertionAction_secondPart(HTerm term);
 	HBlock parse_AssertionAction(std::vector<HTerm> term);
 	HBlock parse_AssertionIsVariable(std::vector<HTerm> lst);
 	HBlockKindOfName parse_KindOf(HTerm term);

@@ -390,10 +390,11 @@ class CBlockAction : public CBlock  // um bloco que representa uma atividade
 public:
     virtual void dump(string ident) override;
 
-    CBlockAction(HBlock input)
-            : input(input) {
-    }
+    CBlockAction(  HBlock _input)
 
+            :   input(_input) {
+    }
+	 
     HBlock input;
 };
 
@@ -413,17 +414,19 @@ public :
 
 using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
 
-class CBlockDinamicDispatch : public CBlockAction {
+
+//Dynamic Dispatch dispacha para TODOS os undestands possiveis
+class CBlockDinamicDispatch : public CBlock {
 public:
 
-    string command;
-
-    CBlockDinamicDispatch(string _command) : CBlockAction(std::make_shared<CBlockNoum>(_command)), command(_command) {}
-
+    HBlock  commandList;
+//    CBlockDinamicDispatch(string _command) : CBlockAction(  std::make_shared<CBlockNoum>(_command)), command(_command) {}
+	CBlockDinamicDispatch(HBlock _command) : commandList(_command) {}
     void dump(string ident) override;
 };
-
 using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;
+
+
 
 class CBlockStaticDispatch : public CBlockAction {
 public:
@@ -431,10 +434,12 @@ public:
     HBlock noum1;
     HBlock noum2;
 
-    CBlockStaticDispatch(int _staticEntryTable, HBlock _noum1, HBlock _noum2) : CBlockAction(
+    CBlockStaticDispatch(int _staticEntryTable, HBlock _noum1, HBlock _noum2) : 
+		CBlockAction(
+			 
             std::make_shared<CBlockNoum>("static " + std::to_string(_staticEntryTable))),
-                                                                                staticEntryTable(_staticEntryTable),
-                                                                                noum1(_noum1), noum2(_noum2) {}
+            staticEntryTable(_staticEntryTable),
+		    noum1(_noum1), noum2(_noum2) {}
 
     void dump(string ident) override;
 };
