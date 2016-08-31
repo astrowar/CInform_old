@@ -184,7 +184,9 @@
     <ClCompile Include="CVariableGlobals.cpp" />
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
+    <ClCompile Include="InterpExecute.cpp" />
     <ClCompile Include="InterpreterListedFunctions.cpp" />
+    <ClCompile Include="InterpreterMatch.cpp" />
     <ClCompile Include="ParseAssertationSecondary.cpp" />
     <ClCompile Include="AssertationVerbRelation.cpp" />
     <ClCompile Include="AssertionValues.cpp" />
@@ -206,6 +208,7 @@
     <ClCompile Include="InterpreterQuery.cpp" />
     <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="ParserDynamicDispatch.cpp" />
     <ClCompile Include="ParseRelation.cpp" />
     <ClCompile Include="ParseRelationWhen.cpp" />
     <ClCompile Include="ParserSelectorFunctional.cpp" />

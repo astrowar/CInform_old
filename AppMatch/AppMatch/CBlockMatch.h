@@ -13,10 +13,9 @@ public:
     virtual void dump(string ident) override;
 
     // CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
-    virtual bool match() { return false; };
-    HBlock matchInner;
+    virtual bool match() { return false; };	
 
-    CBlockMatch(HBlock _matchInner) : matchInner(_matchInner) {};
+    CBlockMatch()  {};
 };
 
 using HBlockMatch = std::shared_ptr<CBlockMatch>;
@@ -30,7 +29,7 @@ public:
     // CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
     virtual bool match() override { return true; };
 
-    CBlockMatchAny() : CBlockMatch(nullptr) {};
+    CBlockMatchAny() : CBlockMatch( ) {};
 };
 
 
@@ -44,7 +43,7 @@ public:
     string named;
     HBlockMatch matchInner;
 
-    CBlockMatchNamed(string _named, HBlockMatch _matchInner) : CBlockMatch(nullptr), named(_named),
+    CBlockMatchNamed(string _named, HBlockMatch _matchInner) : CBlockMatch( ), named(_named),
                                                                     matchInner(_matchInner) {};
 };
 
@@ -61,14 +60,14 @@ public:
     virtual bool match() override { return false; };
     HBlockKind kind;
 
-    CBlockMatchKind(HBlockKind _kindInnter) : CBlockMatch(nullptr), kind(_kindInnter) {};
+    CBlockMatchKind(HBlockKind _kindInnter) : CBlockMatch( ), kind(_kindInnter) {};
 };
 
 
 class CBlockMatchWith : public CBlockMatch // um bloco que serve para dar Match  no match anterior
 {
 	CBlockMatchWith(const HBlock& _matchInner, const HBlockMatch& previous_match)
-		: CBlockMatch(_matchInner),
+		: CBlockMatch( ),
 		  previous_match(previous_match)
 	{
 	}
@@ -87,7 +86,7 @@ public:
     virtual bool match() override { return false; };
     std::list<HBlockMatch> matchList;
 
-    CBlockMatchList(std::list<HBlockMatch> _matchList) : CBlockMatch(nullptr), matchList(_matchList) {};
+    CBlockMatchList(std::list<HBlockMatch> _matchList) : CBlockMatch( ), matchList(_matchList) {};
 };
 
 using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
@@ -96,8 +95,8 @@ using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
 class CBlockMatchAction : public CBlockMatch // um bloco que serve para dar Match em uma Acao
 {
 public :
-    CBlockMatchAction(HBlockAction input)
-            : CBlockMatch(input), input(input) {
+    CBlockMatchAction(HBlockAction _input)
+            : CBlockMatch( ), input(_input) {
     }
 
     HBlockAction input;

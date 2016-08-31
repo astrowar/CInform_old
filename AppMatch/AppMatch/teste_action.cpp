@@ -28,16 +28,19 @@ void testeParser_actionB()
 	CParser parse(interpreter);
 
 	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
-
-	
-	interpreter->execute_init(parse.parser_stmt("understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("understand : insert  [ a thing ] intro [ thing ]  as put X intro B ", ISLOG));
-	 
-
 	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("box is a thing  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt(" insert red apple intro large box ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
+	
+	
+	interpreter->execute_init(parse.parser_stmt("understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("understand : insert  [ a thing ] intro [ thing ] as put X intro B ", ISLOG));
+	 
+
+	
+	interpreter->execute_now(parse.parser_stmt(" insert apple intro  box ", ISLOG));
+
+	return;
 }
 
 void testeParser_actionC()

@@ -419,9 +419,9 @@ using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
 class CBlockDinamicDispatch : public CBlock {
 public:
 
-    HBlock  commandList;
+    HBlockList  commandList;
 //    CBlockDinamicDispatch(string _command) : CBlockAction(  std::make_shared<CBlockNoum>(_command)), command(_command) {}
-	CBlockDinamicDispatch(HBlock _command) : commandList(_command) {}
+	CBlockDinamicDispatch(HBlockList _command) : commandList(_command) {}
     void dump(string ident) override;
 };
 using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;

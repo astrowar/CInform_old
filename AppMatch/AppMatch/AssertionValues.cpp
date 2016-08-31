@@ -40,7 +40,10 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 
 
 
-bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) {
+bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value) 
+{
+	execute_set(obj, value);
+
     if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
         HBlock nobj = resolve_noum(nbase);
         if (nobj != nullptr) {

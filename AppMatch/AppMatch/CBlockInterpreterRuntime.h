@@ -21,6 +21,9 @@ using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
 class QueryStack;
 
+
+class CResultMatch;
+
 class CBlockInterpreter {
 
     std::vector<HBlock> program; // main program .. to run IT
@@ -79,7 +82,8 @@ class CBlockInterpreter {
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value);
 	bool assert_newVerb(HBlockVerbRelation value);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
-	
+	CResultMatch MatchList(HBlockMatchList M, HBlockList value);
+	CResultMatch Match(HBlockMatch M, HBlock value);
 public:
     CBlockInterpreter();
 
@@ -170,6 +174,9 @@ public:
 
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
+	bool execute_set(HBlock obj, HBlock value);
+	HBlock find_dispach_object(HBlockList p);
+	bool execute_now(HBlock c_block); //Executa este bloco !
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

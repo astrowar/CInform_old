@@ -264,5 +264,14 @@
     <ClCompile Include="teste_action.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
+    <ClCompile Include="InterpExecute.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserDynamicDispatch.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpreterMatch.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
