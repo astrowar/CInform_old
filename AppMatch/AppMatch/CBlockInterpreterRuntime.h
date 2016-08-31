@@ -68,7 +68,7 @@ class CBlockInterpreter {
     QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, QueryStack stk);
 	QueryResul query_is_Variable_value(HBlock c_block, HBlock c_block1, QueryStack stk);
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, QueryStack stk); 
-    QueryResul queryVerb(string vb, HBlock c_block, HBlock value, QueryStack stk);
+   // QueryResul queryVerb(string vb, HBlock c_block, HBlock value, QueryStack stk);
 
 
     std::list<HBlockKind> getUpperKinds(HBlockKind kind);
@@ -121,7 +121,7 @@ public:
 	std::list<HBlock> resolve_as_list(HBlock qlist);
 	HBlockKind getKindOf(HBlockInstance obj);
 	string BlockNoum(HBlock c_block); 
-    bool Match(HBlock c_block, HBlockMatch m);
+    bool MatchOld(HBlock c_block, HBlockMatch m);
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecidewhether dct);
     HBlock getDecidedValueOf(HBlock c_block, HBlockToDecide dct);
 

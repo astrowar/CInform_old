@@ -1,35 +1,17 @@
 #include "CBlockInterpreterRuntime.h"
 #include <memory>
+#include "CResultMatch.h"
 using namespace std;
 
 
 //Match engine
-
-class CResultMatch
-{
-public:
-	std::map<string, HBlock> maptch;
-	bool hasMatch;	
-	CResultMatch() : hasMatch(false) {};	
-	CResultMatch( string s , HBlock b ) : hasMatch(true )
-	{
-		maptch[s] = b;
-	};
-	void append(CResultMatch r )
-	{
-		for(auto &kv: r.maptch)
-		{
-			maptch[kv.first] = kv.second;
-		}
-	}
-};
 
 CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 {
 	if (M->matchList.size() != value->lista.size()) return CResultMatch();
 	auto mit = M->matchList.begin();
 	auto vit = value->lista.begin();
-	while ( true )
+	while (true)
 	{
 		CResultMatch r = Match(*mit, *vit);
 
@@ -38,6 +20,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 	}
 
 }
+ 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 {
 

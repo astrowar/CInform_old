@@ -130,6 +130,9 @@
     <ClInclude Include="GrammarParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CResultMatch.h">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -271,6 +274,9 @@
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="InterpreterMatch.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="CResultMatch.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>

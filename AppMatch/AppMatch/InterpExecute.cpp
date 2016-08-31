@@ -2,6 +2,7 @@
 //Executor de acoes 
 
 #include "CBlockInterpreterRuntime.h"
+#include "CResultMatch.h"
 #include <memory>
 using namespace std;
 
@@ -65,7 +66,7 @@ HBlock CBlockInterpreter::find_dispach_object(HBlockList  p)
 {
 	for (auto &d : dynamic_understand)
 	{
-		 if (Match( d->input_n , p ))
+		 //if (Match( d->input_n , p ))
 		 {
 			 
 		 }

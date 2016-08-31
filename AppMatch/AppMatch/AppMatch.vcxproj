@@ -167,6 +167,7 @@
     <ClInclude Include="ConstDefinitions.h" />
     <ClInclude Include="CProperties.h" />
     <ClInclude Include="CRelations.h" />
+    <ClInclude Include="CResultMatch.h" />
     <ClInclude Include="CValueDefinitions.h" />
     <ClInclude Include="CVariableDefinition.h" />
     <ClInclude Include="EqualsResult.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="CResultMatch.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
