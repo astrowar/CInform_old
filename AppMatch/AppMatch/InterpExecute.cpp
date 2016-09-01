@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 #include "CBlockScope.h"
+#include "QueryStack.h"
 using namespace std;
 
 
@@ -64,6 +65,132 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value)
 	return false;
 }
 
+HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock propObj )
+{
+	if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(propObj)) 
+	{
+		if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) 
+		{
+			HVariableNamed pvar = cinst->get_property(property_noum->named);
+			if (pvar != nullptr) {
+				cout << "property  is " << endl;
+				if (pvar->value != nullptr)
+				{
+					return pvar->value;
+				}
+				else
+				{
+					cout << "     EMPTY" << endl;
+					return pvar->value;
+				}
+			}
+		}
+	}
+	return nullptr;
+}
+
+HBlock CBlockInterpreter::exec_eval_property_value(HBlock c_block  ) {
+	if (HBlockProperty cproperty = dynamic_pointer_cast<CBlockProperty>(c_block)) 
+	{
+		if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(cproperty->obj)) 
+		{
+			auto resolved = resolve_noum(cnn);
+			if (resolved != nullptr) {
+				return exec_eval_property_value_imp(cproperty->prop, resolved );
+			}			 
+
+		}
+		
+	
+		return exec_eval_property_value_imp(cproperty->prop, cproperty->obj );
+	}
+	return nullptr;
+
+}
+
+
+
+HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block , std::function< HBlock(HBlock) > is_accetable )
+{
+	// is_accetable recebe um block, terona true se pode parar de descer na arvore
+	QueryStack stk = QueryStack( );
+
+	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
+		if (HBlockAssertion_is qdef = dynamic_pointer_cast<CBlockAssertion_is>(*it)) 		
+		{
+			if (query_is_same(c_block, qdef->get_obj(), stk) == QEquals) 
+			{				
+			HBlock br = (is_accetable(qdef->get_definition()));
+			if (br !=nullptr)
+			  {
+				  return br ;
+			  }
+			}
+		}
+	}
+
+
+	HBlock qprop_value = exec_eval_property_value(c_block );
+	HBlock qbr = is_accetable(qprop_value);
+	if (qbr != nullptr)
+	{
+		return qbr;
+	}
+
+	return nullptr;
+}
+
+
+HBlock CBlockInterpreter::exec_eval(HBlock c_block)
+{
+
+		if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(c_block))
+		{
+			auto  obj = resolve_noum(nn);
+			return  exec_eval(obj);
+		}
+
+		if (HBlockInstance nIns = dynamic_pointer_cast<CBlockInstance>(c_block))
+		{
+			return nIns;
+		}
+
+		if (HBlockKind kIns = dynamic_pointer_cast<CBlockKind>(c_block))
+		{
+			return kIns;
+		}
+
+		if (auto  kvar= dynamic_pointer_cast<CVariableNamed >(c_block))
+		{
+			return kvar->value ;
+		}
+
+		
+
+		if (auto  kprop = dynamic_pointer_cast<CBlockProperty >(c_block))
+		{
+			return nullptr;
+		}
+
+		if (HBlockNamedValue nvalue = dynamic_pointer_cast<CBlockNamedValue>(c_block))
+		{
+			return nvalue;
+		}
+
+		if (auto  kList = dynamic_pointer_cast<CBlockList  >(c_block))
+		{
+			auto rList = std::make_shared<CBlockList>( );
+			for(auto &e : kList->lista)
+			{
+				rList->lista.push_back(exec_eval(e));
+			}
+			return rList;
+		}
+
+		// Bla ! 
+		return nullptr;
+}
+
 HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p)
 {
 	for (auto &d : dynamic_understand)
@@ -92,8 +219,8 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p)
 					 cout << " named " << arg1_named->named  << " == " <<  endl;
 					 result.maptch["noum1"]->dump("               ");
 					 
-					 auto obj_resolved = resolve_value (result.maptch["noum1"]);
-						 localsEntry->locals.push_back(std::pair<string, HBlock>( arg1_named->named ,result.maptch["noum1"] ));
+					 auto obj_resolved = exec_eval (result.maptch["noum1"]);
+						 localsEntry->locals.push_back(std::pair<string, HBlock>( arg1_named->named , obj_resolved));
 					 
 				 } 
 
@@ -105,7 +232,9 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p)
 					 {
 						 cout << " named " << arg2_named->named << " == " << endl;
 						 result.maptch["noum2"]->dump("               ");
-						 localsEntry->locals.push_back(std::pair<string, HBlock>(arg2_named->named, result.maptch["noum2"]));
+
+						 auto obj_resolved = exec_eval(result.maptch["noum2"]);
+						 localsEntry->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));
 					 }
 
 				 }
@@ -119,7 +248,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p)
 	return nullptr;
 }
 
-bool CBlockInterpreter::execute_now(HBlock p)
+bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {	 
 
 	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {

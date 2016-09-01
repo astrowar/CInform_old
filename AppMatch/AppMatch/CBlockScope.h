@@ -31,7 +31,7 @@ public:
 	{
 
 	}
-	void dump(string ident);
+	void dump(string ident) const;
 };
 
 using HExecutionBlock = std::shared_ptr<CExecutionBlock>;

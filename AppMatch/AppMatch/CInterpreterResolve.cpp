@@ -155,22 +155,7 @@ HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) {
 
 }
 
-HBlock CBlockInterpreter::resolve_value(HBlock  c_block)
-{
-	if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(c_block))
-	{
-		auto  obj = resolve_noum(nn);
-		return  resolve_value(obj);
-	}
-
-	if (HBlockInstance nIns = dynamic_pointer_cast<CBlockInstance>(c_block))
-	{
-		return nIns;
-	}
-	dçjfkçlsdjlkj
-	return nullptr;
-
-}
+ 
 
 HBlock CBlockInterpreter::resolve_string(string n) {
     for (auto &defs : assertions) {

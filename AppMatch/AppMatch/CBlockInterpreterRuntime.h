@@ -124,7 +124,7 @@ public:
 	std::list<HBlock> resolve_as_list(HBlock qlist);
 	HBlockKind getKindOf(HBlockInstance obj);
 	string BlockNoum(HBlock c_block); 
-    bool MatchOld(HBlock c_block, HBlockMatch m);
+   // bool MatchOld(HBlock c_block, HBlockMatch m);
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecidewhether dct);
     HBlock getDecidedValueOf(HBlock c_block, HBlockToDecide dct);
 
@@ -179,7 +179,10 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	bool execute_set(HBlock obj, HBlock value);
-	
+	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
+	HBlock exec_eval_property_value(HBlock c_block);
+	HBlock exec_eval_assertations(HBlock c_block, std::function<HBlock(HBlock) > is_accetable);
+	HBlock exec_eval( HBlock c_block);
 	HExecutionBlock create_dispach_env(HBlockList p);
  
 	bool execute_now(HBlock c_block); //Executa este bloco !

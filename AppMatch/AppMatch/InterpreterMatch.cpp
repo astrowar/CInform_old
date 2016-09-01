@@ -1,6 +1,7 @@
 #include "CBlockInterpreterRuntime.h"
 #include <memory>
 #include "CResultMatch.h"
+#include <iostream>
 using namespace std;
 
 
@@ -10,6 +11,9 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 {
 	if (M->matchList.size() != value->lista.size())
 	{
+		std::cout << "FAIL  size  " << std::endl;
+		(M)->dump("    ");
+		(value)->dump("    ");
 		return   CResultMatch(false); //sizes must be equals
 	}
 	auto mit = M->matchList.begin();
@@ -19,7 +23,13 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 	{
 		if (mit == M->matchList.end()) break;
 		CResultMatch r = Match(*mit, *vit);
-		if (r.hasMatch ==false ) return   CResultMatch(false);		
+		if (r.hasMatch == false)
+		{
+			std::cout << "FAIL  item   " << std::endl;
+			(*vit)->dump("    ");
+			(*mit)->dump("    ");
+			return   CResultMatch(false);
+		}
 		rAccm.append(r);
 		++mit;
 		++vit;
@@ -50,9 +60,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 		return mres;
 	}
 
-	if (HBlockList   vList = dynamic_pointer_cast<CBlockList>(value))
+	if (HBlockMatchList   mList = dynamic_pointer_cast<CBlockMatchList>(M))	 
 	{
-		if (HBlockMatchList   mList = dynamic_pointer_cast<CBlockMatchList>(M))
+		if (HBlockList   vList = dynamic_pointer_cast<CBlockList>(value))
 		{
 			return MatchList(mList, vList);
 		}

@@ -513,7 +513,7 @@ void CBlockSelector_Any::dump(string ident)
 }
 
 
-  void CExecutionBlock::dump(string ident)
+  void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "ExecutionBlock " << endl;
 
