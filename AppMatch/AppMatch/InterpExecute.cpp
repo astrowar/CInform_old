@@ -4,6 +4,8 @@
 #include "CBlockInterpreterRuntime.h"
 #include "CResultMatch.h"
 #include <memory>
+#include <iostream>
+#include "CBlockScope.h"
 using namespace std;
 
 
@@ -62,13 +64,56 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value)
 	return false;
 }
 
-HBlock CBlockInterpreter::find_dispach_object(HBlockList  p)
+HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p)
 {
 	for (auto &d : dynamic_understand)
 	{
-		 //if (Match( d->input_n , p ))
+		auto result = (Match(d->input_n, p));
+		if (result.hasMatch)
 		 {
-			 
+			 cout << "Dispatch " << endl;
+			 d->output_n->dump("            ");
+
+			 // Forma eh esta 
+			 for(auto &arg : result.maptch)
+			 {
+				 cout << "      Arg "<< arg.first  << "==" <<  endl;
+				 arg.second->dump("                          ");
+			 }
+			 HRunLocalScope localsEntry = make_shared< CRunLocalScope >();
+			 // Argumentos batem com os matchs dos argumentos ??
+
+			 if (d->argument_n->matchList.size() > 0)
+			 {
+				 auto arg_header_first = d->argument_n->matchList.begin();
+				 // eh um Match Named ???
+				 if (HBlockMatchNamed arg1_named = dynamic_pointer_cast<CBlockMatchNamed>(*arg_header_first))
+				 {
+					 cout << " named " << arg1_named->named  << " == " <<  endl;
+					 result.maptch["noum1"]->dump("               ");
+					 
+					 auto obj_resolved = resolve_value (result.maptch["noum1"]);
+						 localsEntry->locals.push_back(std::pair<string, HBlock>( arg1_named->named ,result.maptch["noum1"] ));
+					 
+				 } 
+
+				 if (d->argument_n->matchList.size() > 1)
+				 {
+					 auto arg_header_second = std::next( arg_header_first);
+					 // eh um Match Named ???
+					 if (HBlockMatchNamed arg2_named = dynamic_pointer_cast<CBlockMatchNamed>(*arg_header_second))
+					 {
+						 cout << " named " << arg2_named->named << " == " << endl;
+						 result.maptch["noum2"]->dump("               ");
+						 localsEntry->locals.push_back(std::pair<string, HBlock>(arg2_named->named, result.maptch["noum2"]));
+					 }
+
+				 }
+			 }
+
+			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsEntry , d->output_n);
+			 return executionBlock;
+
 		 }
 	}
 	return nullptr;
@@ -88,8 +133,9 @@ bool CBlockInterpreter::execute_now(HBlock p)
 	{
 		//determina quem eh o action do dynamica dispatch
 
-		HBlock disp =  find_dispach_object(vdyn->commandList);
-		
+		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList);
+		cout << "EXEC     "  << " == " << endl;
+		dispExec->dump("        ");
 
 		return true;
 	}

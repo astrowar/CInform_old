@@ -46,9 +46,9 @@ public:
 	virtual void dump(string ident) override;
 
 	HBlockMatch input_n; // Pode ser simples ou com a preposicao
-	HBlockMatch argument_n;
+	HBlockMatchList argument_n;
 	HBlock output_n;
-	CBlockUnderstandDynamic(HBlockMatch _input_n, HBlockMatch _argumentMatchs, HBlock _output_n) : input_n(_input_n), argument_n(_argumentMatchs), output_n(_output_n) {};
+	CBlockUnderstandDynamic(HBlockMatch _input_n, HBlockMatchList _argumentMatchs, HBlock _output_n) : input_n(_input_n), argument_n(_argumentMatchs), output_n(_output_n) {};
 };
 
 using HBlockUnderstandDynamic = std::shared_ptr<CBlockUnderstandDynamic>;

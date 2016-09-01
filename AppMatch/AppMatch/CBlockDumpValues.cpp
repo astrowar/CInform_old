@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include "CBlockRelation.h"
+#include "CBlockScope.h"
 
 
 using namespace std;
@@ -138,12 +139,7 @@ void CBlockAssertion_is::dump(string ident) {
     this->get_definition()->dump(ident + "     ");
 }
 
-void CBlockMatch::dump(string ident) {
-    cout << ident << "Match " << endl;
-    {
-        this->matchInner->dump(ident + "       ");
-    }
-}
+ 
 
 void CBlockMatchAny::dump(string ident) {
     cout << ident << "Match Any " << endl;
@@ -155,6 +151,14 @@ void CBlockMatchNamed::dump(string ident) {
     {
         this->matchInner->dump(ident + "       ");
     }
+}
+
+void CBlockMatchNoum::dump(string ident)
+{
+	cout << ident << "Match Noum "   << endl;
+	{
+		this->inner->dump(ident + "       ");
+	}
 }
 
 void CBlockMatchKind::dump(string ident) {
@@ -172,6 +176,33 @@ void CBlockMatchList::dump(string ident) {
         }
     }
     cout << ident << "          ]" << endl;
+}
+
+void CBlockMatchBlock::dump(string ident)
+{
+	cout << ident << "Match Block: " << endl;
+	{
+		this->inner->dump(ident + "       ");
+	}
+}
+
+ 
+void CBlockMatchDirectIs::dump(string ident)
+{
+	cout << ident << "Match Is: " << endl;
+	{
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
+}
+
+void CBlockMatchIsVerb::dump(string ident)
+{
+	cout << ident << "Match verb: "<< verb << endl;
+	{
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
 }
 
 void CBlockActionApply::dump(string ident) {
@@ -469,3 +500,27 @@ void CBlockSelector_Any::dump(string ident)
 	cout << ident << "Select Any " << endl;
 	this->what->dump(ident + "       ");
 }
+
+
+  void CRunLocalScope::dump(string ident)
+{
+	cout << ident << "Local Scope " << endl;
+	for(auto &kv : locals)
+	{		 
+		cout << ident << "  " << kv.first << endl;
+		kv.second->dump(ident + "       ");
+	}
+}
+
+
+  void CExecutionBlock::dump(string ident)
+  {
+	  cout << ident << "ExecutionBlock " << endl;
+
+	  {
+
+		  locals->dump(ident + "       ");
+		  block->dump(ident + "       ");
+
+	  }
+  }

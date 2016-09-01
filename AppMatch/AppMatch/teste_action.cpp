@@ -34,7 +34,7 @@ void testeParser_actionB()
 	
 	
 	interpreter->execute_init(parse.parser_stmt("understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("understand : insert  [ a thing ] intro [ thing ] as put X intro B ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B ", ISLOG));
 	 
 
 	

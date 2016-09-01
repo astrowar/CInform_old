@@ -80,7 +80,7 @@ HBlock CParser::parse_AssertionVerb(std::vector<HTerm> term) {
 
 
 
-HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
+HBlockMatchIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 {
 	//Tambem pode ser um verbo definido
 	{
@@ -96,7 +96,7 @@ HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
 				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-				return std::make_shared<CBlockIsVerb>(vrepr, body, value);
+				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
 				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
 			}
 		}
@@ -114,7 +114,7 @@ HBlockIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 			HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
 				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-				return std::make_shared<CBlockIsVerb>(vrepr, body, value);
+				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
 			}
 		}
 	}

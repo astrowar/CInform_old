@@ -11,6 +11,9 @@
 #include <map>
 #include "CBlockUndestand.h"
 #include <condition_variable>
+#include "CBlockDecideIf.h"
+#include "CBlockScope.h"
+#include <condition_variable>
 
 class CBlockAssertionBase;
 
@@ -164,6 +167,7 @@ public:
     HBlock resolve_noum(HBlockNoum n);
 	HBlock resolve_noum_as_variable(HBlockNoum n);
 	HBlock resolve_string(string n);
+	HBlock resolve_value(HBlock  c_block);
 
     void dump_instance(string str);
 
@@ -175,7 +179,9 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	bool execute_set(HBlock obj, HBlock value);
-	HBlock find_dispach_object(HBlockList p);
+	
+	HExecutionBlock create_dispach_env(HBlockList p);
+ 
 	bool execute_now(HBlock c_block); //Executa este bloco !
 };
 

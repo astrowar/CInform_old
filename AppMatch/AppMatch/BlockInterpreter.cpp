@@ -81,7 +81,7 @@ NoumDefinitions CBlockList::noumDefinitions() {
 }
 
 
-bool CBlockMatchNamed::match() { return matchInner->match(); }
+ 
 
 CBlockActionApply::CBlockActionApply(HBlock _noum1, HBlock _noum2) : noum1((_noum1)), noum2((_noum2)) {
 }

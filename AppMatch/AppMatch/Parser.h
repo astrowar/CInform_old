@@ -135,25 +135,30 @@ public:
  
 	void set_Noum(NoumDefinition ndef);
 	void set_Noum(NoumDefinitions ndef);
-	HBlockIsVerb parserMatchIsConditionVerb(HTerm term);
+
+
+
+	//Matchs 
+	HBlockMatchIsVerb parserMatchIsConditionVerb(HTerm term);
+    HBlockMatchIs parserMatchIsCondition(HTerm match);
+    HBlockMatch  parser_MatchArgument(HTerm term);
+
+
+
+
 	int registerStaticDispatch(int entryId, HBlockMatchList  argumentMatch, HBlock body );
-
-
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entryMatch );
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry, HBlock ret);
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
- 
-	 
- 
- 
- 
-	
+	HBlockMatch parser_Match_What_Assertion(HTerm term);
+
+
 	HBlock parser_What_Assertion( HTerm  term);
 	HBlock parseAssertion_DecideWhat( HTerm  term);
 	HBlock parseAssertion_isDecide(std::vector<HTerm> term);
 	HBlock parserBoolean(  HTerm  term);
-	HBlockAssertion_is parserMatchIsCondition(HTerm match);
+	
 	HBlock STMT_Definition_Assertion(std::vector<HTerm> term);
 	HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
 	HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
@@ -168,7 +173,7 @@ public:
 	HBlock parseAssertionEnumSecondTerm(HTerm term);
 	HBlock STMT_Decide_Assertion(std::vector<HTerm> lst);
 	
-	HBlockMatch  parser_MatchArgument(HTerm term);
+	
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
 	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
 	HBlock STMT_understand_generic_redirect(HTerm term, HBlock output_term);

@@ -17,7 +17,7 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(HTerm term) {
 
     //return std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->repr()));
     return DispatchArguments(replcList, nullptr,
-                             std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->repr())));
+                             std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(term->repr())));
 }
 
 
@@ -53,7 +53,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
         predList.push_back(mkHPredAny("var_named"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockMatch c1 = std::make_shared<CBlockMatch>(
+            HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
                     std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
             HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
             return n1;
@@ -67,7 +67,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
         predList.push_back(mkHPredAny("var_named"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockMatch c1 = std::make_shared<CBlockMatch>(
+            HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
                     std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
             HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
             return n1;
@@ -76,7 +76,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 
 	std::cout << "Argument:  " <<  (term)->repr() << std::endl;
 
-    return std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(term->removeArticle()->repr()));
+    return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(term->removeArticle()->repr()));
     return nullptr;
 }
 
@@ -99,9 +99,9 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockMatch c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+            HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
             HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
-            HBlockMatch c3 = std::make_shared<CBlockMatch>(
+            HBlockMatch c3 = std::make_shared<CBlockMatchNoum>(
                     std::make_shared<CBlockNoum>(res.matchs["with_word"]->repr()));
             HBlockMatch c4 = parser_MatchArgument(res.matchs["kind2"]);
             HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
@@ -132,9 +132,9 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockMatch c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+            HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
             HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
-            HBlockMatch c3 = std::make_shared<CBlockMatch>(
+            HBlockMatch c3 = std::make_shared<CBlockMatchNoum>(
                     std::make_shared<CBlockNoum>(res.matchs["with_word"]->repr()));
             HBlockMatch c4 = parser_MatchArgument(res.matchs["kind2"]);
             HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
@@ -163,8 +163,8 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 		if (res.result == Equals)
 		{
 		 
-			HBlockMatch c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
-			HBlockMatch c1a = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["aux"]->repr()));
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+			HBlockMatch c1a = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["aux"]->repr()));
 
 
 			//HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
@@ -191,7 +191,7 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
         if (res.result == Equals) 
 		{
 			HBlockMatch c1 = nullptr;
-			c1 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
+			c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
 
 
             //HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
@@ -264,6 +264,13 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
 				else
 				{
 					output_noum = parser_expression(res.matchs["Subst"]);
+
+					//Interpretei 
+					std::cout << "Interpretei " << sTerm->repr()   << std::endl;
+					std::cout << "Como "   << std::endl;
+					output_noum->dump("          ");
+					std::cout << "---" << std::endl;
+
 				}
 
 
@@ -271,6 +278,7 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
 				//HBlock value = parser_expression( res.matchs["Subst"]);
 
 				if (output_noum == nullptr) return nullptr;
+				 
 				return STMT_understand_generic_redirect(res.matchs["What"], output_noum);
 
                 //std::cout << "try " << sTerm->repr() << "  N:" << sTerm->nterms() << std::endl;

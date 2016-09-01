@@ -10,5 +10,6 @@ public:
 	bool hasMatch;	
 	CResultMatch() : hasMatch(false) {};	
 	CResultMatch(string s, HBlock b);
+	CResultMatch(bool r);
 	void append(CResultMatch r);
 };

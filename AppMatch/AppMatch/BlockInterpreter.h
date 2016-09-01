@@ -538,24 +538,6 @@ public:
 
 using HBlockToDecidewhether = std::shared_ptr<CBlockToDecidewhether>;
 
-class CBlockToDecideIf
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockToDecideIf(HBlockAssertion_is _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
-
-    HBlockAssertion_is queryToMatch;
-    HBlock decideBody;
-
-    virtual HTerm eval() { return nullptr; }
-
-    void dump(string ident) override;
-};
-
-using HBlockToDecideIf = std::shared_ptr<CBlockToDecideIf>;
 
 class CBlockToDecideOn : public CBlock  // bloco que equivale a um return no decide
 {

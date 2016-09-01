@@ -4,6 +4,7 @@
 #include "CBlockMatch.h"
 #include <iostream>
 #include "CBlockUndestand.h"
+#include "CBlockDecideIf.h"
 
 using namespace std;
 
@@ -38,11 +39,12 @@ bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value) {
 
 
 bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
-    if (auto inner = dynamic_pointer_cast<CBlockMatch>(dct->queryToMatch)) {
-        if (auto if_inner = dynamic_pointer_cast<CBlockAssertion_isDirectAssign>(inner->matchInner)) {
-            decides_if.push_back(make_shared<CBlockToDecideIf>(if_inner, dct->decideBody));
+    if (auto inner = dynamic_pointer_cast<CBlockMatchIs>(dct->queryToMatch)) 
+	{
+        
+            decides_if.push_back(make_shared<CBlockToDecideIf>(inner, dct->decideBody));
             return true;
-        }
+        
     }
     decides_what.push_back(dct);
     return true;

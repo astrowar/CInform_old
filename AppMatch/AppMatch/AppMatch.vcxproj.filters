@@ -133,6 +133,12 @@
     <ClInclude Include="CResultMatch.h">
       <Filter>Source Files\Interpreter</Filter>
     </ClInclude>
+    <ClInclude Include="CBlockDecideIf.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockScope.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

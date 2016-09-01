@@ -53,7 +53,7 @@ void CParser::set_Noum(NoumDefinitions ndef) {
 
 
 
-HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term) 
+HBlockMatchIs CParser::parserMatchIsCondition(HTerm term)
 {
     // Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex 
 	//Default is a direct Asign
@@ -68,7 +68,7 @@ HBlockAssertion_is CParser::parserMatchIsCondition(HTerm term)
             HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
             HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
             if (body != nullptr && value != nullptr) {
-                return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
+                return std::make_shared<CBlockMatchDirectIs>(body, value);
             }
         }
     }

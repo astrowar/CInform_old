@@ -47,6 +47,10 @@ HBlock CParser::parser_expression(HTerm  term)
 
 HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 {
+
+	HBlock rblock_dynamicEntry_1 = (DynamicDispatch_action(lst));
+	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
+
 	HBlock rblock_assert_1 = (parser_VerbAssign(lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 

@@ -8,22 +8,37 @@ using namespace std;
 
 CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 {
-	if (M->matchList.size() != value->lista.size()) return CResultMatch();
+	if (M->matchList.size() != value->lista.size())
+	{
+		return   CResultMatch(false); //sizes must be equals
+	}
 	auto mit = M->matchList.begin();
 	auto vit = value->lista.begin();
+	CResultMatch rAccm = CResultMatch(true);
 	while (true)
 	{
-		CResultMatch r = Match(*mit, *vit);
-
-
 		if (mit == M->matchList.end()) break;
+		CResultMatch r = Match(*mit, *vit);
+		if (r.hasMatch ==false ) return   CResultMatch(false);		
+		rAccm.append(r);
+		++mit;
+		++vit;
 	}
+	return rAccm;
 
 }
  
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 {
-
+	if (auto   mAtom = dynamic_pointer_cast<CBlockMatchNoum>(M))
+	{
+		if (auto inner = std::dynamic_pointer_cast<CBlockNoum>(mAtom->inner))
+			if (auto cinner = std::dynamic_pointer_cast<CBlockNoum>(value))
+			{
+				//Substitua essa igualdade Statica por uma Dynamica
+				return CResultMatch(inner->named == cinner->named);
+			}
+	}
 	 
 	if (auto   mVNamed = dynamic_pointer_cast<CBlockMatchNamed>(M))
 	{
@@ -39,25 +54,22 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 	{
 		if (HBlockMatchList   mList = dynamic_pointer_cast<CBlockMatchList>(M))
 		{
-			
+			return MatchList(mList, vList);
 		}
 		else
 		{
-			return CResultMatch();
+			return CResultMatch(false);
 		}
 	}
 
-	if (HBlockNoum    vNoum = dynamic_pointer_cast<CBlockNoum >(value))
-	{
-		if (auto    mNoum = dynamic_pointer_cast<CBlockMatchAny>(M))
+	 
+	 
+	if (auto    mNoum = dynamic_pointer_cast<CBlockMatchAny>(M))
 		{
-			return CResultMatch("", vNoum);
+			return CResultMatch( true );
 		}
-		else
-		{
-			return CResultMatch();
-		}
-	}
+		 
+	 
 	
-	return CResultMatch();
+	return CResultMatch(false);
 }

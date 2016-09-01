@@ -151,6 +151,7 @@
     <ClInclude Include="BaseTest.h" />
     <ClInclude Include="BlockInstance.h" />
     <ClInclude Include="BlockInterpreter.h" />
+    <ClInclude Include="CBlockDecideIf.h" />
     <ClInclude Include="CBlockRelation.h" />
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="CBlockDumpValues.h" />
     <ClInclude Include="CBlockInterpreterRuntime.h" />
     <ClInclude Include="CBlockMatch.h" />
+    <ClInclude Include="CBlockScope.h" />
     <ClInclude Include="CBlockUndestand.h" />
     <ClInclude Include="CInterpreter.h" />
     <ClInclude Include="CInterpreterKindTree.h" />

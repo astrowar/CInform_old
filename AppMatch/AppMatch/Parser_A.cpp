@@ -118,7 +118,7 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
     return nullptr;
 }
 
-HBlock CParser::parser_What_Assertion(HTerm term) {
+HBlockMatch CParser::parser_Match_What_Assertion(HTerm term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_What_Which());
@@ -130,7 +130,9 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
         if (res.result == Equals) {
             HBlock body = parser_expression(res.matchs["RemainderQuery"]);
             if (body != nullptr) {
-                return std::make_shared<CBlockMatch>(body);
+                //return std::make_shared<CBlockMatch>(body);
+				throw "un Implmeneted";
+				return nullptr;
             }
         }
     }
@@ -143,16 +145,40 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
         predList.push_back(mkHPredAny("BValue"));
 
         MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
+        if (res.result == Equals) 
+		{
             HBlock AValue = parser_assertionTarger(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
             HBlock BValue = parser_expression(res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
-            return std::make_shared<CBlockMatch>(std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue));
+            return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
         }
     }
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("if"));
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("BValue"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+
+			HBlock AValue = parser_assertionTarger(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			HBlock BValue = parser_expression(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			return std::make_shared<CBlockMatchIsVerb >(vrepr, AValue, BValue);
+		}
+	}
 
     {
         std::vector<HPred> predList;
@@ -164,7 +190,9 @@ HBlock CParser::parser_What_Assertion(HTerm term) {
             HBlock AValue = parser_expression(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            return std::make_shared<CBlockMatch>(AValue);
+           // return std::make_shared<CBlockMatch>(AValue);
+			throw "un Implmeneted";
+			return nullptr;
         }
     }
 
@@ -223,7 +251,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock a_match = parser_What_Assertion(res.matchs["Match"]);
+            HBlock a_match = parser_Match_What_Assertion(res.matchs["Match"]);
 
 			std::cout <<  (res.matchs["RemainBody"]->repr()) << std::endl;
 
@@ -253,14 +281,14 @@ HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 
-			HBlockIsVerb  v_match = parserMatchIsConditionVerb (res.matchs["Match"]);
+			HBlockMatchIsVerb  v_match = parserMatchIsConditionVerb (res.matchs["Match"]);
 			if (v_match != nullptr)
 			{
 				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(v_match, body);
 			}
 
-            HBlockAssertion_is a_match = parserMatchIsCondition(res.matchs["Match"]);
+			HBlockMatchIs a_match = parserMatchIsCondition(res.matchs["Match"]);
 			if (a_match != nullptr)
 			{
 				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
