@@ -32,7 +32,7 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 }
 
 
-QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, QueryStack stk)
+QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 
 	if (stk.isQuery(vb, c_block, value)) return QUndefined;
@@ -49,10 +49,10 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	std::list<HBlockAssertion_is> &decList = alist->second;
 	for (auto &c_is : decList)
 	{
-		QueryResul a1 = query_is(c_block , c_is->get_obj() ,stk );
+		QueryResul a1 = query_is(c_block , c_is->get_obj() , localsEntry,stk );
 		if (a1 == QEquals)
 		{
-			QueryResul a2 = query_is(c_is->get_definition(), value,stk);
+			QueryResul a2 = query_is(c_is->get_definition(), value,localsEntry,stk);
 			if (a2 == QEquals)
 			{
 				return QEquals;
@@ -64,11 +64,11 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 
 
 
-bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock obj, HBlock value) {
+bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock obj, HBlock value, HRunLocalScope localsEntry) {
 	if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
-		HBlock nobj = resolve_noum(nbase);
+		HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
-			return assert_it_verbRelation(verbNamed , nobj, value);
+			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry);
 		}		
 	}
 	return setVerb(verbNamed, obj, value);

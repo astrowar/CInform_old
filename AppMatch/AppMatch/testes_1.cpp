@@ -191,7 +191,7 @@ void testeParser_2a() {
         interpreter->execute_init(res);
     }
 
-    interpreter->dump_instance("diary");
+    interpreter->dump_instance("diary" );
 
     QueryResul q_false_1 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
     QueryResul q_false_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));

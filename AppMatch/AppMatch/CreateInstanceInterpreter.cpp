@@ -4,10 +4,13 @@
 using namespace std;
 
 
+void CBlockInterpreter::dump_instance(string str )
+{
+	return dump_instance(str, nullptr);
+}
 
-
-void CBlockInterpreter::dump_instance(string str) {
-    HBlock n = resolve_string(str);
+void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) {
+    HBlock n = resolve_string(str,localsEntry);
     if (HBlockInstance nn = dynamic_pointer_cast<CBlockInstance>(n)) {
         for (auto &va : nn->anomimousSlots) {
             cout << "====================" << endl;

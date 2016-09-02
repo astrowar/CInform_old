@@ -13,6 +13,14 @@ public:
 		
 	}
 
+	HBlock resolve(std::string noum)
+	{
+		for(auto &e:locals )
+		{
+			if (e.first == noum) return e.second;
+		}
+		return nullptr;
+	}
 	void dump(string ident);
 };
 

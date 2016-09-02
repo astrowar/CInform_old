@@ -5,25 +5,25 @@
 using namespace std;
 
 
-std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist)
+std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
 	if (HBlockNoum	nn = dynamic_pointer_cast<CBlockNoum >(qlist))
 	{
-		HBlock resolved =  resolve_noum(nn);
+		HBlock resolved =  resolve_noum(nn,localsEntry);
 		if (resolved != nullptr)
 		{
-			return resolve_as_list(resolved);
+			return resolve_as_list(resolved,localsEntry );
 		}
 	}
 
 	if (HVariableNamed 	nvar  = dynamic_pointer_cast<CVariableNamed >(qlist))
 	{
-		return resolve_as_list(nvar->value);
+		return resolve_as_list(nvar->value,localsEntry);
 	}
 
 	if (HBlockProperty 	nprop = dynamic_pointer_cast<CBlockProperty >(qlist))
 	{
-		auto olist =  resolve_as_list( nprop->obj );
+		auto olist =  resolve_as_list( nprop->obj ,localsEntry);
 		// applica as propiedades a cada objeto
 		std::list<HBlock> po_list;
 		for(auto e: olist)
@@ -113,8 +113,16 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 
 }
 
-HBlock CBlockInterpreter::resolve_noum(HBlockNoum n) {
+HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry) {
     // eh um kind de alguma coisa ?
+
+	if (localsEntry != nullptr )
+	{
+		auto lnoum = localsEntry->resolve(n->named);
+		if (lnoum != nullptr) return lnoum;
+	}
+
+
     for (auto &defs : assertions) {
         if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
             //std::cout << nn->named << std::endl;
@@ -141,7 +149,8 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n) {
 
 }
 
-HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) {
+HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) 
+{
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
 			//std::cout << nn->named << std::endl;
@@ -157,7 +166,14 @@ HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) {
 
  
 
-HBlock CBlockInterpreter::resolve_string(string n) {
+HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
+{
+	if (localsEntry != nullptr)
+	{
+		auto lnoum = localsEntry->resolve(n );
+		if (lnoum != nullptr) return lnoum;
+	}
+
     for (auto &defs : assertions) {
         if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
             //std::cout << nn->named << std::endl;

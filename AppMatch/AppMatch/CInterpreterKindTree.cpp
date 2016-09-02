@@ -60,7 +60,7 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     return upperList;
 }
 
-bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b) {
+bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLocalScope localsEntry) {
     if (a->named == "" || b->named == "") {
         return false;
     }
@@ -77,7 +77,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b) {
                         if (k->named == b->named) {
                             return true;
                         } else {
-                            HBlock bnext = resolve_string(k->named);
+                            HBlock bnext = resolve_string(k->named,localsEntry);
                             if (HBlockKind baseClasse = dynamic_pointer_cast<CBlockKind>(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
                                 if (bnn) {

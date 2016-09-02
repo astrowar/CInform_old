@@ -38,13 +38,13 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 
 
 
-bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value)
+bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value,  HRunLocalScope localsEntry)
 {
 	if (HBlockNoum prop_obj_noum = dynamic_pointer_cast<CBlockNoum>(prop->obj))
 	{
-		HBlock nobj = resolve_noum(prop_obj_noum);
+		HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
 		
-		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value);
+		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value,localsEntry);
 
 	}
 	if (HBlockInstance prop_obj_inst = dynamic_pointer_cast<CBlockInstance>(prop->obj))
@@ -71,19 +71,19 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 
 	return false;
 }
-bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value) {
+bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
     if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
-        HBlock nobj = resolve_noum(nbase);
+        HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
-            return assert_it_defaultValue(nobj, value);
+            return assert_it_defaultValue(nobj, value,localsEntry);
         }
         return false;
     } else if (HBlockInstance ibase = dynamic_pointer_cast<CBlockInstance>(obj)) {
         throw "cant assign Ususally to Instances";
     } else if (HBlockProperty pbase = dynamic_pointer_cast<CBlockProperty>(obj)) {
 
-		return assert_property_defaultValue(pbase, value);
+		return assert_property_defaultValue(pbase, value,localsEntry);
 
 
     } else if (HBlockKind kbase = dynamic_pointer_cast<CBlockKind>(obj)) {
