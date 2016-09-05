@@ -2,6 +2,7 @@
 #include <memory>
 #include "CResultMatch.h"
 #include <iostream>
+#include "QueryStack.h"
 using namespace std;
 
 
@@ -46,7 +47,23 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 			if (auto cinner = std::dynamic_pointer_cast<CBlockNoum>(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
+				cout << inner->named << " == " << cinner->named << endl;
 				return CResultMatch(inner->named == cinner->named);
+				 
+			}
+	}
+
+	if (auto  mAtom = dynamic_pointer_cast<CBlockMatchNoum>(M))
+	{
+		if (auto inner = std::dynamic_pointer_cast<CBlockNoum>(mAtom->inner))
+			if (auto cInst = std::dynamic_pointer_cast<CBlockInstance>(value))
+			{
+				//Substitua essa igualdade Statica por uma Dynamica
+				//return CResultMatch(inner->named == cinner->named);
+				QueryStack stk = QueryStack();
+				auto r = query_is(cInst, inner, nullptr, stk);
+				return CResultMatch(r == QEquals);				
+
 			}
 	}
 	 

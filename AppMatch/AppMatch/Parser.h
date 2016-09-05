@@ -230,6 +230,7 @@ public:
 	HBlockSelector parser_List_selector(std::vector<HTerm> term);
 	HBlockSelector parser_List_selector(HTerm term);
 	HBlock parser_expression(HTerm term);
+	HBlock text_entry(std::vector<HTerm> lst);
 	HBlock parser_expression(std::vector<HTerm>  term);
 
 	HBlockArgumentInput parser_KindCalled(HTerm term);

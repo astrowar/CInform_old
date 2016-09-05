@@ -288,6 +288,17 @@ public:
 using HBlockList_OR = std::shared_ptr<CBlockList_OR>;
 
 
+
+
+ 
+
+
+
+
+
+
+
+
 class CBlockEnums : public CBlock //retorna um valor generico
 {
 public:

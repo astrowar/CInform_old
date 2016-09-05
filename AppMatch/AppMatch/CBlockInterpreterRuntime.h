@@ -208,7 +208,10 @@ public:
  
  
  
-	bool execute_now(HBlock c_block); //Executa este bloco !
+	bool execute_now(HBlock c_block);
+	bool execute_system_action(HBlockActionCall v_call);
+	bool execute_user_action(HBlockActionCall v_call);
+	//Executa este bloco !
 	bool execute_now(HBlock p, HRunLocalScope localsEntry);
 };
 

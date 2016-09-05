@@ -142,6 +142,12 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		}
 	}
 
+	//Custom Resolvers
+
+	if (n->named == "text") {
+		return  std::make_shared<CBlockKindValue>("text");
+	}
+
 
     cout << "Fail to " << n->named << endl;
     return nullptr;

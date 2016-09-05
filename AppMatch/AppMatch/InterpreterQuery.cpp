@@ -188,7 +188,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		}
 	}
 
-
+	
 	
 	//Resolve List OR
 	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(c_block1))
@@ -254,8 +254,12 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
         } else if (HBlockInstance aInstance = dynamic_pointer_cast<CBlockInstance>(c_block)) {
             bool b = is_derivadeOf(aInstance, bkind,localsEntry);
             if (b) return QEquals;
-        }
+        } 
     }
+	
+
+
+
 
     for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it) {
         if (HBlockToDecide tdef = dynamic_pointer_cast<CBlockToDecide>(*it)) {

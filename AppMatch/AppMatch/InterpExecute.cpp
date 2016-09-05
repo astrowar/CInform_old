@@ -201,6 +201,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 cout << "Dispatch " << endl;
 			 d->output_n->dump("            ");
 
+
 			 // Forma eh esta 
 			 for(auto &arg : result.maptch)
 			 {
@@ -209,6 +210,8 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 }
 			 HRunLocalScope localsNext = make_shared< CRunLocalScope >();
 			 // Argumentos batem com os matchs dos argumentos ??
+			 HBlock ref_Arg_1 = nullptr;
+			 HBlock ref_Arg_2 = nullptr;
 
 			 if (d->argument_n->matchList.size() > 0)
 			 {
@@ -217,12 +220,23 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 if (HBlockMatchNamed arg1_named = dynamic_pointer_cast<CBlockMatchNamed>(*arg_header_first))
 				 {
 					 cout << " named " << arg1_named->named  << " == " <<  endl;
-					 result.maptch["noum1"]->dump("               ");
-					 
-					 auto obj_resolved = exec_eval (result.maptch["noum1"], localsEntry);
-					 localsNext->locals.push_back(std::pair<string, HBlock>( arg1_named->named , obj_resolved));
-					 
+
+					 result.maptch["noum1"]->dump("               ");					 
+				     auto obj_resolved = exec_eval (result.maptch["noum1"], localsEntry);
+
+					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved);
+					 if (result_arg1.hasMatch == true)
+					 {
+						 localsNext->locals.push_back(std::pair<string, HBlock>(arg1_named->named, obj_resolved));
+						 ref_Arg_1 = obj_resolved;
+					 }
+					 else
+					 {
+						 continue; //Este match nao serve .. Proximo
+					 }
 				 } 
+
+
 
 				 if (d->argument_n->matchList.size() > 1)
 				 {
@@ -234,24 +248,43 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 						 result.maptch["noum2"]->dump("               ");
 
 						 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry);
-						 localsNext->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));
+						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved);
+						 if (result_arg2.hasMatch == true)
+						 {
+							 localsNext->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));
+							 ref_Arg_2 = obj_resolved;
+						 }
+						 else
+						 {
+							 continue; //Este match nao serve .. Proximo
+						 }
+
+						 
 					 }
 
 				 }
 			 }
 
+			 if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction >(d->output_n))
+			 {
+				return  make_shared< CExecutionBlock >(make_shared< CRunLocalScope >() , std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
+
+			 } 
 			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, d->output_n);
 			 return executionBlock;
 
 		 }
 	}
+
 	return nullptr;
 }
 
 bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {
 	HRunLocalScope localsEntry = make_shared< CRunLocalScope >();
-	return execute_now(p, localsEntry);
+	auto b =   execute_now(p, localsEntry);
+	if (b == false) cout << "fail to execute ";
+	return b;
 }
 
 
@@ -269,10 +302,22 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 	{
 		//determina quem eh o action do dynamica dispatch
 		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
-		cout << "EXEC     "  << " == " << endl;
-		dispExec->dump("        ");
-
-		return true;
+		if (dispExec != nullptr)
+		{
+			cout << "EXEC     " << " == " << endl;
+			dispExec->dump("        ");
+			return execute_now(dispExec->block , dispExec->locals);
+		}
+	}
+	if (HBlockActionCall  vCall = dynamic_pointer_cast<CBlockActionCall >(p))
+	{		 
+		 
+		{
+			cout << "CALL     " << vCall->action <<  endl;		
+			if (execute_system_action(vCall)) return true;
+			if (execute_user_action(vCall)) return true;
+			return false;
+		}
 	}
 
 

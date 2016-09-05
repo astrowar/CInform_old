@@ -330,7 +330,7 @@ void testeParser() {
 		//testeParser_listA();
 		//testeParser_listB();
 
-		 testeParser_actionB();
+		 testeParser_actionC();
        // testeParser_2();
        // testeParser_2a();
         //testeParser_3();

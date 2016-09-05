@@ -169,13 +169,15 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
 			//HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
 			HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
+			
 			std::vector<HPred> replcList;
 			replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
 			replcList.push_back(mk_HPredLiteral(res.matchs["aux"]->repr()));
 			replcList.push_back(mkHPredAny("noum1"));
+			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
 			//return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
 			auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2 }));
-			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c1a, c2 }));
+			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c1a, arg1 }));
 			return DispatchArguments(replcList, mlist1, mlist2);
 		}
 	}
@@ -196,12 +198,13 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
             //HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
 			HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
+			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
             std::vector<HPred> replcList;
             replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
             replcList.push_back(mkHPredAny("noum1"));
             //return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2}));
-            auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, c2}));
+            auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1 }));
             return DispatchArguments(replcList, mlist1, mlist2);
         }
     }
@@ -382,10 +385,10 @@ HBlock CParser::DynamicDispatch_action(std::vector<HTerm> term) {
 			n2->dump("   ");
 
 
-			if (HBlockAction vAction = std::dynamic_pointer_cast<CBlockAction>(it->output))
-			{
-				return std::make_shared<CBlockActionCall>(vAction, n1, n2);
-			}
+			//if (HBlockAction vAction = std::dynamic_pointer_cast<CBlockAction>(it->output))
+			//{
+			//	return std::make_shared<CBlockActionCall>(vAction, n1, n2);
+			//}
 			std::list<HBlock> resList = ToMatchList(it->matchPhase, res_action);
 			auto clistResults = std::make_shared<CBlockList>(resList);
 

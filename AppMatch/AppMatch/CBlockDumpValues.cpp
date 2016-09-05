@@ -286,8 +286,25 @@ void CBlockActionCall::dump(string ident) {
     {
         this->action->dump(ident + "       ");
         cout << ident << "Args: " << endl;
-        this->noum1->dump(ident + "       ");
-        this->noum2->dump(ident + "       ");
+        
+		if (this->noum1 == nullptr)
+		{
+			cout << ident << "       Nothing" << endl;
+		}
+		else
+		{
+			this->noum1->dump(ident + "       ");
+		}
+
+
+		if (this->noum2 == nullptr)
+		{
+			cout << ident << "       Nothing" << endl;
+		}
+		else
+		{
+			this->noum2->dump(ident + "       ");
+		}
 
     }
 }
@@ -523,4 +540,10 @@ void CBlockSelector_Any::dump(string ident)
 		  block->dump(ident + "       ");
 
 	  }
+  }
+
+
+  void CBlockText::dump(string ident)
+  {
+	  cout << ident << "Text:  " << contents << endl;
   }

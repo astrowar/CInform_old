@@ -35,9 +35,8 @@ void testeParser_actionB()
 	
 	interpreter->execute_init(parse.parser_stmt("understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B ", ISLOG));
-	
-	
-	interpreter->execute_now(parse.parser_stmt(" insert ( apple  and  box ) intro  box ", ISLOG));
+
+	interpreter->execute_now(parse.parser_stmt(" insert ( apple and box )  intro  box ", ISLOG));
 
 	return;
 }
@@ -47,5 +46,15 @@ void testeParser_actionB()
 
 void testeParser_actionC()
 {
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
 
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("say_text  is ( an action  applying to ( an text ) ) ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("understand : say  [ a text called X ]   as say_text  ", ISLOG)); 
+	interpreter->execute_now(parse.parser_stmt(" say  (text apple )   ", ISLOG));
+	//interpreter->execute_now(parse.parser_stmt(" say apple   ", ISLOG));
+	return;
 }

@@ -68,6 +68,14 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
         return true;
     }
 
+	// Custom derivades
+	if (HBlockText nInstanceText = dynamic_pointer_cast<CBlockText>(a ))
+	{
+		return  (b->named == "text"); //CBlock Text is instance of of Text
+			
+	}
+
+
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
             if (HBlockInstance nbase = dynamic_pointer_cast<CBlockInstance>((*it)->get_obj()))

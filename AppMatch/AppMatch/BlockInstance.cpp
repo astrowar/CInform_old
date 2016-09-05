@@ -167,3 +167,10 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 	}
 	return QUndefined;
 }
+
+
+
+
+
+
+

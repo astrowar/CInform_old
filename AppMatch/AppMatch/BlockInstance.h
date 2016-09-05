@@ -85,4 +85,28 @@ public:
 
 using HBlockInstance = std::shared_ptr<CBlockInstance>;
 
+
+
+
+
+
+
+
+//Values Instances .. Text , Number , DateTime 
+
+
+
+
+class CBlockText : public CBlockInstance //retorna um valor generico
+{
+public:
+	virtual void dump(string ident) override;
+	std::string contents;
+	CBlockText(std::string _contents) :CBlockInstance( "text", std::make_shared<CBlockKindValue>("text") ), contents(_contents) {}
+};
+using HBlockText = std::shared_ptr<CBlockText>;
+
+
+
+
 #endif //APPMATCH_BLOCKINSTANCE_H
