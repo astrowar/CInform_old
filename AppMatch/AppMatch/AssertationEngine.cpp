@@ -39,12 +39,18 @@ bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value, HRunL
 
 
 bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
-    if (auto inner = dynamic_pointer_cast<CBlockMatchIs>(dct->queryToMatch)) 
+
+ 
+	if (auto innerBlock = dynamic_pointer_cast<CBlockMatchBlock>(dct->queryToMatch))
 	{
-        
+		decides_what.push_back(dct);
+		return true;
+	}
+
+    if (auto inner = dynamic_pointer_cast<CBlockMatchIs>(dct->queryToMatch)) 
+	{        
             decides_if.push_back(make_shared<CBlockToDecideIf>(inner, dct->decideBody));
-            return true;
-        
+            return true;        
     }
     decides_what.push_back(dct);
     return true;
@@ -70,7 +76,20 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value,   HRunLoca
             return true;
         }
 
-    } else if (HBlockKind nKind = dynamic_pointer_cast<CBlockKind>(obj)) 	{
+    } 
+
+	if (HBlockAction nAction = dynamic_pointer_cast<CBlockAction>(obj)) 
+	{
+		//name da variavel
+		if (HBlockInstanceVariable variable_ = dynamic_pointer_cast<CBlockInstanceVariable>(value)) {
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
+			nAction->newNamedVariable(variable_->property_name, nkindBase);
+			return true;
+		}
+
+	}
+	
+	if (HBlockKind nKind = dynamic_pointer_cast<CBlockKind>(obj)) 	{
 		
 		if (HBlockInstanceVariable iVariableNamed = dynamic_pointer_cast<CBlockInstanceVariable>(value)) {
 			if (HBlockKind_InstanceVariable variable_ = make_shared<CBlockKind_InstanceVariable>(nKind, iVariableNamed))
@@ -120,6 +139,16 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 		}
 	}
 
+	if (HBlockAction cAction = dynamic_pointer_cast<CBlockAction>(value)) 
+	{
+		if (HBlockKindValue kAction = dynamic_pointer_cast<CBlockKindValue>(kind))
+		{					
+			if ((kAction->named == "action")) return cAction;
+			return nullptr;
+		}
+	}
+
+
 	if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(value)) {
 		HBlock resolved = resolve_noum(cnn,localsEntry);
 		if (resolved != nullptr)
@@ -142,7 +171,10 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
         }
     }
 
-
+	cout << "Unable to set " << endl;
+	value->dump("    ");
+	cout << "to -------------- " << endl;
+	kind->dump("    ");
 	return nullptr;
 
 }
@@ -170,6 +202,21 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
             }
         }
     }
+
+	if (HBlockAction cAction = dynamic_pointer_cast<CBlockAction>(obj)) {
+		if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) {
+			HVariableNamed vv = cAction->get_property(property_noum->named);
+			if (vv == nullptr)
+			{
+				cout << "Obje dont have " << property_noum->named << "property " << endl;
+			}
+			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
+			if (instanceValueRefered) {
+				cAction->set_property(property_noum->named, instanceValueRefered);
+				return true;
+			}
+		}
+	}
     return false;
 
 }
@@ -230,6 +277,10 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 
 		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) return;
+		else
+		{
+			throw "undefined variable block";
+		}
 	}
 
 	else if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {

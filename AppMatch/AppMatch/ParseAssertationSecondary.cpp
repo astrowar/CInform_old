@@ -49,7 +49,7 @@ HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {
 				
 				HBlockKindAction action = applyTO;
 				auto sActionName = CtoString(res.matchs["ActionName"]);
-				HBlock _naction = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>(sActionName));
+				HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
 				HPred actionMatch = mk_HPredLiteral(sActionName);
 
 
@@ -296,7 +296,7 @@ HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm> term)
 
             if (HBlockKindAction action = std::dynamic_pointer_cast<CBlockKindAction>(value)) {
                 auto sterm = expandBract(res.matchs["Noum"]);
-                HBlock _naction = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>(sterm->repr()));
+                HBlock _naction = std::make_shared<CBlockAction>( (sterm->repr()));
 
 
                 HPred actionMatch = convert_to_predicate(sterm.get());

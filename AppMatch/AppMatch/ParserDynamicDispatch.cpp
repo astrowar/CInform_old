@@ -134,8 +134,7 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
         if (res.result == Equals) {
             HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["verb"]->repr()));
             HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
-            HBlockMatch c3 = std::make_shared<CBlockMatchNoum>(
-                    std::make_shared<CBlockNoum>(res.matchs["with_word"]->repr()));
+          
             HBlockMatch c4 = parser_MatchArgument(res.matchs["kind2"]);
             HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
             HBlockMatch arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
@@ -143,11 +142,11 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
             std::vector<HPred> replcList;
             replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
             replcList.push_back(mkHPredAny("noum1"));
-            replcList.push_back(mk_HPredLiteral(res.matchs["with_word"]->repr()));
+            
             replcList.push_back(mkHPredAny("noum2"));
 
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2, c4}));
-            auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1, c3, arg2}));
+            auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1,   arg2}));
             return DispatchArguments(replcList, mlist1, mlist2);
 
         }
@@ -262,7 +261,7 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
 				MatchResult res_action = CMatch(sTerm, actionList);
 				if (res_action.result == Equals) {
 
-					output_noum = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>((sTerm)->repr())); //An Action !!!
+					output_noum = std::make_shared<CBlockAction>( ((sTerm)->repr())); //An Action !!!
 				}
 				else
 				{
@@ -293,7 +292,7 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
                 //MatchResult res_action = CMatch(sTerm, actionList);
 				if (res_action.result == Equals) {
 					
-					HBlockAction output_action = std::make_shared<CBlockAction>(std::make_shared<CBlockNoum>((sTerm)->repr()));
+					HBlockAction output_action = std::make_shared<CBlockAction>(((sTerm)->repr()));
 
 					output_noum = output_action;
 					DispatchArguments match_predicate = parser_buildMatchBlock_actionInput(res.matchs["What"]);

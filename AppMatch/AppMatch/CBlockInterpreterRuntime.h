@@ -14,6 +14,7 @@
 #include "CBlockDecideIf.h"
 #include "CBlockScope.h"
 #include <condition_variable>
+#include "CBlockAction.h"
 
 class CBlockAssertionBase;
 
@@ -152,7 +153,7 @@ public:
 	QueryResul get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
- 
+	QueryResul query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry);
  
  
@@ -174,8 +175,9 @@ public:
     HBlock resolve(CTerm *b);
 
     HBlock resolve_of(HBlock b, HBlock a);
-
-    bool is_derivadeOf(HBlockKind a, HBlockKind b);
+	HBlockKind resolve_system_kind(string n);
+ 
+	bool is_derivadeOf(HBlockKind a, HBlockKind b);
 
  
 
@@ -204,6 +206,7 @@ public:
 	HBlock exec_eval_assertations(HBlock c_block, HRunLocalScope localsEntry, std::function<HBlock(HBlock)> is_accetable);
  
 	HBlock exec_eval(HBlock c_block, HRunLocalScope localsEntry);
+	HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);
 	HExecutionBlock create_dispach_env(HBlockList p, HRunLocalScope localsEntry);
  
  

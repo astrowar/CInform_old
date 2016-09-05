@@ -216,11 +216,14 @@ void CBlockActionApply::dump(string ident) {
 }
 
 void CBlockAction::dump(string ident) {
-    cout << ident << "Action " << endl;
-    {
-        this->input->dump(ident + "       ");
-    }
+    cout << ident << "Action " << this->named << endl;
+     
 
+}
+
+void CBlockAction::newNamedVariable(HBlockNoum called, HBlockKind kind)
+{
+	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
 }
 
 void CBlockToDecide::dump(string ident) {
@@ -329,6 +332,34 @@ void CBlockStaticDispatch::dump(string ident) {
         this->noum2->dump(ident + "       ");
 
     }
+}
+
+HVariableNamed CBlockAction::get_property(string pnamed)
+{
+	for (auto &va : this->namedSlots)
+	{
+
+		if (va->name->named == pnamed)
+		{
+				 
+			return va;
+		}
+	}
+	return nullptr;
+}
+
+void CBlockAction::set_property(string pnamed, HBlock value)
+{
+	for (auto &va : this->namedSlots)
+	{
+
+		if (va->name->named == pnamed)
+		{
+				 
+			va->value = value;
+		}
+	}
+	return;
 }
 
 void CBlockAssertion_canBe::dump(string ident) {

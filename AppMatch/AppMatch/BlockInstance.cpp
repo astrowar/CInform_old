@@ -48,8 +48,8 @@ void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
 void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
 	this->namedSlots.push_back(make_shared< CVariableNamed>(called, kind, nullptr));
-
 }
+
 
 void CBlockInstance::set(HBlockNoum c_block)
 {

@@ -169,6 +169,13 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 		if (auto  kprop = dynamic_pointer_cast<CBlockProperty >(c_block))
 		{
+			auto instancia = exec_eval(kprop->obj, localsEntry);
+			if (HBlockInstance objInst = dynamic_pointer_cast<CBlockInstance>(instancia))
+				if (HBlockNoum propNoum = dynamic_pointer_cast<CBlockNoum>(kprop->prop))
+				{
+					HVariableNamed pvar = objInst->get_property(propNoum->named);
+					return pvar->value;
+				}
 			return nullptr;
 		}
 
@@ -189,6 +196,36 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 		// Bla ! 
 		return nullptr;
+}
+
+
+HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope localsEntry)
+{
+ 
+
+	//Execution block is not an action ??
+	if (HBlockNoum noumCall = dynamic_pointer_cast<CBlockNoum>(p))
+	{
+		auto callAs = resolve_noum(noumCall, localsEntry);
+		if (callAs != nullptr)
+		{
+			return  resolve_as_callCommand(callAs, localsEntry);
+		}
+	}
+
+	if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction>(p))
+	{
+		return actionCall;
+	}
+
+	if (HVariableNamed callAsVar = dynamic_pointer_cast<CVariableNamed>(p))
+	{
+		auto actionCall_1 = callAsVar->value;
+		return  resolve_as_callCommand(actionCall_1, localsEntry);
+	}
+	
+
+	return nullptr;
 }
 
 HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalScope localsEntry)
@@ -265,12 +302,16 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 }
 			 }
 
-			 if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction >(d->output_n))
+			 
+			 auto output_block =  resolve_as_callCommand(d->output_n, localsEntry); 
+
+
+			 if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction >(output_block))
 			 {
 				return  make_shared< CExecutionBlock >(make_shared< CRunLocalScope >() , std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
-
 			 } 
-			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, d->output_n);
+
+			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, output_block);
 			 return executionBlock;
 
 		 }
@@ -291,6 +332,9 @@ bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //executa STMT
 {	 
 
+	 
+
+
 	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
@@ -309,6 +353,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 			return execute_now(dispExec->block , dispExec->locals);
 		}
 	}
+
 	if (HBlockActionCall  vCall = dynamic_pointer_cast<CBlockActionCall >(p))
 	{		 
 		 
@@ -319,6 +364,8 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 			return false;
 		}
 	}
+
+	
 
 
 	return false;

@@ -5,6 +5,7 @@
 #include "CBlockInterpreterRuntime.h"
 #include "CblockAssertion.h"
 #include "QueryStack.h"
+#include "CResultMatch.h"
 
 using namespace std;
 
@@ -417,9 +418,40 @@ QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HRunLocalS
 	return rr;
 }
 
+
+
+QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk)
+{
+	for (HBlockToDecide &e : decides_what)
+	{
+	  CResultMatch  reMatch = Match(e->queryToMatch, e);
+	  if (reMatch.hasMatch )
+	  {
+		  return QEquals;
+		  //return   e->decideBody;
+	  }
+
+	}
+
+	return QUndefined;
+
+}
+
+
+
+
+
 QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack stk  )
 {
-if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
+	
+	//verifica se tem algum Decide aqui
+	auto qDecide = (query_decides(q, localsEntry, stk));
+	{
+		if (qDecide != QUndefined) return qDecide;
+	}
+
+
+    if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
 	{
 		return  query_not_verb(is_nverb, localsEntry , stk);
 	}

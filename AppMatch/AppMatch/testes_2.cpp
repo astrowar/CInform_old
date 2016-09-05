@@ -141,3 +141,19 @@ void testeParser_5() {
     }
 }
 
+
+void testeParser_5b() {
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG)); 
+	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+
+
+	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( special item ) : ( decide on apple  )  ", ISLOG));
+
+	auto ret = interpreter->query(parse.parser_stmt("( special item ) is apple  ", ISLOG));
+
+	return;
+
+}

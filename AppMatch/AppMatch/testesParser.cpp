@@ -335,12 +335,12 @@ void testeParser() {
        // testeParser_2a();
         //testeParser_3();
         //testeParser_4();
-        //testeParser_5();
+        testeParser_5b();
         //testeParser_6();
        //testeParser_7a();
 	   //testeParser_7b();
 		//testeParser_7c();
-		//testeParser_7d();
+		 //testeParser_7d();
       //testeParser_22();
         std::cout << ".";
     }

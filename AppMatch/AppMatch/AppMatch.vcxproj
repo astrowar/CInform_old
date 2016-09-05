@@ -149,9 +149,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseTest.h" />
+    <ClInclude Include="CBlockAction.h" />
     <ClInclude Include="BlockInstance.h" />
     <ClInclude Include="BlockInterpreter.h" />
     <ClInclude Include="CBlockDecideIf.h" />
+    <ClInclude Include="CBlockNamedVariable.h" />
     <ClInclude Include="CBlockRelation.h" />
     <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
@@ -189,6 +191,7 @@
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
     <ClCompile Include="InterpExecute.cpp" />
+    <ClCompile Include="InterpFunctionsCallcpp.cpp" />
     <ClCompile Include="InterpreterListedFunctions.cpp" />
     <ClCompile Include="InterpreterMatch.cpp" />
     <ClCompile Include="ParseAssertationSecondary.cpp" />

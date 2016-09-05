@@ -101,6 +101,25 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
     return nullptr;
 }
 
+HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
+{
+	{
+		if (n == "text") {
+			return  std::make_shared<CBlockKindValue>("text");
+		}
+
+	}
+
+	{
+		if (n == "action") {
+			return  std::make_shared<CBlockKindValue>("action");
+		}
+
+	}
+	return nullptr;
+}
+
+
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
     for (auto &defs : assertions) {
         if (HBlockKind nn = dynamic_pointer_cast<CBlockKind>(defs->get_definition())) {
@@ -109,12 +128,23 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
             }
         }
     }
+	if (auto kcustom = resolve_system_kind(n))
+	{
+		return kcustom;
+	}
+	 
+
+
     return nullptr;
 
 }
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry) {
-    // eh um kind de alguma coisa ?
+    
+	
+	
+	
+	// eh um kind de alguma coisa ?
 
 	if (localsEntry != nullptr )
 	{
@@ -142,10 +172,22 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		}
 	}
 
+
+	for (auto &adefs : actions_header) {
+
+		if (adefs->named == n->named) {
+			return adefs;
+		}
+
+	}
+
+ 
+
 	//Custom Resolvers
 
-	if (n->named == "text") {
-		return  std::make_shared<CBlockKindValue>("text");
+	if (auto kcustom = resolve_system_kind(n->named))
+	{
+		return kcustom;
 	}
 
 

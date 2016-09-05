@@ -64,6 +64,10 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
         }
     }
 
+ 
+
+
+
     if (HBlockProperty prop_n = dynamic_pointer_cast<CBlockProperty>(obj)) {
         HBlock propNamed = prop_n->prop;
         HBlock destination = prop_n->obj;
@@ -110,7 +114,7 @@ bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value)
 	if (HBlockKindAction   act = dynamic_pointer_cast<CBlockKindAction>(value)) {
 		if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
 
-			auto haction = make_shared<CBlockAction >(nbase);
+			auto haction = make_shared<CBlockAction >(nbase->named);
 			//actions_header.push_back(haction);
 			return assert_it_action(haction, value);
 		}

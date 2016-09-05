@@ -128,8 +128,15 @@ HBlockMatch CParser::parser_Match_What_Assertion(HTerm term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock body = parser_expression(res.matchs["RemainderQuery"]);
-            if (body != nullptr) {
+
+			HBlockMatch c1 = parser_MatchArgument(res.matchs["kindReturn"]); 
+			HBlock  AdjetiveMatch = parser_expression(res.matchs["RemainderQuery"]);
+
+            if (AdjetiveMatch != nullptr) 
+			{				
+				auto adjBlockMatch = std::make_shared<CBlockMatchBlock >(AdjetiveMatch);
+				return adjBlockMatch;
+				//return std::make_shared<CBlockMatchDirectIs>(c1, adjBlockMatch);
                 //return std::make_shared<CBlockMatch>(body);
 				throw "un Implmeneted";
 				return nullptr;
@@ -251,7 +258,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock a_match = parser_Match_What_Assertion(res.matchs["Match"]);
+            HBlockMatch a_match = parser_Match_What_Assertion(res.matchs["Match"]);
 
 			std::cout <<  (res.matchs["RemainBody"]->repr()) << std::endl;
 

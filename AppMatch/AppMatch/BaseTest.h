@@ -27,6 +27,8 @@ void testeParser_2a();
 void testeParser_3();
 void testeParser_4();
 void testeParser_5();
+void testeParser_5b();
+
 void testeParser_6();
 void testeParser_7a();
 void testeParser_7b();

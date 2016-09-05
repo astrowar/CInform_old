@@ -2,7 +2,11 @@
 
 
  
-HBlock CParser::parser_kind(HTerm term) { 	return parser_expression(term);}
+HBlock CParser::parser_kind(HTerm term)
+{
+
+	return parser_expression(term);
+}
 HBlock CParser::parser_kind_or_instance(HTerm term) { return parser_expression(term); }
 HBlock CParser::parser_valueReference(HTerm term) { return parser_expression(term); }
 HBlock CParser::parser_assertionTarger(HTerm term)

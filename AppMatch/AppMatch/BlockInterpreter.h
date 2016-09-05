@@ -396,34 +396,10 @@ public:
 
 using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
 
-class CBlockAction : public CBlock  // um bloco que representa uma atividade
-{
-public:
-    virtual void dump(string ident) override;
 
-    CBlockAction(  HBlock _input)
+ 
 
-            :   input(_input) {
-    }
-	 
-    HBlock input;
-};
 
-using HBlockAction = std::shared_ptr<CBlockAction>;
-
-class CBlockActionCall : public CBlock {
-public :
-    HBlockAction action;
-    HBlock noum1;
-    HBlock noum2;
-
-    CBlockActionCall(HBlockAction _action, HBlock _noum1, HBlock _noum2) : action(_action), noum1(_noum1),
-                                                                           noum2(_noum2) {}
-
-    void dump(string ident) override;
-};
-
-using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
 
 
 //Dynamic Dispatch dispacha para TODOS os undestands possiveis
@@ -437,25 +413,6 @@ public:
 };
 using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;
 
-
-
-class CBlockStaticDispatch : public CBlockAction {
-public:
-    int staticEntryTable;
-    HBlock noum1;
-    HBlock noum2;
-
-    CBlockStaticDispatch(int _staticEntryTable, HBlock _noum1, HBlock _noum2) : 
-		CBlockAction(
-			 
-            std::make_shared<CBlockNoum>("static " + std::to_string(_staticEntryTable))),
-            staticEntryTable(_staticEntryTable),
-		    noum1(_noum1), noum2(_noum2) {}
-
-    void dump(string ident) override;
-};
-
-using HBlockStaticDispatch = std::shared_ptr<CBlockStaticDispatch>;
 
 class CBlockTransform : public CBlock  // um bloco que trasnforma um valor em outro
 {
@@ -509,61 +466,6 @@ class CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( co
 };
 
 using HBlockProp = std::shared_ptr<CBlockProp>;
-
-class CBlockToDecide
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockToDecide(HBlock _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
-
-    HBlock queryToMatch;
-    HBlock decideBody;
-
-    virtual HTerm eval() { return nullptr; }
-
-    void dump(string ident) override;
-};
-
-using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
-
-class CBlockToDecidewhether
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockToDecidewhether
-            (HBlock _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
-
-    HBlock queryToMatch;
-    HBlock decideBody;
-
-    virtual HTerm eval() { return nullptr; }
-
-    void dump(string ident) override;
-};
-
-using HBlockToDecidewhether = std::shared_ptr<CBlockToDecidewhether>;
-
-
-class CBlockToDecideOn : public CBlock  // bloco que equivale a um return no decide
-{
-public:
-    CBlockToDecideOn(HBlock _decideBody) : decideBody(_decideBody) {
-    }
-
-    HBlock decideBody;
-
-    virtual HTerm eval() { return nullptr; }
-
-    void dump(string ident) override;
-};
-
-using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
 
 
  

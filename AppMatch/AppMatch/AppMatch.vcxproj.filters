@@ -139,6 +139,12 @@
     <ClInclude Include="CBlockScope.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CBlockAction.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockNamedVariable.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -287,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="ParserTextEntry.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpFunctionsCallcpp.cpp">
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

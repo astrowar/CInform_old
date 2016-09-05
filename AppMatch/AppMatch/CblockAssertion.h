@@ -4,8 +4,7 @@
 
 #include "BlockInterpreter.h"
 #include "BlockInstance.h"
-
- 
+#include "CBlockAction.h"
 
 
 class CBlockAssertionBase : public CBlock //retorna uma declaracao

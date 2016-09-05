@@ -5,6 +5,7 @@
 
 
 #include "BlockInterpreter.h"
+#include "CBlockAction.h"
 
 class CBlockMatch
         : public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel

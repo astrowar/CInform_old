@@ -12,7 +12,7 @@ void testeParser_actionA()
 	 interpreter->execute_init(parse.parser_stmt("understand : eat  [ a thing ] as eat_this ", ISLOG));
 	 interpreter->execute_init(parse.parser_stmt("understand : bite all [  thing called X ] as  eat  X  ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt(" apple is a thing  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("  bite all apple ", ISLOG));
 
 	//interpreter->execute_init(parse.parser_stmt("book is a object  ", ISLOG));
@@ -50,11 +50,20 @@ void testeParser_actionC()
 	CParser parse(interpreter);
 
 	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("thing has a text called description  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("description of apple is (text a red and round apple )  ", ISLOG));
 
 	interpreter->execute_init(parse.parser_stmt("say_text  is ( an action  applying to ( an text ) ) ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("say_text has a thing called speaker  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("understand : say  [ a text called X ]   as say_text  ", ISLOG)); 
-	interpreter->execute_now(parse.parser_stmt(" say  (text apple )   ", ISLOG));
-	//interpreter->execute_now(parse.parser_stmt(" say apple   ", ISLOG));
+
+
+	interpreter->execute_init(parse.parser_stmt("speaker of  say_text is apple ", ISLOG));
+
+	interpreter->execute_now(parse.parser_stmt(" say  (text apple) ", ISLOG));
+ 
+
+
 	return;
 }
