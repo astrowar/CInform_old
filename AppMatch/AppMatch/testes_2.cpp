@@ -200,3 +200,25 @@ void testeParser_5d() {
 	return;
 
 }
+
+void testeParser_5e() {
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("direction is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("room is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("garden is a room  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("hall is a room  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("north is a direction  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("south is a direction  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  connection relation", ISLOG));
+
+	//interpreter->execute_init(parse.parser_stmt("definition : ( a direction called thataway ) is viable if (  thataway from ( the location ) ) is ( a room )", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("definition : ( a direction called thataway ) is viable if (  thataway is north )", ISLOG));
+
+	auto ret_true = interpreter->query(parse.parser_stmt("north is viable", ISLOG));
+	return;
+}

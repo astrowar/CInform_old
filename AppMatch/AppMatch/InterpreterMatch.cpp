@@ -141,8 +141,31 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 			return CResultMatch(false);
 		}
 	}
-	 
-	 
+	
+
+	if (HBlockMatchDirectIs   mDirect = dynamic_pointer_cast<CBlockMatchDirectIs>(M))
+	{
+		if (HBlockAssertion_isDirectAssign   vDirect = dynamic_pointer_cast<CBlockAssertion_isDirectAssign>(value))
+		{
+			CResultMatch mres = Match(mDirect->obj, vDirect->get_obj()  , stk);
+			if (mres.hasMatch)
+			{
+				CResultMatch mres_k = Match(mDirect->value, vDirect->value , stk);
+				if (mres_k.hasMatch)
+				{
+					mres.append(mres_k);
+					return mres;
+
+				}
+			}	
+			else
+			{
+				return CResultMatch(false);
+			}
+		}
+	}
+
+
 	if (auto    mNoum = dynamic_pointer_cast<CBlockMatchAny>(M))
 		{
 			return CResultMatch( true );

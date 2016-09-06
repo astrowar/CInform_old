@@ -143,15 +143,9 @@ public:
    // bool MatchOld(HBlock c_block, HBlockMatch m);
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
 	HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack stk);
- 
- 
+	QueryResul getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
 
 
-
-
- 
-   
-  
 	QueryResul Selector_all(HBlock aList, HRunLocalScope localsEntry ,std::function<QueryResul(HBlock)> selector );
 	QueryResul Selector_any(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResul(HBlock)> selector );
 	QueryResul get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);

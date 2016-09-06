@@ -197,6 +197,10 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		}
 	}
 	
+
+	
+
+
 	
 	//Resolve List OR
 	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(c_block1))
@@ -455,7 +459,14 @@ QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry
 QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack stk  )
 {
 	
- 
+	for (auto dctIF : decides_if)
+	{
+		QueryResul dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
+		if (dctValueWrap_1 !=  QUndefined) 
+		{
+			return  dctValueWrap_1;
+		}
+	}
 
 
     if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))

@@ -30,6 +30,7 @@ void testeParser_5();
 void testeParser_5b();
 void testeParser_5c();
 void testeParser_5d();
+void testeParser_5e();
 
 void testeParser_6();
 void testeParser_7a();

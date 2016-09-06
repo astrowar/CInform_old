@@ -336,7 +336,8 @@ void testeParser() {
         //testeParser_3();
         //testeParser_4();
         //testeParser_5b();
-		testeParser_5d();
+		//testeParser_5d();
+		testeParser_5e();
         //testeParser_6();
        //testeParser_7a();
 	   //testeParser_7b();

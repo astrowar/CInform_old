@@ -36,3 +36,29 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 
     return nullptr;
 }
+ 
+
+QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
+{
+	CResultMatch result = this->Match(dct->queryToMatch, c_block, stk);
+	if (result.hasMatch)
+	{
+		auto localsHeader = std::make_shared< CRunLocalScope >(result.maptch);
+		HRunLocalScope localsNext = nullptr;
+		if (localsEntry != nullptr)
+		{
+			  localsNext = localsEntry->Union(localsHeader);
+		}
+		else
+		{
+			  localsNext = localsHeader;
+		}
+
+		auto rr =  query(dct->decideBody, localsNext, stk);
+		if (rr == QEquals) return  QEquals;
+		return QNotEquals;
+
+	}
+
+	return QUndefined;
+}
