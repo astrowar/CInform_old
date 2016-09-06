@@ -142,7 +142,8 @@ public:
 	string BlockNoum(HBlock c_block); 
    // bool MatchOld(HBlock c_block, HBlockMatch m);
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
-	HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, QueryStack stk);
+	HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack stk);
+ 
  
 
 

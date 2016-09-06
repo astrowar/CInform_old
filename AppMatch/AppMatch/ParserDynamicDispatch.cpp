@@ -41,11 +41,67 @@ HBlockStaticDispatch CParser::getStaticDispatchResolve(HTerm term) //Determina s
 
 }
 
+HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm> term )
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind"));
+		predList.push_back(mk_HPredLiteral("called"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
 
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind"));
+		predList.push_back(mk_HPredLiteral("-"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+	 
+ 
+	return nullptr;
+}
 
 HBlockMatch CParser::parser_MatchArgument(HTerm term) 
 {
-
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("ListKind"));
+		predList.push_back(mk_HPredLiteral("called"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
+			//cterm eh uma lista ??
+			if (CList* clist = dynamic_cast<CList*>(cterm))
+			{
+				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
+				for(auto &ci : clist->lst  )
+				{
+					auto  str_i =  ci->removeArticle()->repr();
+					HBlockMatch mi = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(str_i));
+					mmlist->matchList.push_back(mi);
+				}
+				//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["ListKind"]->removeArticle()->repr()));
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), mmlist);
+				return n1;
+			}
+		}
+	}
     {
         std::vector<HPred> predList;
         predList.push_back(mkHPredAny("kind"));
@@ -73,9 +129,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
             return n1;
         }
     }
-
 	std::cout << "Argument:  " <<  (term)->repr() << std::endl;
-
     return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(CtoString(expandBract(term)->removeArticle())));
     return nullptr;
 }

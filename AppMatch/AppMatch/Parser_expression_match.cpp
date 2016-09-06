@@ -236,6 +236,59 @@ HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm> term) {
 }
 
 
+
+HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
+{
+	{
+
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(mkHPredAny("N2"));
+		predList.push_back(mkHPredAny("N3"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					HBlockMatch n3 = parser_expression_match(res.matchs["N3"]);
+					return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 ,n3 });
+				}
+			}
+
+		}
+	}
+
+
+	{
+		 
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(mkHPredAny("N2"));	
+		
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+			
+			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				if (n2 != nullptr)
+					return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 });
+			}
+		
+		}
+	}
+	return nullptr;
+}
+
+
+
 HBlockMatch CParser::parser_expression_match(std::vector<HTerm>   lst)
 {
 
@@ -252,6 +305,17 @@ HBlockMatch CParser::parser_expression_match(std::vector<HTerm>   lst)
 		return noum_propOF;
 	}
 
+	 
+
+	HBlockMatch arg_Assign = parser_MatchArgument(lst);
+	if (arg_Assign != nullptr) {
+		return arg_Assign;
+	}
+
+	HBlockMatch list_Assign = parse_match_list(lst);
+	if (list_Assign != nullptr) {
+		return list_Assign;
+	}
 
 	HBlockMatch noum_Assign = parse_match_noum(lst);
 	if (noum_Assign != nullptr) {

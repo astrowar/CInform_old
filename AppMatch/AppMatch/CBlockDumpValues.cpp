@@ -178,6 +178,28 @@ void CBlockMatchList::dump(string ident) {
     cout << ident << "          ]" << endl;
 }
 
+void CBlockMatchAND::dump(string ident)
+{
+	cout << ident << "Match AND [" << endl;
+	{
+		for (auto i : matchList) {
+			i->dump(ident + "       ");
+		}
+	}
+	cout << ident << "          ]" << endl;
+}
+
+void CBlockMatchOR::dump(string ident)
+{
+	cout << ident << "Match OR [" << endl;
+	{
+		for (auto i : matchList) {
+			i->dump(ident + "       ");
+		}
+	}
+	cout << ident << "          ]" << endl;
+}
+
 void CBlockMatchBlock::dump(string ident)
 {
 	cout << ident << "Match Block: " << endl;
@@ -591,8 +613,23 @@ void CBlockSelector_Any::dump(string ident)
 	}
 }
 
+std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
+{
+	auto localsNext = std::make_shared< CRunLocalScope >();
+	for (auto &e : this->locals)
+	{
+		localsNext->locals.push_back(e);
+	}
 
-  void CExecutionBlock::dump(string ident) const
+	for (auto &e : other->locals)
+	{
+		localsNext->locals.push_back(e);
+	}
+
+	return localsNext;
+}
+
+void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "ExecutionBlock " << endl;
 

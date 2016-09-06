@@ -102,6 +102,50 @@ public:
 
 using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
 
+
+//And Block
+
+class CBlockMatchAND
+	: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(string ident) override;
+
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+
+	std::list<HBlockMatch> matchList;
+
+	CBlockMatchAND(std::list<HBlockMatch> _matchList) : CBlockMatch(), matchList(_matchList) {};
+};
+
+using HBlockMatchAND = std::shared_ptr<CBlockMatchAND>;
+
+
+
+
+//OR  Block
+
+class CBlockMatchOR
+	: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(string ident) override;
+
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+
+	std::list<HBlockMatch> matchList;
+
+	CBlockMatchOR(std::list<HBlockMatch> _matchList) : CBlockMatch(), matchList(_matchList) {};
+};
+
+using HBlockMatchOR = std::shared_ptr<CBlockMatchOR>;
+
+
+
+
+
+
+
 //  eating something in the presence of Lady Bracknell
 class CBlockMatchAction : public CBlockMatch // um bloco que serve para dar Match em uma Acao
 {

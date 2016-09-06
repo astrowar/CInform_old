@@ -130,7 +130,7 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 		if (res.result == Equals) {
 
 			HBlockMatch c1 = parser_MatchArgument(res.matchs["kindReturn"]);
-			HBlockMatch  AdjetiveMatch = parser_MatchArgument(res.matchs["RemainderQuery"]);
+			HBlockMatch  AdjetiveMatch = parser_expression_match(res.matchs["RemainderQuery"]);
 
 			if (AdjetiveMatch != nullptr)
 			{

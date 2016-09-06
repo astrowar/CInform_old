@@ -149,11 +149,54 @@ void testeParser_5b() {
 	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG)); 
 	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( far item ) :  ( special item )    ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is oposite of ( far item ) :  ( special item )    ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( special item ) :   apple    ", ISLOG));
 
 	auto ret = interpreter->query(parse.parser_stmt("( special item ) is apple  ", ISLOG));
 	auto ret_2 = interpreter->query(parse.parser_stmt("( far item ) is apple  ", ISLOG));
+	return;
+
+}
+
+
+void testeParser_5c() {
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is oposite of ( thing called X ) :  X   ", ISLOG));	
+
+	auto ret = interpreter->query(parse.parser_stmt(" oposite of apple  is apple  ", ISLOG));
+	
+	return;
+
+}
+
+void testeParser_5d() {
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("room is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("book is a thing  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("place is a room  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("apple can be lit  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("apple is  lit  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("the verb ( in same ) implies a equality relation ", ISLOG));
+	 
+
+	interpreter->execute_init(parse.parser_stmt("definition : ( (lit thing called T ) is in same ( room called R ) ) if ( (location of T ) is R )", ISLOG));
+
+	//interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is oposite of ( thing called X ) :  X   ", ISLOG));
+	//auto ret = interpreter->query(parse.parser_stmt(" oposite of apple  is apple  ", ISLOG));
+
+	auto ret_lit = interpreter->query(parse.parser_stmt("apple is lit ", ISLOG));
+	auto ret_true = interpreter->query(parse.parser_stmt("apple is in same  place ", ISLOG));
+	auto ret_false = interpreter->query(parse.parser_stmt("book is in same  place ", ISLOG));
 	return;
 
 }

@@ -163,6 +163,7 @@ public:
 	
 	HBlock STMT_Definition_Assertion(std::vector<HTerm> term);
 	HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
+	HBlockMatch parser_MatchArgument(std::vector<HTerm> term);
 	HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
 	HBlockList  parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep );
 	HBlockList  parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, HBlockList  CList);
@@ -247,6 +248,7 @@ public:
 	HBlockMatch parser_expression_match(HTerm term);
 	std::list<HBlockMatch> ToMatchListMatc(std::vector<HPred> pvector, MatchResult result);
 	HBlockMatch DynamicDispatch_action_match(std::vector<HTerm> term);
+	HBlockMatch parse_match_list(std::vector<HTerm> term);
 	HBlockMatch parser_expression_match(std::vector<HTerm> lst);
 };
 

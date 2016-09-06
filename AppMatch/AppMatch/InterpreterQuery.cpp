@@ -239,7 +239,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     }
 
     for (auto dct : decides_what) {
-        auto dctValueWrap = getDecidedValueOf(c_block, dct,stk);
+        auto dctValueWrap = getDecidedValueOf(c_block, dct,localsEntry, stk);
         if (dctValueWrap != nullptr) {
             auto rw =  query_is(dctValueWrap, c_block1, localsEntry, stk); //is not opnional
 			return rw;
@@ -248,7 +248,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
     for (auto dct : decides_what) 
 	{
-        auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, stk);
+        auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, localsEntry, stk);
         if (dctValueWrap_1 != nullptr) {
             return query_is(c_block, dctValueWrap_1, localsEntry,stk);  //is not opnional
         }
@@ -400,7 +400,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 	{
 		return queryVerb_ListedIn(n1, n2,localsEntry, stk);
 	}
-	return QueryResul();
+	return QUndefined;
 }
 
  
@@ -409,6 +409,8 @@ QueryResul CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocalScope lo
 {
     QueryResul rrcstm =  get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
     if (rrcstm != QUndefined) return rrcstm;
+
+
 
 	QueryResul rr =  query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2,localsEntry, stk);
 	return rr; 

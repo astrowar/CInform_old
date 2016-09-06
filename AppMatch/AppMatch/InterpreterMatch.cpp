@@ -48,7 +48,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
 				cout << inner->named << " == " << cinner->named << endl;
-				return CResultMatch(inner->named == cinner->named);
+				if (inner->named == cinner->named)
+				{
+				  return 	CResultMatch(true );
+				}
+
+				auto rcc = query_is(cinner, inner, nullptr, stk);
+				return CResultMatch(rcc == QEquals);
 				 
 			}
 	}
@@ -56,15 +62,28 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	if (auto  mAtom = dynamic_pointer_cast<CBlockMatchNoum>(M))
 	{
 		if (auto inner = std::dynamic_pointer_cast<CBlockNoum>(mAtom->inner))
+		{
+			if (auto vNoumm = std::dynamic_pointer_cast<CBlockNoum>(value))
+			{
+				if (vNoumm->named == inner->named)
+				{
+					return CResultMatch( true );
+				}
+			}
 			if (auto cInst = std::dynamic_pointer_cast<CBlockInstance>(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
-				 
+
 				auto r = query_is(cInst, inner, nullptr, stk);
-				return CResultMatch(r == QEquals);				
+				return CResultMatch(r == QEquals);
 
 			}
+
+			auto rcc = query_is(value, inner, nullptr, stk);
+			return CResultMatch(rcc == QEquals);
+		}
+
 	}
 	 
 	if (auto   mVNamed = dynamic_pointer_cast<CBlockMatchNamed>(M))
@@ -89,6 +108,39 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 		}
 	}
 
+	if (HBlockMatchAND   mAnnd = dynamic_pointer_cast<CBlockMatchAND>(M))
+	{
+		for(auto& mItem : mAnnd->matchList)
+		{
+			auto rAnnd =  Match(mItem, value, stk);
+			if (rAnnd.hasMatch == false )
+			{
+				return CResultMatch(false);
+			}
+		}		
+		return CResultMatch(true);
+		
+	}
+
+
+
+	if (HBlockMatchProperty   mProp = dynamic_pointer_cast<CBlockMatchProperty>(M))
+	{
+		if (HBlockProperty    vProp = dynamic_pointer_cast<CBlockProperty>(value))
+		{
+
+			auto rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
+			if (rProp == QEquals)
+			{
+				CResultMatch mres =  Match(mProp->obj, vProp->obj, stk);
+				return mres;
+			}
+		}
+		else
+		{
+			return CResultMatch(false);
+		}
+	}
 	 
 	 
 	if (auto    mNoum = dynamic_pointer_cast<CBlockMatchAny>(M))

@@ -12,6 +12,13 @@ public:
 	{
 		
 	}
+	CRunLocalScope( std::map<string,HBlock> varMap)
+	{
+		for( auto &e: varMap)
+		{
+			locals.push_back(e);
+		}
+	}
 
 	HBlock resolve(std::string noum)
 	{
@@ -22,6 +29,9 @@ public:
 		return nullptr;
 	}
 	void dump(string ident);
+
+
+	std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
 };
 
  

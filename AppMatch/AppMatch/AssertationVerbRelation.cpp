@@ -1,6 +1,7 @@
 #include "CBlockInterpreterRuntime.h"
 #include <iostream>
 #include "QueryStack.h"
+#include "CResultMatch.h"
 using namespace std; 
 
 
@@ -45,6 +46,32 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	{
 		return QueryResul::QUndefined;
 	} 
+
+
+	//Custom Define
+	for(auto &v : decides_if)
+	{
+		if (HBlockMatchIsVerb qVerb = dynamic_pointer_cast<CBlockMatchIsVerb>(v->queryToMatch)) 
+		{
+			cout << vb <<  " =?= " << qVerb->verb << endl;
+			if (vb == qVerb->verb)
+			{
+				CResultMatch  result_obj = Match(qVerb->obj, c_block,  stk);
+				if (result_obj.hasMatch)
+				{
+					CResultMatch  result_value = Match(qVerb->value, value, stk);
+					if (result_value.hasMatch)
+					{
+						//return v->decideBody;
+						return QueryResul::QEquals;
+					}
+
+				}
+			}
+		}
+	}
+
+
 
 	std::list<HBlockAssertion_is> &decList = alist->second;
 	for (auto &c_is : decList)
