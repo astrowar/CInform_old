@@ -58,8 +58,8 @@ class CBlockInterpreter {
     std::vector<HBlockAssertionBase> kind_variables;
 	std::vector<HBlockKind_InstanceVariable> kind_named_variables;
 
-    std::vector<HBlockToDecide> decides_what;
-    std::vector<HBlockToDecidewhether> decides_whether;
+    std::vector<HBlockToDecideWhat> decides_what;
+    std::vector<HBlockToDecideWhether> decides_whether;
     std::vector<HBlockToDecideIf> decides_if;
 
 
@@ -92,8 +92,10 @@ class CBlockInterpreter {
 
 	bool assert_newVerb(HBlockVerbRelation value);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
-	CResultMatch MatchList(HBlockMatchList M, HBlockList value);
-	CResultMatch Match(HBlockMatch M, HBlock value);
+ 
+	CResultMatch MatchList(HBlockMatchList M, HBlockList value, QueryStack stk);
+	CResultMatch Match(HBlockMatch M, HBlock value, QueryStack stk);
+ 
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
 public:
@@ -139,8 +141,9 @@ public:
 	HBlockKind getKindOf(HBlockInstance obj);
 	string BlockNoum(HBlock c_block); 
    // bool MatchOld(HBlock c_block, HBlockMatch m);
-    HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecidewhether dct);
-    HBlock getDecidedValueOf(HBlock c_block, HBlockToDecide dct);
+    HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
+	HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, QueryStack stk);
+ 
 
 
 

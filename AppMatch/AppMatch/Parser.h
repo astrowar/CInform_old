@@ -151,7 +151,9 @@ public:
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry, HBlock ret);
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
-	HBlockMatch parser_Match_What_Assertion(HTerm term);
+	HBlockMatch parser_What_Which_Assertion(HTerm term);
+	HBlockMatchIs parser_Match_IF_Assertion(HTerm term);
+ 
 
 
 	HBlock parser_What_Assertion( HTerm  term);
@@ -236,7 +238,16 @@ public:
 	HBlockArgumentInput parser_KindCalled(HTerm term);
 	HBlock STMT_relates_Assertion(std::vector<HTerm> term);
 	HBlock STMT_relates_AssertionWhen(std::vector<HTerm> term);
-	HBlock DynamicDispatch_action(std::vector<HTerm> term);
+	HBlock  DynamicDispatch_action(std::vector<HTerm> term);
+	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm> term);
+	HBlockMatch parse_match_noum(std::vector<HTerm> term);
+	HBlockMatch parse_AssertionVerb_Match(std::vector<HTerm> term);
+	HBlockMatchIs parse_AssertionDirectAssign_Match(std::vector<HTerm> term);
+	HBlockMatch parser_Verb_Match(std::vector<HTerm> term);
+	HBlockMatch parser_expression_match(HTerm term);
+	std::list<HBlockMatch> ToMatchListMatc(std::vector<HPred> pvector, MatchResult result);
+	HBlockMatch DynamicDispatch_action_match(std::vector<HTerm> term);
+	HBlockMatch parser_expression_match(std::vector<HTerm> lst);
 };
 
 

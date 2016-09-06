@@ -65,8 +65,8 @@ HBlockMatchIs CParser::parserMatchIsCondition(HTerm term)
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock body = parser_MatchArgument(res.matchs["MatchBody"]);
-            HBlock value = parser_MatchArgument(res.matchs["valueToCheck"]);
+            HBlockMatch body = parser_MatchArgument(res.matchs["MatchBody"]);
+			HBlockMatch value = parser_MatchArgument(res.matchs["valueToCheck"]);
             if (body != nullptr && value != nullptr) {
                 return std::make_shared<CBlockMatchDirectIs>(body, value);
             }

@@ -76,7 +76,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 
 	std::cout << "Argument:  " <<  (term)->repr() << std::endl;
 
-    return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(term->removeArticle()->repr()));
+    return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(CtoString(expandBract(term)->removeArticle())));
     return nullptr;
 }
 

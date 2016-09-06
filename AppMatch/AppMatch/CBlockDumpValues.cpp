@@ -196,6 +196,15 @@ void CBlockMatchDirectIs::dump(string ident)
 	}
 }
 
+void CBlockMatchDirectIsNot::dump(string ident)
+{
+	cout << ident << "Match Is Not: " << endl;
+	{
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
+}
+
 void CBlockMatchIsVerb::dump(string ident)
 {
 	cout << ident << "Match verb: "<< verb << endl;
@@ -203,6 +212,27 @@ void CBlockMatchIsVerb::dump(string ident)
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
 	}
+}
+
+void CBlockMatchIsNotVerb::dump(string ident)
+{
+	cout << ident << "Match Not verb: " << verb << endl;
+	{
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
+}
+
+void CBlockMatchProperty::dump(string ident)
+{
+	cout << ident << "Match property: " <<   endl;
+	{
+		this->prop->dump(ident + "       ");
+		cout << ident << "OF " << endl;
+		this->obj->dump(ident + "       ");
+		
+	}
+
 }
 
 void CBlockActionApply::dump(string ident) {
@@ -226,18 +256,9 @@ void CBlockAction::newNamedVariable(HBlockNoum called, HBlockKind kind)
 	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
 }
 
-void CBlockToDecide::dump(string ident) {
-    cout << ident << "To Decide " << endl;
-    {
+ 
 
-        this->queryToMatch->dump(ident + "       ");
-
-        cout << ident << "Decide for " << endl;
-        this->decideBody->dump(ident + "       ");
-    }
-}
-
-void CBlockToDecidewhether::dump(string ident) {
+void CBlockToDecideWhether::dump(string ident) {
     cout << ident << "To Decide Whether (bool)" << endl;
     {
         this->queryToMatch->dump(ident + "       ");
@@ -255,6 +276,16 @@ void CBlockToDecideIf::dump(string ident) {
         cout << ident << "IF " << endl;
         this->decideBody->dump(ident + "       ");
     }
+}
+
+void CBlockToDecideWhat::dump(string ident)
+{
+	cout << ident << "To   What " << endl;
+	{
+		this->queryToMatch->dump(ident + "       ");
+		cout << ident << "Decide for " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
 }
 
 void CBlockToDecideOn::dump(string ident) {

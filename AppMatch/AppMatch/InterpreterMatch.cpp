@@ -8,7 +8,7 @@ using namespace std;
 
 //Match engine
 
-CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
+CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value, QueryStack stk)
 {
 	if (M->matchList.size() != value->lista.size())
 	{
@@ -23,7 +23,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 	while (true)
 	{
 		if (mit == M->matchList.end()) break;
-		CResultMatch r = Match(*mit, *vit);
+		CResultMatch r = Match(*mit, *vit,stk);
 		if (r.hasMatch == false)
 		{
 			std::cout << "FAIL  item   " << std::endl;
@@ -39,7 +39,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value)
 
 }
  
-CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
+CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack stk)
 {
 	if (auto   mAtom = dynamic_pointer_cast<CBlockMatchNoum>(M))
 	{
@@ -60,7 +60,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
-				QueryStack stk = QueryStack();
+				 
 				auto r = query_is(cInst, inner, nullptr, stk);
 				return CResultMatch(r == QEquals);				
 
@@ -69,7 +69,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 	 
 	if (auto   mVNamed = dynamic_pointer_cast<CBlockMatchNamed>(M))
 	{
-		CResultMatch mres = Match(mVNamed->matchInner , value);
+		CResultMatch mres = Match(mVNamed->matchInner , value,stk);
 		if (mres.hasMatch)
 		{
 			return CResultMatch(mVNamed->named, value);
@@ -81,7 +81,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value)
 	{
 		if (HBlockList   vList = dynamic_pointer_cast<CBlockList>(value))
 		{
-			return MatchList(mList, vList);
+			return MatchList(mList, vList,stk);
 		}
 		else
 		{

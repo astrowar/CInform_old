@@ -2,8 +2,24 @@
 #include "BlockInterpreter.h" 
 #include "CBlockMatch.h"
 
-class CBlockToDecideIf
+
+
+class CBlockToDecide
         : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+    CBlockToDecide( )
+             {
+    }
+
+    virtual HTerm eval() { return nullptr; }
+    
+};
+
+
+
+class CBlockToDecideIf
+        : public CBlockToDecide  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
     CBlockToDecideIf(HBlockMatchIs _queryToMatch, HBlock _decideBody)
@@ -14,52 +30,58 @@ public:
 	HBlockMatchIs queryToMatch;
     HBlock decideBody;
 
-    virtual HTerm eval() { return nullptr; }
+     
 
     void dump(string ident) override;
 };
 
 using HBlockToDecideIf = std::shared_ptr<CBlockToDecideIf>;
+using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
 
 
-class CBlockToDecide
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+
+class CBlockToDecideWhether
+        : public CBlockToDecide   
 {
 public:
-    CBlockToDecide(HBlockMatch _queryToMatch, HBlock _decideBody)
+	CBlockToDecideWhether
+            (HBlockMatch _queryToMatch, HBlock _decideBody)
             : queryToMatch(_queryToMatch),
               decideBody(_decideBody) {
     }
 
 	HBlockMatch queryToMatch;
-    HBlock decideBody;
-
-    virtual HTerm eval() { return nullptr; }
+    HBlock decideBody;    
 
     void dump(string ident) override;
 };
 
-using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
+using HBlockToDecideWhether = std::shared_ptr<CBlockToDecideWhether>;
 
-class CBlockToDecidewhether
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+
+
+
+class CBlockToDecideWhat
+	: public CBlockToDecide   
 {
 public:
-    CBlockToDecidewhether
-            (HBlock _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
+	CBlockToDecideWhat
+	(HBlockMatch _queryToMatch, HBlock _decideBody)
+		: queryToMatch(_queryToMatch),
+		decideBody(_decideBody) {
+	}
 
-    HBlock queryToMatch;
-    HBlock decideBody;
+	HBlockMatch queryToMatch;
+	HBlock decideBody;
 
-    virtual HTerm eval() { return nullptr; }
-
-    void dump(string ident) override;
+	void dump(string ident) override;
 };
 
-using HBlockToDecidewhether = std::shared_ptr<CBlockToDecidewhether>;
+using HBlockToDecideWhat = std::shared_ptr<CBlockToDecideWhat>;
+
+
+
+
 
 
 class CBlockToDecideOn : public CBlock  // bloco que equivale a um return no decide

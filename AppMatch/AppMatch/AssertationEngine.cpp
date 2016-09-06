@@ -40,20 +40,21 @@ bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value, HRunL
 
 bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 
- 
-	if (auto innerBlock = dynamic_pointer_cast<CBlockMatchBlock>(dct->queryToMatch))
+	if (auto dct_w = dynamic_pointer_cast<CBlockToDecideWhat>(dct))
 	{
-		decides_what.push_back(dct);
+		decides_what.push_back(dct_w);
 		return true;
 	}
+ 
 
-    if (auto inner = dynamic_pointer_cast<CBlockMatchIs>(dct->queryToMatch)) 
-	{        
-            decides_if.push_back(make_shared<CBlockToDecideIf>(inner, dct->decideBody));
-            return true;        
-    }
-    decides_what.push_back(dct);
-    return true;
+	if (auto dct_if = dynamic_pointer_cast<CBlockToDecideIf>(dct))
+	{
+		decides_if.push_back(dct_if);
+		return true;
+	}
+	 
+ 
+    return false;
 }
 
 

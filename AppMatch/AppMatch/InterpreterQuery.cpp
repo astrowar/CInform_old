@@ -189,6 +189,13 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		}
 	}
 
+	if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block))
+	{
+		HBlock resolved = resolve_noum(nnoum, localsEntry);
+		if (resolved) {
+			return query_is(resolved , c_block1 , localsEntry, stk);
+		}
+	}
 	
 	
 	//Resolve List OR
@@ -232,14 +239,16 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     }
 
     for (auto dct : decides_what) {
-        auto dctValueWrap = getDecidedValueOf(c_block, dct);
+        auto dctValueWrap = getDecidedValueOf(c_block, dct,stk);
         if (dctValueWrap != nullptr) {
-            return query_is(dctValueWrap, c_block1, localsEntry, stk); //is not opnional
+            auto rw =  query_is(dctValueWrap, c_block1, localsEntry, stk); //is not opnional
+			return rw;
         }
     }
 
-    for (auto dct : decides_what) {
-        auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct);
+    for (auto dct : decides_what) 
+	{
+        auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, stk);
         if (dctValueWrap_1 != nullptr) {
             return query_is(c_block, dctValueWrap_1, localsEntry,stk);  //is not opnional
         }
@@ -422,9 +431,9 @@ QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HRunLocalS
 
 QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk)
 {
-	for (HBlockToDecide &e : decides_what)
+	for (HBlockToDecideWhat &e : decides_what)
 	{
-	  CResultMatch  reMatch = Match(e->queryToMatch, e);
+	  CResultMatch  reMatch = Match(e->queryToMatch, q,stk);
 	  if (reMatch.hasMatch )
 	  {
 		  return QEquals;
@@ -444,11 +453,7 @@ QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry
 QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack stk  )
 {
 	
-	//verifica se tem algum Decide aqui
-	auto qDecide = (query_decides(q, localsEntry, stk));
-	{
-		if (qDecide != QUndefined) return qDecide;
-	}
+ 
 
 
     if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))

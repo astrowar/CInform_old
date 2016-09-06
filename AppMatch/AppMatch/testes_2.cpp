@@ -149,11 +149,11 @@ void testeParser_5b() {
 	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG)); 
 	interpreter->execute_init(parse.parser_stmt("apple is a thing  ", ISLOG));
 
-
-	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( special item ) : ( decide on apple  )  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( far item ) :  ( special item )    ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("to decide what ( thing ) is ( special item ) :   apple    ", ISLOG));
 
 	auto ret = interpreter->query(parse.parser_stmt("( special item ) is apple  ", ISLOG));
-
+	auto ret_2 = interpreter->query(parse.parser_stmt("( far item ) is apple  ", ISLOG));
 	return;
 
 }

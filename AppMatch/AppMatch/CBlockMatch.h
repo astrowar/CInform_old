@@ -131,9 +131,9 @@ class CBlockMatchIs  : public CBlockMatch // um bloco que serve para dar Match e
 {
 public:
  
-	HBlock  obj;
-	HBlock  value;
-	CBlockMatchIs(HBlock  _obj, HBlock _value ) : CBlockMatch(), obj(_obj) , value(_value ) {};
+	HBlockMatch  obj;
+	HBlockMatch  value;
+	CBlockMatchIs(HBlockMatch  _obj, HBlockMatch _value ) : CBlockMatch(), obj(_obj) , value(_value ) {};
 };
 using HBlockMatchIs = std::shared_ptr<CBlockMatchIs>;
 
@@ -145,10 +145,20 @@ class CBlockMatchDirectIs : public CBlockMatchIs // um bloco que serve para dar 
 public:
 	virtual void dump(string ident) override;
  
-	CBlockMatchDirectIs(HBlock  _obj, HBlock _value) : CBlockMatchIs(_obj , _value )   {};
+	CBlockMatchDirectIs(HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj , _value )   {};
 };
 using HBlockMatchDirectIs = std::shared_ptr<CBlockMatchDirectIs>;
 
+
+
+class CBlockMatchDirectIsNot : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+{
+public:
+	virtual void dump(string ident) override;
+
+	CBlockMatchDirectIsNot(HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value) {};
+};
+using HBlockMatchDirectIsNot = std::shared_ptr<CBlockMatchDirectIsNot>;
 
 
 
@@ -157,9 +167,31 @@ class CBlockMatchIsVerb : public CBlockMatchIs // um bloco que serve para dar Ma
 public:
 	virtual void dump(string ident) override; 
 	std::string verb;
-	CBlockMatchIsVerb(string _verb , HBlock  _obj, HBlock _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
+	CBlockMatchIsVerb(string _verb , HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
 };
 using HBlockMatchIsVerb = std::shared_ptr<CBlockMatchIsVerb>;
 
+
+class CBlockMatchIsNotVerb : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+{
+public:
+	virtual void dump(string ident) override;
+	std::string verb;
+	CBlockMatchIsNotVerb(string _verb, HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
+};
+using HBlockMatchIsNotVerb = std::shared_ptr<CBlockMatchIsNotVerb>;
+
+
+
+class CBlockMatchProperty : public CBlockMatch //retorna um valor generico
+{
+public:
+	void dump(string ident) override;
+	CBlockMatchProperty(HBlock _prop, HBlockMatch b): prop(_prop), obj(b){}
+	HBlock prop;
+	HBlockMatch obj;
+
+};
+using HBlockMatchProperty = std::shared_ptr<CBlockMatchProperty>;
 
 #endif //CBLOCKMATCH_H

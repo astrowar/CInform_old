@@ -118,32 +118,35 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
     return nullptr;
 }
 
-HBlockMatch CParser::parser_Match_What_Assertion(HTerm term) {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_What_Which());
-        predList.push_back(mkHPredAny("kindReturn"));
-        predList.push_back(verb_IS());
-        predList.push_back(mkHPredAny("RemainderQuery"));
+HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_What_Which());
+		predList.push_back(mkHPredAny("kindReturn"));  // which (Person) is (the targert)
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("RemainderQuery"));
 
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
 
-			HBlockMatch c1 = parser_MatchArgument(res.matchs["kindReturn"]); 
-			HBlock  AdjetiveMatch = parser_expression(res.matchs["RemainderQuery"]);
+			HBlockMatch c1 = parser_MatchArgument(res.matchs["kindReturn"]);
+			HBlockMatch  AdjetiveMatch = parser_MatchArgument(res.matchs["RemainderQuery"]);
 
-            if (AdjetiveMatch != nullptr) 
-			{				
-				auto adjBlockMatch = std::make_shared<CBlockMatchBlock >(AdjetiveMatch);
-				return adjBlockMatch;
-				//return std::make_shared<CBlockMatchDirectIs>(c1, adjBlockMatch);
-                //return std::make_shared<CBlockMatch>(body);
+			if (AdjetiveMatch != nullptr)
+			{
+				//auto adjBlockMatch = std::make_shared<CBlockMatchBlock >(AdjetiveMatch);
+				return AdjetiveMatch;
+				//return std::make_shared<CBlockMatchDirectIs>(c1, AdjetiveMatch);
+				//return std::make_shared<CBlockMatch>(body);
 				throw "un Implmeneted";
 				return nullptr;
-            }
-        }
-    }
-
+			}
+		}
+	}
+	return nullptr;
+}
+HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
+{
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("if"));
@@ -154,10 +157,10 @@ HBlockMatch CParser::parser_Match_What_Assertion(HTerm term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{
-            HBlock AValue = parser_assertionTarger(res.matchs["AValue"]);
+			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_expression(res.matchs["BValue"]);
+			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
@@ -177,10 +180,10 @@ HBlockMatch CParser::parser_Match_What_Assertion(HTerm term) {
 		{
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 
-			HBlock AValue = parser_assertionTarger(res.matchs["AValue"]);
+			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock BValue = parser_expression(res.matchs["BValue"]);
+			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockMatchIsVerb >(vrepr, AValue, BValue);
@@ -213,40 +216,7 @@ HBlock CParser::parseAssertion_DecideWhat(HTerm term) {
 
 HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 
-    //{
-    //	// is a kind definition ??
-    //	std::vector<HPred> predList;
-
-
-    //	//predList.push_back(mkHPredList("initial_part", { mk_HPredLiteral("to") , mk_HPredLiteral("decide") , mk_What_Which() }));
-
-    //	predList.push_back(mk_HPredLiteral("to"));
-    //	predList.push_back(mk_HPredLiteral("decide"));
-    //	predList.push_back(mk_What_Which());
-    //
-    //	predList.push_back(mkHPredAny("KindToReturn"));
-
-
-    //	   auto L_is_the = mkHPredList("verb", { verb_IS(), mk_HPredLiteral("the") });
-    //	   auto L_is = mkHPredList("verb", { verb_IS() });
-    //	   predList.push_back(mkHPredBooleanOr("verb_part", verb_IS(), L_is_the));
-
-
-    //	predList.push_back(mkHPredAny("ValueToDecide"));
-    //	predList.push_back(mk_HPredLiteral(":"));
-    //	predList.push_back(mkHPredAny("RemainBody"));
-    //	MatchResult res = CMatch(term, predList);
-
-    //	if (res.result == Equals)
-    //	{
-    //		HBlockMatch   noumVariable = std::make_shared<CBlockMatch>(parseAssertion_DecideWhat( res.matchs["ValueToDecide"] ) );
-    //		HBlockKind          baseKind = std::make_shared<CBlockKind>(res.matchs["KindToReturn"]->removeArticle()->repr());
-
-    //		HBlock    body =   std::make_shared<CBlockNoum>(res.matchs["RemainBody"]->removeArticle()->repr());
-
-    //		return  std::make_shared<CBlockToDefine>(baseKind, noumVariable , body);
-    //	}
-    //}
+   
 
     {
         std::vector<HPred> predList;
@@ -258,13 +228,23 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockMatch a_match = parser_Match_What_Assertion(res.matchs["Match"]);
+            HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
+			if (a_match)
+			{
+				std::cout << (res.matchs["RemainBody"]->repr()) << std::endl;
+				HBlock body = parser_expression(res.matchs["RemainBody"]);
+				return std::make_shared<CBlockToDecideIf>(a_match, body);
+			}
 
-			std::cout <<  (res.matchs["RemainBody"]->repr()) << std::endl;
 
-            HBlock body = parser_expression(res.matchs["RemainBody"]);
+			HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
+			if (w_match)
+			{
+				std::cout << (res.matchs["RemainBody"]->repr()) << std::endl;
+				HBlock body = parser_expression(res.matchs["RemainBody"]);
+				return std::make_shared<CBlockToDecideWhat>(w_match, body);
+			}
 
-            return std::make_shared<CBlockToDecide>(a_match, body);
         }
     }
 

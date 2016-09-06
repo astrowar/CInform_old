@@ -222,6 +222,7 @@
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="ParserTextEntry.cpp" />
     <ClCompile Include="Parser_A.cpp" />
+    <ClCompile Include="Parser_expression_match.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />
     <ClCompile Include="QueryItem.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
