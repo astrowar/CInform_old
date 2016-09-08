@@ -53,6 +53,11 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 		return true;
 	}
 	 
+	if (auto dct_noum1 = dynamic_pointer_cast<CBlockToDecideWhat_FirstNoum>(dct))
+	{
+		decides_noum1.push_back(dct_noum1);
+		return true;
+	}
  
     return false;
 }

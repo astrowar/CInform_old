@@ -152,12 +152,13 @@ public:
 	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
 	HBlockMatch parser_What_Which_Assertion(HTerm term);
+	HBlockMatchIs parser_What_Which_Verb_Assertion(HTerm term);
 	HBlockMatchIs parser_Match_IF_Assertion(HTerm term);
  
 
 
-	HBlock parser_What_Assertion( HTerm  term);
-	HBlock parseAssertion_DecideWhat( HTerm  term);
+ 
+	 
 	HBlock parseAssertion_isDecide(std::vector<HTerm> term);
 	HBlock parserBoolean(  HTerm  term);
 	

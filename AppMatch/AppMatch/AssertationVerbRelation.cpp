@@ -72,6 +72,32 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	}
 
 
+	// Match com o primeiro Noum
+
+
+	//Custom Define
+	for (auto &v : decides_noum1)
+	{
+		if (HBlockMatchIsVerb qVerb_N1 = dynamic_pointer_cast<CBlockMatchIsVerb>(v->queryToMatch))
+		{
+			
+			if (vb == qVerb_N1->verb)
+			{
+				cout << vb << " =?= " << qVerb_N1->verb << endl;
+				CResultMatch  result_value = Match(qVerb_N1->value, value, stk); // o resto da match ??
+				if (result_value.hasMatch)
+				{
+					auto  obj_resolved = v->decideBody;
+					value->dump("   ");
+					obj_resolved->dump("  ");
+					
+					return query_is(c_block, obj_resolved,localsEntry,stk );
+				}
+			}
+		}
+	}
+
+
 
 	std::list<HBlockAssertion_is> &decList = alist->second;
 	for (auto &c_is : decList)

@@ -28,9 +28,8 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 		{
 			HRunLocalScope localsNext = localsHeader;
 		}
-
-		
-
+		 
+		//Execute body
         return dct->decideBody;
     }
 

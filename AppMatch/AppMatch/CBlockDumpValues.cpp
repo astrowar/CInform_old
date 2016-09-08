@@ -310,6 +310,16 @@ void CBlockToDecideWhat::dump(string ident)
 	}
 }
 
+void CBlockToDecideWhat_FirstNoum::dump(string ident)
+{
+	cout << ident << "To  What N1 " << endl;
+	{
+		this->queryToMatch->dump(ident + "       ");
+		cout << ident << "Decide for " << endl;
+		this->decideBody->dump(ident + "       ");
+	}
+}
+
 void CBlockToDecideOn::dump(string ident) {
     cout << ident << "DecideOn " << endl;
     {

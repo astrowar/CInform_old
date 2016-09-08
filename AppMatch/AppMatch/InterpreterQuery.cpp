@@ -176,6 +176,8 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 	return QUndefined;
 }
 
+
+
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     if (stk.isQuery("is", c_block, c_block1 )) return QUndefined;
     stk.addQuery("is", c_block, c_block1);
@@ -244,7 +246,9 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
     for (auto dct : decides_what) {
         auto dctValueWrap = getDecidedValueOf(c_block, dct,localsEntry, stk);
-        if (dctValueWrap != nullptr) {
+        if (dctValueWrap != nullptr) 
+		{
+		 
             auto rw =  query_is(dctValueWrap, c_block1, localsEntry, stk); //is not opnional
 			return rw;
         }
@@ -252,6 +256,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
     for (auto dct : decides_what) 
 	{
+		
         auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, localsEntry, stk);
         if (dctValueWrap_1 != nullptr) {
             return query_is(c_block, dctValueWrap_1, localsEntry,stk);  //is not opnional
@@ -377,7 +382,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 		}
 	}
 
-	//Resolve List OR
+	//Resolve List ALL
 	if (HBlockSelector_All  selector_all = dynamic_pointer_cast<CBlockSelector_All>(n1))
 	{
 		return Selector_all( selector_all->what , localsEntry,[&](HBlock e1 )
@@ -388,7 +393,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 	}
 
 
-	//Resolve List OR
+	//Resolve List ANY
 	if (HBlockSelector_Any  selector_any = dynamic_pointer_cast<CBlockSelector_Any>(n1))
 	{
 		return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)

@@ -47,7 +47,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 			if (auto cinner = std::dynamic_pointer_cast<CBlockNoum>(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
-				cout << inner->named << " == " << cinner->named << endl;
+				cout << cinner->named << " == " <<  inner->named << endl;
 				if (inner->named == cinner->named)
 				{
 				  return 	CResultMatch(true );
@@ -142,6 +142,29 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 		}
 	}
 	
+	// Customized verb
+	if (HBlockMatchIsVerb    mVerb = dynamic_pointer_cast<CBlockMatchIsVerb>(M))
+	{
+		if (HBlockIsVerb    vVerb = dynamic_pointer_cast<CBlockIsVerb>(value))
+		{
+			CResultMatch mres = Match(mVerb->obj, vVerb->n1, stk);
+			if (mres.hasMatch)
+			{
+				CResultMatch mres_k = Match(mVerb->value, vVerb->n2 , stk);
+				if (mres_k.hasMatch)
+				{
+					mres.append(mres_k);
+					return mres;
+				}
+			}
+			else
+			{
+				return CResultMatch(false);
+			}
+
+		}
+	}
+
 
 	if (HBlockMatchDirectIs   mDirect = dynamic_pointer_cast<CBlockMatchDirectIs>(M))
 	{

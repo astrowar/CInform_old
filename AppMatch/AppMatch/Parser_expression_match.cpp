@@ -239,6 +239,40 @@ HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm> term) {
 
 HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
 {
+
+	{
+
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(mkHPredAny("N2"));
+		predList.push_back(mkHPredAny("N3"));
+		predList.push_back(mkHPredAny("N4"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					HBlockMatch n3 = parser_expression_match(res.matchs["N3"]);
+					if (n3 != nullptr)
+					{
+						HBlockMatch n4 = parser_expression_match(res.matchs["N4"]);
+						if (n4 != nullptr)
+						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2, n3 , n4});
+					}
+
+					
+				}
+			}
+
+		}
+	}
+
+
 	{
 
 		std::vector<HPred> predList;

@@ -61,6 +61,7 @@ class CBlockInterpreter {
     std::vector<HBlockToDecideWhat> decides_what;
     std::vector<HBlockToDecideWhether> decides_whether;
     std::vector<HBlockToDecideIf> decides_if;
+	std::vector<HBlockToDecideWhat_FirstNoum> decides_noum1;
 
 
 	std::vector<HBlockAction> actions_header;

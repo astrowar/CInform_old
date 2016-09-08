@@ -80,6 +80,29 @@ public:
 using HBlockToDecideWhat = std::shared_ptr<CBlockToDecideWhat>;
 
 
+//First Noum .... Serve para identificar o primeiro Noum de uma sentenca com verbo no meio
+
+
+
+class CBlockToDecideWhat_FirstNoum
+	: public CBlockToDecide
+{
+public:
+	CBlockToDecideWhat_FirstNoum
+	(HBlockMatchIs _queryToMatch, HBlock _decideBody)
+		: queryToMatch(_queryToMatch),
+		decideBody(_decideBody) {
+	}
+
+	HBlockMatchIs queryToMatch;  //Obrigatorio ser um Query IS
+	HBlock decideBody;
+
+	void dump(string ident) override;
+};
+
+using HBlockToDecideWhat_FirstNoum = std::shared_ptr<CBlockToDecideWhat_FirstNoum>;
+
+
 
 
 
