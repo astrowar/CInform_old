@@ -59,7 +59,19 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testes_1.cpp
         AppMatch/AppMatch/testes_2.cpp
         AppMatch/AppMatch/testes_decide.cpp
+        AppMatch/AppMatch/teste_action.cpp
         AppMatch/AppMatch/AssertationVerbRelation.cpp
+        AppMatch/AppMatch/ParserSelectorFunctional.cpp
+        AppMatch/AppMatch/InterpreterListedFunctions.cpp
+
+        AppMatch/AppMatch/InterpFunctionsCallcpp.cpp
+        AppMatch/AppMatch/ParserTextEntry.cpp
+        AppMatch/AppMatch/Parser_expression_match.cpp
+        AppMatch/AppMatch/Parser_Decide.cpp
+        AppMatch/AppMatch/ParserDynamicDispatch.cpp
+        AppMatch/AppMatch/InterpreterMatch.cpp
+        AppMatch/AppMatch/InterpExecute.cpp
+        AppMatch/AppMatch/CResultMatch.cpp
 
 
         AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)

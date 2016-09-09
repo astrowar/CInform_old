@@ -79,7 +79,7 @@ void testeParser_listB()
 	interpreter->execute_init(parse.parser_stmt("items is a list of object  that varies", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("items is  ( diary, book and box )", ISLOG));
 
-	QueryResul q_all_of = interpreter->query(parse.parser_stmt(" (all distance of items ) is far   ", ISLOG));
+	QueryResul q_all_of = interpreter->query(parse.parser_stmt(" (all distance of items ) is (near or far)   ", ISLOG));
 
 
 	return;

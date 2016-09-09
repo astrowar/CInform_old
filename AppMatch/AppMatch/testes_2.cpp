@@ -256,7 +256,7 @@ void testeParser_5f() {
 	interpreter->execute_init(parse.parser_stmt(
 	"to decide what ( direction )  points to exit of ( room called R )   : north ", ISLOG));
 	
-	auto ret_true_a = interpreter->query(parse.parser_stmt("south points to exit of hall  ", ISLOG));
+	auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
 	
 
 
