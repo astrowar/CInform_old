@@ -15,7 +15,7 @@ HBlock CBlockInterpreter::getDecidedWhether(HBlock c_block, HBlock c_block1, HBl
 HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
     HBlockMatch match = std::dynamic_pointer_cast<CBlockMatch>(dct->queryToMatch);
 
-	CResultMatch result = this->Match(match, c_block, stk);
+	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
     if (result.hasMatch ) 
 	{
  
@@ -39,7 +39,8 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 
 QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
 {
-	CResultMatch result = this->Match(dct->queryToMatch, c_block, stk);
+	if(localsEntry != nullptr) localsEntry->dump("   ");
+	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 	if (result.hasMatch)
 	{
 		auto localsHeader = std::make_shared< CRunLocalScope >(result.maptch);

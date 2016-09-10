@@ -237,7 +237,10 @@ void testeParser_5f() {
 	interpreter->execute_init(parse.parser_stmt("south is a direction  ", ISLOG));
 
 	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  connection relation", ISLOG));
+
 	interpreter->execute_init(parse.parser_stmt("the verb (points to)  implies a  wearing relation", ISLOG));
+    interpreter->execute_init(parse.parser_stmt("the verb (exits to)  implies a  wearing relation", ISLOG));
+
 	interpreter->execute_init(parse.parser_stmt("the verb  wears  implies a  wearing relation", ISLOG));
 	 interpreter->execute_init(parse.parser_stmt("the verb  in  implies a  _in relation", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("to decide what ( room ) is ( north from  hall ) :  garden   ", ISLOG));
@@ -255,10 +258,22 @@ void testeParser_5f() {
 
 	interpreter->execute_init(parse.parser_stmt(
 	"to decide what ( direction )  points to exit of ( room called R )   : north ", ISLOG));
-	
-	auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
-	
 
 
-	return;
+    interpreter->execute_init(parse.parser_stmt(
+            "to decide if (room called R ) exits to ( direction called D ) :  D points to exit of R  ", ISLOG));
+
+
+    interpreter->execute_init(parse.parser_stmt(
+            " south points to exit of garden  ", ISLOG));
+
+
+	//auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
+
+   // auto ret_true_a = interpreter->query(parse.parser_stmt("hall exits to south   ", ISLOG));
+
+    auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
+
+
+    return;
 }

@@ -3,7 +3,7 @@
 #ifndef CBLOCKMATCH_H
 #define CBLOCKMATCH_H
 
-
+#include <iostream>
 #include "BlockInterpreter.h"
 #include "CBlockAction.h"
 
@@ -211,7 +211,13 @@ class CBlockMatchIsVerb : public CBlockMatchIs // um bloco que serve para dar Ma
 public:
 	virtual void dump(string ident) override; 
 	std::string verb;
-	CBlockMatchIsVerb(string _verb , HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
+	CBlockMatchIsVerb(string _verb , HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {
+		if (_verb == "from")
+		{
+			std::cout << "wrong" << std::endl;
+		}
+
+	};
 };
 using HBlockMatchIsVerb = std::shared_ptr<CBlockMatchIsVerb>;
 

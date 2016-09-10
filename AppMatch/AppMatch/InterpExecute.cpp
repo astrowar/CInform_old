@@ -233,7 +233,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 	QueryStack stk;
 	for (auto &d : dynamic_understand)
 	{
-		auto result = (Match(d->input_n, p, stk));
+		auto result = (Match(d->input_n, p, localsEntry, stk));
 		if (result.hasMatch)
 		 {
 			 cout << "Dispatch " << endl;
@@ -262,7 +262,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 					 result.maptch["noum1"]->dump("               ");					 
 				     auto obj_resolved = exec_eval (result.maptch["noum1"], localsEntry);
 
-					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved, stk);
+					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved,  localsEntry,stk);
 					 if (result_arg1.hasMatch == true)
 					 {
 						 localsNext->locals.push_back(std::pair<string, HBlock>(arg1_named->named, obj_resolved));
@@ -286,7 +286,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 						 result.maptch["noum2"]->dump("               ");
 
 						 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry);
-						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved, stk);
+						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved, localsEntry , stk);
 						 if (result_arg2.hasMatch == true)
 						 {
 							 localsNext->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));

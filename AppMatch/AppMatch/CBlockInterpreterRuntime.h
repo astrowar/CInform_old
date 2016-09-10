@@ -94,8 +94,8 @@ class CBlockInterpreter {
 	bool assert_newVerb(HBlockVerbRelation value);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
  
-	CResultMatch MatchList(HBlockMatchList M, HBlockList value, QueryStack stk);
-	CResultMatch Match(HBlockMatch M, HBlock value, QueryStack stk);
+	CResultMatch MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk);
+	CResultMatch Match(HBlockMatch M, HBlock value,HRunLocalScope localsEntry, QueryStack stk);
  
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);

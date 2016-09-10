@@ -114,9 +114,10 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            HBlock AValue = parser_expression_match(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
-
+            auto r =  res.matchs["AValue"].get();
+			std::cout <<  r->repr() << std::endl;
            // return std::make_shared<CBlockMatch>(AValue);
 			throw "un Implmeneted";
 			return nullptr;

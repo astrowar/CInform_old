@@ -140,38 +140,34 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 }
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry) {
-    
-	
-	
-	
+
+
+
+
 	// eh um kind de alguma coisa ?
 
-	if (localsEntry != nullptr )
-	{
+	if (localsEntry != nullptr) {
 		auto lnoum = localsEntry->resolve(n->named);
 		if (lnoum != nullptr) return lnoum;
 	}
 
-
-    for (auto &defs : assertions) {
-        if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
-            //std::cout << nn->named << std::endl;
-            if (nn->named == n->named) {
-                return defs->get_definition();
-            }
-        } 
-    }
-
-	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs )) {
+	for (auto &defs : assertions) {
+		if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
 			//std::cout << nn->named << std::endl;
-			if (nnvar->name->named  == n->named)
-			{
-				return nnvar ;
+			if (nn->named == n->named) {
+				return defs->get_definition();
 			}
 		}
 	}
 
+	for (auto &defs : global_variables) {
+		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
+			//std::cout << nn->named << std::endl;
+			if (nnvar->name->named == n->named) {
+				return nnvar;
+			}
+		}
+	}
 
 	for (auto &adefs : actions_header) {
 
@@ -181,17 +177,19 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 
 	}
 
- 
+
 
 	//Custom Resolvers
 
-	if (auto kcustom = resolve_system_kind(n->named))
-	{
+	if (auto kcustom = resolve_system_kind(n->named)) {
 		return kcustom;
 	}
 
-
-    cout << "Fail to " << n->named << endl;
+	cout << "Fail to " << n->named << endl;
+	if (n->named == "D")
+	{
+		return nullptr;
+	}
     return nullptr;
 
 

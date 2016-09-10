@@ -444,7 +444,7 @@ QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry
 {
 	for (HBlockToDecideWhat &e : decides_what)
 	{
-	  CResultMatch  reMatch = Match(e->queryToMatch, q,stk);
+	  CResultMatch  reMatch = Match(e->queryToMatch, q, localsEntry, stk);
 	  if (reMatch.hasMatch )
 	  {
 		  return QEquals;

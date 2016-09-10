@@ -26,7 +26,9 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 				return true; // ja existe
 			}
 		}
-		decList.push_back(make_shared<CBlockAssertion_isDirectAssign>(c_block, value));
+		//decList.push_back(make_shared<CBlockAssertion_isDirectAssign>(c_block, value));
+
+		decList.push_back( make_shared<CBlockIsVerb>( vb,  c_block, value));
 		return true ;
 	}
 
@@ -56,16 +58,32 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 			cout << vb <<  " =?= " << qVerb->verb << endl;
 			if (vb == qVerb->verb)
 			{
-				CResultMatch  result_obj = Match(qVerb->obj, c_block,  stk);
+				CResultMatch  result_obj = Match(qVerb->obj, c_block, localsEntry, stk);
 				if (result_obj.hasMatch)
 				{
-					CResultMatch  result_value = Match(qVerb->value, value, stk);
+					CResultMatch  result_value = Match(qVerb->value, value, localsEntry , stk);
 					if (result_value.hasMatch)
 					{
 						//return v->decideBody;
 						return QueryResul::QEquals;
 					}
 
+				}
+			}
+		}
+	}
+
+	// Match com o What
+
+	for(auto &dct : decides_what)
+	{
+		if (HBlockMatchIsVerb qVerb = dynamic_pointer_cast<CBlockMatchIsVerb>(dct->queryToMatch)) {
+			cout << vb << " =?= " << qVerb->verb << endl;
+			if (qVerb->verb == vb) {
+				HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
+				if (wvalued != nullptr) {
+					auto wresult = query_is(c_block, wvalued, localsEntry, stk);
+					return wresult;
 				}
 			}
 		}
@@ -84,7 +102,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 			if (vb == qVerb_N1->verb)
 			{
 				cout << vb << " =?= " << qVerb_N1->verb << endl;
-				CResultMatch  result_value = Match(qVerb_N1->value, value, stk); // o resto da match ??
+				CResultMatch  result_value = Match(qVerb_N1->value, value, localsEntry, stk); // o resto da match ??
 				if (result_value.hasMatch)
 				{
 					auto  obj_resolved = v->decideBody;

@@ -8,7 +8,7 @@ using namespace std;
 
 //Match engine
 
-CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value, QueryStack stk)
+CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk)
 {
 	if (M->matchList.size() != value->lista.size())
 	{
@@ -23,7 +23,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value, 
 	while (true)
 	{
 		if (mit == M->matchList.end()) break;
-		CResultMatch r = Match(*mit, *vit,stk);
+		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
 		if (r.hasMatch == false)
 		{
 			std::cout << "FAIL  item   " << std::endl;
@@ -39,7 +39,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value, 
 
 }
  
-CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack stk)
+CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
 {
 	if (auto   mAtom = dynamic_pointer_cast<CBlockMatchNoum>(M))
 	{
@@ -53,7 +53,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 				  return 	CResultMatch(true );
 				}
 
-				auto rcc = query_is(cinner, inner, nullptr, stk);
+				auto rcc = query_is(cinner, inner, localsEntry, stk);
 				return CResultMatch(rcc == QEquals);
 				 
 			}
@@ -75,12 +75,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
-				auto r = query_is(cInst, inner, nullptr, stk);
+				auto r = query_is(cInst, inner, localsEntry, stk);
 				return CResultMatch(r == QEquals);
 
 			}
 
-			auto rcc = query_is(value, inner, nullptr, stk);
+			auto rcc = query_is(value, inner, localsEntry, stk);
 			return CResultMatch(rcc == QEquals);
 		}
 
@@ -88,7 +88,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	 
 	if (auto   mVNamed = dynamic_pointer_cast<CBlockMatchNamed>(M))
 	{
-		CResultMatch mres = Match(mVNamed->matchInner , value,stk);
+		CResultMatch mres = Match(mVNamed->matchInner , value, localsEntry,stk);
 		if (mres.hasMatch)
 		{
 			return CResultMatch(mVNamed->named, value);
@@ -100,7 +100,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	{
 		if (HBlockList   vList = dynamic_pointer_cast<CBlockList>(value))
 		{
-			return MatchList(mList, vList,stk);
+			return MatchList(mList, vList,localsEntry ,stk);
 		}
 		else
 		{
@@ -112,7 +112,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	{
 		for(auto& mItem : mAnnd->matchList)
 		{
-			auto rAnnd =  Match(mItem, value, stk);
+			auto rAnnd =  Match(mItem, value, localsEntry, stk);
 			if (rAnnd.hasMatch == false )
 			{
 				return CResultMatch(false);
@@ -132,7 +132,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 			auto rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
 			if (rProp == QEquals)
 			{
-				CResultMatch mres =  Match(mProp->obj, vProp->obj, stk);
+				CResultMatch mres =  Match(mProp->obj, vProp->obj, localsEntry, stk);
 				return mres;
 			}
 		}
@@ -147,10 +147,10 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	{
 		if (HBlockIsVerb    vVerb = dynamic_pointer_cast<CBlockIsVerb>(value))
 		{
-			CResultMatch mres = Match(mVerb->obj, vVerb->n1, stk);
+			CResultMatch mres = Match(mVerb->obj, vVerb->n1, localsEntry, stk);
 			if (mres.hasMatch)
 			{
-				CResultMatch mres_k = Match(mVerb->value, vVerb->n2 , stk);
+				CResultMatch mres_k = Match(mVerb->value, vVerb->n2 , localsEntry,stk);
 				if (mres_k.hasMatch)
 				{
 					mres.append(mres_k);
@@ -170,10 +170,10 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, QueryStack s
 	{
 		if (HBlockAssertion_isDirectAssign   vDirect = dynamic_pointer_cast<CBlockAssertion_isDirectAssign>(value))
 		{
-			CResultMatch mres = Match(mDirect->obj, vDirect->get_obj()  , stk);
+			CResultMatch mres = Match(mDirect->obj, vDirect->get_obj(),localsEntry  , stk);
 			if (mres.hasMatch)
 			{
-				CResultMatch mres_k = Match(mDirect->value, vDirect->value , stk);
+				CResultMatch mres_k = Match(mDirect->value, vDirect->value , localsEntry ,stk);
 				if (mres_k.hasMatch)
 				{
 					mres.append(mres_k);
