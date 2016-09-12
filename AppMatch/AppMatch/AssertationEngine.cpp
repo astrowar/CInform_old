@@ -357,7 +357,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		
 	}
 
-    if ( HBlockRelation    dn_relation = dynamic_pointer_cast<CBlockRelation >(p))
+    if (HBlockRelationBase    dn_relation = dynamic_pointer_cast<CBlockRelationBase >(p))
     {
         if (assert_newRelation(dn_relation)) return;
 

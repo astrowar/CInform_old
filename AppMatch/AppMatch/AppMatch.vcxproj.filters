@@ -145,6 +145,9 @@
     <ClInclude Include="CBlockNamedVariable.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="CBlockCommand.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -302,6 +305,15 @@
     </ClCompile>
     <ClCompile Include="Parser_Decide.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="testes_Relation.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpreterRelationEngine.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="CInterpreterRelation.cpp">
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,6 +10,36 @@
 using namespace std;
 
 
+bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry)
+{
+
+	// Eh uma relacao ??
+	for (auto & rv : verbRelationAssoc)
+	{
+		if (rv.first == vverb->verb)
+		{
+			auto relation_name = rv.second->named;
+			if (relation_name == "dynamic")
+			{
+				cout << " dynamic relations is READ ONLY " << std::endl;
+				return false;
+			}
+			auto rel_find = this->staticRelation.find(relation_name);
+			if (rel_find != this->staticRelation.end())
+			{
+				HBlockRelationBase rel = rel_find->second;
+				this->set_relation(rel, vverb->n1, vverb->n2);
+				return true;
+			}
+		}
+
+	}
+	return false;
+}
+
+
+
+
 bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope localsEntry)
 {
 	if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
@@ -334,9 +364,13 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 {	 
 
 	 
+	if (HBlockIsVerb vverb = dynamic_pointer_cast<CBlockIsVerb >(p)) {
+ 
+		if (execute_verb_set(vverb, localsEntry))
+			return true;
+	}
 
-
-	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
+	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_isDirectAssign >(p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
 		execute_set(obj, value,localsEntry);

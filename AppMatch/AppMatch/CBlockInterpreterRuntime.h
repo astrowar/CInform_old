@@ -44,7 +44,7 @@ class CBlockInterpreter {
     std::vector<HBlockAssertion_is> assertions;
 
 //Relations
-	std::map<string, HBlockRelation > staticRelation;
+	std::map<string, HBlockRelationBase > staticRelation;
     std::list<HBlockRelationInstance > relInstances;
 
 
@@ -96,6 +96,7 @@ class CBlockInterpreter {
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
 	bool setVerb(string cs, HBlock c_block, HBlock value);
+	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value);
 	QueryResul query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
 
@@ -119,7 +120,7 @@ public:
 	void dump_instance(string str);
 	bool assert_newUnderstand(HBlockUnderstandDynamic value);
 
-	bool assert_newRelation(HBlockRelation rel);
+	bool assert_newRelation(HBlockRelationBase rel);
 
 	bool assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	void execute_init(HBlock p);
@@ -210,6 +211,8 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
+	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
 	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
 	HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);

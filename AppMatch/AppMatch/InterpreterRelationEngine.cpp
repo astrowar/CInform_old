@@ -12,7 +12,7 @@
 
 using namespace std;
 
-bool CBlockInterpreter::assert_newRelation(HBlockRelation rel) {
+bool CBlockInterpreter::assert_newRelation(HBlockRelationBase rel) {
     // processa uma nova relacao
     string nrel = rel->named;
     if (staticRelation.find(nrel) != staticRelation.end()) {

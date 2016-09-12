@@ -10,7 +10,13 @@ void testeRelation1() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 
-
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("direction is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("room is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("garden is a room  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("hall is a room  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("key is a thing  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("box is a thing  ", ISLOG));
 
     std::list< std::string >  slist(	{
                                                 "Marriage relates (a person ) to another",
@@ -31,43 +37,21 @@ void testeRelation1() {
 
     std::cout << std::endl;
 
+	interpreter->execute_init(parse.parser_stmt("unloking relates (a thing ) to another", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb  unlock  implies a  unloking relation", ISLOG));
 
 
-	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("direction is a kind  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("room is a kind  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("garden is a room  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("hall is a room  ", ISLOG));
+	std::cout << std::endl;
 
-	interpreter->execute_init(parse.parser_stmt("north is a direction  ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("south is a direction  ", ISLOG));
+	interpreter->execute_now (parse.parser_stmt("   key unlock box  ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  direction relation", ISLOG));
-
-	interpreter->execute_init(parse.parser_stmt("the verb (points to)  implies a  dynamic relation", ISLOG));
-    interpreter->execute_init(parse.parser_stmt("the verb (exits to)  implies a  dynamic relation", ISLOG));
-
-	interpreter->execute_init(parse.parser_stmt("the verb  wears  implies a  dynamic relation", ISLOG));
-	 interpreter->execute_init(parse.parser_stmt("the verb  in  implies a  dynamic relation", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("to decide what ( room ) is ( north from  hall ) :  garden   ", ISLOG));
-	interpreter->execute_init(parse.parser_stmt("to decide what ( room ) is ( south from  garden ) :  hall   ", ISLOG));
-
-
-	interpreter->execute_init(parse.parser_stmt(
-	"to decide what ( direction )  points to exit of ( room called R )   : north ", ISLOG));
-
-
-    interpreter->execute_init(parse.parser_stmt(
-            "to decide if (room called R ) exits to ( direction called D ) :  D points to exit of R  ", ISLOG));
-
-
-    interpreter->execute_init(parse.parser_stmt(
-            " south points to exit of garden  ", ISLOG));
-
+ 
+	std::cout << std::endl;
+	 
 
 	//auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
 
-    auto ret_true_a = interpreter->query(parse.parser_stmt("hall exits to north   ", ISLOG));
+    auto ret_true_a = interpreter->query(parse.parser_stmt(" key unlock box ", ISLOG));
 
    // auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
 

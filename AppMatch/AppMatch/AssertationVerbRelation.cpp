@@ -35,11 +35,57 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 }
 
 
+QueryResul CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+{
+	// Percorre todos e retorna o valor
+	for(auto &rr : relInstances)
+	{		
+		if (rr->relation == rel )
+		{
+			if (QEquals == query_is(rr->value1, c_block, localsEntry, stk) )
+				if (QEquals == query_is(rr->value2, value, localsEntry, stk))
+				{
+
+					
+				}
+		}
+	}
+	return QUndefined;
+}
+
 QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 
 	if (stk.isQuery(vb, c_block, value)) return QUndefined;
 	stk.addQuery(vb, c_block, value);
+
+
+
+
+	// Tem alguma relacao associada ??
+	for (auto & rv : verbRelationAssoc)
+	{
+		if (rv.first == vb)
+		{
+			auto relation_name = rv.second->named;
+			if (relation_name != "dynamic")
+			{
+				auto rel_find = this->staticRelation.find(relation_name);
+				if (rel_find != this->staticRelation.end())
+				{
+					HBlockRelationBase rel = rel_find->second;
+					QueryResul rel_query = this->query_relation(rel,  c_block , value);
+					if (rel_query == QEquals) return  QEquals;
+					return QNotEquals;
+				}
+			}
+		}
+
+	}
+
+
+	
+
 
 
 	auto alist = verbAssertation.find(vb);

@@ -106,7 +106,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 			if (arg1 != nullptr)
 			{
 				auto arg2 = std::make_shared<CBlockArgumentInput>(arg1->kind, "");
-				return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2);
+				return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,true,true);
 			}
 		}
 	}
@@ -133,7 +133,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				auto arg2 = std::make_shared<CBlockArgumentInput>(arg1->kind, "");
 				if (arg2 != nullptr)
 				{
-					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}
 		}
@@ -165,7 +165,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2, true,true);
 				}
 			}
 
@@ -193,7 +193,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,true,false);
 				}
 			}
 
@@ -221,7 +221,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,true);
 				}
 			}
 		} 
@@ -253,7 +253,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}
 		}
@@ -279,7 +279,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}
 
