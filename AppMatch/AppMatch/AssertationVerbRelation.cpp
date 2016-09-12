@@ -38,16 +38,53 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 QueryResul CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 	// Percorre todos e retorna o valor
-	for(auto &rr : relInstances)
-	{		
-		if (rr->relation == rel )
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation == rel)
 		{
-			if (QEquals == query_is(rr->value1, c_block, localsEntry, stk) )
-				if (QEquals == query_is(rr->value2, value, localsEntry, stk))
+			QueryResul query_2 = QUndefined;
+			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+			{
+				if (QEquals == query_is(value,rr->value2, localsEntry, stk))
 				{
-
-					
+					return QEquals;
 				}
+				query_2 = QNotEquals;
+				if (rr->relation->is_various_noum1() == false)
+				{
+					return QNotEquals;
+				}
+			}
+			else if (QUndefined == query_2 )
+			{
+				if (QEquals == query_is(value, rr->value2, localsEntry, stk))
+				{
+					if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+					{
+						return QEquals;
+					}
+					if (rr->relation->is_various_noum2() == false)
+					{
+						return QNotEquals;
+					}
+				}
+			}
+
+
+			if (rr->relation->is_symetric()) // Trocado
+			{
+				if (QEquals == query_is(c_block, rr->value2, localsEntry, stk))
+				{
+					if (QEquals == query_is(value, rr->value1, localsEntry, stk))
+					{
+						return QEquals;
+					}
+					if (rr->relation->is_various_noum1() == false)
+					{
+						return QNotEquals;
+					}
+				}
+			}
 		}
 	}
 	return QUndefined;
@@ -74,7 +111,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 				if (rel_find != this->staticRelation.end())
 				{
 					HBlockRelationBase rel = rel_find->second;
-					QueryResul rel_query = this->query_relation(rel,  c_block , value);
+					QueryResul rel_query = this->query_relation(rel,  c_block , value,localsEntry,stk);
 					if (rel_query == QEquals) return  QEquals;
 					return QNotEquals;
 				}

@@ -96,7 +96,7 @@ class CBlockInterpreter {
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
 	bool setVerb(string cs, HBlock c_block, HBlock value);
-	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value);
+	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
 

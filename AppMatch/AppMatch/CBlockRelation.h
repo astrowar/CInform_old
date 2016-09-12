@@ -56,7 +56,7 @@ public:
 	CBlockSimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b,bool _various_1, bool _various_2) : CBlockRelationBase(_named, input_a, input_b ,_various_1,_various_2)
 	{
 	}
-	virtual bool is_symetric()override { return false; }
+	virtual bool is_symetric()override { return true ; }
 };
 using HBlockSimetricRelation = std::shared_ptr<CBlockSimetricRelation>;
 
@@ -71,7 +71,7 @@ public:
 	{
 	}
 
-	 virtual bool is_symetric()override { return true; }
+	 virtual bool is_symetric()override { return false; }
 };
 
  
