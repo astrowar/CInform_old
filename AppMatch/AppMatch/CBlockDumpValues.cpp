@@ -15,6 +15,7 @@
 #include <iostream>
 #include "CBlockRelation.h"
 #include "CBlockScope.h"
+#include "CBlockCommand.h"
 
 
 using namespace std;
@@ -656,3 +657,21 @@ void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "Text:  " << contents << endl;
   }
+
+
+void CBlockRelationInstance::dump(string ident)
+{
+    cout << ident << "Relation Instance of " << this->relation->named << endl;
+    {
+        this->value1->dump(ident + "       ");
+        this->value2->dump(ident + "       ");
+    }
+}
+
+void CBlockNow::dump(string ident) {
+    cout << ident << "Now " <<  endl;
+    {
+        this->assertation->dump(ident + "       ");
+    }
+
+}

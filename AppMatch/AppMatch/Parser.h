@@ -195,7 +195,7 @@ public:
 	HBlockEnums  parseAssertion_EnumTerms(  HTerm  elist);
 
 
-	HBlock parse_AssertionVerb(std::vector<HTerm> term);
+	HBlockAssertion_is parse_AssertionVerb(std::vector<HTerm> term);
 	HBlockKindAction parse_AssertionAction_secondPart(HTerm term);
 	HBlock parse_AssertionAction(std::vector<HTerm> term);
 	HBlock parse_AssertionIsVariable(std::vector<HTerm> lst);
@@ -251,6 +251,10 @@ public:
 	HBlockMatch DynamicDispatch_action_match(std::vector<HTerm> term);
 	HBlockMatch parse_match_list(std::vector<HTerm> term);
 	HBlockMatch parser_expression_match(std::vector<HTerm> lst);
+
+    HBlock STMT_system_Assertion(std::vector<HTerm> term);
+
+	HBlock sys_now_action(std::vector<HTerm> term);
 };
 
 

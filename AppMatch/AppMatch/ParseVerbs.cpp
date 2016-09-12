@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-HBlock CParser::parse_AssertionVerb(std::vector<HTerm> term) {
+HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
     {
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;

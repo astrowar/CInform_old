@@ -101,6 +101,9 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
 
+	HBlock rblock_system_stmt = (STMT_system_Assertion(lst));
+	if (rblock_system_stmt != nullptr) return rblock_system_stmt;
+
     HBlock rblock_understand_1 = (STMT_understand_Assertion(lst));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
@@ -113,7 +116,7 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
     HBlock rblock_verb_1 = (STMT_verb_Assertion(lst));
     if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
-    HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst));
+    HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst)); //To define ...
     if (rblock_definition_1 != nullptr) return rblock_definition_1;
 
     HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst));

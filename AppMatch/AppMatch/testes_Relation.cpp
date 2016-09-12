@@ -31,7 +31,7 @@ void testeRelation1() {
 
     std::cout << std::endl;
 
-    return;
+
 
 	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("direction is a kind  ", ISLOG));
