@@ -15,15 +15,17 @@
 #include "CBlockScope.h"
 #include <condition_variable>
 #include "CBlockAction.h"
+#include "CBlockRelation.h"
+#include "QueryStack.h"
 
-class CBlockAssertionBase;
+ class CBlockAssertionBase;
 
 class CBlockAssertion_is;
 
 using HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;
 using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
-class QueryStack;
+
 
 
 class CResultMatch;
@@ -41,8 +43,13 @@ class CBlockInterpreter {
     std::vector<NoumDefinition> nregisters;
     std::vector<HBlockAssertion_is> assertions;
 
-	
-	std::map<string, HBlock> verbRelationAssoc;
+//Relations
+	std::map<string, HBlockRelation > staticRelation;
+    std::list<HBlockRelationInstance > relInstances;
+
+
+//Verb to relation
+	std::map<string, HBlockNoum > verbRelationAssoc;
 	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
  
 
@@ -58,6 +65,7 @@ class CBlockInterpreter {
     std::vector<HBlockAssertionBase> kind_variables;
 	std::vector<HBlockKind_InstanceVariable> kind_named_variables;
 
+//Decides
     std::vector<HBlockToDecideWhat> decides_what;
     std::vector<HBlockToDecideWhether> decides_whether;
     std::vector<HBlockToDecideIf> decides_if;
@@ -110,6 +118,9 @@ public:
 
 	void dump_instance(string str);
 	bool assert_newUnderstand(HBlockUnderstandDynamic value);
+
+	bool assert_newRelation(HBlockRelation rel);
+
 	bool assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	void execute_init(HBlock p);
 
@@ -215,6 +226,10 @@ public:
 	bool execute_user_action(HBlockActionCall v_call);
 	//Executa este bloco !
 	bool execute_now(HBlock p, HRunLocalScope localsEntry);
+
+    bool queryIsVerbToRelation(HBlockMatch m);
+
+
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

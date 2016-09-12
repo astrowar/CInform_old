@@ -524,7 +524,7 @@ void CBlockVerbRelation::dump(string ident) {
 	cout << ident << "Verb  " << endl;
 	this->verbNoum->dump(ident + "       ");
 	cout << ident << "Implies " << endl;
-	this->relation->dump(ident + "       ");
+	this->relationNoum->dump(ident + "       ");
 }
 
 void CVariableNamed::dump(string ident)

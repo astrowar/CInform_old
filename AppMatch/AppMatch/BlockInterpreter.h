@@ -344,10 +344,10 @@ class CBlockVerbRelation : public CBlock    //retorna uma declaracao
 public:
     virtual void dump(string ident) override;
 
-    HBlock verbNoum; // Pode ser simples ou com a preposicao
-    HBlock relation;
+    HBlock  verbNoum; // Pode ser simples ou com a preposicao
+    HBlockNoum relationNoum;
 
-    CBlockVerbRelation(HBlock _noum, HBlock _relation) : verbNoum((_noum)), relation((_relation)) {};
+    CBlockVerbRelation(HBlock  _noum, HBlockNoum _relationNoum) : verbNoum((_noum)), relationNoum((_relationNoum)) {};
 };
 using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
 

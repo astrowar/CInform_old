@@ -236,13 +236,13 @@ void testeParser_5f() {
 	interpreter->execute_init(parse.parser_stmt("north is a direction  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("south is a direction  ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  connection relation", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  direction relation", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("the verb (points to)  implies a  wearing relation", ISLOG));
-    interpreter->execute_init(parse.parser_stmt("the verb (exits to)  implies a  wearing relation", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb (points to)  implies a  dynamic relation", ISLOG));
+    interpreter->execute_init(parse.parser_stmt("the verb (exits to)  implies a  dynamic relation", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("the verb  wears  implies a  wearing relation", ISLOG));
-	 interpreter->execute_init(parse.parser_stmt("the verb  in  implies a  _in relation", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb  wears  implies a  dynamic relation", ISLOG));
+	 interpreter->execute_init(parse.parser_stmt("the verb  in  implies a  dynamic relation", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("to decide what ( room ) is ( north from  hall ) :  garden   ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("to decide what ( room ) is ( south from  garden ) :  hall   ", ISLOG));
 
@@ -270,9 +270,9 @@ void testeParser_5f() {
 
 	//auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
 
-   // auto ret_true_a = interpreter->query(parse.parser_stmt("hall exits to south   ", ISLOG));
+    auto ret_true_a = interpreter->query(parse.parser_stmt("hall exits to north   ", ISLOG));
 
-    auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
+   // auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
 
 
     return;

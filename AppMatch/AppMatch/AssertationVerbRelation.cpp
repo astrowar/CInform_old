@@ -152,12 +152,21 @@ bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock ob
 
 bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 {
+	std::string vstr = HtoString(value->verbNoum);
+	//verifica se ja existe esse verbo
 
-	std::string vstr = HtoString(value->verbNoum); 
+	auto vfind = verbAssertation.find(vstr);
+	if (vfind != verbAssertation.end() )
+	{
+		throw  "Verb is Assigned";
+		return false;
+	}
+
 	cout << " new Verb |" <<vstr  <<"|"<< endl;
 	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
 
-	verbRelationAssoc[vstr] = value->relation;
+    // Existe essa relacao ??
+	verbRelationAssoc[vstr] = value->relationNoum;
  
 
 	return true;

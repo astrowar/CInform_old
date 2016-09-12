@@ -100,7 +100,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
@@ -124,7 +125,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
@@ -155,7 +157,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			{
 				auto arg2 = parser_KindCalled(res.matchs["K2"]);
@@ -182,7 +185,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			{
 				auto arg2 = parser_KindCalled(res.matchs["K2"]);
@@ -208,7 +212,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
@@ -239,7 +244,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
@@ -264,7 +270,8 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			string rname = res.matchs["relationName"]->removeArticle()->repr();
+			//string rname = res.matchs["relationName"]->removeArticle()->repr();
+			string rname = CtoString(res.matchs["relationName"]->removeArticle());
 			auto arg1 = parser_KindCalled(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{

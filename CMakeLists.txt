@@ -74,6 +74,6 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CResultMatch.cpp
 
 
-        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)
+        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp AppMatch/AppMatch/InterpreterRelationEngine.cpp)
 
 add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)

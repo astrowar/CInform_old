@@ -337,13 +337,16 @@ void testeParser() {
         //testeParser_4();
         //testeParser_5b();
 		//testeParser_5d();
-		testeParser_5f();
+		//testeParser_5f();
         //testeParser_6();
        //testeParser_7a();
 	   //testeParser_7b();
 		//testeParser_7c();
 		 //testeParser_7d();
       //testeParser_22();
+
+        testeRelation1();
+
         std::cout << ".";
     }
     std::cout << std::endl;

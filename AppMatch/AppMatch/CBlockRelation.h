@@ -63,3 +63,21 @@ public:
 
 };
 using HBlockASimetricRelation = std::shared_ptr<CBlockASimetricRelation>;
+
+
+//Relation Connection Per Se
+class CBlockRelationInstance : public CBlock
+{
+public:
+	virtual void dump(string ident) override;
+	HBlockRelation relation;
+	HBlock value1 ;
+	HBlock value2 ;
+
+	CBlockRelationInstance(HBlockRelation _relation, HBlock _value1 , HBlock  _value2) : relation( _relation), value1(_value1), value2(_value2)
+	{
+	}
+
+};
+using HBlockRelationInstance = std::shared_ptr<CBlockRelationInstance>;
+

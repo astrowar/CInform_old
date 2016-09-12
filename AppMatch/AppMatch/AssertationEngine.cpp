@@ -5,6 +5,7 @@
 #include <iostream>
 #include "CBlockUndestand.h"
 #include "CBlockDecideIf.h"
+#include "CBlockRelation.h"
 
 using namespace std;
 
@@ -36,12 +37,37 @@ bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value, HRunL
 }
 
 
+bool CBlockInterpreter::queryIsVerbToRelation( HBlockMatch m)
+{
+	if (auto vv = dynamic_pointer_cast<CBlockMatchIsVerb>(m))
+	{
+		auto cfind = verbRelationAssoc.find(vv->verb);
+		if (cfind != verbRelationAssoc.end())
+		{
+           if (cfind->second->named != "dynamic")
+           {
+               std::cout << "verb " << vv->verb << " belongs to relation " << cfind->second->named << std::endl;
+               return true;
+           }
+		}
+	}
+	return false;
+}
 
 
 bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 
+
+
+
 	if (auto dct_w = dynamic_pointer_cast<CBlockToDecideWhat>(dct))
 	{
+        if (queryIsVerbToRelation(dct_w->queryToMatch))
+        {
+
+            throw "Verb is Assigned to an static Relation ";
+        }
+
 		decides_what.push_back(dct_w);
 		return true;
 	}
@@ -49,12 +75,21 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 
 	if (auto dct_if = dynamic_pointer_cast<CBlockToDecideIf>(dct))
 	{
+        if (queryIsVerbToRelation(dct_if->queryToMatch))
+        {
+            throw "Verb is Assigned to an static Relation ";
+        }
 		decides_if.push_back(dct_if);
 		return true;
 	}
 	 
 	if (auto dct_noum1 = dynamic_pointer_cast<CBlockToDecideWhat_FirstNoum>(dct))
 	{
+        if (queryIsVerbToRelation(dct_noum1->queryToMatch))
+        {
+            throw "Verb is Assigned to an static Relation ";
+        }
+
 		decides_noum1.push_back(dct_noum1);
 		return true;
 	}
@@ -322,6 +357,11 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		
 	}
 
+    if ( HBlockRelation    dn_relation = dynamic_pointer_cast<CBlockRelation >(p))
+    {
+        if (assert_newRelation(dn_relation)) return;
+
+    }
 
 
     cout << "not found block definition " << endl;
