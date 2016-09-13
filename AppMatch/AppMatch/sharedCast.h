@@ -79,3 +79,4 @@ HBlockAssertion_InstanceVariable asHBlockAssertion_InstanceVariable(HBlock* c );
 HBlockAssertion_isInstanceOf asHBlockAssertion_isInstanceOf(HBlock* c ); 
 HBlockDinamicDispatch asHBlockDinamicDispatch(HBlock* c ); 
 HBlockNow asHBlockNow(HBlock* c ); 
+
