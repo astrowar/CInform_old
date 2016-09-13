@@ -10,7 +10,7 @@
 enum BlockType {
 	BlockEnum,
 	BlockKind,
-	BlockUnresolved,
+	Unresolved,
 	BlockKindOf,
 	BlockKindAction,
 	BlockKindValue,
@@ -23,7 +23,7 @@ enum BlockType {
 	BlockProperty,
 	BlockAssertion_isDefaultAssign,
 	BlockNoum,
-	Kind_InstanceVariable,
+	BlockKind_InstanceVariable,
 	BlockAssertion_isDirectAssign,
 	BlockAssertion_canBe,
 	BlockAssertion_is,
@@ -140,7 +140,7 @@ class CUnresolved : public CBlock {
 
 	CUnresolved(string named);
 	
-	virtual BlockType type() override { return BlockType::BlockUnresolved; }
+	virtual BlockType type() override { return BlockType::Unresolved; }
 
     string contents;
 
@@ -148,6 +148,7 @@ class CUnresolved : public CBlock {
         return noum_nothing();  // define nada
     };
 };
+using HUnresolved= std::shared_ptr<CUnresolved>;
 
 using UBlock = CBlock *;
 
@@ -349,7 +350,7 @@ class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
 {
 public:
 	void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::Kind_InstanceVariable  ; }
+	virtual BlockType type() override { return BlockType::BlockKind_InstanceVariable; }
 	CBlockKind_InstanceVariable(HBlockKind  _kind , HBlockInstanceVariable _variableNamed):variableNamed(_variableNamed), kind(_kind){}
 	HBlockInstanceVariable variableNamed;
 	HBlockKind kind;

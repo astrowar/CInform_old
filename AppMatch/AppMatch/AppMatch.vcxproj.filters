@@ -148,6 +148,12 @@
     <ClInclude Include="CBlockCommand.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="dynamicCast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedCast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -314,6 +320,12 @@
     </ClCompile>
     <ClCompile Include="CInterpreterRelation.cpp">
       <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamicCast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sharedCast.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

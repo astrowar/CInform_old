@@ -176,11 +176,13 @@
     <ClInclude Include="CResultMatch.h" />
     <ClInclude Include="CValueDefinitions.h" />
     <ClInclude Include="CVariableDefinition.h" />
+    <ClInclude Include="dynamicCast.h" />
     <ClInclude Include="EqualsResult.h" />
     <ClInclude Include="FEnviroment.h" />
     <ClInclude Include="GrammarParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="QueryStack.h" />
+    <ClInclude Include="sharedCast.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -191,6 +193,7 @@
     <ClCompile Include="CInterpreterRelation.cpp" />
     <ClCompile Include="CResultMatch.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
+    <ClCompile Include="dynamicCast.cpp" />
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
     <ClCompile Include="InterpExecute.cpp" />
@@ -231,6 +234,7 @@
     <ClCompile Include="ParseVerbs.cpp" />
     <ClCompile Include="QueryItem.cpp" />
     <ClCompile Include="RepresentationFunctions.cpp" />
+    <ClCompile Include="sharedCast.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="testeLista.cpp" />

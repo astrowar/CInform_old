@@ -6,6 +6,7 @@
 #include "CblockAssertion.h"
 #include "QueryStack.h"
 #include "CResultMatch.h"
+#include "dynamicCast.h"
 
 using namespace std;
 
@@ -38,8 +39,8 @@ CBlockInterpreter::~CBlockInterpreter() {
 //}
 
 QueryResul CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_block1) {
-    if (CBlockList *lst1 = dynamic_cast<CBlockList*>(c_block)) {
-        if (CBlockList *lst2 = dynamic_cast<CBlockList*>(c_block1))
+    if (CBlockList *lst1 = asCBlockList(c_block)) {
+        if (CBlockList *lst2 = asCBlockList(c_block1))
         {
             if (lst1->lista.size() != lst2->lista.size()) return QNotEquals;
 

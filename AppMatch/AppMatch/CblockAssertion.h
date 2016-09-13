@@ -189,6 +189,9 @@ public:
     CBlockAssertion_isForbiddenAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
                                                                          value( (_value)) {};
 };
+using HBlockAssertion_isForbiddenAssign = std::shared_ptr<CBlockAssertion_isForbiddenAssign>;
+
+
 
 class CBlockAssertion_isDirectAssign : public CBlockAssertion_is //retorna uma declaracao
 {
@@ -242,7 +245,7 @@ public:
                                                                                                                  _application) {};
 };
 
-
+using HBlockAssertion_isActionOf = std::shared_ptr<CBlockAssertion_isActionOf>;
 
 class CBlockIsVerb : public CBlockAssertion_is    //retorna uma declaracao
 {

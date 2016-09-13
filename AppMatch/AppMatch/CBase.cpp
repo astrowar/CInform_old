@@ -99,12 +99,12 @@ EqualsResul equals(CTerm *c1, CTerm *c2) {
     q = equals(asCList(c1), asCList(c2));
     if (q != Undefined) return q;*/
 
-	q = equals(asCString(c1), asCString(c2));
-	if (q != Undefined) return q;
-	q = equals(asCNumber(c1), asCNumber(c2));
-	if (q != Undefined) return q;
-	q = equals(asCList(c1), asCList(c2));
-	if (q != Undefined) return q;
+    q = equals(asCString(c1), asCString(c2));
+    if (q != Undefined) return q;
+    q = equals(asCNumber(c1), asCNumber(c2));
+    if (q != Undefined) return q;
+    q = equals(asCList(c1), asCList(c2));
+    if (q != Undefined) return q;
 
     return Undefined;
 }
@@ -123,20 +123,20 @@ HTerm make_list(std::initializer_list<HTerm> x) {
 
 CList* asCList(CTerm* c)
 {
-	if (c->type() == TermList) return static_cast<CList*>(c);
-	return nullptr;
+    if (c->type() == TermList) return static_cast<CList*>(c);
+    return nullptr;
 }
 
 CNumber* asCNumber(CTerm* c)
 {
-	if (c->type() == TermNumber) return static_cast<CNumber*>(c);
-	return nullptr;
+    if (c->type() == TermNumber) return static_cast<CNumber*>(c);
+    return nullptr;
 }
 
 CString* asCString(CTerm* c)
 {
-	if (c->type() == TermString) return static_cast<CString*>(c);
-	return nullptr;
+    if (c->type() == TermString) return static_cast<CString*>(c);
+    return nullptr;
 }
 
 HTerm make_string(std::string x) {

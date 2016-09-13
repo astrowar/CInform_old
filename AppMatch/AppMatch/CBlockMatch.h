@@ -33,7 +33,7 @@ public:
 
     CBlockMatchAny() : CBlockMatch( ) {};
 };
-
+using HBlockMatchAny = std::shared_ptr<CBlockMatchAny>;
 
 class CBlockMatchNamed : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 {
@@ -59,7 +59,7 @@ public:
 	HBlockNoum  inner;
 	CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inner) {};
 };
-using HCBlockMatchNoum = std::shared_ptr<CBlockMatchNoum>;
+using HBlockMatchNoum = std::shared_ptr<CBlockMatchNoum>;
 
 
 
@@ -77,6 +77,7 @@ public:
 
     CBlockMatchKind(HBlockKind _kindInnter) : CBlockMatch( ), kind(_kindInnter) {};
 };
+using HBlockMatchKind = std::shared_ptr<CBlockMatchKind>;
 
 
 class CBlockMatchWith : public CBlockMatch // um bloco que serve para dar Match  no match anterior
