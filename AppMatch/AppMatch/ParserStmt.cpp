@@ -39,7 +39,7 @@ HBlock   CParser::parser_VerbAssign(std::vector<HTerm> term)
 
 HBlock CParser::parser_expression(HTerm  term)
 {
-	if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+	if (CList *vlist = asCList(term.get())) {
 		auto r = parser_expression(vlist->asVector());
 		/*if (r == nullptr)
 		std::cout << term->repr() << std::endl;*/

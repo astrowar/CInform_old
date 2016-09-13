@@ -7,7 +7,7 @@ class CBlockArgumentInput : public CBlock //retorna um valor generico
 {
 public:
 	virtual void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockArgumentInput; }
 	CBlockArgumentInput(HBlockKind _kind,string _named): kind(_kind),named(_named){}
 
 	HBlockKind kind;
@@ -52,6 +52,7 @@ class CBlockSimetricRelation : public CBlockRelationBase
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockSimetricRelation; }
 
 	CBlockSimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b,bool _various_1, bool _various_2) : CBlockRelationBase(_named, input_a, input_b ,_various_1,_various_2)
 	{
@@ -67,6 +68,7 @@ class CBlockASimetricRelation : public CBlockRelationBase
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockASimetricRelation; }
 	 CBlockASimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_1, bool _various_2) : CBlockRelationBase(_named, input_a, input_b,_various_1, _various_2)
 	{
 	}
@@ -85,6 +87,7 @@ class CBlockRelationInstance : public CBlock
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockRelationInstance; }
 	HBlockRelationBase relation;
 	HBlock value1 ;
 	HBlock value2 ;

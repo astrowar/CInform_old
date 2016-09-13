@@ -145,11 +145,11 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
             HBlock a_verb;
             HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
 
-            if (CList *plist = dynamic_cast<CList *>(res.matchs["VerbList"].get())) {
+            if (CList *plist = asCList(res.matchs["VerbList"].get())) {
                 //eh uma lista
 
 				HTerm listExpand =  expandBract(res.matchs["VerbList"]);
-				plist = dynamic_cast<CList*>(listExpand.get());
+				plist = asCList(listExpand.get());
 
 
                 HBlockList clist = std::make_shared<CBlockList>();
@@ -313,7 +313,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
+            if (CList *cverb = asCList(res.matchs["Verb"].get())) {
                 HBlock a_verb = nullptr;
                 HPred verbMatch = nullptr;
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());
@@ -366,7 +366,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
+            if (CList *cverb = asCList(res.matchs["Verb"].get())) {
                 HBlock a_verb = nullptr;
                 HPred verbMatch = nullptr;
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());

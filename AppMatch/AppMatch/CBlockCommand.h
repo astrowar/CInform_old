@@ -12,6 +12,8 @@ class CBlockNow : public CBlock     //retorna uma declaracao
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockNow; }
+
 	HBlockAssertion_is assertation;
 	CBlockNow(  HBlockAssertion_is _n ) : assertation(_n) {};
 };

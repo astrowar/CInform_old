@@ -36,6 +36,7 @@ using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
 class CVariableNamed :public CBlock {
 public:
 	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::VariableNamed; }
 	HBlock value;
     HBlockKind kind;
     HBlockNoum name;

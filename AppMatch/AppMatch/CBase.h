@@ -7,6 +7,20 @@
 #include <vector>
 #include "EqualsResult.h"
 
+enum TermType {
+	TermString,
+	TermNumber,
+	TermList,
+	Pred,
+	PredAtom,
+	PredList,
+	PredAny,
+	PredBooleanAnd,
+	PredBooleanOr,
+	PredWord
+};
+
+
 class CTerm
 {
 public:
@@ -14,12 +28,12 @@ public:
 	{
 	}
 
+	virtual TermType type() = 0;
+
 	virtual std::string repr() = 0;
 	virtual size_t nterms() = 0;
 	virtual bool is_openBracket() { return false; }
-
-	virtual CTerm* removeArticle() { return this;}
- 
+	virtual CTerm* removeArticle() { return this;} 
 	virtual bool is_closeBracket() { return false; };
 		
 };
@@ -40,6 +54,7 @@ public:
 	
 	virtual size_t nterms() override 	{ return 1; }
 	
+	virtual TermType type() override { return TermType::TermString; }
 
 
 
@@ -56,6 +71,7 @@ public:
 	CNumber(int _val);
 	virtual std::string repr() override;
 	virtual size_t nterms() override { return 1; }
+	virtual TermType type() override { return TermType::TermNumber; }
 };
 
 //typedef TermList = std::list<CTerm*>;
@@ -72,6 +88,7 @@ public:
 	virtual CTerm* removeArticle() override;
 
 	virtual size_t nterms() override { return  lst.size(); }
+	virtual TermType type() override { return TermType::TermList; }
 };
 
 
@@ -81,6 +98,16 @@ EqualsResul equals(HTerm c1, HTerm c2);
 HTerm make_number(int x);
 HTerm make_string(std::string x);
 HTerm make_list(std::initializer_list<HTerm> x);
+
+
+
+
+//ConversionTerms
+
+CList* asCList(CTerm* c);
+CNumber* asCNumber(CTerm* c);
+CString* asCString(CTerm* c);
+
 #endif
 
 

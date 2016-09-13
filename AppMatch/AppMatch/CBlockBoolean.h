@@ -18,6 +18,7 @@ public:
     HBlock input_B;
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockBooleanAND; }
 };
 
 class CBlockBooleanOR
@@ -33,6 +34,7 @@ public:
     HBlock input_B;
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockBooleanOR; }
 };
 
 class CBlockBooleanNOT
@@ -45,6 +47,7 @@ public:
     HBlock input_A;
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockBooleanNOT; }
 };
 
 

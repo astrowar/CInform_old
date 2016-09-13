@@ -26,6 +26,7 @@ class CBlockMatchAny
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchAny; }
 
     // CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
    
@@ -38,6 +39,7 @@ class CBlockMatchNamed : public CBlockMatch // um bloco que serve para dar Match
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchNamed; }
 
     
     string named;
@@ -53,6 +55,7 @@ class CBlockMatchNoum : public CBlockMatch // um bloco que serve para dar Match 
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchNoum; }
 	HBlockNoum  inner;
 	CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inner) {};
 };
@@ -65,6 +68,7 @@ class CBlockMatchKind
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchKind; }
 
     // CBlockMatc(CBlockKind("book")) -> filtra kinds do tipo block
     // CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
@@ -92,6 +96,7 @@ class CBlockMatchList
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchList; }
 
     // CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
  
@@ -110,6 +115,7 @@ class CBlockMatchAND
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchAND; }
 
 	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
 
@@ -130,6 +136,7 @@ class CBlockMatchOR
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchOR; }
 
 	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
 
@@ -163,6 +170,7 @@ class CBlockMatchBlock : public CBlockMatch // um bloco que serve para dar Match
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchBlock; }
 	HBlock  inner;
 	CBlockMatchBlock(HBlock  _inner) : CBlockMatch(), inner(_inner) {};
 };
@@ -188,6 +196,7 @@ class CBlockMatchDirectIs : public CBlockMatchIs // um bloco que serve para dar 
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchDirectIs; }
  
 	CBlockMatchDirectIs(HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj , _value )   {};
 };
@@ -199,6 +208,7 @@ class CBlockMatchDirectIsNot : public CBlockMatchIs // um bloco que serve para d
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchDirectIsNot; }
 
 	CBlockMatchDirectIsNot(HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value) {};
 };
@@ -210,6 +220,7 @@ class CBlockMatchIsVerb : public CBlockMatchIs // um bloco que serve para dar Ma
 {
 public:
 	virtual void dump(string ident) override; 
+	virtual BlockType type() override { return BlockType::BlockMatchIsVerb; }
 	std::string verb;
 	CBlockMatchIsVerb(string _verb , HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {
 		if (_verb == "from")
@@ -226,6 +237,7 @@ class CBlockMatchIsNotVerb : public CBlockMatchIs // um bloco que serve para dar
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchIsNotVerb; }
 	std::string verb;
 	CBlockMatchIsNotVerb(string _verb, HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
 };
@@ -237,6 +249,7 @@ class CBlockMatchProperty : public CBlockMatch //retorna um valor generico
 {
 public:
 	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchProperty; }
 	CBlockMatchProperty(HBlock _prop, HBlockMatch b): prop(_prop), obj(b){}
 	HBlock prop;
 	HBlockMatch obj;

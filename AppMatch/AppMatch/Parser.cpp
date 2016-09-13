@@ -124,7 +124,7 @@ HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term) {
 
 std::vector<HTerm> expandTerm( HTerm term)
 {
-    if (CList* clist =  dynamic_cast<CList*>( term.get() ) )
+    if (CList* clist =  asCList( term.get() ) )
     {
           return clist->asVector();
     }
@@ -436,7 +436,7 @@ HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm> lst) {
 
 
 HBlock CParser::parser_stmt(HTerm term) {
-    if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+    if (CList *vlist = asCList(term.get())) {
         auto r = parser_stmt(vlist->asVector());
         /*if (r == nullptr)
             std::cout << term->repr() << std::endl;*/
@@ -448,7 +448,7 @@ HBlock CParser::parser_stmt(HTerm term) {
 
 
 HBlock CParser::parserBoolean(HTerm term) {
-    if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+    if (CList *vlist = asCList(term.get())) {
         auto r = parserBoolean(vlist->asVector());
         if (r != nullptr) {
             return r;

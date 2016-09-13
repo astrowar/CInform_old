@@ -40,10 +40,10 @@ string CtoString(HTerm  value)
 
 string CtoString(CTerm  *value)
 {
-	if (CString* lstr = dynamic_cast<CString*>(value)) {
+	if (CString* lstr = asCString(value)) {
 		return lstr->s;
 	}
-	if (CList* lst = dynamic_cast<CList*>(value)) {
+	if (CList* lst = asCList(value)) {
 		{
 			return CtoString(lst);
 		}
@@ -54,7 +54,7 @@ string CtoString(CTerm  *value)
 
 
 HTerm expandBract(HTerm term) {
-    if (CList *clist = dynamic_cast<CList *>(term.get())) {
+    if (CList *clist = asCList(term.get())) {
         if (clist->lst.front()->is_openBracket() && clist->lst.back()->is_closeBracket()) {
             auto vlist = clist->asVector();
             vlist = remove_boundaryListMark(vlist);
@@ -152,12 +152,12 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
 HPred convert_to_predicate(CTerm *termo) {
 
-	if (CList *clist = dynamic_cast<CList *>(termo)) {
+	if (CList *clist = asCList(termo)) {
 		auto vlist = clist->asVector();
 		vlist = remove_boundaryListMark(vlist);
 
 		auto hpr = mkHPredList("predListing", {});
-		CPredList *predList = dynamic_cast<CPredList *>(hpr.get());
+		CPredList *predList = asPredList (hpr.get());
 
 		for (auto k : vlist) {
 			predList->plist.push_back(convert_to_predicate(k.get()));
@@ -165,7 +165,7 @@ HPred convert_to_predicate(CTerm *termo) {
 		return hpr;
 	}
 	else {
-		if (CString *css = dynamic_cast<CString *>(termo)) {
+		if (CString *css = asCString(termo)) {
 
 			return mk_HPredLiteral(css->s);
 		}

@@ -23,6 +23,7 @@ class CBlockUnderstandStatic : public CBlock    //retorna uma declaracao
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockUnderstandStatic; }
 
     HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
     HBlock output_n;
@@ -44,6 +45,7 @@ class CBlockUnderstandDynamic : public CBlock    //retorna uma declaracao
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockUnderstandDynamic; }
 
 	HBlockMatch input_n; // Pode ser simples ou com a preposicao
 	HBlockMatchList argument_n;

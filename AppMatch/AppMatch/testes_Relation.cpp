@@ -39,7 +39,7 @@ void testeRelation1() {
 
 	interpreter->execute_init(parse.parser_stmt("unloking relates (a thing ) to another", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("the verb  unlock  implies a  unloking relation", ISLOG));
-
+	interpreter->execute_init(parse.parser_stmt("the verb ( unlocked by ) implies a  unloking relation", ISLOG));
 
 	std::cout << std::endl;
 
@@ -48,15 +48,14 @@ void testeRelation1() {
  
 	std::cout << std::endl;
 	 
-	interpreter->execute_init(parse.parser_stmt(
-		"to decide if ( thing called T ) unloked by ( thing called K ) :  K unlocks T   ", ISLOG));
+	//interpreter->execute_init(parse.parser_stmt("to decide if ( thing called T ) unloked by ( thing called K ) :  K unlocks T   ", ISLOG));
 
 	//auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
 
     auto ret_true_a = interpreter->query(parse.parser_stmt(" key unlock box ", ISLOG));
 	auto ret_true_b = interpreter->query(parse.parser_stmt(" box unlock key ", ISLOG));
 	auto ret_true_c = interpreter->query(parse.parser_stmt(" key unlock garden ", ISLOG));
-	auto ret_true_d = interpreter->query(parse.parser_stmt(" box is unlocked by key ", ISLOG));
+	auto ret_true_d = interpreter->query(parse.parser_stmt(" key is unlocked by box ", ISLOG));
 
    // auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
 
