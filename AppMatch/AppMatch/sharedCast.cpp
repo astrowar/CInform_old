@@ -7,8 +7,13 @@ HBlockEnums asHBlockEnums(HBlock c )
    return nullptr;
 } 
 HBlockKind asHBlockKind(HBlock c )
-{ 
-   if (c != nullptr && c->type() == BlockType::BlockKind)
+{
+    if( c == nullptr ) return nullptr;
+
+    auto t = c->type();
+   if (t == BlockType::BlockKindValue ||
+           t == BlockType::BlockKindThing ||
+           t == BlockType::BlockListOfKind )
         return std::static_pointer_cast<CBlockKind>(c);
    return nullptr;
 } 
@@ -65,7 +70,14 @@ HBlockList asHBlockList(HBlock c )
    if (c != nullptr && c->type() == BlockType::BlockList)
         return std::static_pointer_cast<CBlockList>(c);
    return nullptr;
-} 
+}
+HBlockList_OR asHBlockList_OR(HBlock c )
+
+{
+    if (c != nullptr && c->type() == BlockType::BlockList_OR)
+        return std::static_pointer_cast<CBlockList_OR>(c);
+    return nullptr;
+}
  
 HBlockProperty asHBlockProperty(HBlock c )
 { 
@@ -103,12 +115,28 @@ HBlockAssertion_canBe asHBlockAssertion_canBe(HBlock c )
         return std::static_pointer_cast<CBlockAssertion_canBe>(c);
    return nullptr;
 } 
-HBlockAssertion_is asHBlockAssertion_is(HBlock c )
-{ 
-   if (c != nullptr && c->type() == BlockType::BlockAssertion_is)
+HBlockAssertion_is asHBlockAssertion_is(HBlock c ) {
+    if (c == nullptr) return nullptr;
+    auto t = c->type();
+
+    if (t == BlockType::BlockAssertion_canBe ||
+        t == BlockType::BlockAssertion_isKindOf ||
+        t == BlockType::BlockAssertion_isInstanceOf ||
+        t == BlockType::BlockAssertion_isNamedValueOf ||
+        t == BlockType::BlockAssertion_isNamedValueOf ||
+        t == BlockType::BlockAssertion_isDefaultAssign ||
+        t == BlockType::BlockAssertion_isConstantAssign ||
+        t == BlockType::BlockAssertion_isForbiddenAssign ||
+        t == BlockType::BlockAssertion_isDirectAssign ||
+        t == BlockType::BlockAssertion_isNotDirectAssign ||
+        t == BlockType::BlockAssertion_isActionOf ||
+        t == BlockType::BlockIsVerb ||
+        t == BlockType::BlockIsNotVerb)
         return std::static_pointer_cast<CBlockAssertion_is>(c);
-   return nullptr;
-} 
+    return nullptr;
+}
+
+
 HBlockIsVerb asHBlockIsVerb(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockIsVerb)
@@ -312,7 +340,19 @@ HBlockToDecideOn asHBlockToDecideOn(HBlock c )
    if (c != nullptr && c->type() == BlockType::BlockToDecideOn)
         return std::static_pointer_cast<CBlockToDecideOn>(c);
    return nullptr;
-} 
+}
+HBlockToDecide asHBlockToDecide(HBlock c )
+{
+    if (c == nullptr) return nullptr;
+    auto t = c->type() ;
+    if( c->type() == BlockType::BlockToDecideIf ||
+            c->type() == BlockType::BlockToDecideOn ||
+            c->type() == BlockType::BlockToDecideWhat ||
+            c->type() == BlockType::BlockToDecideWhat_FirstNoum ||
+            c->type() == BlockType::BlockToDecideWhether )
+        return std::static_pointer_cast<CBlockToDecide>(c);
+    return nullptr;
+}
 HBlockActionApply asHBlockActionApply(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockActionApply)
@@ -324,7 +364,14 @@ HBlockKindOfName asHBlockKindOfName(HBlock c )
    if (c != nullptr && c->type() == BlockType::BlockKindOfName)
         return std::static_pointer_cast<CBlockKindOfName>(c);
    return nullptr;
-} 
+}
+HBlockKindThing asHBlockKindThing(HBlock c )
+{
+if (c != nullptr && c->type() == BlockType::BlockKindThing)
+return std::static_pointer_cast<CBlockKindThing>(c);
+return nullptr;
+}
+
 HBlockArgumentInput asHBlockArgumentInput(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockArgumentInput)
@@ -342,7 +389,20 @@ HBlockInstance asHBlockInstance(HBlock c )
    if (c != nullptr && c->type() == BlockType::BlockInstance)
         return std::static_pointer_cast<CBlockInstance>(c);
    return nullptr;
-} 
+}
+
+HBlockRelationBase asHBlockRelationBase(HBlock c )
+{
+  if (c == nullptr) return nullptr;
+    auto t = c->type();
+
+    if ( t == BlockType::BlockSimetricRelation ||
+            t == BlockType::BlockASimetricRelation ||
+            t == BlockType::BlockSimetricRelation  )
+        return std::static_pointer_cast<CBlockRelationBase>(c);
+    return nullptr;
+
+}
 HBlockSimetricRelation asHBlockSimetricRelation(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockSimetricRelation)

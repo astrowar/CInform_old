@@ -8,6 +8,8 @@
 #include "CblockAssertion.h"
 #include "CBlockUndestand.h"
 #include "CBlockCommand.h"
+#include "sharedCast.h"
+
 
 CParser::CParser(HBlockInterpreter _interpreter) {
     interpreter = _interpreter;
@@ -352,7 +354,7 @@ HBlockEnums CParser::parseAssertion_EnumTerms(HTerm enumList) {
 
     std::vector<HBlockNoum> nlist;
     std::for_each(elist->lista.begin(), elist->lista.end(),
-                  [&nlist](HBlock c) { nlist.push_back(std::dynamic_pointer_cast<CBlockNoum>(c)); });
+                  [&nlist](HBlock c) { nlist.push_back(asHBlockNoum(c)); });
     return std::make_shared<CBlockEnums>(nlist);
 
 }

@@ -4,7 +4,7 @@
 #include "CResultMatch.h"
 #include <iostream>
 #include "QueryStack.h"
-
+#include "sharedCast.h"
 
 #undef PROPAGATE_LETS
 
@@ -37,7 +37,7 @@ HBlock CBlockInterpreter::getDecidedWhether(HBlock c_block, HBlock c_block1, HBl
 }
 
 HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
-    HBlockMatch match = std::dynamic_pointer_cast<CBlockMatch>(dct->queryToMatch);
+    HBlockMatch match =   (dct->queryToMatch);
 
 	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
     if (result.hasMatch ) 

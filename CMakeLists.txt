@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(AppMatch)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -fno-rtti ")
 
 set(SOURCE_FILES
         AppMatch/AppMatch/AppMatch.cpp

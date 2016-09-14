@@ -13,12 +13,14 @@ enum BlockType {
 	Unresolved,
 	BlockKindOf,
 	BlockKindAction,
+	BlockKindThing,
 	BlockKindValue,
 	BlockListOfKind,
 	BlockNamedValue,
 	BlockVariable,
 	BlockInstanceVariable,
 	BlockList,
+	BlockList_OR,
 	BlockEnums,
 	BlockProperty,
 	BlockAssertion_isDefaultAssign,
@@ -26,7 +28,7 @@ enum BlockType {
 	BlockKind_InstanceVariable,
 	BlockAssertion_isDirectAssign,
 	BlockAssertion_canBe,
-	BlockAssertion_is,
+	BlockAssertion_isKindOf,
 	BlockIsVerb,
 	BlockAssertion_isActionOf,
 	BlockIsNotVerb,
@@ -185,7 +187,7 @@ class CBlockKind : public CBlock  //retorna um valor generico porem Abstrado
 {
 public:
     virtual bool isValue() = 0;
-	virtual BlockType type() override { return BlockType::BlockKind; }
+	//virtual BlockType type() override { return BlockType::BlockKind; }
     CBlockKind(string _named) : named(_named) {};
     string named;
 
@@ -253,6 +255,7 @@ public:
     virtual bool isValue() override { return true; }
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockKindThing; }
 
     CBlockKindThing(string _named) : CBlockKind(_named) {};
 

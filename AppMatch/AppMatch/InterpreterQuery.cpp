@@ -7,6 +7,7 @@
 #include "QueryStack.h"
 #include "CResultMatch.h"
 #include "dynamicCast.h"
+#include "sharedCast.h"
 
 using namespace std;
 
@@ -69,7 +70,7 @@ QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1, HRu
 }
 
 //QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, QueryStack stk) {
-//    if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
+//    if (HBlockNoum nnoum = asHBlockNoum(c_block1)) {
 //        HBlock resolved = resolve_noum(nnoum);
 //        if (resolved) {
 //            return query_is(c_block, resolved, stk);
@@ -85,8 +86,8 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
 
 	
 
-    if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(c_block))
-        if (HBlockNoum value = dynamic_pointer_cast<CBlockNoum>(c_block1)) {
+    if (HBlockInstance cinst = asHBlockInstance(c_block))
+        if (HBlockNoum value = asHBlockNoum(c_block1)) {
             if (cinst->has_slot(value)) {
                 cout << cinst->named << "  " << value->named << endl;
                 if (cinst->is_set(value)) {
@@ -101,8 +102,8 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
 
 QueryResul
 CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
-    if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(propObj)) {
-        if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) {
+    if (HBlockInstance cinst = asHBlockInstance(propObj)) {
+        if (HBlockNoum property_noum = asHBlockNoum(propname)) {
             HVariableNamed pvar = cinst->get_property(property_noum->named);
             if (pvar != nullptr) {
                 cout << "property  is " << endl;
@@ -127,8 +128,8 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 
 QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
-    if (HBlockProperty cproperty = dynamic_pointer_cast<CBlockProperty>(c_block)) {
-        if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(cproperty->obj)) {
+    if (HBlockProperty cproperty = asHBlockProperty(c_block)) {
+        if (HBlockNoum cnn = asHBlockNoum(cproperty->obj)) {
             auto resolved = resolve_noum(cnn,localsEntry);
             if (resolved != nullptr) {
                 return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, stk);
@@ -147,7 +148,7 @@ QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_block, HBlock c
 QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk)
 {
 
-	if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(c_block ))
+	if (HBlockNoum cnn = asHBlockNoum(c_block ))
 	{
 		auto var_1 = resolve_noum_as_variable(cnn);
 		if (var_1 !=nullptr)
@@ -156,10 +157,10 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 		}
 	}
 
-	if (HVariableNamed nvar1 = dynamic_pointer_cast<CVariableNamed>(c_block))
+	if (HVariableNamed nvar1 = asHVariableNamed(c_block))
 	{
 		if (nvar1->value == nullptr) return QUndefined;
-		if (HVariableNamed nvar2 = dynamic_pointer_cast<CVariableNamed>(c_block1))
+		if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
 		{
 			if (nvar2->value == nullptr) return QUndefined;
 			if (nvar1 == nvar2) return QEquals; //same reference			 
@@ -168,7 +169,7 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 		return query_is(nvar1->value, c_block1,localsEntry, stk);		
 	}
 
-	if (HVariableNamed nvar2 = dynamic_pointer_cast<CVariableNamed>(c_block1))
+	if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
 	{
 		if (nvar2->value == nullptr) return QUndefined;		 
 		return query_is(c_block , nvar2->value,localsEntry, stk);
@@ -184,7 +185,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     stk.addQuery("is", c_block, c_block1);
 
 	//resolve It
-	if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block1)) 
+	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
 	{
 		HBlock resolved = resolve_noum(nnoum,localsEntry);
 		if (resolved) {
@@ -192,7 +193,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		}
 	}
 
-	if (HBlockNoum nnoum = dynamic_pointer_cast<CBlockNoum>(c_block))
+	if (HBlockNoum nnoum = asHBlockNoum(c_block))
 	{
 		HBlock resolved = resolve_noum(nnoum, localsEntry);
 		if (resolved) {
@@ -206,7 +207,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 	
 	//Resolve List OR
-	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(c_block1))
+	if (HBlockList_OR  orList = asHBlockList_OR(c_block1))
 	{
 		for (auto &item : orList->lista)
 		{
@@ -215,7 +216,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 	}
 
 	//Resolve List OR
-	if (HBlockSelector_All  selector_all = dynamic_pointer_cast<CBlockSelector_All>(c_block))
+	if (HBlockSelector_All  selector_all = asHBlockSelector_All(c_block))
 	{
 		return Selector_all(selector_all->what, localsEntry, [&](HBlock e1)
 		{
@@ -224,7 +225,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		});
 	}
 
-	if (HBlockSelector_Any  selector_any = dynamic_pointer_cast<CBlockSelector_Any>(c_block))
+	if (HBlockSelector_Any  selector_any = asHBlockSelector_Any(c_block))
 	{
 		return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
 		{
@@ -236,8 +237,8 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 
 	{
-        if (HBlockInstance ninst_1 = dynamic_pointer_cast<CBlockInstance>(c_block))
-            if (HBlockInstance ninst_2 = dynamic_pointer_cast<CBlockInstance>(c_block1)) {
+        if (HBlockInstance ninst_1 = asHBlockInstance(c_block))
+            if (HBlockInstance ninst_2 = asHBlockInstance(c_block1)) {
                 if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind) {
                     if (ninst_1 == ninst_2) return QEquals;
                 }
@@ -267,11 +268,11 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 
     //is scond a kind of anything ??
-    if (HBlockKind bkind = dynamic_pointer_cast<CBlockKind>(c_block1)) {
-        if (HBlockKind akind = dynamic_pointer_cast<CBlockKind>(c_block)) {
+    if (HBlockKind bkind = asHBlockKind(c_block1)) {
+        if (HBlockKind akind = asHBlockKind(c_block)) {
             bool b = is_derivadeOf(akind, bkind);
             if (b) return QEquals;
-        } else if (HBlockInstance aInstance = dynamic_pointer_cast<CBlockInstance>(c_block)) {
+        } else if (HBlockInstance aInstance = asHBlockInstance(c_block)) {
             bool b = is_derivadeOf(aInstance, bkind,localsEntry);
             if (b) return QEquals;
         } 
@@ -282,7 +283,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 
     for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it) {
-        if (HBlockToDecide tdef = dynamic_pointer_cast<CBlockToDecide>(*it)) {
+        if (HBlockToDecide tdef = asHBlockToDecide(*it)) {
 
         }
     }
@@ -313,7 +314,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     }
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-        if (HBlockAssertion_is qdef = dynamic_pointer_cast<CBlockAssertion_is>(*it)) {
+        if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it)) {
             if (query_is_same(c_block, qdef->get_obj(), localsEntry, stk) == QEquals) {
                 auto r = query_is(qdef->get_definition(), c_block1,localsEntry, stk);
                 if (r != QUndefined) {
@@ -375,7 +376,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 	
 
 	//Resolve List OR
-	if (HBlockList_OR  orList = dynamic_pointer_cast<CBlockList_OR>(n2))
+	if (HBlockList_OR  orList = asHBlockList_OR(n2))
 	{
 		for (auto &item : orList->lista)
 		{
@@ -384,7 +385,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 	}
 
 	//Resolve List ALL
-	if (HBlockSelector_All  selector_all = dynamic_pointer_cast<CBlockSelector_All>(n1))
+	if (HBlockSelector_All  selector_all = asHBlockSelector_All(n1))
 	{
 		return Selector_all( selector_all->what , localsEntry,[&](HBlock e1 )
 		{
@@ -395,7 +396,7 @@ QueryResul CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBlock n2, 
 
 
 	//Resolve List ANY
-	if (HBlockSelector_Any  selector_any = dynamic_pointer_cast<CBlockSelector_Any>(n1))
+	if (HBlockSelector_Any  selector_any = asHBlockSelector_Any(n1))
 	{
 		return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
 		{
@@ -475,17 +476,17 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 	}
 
 
-    if (HBlockIsNotVerb is_nverb = dynamic_pointer_cast<CBlockIsNotVerb>(q))
+    if (HBlockIsNotVerb is_nverb = asHBlockIsNotVerb(q))
 	{
 		return  query_not_verb(is_nverb, localsEntry , stk);
 	}
 
-	if (HBlockIsVerb is_verb = dynamic_pointer_cast<CBlockIsVerb>(q) )
+	if (HBlockIsVerb is_verb = asHBlockIsVerb(q) )
 	{
 	return 	query_verb(is_verb, localsEntry , stk);
 
 	}
-	if (HBlockAssertion_is q_assign = dynamic_pointer_cast<CBlockAssertion_is>(q))
+	if (HBlockAssertion_is q_assign = asHBlockAssertion_is(q))
 	{
 		return query_is(q_assign->get_obj(), q_assign->get_definition(), localsEntry, stk);
 	}
@@ -508,16 +509,16 @@ HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 
     // is what ??
 
-    if (HBlockNamedValue is_namedValue = dynamic_pointer_cast<CBlockNamedValue>(b->get_obj())) {
+    if (HBlockNamedValue is_namedValue = asHBlockNamedValue(b->get_obj())) {
 
 
     }
 
-    if (HBlockAssertion_canBe noum_canBe = dynamic_pointer_cast<CBlockAssertion_canBe>(b->get_definition())) {
+    if (HBlockAssertion_canBe noum_canBe = asHBlockAssertion_canBe(b->get_definition())) {
 
     }
 
-    if (HBlockKind is_define_kind = dynamic_pointer_cast<CBlockKind>(b->get_definition())) {
+    if (HBlockKind is_define_kind = asHBlockKind(b->get_definition())) {
 
     }
     return nullptr;
@@ -527,7 +528,7 @@ HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 
 HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
 
-    if (HBlockAssertion_isInstanceOf inst = dynamic_pointer_cast<CBlockAssertion_isInstanceOf>(b)) {
+    if (HBlockAssertion_isInstanceOf inst = asHBlockAssertion_isInstanceOf(b)) {
         instancias.push_back(inst->noum);
     }
 
@@ -540,8 +541,8 @@ HTerm CBlockInterpreter::execute(HBlock b) {
         throw "parse error";
     }
 
-    if (dynamic_pointer_cast<CBlockAssertionBase>(b) != nullptr)
-        return executeAssertion(dynamic_pointer_cast<CBlockAssertionBase>(b));
+    if (asHBlockAssertion_is(b) != nullptr)
+        return executeAssertion(asHBlockAssertion_is(b));
 
     return nullptr;
 }

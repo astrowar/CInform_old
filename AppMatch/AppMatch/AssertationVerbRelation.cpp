@@ -2,6 +2,8 @@
 #include <iostream>
 #include "QueryStack.h"
 #include "CResultMatch.h"
+#include "sharedCast.h"
+
 using namespace std; 
 
 
@@ -136,7 +138,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	//Custom Define
 	for(auto &v : decides_if)
 	{
-		if (HBlockMatchIsVerb qVerb = dynamic_pointer_cast<CBlockMatchIsVerb>(v->queryToMatch)) 
+		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			cout << vb <<  " =?= " << qVerb->verb << endl;
 			if (vb == qVerb->verb)
@@ -160,7 +162,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 
 	for(auto &dct : decides_what)
 	{
-		if (HBlockMatchIsVerb qVerb = dynamic_pointer_cast<CBlockMatchIsVerb>(dct->queryToMatch)) {
+		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(dct->queryToMatch)) {
 			cout << vb << " =?= " << qVerb->verb << endl;
 			if (qVerb->verb == vb) {
 				HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
@@ -179,7 +181,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	//Custom Define
 	for (auto &v : decides_noum1)
 	{
-		if (HBlockMatchIsVerb qVerb_N1 = dynamic_pointer_cast<CBlockMatchIsVerb>(v->queryToMatch))
+		if (HBlockMatchIsVerb qVerb_N1 = asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			
 			if (vb == qVerb_N1->verb)
@@ -219,7 +221,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 
 
 bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock obj, HBlock value, HRunLocalScope localsEntry) {
-	if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
 		HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
 			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry);

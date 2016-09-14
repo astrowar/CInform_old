@@ -5,6 +5,7 @@
 #include "CBlockInterpreterRuntime.h"
 
 #include "BlockInterpreter.h"
+#include "sharedCast.h"
 #include <iostream>
 
 using namespace std;
@@ -15,10 +16,10 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
-            if (HBlockKind nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
+            if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
 
                 if (nbase->named == a->named) {
-                    if (HBlockKindOf k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition())) {
+                    if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
                         if (k->baseClasse->named == b->named) {
                             return true;
                         } else {
@@ -41,10 +42,10 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     cout << "U " << a->named << endl;
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
-        if (HBlockKind nbase = dynamic_pointer_cast<CBlockKind>((*it)->get_obj()))
+        if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
             if (nbase->named == a->named)  //  A -> X
             {
-                if (HBlockKindOf k = dynamic_pointer_cast<CBlockKindOf>((*it)->get_definition())) {
+                if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
 
                     list<HBlockKind> ap = getUpperKinds(k->baseClasse);
                     upperList.insert(upperList.end(), ap.begin(), ap.end());
@@ -69,7 +70,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
     }
 
 	// Custom derivades
-	if (HBlockText nInstanceText = dynamic_pointer_cast<CBlockText>(a ))
+	if (HBlockText nInstanceText = asHBlockText(a ))
 	{
 		return  (b->named == "text"); //CBlock Text is instance of of Text
 			
@@ -78,15 +79,15 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
-            if (HBlockInstance nbase = dynamic_pointer_cast<CBlockInstance>((*it)->get_obj()))
+            if (HBlockInstance nbase = asHBlockInstance((*it)->get_obj()))
 
                 if (nbase->named == a->named) {
-                    if (HBlockKind k = dynamic_pointer_cast<CBlockKind>((*it)->get_definition())) {
+                    if (HBlockKind k = asHBlockKind((*it)->get_definition())) {
                         if (k->named == b->named) {
                             return true;
                         } else {
                             HBlock bnext = resolve_string(k->named,localsEntry);
-                            if (HBlockKind baseClasse = dynamic_pointer_cast<CBlockKind>(bnext)) {
+                            if (HBlockKind baseClasse = asHBlockKind(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
                                 if (bnn) {
                                     return true;

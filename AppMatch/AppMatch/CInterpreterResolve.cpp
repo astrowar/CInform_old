@@ -1,6 +1,7 @@
 
  
 #include "CBlockInterpreterRuntime.h"
+#include "sharedCast.h"
 #include <iostream>
 using namespace std;
 
@@ -45,9 +46,9 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 
 HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-        if (HBlockAssertion_is v = dynamic_pointer_cast<CBlockAssertion_is>(*it)) {
+        if (HBlockAssertion_is v = asHBlockAssertion_is(*it)) {
             if (v->get_obj() == obj) {
-                if (HBlockKind k = dynamic_pointer_cast<CBlockKind>(v->get_definition())) {
+                if (HBlockKind k = asHBlockKind(v->get_definition())) {
                     return k;
                 }
             }
@@ -58,31 +59,31 @@ HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
 
 
 string CBlockInterpreter::BlockNoum(HBlock c_block) {
-    if (HBlockKind k0 = dynamic_pointer_cast<CBlockKind>(c_block)) {
+    if (HBlockKind k0 = asHBlockKind(c_block)) {
         return k0->named;
     }
 
-    if (HBlockInstance k1 = dynamic_pointer_cast<CBlockInstance>(c_block)) {
+    if (HBlockInstance k1 = asHBlockInstance(c_block)) {
         return k1->named;
     }
 
-    if (HBlockKindValue k2 = dynamic_pointer_cast<CBlockKindValue>(c_block)) {
+    if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
         return k2->named;
     }
 
-    if (HBlockNamedValue k3 = dynamic_pointer_cast<CBlockNamedValue>(c_block)) {
+    if (HBlockNamedValue k3 = asHBlockNamedValue(c_block)) {
         return k3->named;
     }
 
-    if (HBlockVariable k4 = dynamic_pointer_cast<CBlockVariable>(c_block)) {
+    if (HBlockVariable k4 = asHBlockVariable(c_block)) {
         return k4->named;
     }
 
-    if (HBlockNoum k5 = dynamic_pointer_cast<CBlockNoum>(c_block)) {
+    if (HBlockNoum k5 = asHBlockNoum(c_block)) {
         return k5->named;
     }
 
-	if (HBlockVerb k6 = dynamic_pointer_cast<CBlockVerb>(c_block)) {
+	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
 		return k6->named ;
 	}
 
@@ -122,7 +123,7 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
     for (auto &defs : assertions) {
-        if (HBlockKind nn = dynamic_pointer_cast<CBlockKind>(defs->get_definition())) {
+        if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
             if (nn->named == n) {
                 return nn;
             }
@@ -152,7 +153,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 	}
 
 	for (auto &defs : assertions) {
-		if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
+		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//std::cout << nn->named << std::endl;
 			if (nn->named == n->named) {
 				return defs->get_definition();
@@ -161,7 +162,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 	}
 
 	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
+		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
 			if (nnvar->name->named == n->named) {
 				return nnvar;
@@ -198,7 +199,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) 
 {
 	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
+		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
 			if (nnvar->name->named == n->named)
 			{
@@ -221,7 +222,7 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	}
 
     for (auto &defs : assertions) {
-        if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
+        if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
             //std::cout << nn->named << std::endl;
             if (nn->named == n) {
                 return defs->get_definition();

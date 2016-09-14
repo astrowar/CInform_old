@@ -110,12 +110,12 @@ CBlockAssertion_canBe* asCBlockAssertion_canBe(CBlock* c )
      return static_cast<CBlockAssertion_canBe*>(c);
    return nullptr;
 } 
-CBlockAssertion_is* asCBlockAssertion_is(CBlock* c )
+/*CBlockAssertion_is* asCBlockAssertion_is(CBlock* c )
 { 
    if ( c->type() == BlockType::BlockAssertion_is)
      return static_cast<CBlockAssertion_is*>(c);
    return nullptr;
-} 
+} */
 CBlockIsVerb* asCBlockIsVerb(CBlock* c )
 { 
    if ( c->type() == BlockType::BlockIsVerb)

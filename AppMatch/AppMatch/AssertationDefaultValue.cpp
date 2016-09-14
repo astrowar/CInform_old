@@ -1,4 +1,5 @@
 #include "CBlockInterpreterRuntime.h"
+#include "sharedCast.h"
 #include <iostream>
 using namespace std;
 
@@ -40,22 +41,22 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 
 bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value,  HRunLocalScope localsEntry)
 {
-	if (HBlockNoum prop_obj_noum = dynamic_pointer_cast<CBlockNoum>(prop->obj))
+	if (HBlockNoum prop_obj_noum = asHBlockNoum(prop->obj))
 	{
 		HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
 		
 		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value,localsEntry);
 
 	}
-	if (HBlockInstance prop_obj_inst = dynamic_pointer_cast<CBlockInstance>(prop->obj))
+	if (HBlockInstance prop_obj_inst = asHBlockInstance(prop->obj))
 	{
 		throw "cant assign Ususally to Instances";
 		return false;
 	}
 
-	if (HBlockKind prop_obj_kind = dynamic_pointer_cast<CBlockKind>(prop->obj))
+	if (HBlockKind prop_obj_kind = asHBlockKind(prop->obj))
 	{
-		if (HBlockNoum prop_name_noum = dynamic_pointer_cast<CBlockNoum>(prop->prop))
+		if (HBlockNoum prop_name_noum = asHBlockNoum(prop->prop))
 		{		
 			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
 			{
@@ -73,21 +74,21 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 }
 bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
-    if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
+    if (HBlockNoum nbase = asHBlockNoum(obj)) {
         HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_defaultValue(nobj, value,localsEntry);
         }
         return false;
-    } else if (HBlockInstance ibase = dynamic_pointer_cast<CBlockInstance>(obj)) {
+    } else if (HBlockInstance ibase = asHBlockInstance(obj)) {
         throw "cant assign Ususally to Instances";
-    } else if (HBlockProperty pbase = dynamic_pointer_cast<CBlockProperty>(obj)) {
+    } else if (HBlockProperty pbase = asHBlockProperty(obj)) {
 
 		return assert_property_defaultValue(pbase, value,localsEntry);
 
 
-    } else if (HBlockKind kbase = dynamic_pointer_cast<CBlockKind>(obj)) {
-        if (HBlockNoum nvalue = dynamic_pointer_cast<CBlockNoum>(value)) {
+    } else if (HBlockKind kbase = asHBlockKind(obj)) {
+        if (HBlockNoum nvalue = asHBlockNoum(value)) {
             cout << kbase->named << "  " << nvalue->named << endl;
             //default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
         }

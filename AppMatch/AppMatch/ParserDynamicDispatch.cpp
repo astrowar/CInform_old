@@ -438,7 +438,7 @@ HBlock CParser::DynamicDispatch_action(std::vector<HTerm> term) {
 			n2->dump("   ");
 
 
-			//if (HBlockAction vAction = std::dynamic_pointer_cast<CBlockAction>(it->output))
+			//if (HBlockAction vAction = std::asHBlockAction(it->output))
 			//{
 			//	return std::make_shared<CBlockActionCall>(vAction, n1, n2);
 			//}

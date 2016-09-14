@@ -16,6 +16,7 @@
 #include "CBlockRelation.h"
 #include "CBlockScope.h"
 #include "CBlockCommand.h"
+#include "sharedCast.h"
 
 
 using namespace std;
@@ -555,14 +556,14 @@ string HtoString(HBlockList lst)
 
 string HtoString(HBlock value)
 {
-	if (HBlockNoum verbNoum = dynamic_pointer_cast<CBlockNoum>(value)) {
+	if (HBlockNoum verbNoum = asHBlockNoum(value)) {
 		return verbNoum->named;
 	}
-	else if (HBlockList verbNoumList = dynamic_pointer_cast<CBlockList>(value))
+	else if (HBlockList verbNoumList = asHBlockList(value))
 	{
 		return HtoString(verbNoumList);
 	}
-	else if (HBlockProperty pNoumList = dynamic_pointer_cast<CBlockProperty>(value))
+	else if (HBlockProperty pNoumList = asHBlockProperty(value))
 	{
 		return HtoString(pNoumList->prop) +" of "+  HtoString(pNoumList->obj);
 	}

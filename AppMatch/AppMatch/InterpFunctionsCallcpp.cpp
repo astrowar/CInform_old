@@ -6,6 +6,7 @@
 #include <iostream>
 #include "CBlockScope.h"
 #include "QueryStack.h"
+#include "sharedCast.h"
 using namespace std;
 
 
@@ -15,7 +16,7 @@ bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 
 	if (v_call->action->named == "say_text")
 	{
-		if (HBlockText  ntext = dynamic_pointer_cast<CBlockText>(v_call->noum1))
+		if (HBlockText  ntext = asHBlockText(v_call->noum1))
 		{
 			printf("root$ %s \n", ntext->contents.c_str());
 			return true;
