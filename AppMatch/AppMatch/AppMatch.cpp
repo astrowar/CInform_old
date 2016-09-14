@@ -335,7 +335,7 @@ void teste_relations3() {
 void testeParser();
 
 
-int main() {
+int main_old() {
     testeParser();
     return 0;
     teste_1();

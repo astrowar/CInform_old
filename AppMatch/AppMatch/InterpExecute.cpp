@@ -191,14 +191,14 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 			return kIns;
 		}
 
-		if (auto  kvar= dynamic_pointer_cast<CVariableNamed >(c_block))
+		if (auto  kvar= asHVariableNamed(c_block))
 		{
 			return kvar->value ;
 		}
 
 		
 
-		if (auto  kprop = dynamic_pointer_cast<CBlockProperty >(c_block))
+		if (auto  kprop = asHBlockProperty (c_block))
 		{
 			auto instancia = exec_eval(kprop->obj, localsEntry);
 			if (HBlockInstance objInst = asHBlockInstance(instancia))
@@ -215,7 +215,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 			return nvalue;
 		}
 
-		if (auto  kList = dynamic_pointer_cast<CBlockList  >(c_block))
+		if (auto  kList = asHBlockList  (c_block))
 		{
 			auto rList = std::make_shared<CBlockList>( );
 			for(auto &e : kList->lista)
@@ -338,7 +338,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 auto output_block =  resolve_as_callCommand(d->output_n, localsEntry); 
 
 
-			 if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction >(output_block))
+			 if (HBlockAction actionCall = asHBlockAction (output_block))
 			 {
 				return  make_shared< CExecutionBlock >(make_shared< CRunLocalScope >() , std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
@@ -365,13 +365,13 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 {	 
 
 	 
-	if (HBlockIsVerb vverb = dynamic_pointer_cast<CBlockIsVerb >(p)) {
+	if (HBlockIsVerb vverb = asHBlockIsVerb (p)) {
  
 		if (execute_verb_set(vverb, localsEntry))
 			return true;
 	}
 
-	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_isDirectAssign >(p)) {
+	if (HBlockAssertion_is vk = asHBlockAssertion_isDirectAssign (p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
 		execute_set(obj, value,localsEntry);
@@ -390,7 +390,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		}
 	}
 
-	if (HBlockActionCall  vCall = dynamic_pointer_cast<CBlockActionCall >(p))
+	if (HBlockActionCall  vCall =asHBlockActionCall (p))
 	{		 
 		 
 		{

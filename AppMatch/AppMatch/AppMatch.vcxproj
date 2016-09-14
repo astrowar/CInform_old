@@ -88,7 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +157,6 @@
     <ClInclude Include="CBlockDecideIf.h" />
     <ClInclude Include="CBlockNamedVariable.h" />
     <ClInclude Include="CBlockRelation.h" />
-    <ClInclude Include="CAssertionDefinition.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CblockAssertion.h" />
     <ClInclude Include="CBlockBoolean.h" />
@@ -169,16 +168,9 @@
     <ClInclude Include="CInterpreter.h" />
     <ClInclude Include="CInterpreterKindTree.h" />
     <ClInclude Include="CMatch.h" />
-    <ClInclude Include="CObjectDefinitions.h" />
-    <ClInclude Include="ConstDefinitions.h" />
-    <ClInclude Include="CProperties.h" />
-    <ClInclude Include="CRelations.h" />
     <ClInclude Include="CResultMatch.h" />
-    <ClInclude Include="CValueDefinitions.h" />
-    <ClInclude Include="CVariableDefinition.h" />
     <ClInclude Include="dynamicCast.h" />
     <ClInclude Include="EqualsResult.h" />
-    <ClInclude Include="FEnviroment.h" />
     <ClInclude Include="GrammarParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="QueryStack.h" />
@@ -187,7 +179,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AppMatch.cpp" />
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />
@@ -209,16 +200,11 @@
     <ClCompile Include="CBase.cpp" />
     <ClCompile Include="CBlockDumpValues.cpp" />
     <ClCompile Include="CBlockInterpreterDecideBody.cpp" />
-    <ClCompile Include="CInterpreter.cpp" />
     <ClCompile Include="CInterpreterKindTree.cpp" />
     <ClCompile Include="CInterpreterResolve.cpp" />
     <ClCompile Include="CMatch.cpp" />
     <ClCompile Include="CParseAux.cpp" />
-    <ClCompile Include="CpropertiesFunctions.cpp" />
     <ClCompile Include="CreateInstanceInterpreter.cpp" />
-    <ClCompile Include="CRelations.cpp" />
-    <ClCompile Include="Equality.cpp" />
-    <ClCompile Include="FEnviroment.cpp" />
     <ClCompile Include="InterpreterQuery.cpp" />
     <ClCompile Include="ParseListAux.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -233,7 +219,6 @@
     <ClCompile Include="Parser_expression_match.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />
     <ClCompile Include="QueryItem.cpp" />
-    <ClCompile Include="RepresentationFunctions.cpp" />
     <ClCompile Include="sharedCast.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />

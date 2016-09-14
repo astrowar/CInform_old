@@ -8,7 +8,7 @@ using namespace std;
 
 std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
-	if (HBlockNoum	nn = dynamic_pointer_cast<CBlockNoum >(qlist))
+	if (HBlockNoum	nn = asHBlockNoum(qlist))
 	{
 		HBlock resolved =  resolve_noum(nn,localsEntry);
 		if (resolved != nullptr)
@@ -17,12 +17,12 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 		}
 	}
 
-	if (HVariableNamed 	nvar  = dynamic_pointer_cast<CVariableNamed >(qlist))
+	if (HVariableNamed 	nvar  = asHVariableNamed (qlist))
 	{
 		return resolve_as_list(nvar->value,localsEntry);
 	}
 
-	if (HBlockProperty 	nprop = dynamic_pointer_cast<CBlockProperty >(qlist))
+	if (HBlockProperty 	nprop = asHBlockProperty (qlist))
 	{
 		auto olist =  resolve_as_list( nprop->obj ,localsEntry);
 		// applica as propiedades a cada objeto
@@ -35,7 +35,7 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 
 	}
 
-	if (HBlockList nlist = dynamic_pointer_cast<CBlockList >(qlist) )
+	if (HBlockList nlist = asHBlockList (qlist) )
 	{
 		return nlist->lista;
 	}

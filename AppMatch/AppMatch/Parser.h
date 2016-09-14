@@ -259,7 +259,7 @@ public:
 
 
 
-std::vector<HTerm> decompose(string phase);;
+std::vector<HTerm> decompose(string phase); 
 string  decompose_bracket(string phase, string dlm);
 MTermSet remove_boundaryListMark(MTermSet& m);
 

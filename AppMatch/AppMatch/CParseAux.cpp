@@ -4,6 +4,35 @@
 #include "Parser.h"
 #include <iostream>
 #include <algorithm>
+#include <sstream>
+
+
+std::string decompose_bracket(std::string phase, std::string dlm) {
+
+	size_t b = phase.find(dlm);
+	if (b != std::string::npos) {
+		std::string sa = phase.substr(0, b);
+		std::string sb = phase.substr(b + 1, phase.size() - b - 1);
+		sb = decompose_bracket(sb, dlm);
+		return sa + " " + dlm + " " + sb;
+	}
+	return phase;
+}
+
+std::vector<HTerm> decompose(std::string phase) {
+	std::stringstream test(phase);
+	std::string segment;
+	std::vector<HTerm> seglist;
+	while (getline(test, segment, ' ')) {
+
+		if (segment.length() > 0) {
+			if (segment[0] != ' ') {
+				seglist.push_back(make_string(segment));
+			}
+		}
+	}
+	return seglist;
+}
 
 HPred mk_HPredLiteral(string str) {
     return mkHPredAtom("_", make_string(str));
