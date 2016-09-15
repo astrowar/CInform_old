@@ -322,7 +322,7 @@ void testeParser_22() {
 }
 
 
-void main() {
+int main() {
     // testeParser_1();
 
    // for (int k = 0; k < 100; ++k)

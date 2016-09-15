@@ -108,6 +108,7 @@ class CBlockInterpreter {
  
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
+
 public:
     CBlockInterpreter();
 
