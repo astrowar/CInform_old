@@ -185,7 +185,7 @@ HBlockMatch   CParser::parser_Verb_Match(std::vector<HTerm> term)
 
 HBlockMatch CParser::parser_expression_match(HTerm  term)
 {
-	if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+	if (CList *vlist = asCList(term.get())) {
 		auto r = parser_expression_match(vlist->asVector());
 		/*if (r == nullptr)
 		std::cout << term->repr() << std::endl;*/
@@ -198,13 +198,13 @@ HBlockMatch CParser::parser_expression_match(HTerm  term)
 std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, MatchResult result)
 {
 	std::list<HBlockMatch> vlist;
-	for (int j = 0; j< pvector.size(); ++j)
+	for (size_t j = 0; j< pvector.size(); ++j)
 	{
-		if (CPredAtom* vAtom = dynamic_cast < CPredAtom * >(pvector[j].get()))
+		if (CPredAtom* vAtom = asPredAtom(pvector[j].get()))
 		{
 			vlist.push_back(std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(vAtom->h->repr())));
 		}
-		else if (CPredAny * vAny = dynamic_cast < CPredAny* >(pvector[j].get()))
+		else if (CPredAny * vAny = asPredAny(pvector[j].get()))
 		{
 			HBlockMatch n1 = parser_expression_match(result.matchs[vAny->named]);
 			vlist.push_back(n1);

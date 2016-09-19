@@ -21,7 +21,7 @@ void teste_2() {
     auto lst = make_list(
             {make_number(1), make_string("X"), make_number(3), make_number(4), make_string("Y"), make_number(6),
              make_number(7), make_number(8), make_number(9)});
-    CList *lst_ptr = dynamic_cast<CList *>(lst.get());
+    CList *lst_ptr = asCList(lst.get());
     auto asVector = lst_ptr->asVector();
 
     MTermSetCombinatoriaList mlist = getCombinatorias(asVector, 3);
@@ -335,7 +335,7 @@ void teste_relations3() {
 void testeParser();
 
 
-int main() {
+int main_old() {
     testeParser();
     return 0;
     teste_1();

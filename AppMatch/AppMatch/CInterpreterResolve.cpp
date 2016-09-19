@@ -1,13 +1,14 @@
 
  
 #include "CBlockInterpreterRuntime.h"
+#include "sharedCast.h"
 #include <iostream>
 using namespace std;
 
 
 std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
-	if (HBlockNoum	nn = dynamic_pointer_cast<CBlockNoum >(qlist))
+	if (HBlockNoum	nn = asHBlockNoum(qlist))
 	{
 		HBlock resolved =  resolve_noum(nn,localsEntry);
 		if (resolved != nullptr)
@@ -16,12 +17,12 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 		}
 	}
 
-	if (HVariableNamed 	nvar  = dynamic_pointer_cast<CVariableNamed >(qlist))
+	if (HVariableNamed 	nvar  = asHVariableNamed (qlist))
 	{
 		return resolve_as_list(nvar->value,localsEntry);
 	}
 
-	if (HBlockProperty 	nprop = dynamic_pointer_cast<CBlockProperty >(qlist))
+	if (HBlockProperty 	nprop = asHBlockProperty (qlist))
 	{
 		auto olist =  resolve_as_list( nprop->obj ,localsEntry);
 		// applica as propiedades a cada objeto
@@ -34,7 +35,7 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 
 	}
 
-	if (HBlockList nlist = dynamic_pointer_cast<CBlockList >(qlist) )
+	if (HBlockList nlist = asHBlockList (qlist) )
 	{
 		return nlist->lista;
 	}
@@ -45,9 +46,9 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 
 HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-        if (HBlockAssertion_is v = dynamic_pointer_cast<CBlockAssertion_is>(*it)) {
+        if (HBlockAssertion_is v = asHBlockAssertion_is(*it)) {
             if (v->get_obj() == obj) {
-                if (HBlockKind k = dynamic_pointer_cast<CBlockKind>(v->get_definition())) {
+                if (HBlockKind k = asHBlockKind(v->get_definition())) {
                     return k;
                 }
             }
@@ -58,31 +59,31 @@ HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
 
 
 string CBlockInterpreter::BlockNoum(HBlock c_block) {
-    if (HBlockKind k0 = dynamic_pointer_cast<CBlockKind>(c_block)) {
+    if (HBlockKind k0 = asHBlockKind(c_block)) {
         return k0->named;
     }
 
-    if (HBlockInstance k1 = dynamic_pointer_cast<CBlockInstance>(c_block)) {
+    if (HBlockInstance k1 = asHBlockInstance(c_block)) {
         return k1->named;
     }
 
-    if (HBlockKindValue k2 = dynamic_pointer_cast<CBlockKindValue>(c_block)) {
+    if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
         return k2->named;
     }
 
-    if (HBlockNamedValue k3 = dynamic_pointer_cast<CBlockNamedValue>(c_block)) {
+    if (HBlockNamedValue k3 = asHBlockNamedValue(c_block)) {
         return k3->named;
     }
 
-    if (HBlockVariable k4 = dynamic_pointer_cast<CBlockVariable>(c_block)) {
+    if (HBlockVariable k4 = asHBlockVariable(c_block)) {
         return k4->named;
     }
 
-    if (HBlockNoum k5 = dynamic_pointer_cast<CBlockNoum>(c_block)) {
+    if (HBlockNoum k5 = asHBlockNoum(c_block)) {
         return k5->named;
     }
 
-	if (HBlockVerb k6 = dynamic_pointer_cast<CBlockVerb>(c_block)) {
+	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
 		return k6->named ;
 	}
 
@@ -122,7 +123,7 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
     for (auto &defs : assertions) {
-        if (HBlockKind nn = dynamic_pointer_cast<CBlockKind>(defs->get_definition())) {
+        if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
             if (nn->named == n) {
                 return nn;
             }
@@ -140,38 +141,34 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 }
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry) {
-    
-	
-	
-	
+
+
+
+
 	// eh um kind de alguma coisa ?
 
-	if (localsEntry != nullptr )
-	{
+	if (localsEntry != nullptr) {
 		auto lnoum = localsEntry->resolve(n->named);
 		if (lnoum != nullptr) return lnoum;
 	}
 
-
-    for (auto &defs : assertions) {
-        if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
-            //std::cout << nn->named << std::endl;
-            if (nn->named == n->named) {
-                return defs->get_definition();
-            }
-        } 
-    }
-
-	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs )) {
+	for (auto &defs : assertions) {
+		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//std::cout << nn->named << std::endl;
-			if (nnvar->name->named  == n->named)
-			{
-				return nnvar ;
+			if (nn->named == n->named) {
+				return defs->get_definition();
 			}
 		}
 	}
 
+	for (auto &defs : global_variables) {
+		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
+			//std::cout << nn->named << std::endl;
+			if (nnvar->name->named == n->named) {
+				return nnvar;
+			}
+		}
+	}
 
 	for (auto &adefs : actions_header) {
 
@@ -181,17 +178,19 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 
 	}
 
- 
+
 
 	//Custom Resolvers
 
-	if (auto kcustom = resolve_system_kind(n->named))
-	{
+	if (auto kcustom = resolve_system_kind(n->named)) {
 		return kcustom;
 	}
 
-
-    cout << "Fail to " << n->named << endl;
+	cout << "Fail to " << n->named << endl;
+	if (n->named == "D")
+	{
+		return nullptr;
+	}
     return nullptr;
 
 
@@ -200,7 +199,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) 
 {
 	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = dynamic_pointer_cast<CVariableNamed>(defs)) {
+		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
 			if (nnvar->name->named == n->named)
 			{
@@ -223,7 +222,7 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	}
 
     for (auto &defs : assertions) {
-        if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(defs->get_obj())) {
+        if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
             //std::cout << nn->named << std::endl;
             if (nn->named == n) {
                 return defs->get_definition();

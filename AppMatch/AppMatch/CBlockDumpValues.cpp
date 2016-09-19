@@ -15,6 +15,8 @@
 #include <iostream>
 #include "CBlockRelation.h"
 #include "CBlockScope.h"
+#include "CBlockCommand.h"
+#include "sharedCast.h"
 
 
 using namespace std;
@@ -524,7 +526,7 @@ void CBlockVerbRelation::dump(string ident) {
 	cout << ident << "Verb  " << endl;
 	this->verbNoum->dump(ident + "       ");
 	cout << ident << "Implies " << endl;
-	this->relation->dump(ident + "       ");
+	this->relationNoum->dump(ident + "       ");
 }
 
 void CVariableNamed::dump(string ident)
@@ -554,14 +556,14 @@ string HtoString(HBlockList lst)
 
 string HtoString(HBlock value)
 {
-	if (HBlockNoum verbNoum = dynamic_pointer_cast<CBlockNoum>(value)) {
+	if (HBlockNoum verbNoum = asHBlockNoum(value)) {
 		return verbNoum->named;
 	}
-	else if (HBlockList verbNoumList = dynamic_pointer_cast<CBlockList>(value))
+	else if (HBlockList verbNoumList = asHBlockList(value))
 	{
 		return HtoString(verbNoumList);
 	}
-	else if (HBlockProperty pNoumList = dynamic_pointer_cast<CBlockProperty>(value))
+	else if (HBlockProperty pNoumList = asHBlockProperty(value))
 	{
 		return HtoString(pNoumList->prop) +" of "+  HtoString(pNoumList->obj);
 	}
@@ -643,6 +645,7 @@ void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "ExecutionBlock " << endl;
 
+      
 	  {
 
 		  locals->dump(ident + "       ");
@@ -656,3 +659,21 @@ void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "Text:  " << contents << endl;
   }
+
+
+void CBlockRelationInstance::dump(string ident)
+{
+    cout << ident << "Relation Instance of " << this->relation->named << endl;
+    {
+        this->value1->dump(ident + "       ");
+        this->value2->dump(ident + "       ");
+    }
+}
+
+void CBlockNow::dump(string ident) {
+    cout << ident << "Now " <<  endl;
+    {
+        this->assertation->dump(ident + "       ");
+    }
+
+}

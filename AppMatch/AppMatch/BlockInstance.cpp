@@ -4,6 +4,8 @@
 
 #include "BlockInstance.h"
 #include <iostream>
+#include "sharedCast.h"
+
 using  namespace  std   ;
 
 CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
@@ -56,7 +58,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 	//Anonymous SET
 	for(auto &va :	this->anomimousSlots)
 	{
-		if (HVariableSlotEnum   venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
+		if (HVariableSlotEnum   venum = asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains( c_block->named ))
 			{
@@ -64,7 +66,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 				return;
 			}
 		}
-		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
+		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named )
 			{
@@ -81,7 +83,7 @@ void CBlockInstance::unset(HBlockNoum c_block)
 	for (auto &va : this->anomimousSlots)
 	{
 
-		if (HVariableSlotBool  vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
+		if (HVariableSlotBool  vbool = asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named)
 			{
@@ -97,14 +99,14 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 
 	for (auto &va : this->anomimousSlots)
 	{
-		if (HVariableSlotEnum   venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
+		if (HVariableSlotEnum   venum = asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
 				return true ;
 			}
 		}
-		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
+		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{
@@ -147,7 +149,7 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
 	for (auto &va : this->anomimousSlots)
 	{
-		if (HVariableSlotEnum  venum = dynamic_pointer_cast<CVariableSlotEnum>(va))
+		if (HVariableSlotEnum  venum = asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
@@ -155,7 +157,7 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 				return QNotEquals;
 			}
 		}
-		if (HVariableSlotBool   vbool = dynamic_pointer_cast<CVariableSlotBool>(va))
+		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{

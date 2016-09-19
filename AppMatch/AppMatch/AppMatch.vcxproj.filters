@@ -82,31 +82,7 @@
     <ClInclude Include="BlockInterpreter.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
-    <ClInclude Include="CAssertionDefinition.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
     <ClInclude Include="CInterpreter.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjectDefinitions.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstDefinitions.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="CProperties.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="FEnviroment.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="CVariableDefinition.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="CValueDefinitions.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="CRelations.h">
       <Filter>Header Files\VM</Filter>
     </ClInclude>
     <ClInclude Include="Parser.h">
@@ -143,6 +119,15 @@
       <Filter>Header Files\Block</Filter>
     </ClInclude>
     <ClInclude Include="CBlockNamedVariable.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockCommand.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedCast.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamicCast.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
   </ItemGroup>
@@ -188,27 +173,6 @@
     </ClCompile>
     <ClCompile Include="BlockInterpreter.cpp">
       <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="RepresentationFunctions.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="FEnviroment.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="CRelations.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="CpropertiesFunctions.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreter.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="AppMatch.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="Equality.cpp">
-      <Filter>Source Files\VM</Filter>
     </ClCompile>
     <ClCompile Include="CMatch.cpp">
       <Filter>Source Files\Match</Filter>
@@ -302,6 +266,21 @@
     </ClCompile>
     <ClCompile Include="Parser_Decide.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="testes_Relation.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="InterpreterRelationEngine.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="CInterpreterRelation.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamicCast.cpp">
+      <Filter>Source Files\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="sharedCast.cpp">
+      <Filter>Source Files\Block</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

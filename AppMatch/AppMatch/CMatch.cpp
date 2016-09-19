@@ -392,10 +392,15 @@ std::string CPred::repr() {
     return "Pred";
 }
 
-bool CPredAtom::isSame(HTerm b) {
-    if (CPredAtom *hlist = dynamic_cast<CPredAtom *>(b.get())) {
-        return (equals(this->h.get(), hlist->h.get()) == Equals);
-    }
+bool CPredAtom::isSame(HTerm b) 
+{
+	if (b->type() == TermType::PredAtom)
+	{
+		CPredAtom *hlist = static_cast<CPredAtom*>(b.get());
+		{
+			return (equals(this->h.get(), hlist->h.get()) == Equals);
+		}
+	}
     return false;
 }
 
@@ -426,7 +431,7 @@ EqualsResul CPredAtom::match(HTerm h) {
 }
 
 bool CPredList::isSame(HTerm h) {
-    if (CPredList *hlist = dynamic_cast<CPredList *>(h.get())) {
+    if (CPredList *hlist = asPredList(h.get())) {
         if (this->plist.size() != hlist->plist.size()) return false;
         for (size_t i = 0; i < this->plist.size(); ++i) {
             if (!this->plist[i]->isSame(hlist->plist[i])) {
@@ -486,7 +491,7 @@ EqualsResul CPredList::match(MTermSet &_h) {
 }
 
 EqualsResul CPredList::match(HTerm h) {
-    CList *lst = dynamic_cast<CList * >(h.get());
+    CList *lst = asCList(h.get());
     if (lst != nullptr) {
         auto asVector = lst->asVector();
         return this->match(asVector); //chama o termo superior
@@ -497,7 +502,7 @@ EqualsResul CPredList::match(HTerm h) {
 
 bool CPredAny::isSame(HTerm h) {
 
-    if (CPredAny *hlist = dynamic_cast<CPredAny *>(h.get())) {
+    if (CPredAny *hlist = asPredAny(h.get())) {
         return true;
     }
     return false;
@@ -519,7 +524,7 @@ EqualsResul CPredAny::match(HTerm h) {
 }
 
 bool CPredWord::isSame(HTerm b) {
-    if (CPredWord *hlist = dynamic_cast<CPredWord *>(b.get())) {
+    if (CPredWord *hlist = asPredWord(b.get())) {
         return true;
     }
     return false;
@@ -538,7 +543,7 @@ EqualsResul CPredWord::match(MTermSet &_h) {
 }
 
 EqualsResul CPredWord::match(HTerm h) {
-    if (CString *v = dynamic_cast<CString *>(h.get())) {
+    if (CString *v = asCString(h.get())) {
         return Equals;
     }
     return NotEquals;
@@ -548,10 +553,13 @@ CPredBoolean::CPredBoolean(const std::string &_named) : CPred(_named) {
 }
 
 bool CPredBooleanAnd::isSame(HTerm b) {
-    if (CPredBooleanAnd *v = dynamic_cast<CPredBooleanAnd *>(b.get())) {
-        if (!this->b1->isSame(v->b1)) return false;
-        return this->b2->isSame(v->b2);
-    }
+	if (b->type() == TermType::PredBooleanAnd)
+	{
+		if (CPredBooleanAnd *v = static_cast<CPredBooleanAnd *>(b.get())) {
+			if (!this->b1->isSame(v->b1)) return false;
+			return this->b2->isSame(v->b2);
+		}
+	}
     return false;
 }
 
@@ -578,16 +586,18 @@ CPredBooleanAnd::CPredBooleanAnd(const std::string &_named, const HPred &c_pred,
 }
 
 bool CPredBooleanOr::isSame(HTerm b) {
+	if (b->type() == TermType::PredBooleanOr)
+	{
+		if (CPredBooleanOr *v = static_cast<CPredBooleanOr *>(b.get())) {
+			int n = blist.size();
+			if (v->blist.size() != n) return false;
 
-    if (CPredBooleanOr *v = dynamic_cast<CPredBooleanOr *>(b.get())) {
-        int n = blist.size();
-        if (v->blist.size() != n) return false;
-
-        for (int i = 0; i < n; ++i) {
-            if (!blist[i]->isSame(v->blist[i])) return false;
-        }
-        return true;
-    }
+			for (int i = 0; i < n; ++i) {
+				if (!blist[i]->isSame(v->blist[i])) return false;
+			}
+			return true;
+		}
+	}
     return false;
 
 }
@@ -766,7 +776,7 @@ MatchResult CMatch_j(MTermSet &termo, CPred *predicate) {
 
 
 MatchResult CMatch_LI(std::vector<HTerm> term, HPred predicate) {
-    CPredList *plst = dynamic_cast<CPredList * >(predicate.get());
+    CPredList *plst = asPredList(predicate.get());
     if (plst != nullptr) {
         return CMatch(term, plst->plist);
 
@@ -775,7 +785,7 @@ MatchResult CMatch_LI(std::vector<HTerm> term, HPred predicate) {
 }
 
 MatchResult CMatch_IL(HTerm term, std::vector<HPred> predicate) {
-    CList *lst = dynamic_cast<CList * >(term.get());
+    CList *lst = asCList(term.get());
     if (lst != nullptr) {
         return CMatch(lst->asVector(), predicate);
     }
@@ -799,7 +809,7 @@ MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPre
 	    // inicia com tudo OK
         for (size_t i = 0; i < tn; ++i) {
             CPred *term_i = predicates_ptr[i];
-            if (CPredAtom *v = dynamic_cast<CPredAtom *>(term_i )) {
+            if (CPredAtom *v = asPredAtom(term_i )) {
 
                 MTermSet &termGroup = combinacao[i];
                 MatchResult mj = CMatch_j(termGroup, term_i);
@@ -885,7 +895,7 @@ MatchResult CMatch(HTerm term, std::vector<HPred> predicates) {
         return MatchResult();
     }
 
-    CList *lst = dynamic_cast<CList * >(term.get());
+    CList *lst =asCList(term.get());
     if (lst != nullptr) {
         return CMatch(lst->asVector(), predicates); // trata como uma lista
     }
@@ -901,5 +911,28 @@ std::string get_repr(MatchResult r) {
         s += "\n";
     }
     return s;
+}
+
+CPredAtom* asPredAtom(CTerm* c)
+{
+	if (c->type() == PredAtom) return static_cast<CPredAtom*>(c);
+	return nullptr;
+}
+
+CPredList* asPredList(CTerm* c)
+{	
+		if (c->type() == PredList) return static_cast<CPredList*>(c);
+		return nullptr;	
 };
 
+CPredAny* asPredAny(CTerm* c)
+{
+	if (c->type() == TermType::PredAny) return static_cast<CPredAny*>(c);
+	return nullptr;
+};
+
+CPredWord* asPredWord(CTerm* c)
+{
+	if (c->type() == TermType::PredWord) return static_cast<CPredWord*>(c);
+	return nullptr;
+};

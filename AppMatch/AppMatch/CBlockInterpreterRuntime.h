@@ -15,15 +15,17 @@
 #include "CBlockScope.h"
 #include <condition_variable>
 #include "CBlockAction.h"
+#include "CBlockRelation.h"
+#include "QueryStack.h"
 
-class CBlockAssertionBase;
+ class CBlockAssertionBase;
 
 class CBlockAssertion_is;
 
 using HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;
 using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
-class QueryStack;
+
 
 
 class CResultMatch;
@@ -41,8 +43,13 @@ class CBlockInterpreter {
     std::vector<NoumDefinition> nregisters;
     std::vector<HBlockAssertion_is> assertions;
 
-	
-	std::map<string, HBlock> verbRelationAssoc;
+//Relations
+	std::map<string, HBlockRelationBase > staticRelation;
+    std::list<HBlockRelationInstance > relInstances;
+
+
+//Verb to relation
+	std::map<string, HBlockNoum > verbRelationAssoc;
 	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
  
 
@@ -58,6 +65,7 @@ class CBlockInterpreter {
     std::vector<HBlockAssertionBase> kind_variables;
 	std::vector<HBlockKind_InstanceVariable> kind_named_variables;
 
+//Decides
     std::vector<HBlockToDecideWhat> decides_what;
     std::vector<HBlockToDecideWhether> decides_whether;
     std::vector<HBlockToDecideIf> decides_if;
@@ -88,17 +96,19 @@ class CBlockInterpreter {
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
 	bool setVerb(string cs, HBlock c_block, HBlock value);
+	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
 
 	bool assert_newVerb(HBlockVerbRelation value);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
  
-	CResultMatch MatchList(HBlockMatchList M, HBlockList value, QueryStack stk);
-	CResultMatch Match(HBlockMatch M, HBlock value, QueryStack stk);
+	CResultMatch MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk);
+	CResultMatch Match(HBlockMatch M, HBlock value,HRunLocalScope localsEntry, QueryStack stk);
  
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
+
 public:
     CBlockInterpreter();
 
@@ -110,6 +120,9 @@ public:
 
 	void dump_instance(string str);
 	bool assert_newUnderstand(HBlockUnderstandDynamic value);
+
+	bool assert_newRelation(HBlockRelationBase rel);
+
 	bool assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	void execute_init(HBlock p);
 
@@ -199,6 +212,8 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
+	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
 	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
 	HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);
@@ -215,6 +230,10 @@ public:
 	bool execute_user_action(HBlockActionCall v_call);
 	//Executa este bloco !
 	bool execute_now(HBlock p, HRunLocalScope localsEntry);
+
+    bool queryIsVerbToRelation(HBlockMatch m);
+
+
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

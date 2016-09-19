@@ -30,6 +30,7 @@ std::string get_repr(MTermSetCombinatoria lst);
 class CPred : public CAtom {
 public:
     std::string repr() override;
+	//virtual TermType type() override { return TermType::Pred; }
 
     std::string named;
 
@@ -41,6 +42,7 @@ public:
     virtual EqualsResul match(HTerm h) = 0;
 
     virtual bool isSame(HTerm b) = 0;
+
 };
 
 using HPred = std::shared_ptr<CPred>;
@@ -52,6 +54,7 @@ public:
     HTerm h;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredAtom; }
 
     CPredAtom(std::string _named, HTerm atom);
 
@@ -65,6 +68,7 @@ public:
     bool isSame(HTerm b) override;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredList; }
 
     std::vector<HPred> plist;
 
@@ -80,6 +84,7 @@ public:
     bool isSame(HTerm b) override;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredAny; }
 
     CPredAny(std::string _named);;
 
@@ -93,6 +98,7 @@ public:
     bool isSame(HTerm b) override;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredWord; }
 
     CPredWord(std::string _named);;
 
@@ -111,6 +117,7 @@ public:
     bool isSame(HTerm b) override;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredBooleanAnd; }
 
     virtual EqualsResul match(MTermSet &h) override;
 
@@ -127,6 +134,7 @@ public:
     bool isSame(HTerm b) override;
 
     std::string repr() override;
+	virtual TermType type() override { return TermType::PredBooleanOr; }
 
     CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
                    const HPred &c_pred3);
@@ -192,6 +200,17 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates);
 MatchResult CMatch(HTerm term, std::vector<HPred> predicates);
 
 std::string get_repr(MatchResult r);
+
+
+
+
+CPredAtom* asPredAtom(CTerm* c);
+CPredList* asPredList(CTerm* c);
+CPredAny* asPredAny(CTerm* c);
+CPredWord * asPredWord(CTerm* c);
+
+
+
 
 #endif
 

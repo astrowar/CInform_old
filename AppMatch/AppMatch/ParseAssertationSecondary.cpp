@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include "sharedCast.h"
 #include <iostream>
 
 HBlockKindAction CParser::parse_AssertionAction_secondPart( HTerm  term)
@@ -294,7 +295,7 @@ HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm> term)
             HBlock value = parser_expression(res.matchs["Value"]);
             if (value == nullptr) return nullptr;
 
-            if (HBlockKindAction action = std::dynamic_pointer_cast<CBlockKindAction>(value)) {
+            if (HBlockKindAction action =  asHBlockKindAction(value)) {
                 auto sterm = expandBract(res.matchs["Noum"]);
                 HBlock _naction = std::make_shared<CBlockAction>( (sterm->repr()));
 

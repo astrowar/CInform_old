@@ -4,6 +4,35 @@
 #include "Parser.h"
 #include <iostream>
 #include <algorithm>
+#include <sstream>
+
+
+std::string decompose_bracket(std::string phase, std::string dlm) {
+
+	size_t b = phase.find(dlm);
+	if (b != std::string::npos) {
+		std::string sa = phase.substr(0, b);
+		std::string sb = phase.substr(b + 1, phase.size() - b - 1);
+		sb = decompose_bracket(sb, dlm);
+		return sa + " " + dlm + " " + sb;
+	}
+	return phase;
+}
+
+std::vector<HTerm> decompose(std::string phase) {
+	std::stringstream test(phase);
+	std::string segment;
+	std::vector<HTerm> seglist;
+	while (getline(test, segment, ' ')) {
+
+		if (segment.length() > 0) {
+			if (segment[0] != ' ') {
+				seglist.push_back(make_string(segment));
+			}
+		}
+	}
+	return seglist;
+}
 
 HPred mk_HPredLiteral(string str) {
     return mkHPredAtom("_", make_string(str));
@@ -40,10 +69,10 @@ string CtoString(HTerm  value)
 
 string CtoString(CTerm  *value)
 {
-	if (CString* lstr = dynamic_cast<CString*>(value)) {
+	if (CString* lstr = asCString(value)) {
 		return lstr->s;
 	}
-	if (CList* lst = dynamic_cast<CList*>(value)) {
+	if (CList* lst = asCList(value)) {
 		{
 			return CtoString(lst);
 		}
@@ -54,7 +83,7 @@ string CtoString(CTerm  *value)
 
 
 HTerm expandBract(HTerm term) {
-    if (CList *clist = dynamic_cast<CList *>(term.get())) {
+    if (CList *clist = asCList(term.get())) {
         if (clist->lst.front()->is_openBracket() && clist->lst.back()->is_closeBracket()) {
             auto vlist = clist->asVector();
             vlist = remove_boundaryListMark(vlist);
@@ -152,12 +181,12 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
 HPred convert_to_predicate(CTerm *termo) {
 
-	if (CList *clist = dynamic_cast<CList *>(termo)) {
+	if (CList *clist = asCList(termo)) {
 		auto vlist = clist->asVector();
 		vlist = remove_boundaryListMark(vlist);
 
 		auto hpr = mkHPredList("predListing", {});
-		CPredList *predList = dynamic_cast<CPredList *>(hpr.get());
+		CPredList *predList = asPredList (hpr.get());
 
 		for (auto k : vlist) {
 			predList->plist.push_back(convert_to_predicate(k.get()));
@@ -165,7 +194,7 @@ HPred convert_to_predicate(CTerm *termo) {
 		return hpr;
 	}
 	else {
-		if (CString *css = dynamic_cast<CString *>(termo)) {
+		if (CString *css = asCString(termo)) {
 
 			return mk_HPredLiteral(css->s);
 		}

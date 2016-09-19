@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-HBlock CParser::parse_AssertionVerb(std::vector<HTerm> term) {
+HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
     {
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;
@@ -143,13 +143,13 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
         if (res.result == Equals) {
             HPred verbMatch;
             HBlock a_verb;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+            HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
 
-            if (CList *plist = dynamic_cast<CList *>(res.matchs["VerbList"].get())) {
+            if (CList *plist = asCList(res.matchs["VerbList"].get())) {
                 //eh uma lista
 
 				HTerm listExpand =  expandBract(res.matchs["VerbList"]);
-				plist = dynamic_cast<CList*>(listExpand.get());
+				plist = asCList(listExpand.get());
 
 
                 HBlockList clist = std::make_shared<CBlockList>();
@@ -203,7 +203,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 
             HBlock a_verb = clist;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+            HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
 
             auto verbMatch = (mkHPredList("VerbMatch", {
                     mk_HPredLiteral(res.matchs["Verb"]->repr()),
@@ -234,7 +234,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 
             HBlock a_verb = clist;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+            HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
 
             auto verbMatch = (mkHPredList("VerbMatch", {
                     mk_HPredLiteral(res.matchs["Verb"]->repr()),
@@ -267,7 +267,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             auto vaux = getVerbAndAux(res.matchs["Verb"]);
             HBlock a_verb = vaux.first;
             HPred verbMatch = vaux.second;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+            HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
             verbList->blist.push_back(verbMatch);
             return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
 
@@ -291,7 +291,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             auto vaux = getVerbAndAux(res.matchs["Verb"]);
             HBlock a_verb = vaux.first;
             HPred verbMatch = vaux.second;
-            HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+            HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
             verbList->blist.push_back(verbMatch);
             return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
 
@@ -313,7 +313,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
+            if (CList *cverb = asCList(res.matchs["Verb"].get())) {
                 HBlock a_verb = nullptr;
                 HPred verbMatch = nullptr;
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());
@@ -340,14 +340,14 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
                 //std::cout << res.matchs["Verb"]->repr() << std::endl;
                 if (a_verb != nullptr) {
 
-                    HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+                    HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                     verbList->blist.push_back(verbMatch);
                     return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
                 }
             } else {
 
                 HBlock a_verb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-                HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+                HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                 verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
                 return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
             }
@@ -366,7 +366,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            if (CList *cverb = dynamic_cast<CList *>(res.matchs["Verb"].get())) {
+            if (CList *cverb = asCList(res.matchs["Verb"].get())) {
                 HBlock a_verb = nullptr;
                 HPred verbMatch = nullptr;
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());
@@ -389,13 +389,13 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
                 }
 
                 if (a_verb != nullptr) {
-                    HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+                    HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                     verbList->blist.push_back(verbMatch);
                     return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
                 }
             } else {
                 HBlock a_verb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-                HBlock a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+                HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                 verbList->blist.push_back(mk_HPredLiteral(res.matchs["Verb"]->repr()));
                 return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
             }

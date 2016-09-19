@@ -33,6 +33,7 @@ public:
      
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockToDecideIf; }
 };
 
 using HBlockToDecideIf = std::shared_ptr<CBlockToDecideIf>;
@@ -54,6 +55,7 @@ public:
     HBlock decideBody;    
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockToDecideWhether; }
 };
 
 using HBlockToDecideWhether = std::shared_ptr<CBlockToDecideWhether>;
@@ -75,6 +77,7 @@ public:
 	HBlock decideBody;
 
 	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockToDecideWhat; }
 };
 
 using HBlockToDecideWhat = std::shared_ptr<CBlockToDecideWhat>;
@@ -98,6 +101,7 @@ public:
 	HBlock decideBody;
 
 	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockToDecideWhat_FirstNoum; }
 };
 
 using HBlockToDecideWhat_FirstNoum = std::shared_ptr<CBlockToDecideWhat_FirstNoum>;
@@ -118,6 +122,7 @@ public:
     virtual HTerm eval() { return nullptr; }
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockToDecideOn; }
 };
 
 using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;

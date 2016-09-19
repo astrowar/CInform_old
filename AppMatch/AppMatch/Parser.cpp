@@ -7,6 +7,9 @@
  
 #include "CblockAssertion.h"
 #include "CBlockUndestand.h"
+#include "CBlockCommand.h"
+#include "sharedCast.h"
+
 
 CParser::CParser(HBlockInterpreter _interpreter) {
     interpreter = _interpreter;
@@ -121,7 +124,59 @@ HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term) {
 
 }
 
+std::vector<HTerm> expandTerm( HTerm term)
+{
+    if (CList* clist =  asCList( term.get() ) )
+    {
+          return clist->asVector();
+    }
+    return {term};
+}
 
+HBlock CParser::sys_now_action(std::vector<HTerm> term) {
+    {
+        std::vector<HPred> predList;
+        predList.push_back(mk_HPredLiteral("now"));
+        predList.push_back(mkHPredAny("Assertion"));
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals)
+        {
+            auto nterms = expandTerm(res.matchs["Assertion"]);
+            //parse_AssertionVerb
+            //parse_AssertionDirectAssign
+
+            {
+                HBlockAssertion_is now_verb = parse_AssertionVerb(nterms);
+                if (now_verb != nullptr)
+                {
+                    return std::make_shared<CBlockNow >(now_verb);
+                }
+            }
+
+
+            {
+                HBlockAssertion_is now_is = parse_AssertionDirectAssign(nterms);
+                if (now_is != nullptr)
+                {
+                    return std::make_shared<CBlockNow >(now_is);
+                }
+            }
+        }
+    }
+    return nullptr;
+}
+
+
+
+//Processa os smtm que sao do sistema
+HBlock CParser::STMT_system_Assertion(std::vector<HTerm> term)
+{
+
+            auto d_now = (sys_now_action(term));
+            if (d_now != nullptr) return d_now;
+
+    return nullptr;
+}
 
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
 HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
@@ -299,7 +354,7 @@ HBlockEnums CParser::parseAssertion_EnumTerms(HTerm enumList) {
 
     std::vector<HBlockNoum> nlist;
     std::for_each(elist->lista.begin(), elist->lista.end(),
-                  [&nlist](HBlock c) { nlist.push_back(std::dynamic_pointer_cast<CBlockNoum>(c)); });
+                  [&nlist](HBlock c) { nlist.push_back(asHBlockNoum(c)); });
     return std::make_shared<CBlockEnums>(nlist);
 
 }
@@ -383,7 +438,7 @@ HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm> lst) {
 
 
 HBlock CParser::parser_stmt(HTerm term) {
-    if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+    if (CList *vlist = asCList(term.get())) {
         auto r = parser_stmt(vlist->asVector());
         /*if (r == nullptr)
             std::cout << term->repr() << std::endl;*/
@@ -395,7 +450,7 @@ HBlock CParser::parser_stmt(HTerm term) {
 
 
 HBlock CParser::parserBoolean(HTerm term) {
-    if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+    if (CList *vlist = asCList(term.get())) {
         auto r = parserBoolean(vlist->asVector());
         if (r != nullptr) {
             return r;

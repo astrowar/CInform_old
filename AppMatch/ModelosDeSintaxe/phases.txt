@@ -1,0 +1,26 @@
+
+frases  sao comandos.
+frases sao sempre associados a verbos e nunca retornam um objeto.
+
+ha dois tipos de frases no interpreter. as frases de sistema e as frases do usuario
+frases do sistema sao os opcodes basicos.
+say, let , if , now , insert , delete , push state ...
+
+frases do usuario sao criadas a partiri de um conjunto de frases
+para definir uma frase, eh preciso associar a um verbo ou a um PattenMatch
+
+To do power X with Y : ....
+A frase entao entende que deve realizar as acoes a seguir sempre que for informada para faze algo como:
+ power lighflash with batteries.
+
+to do power ( X - thing ) with ( Y - thing ):
+   if (( X is lightflash ) and ( Y is batteries ))
+      now lightflash is on
+      now batteries is in limbo
+      say "the lightflash is on"
+   else
+      say "i can do it".
+   end.
+
+Uma coisa que nao esta clara eh a relacao entre frase e acao ...
+isso ai em cima esta mais para acao do que frase ...

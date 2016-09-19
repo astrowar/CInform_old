@@ -50,7 +50,7 @@ public:
     virtual HBlock get_obj() override;
 
     virtual void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockAssertion_canBe; }
     HBlockEnums definition;
     HBlock obj;
 
@@ -87,6 +87,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isInstanceOf; }
 
     HBlockInstance noum;
     HBlockKind baseKind;
@@ -104,6 +105,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isNamedValueOf; }
 
     HBlock noum;
     HBlock baseKind;
@@ -122,6 +124,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isVariable; }
 
     HBlock variable;
     HBlock baseKind;
@@ -141,7 +144,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockAssertion_isDefaultAssign; }
     HBlock variable;
     HBlock value;
 
@@ -159,6 +162,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isConstantAssign; }
 
     HBlock variable;
     HBlock value;
@@ -177,6 +181,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isForbiddenAssign; }
 
     HBlock variable;
     HBlock value;
@@ -184,6 +189,9 @@ public:
     CBlockAssertion_isForbiddenAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
                                                                          value( (_value)) {};
 };
+using HBlockAssertion_isForbiddenAssign = std::shared_ptr<CBlockAssertion_isForbiddenAssign>;
+
+
 
 class CBlockAssertion_isDirectAssign : public CBlockAssertion_is //retorna uma declaracao
 {
@@ -193,7 +201,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockAssertion_isDirectAssign; }
     HBlock variable;
     HBlock value;
 
@@ -211,6 +219,7 @@ public:
     HBlock get_definition() override;
 
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAssertion_isNotDirectAssign; }
 
     HBlock variable;
     HBlock value;
@@ -225,7 +234,7 @@ class CBlockAssertion_isActionOf : public CBlockAssertion_is //retorna uma decla
 {
 public:
     void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockAssertion_isActionOf; }
     HBlockNoum noum;
     HBlockAction action;
     HBlockActionApply application;
@@ -236,7 +245,7 @@ public:
                                                                                                                  _application) {};
 };
 
-
+using HBlockAssertion_isActionOf = std::shared_ptr<CBlockAssertion_isActionOf>;
 
 class CBlockIsVerb : public CBlockAssertion_is    //retorna uma declaracao
 {
@@ -244,7 +253,7 @@ public:
 	HBlock get_obj() override;
 	HBlock get_definition() override;
 	virtual void dump(string ident) override;
-
+	virtual BlockType type() override { return BlockType::BlockIsVerb; }
 	string verb;
 	HBlock n1;
 	HBlock n2;
@@ -260,6 +269,7 @@ public:
 	HBlock get_obj() override;
 	HBlock get_definition() override;
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockIsNotVerb; }
 
 	string verb;
 	HBlock n1;

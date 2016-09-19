@@ -5,10 +5,18 @@
 #include "BlockInterpreter.h"
 #include <string>
 
+
+enum VarSlotType
+{
+	EnumSlot,
+	BoolSlot
+};
+
 class CVariableSlot {
 public:
     virtual ~CVariableSlot() {
     }
+	virtual VarSlotType  type() = 0;
 };
 
 using HVariableSlot = std::shared_ptr<CVariableSlot>;
@@ -19,6 +27,7 @@ public:
     HBlockEnums valueDefinition;
 
     CVariableSlotEnum(HBlockEnums enums);
+	virtual VarSlotType  type() override  { return VarSlotType ::EnumSlot ; };
 };
 
 using HVariableSlotEnum = std::shared_ptr<CVariableSlotEnum>;
@@ -29,6 +38,7 @@ public:
     HBlockNoum valueDefinition;
 
     CVariableSlotBool(HBlockNoum valueDef);
+	virtual VarSlotType  type() override  { return VarSlotType ::BoolSlot ; };
 };
 
 using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
@@ -36,6 +46,7 @@ using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
 class CVariableNamed :public CBlock {
 public:
 	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::VariableNamed; }
 	HBlock value;
     HBlockKind kind;
     HBlockNoum name;

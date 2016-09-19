@@ -6,7 +6,7 @@
 
 
 DispatchArguments CParser::parser_buildMatchBlock_actionInput(HTerm term) {
-    if (CList *cterm = dynamic_cast<CList *>(term.get())) {
+    if (CList *cterm = asCList(term.get())) {
         std::vector<HTerm> vterm(cterm->lst.begin(), cterm->lst.end());
         auto kv = parser_buildMatchBlock_actionInput(vterm);
         return kv;
@@ -87,7 +87,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 		{
 			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
 			//cterm eh uma lista ??
-			if (CList* clist = dynamic_cast<CList*>(cterm))
+			if (CList* clist = asCList(cterm))
 			{
 				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
 				for(auto &ci : clist->lst  )
@@ -398,13 +398,13 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
 std::list<HBlock> CParser::ToMatchList( std::vector<HPred> pvector, MatchResult result)
 {
 	std::list<HBlock> vlist;
-	for(int j = 0; j< pvector.size();++j)
+	for(size_t j = 0; j< pvector.size();++j)
 	{
-		if (CPredAtom* vAtom = dynamic_cast < CPredAtom * >(pvector[j].get()))
+		if (CPredAtom* vAtom = asPredAtom(pvector[j].get()))
 		{
 			vlist.push_back(std::make_shared<CBlockNoum>(vAtom->h->repr()));
 		}
-		else if (CPredAny * vAny = dynamic_cast < CPredAny* >(pvector[j].get()))
+		else if (CPredAny * vAny =asPredAny(pvector[j].get()))
 		{
 			HBlock n1 = parser_expression(result.matchs[vAny->named]);
 			vlist.push_back(n1);
@@ -438,7 +438,7 @@ HBlock CParser::DynamicDispatch_action(std::vector<HTerm> term) {
 			n2->dump("   ");
 
 
-			//if (HBlockAction vAction = std::dynamic_pointer_cast<CBlockAction>(it->output))
+			//if (HBlockAction vAction = std::asHBlockAction(it->output))
 			//{
 			//	return std::make_shared<CBlockActionCall>(vAction, n1, n2);
 			//}

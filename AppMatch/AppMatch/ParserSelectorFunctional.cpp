@@ -63,7 +63,7 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm> term)
 
 HBlockSelector CParser::parser_List_selector(HTerm  term)
 {
-	if (CList *vlist = dynamic_cast<CList *>(term.get())) {
+	if (CList *vlist = asCList(term.get())) {
 		auto r = parser_List_selector(vlist->asVector());		 
 		return r;
 	}

@@ -12,6 +12,7 @@ class CBlockAction : public CBlock  // um bloco que representa uma atividade
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockAction; }
 
     CBlockAction(string _named)
 
@@ -40,6 +41,7 @@ public :
                                                                            noum2(_noum2) {}
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockActionCall; }
 };
 
 using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
@@ -62,6 +64,7 @@ public:
 		    noum1(_noum1), noum2(_noum2) {}
 
     void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockStaticDispatch; }
 
  
 };

@@ -13,6 +13,7 @@ class CBlockInstance : public CBlock //retorna um valor generico
 {
 public:
     virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockInstance; }
 
     CBlockInstance(string _named, HBlockKind base);
 
@@ -62,6 +63,7 @@ class CBlockText : public CBlockInstance //retorna um valor generico
 {
 public:
 	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockText; }
 	std::string contents;
 	CBlockText(std::string _contents) :CBlockInstance( "text", std::make_shared<CBlockKindValue>("text") ), contents(_contents) {}
 };

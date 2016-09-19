@@ -7,12 +7,43 @@
 #include <iostream>
 #include "CBlockScope.h"
 #include "QueryStack.h"
+#include "sharedCast.h"
 using namespace std;
+
+
+bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry)
+{
+
+	// Eh uma relacao ??
+	for (auto & rv : verbRelationAssoc)
+	{
+		if (rv.first == vverb->verb)
+		{
+			auto relation_name = rv.second->named;
+			if (relation_name == "dynamic")
+			{
+				cout << " dynamic relations is READ ONLY " << std::endl;
+				return false;
+			}
+			auto rel_find = this->staticRelation.find(relation_name);
+			if (rel_find != this->staticRelation.end())
+			{
+				HBlockRelationBase rel = rel_find->second;
+				this->set_relation(rel, vverb->n1, vverb->n2);
+				return true;
+			}
+		}
+
+	}
+	return false;
+}
+
+
 
 
 bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope localsEntry)
 {
-	if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(obj)) {
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
 		HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
 			return assert_it_Value(nobj, value,localsEntry);
@@ -23,8 +54,8 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 
 	// value tem que ser uma instancia, propriedade ou variavel
 
-	if (HBlockInstance nInst = dynamic_pointer_cast<CBlockInstance>(obj)) {
-		if (HBlockNoum nbase = dynamic_pointer_cast<CBlockNoum>(value)) {
+	if (HBlockInstance nInst = asHBlockInstance(obj)) {
+		if (HBlockNoum nbase = asHBlockNoum(value)) {
 			HBlock nobj = resolve_noum(nbase,localsEntry);
 			if (nobj == nullptr)
 			{
@@ -33,19 +64,19 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 			}
 		}
 	}
-	if (HBlockProperty prop_n = dynamic_pointer_cast<CBlockProperty>(obj)) {
+	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
 		HBlock propNamed = prop_n->prop;
 		HBlock destination = prop_n->obj;
 		return assert_it_property(propNamed, destination, value,localsEntry);
 	}
 
 	//
-	if (HVariableNamed  var_n = dynamic_pointer_cast<CVariableNamed>(obj)) {
+	if (HVariableNamed  var_n = asHVariableNamed(obj)) {
 
 		HBlock destination = var_n->value;
 		if (value_can_be_assign_to(value, var_n->kind,localsEntry))
 		{
-			if (HBlockList   val_list = dynamic_pointer_cast<CBlockList>(value))
+			if (HBlockList   val_list = asHBlockList(value))
 			{
 				//list is passed as copy
 				HBlockList lcopy = make_shared<CBlockList>();
@@ -67,9 +98,9 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 
 HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock propObj )
 {
-	if (HBlockInstance cinst = dynamic_pointer_cast<CBlockInstance>(propObj)) 
+	if (HBlockInstance cinst = asHBlockInstance(propObj))
 	{
-		if (HBlockNoum property_noum = dynamic_pointer_cast<CBlockNoum>(propname)) 
+		if (HBlockNoum property_noum = asHBlockNoum(propname))
 		{
 			HVariableNamed pvar = cinst->get_property(property_noum->named);
 			if (pvar != nullptr) {
@@ -90,9 +121,9 @@ HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock p
 }
 
 HBlock CBlockInterpreter::exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry) {
-	if (HBlockProperty cproperty = dynamic_pointer_cast<CBlockProperty>(c_block)) 
+	if (HBlockProperty cproperty = asHBlockProperty(c_block))
 	{
-		if (HBlockNoum cnn = dynamic_pointer_cast<CBlockNoum>(cproperty->obj)) 
+		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
 		{
 			auto resolved = resolve_noum(cnn,localsEntry);
 			if (resolved != nullptr) {
@@ -116,7 +147,7 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 	QueryStack stk = QueryStack( );
 
 	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-		if (HBlockAssertion_is qdef = dynamic_pointer_cast<CBlockAssertion_is>(*it)) 		
+		if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it))
 		{
 			if (query_is_same(c_block, qdef->get_obj(), localsEntry, stk) == QEquals) 
 			{				
@@ -144,34 +175,34 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 {
 
-		if (HBlockNoum nn = dynamic_pointer_cast<CBlockNoum>(c_block))
+		if (HBlockNoum nn = asHBlockNoum(c_block))
 		{
 			auto  obj = resolve_noum(nn,localsEntry);
 			return  exec_eval(obj , localsEntry);
 		}
 
-		if (HBlockInstance nIns = dynamic_pointer_cast<CBlockInstance>(c_block))
+		if (HBlockInstance nIns = asHBlockInstance(c_block))
 		{
 			return nIns;
 		}
 
-		if (HBlockKind kIns = dynamic_pointer_cast<CBlockKind>(c_block))
+		if (HBlockKind kIns = asHBlockKind(c_block))
 		{
 			return kIns;
 		}
 
-		if (auto  kvar= dynamic_pointer_cast<CVariableNamed >(c_block))
+		if (auto  kvar= asHVariableNamed(c_block))
 		{
 			return kvar->value ;
 		}
 
 		
 
-		if (auto  kprop = dynamic_pointer_cast<CBlockProperty >(c_block))
+		if (auto  kprop = asHBlockProperty (c_block))
 		{
 			auto instancia = exec_eval(kprop->obj, localsEntry);
-			if (HBlockInstance objInst = dynamic_pointer_cast<CBlockInstance>(instancia))
-				if (HBlockNoum propNoum = dynamic_pointer_cast<CBlockNoum>(kprop->prop))
+			if (HBlockInstance objInst = asHBlockInstance(instancia))
+				if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 				{
 					HVariableNamed pvar = objInst->get_property(propNoum->named);
 					return pvar->value;
@@ -179,12 +210,12 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 			return nullptr;
 		}
 
-		if (HBlockNamedValue nvalue = dynamic_pointer_cast<CBlockNamedValue>(c_block))
+		if (HBlockNamedValue nvalue = asHBlockNamedValue(c_block))
 		{
 			return nvalue;
 		}
 
-		if (auto  kList = dynamic_pointer_cast<CBlockList  >(c_block))
+		if (auto  kList = asHBlockList  (c_block))
 		{
 			auto rList = std::make_shared<CBlockList>( );
 			for(auto &e : kList->lista)
@@ -204,7 +235,7 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
  
 
 	//Execution block is not an action ??
-	if (HBlockNoum noumCall = dynamic_pointer_cast<CBlockNoum>(p))
+	if (HBlockNoum noumCall = asHBlockNoum(p))
 	{
 		auto callAs = resolve_noum(noumCall, localsEntry);
 		if (callAs != nullptr)
@@ -213,12 +244,12 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
 		}
 	}
 
-	if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction>(p))
+	if (HBlockAction actionCall = asHBlockAction(p))
 	{
 		return actionCall;
 	}
 
-	if (HVariableNamed callAsVar = dynamic_pointer_cast<CVariableNamed>(p))
+	if (HVariableNamed callAsVar = asHVariableNamed(p))
 	{
 		auto actionCall_1 = callAsVar->value;
 		return  resolve_as_callCommand(actionCall_1, localsEntry);
@@ -233,7 +264,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 	QueryStack stk;
 	for (auto &d : dynamic_understand)
 	{
-		auto result = (Match(d->input_n, p, stk));
+		auto result = (Match(d->input_n, p, localsEntry, stk));
 		if (result.hasMatch)
 		 {
 			 cout << "Dispatch " << endl;
@@ -255,14 +286,14 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 {
 				 auto arg_header_first = d->argument_n->matchList.begin();
 				 // eh um Match Named ???
-				 if (HBlockMatchNamed arg1_named = dynamic_pointer_cast<CBlockMatchNamed>(*arg_header_first))
+				 if (HBlockMatchNamed arg1_named = asHBlockMatchNamed(*arg_header_first))
 				 {
 					 cout << " named " << arg1_named->named  << " == " <<  endl;
 
 					 result.maptch["noum1"]->dump("               ");					 
 				     auto obj_resolved = exec_eval (result.maptch["noum1"], localsEntry);
 
-					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved, stk);
+					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved,  localsEntry,stk);
 					 if (result_arg1.hasMatch == true)
 					 {
 						 localsNext->locals.push_back(std::pair<string, HBlock>(arg1_named->named, obj_resolved));
@@ -280,13 +311,13 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 {
 					 auto arg_header_second = std::next( arg_header_first);
 					 // eh um Match Named ???
-					 if (HBlockMatchNamed arg2_named = dynamic_pointer_cast<CBlockMatchNamed>(*arg_header_second))
+					 if (HBlockMatchNamed arg2_named = asHBlockMatchNamed(*arg_header_second))
 					 {
 						 cout << " named " << arg2_named->named << " == " << endl;
 						 result.maptch["noum2"]->dump("               ");
 
 						 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry);
-						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved, stk);
+						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved, localsEntry , stk);
 						 if (result_arg2.hasMatch == true)
 						 {
 							 localsNext->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));
@@ -307,7 +338,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 auto output_block =  resolve_as_callCommand(d->output_n, localsEntry); 
 
 
-			 if (HBlockAction actionCall = dynamic_pointer_cast<CBlockAction >(output_block))
+			 if (HBlockAction actionCall = asHBlockAction (output_block))
 			 {
 				return  make_shared< CExecutionBlock >(make_shared< CRunLocalScope >() , std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
@@ -334,16 +365,20 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 {	 
 
 	 
+	if (HBlockIsVerb vverb = asHBlockIsVerb (p)) {
+ 
+		if (execute_verb_set(vverb, localsEntry))
+			return true;
+	}
 
-
-	if (HBlockAssertion_is vk = dynamic_pointer_cast<CBlockAssertion_is>(p)) {
+	if (HBlockAssertion_is vk = asHBlockAssertion_isDirectAssign (p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
 		execute_set(obj, value,localsEntry);
 	}
 
 
-	if (HBlockDinamicDispatch  vdyn = dynamic_pointer_cast<CBlockDinamicDispatch>(p)) 
+	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
 	{
 		//determina quem eh o action do dynamica dispatch
 		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
@@ -355,7 +390,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		}
 	}
 
-	if (HBlockActionCall  vCall = dynamic_pointer_cast<CBlockActionCall >(p))
+	if (HBlockActionCall  vCall =asHBlockActionCall (p))
 	{		 
 		 
 		{

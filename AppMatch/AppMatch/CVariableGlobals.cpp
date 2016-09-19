@@ -1,11 +1,12 @@
 #include "CBlockInterpreterRuntime.h"
 #include <iostream>
+#include "sharedCast.h"
 using namespace std;
 
 
 bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 {
-	if (HBlockNoum  kindname = dynamic_pointer_cast<CBlockNoum>(baseKind))
+	if (HBlockNoum  kindname = asHBlockNoum(baseKind))
 	{
 		HBlockKind kindr = resolve_kind(kindname->named);
 		if (kindr != nullptr) 
@@ -15,10 +16,10 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 	}
 
 	
-	if (HBlockProperty  ComposeKind = dynamic_pointer_cast<CBlockProperty>(baseKind))
+	if (HBlockProperty  ComposeKind = asHBlockProperty(baseKind))
 	{
-		if (HBlockNoum  KTemplate = dynamic_pointer_cast<CBlockNoum>(ComposeKind->prop))
-			if (HBlockNoum  KTemplateItem = dynamic_pointer_cast<CBlockNoum>(ComposeKind->obj))
+		if (HBlockNoum  KTemplate = asHBlockNoum(ComposeKind->prop))
+			if (HBlockNoum  KTemplateItem = asHBlockNoum(ComposeKind->obj))
 			{
 				if (KTemplate->named == "list")
 				{
@@ -37,9 +38,9 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 	}
 	 
 	
-	if (HBlockKind  kind = dynamic_pointer_cast<CBlockKind>(baseKind))
+	if (HBlockKind  kind = asHBlockKind(baseKind))
 	{
-		if (HBlockNoum nameVar = dynamic_pointer_cast<CBlockNoum>(obj)) {
+		if (HBlockNoum nameVar = asHBlockNoum(obj)) {
 			HVariableNamed newVar = make_shared<CVariableNamed>(nameVar, kind, nullptr);
 
 			cout << "Add VAR " << newVar->name->named <<endl;
@@ -47,7 +48,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 			global_variables.push_back(newVar);
 			return true;
 		}
-		else if (HBlockProperty nameProperty = dynamic_pointer_cast<CBlockProperty>(obj)) 
+		else if (HBlockProperty nameProperty = asHBlockProperty(obj))
 		{
 			return assert_it_variableGlobal(   make_shared<CBlockNoum>(HtoString(nameProperty)) ,kind) ;
 		}

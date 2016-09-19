@@ -28,7 +28,7 @@ HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2);
+					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}
 

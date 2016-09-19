@@ -92,12 +92,20 @@ CTerm *CList::removeArticle() {
 
 EqualsResul equals(CTerm *c1, CTerm *c2) {
     EqualsResul q ;
-    q = equals(dynamic_cast<CString *>(c1), dynamic_cast<CString *>(c2));
+   /* q = equals(dynamic_cast<CString *>(c1), dynamic_cast<CString *>(c2));
     if (q != Undefined) return q;
     q = equals(dynamic_cast<CNumber *>(c1), dynamic_cast<CNumber *>(c2));
     if (q != Undefined) return q;
-    q = equals(dynamic_cast<CList *>(c1), dynamic_cast<CList *>(c2));
+    q = equals(asCList(c1), asCList(c2));
+    if (q != Undefined) return q;*/
+
+    q = equals(asCString(c1), asCString(c2));
     if (q != Undefined) return q;
+    q = equals(asCNumber(c1), asCNumber(c2));
+    if (q != Undefined) return q;
+    q = equals(asCList(c1), asCList(c2));
+    if (q != Undefined) return q;
+
     return Undefined;
 }
 
@@ -113,7 +121,27 @@ HTerm make_list(std::initializer_list<HTerm> x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CList>(x));
 }
 
+CList* asCList(CTerm* c)
+{
+    if (c->type() == TermList) return static_cast<CList*>(c);
+    return nullptr;
+}
+
+CNumber* asCNumber(CTerm* c)
+{
+    if (c->type() == TermNumber) return static_cast<CNumber*>(c);
+    return nullptr;
+}
+
+CString* asCString(CTerm* c)
+{
+    if (c->type() == TermString) return static_cast<CString*>(c);
+    return nullptr;
+}
+
 HTerm make_string(std::string x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CString>(x));
 }
+
+
 
