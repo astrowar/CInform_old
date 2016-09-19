@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.0)
 project(AppMatch)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
@@ -60,8 +60,23 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testes_2.cpp
         AppMatch/AppMatch/testes_decide.cpp
         AppMatch/AppMatch/AssertationVerbRelation.cpp
+        AppMatch/AppMatch/ParserDynamicDispatch.cpp
+        AppMatch/AppMatch/InterpreterMatch.cpp
+        AppMatch/AppMatch/CResultMatch.cpp
+        AppMatch/AppMatch/ParserTextEntry.cpp
+        AppMatch/AppMatch/InterpExecute.cpp
+        AppMatch/AppMatch/Parser_Decide.cpp
+AppMatch/AppMatch/ParserSelectorFunctional.cpp
+AppMatch/AppMatch/Parser_expression_match.cpp
+AppMatch/AppMatch/InterpFunctionsCallcpp.cpp
+AppMatch/AppMatch/InterpreterQuery.cpp
+AppMatch/AppMatch/InterpreterListedFunctions.cpp
+ 
 
-
-        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp)
+AppMatch/AppMatch/ParseDictionary.cpp
+ AppMatch/AppMatch/Parser_A.cpp 
+AppMatch/AppMatch/StaticDispatchFunctions.cpp
+AppMatch/AppMatch/CParseAux.cpp
+ )
 
 add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)
