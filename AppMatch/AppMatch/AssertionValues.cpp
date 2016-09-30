@@ -84,7 +84,7 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
             if (HBlockList   val_list = asHBlockList(value))
             {
                 //list is passed as copy
-                HBlockList lcopy = make_shared<CBlockList> ( );
+                HBlockList lcopy = make_shared<CBlockList> (std::list<HBlock>());
                 lcopy->lista = val_list->lista;
                 var_n->value = lcopy;
 

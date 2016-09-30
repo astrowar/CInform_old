@@ -13,7 +13,7 @@ HBlockList CParser::parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep) {
     predList.push_back(mkHPredAny("N2"));
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
-        HBlockList cList = std::make_shared<CBlockList>();
+        HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
         cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
         cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
         return cList;
@@ -63,7 +63,7 @@ HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
         predList.push_back(mkHPredAny("N2"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockList cList = std::make_shared<CBlockList>();
+            HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
             cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
             cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
             return cList;
@@ -89,7 +89,7 @@ HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
         predList.push_back(mkHPredAny("N2"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockList cList = std::make_shared<CBlockList>();
+            HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
             cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
             cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
             return cList;
@@ -110,10 +110,10 @@ HBlock CParser::parse_List_OR(std::vector<HTerm> term) {
 		predList.push_back(mkHPredAny("N2"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockList  cList = std::make_shared<CBlockList  >();
+			HBlockList  cList = std::make_shared<CBlockList  >(std::list<HBlock>());
 			cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N1"], sep, cList);
 			cList = parseAssertionFirstTerm_COMMA_Supl(res.matchs["N2"], sep, cList);
-			HBlockList_OR  or_List = std::make_shared<CBlockList_OR  >();
+			HBlockList_OR  or_List = std::make_shared<CBlockList_OR  >(std::list<HBlock>());
 			or_List->lista = cList->lista;
 			return or_List;
 		}

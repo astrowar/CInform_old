@@ -325,7 +325,7 @@ void testeParser_22() {
 int main() {
     // testeParser_1();
 
-   for (int k = 0; k < 100; ++k)
+  // for (int k = 0; k < 100; ++k)
     {
 		 testeParser_listA();
 		 testeParser_listB();
@@ -351,6 +351,8 @@ int main() {
       //testeParser_22();
 
         testeRelation1();
+
+		testeSerialize1();
 
         std::cout << ".";
     }

@@ -28,8 +28,11 @@ void *CBlock::operator new(size_t size) {
 
 }
 
-CUnresolved::CUnresolved(string _contents) : contents(_contents) {
+CUnresolved::CUnresolved(string _contents) : contents(_contents) 
+{
 }
+
+
 
 CBlockNoum::CBlockNoum(string _value) {
     named = _value;
@@ -63,7 +66,7 @@ CBlockProperty::CBlockProperty(HBlock _prop, HBlock _obj) : prop((_prop)), obj((
 
 }
 
-CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _called) : property_name(_called),
+CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _property_name) : property_name(_property_name),
                                                                                             kind_name((_kind_name)) {
 }
 

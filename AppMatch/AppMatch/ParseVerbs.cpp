@@ -152,7 +152,7 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
 				plist = asCList(listExpand.get());
 
 
-                HBlockList clist = std::make_shared<CBlockList>();
+                HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
 
                 verbMatch = mkHPredList("VerbMatch", {});
                 CPredList *cpList = reinterpret_cast<CPredList *>(verbMatch.get());
@@ -198,7 +198,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
 
         if (res.result == Equals) {
 
-            HBlockList clist = std::make_shared<CBlockList>();
+            HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 
@@ -229,7 +229,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
 
         if (res.result == Equals) {
 
-            HBlockList clist = std::make_shared<CBlockList>();
+            HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 
@@ -319,7 +319,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());
                 inList = remove_boundaryListMark(inList);
                 if (inList.size() == 2) {
-                    HBlockList clist = std::make_shared<CBlockList>();
+                    HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
                     clist->push_back(std::make_shared<CBlockNoum>(inList.front()->repr()));
                     clist->push_back(std::make_shared<CBlockNoum>(inList.back()->repr()));
                     a_verb = clist;
@@ -372,7 +372,7 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
                 MTermSet inList(cverb->lst.begin(), cverb->lst.end());
                 inList = remove_boundaryListMark(inList);
                 if (inList.size() == 2) {
-                    HBlockList clist = std::make_shared<CBlockList>();
+                    HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
                     clist->push_back(std::make_shared<CBlockNoum>(inList.front()->repr()));
                     clist->push_back(std::make_shared<CBlockNoum>(inList.back()->repr()));
                     a_verb = clist;

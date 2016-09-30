@@ -16,6 +16,11 @@ public:
     HBlock output_n;
 
     CBlockUnderstand(HBlockMatch _input_n, HBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
+	template <class HArchive>  void serialize(HArchive& ar)
+	{
+		ar(input_n);
+		ar(output_n);
+	}
 };
 
 
@@ -25,12 +30,20 @@ public:
     virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockUnderstandStatic; }
 
-    HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
+	template <class HArchive>
+	static void load_and_construct(HArchive& ar, cereal::construct<CBlockUnderstandStatic>& construct);
+	HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
     HBlock output_n;
 	int entryID;
     CBlockUnderstandStatic(int _entryID,HBlockMatchList _argument_match, HBlock _output_n) : argument_match(_argument_match),
                                                                                 output_n((_output_n)), entryID(_entryID)
     {};
+	template <class HArchive>  void serialize(HArchive& ar)
+	{
+		ar(entryID );
+		ar(argument_match);
+		ar(output_n);
+	}
 };
 
 using HBlockUnderstandStatic = std::shared_ptr<CBlockUnderstandStatic>;

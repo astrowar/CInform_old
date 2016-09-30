@@ -46,6 +46,7 @@ void CBlockKindOf::dump(string ident) {
 }
 
 
+
 void CBlockArgumentInput::dump(string ident)
 {
 	printf("%s  Argument Named : %s\n",ident.c_str() ,   named.c_str());
@@ -74,6 +75,8 @@ void CBlockKindAction::dump(string ident) {
 		this->applyTo->dump(ident + "   ");
 }
 
+
+
 void CBlockKindValue::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Value: ", named.c_str());
 }
@@ -87,6 +90,8 @@ void CBlockListOfKind::dump(string ident)
 	printf("%s %s\n",ident.c_str() , "List Of:  ");
 		itemKind->dump(ident + "   ");
 }
+
+
 
 void CBlockNamedValue::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Named Value: ", named.c_str());
@@ -118,6 +123,8 @@ void CBlockKind_InstanceVariable::dump(string ident)
 		printf("%s %s\n",ident.c_str() , "   has  an:");
 		variableNamed->dump(ident + "          ");
 }
+
+ 
 
 void CBlockList::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "List: ");
@@ -614,6 +621,7 @@ void CBlockSelector_Any::dump(string ident)
 		this->what->dump(ident + "       ");
 }
 
+ 
 
 void CRunLocalScope::dump(string ident)
 {

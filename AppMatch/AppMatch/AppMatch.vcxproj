@@ -71,15 +71,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -170,7 +174,7 @@
     <ClInclude Include="CBlockMatch.h" />
     <ClInclude Include="CBlockScope.h" />
     <ClInclude Include="CBlockUndestand.h" />
-    <ClInclude Include="CInterpreter.h" />
+    <ClInclude Include="CDataMananger.h" />
     <ClInclude Include="CInterpreterKindTree.h" />
     <ClInclude Include="CMatch.h" />
     <ClInclude Include="CResultMatch.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="GrammarParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="QueryStack.h" />
+    <ClInclude Include="serialRegister.h" />
     <ClInclude Include="sharedCast.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -186,6 +191,8 @@
   <ItemGroup>
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="CBlockSerialize.cpp" />
+    <ClCompile Include="CDataMananger.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />
     <ClCompile Include="CResultMatch.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
@@ -228,6 +235,7 @@
     <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="testeLista.cpp" />
+    <ClCompile Include="testeSerialize.cpp" />
     <ClCompile Include="testesParser.cpp" />
     <ClCompile Include="testes_1.cpp" />
     <ClCompile Include="testes_2.cpp" />

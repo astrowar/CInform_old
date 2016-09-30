@@ -29,6 +29,7 @@
 #ifndef CEREAL_ACCESS_HPP_
 #define CEREAL_ACCESS_HPP_
 
+#include <new>
 #include <type_traits>
 #include <iostream>
 #include <cstdint>

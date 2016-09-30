@@ -255,7 +255,7 @@ HBlockAssertion_isInstanceOf CParser::parseAssertion_isInstanceOf(std::vector<HT
 
 
 HBlock CParser::parseAssertionFirstTerm_Compose(HTerm term) {
-    HBlockList c_list = std::make_shared<CBlockList>();
+    HBlockList c_list = std::make_shared<CBlockList>(std::list<HBlock>());
     c_list = parseAssertionFirstTerm_COMMA_AND(term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
@@ -273,7 +273,7 @@ HBlock CParser::parseAssertionFirstTerm(HTerm term) {
 
 
 HBlock CParser::parseAssertionEnumSecondTerm(HTerm term) {
-    HBlockList c_list = std::make_shared<CBlockList>();
+    HBlockList c_list = std::make_shared<CBlockList>(std::list<HBlock>());
     c_list = parseAssertionFirstTerm_COMMA_OR(term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
@@ -346,7 +346,7 @@ HBlockProperty CParser::parse_PropertyOf(std::vector<HTerm> term) {
 
 HBlockEnums CParser::parseAssertion_EnumTerms(HTerm enumList) {
 
-    HBlockList elist = std::make_shared<CBlockList>();
+    HBlockList elist = std::make_shared<CBlockList>(std::list<HBlock>());
     elist = parseAssertionFirstTerm_COMMA_OR(enumList, elist);
     if (elist->lista.empty()) {
         return nullptr;

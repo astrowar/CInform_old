@@ -44,3 +44,5 @@ void testeRelation1();
 void testeRelation2();
 void testeRelation3();
 void testeRelation4();
+
+void testeSerialize1();

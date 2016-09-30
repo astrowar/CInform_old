@@ -79,7 +79,7 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 			if (HBlockList   val_list = asHBlockList(value))
 			{
 				//list is passed as copy
-				HBlockList lcopy = make_shared<CBlockList>();
+				HBlockList lcopy = make_shared<CBlockList>(std::list<HBlock>());
 				lcopy->lista = val_list->lista;
 				var_n->value = lcopy;
 
@@ -217,7 +217,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 		if (auto  kList = asHBlockList  (c_block))
 		{
-			auto rList = std::make_shared<CBlockList>( );
+			auto rList = std::make_shared<CBlockList>(std::list<HBlock>());
 			for(auto &e : kList->lista)
 			{
 				rList->lista.push_back(exec_eval(e,localsEntry));

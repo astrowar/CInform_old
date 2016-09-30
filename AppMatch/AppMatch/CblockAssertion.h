@@ -202,7 +202,9 @@ public:
 
     virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockAssertion_isDirectAssign; }
-    HBlock variable;
+
+	void store(CDataManangerSave* m);
+	HBlock variable;
     HBlock value;
 
     CBlockAssertion_isDirectAssign(HBlock _variable, HBlock _value) : variable( (_variable)),
@@ -254,6 +256,8 @@ public:
 	HBlock get_definition() override;
 	virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockIsVerb; }
+
+	void store(CDataManangerSave* m);
 	string verb;
 	HBlock n1;
 	HBlock n2;

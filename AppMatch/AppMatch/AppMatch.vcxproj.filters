@@ -82,9 +82,6 @@
     <ClInclude Include="BlockInterpreter.h">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
-    <ClInclude Include="CInterpreter.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
@@ -129,6 +126,12 @@
     </ClInclude>
     <ClInclude Include="dynamicCast.h">
       <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataMananger.h">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="serialRegister.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +283,15 @@
       <Filter>Source Files\Block</Filter>
     </ClCompile>
     <ClCompile Include="sharedCast.cpp">
+      <Filter>Source Files\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CDataMananger.cpp">
+      <Filter>Source Files\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="testeSerialize.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlockSerialize.cpp">
       <Filter>Source Files\Block</Filter>
     </ClCompile>
   </ItemGroup>

@@ -153,7 +153,7 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlockList clist = std::make_shared<CBlockList>();
+            HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 

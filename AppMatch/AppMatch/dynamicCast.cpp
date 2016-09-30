@@ -4,7 +4,7 @@
 
 CBlockEnums* asCBlockEnum(CBlock* c )
 { 
-   if ( c->type() == BlockType::BlockEnum)
+   if ( c->type() == BlockType::BlockEnums)
      return static_cast<CBlockEnums*>(c);
    return nullptr;
 } 
