@@ -44,10 +44,13 @@ HBlockStaticDispatch CParser::getStaticDispatchResolve(HTerm term) //Determina s
 HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm> term )
 {
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("kind"));
-		predList.push_back(mk_HPredLiteral("called"));
-		predList.push_back(mkHPredAny("var_named"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
@@ -58,10 +61,13 @@ HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm> term )
 	}
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("kind"));
-		predList.push_back(mk_HPredLiteral("-"));
-		predList.push_back(mkHPredAny("var_named"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("-"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
@@ -78,10 +84,13 @@ HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm> term )
 HBlockMatch CParser::parser_MatchArgument(HTerm term) 
 {
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("ListKind"));
-		predList.push_back(mk_HPredLiteral("called"));
-		predList.push_back(mkHPredAny("var_named"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("ListKind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{
@@ -103,10 +112,13 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 		}
 	}
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("kind"));
-        predList.push_back(mk_HPredLiteral("called"));
-        predList.push_back(mkHPredAny("var_named"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
@@ -117,10 +129,13 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
     }
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("kind"));
-        predList.push_back(mk_HPredLiteral("-"));
-        predList.push_back(mkHPredAny("var_named"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("-"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
@@ -140,16 +155,20 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
     std::cout << "what:  " << get_repr(term) << std::endl;
     {
-        std::vector<HPred> predList;
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
 
-        predList.push_back(mkHPredAny("verb"));
-        predList.push_back(mk_HPredLiteral("["));
-        predList.push_back(mkHPredAny("kind1"));
-        predList.push_back(mk_HPredLiteral("]"));
-        predList.push_back(mkHPredAny("with_word"));
-        predList.push_back(mk_HPredLiteral("["));
-        predList.push_back(mkHPredAny("kind2"));
-        predList.push_back(mk_HPredLiteral("]"));
+			predList.push_back(mkHPredAny("verb"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind1"));
+			predList.push_back(mk_HPredLiteral("]"));
+			predList.push_back(mkHPredAny("with_word"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind2"));
+			predList.push_back(mk_HPredLiteral("]"));
+		}
+
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -174,15 +193,18 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
         }
     }
     {
-        std::vector<HPred> predList;
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("verb"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind1"));
+			predList.push_back(mk_HPredLiteral("]"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind2"));
+			predList.push_back(mk_HPredLiteral("]"));
+		}
 
-        predList.push_back(mkHPredAny("verb"));
-        predList.push_back(mk_HPredLiteral("["));
-        predList.push_back(mkHPredAny("kind1"));
-        predList.push_back(mk_HPredLiteral("]"));
-        predList.push_back(mk_HPredLiteral("["));
-        predList.push_back(mkHPredAny("kind2"));
-        predList.push_back(mk_HPredLiteral("]"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -206,12 +228,16 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
         }
     }
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("verb"));
-		predList.push_back(mkHPredAny("aux"));
-		predList.push_back(mk_HPredLiteral("["));
-		predList.push_back(mkHPredAny("kind1"));
-		predList.push_back(mk_HPredLiteral("]"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("verb"));
+			predList.push_back(mkHPredAny("aux"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind1"));
+			predList.push_back(mk_HPredLiteral("]"));
+		}
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -237,11 +263,14 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("verb"));
-        predList.push_back(mk_HPredLiteral("["));
-        predList.push_back(mkHPredAny("kind1"));
-        predList.push_back(mk_HPredLiteral("]"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("verb"));
+			predList.push_back(mk_HPredLiteral("["));
+			predList.push_back(mkHPredAny("kind1"));
+			predList.push_back(mk_HPredLiteral("]"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{
@@ -284,12 +313,15 @@ HBlock CParser::STMT_understand_generic_redirect( HTerm  term, HBlock  output_te
 HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term) {
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("understand"));
-        predList.push_back(mk_HPredLiteral(":"));
-        predList.push_back(mkHPredAny("What"));
-        predList.push_back(mk_HPredLiteral("as"));
-        predList.push_back(mkHPredAny("Subst"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("understand"));
+			predList.push_back(mk_HPredLiteral(":"));
+			predList.push_back(mkHPredAny("What"));
+			predList.push_back(mk_HPredLiteral("as"));
+			predList.push_back(mkHPredAny("Subst"));
+		}
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {

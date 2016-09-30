@@ -266,10 +266,13 @@ HBlock CParser::parse_AssertionDefaultAssign(std::vector<HTerm> term) {
 HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm> term) {
     {
         // is a kind definition ??
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("Noum"));
-        predList.push_back(verb_IS_NOT());
-        predList.push_back(mkHPredAny("Value"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("Noum"));
+			predList.push_back(verb_IS_NOT());
+			predList.push_back(mkHPredAny("Value"));
+		}
 
         MatchResult res = CMatch(term, predList);
 
@@ -283,10 +286,14 @@ HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm> term)
     }
     {
         // is a kind definition ??
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("Noum"));
-        predList.push_back(verb_IS());
-        predList.push_back(mkHPredAny("Value"));
+         
+		static std::vector<HPred> predList ={};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("Noum"));
+			predList.push_back(verb_IS());
+			predList.push_back(mkHPredAny("Value"));
+		}
 
         MatchResult res = CMatch(term, predList);
 

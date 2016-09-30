@@ -8,14 +8,17 @@ HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm> term)
 {
 	//Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X.
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mkHPredAny("K2"));
-		predList.push_back(mk_HPredLiteral("when"));
-		predList.push_back(mkHPredAny("Condition"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mkHPredAny("K2"));
+			predList.push_back(mk_HPredLiteral("when"));
+			predList.push_back(mkHPredAny("Condition"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

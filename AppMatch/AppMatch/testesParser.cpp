@@ -325,17 +325,22 @@ void testeParser_22() {
 int main() {
     // testeParser_1();
 
-   // for (int k = 0; k < 100; ++k)
+   for (int k = 0; k < 100; ++k)
     {
-		//testeParser_listA();
-		//testeParser_listB();
+		 testeParser_listA();
+		 testeParser_listB();
 
 		// testeParser_actionC();
        // testeParser_2();
        // testeParser_2a();
         //testeParser_3();
         //testeParser_4();
-        //testeParser_5b();
+         testeParser_5b();
+		 testeParser_5c();
+		 testeParser_5d();
+		 testeParser_5e();
+		 testeParser_5f();
+
 		//testeParser_5d();
 		//testeParser_5f();
         //testeParser_6();

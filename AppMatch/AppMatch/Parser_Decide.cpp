@@ -135,13 +135,15 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
    
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("to"));
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mkHPredAny("Match"));
-        predList.push_back(mk_HPredLiteral(":"));
-        predList.push_back(mkHPredAny("RemainBody"));
-
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mk_HPredLiteral("decide"));
+			predList.push_back(mkHPredAny("Match"));
+			predList.push_back(mk_HPredLiteral(":"));
+			predList.push_back(mkHPredAny("RemainBody"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
@@ -179,16 +181,16 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {
 
     {
-        std::vector<HPred> predList;
-
-
-        auto c1 = mkHPredList("def_A", {mk_HPredLiteral("definition"), mk_HPredLiteral(":")});
-        auto c2 = mk_HPredLiteral("definition:");
-        predList.push_back(mkHPredBooleanOr("kindpart", c1, c2));
-
-        predList.push_back(mkHPredAny("Match"));
-        predList.push_back(mk_HPredLiteral("if"));
-        predList.push_back(mkHPredAny("LogicalBody"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			auto c1 = mkHPredList("def_A", { mk_HPredLiteral("definition"), mk_HPredLiteral(":") });
+			auto c2 = mk_HPredLiteral("definition:");
+			predList.push_back(mkHPredBooleanOr("kindpart", c1, c2));
+			predList.push_back(mkHPredAny("Match"));
+			predList.push_back(mk_HPredLiteral("if"));
+			predList.push_back(mkHPredAny("LogicalBody"));
+		}
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {

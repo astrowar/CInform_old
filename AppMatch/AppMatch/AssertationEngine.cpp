@@ -10,30 +10,30 @@
 using namespace std;
 
 void CBlockInterpreter::initialize() {
-    for (auto &p : program) {
-        execute_init(p);
-    }
+	for (auto &p : program) {
+		execute_init(p);
+	}
 
 }
 
 bool CBlockInterpreter::assert_it_canBe(HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry) {
-    if (HBlockNoum nbase = asHBlockNoum(c_block)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
-        if (nobj != nullptr) {
-            return assert_it_canBe(nobj, value,localsEntry);
-        }
-        return false;
-    } else if (HBlockKind nkind = asHBlockKind(c_block)) {
-        kind_variables.push_back(make_shared<CBlockAssertion_canBe>(nkind, value));
-        return true;
-    } else if (HBlockInstance nInst = asHBlockInstance(c_block)) {
-        auto p = make_shared<CBlockAssertion_canBe>(nInst, value);
-        assign_variable_to_instance(make_shared<CBlockAssertion_canBe>(nInst, value));
+	if (HBlockNoum nbase = asHBlockNoum(c_block)) {
+		HBlock nobj = resolve_noum(nbase,localsEntry);
+		if (nobj != nullptr) {
+			return assert_it_canBe(nobj, value,localsEntry);
+		}
+		return false;
+	} else if (HBlockKind nkind = asHBlockKind(c_block)) {
+		kind_variables.push_back(make_shared<CBlockAssertion_canBe>(nkind, value));
+		return true;
+	} else if (HBlockInstance nInst = asHBlockInstance(c_block)) {
+		auto p = make_shared<CBlockAssertion_canBe>(nInst, value);
+		assign_variable_to_instance(make_shared<CBlockAssertion_canBe>(nInst, value));
 
-        return true;
-    }
+		return true;
+	}
 
-    return true;
+	return true;
 }
 
 
@@ -44,11 +44,11 @@ bool CBlockInterpreter::queryIsVerbToRelation( HBlockMatch m)
 		auto cfind = verbRelationAssoc.find(vv->verb);
 		if (cfind != verbRelationAssoc.end())
 		{
-           if (cfind->second->named != "dynamic")
-           {
-               std::cout << "verb " << vv->verb << " belongs to relation " << cfind->second->named << std::endl;
-               return true;
-           }
+		   if (cfind->second->named != "dynamic")
+		   {
+			   std::cout << "verb " << vv->verb << " belongs to relation " << cfind->second->named << std::endl;
+			   return true;
+		   }
 		}
 	}
 	return false;
@@ -62,11 +62,11 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 
 	if (auto dct_w = asHBlockToDecideWhat(dct))
 	{
-        if (queryIsVerbToRelation(dct_w->queryToMatch))
-        {
+		if (queryIsVerbToRelation(dct_w->queryToMatch))
+		{
 
-            throw "Verb is Assigned to an static Relation ";
-        }
+			throw "Verb is Assigned to an static Relation ";
+		}
 
 		decides_what.push_back(dct_w);
 		return true;
@@ -75,49 +75,49 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 
 	if (auto dct_if = asHBlockToDecideIf(dct))
 	{
-        if (queryIsVerbToRelation(dct_if->queryToMatch))
-        {
-            throw "Verb is Assigned to an static Relation ";
-        }
+		if (queryIsVerbToRelation(dct_if->queryToMatch))
+		{
+			throw "Verb is Assigned to an static Relation ";
+		}
 		decides_if.push_back(dct_if);
 		return true;
 	}
 	 
 	if (auto dct_noum1 = asHBlockToDecideWhat_FirstNoum(dct))
 	{
-        if (queryIsVerbToRelation(dct_noum1->queryToMatch))
-        {
-            throw "Verb is Assigned to an static Relation ";
-        }
+		if (queryIsVerbToRelation(dct_noum1->queryToMatch))
+		{
+			throw "Verb is Assigned to an static Relation ";
+		}
 
 		decides_noum1.push_back(dct_noum1);
 		return true;
 	}
  
-    return false;
+	return false;
 }
 
 
  
 bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value,   HRunLocalScope localsEntry) {
 
-    if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
-        if (nobj != nullptr) {
-            return assert_has_variable(nobj, value, localsEntry);
-        }
-        return false;
-    }
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+		HBlock nobj = resolve_noum(nbase,localsEntry);
+		if (nobj != nullptr) {
+			return assert_has_variable(nobj, value, localsEntry);
+		}
+		return false;
+	}
 
-    if (HBlockInstance nInst = asHBlockInstance(obj)) {
-        //name da variavel
-        if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) {
-            HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
-            nInst->newNamedVariable(variable_->property_name, nkindBase);
-            return true;
-        }
+	if (HBlockInstance nInst = asHBlockInstance(obj)) {
+		//name da variavel
+		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) {
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
+			nInst->newNamedVariable(variable_->property_name, nkindBase);
+			return true;
+		}
 
-    } 
+	} 
 
 	if (HBlockAction nAction = asHBlockAction(obj))
 	{
@@ -141,18 +141,18 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value,   HRunLoca
 			}
 		}
 		 
-    }
-    return false;
+	}
+	return false;
 }
 
 bool CBlockInterpreter::is_all_items_of_kind(HBlockList listvalues, HBlockKind kind , HRunLocalScope localsEntry)
 {
-    for( auto &v : listvalues->lista )
-    {
-        if (value_can_be_assign_to(v,kind,localsEntry) == nullptr  ) return false ;
+	for( auto &v : listvalues->lista )
+	{
+		if (value_can_be_assign_to(v,kind,localsEntry) == nullptr  ) return false ;
 
-    }
-    return true;
+	}
+	return true;
 
 
 }
@@ -198,19 +198,19 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 		}
 	}
 
-    if (HBlockList clist = asHBlockList(value))
-    {
-        //Kind precisa ser uma lista tambem
-        if (HBlockListOfKind klist = asHBlockListOfKind(kind)) {
-            //tem algum tipo que nao corresponde ?
-            if (is_all_items_of_kind(clist, klist->itemKind,localsEntry) == false)
-            {
-                return nullptr;
-            }
-            return value;
+	if (HBlockList clist = asHBlockList(value))
+	{
+		//Kind precisa ser uma lista tambem
+		if (HBlockListOfKind klist = asHBlockListOfKind(kind)) {
+			//tem algum tipo que nao corresponde ?
+			if (is_all_items_of_kind(clist, klist->itemKind,localsEntry) == false)
+			{
+				return nullptr;
+			}
+			return value;
 
-        }
-    }
+		}
+	}
 
 	cout << "Unable to set " << endl;
 	value->dump("    ");
@@ -222,27 +222,27 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 
 
 bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock value,   HRunLocalScope localsEntry) {
-    if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
-        if (nobj != nullptr) {
-            return assert_it_property(propname, nobj, value,localsEntry);
-        }
-        return false;
-    }
-    if (HBlockInstance cinst = asHBlockInstance(obj)) {
-        if (HBlockNoum property_noum = asHBlockNoum(propname)) {
-            HVariableNamed vv = cinst->get_property(property_noum->named);
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+		HBlock nobj = resolve_noum(nbase,localsEntry);
+		if (nobj != nullptr) {
+			return assert_it_property(propname, nobj, value,localsEntry);
+		}
+		return false;
+	}
+	if (HBlockInstance cinst = asHBlockInstance(obj)) {
+		if (HBlockNoum property_noum = asHBlockNoum(propname)) {
+			HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv == nullptr)
 			{
 				cout << "Obje dont have " << property_noum->named << "property " <<  endl;
 			}
-            HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind,localsEntry));
-            if (instanceValueRefered) {
-                cinst->set_property(property_noum->named, instanceValueRefered);
-                return true;
-            }
-        }
-    }
+			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind,localsEntry));
+			if (instanceValueRefered) {
+				cinst->set_property(property_noum->named, instanceValueRefered);
+				return true;
+			}
+		}
+	}
 
 	if (HBlockAction cAction = asHBlockAction(obj)) {
 		if (HBlockNoum property_noum = asHBlockNoum(propname)) {
@@ -258,32 +258,32 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
 			}
 		}
 	}
-    return false;
+	return false;
 
 }
 
 
 
 bool CBlockInterpreter::assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
-    if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
-        if (nobj != nullptr) {
-            return assert_it_not_Value(nobj, value,localsEntry);
-        }
-        return false;
-    }
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+		HBlock nobj = resolve_noum(nbase,localsEntry);
+		if (nobj != nullptr) {
+			return assert_it_not_Value(nobj, value,localsEntry);
+		}
+		return false;
+	}
 
-    if (HBlockInstance nInst = asHBlockInstance(obj)) {
-        if (HBlockNoum nbase = asHBlockNoum(value)) {
-            HBlock nobj = resolve_noum(nbase,localsEntry);
-            if (nobj == nullptr) {
-                nInst->unset(nbase);
-                return true;
-            }
-        }
+	if (HBlockInstance nInst = asHBlockInstance(obj)) {
+		if (HBlockNoum nbase = asHBlockNoum(value)) {
+			HBlock nobj = resolve_noum(nbase,localsEntry);
+			if (nobj == nullptr) {
+				nInst->unset(nbase);
+				return true;
+			}
+		}
 
-    }
-    return false;
+	}
+	return false;
 }
 
 
@@ -313,7 +313,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		HBlock obj = vRelation->get_obj();
 		HBlock value = vRelation->get_definition();
 		if (assert_it_verbRelation(vRelation->verb , obj, value,localsEntry)) return;
-    }
+	}
 	else if (HBlockAssertion_isVariable  vGlobal  = asHBlockAssertion_isVariable(p)) {
 
 
@@ -325,25 +325,25 @@ void CBlockInterpreter::execute_init(HBlock p) {
 	}
 
 	else if (HBlockAssertion_is vk = asHBlockAssertion_is(p)) {
-        HBlock obj = vk->get_obj();
-        HBlock value = vk->get_definition();
-        //Static Definition de uma instancia derivado
-        if (assert_it_Value(obj, value,localsEntry)) return;
-        if (assert_it_kind(obj, value,localsEntry)) return;
-        if (assert_it_instance(obj, value,localsEntry)) return;
-        if (assert_it_valuesDefinitions(obj, value,localsEntry)) return;
+		HBlock obj = vk->get_obj();
+		HBlock value = vk->get_definition();
+		//Static Definition de uma instancia derivado
+		if (assert_it_Value(obj, value,localsEntry)) return;
+		if (assert_it_kind(obj, value,localsEntry)) return;
+		if (assert_it_instance(obj, value,localsEntry)) return;
+		if (assert_it_valuesDefinitions(obj, value,localsEntry)) return;
 		if (assert_it_action(obj, value)) return;
 		 
 
-        throw "undefined block";
-    } else if (HBlockAssertion_InstanceVariable ivar = asHBlockAssertion_InstanceVariable(p)) {
-        HBlock obj = ivar->noum;
-        HBlock value = ivar->instance_variable;
-        if (assert_has_variable(obj, value,localsEntry)) return;
-    } else if (HBlockToDecide dcMatch = asHBlockToDecide(p)) {
-        if (assert_decideBlock(dcMatch)) return;
+		throw "undefined block";
+	} else if (HBlockAssertion_InstanceVariable ivar = asHBlockAssertion_InstanceVariable(p)) {
+		HBlock obj = ivar->noum;
+		HBlock value = ivar->instance_variable;
+		if (assert_has_variable(obj, value,localsEntry)) return;
+	} else if (HBlockToDecide dcMatch = asHBlockToDecide(p)) {
+		if (assert_decideBlock(dcMatch)) return;
 
-    }
+	}
 	if (HBlockVerbRelation dcverbImpl = asHBlockVerbRelation(p))
 	{ 
 
@@ -357,13 +357,13 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		
 	}
 
-    if (HBlockRelationBase    dn_relation = asHBlockRelationBase (p))
-    {
-        if (assert_newRelation(dn_relation)) return;
+	if (HBlockRelationBase    dn_relation = asHBlockRelationBase (p))
+	{
+		if (assert_newRelation(dn_relation)) return;
 
-    }
+	}
 
 
-    cout << "not found block definition " << endl;
-    return;
+	cout << "not found block definition " << endl;
+	return;
 }

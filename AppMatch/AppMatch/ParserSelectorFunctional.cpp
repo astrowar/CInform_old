@@ -26,9 +26,12 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm> term)
 {
 	{
 		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("all"));
-		predList.push_back(mkHPredAny("List"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("all"));
+			predList.push_back(mkHPredAny("List"));
+		}
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals)
@@ -41,9 +44,12 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm> term)
 
 	{
 		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("any"));
-		predList.push_back(mkHPredAny("List"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("any"));
+			predList.push_back(mkHPredAny("List"));
+		}
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals)

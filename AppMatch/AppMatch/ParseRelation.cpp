@@ -1,6 +1,6 @@
 #include "Parser.h"
  
-#include <iostream>
+ 
 #include "CBlockRelation.h"
 
 string  parser_OtherCalledAs(HTerm term)
@@ -85,18 +85,22 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 	// Assimetricos
 	// R relates one K to another
 
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
 
-{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mk_HPredLiteral("each"));
-		predList.push_back(mk_HPredLiteral("other"));
-		predList.push_back(mk_HPredLiteral("in"));
-		predList.push_back(mk_HPredLiteral("groups"));
 
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mk_HPredLiteral("each"));
+			predList.push_back(mk_HPredLiteral("other"));
+			predList.push_back(mk_HPredLiteral("in"));
+			predList.push_back(mk_HPredLiteral("groups"));
+
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -106,21 +110,23 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 			if (arg1 != nullptr)
 			{
 				auto arg2 = std::make_shared<CBlockArgumentInput>(arg1->kind, "");
-				return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,true,true);
+				return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2, true, true);
 			}
 		}
 	}
 
 
 {
-	std::vector<HPred> predList;
-	predList.push_back(mkHPredAny("relationName"));
-	predList.push_back(mk_HPredLiteral("relates"));
-	predList.push_back(mkHPredAny("K1"));
-	predList.push_back(mk_HPredLiteral("to"));
-	predList.push_back(mk_HPredLiteral("each"));
-	predList.push_back(mk_HPredLiteral_OR("other", {"other", "another"}));
- 
+	static std::vector<HPred> predList;
+	if (predList.empty())
+	{
+		predList.push_back(mkHPredAny("relationName"));
+		predList.push_back(mk_HPredLiteral("relates"));
+		predList.push_back(mkHPredAny("K1"));
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mk_HPredLiteral("each"));
+		predList.push_back(mk_HPredLiteral_OR("other", { "other", "another" }));
+	}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -145,14 +151,18 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 
 
 	{  
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mk_HPredLiteral("various"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mk_HPredLiteral("various"));
-		predList.push_back(mkHPredAny("K2"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mkHPredAny("K2"));
+		}
+		
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -174,14 +184,16 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 	}
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mk_HPredLiteral("various"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mkHPredAny("K2"));
-
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mkHPredAny("K2"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -201,13 +213,16 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 	}
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mk_HPredLiteral("various"));
-		predList.push_back(mkHPredAny("K2"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mkHPredAny("K2"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -232,15 +247,17 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 	//___________________________________________________________________________________ 
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mkHPredAny("K2"));
-		predList.push_back(mk_HPredLiteral("when"));
-		predList.push_back(mkHPredAny("Condition"));
-
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mkHPredAny("K2"));
+			predList.push_back(mk_HPredLiteral("when"));
+			predList.push_back(mkHPredAny("Condition"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -260,12 +277,15 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 	}
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("relationName"));
-		predList.push_back(mk_HPredLiteral("relates"));
-		predList.push_back(mkHPredAny("K1"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mkHPredAny("K2")); 
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("relationName"));
+			predList.push_back(mk_HPredLiteral("relates"));
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_HPredLiteral("to"));
+			predList.push_back(mkHPredAny("K2"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

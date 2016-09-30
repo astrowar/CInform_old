@@ -186,7 +186,8 @@ void testeParser_5d() {
 	interpreter->execute_init(parse.parser_stmt("apple can be lit  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("apple is  lit  ", ISLOG));
 	//it->ei->p.ps()
-	interpreter->execute_init(parse.parser_stmt("the verb ( in same ) implies a equality relation ", ISLOG));
+	//interpreter->execute_init(parse.parser_stmt("the verb ( in same ) implies a equality relation ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb ( in same ) implies a dynamic relation ", ISLOG));
 	 
 
 	interpreter->execute_init(parse.parser_stmt("definition : ( (lit thing called T ) is in same ( room called R ) ) if ( (location of T ) is R )", ISLOG));
@@ -236,7 +237,7 @@ void testeParser_5f() {
 	interpreter->execute_init(parse.parser_stmt("north is a direction  ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("south is a direction  ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  direction relation", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the verb  from   implies a  dynamic relation", ISLOG));
 
 	interpreter->execute_init(parse.parser_stmt("the verb (points to)  implies a  dynamic relation", ISLOG));
     interpreter->execute_init(parse.parser_stmt("the verb (exits to)  implies a  dynamic relation", ISLOG));

@@ -7,9 +7,12 @@ HBlock CParser::text_entry(std::vector<HTerm> term)
 {
 	{
 		 
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("text"));		
-		predList.push_back(mkHPredAny("Contents"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("text"));
+			predList.push_back(mkHPredAny("Contents"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{

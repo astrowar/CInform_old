@@ -12,7 +12,7 @@
 #include "CBlockUndestand.h"
 
 
-#include <iostream>
+ 
 #include "CBlockRelation.h"
 #include "CBlockScope.h"
 #include "CBlockCommand.h"
@@ -22,198 +22,198 @@
 using namespace std;
 
 void CUnresolved::dump(string ident) {
-    cout << ident << "UNRESOLVED: " << this->contents << endl;
+	printf("%s %s %s\n", ident.c_str(), "UNRESOLVED: ", this->contents.c_str());
 }
 
 void CBlockNoum::dump(string ident) {
-    cout << ident << this->named << endl;
+	printf("%s %s\n", ident.c_str(), this->named.c_str());
 }
 
 void CBlockEnums::dump(string ident) {
-    cout << ident << "Enum:" << endl;
-    for (auto e = values.begin(); e != values.end(); ++e) {
-        (*e)->dump(ident + "   ");
-    }
+	printf("%s %s\n", ident.c_str(), "Enum:");
+		for (auto e = values.begin(); e != values.end(); ++e) {
+			(*e)->dump(ident + "   ");
+		}
 }
 
 void CBlockKindOfName::dump(string ident) {
-    cout << ident << "Kind Named :  " << baseClasseName << endl;
+	printf("%s %s %s\n", ident.c_str(), "Kind Named :  ", baseClasseName.c_str());
 }
 
 void CBlockKindOf::dump(string ident) {
-    cout << ident << "Kind Of:  " << endl;
-    baseClasse->dump(ident + "   ");
+	printf("%s %s\n", ident.c_str(), "Kind Of:  ");
+		baseClasse->dump(ident + "   ");
 }
 
 
 void CBlockArgumentInput::dump(string ident)
 {
-	cout << ident << "Argument Named :  " << named << endl;
-	kind->dump(ident + "   ");
+	printf("%s  Argument Named : %s\n",ident.c_str() ,   named.c_str());
+		kind->dump(ident + "   ");
 }
 
 void CBlockSimetricRelation::dump(string ident)
 {
-	cout << ident << "S Relation  :  " << named << endl;
-	input_A->dump(ident + "   ");
-	cout << ident << "To    " <<  endl;
+	printf("%s S Relation  : %s\n",ident.c_str() ,   named.c_str());
+		input_A->dump(ident + "   ");
+		printf("%s %s\n", ident.c_str() , "To    "  );
 	input_B->dump(ident + "   ");
 
 }
 
 void CBlockASimetricRelation::dump(string ident)
 {
-	cout << ident << "A Relation  :  " << named << endl;
-	input_A->dump(ident + "   ");
-	cout << ident << "To    " << endl;
-	input_B->dump(ident + "   ");
+	printf("%s A Relation  : %s\n",ident.c_str() ,    named.c_str());
+		input_A->dump(ident + "   ");
+		printf("%s %s\n", ident.c_str(), "To    ");
+		input_B->dump(ident + "   ");
 }
 
 void CBlockKindAction::dump(string ident) {
-    cout << ident << "Action applying to:  " << baseClasseName << endl;
-    this->applyTo->dump(ident + "   ");
+	printf("%s %s %s\n", ident.c_str(), "Action applying to:  ", baseClasseName.c_str());
+		this->applyTo->dump(ident + "   ");
 }
 
 void CBlockKindValue::dump(string ident) {
-    cout << ident << "Kind Value: " << named << endl;
+	printf("%s %s %s\n", ident.c_str(), "Kind Value: ", named.c_str());
 }
 
 void CBlockKindThing::dump(string ident) {
-    cout << ident << "Kind Thing : " << named << endl;
+	printf("%s %s %s\n", ident.c_str(), "Kind Thing : ", named.c_str());
 }
 
 void CBlockListOfKind::dump(string ident)
 {
-	cout << ident << "List Of:  "  << endl;
-	itemKind->dump(ident + "   ");
+	printf("%s %s\n",ident.c_str() , "List Of:  ");
+		itemKind->dump(ident + "   ");
 }
 
 void CBlockNamedValue::dump(string ident) {
-    cout << ident << "Named Value: " << named << endl;
+	printf("%s %s %s\n", ident.c_str(), "Named Value: ", named.c_str());
 }
 
 void CBlockVariable::dump(string ident) {
-    cout << ident << "Variable: " << named << endl;
+	printf("%s %s %s\n", ident.c_str(), "Variable: ", named.c_str());
 }
 
 void CBlockProperty::dump(string ident) {
-    cout << ident << "Property:" << endl;
-    prop->dump(ident + "          ");
-    cout << ident << "      of:" << endl;
-    obj->dump(ident + "          ");
+	printf("%s %s\n", ident.c_str(), "Property:");
+		prop->dump(ident + "          ");
+		printf("%s %s\n", ident.c_str(), "      of:");
+		obj->dump(ident + "          ");
 }
 
 void CBlockInstanceVariable::dump(string ident) {
 
-    cout << ident << "Property:" << endl;
-    kind_name->dump(ident + "          ");
-    cout << ident << "   called:" << endl;
-    property_name->dump(ident + "          ");
+	printf("%s %s\n", ident.c_str(), "Property:");
+		kind_name->dump(ident + "          ");
+		printf("%s %s\n", ident.c_str(), "   called:");
+		property_name->dump(ident + "          ");
 }
 
 void CBlockKind_InstanceVariable::dump(string ident)
 {
-	cout << ident << "Kind Named Variable: " << endl;
-	kind ->dump(ident + "          ");
-	cout << ident << "   has  an:" << endl;
-	variableNamed->dump(ident + "          ");
+	printf("%s %s\n",ident.c_str() , "Kind Named Variable: ");
+		kind->dump(ident + "          ");
+		printf("%s %s\n",ident.c_str() , "   has  an:");
+		variableNamed->dump(ident + "          ");
 }
 
 void CBlockList::dump(string ident) {
-    cout << ident << "List: " << endl;
-    for (auto e = lista.begin(); e != lista.end(); ++e) {
-        (*e)->dump(ident + "   ");
-    }
+	printf("%s %s\n", ident.c_str(), "List: ");
+		for (auto e = lista.begin(); e != lista.end(); ++e) {
+			(*e)->dump(ident + "   ");
+		}
 }
 
 void CBlockList_OR::dump(string ident) {
-	cout << ident << "List OR: " << endl;
-	for (auto e = lista.begin(); e != lista.end(); ++e) {
-		(*e)->dump(ident + "   ");
-	}
+	printf("%s %s\n",ident.c_str() , "List OR: ");
+		for (auto e = lista.begin(); e != lista.end(); ++e) {
+			(*e)->dump(ident + "   ");
+		}
 }
 
 void CBlockAssertion_is::dump(string ident) {
-    cout << ident << "Assert: " << endl;
+	printf("%s %s\n", ident.c_str(), "Assert: ");
 
-    this->get_obj()->dump(ident + "     ");
-    cout << ident << "is_____ " << endl;
-    this->get_definition()->dump(ident + "     ");
+		this->get_obj()->dump(ident + "     ");
+		printf("%s %s\n", ident.c_str(), "is_____ ");
+		this->get_definition()->dump(ident + "     ");
 }
 
- 
+
 
 void CBlockMatchAny::dump(string ident) {
-    cout << ident << "Match Any " << endl;
+	printf("%s %s\n", ident.c_str(), "Match Any ");
 
 }
 
 void CBlockMatchNamed::dump(string ident) {
-    cout << ident << "Match As " << named << endl;
-    {
-        this->matchInner->dump(ident + "       ");
-    }
+	printf("%s %s %s\n", ident.c_str(), "Match As ", named.c_str());
+	{
+		this->matchInner->dump(ident + "       ");
+	}
 }
 
 void CBlockMatchNoum::dump(string ident)
 {
-	cout << ident << "Match Noum "   << endl;
+	printf("%s %s\n",ident.c_str() , "Match Noum ");
 	{
 		this->inner->dump(ident + "       ");
 	}
 }
 
 void CBlockMatchKind::dump(string ident) {
-    cout << ident << "Match Kind: " << endl;
-    {
-        this->kind->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "Match Kind: ");
+	{
+		this->kind->dump(ident + "       ");
+	}
 }
 
 void CBlockMatchList::dump(string ident) {
-    cout << ident << "Match List [" << endl;
-    {
-        for (auto i : matchList) {
-            i->dump(ident + "       ");
-        }
-    }
-    cout << ident << "          ]" << endl;
+	printf("%s %s\n", ident.c_str(), "Match List [");
+	{
+		for (auto i : matchList) {
+			i->dump(ident + "       ");
+		}
+	}
+	printf("%s %s\n", ident.c_str(), "          ]");
 }
 
 void CBlockMatchAND::dump(string ident)
 {
-	cout << ident << "Match AND [" << endl;
+	printf("%s %s\n",ident.c_str(), "Match AND [");
 	{
 		for (auto i : matchList) {
 			i->dump(ident + "       ");
 		}
 	}
-	cout << ident << "          ]" << endl;
+	printf("%s %s\n",ident.c_str() , "          ]");
 }
 
 void CBlockMatchOR::dump(string ident)
 {
-	cout << ident << "Match OR [" << endl;
+	printf("%s %s\n",ident.c_str() , "Match OR [");
 	{
 		for (auto i : matchList) {
 			i->dump(ident + "       ");
 		}
 	}
-	cout << ident << "          ]" << endl;
+	printf("%s %s\n",ident.c_str() , "          ]");
 }
 
 void CBlockMatchBlock::dump(string ident)
 {
-	cout << ident << "Match Block: " << endl;
+	printf("%s %s\n",ident.c_str() , "Match Block: ");
 	{
 		this->inner->dump(ident + "       ");
 	}
 }
 
- 
+
 void CBlockMatchDirectIs::dump(string ident)
 {
-	cout << ident << "Match Is: " << endl;
+	printf("%s %s\n",ident.c_str() , "Match Is: ");
 	{
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
@@ -222,7 +222,7 @@ void CBlockMatchDirectIs::dump(string ident)
 
 void CBlockMatchDirectIsNot::dump(string ident)
 {
-	cout << ident << "Match Is Not: " << endl;
+	printf("%s %s\n",ident.c_str() , "Match Is Not: ");
 	{
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
@@ -231,7 +231,7 @@ void CBlockMatchDirectIsNot::dump(string ident)
 
 void CBlockMatchIsVerb::dump(string ident)
 {
-	cout << ident << "Match verb: "<< verb << endl;
+	printf("%s Match verb: %s\n",ident.c_str() ,  verb.c_str() );
 	{
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
@@ -240,7 +240,7 @@ void CBlockMatchIsVerb::dump(string ident)
 
 void CBlockMatchIsNotVerb::dump(string ident)
 {
-	cout << ident << "Match Not verb: " << verb << endl;
+	printf("%s Match Not verb: %s\n", ident.c_str(),  verb.c_str());
 	{
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
@@ -249,29 +249,29 @@ void CBlockMatchIsNotVerb::dump(string ident)
 
 void CBlockMatchProperty::dump(string ident)
 {
-	cout << ident << "Match property: " <<   endl;
+	printf("%s %s\n" , ident.c_str() , "Match property: "   );
 	{
 		this->prop->dump(ident + "       ");
-		cout << ident << "OF " << endl;
-		this->obj->dump(ident + "       ");
-		
+		printf("%s %s\n",ident.c_str() , "OF ");
+			this->obj->dump(ident + "       ");
+
 	}
 
 }
 
 void CBlockActionApply::dump(string ident) {
-    cout << ident << "Action applyTo " << endl;
-    {
-        this->noum1->dump(ident + "       ");
-        cout << ident << "With " << endl;
-        this->noum2->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Action applyTo ");
+	{
+		this->noum1->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "With ");
+			this->noum2->dump(ident + "       ");
 
-    }
+	}
 }
 
 void CBlockAction::dump(string ident) {
-    cout << ident << "Action " << this->named << endl;
-     
+	printf("%s %s %s\n", ident.c_str(), "Action ", this->named.c_str());
+
 
 }
 
@@ -280,123 +280,123 @@ void CBlockAction::newNamedVariable(HBlockNoum called, HBlockKind kind)
 	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
 }
 
- 
+
 
 void CBlockToDecideWhether::dump(string ident) {
-    cout << ident << "To Decide Whether (bool)" << endl;
-    {
-        this->queryToMatch->dump(ident + "       ");
-        cout << ident << "Decide for " << endl;
-        this->decideBody->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "To Decide Whether (bool)");
+	{
+		this->queryToMatch->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Decide for ");
+			this->decideBody->dump(ident + "       ");
+	}
 }
 
 void CBlockToDecideIf::dump(string ident) {
-    cout << ident << "Define " << endl;
-    {
+	printf("%s %s\n", ident.c_str(), "Define ");
+	{
 
-        this->queryToMatch->dump(ident + "       ");
+		this->queryToMatch->dump(ident + "       ");
 
-        cout << ident << "IF " << endl;
-        this->decideBody->dump(ident + "       ");
-    }
+		printf("%s %s\n", ident.c_str(), "IF ");
+			this->decideBody->dump(ident + "       ");
+	}
 }
 
 void CBlockToDecideWhat::dump(string ident)
 {
-	cout << ident << "To   What " << endl;
+	printf("%s %s\n",ident.c_str() , "To   What ");
 	{
 		this->queryToMatch->dump(ident + "       ");
-		cout << ident << "Decide for " << endl;
-		this->decideBody->dump(ident + "       ");
+		printf("%s %s\n",ident.c_str() , "Decide for ");
+			this->decideBody->dump(ident + "       ");
 	}
 }
 
 void CBlockToDecideWhat_FirstNoum::dump(string ident)
 {
-	cout << ident << "To  What N1 " << endl;
+	printf("%s %s\n",ident.c_str() , "To  What N1 ");
 	{
 		this->queryToMatch->dump(ident + "       ");
-		cout << ident << "Decide for " << endl;
-		this->decideBody->dump(ident + "       ");
+		printf("%s %s\n",ident.c_str() , "Decide for ");
+			this->decideBody->dump(ident + "       ");
 	}
 }
 
 void CBlockToDecideOn::dump(string ident) {
-    cout << ident << "DecideOn " << endl;
-    {
-        this->decideBody->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "DecideOn ");
+	{
+		this->decideBody->dump(ident + "       ");
+	}
 }
 
 void CBlockBooleanAND::dump(string ident) {
-    cout << ident << "Boolean " << endl;
-    {
-        this->input_A->dump(ident + "       ");
-        cout << ident << "AND " << endl;
-        this->input_B->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "Boolean ");
+	{
+		this->input_A->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "AND ");
+			this->input_B->dump(ident + "       ");
+	}
 
 }
 
 void CBlockBooleanOR::dump(string ident) {
-    cout << ident << "Boolean NOT" << endl;
-    {
-        this->input_A->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "Boolean NOT");
+	{
+		this->input_A->dump(ident + "       ");
+	}
 }
 
 void CBlockBooleanNOT::dump(string ident) {
 }
 
 void CBlockActionCall::dump(string ident) {
-    cout << ident << "Call " << endl;
-    {
-        this->action->dump(ident + "       ");
-        cout << ident << "Args: " << endl;
-        
-		if (this->noum1 == nullptr)
-		{
-			cout << ident << "       Nothing" << endl;
-		}
-		else
-		{
-			this->noum1->dump(ident + "       ");
-		}
+	printf("%s %s\n", ident.c_str(), "Call ");
+	{
+		this->action->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Args: ");
+
+			if (this->noum1 == nullptr)
+			{
+				printf("%s %s\n",ident.c_str() , "       Nothing");
+			}
+			else
+			{
+				this->noum1->dump(ident + "       ");
+			}
 
 
 		if (this->noum2 == nullptr)
 		{
-			cout << ident << "       Nothing" << endl;
+			printf("%s %s\n",ident.c_str() , "       Nothing");
 		}
 		else
 		{
 			this->noum2->dump(ident + "       ");
 		}
 
-    }
+	}
 }
 
 void CBlockAssertion_isActionOf::dump(string ident) {
-    cout << ident << "Action " << endl;
+	printf("%s %s\n", ident.c_str(), "Action ");
 }
 
 void CBlockDinamicDispatch::dump(string ident) {
-    cout << ident << "DinamicDispatch " << endl;
-    {
-        this->commandList->dump(ident + "       ");
-    }
+	printf("%s %s\n", ident.c_str(), "DinamicDispatch ");
+	{
+		this->commandList->dump(ident + "       ");
+	}
 }
 
 void CBlockStaticDispatch::dump(string ident) {
-    cout << ident << "StaticDispatch Entry:  " << this->staticEntryTable << endl;
-    {
+	printf("%s %s %i \n", ident.c_str(), "StaticDispatch Entry:  ", this->staticEntryTable  );
+	{
 
-        cout << ident << "Args: " << endl;
-        this->noum1->dump(ident + "       ");
-        this->noum2->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Args: ");
+			this->noum1->dump(ident + "       ");
+		this->noum2->dump(ident + "       ");
 
-    }
+	}
 }
 
 HVariableNamed CBlockAction::get_property(string pnamed)
@@ -406,7 +406,7 @@ HVariableNamed CBlockAction::get_property(string pnamed)
 
 		if (va->name->named == pnamed)
 		{
-				 
+
 			return va;
 		}
 	}
@@ -420,7 +420,7 @@ void CBlockAction::set_property(string pnamed, HBlock value)
 
 		if (va->name->named == pnamed)
 		{
-				 
+
 			va->value = value;
 		}
 	}
@@ -428,113 +428,113 @@ void CBlockAction::set_property(string pnamed, HBlock value)
 }
 
 void CBlockAssertion_canBe::dump(string ident) {
-    cout << ident << "Can Be " << endl;
-    {
-        this->get_obj()->dump(ident + "       ");
-        cout << ident << "Values: " << endl;
-        this->definition->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Can Be ");
+	{
+		this->get_obj()->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Values: ");
+			this->definition->dump(ident + "       ");
 
-    }
+	}
 }
 
 void CBlockAssertion_isKindOf::dump(string ident) {
-    cout << ident << "is Kind Of " << endl;
-    this->noum->dump(ident + "       ");
-    cout << ident << "Kind " << endl;
-    this->baseKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "is Kind Of ");
+		this->noum->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Kind ");
+		this->baseKind->dump(ident + "       ");
 }
 
 void CBlockAssertion_isInstanceOf::dump(string ident) {
-    cout << ident << "is Instance Of " << endl;
-    this->noum->dump(ident + "       ");
-    cout << ident << "Kind " << endl;
-    this->baseKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "is Instance Of ");
+		this->noum->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Kind ");
+		this->baseKind->dump(ident + "       ");
 }
 
 void CBlockAssertion_isNamedValueOf::dump(string ident) {
-    cout << ident << "is Named Value Of " << endl;
-    this->noum->dump(ident + "       ");
-    cout << ident << "Kind " << endl;
-    this->baseKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "is Named Value Of ");
+		this->noum->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Kind ");
+		this->baseKind->dump(ident + "       ");
 }
 
 void CBlockAssertion_isVariable::dump(string ident) {
-    cout << ident << "is Variable Of  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Kind " << endl;
-    this->baseKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "is Variable Of  ");
+		this->variable->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Kind ");
+		this->baseKind->dump(ident + "       ");
 }
 
 void CBlockAssertion_isDefaultAssign::dump(string ident) {
-    cout << ident << "Assign  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Is Usually " << endl;
-    this->value->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Assign  ");
+		this->variable->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Is Usually ");
+		this->value->dump(ident + "       ");
 }
 
 void CBlockAssertion_isConstantAssign::dump(string ident) {
-    cout << ident << "Assign  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Is Always " << endl;
-    this->value->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Assign  ");
+		this->variable->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Is Always ");
+		this->value->dump(ident + "       ");
 }
 
 void CBlockAssertion_isForbiddenAssign::dump(string ident) {
-    cout << ident << "Assign  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Is Never " << endl;
-    this->value->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Assign  ");
+		this->variable->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Is Never ");
+		this->value->dump(ident + "       ");
 }
 
 void CBlockAssertion_isDirectAssign::dump(string ident) {
-    cout << ident << "Assign  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Is " << endl;
-    this->value->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Assign  ");
+		this->variable->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Is ");
+		this->value->dump(ident + "       ");
 }
 
 void CBlockAssertion_isNotDirectAssign::dump(string ident) {
-    cout << ident << "Assign  " << endl;
-    this->variable->dump(ident + "       ");
-    cout << ident << "Is NOT" << endl;
-    this->value->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Assign  ");
+		this->variable->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Is NOT");
+		this->value->dump(ident + "       ");
 }
 
 void CBlockAssertion_InstanceVariable::dump(string ident) {
-    cout << ident << "Instance  " << endl;
-    this->noum->dump(ident + "       ");
-    cout << ident << "Has " << endl;
-    this->instance_variable->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Instance  ");
+		this->noum->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "Has ");
+		this->instance_variable->dump(ident + "       ");
 
 }
 
 void CBlockIsVerb::dump(string ident) {
-    cout << ident << "Is     " << verb << endl;
-    this->n1->dump(ident + "       ");
-    cout << ident << "related " << endl;
-    this->n2->dump(ident + "       ");
+	printf("%s %s %s\n", ident.c_str(), "Is     ", verb.c_str());
+		this->n1->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "related ");
+		this->n2->dump(ident + "       ");
 }
 
 void CBlockIsNotVerb::dump(string ident) {
-    cout << ident << "Is  NOT " << verb << endl;
-    this->n1->dump(ident + "       ");
-    cout << ident << "related " << endl;
-    this->n2->dump(ident + "       ");
+	printf("%s %s %s\n", ident.c_str(), "Is  NOT ", verb.c_str());
+		this->n1->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "related ");
+		this->n2->dump(ident + "       ");
 }
 
 void CBlockVerbRelation::dump(string ident) {
-	cout << ident << "Verb  " << endl;
-	this->verbNoum->dump(ident + "       ");
-	cout << ident << "Implies " << endl;
-	this->relationNoum->dump(ident + "       ");
+	printf("%s %s\n",ident.c_str() , "Verb  ");
+		this->verbNoum->dump(ident + "       ");
+	printf("%s %s\n",ident.c_str() , "Implies ");
+		this->relationNoum->dump(ident + "       ");
 }
 
 void CVariableNamed::dump(string ident)
 {
-	cout << ident << "VAriable Named  " << name << endl;
-	this->kind->dump(ident + "       ");
-	cout << ident << "values " << endl;
-	this->value->dump(ident + "       ");
+	printf("%s VAriable Named  %s\n",ident.c_str() ,   name->named.c_str());
+		this->kind->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "values ");
+		this->value->dump(ident + "       ");
 }
 
 string HtoString(HBlockList lst)
@@ -565,64 +565,64 @@ string HtoString(HBlock value)
 	}
 	else if (HBlockProperty pNoumList = asHBlockProperty(value))
 	{
-		return HtoString(pNoumList->prop) +" of "+  HtoString(pNoumList->obj);
+		return HtoString(pNoumList->prop) + " of " + HtoString(pNoumList->obj);
 	}
 	return "";
 
 }
 
 void CBlockUnderstand::dump(string ident) {
-    cout << ident << "Understand  " << endl;
-    this->input_n->dump(ident + "       ");
-    cout << ident << "As " << endl;
-    this->output_n->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Understand  ");
+		this->input_n->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "As ");
+		this->output_n->dump(ident + "       ");
 
 }
 
 void CBlockUnderstandStatic::dump(string ident) {
-    cout << ident << "Understand Static " << entryID << endl;
-    this->argument_match->dump(ident + "       ");
-    cout << ident << "As " << endl;
-    this->output_n->dump(ident + "       ");
+	printf("%s %s %i \n", ident.c_str(), "Understand Static ", entryID);
+		this->argument_match->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "As ");
+		this->output_n->dump(ident + "       ");
 }
 
 void CBlockUnderstandDynamic::dump(string ident)
 {
-	cout << ident << "Understand Dynamic " <<  endl;
+	printf("%s %s\n" , ident.c_str(), "Understand Dynamic "  );
 	this->input_n->dump(ident + "       ");
 	this->argument_n->dump(ident + "       ");
-	cout << ident << "As " << endl;
-	this->output_n->dump(ident + "       ");
+	printf("%s %s\n",ident.c_str() , "As ");
+		this->output_n->dump(ident + "       ");
 }
 
 void CBlockVerb::dump(string ident)
 {
-	cout << ident << "verb "<< named << endl;
+	printf("%s verb %s\n",ident.c_str() ,   named.c_str());
 }
 
- 
+
 void CBlockSelector_All::dump(string ident)
 {
-	cout << ident << "Select All " <<  endl;
+	printf("%s %s\n" , ident.c_str(), "Select All "   );
 	this->what->dump(ident + "       ");
 }
 
 
 void CBlockSelector_Any::dump(string ident)
 {
-	cout << ident << "Select Any " << endl;
-	this->what->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Select Any ");
+		this->what->dump(ident + "       ");
 }
 
 
-  void CRunLocalScope::dump(string ident)
+void CRunLocalScope::dump(string ident)
 {
-	cout << ident << "Local Scope " << endl;
-	for(auto &kv : locals)
-	{		 
-		cout << ident << "  " << kv.first << endl;
-		kv.second->dump(ident + "       ");
-	}
+	printf("%s %s\n",ident.c_str() , "Local Scope ");
+		for (auto &kv : locals)
+		{
+			printf("%s    %s\n",ident.c_str() ,  kv.first.c_str());
+				kv.second->dump(ident + "       ");
+		}
 }
 
 std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
@@ -642,38 +642,36 @@ std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalS
 }
 
 void CExecutionBlock::dump(string ident) const
-  {
-	  cout << ident << "ExecutionBlock " << endl;
+{
+	printf("%s %s\n", ident.c_str(), "ExecutionBlock "); 
+	{
 
-      
-	  {
+		locals->dump(ident + "       ");
+		block->dump(ident + "       ");
 
-		  locals->dump(ident + "       ");
-		  block->dump(ident + "       ");
-
-	  }
-  }
+	}
+}
 
 
-  void CBlockText::dump(string ident)
-  {
-	  cout << ident << "Text:  " << contents << endl;
-  }
+void CBlockText::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Text:  ", contents.c_str());
+}
 
 
 void CBlockRelationInstance::dump(string ident)
 {
-    cout << ident << "Relation Instance of " << this->relation->named << endl;
-    {
-        this->value1->dump(ident + "       ");
-        this->value2->dump(ident + "       ");
-    }
+	printf("%s %s %s\n", ident.c_str(), "Relation Instance of ", this->relation->named.c_str());
+	{
+		this->value1->dump(ident + "       ");
+		this->value2->dump(ident + "       ");
+	}
 }
 
 void CBlockNow::dump(string ident) {
-    cout << ident << "Now " <<  endl;
-    {
-        this->assertation->dump(ident + "       ");
-    }
+	printf("%s %s\n" , ident.c_str(), "Now "  );
+	{
+		this->assertation->dump(ident + "       ");
+	}
 
 }

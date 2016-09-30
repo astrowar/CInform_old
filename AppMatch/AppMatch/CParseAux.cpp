@@ -145,9 +145,12 @@ HPred mk_What_Which() {
 std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mkHPredAny("Aux"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("Verb"));
+			predList.push_back(mkHPredAny("Aux"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockList clist = std::make_shared<CBlockList>();

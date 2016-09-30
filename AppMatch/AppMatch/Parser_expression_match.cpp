@@ -7,10 +7,13 @@ HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm> term)
 {
 	{
 
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("property"));
-		predList.push_back(mk_HPredLiteral("of"));
-		predList.push_back(mkHPredAny("obj"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("property"));
+			predList.push_back(mk_HPredLiteral("of"));
+			predList.push_back(mkHPredAny("obj"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlock a = parser_expression(res.matchs["property"]);
@@ -118,10 +121,14 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm> term) {
 HBlockMatchIs  CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm> term) {
 	{
 		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("Noum"));
-		predList.push_back(verb_IS_NOT());
-		predList.push_back(mkHPredAny("Value"));
+	 
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("Noum"));
+			predList.push_back(verb_IS_NOT());
+			predList.push_back(mkHPredAny("Value"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 
@@ -135,10 +142,13 @@ HBlockMatchIs  CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm> ter
 	}
 	{
 		// is a kind definition ??
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("Noum"));
-		predList.push_back(verb_IS());
-		predList.push_back(mkHPredAny("Value"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("Noum"));
+			predList.push_back(verb_IS());
+			predList.push_back(mkHPredAny("Value"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 
@@ -242,11 +252,14 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
 
 	{
 
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(mkHPredAny("N2"));
-		predList.push_back(mkHPredAny("N3"));
-		predList.push_back(mkHPredAny("N4"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(mkHPredAny("N2"));
+			predList.push_back(mkHPredAny("N3"));
+			predList.push_back(mkHPredAny("N4"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -275,10 +288,13 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
 
 	{
 
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(mkHPredAny("N2"));
-		predList.push_back(mkHPredAny("N3"));
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(mkHPredAny("N2"));
+			predList.push_back(mkHPredAny("N3"));
+		}
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -300,10 +316,12 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
 
 	{
 		 
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(mkHPredAny("N2"));	
-		
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(mkHPredAny("N2"));
+		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{
