@@ -645,7 +645,7 @@ void CExecutionBlock::dump(string ident) const
   {
 	  cout << ident << "ExecutionBlock " << endl;
 
-      
+
 	  {
 
 		  locals->dump(ident + "       ");

@@ -4,7 +4,9 @@
 
 #include "CBase.h"
 
+#include <cereal/archives/xml.hpp>
 
+using HArchive = cereal::XMLOutputArchive ;
 
 
 enum BlockType {
@@ -125,6 +127,7 @@ class CBlock {
 
 public:
     virtual void dump(string ident) = 0;
+    virtual void serialize(HArchive & ar )   = delete ;
 	virtual BlockType type() = 0;
 
     virtual ~CBlock() {
@@ -133,6 +136,8 @@ public:
     virtual NoumDefinitions noumDefinitions() { return noum_nothing(); };
 
     void *operator new(size_t size);
+
+
 };
 
 using HBlock = std::shared_ptr<CBlock>;
@@ -203,6 +208,7 @@ class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 {
 public:
     void dump(string ident) override;
+    void serialize( HArchive & ar ) { ar(baseClasseName ); } ;
 	virtual BlockType type() override { return BlockType::BlockKindOfName; }
     CBlockKindOfName(string _baseClasseName) : baseClasseName(_baseClasseName) {};
     string baseClasseName;
@@ -214,6 +220,7 @@ class CBlockKindOf : public CBlock  //Define uma classe derivada de outra
 {
 public:
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockKindOf; }
     CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {};
     HBlockKind baseClasse;
@@ -225,6 +232,7 @@ class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
 {
 public:
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockKindAction; }
     CBlockKindAction(string _baseActionName, HBlock _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {};
     string baseClasseName;
@@ -239,6 +247,7 @@ public:
     virtual bool isValue() override { return true; }
 
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockKindValue; }
 
     CBlockKindValue(string _named) : CBlockKind(_named) {};
@@ -255,6 +264,7 @@ public:
     virtual bool isValue() override { return true; }
 
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockKindThing; }
 
     CBlockKindThing(string _named) : CBlockKind(_named) {};
@@ -273,6 +283,7 @@ public:
 	virtual bool isValue() override { return true; }
 
 	void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockListOfKind; }
 
 	CBlockListOfKind(HBlockKind _itemKind  ) : CBlockKind("list@"+ _itemKind->named) , itemKind(_itemKind){};
@@ -289,6 +300,7 @@ class CBlockNamedValue : public CBlock //retorna um valor generico
 {
 public:
     virtual void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockNamedValue; }
 
     CBlockNamedValue(string _named);
@@ -304,6 +316,7 @@ class CBlockVariable : public CBlock //retorna um valor generico
 {
 public:
     virtual void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockVariable; }
 
     CBlockVariable(string _named);
@@ -320,6 +333,7 @@ class CBlockProperty : public CBlock //retorna um valor generico
 {
 public:
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockProperty; }
     CBlockProperty(HBlock prop, HBlock b);
 
@@ -334,6 +348,7 @@ class CBlockInstanceVariable : public CBlock //retorna um valor generico
 {
 public:
     void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockInstanceVariable; }
 
     CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _called);
@@ -353,6 +368,7 @@ class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
 {
 public:
 	void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockKind_InstanceVariable; }
 	CBlockKind_InstanceVariable(HBlockKind  _kind , HBlockInstanceVariable _variableNamed):variableNamed(_variableNamed), kind(_kind){}
 	HBlockInstanceVariable variableNamed;
@@ -367,6 +383,7 @@ class CBlockList : public CBlock //retorna um valor generico
 {
 public:
     virtual void dump(string ident) override;
+    void serialize( HArchive & ar ) override ;
 	virtual BlockType type() override { return BlockType::BlockList; }
     std::list<HBlock> lista;
     CBlockList(){}
