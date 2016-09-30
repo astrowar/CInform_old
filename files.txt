@@ -1,0 +1,51 @@
+        AppMatch.cpp
+        AssertationEngine.cpp
+        BlockInterpreter.cpp
+        CBase.cpp
+        CInterpreter.cpp
+        CMatch.cpp
+        CpropertiesFunctions.cpp
+        CreateInstanceInterpreter.cpp
+        CRelations.cpp
+        Equality.cpp
+        FEnviroment.cpp
+        CInterpreterResolve.cpp
+        AssertionValues.cpp
+        Parser.cpp
+        RepresentationFunctions.cpp
+        CVariableGlobals.cpp
+        InterpreterQuery.cpp
+        ParseRelation.cpp
+        stdafx.cpp
+        testesParser.cpp
+        CInterpreterKindTree.cpp
+        CBlockDumpValues.cpp
+        BlockInstance.cpp
+        CBlockInterpreterDecideBody.cpp
+        ParseAssertationSecondary.cpp
+        ParseListAux.cpp
+        AssertationDefaultValue.cpp
+        ParseRelationWhen.cpp
+        QueryItem.cpp
+        ParserStmt.cpp
+        ParseVerbs.cpp
+        testeLista.cpp
+        testes_1.cpp
+        testes_2.cpp
+        testes_decide.cpp
+        AssertationVerbRelation.cpp
+        ParserDynamicDispatch.cpp
+        InterpreterMatch.cpp
+        CResultMatch.cpp
+        ParserTextEntry.cpp
+        InterpExecute.cpp
+        Parser_Decide.cpp
+ParserSelectorFunctional.cpp
+Parser_expression_match.cpp
+InterpFunctionsCallcpp.cpp
+InterpreterQuery.cpp
+InterpreterListedFunctions.cpp
+ParseDictionary.cpp
+ Parser_A.cpp 
+StaticDispatchFunctions.cpp
+CParseAux.cpp

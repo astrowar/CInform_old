@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 project(AppMatch)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -fno-rtti ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x  ")
+
+include_directories( AppMatch/AppMatch/include/ )
 
 set(SOURCE_FILES
 
@@ -18,7 +20,6 @@ set(SOURCE_FILES
 
         AppMatch/AppMatch/CMatch.cpp
         AppMatch/AppMatch/CMatch.h
-        AppMatch/AppMatch/CObjectDefinitions.h
         AppMatch/AppMatch/ConstDefinitions.h
         AppMatch/AppMatch/CProperties.h
 
@@ -76,6 +77,6 @@ set(SOURCE_FILES
 
 
 
-        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp AppMatch/AppMatch/InterpreterRelationEngine.cpp AppMatch/AppMatch/CBlockCommand.h)
+        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp AppMatch/AppMatch/InterpreterRelationEngine.cpp AppMatch/AppMatch/CBlockCommand.h AppMatch/AppMatch/CDataMananger.cpp AppMatch/AppMatch/CDataMananger.h)
 
-add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h)
+add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/CDataMananger.cpp AppMatch/AppMatch/CDataMananger.h)

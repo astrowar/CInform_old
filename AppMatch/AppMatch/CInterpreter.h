@@ -4,7 +4,7 @@
 #define _CINTEPRETERMAIN_H
 
 #include "CValueDefinitions.h"
-#include "FEnviroment.h"
+
 
 
 // Aqui tem funcoes mais complexas
