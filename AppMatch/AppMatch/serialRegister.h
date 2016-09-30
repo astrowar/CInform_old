@@ -20,7 +20,8 @@
 
 
 
- 
+CEREAL_REGISTER_TYPE(CBlockKindOf);
+CEREAL_REGISTER_TYPE(CBlockNoum);
  
 
 #endif

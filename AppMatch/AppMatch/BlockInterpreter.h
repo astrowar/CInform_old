@@ -187,7 +187,12 @@ class CBlockNoum : public CBlock //retorna um valor generico
 public:
     void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockNoum     ; }
-
+	template<class Archive>
+	void serialize(Archive & ar)
+	{
+		ar(named);
+	}
+	CBlockNoum(){};
     CBlockNoum(string named);
 	virtual void store(CDataManangerSave * m) override;
     string named;

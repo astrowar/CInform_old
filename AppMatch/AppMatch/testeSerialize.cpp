@@ -14,11 +14,14 @@ void testeSerialize1() {
 
 	auto p = (parse.parser_stmt("puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
 	
-	data_d_mananger.store( std::make_shared<CBlockNoum>("teste") );
-	 
-	data_d_mananger.store(p);
-	
+	//data_d_mananger.store( std::make_shared<CBlockNoum>("teste") );
 
+	auto h = std::make_shared<CBlockNoum>("teste");
+	data_d_mananger.archive->operator()(h);
+	 
+	 
+	
+	return;
 
  
 

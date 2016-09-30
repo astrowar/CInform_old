@@ -4,7 +4,7 @@
 
 #include "CDataMananger.h"
 #include "BlockInterpreter.h"
-
+#include "serialRegister.h"
 #include <fstream>
 
 
@@ -24,7 +24,7 @@
  void CDataManangerSave::type(BlockType tp, string b1 , HBlock b2, HBlock b3)
  {
 	 int i2 = store(b2); 
-	 int  i3 = store(b3); 
+	 int i3 = store(b3); 
  
 	 archive->operator()(tp);
 	 archive->operator()(b1);
@@ -159,3 +159,76 @@ CDataManangerSave::~CDataManangerSave()
 	 file.close();
  }
 
+std::string CDataManangerLoad::loadString()
+{
+	std::string str;
+	archive->operator()(str);
+	return str;
+}
+
+std::vector<HBlock> CDataManangerLoad::loadList(std::vector<int> alist)
+{
+	std::vector<HBlock > refs;
+	for (auto &b : alist)
+	{
+		auto k = loadBlock(b);
+		refs.push_back(k);
+	}
+	return refs;
+}
+
+
+
+HBlock CDataManangerLoad::loadBlock(int i)
+{
+	auto p = blocks_loaded.find( i);
+	if (p == blocks_loaded.end())
+	{
+		 
+		archive->operator()(id);
+		// techicamente os ids anteriores ja foram carregados
+		HBlock h = loadBlockRaw();
+
+		blocks_saved[h.get()] = id;
+		blocks_loaded[id] = h;
+		 
+
+		return h;
+	}
+	else
+	{
+		return p->second;
+	}
+
+
+}
+
+CDataManangerLoad::CDataManangerLoad()
+{
+	file = std::ifstream("out.xml");
+	archive = std::make_unique< cereal::BinaryInputArchive>(file);
+}
+
+CDataManangerLoad::~CDataManangerLoad()
+{
+	archive = nullptr;
+	file.close();
+}
+
+
+HBlock CDataManangerLoad::loadBlockRaw()
+{
+	BlockType tp;
+	archive->operator()(tp);
+
+	if (tp == BlockNoum)
+	{
+		string s = loadString();		
+		return std::make_shared<CBlockNoum>(s);
+	}
+
+	 
+
+	return nullptr;
+	 
+}

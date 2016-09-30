@@ -23,11 +23,11 @@ class CDataManangerSave {
 	std::map<int, HBlock> blocks_loaded;
 	std::map<int, std::string> string_loaded;
 	//std::unique_ptr< cereal::XMLOutputArchive>  archive;
-	std::unique_ptr< cereal::BinaryOutputArchive >  archive;
+	
 
 	std::ofstream file; ;
 public:
-
+std::unique_ptr< cereal::BinaryOutputArchive >  archive;
 
 	void type(BlockType tp);
 	void type(BlockType tp, std::string b1);
@@ -48,7 +48,28 @@ public:
 };
 
 
+class CDataManangerLoad {
+	int id = 0;
+	std::map<CBlock*, int> blocks_saved;
+	std::map<int, HBlock> blocks_loaded;
+	std::map<int, std::string> string_loaded;
+	//std::unique_ptr< cereal::XMLOutputArchive>  archive;
+	std::unique_ptr< cereal::BinaryInputArchive >  archive;
 
+	std::ifstream file; ;
+public:
+
+
+ 
+
+	std::string loadString(); 
+	std::vector<HBlock> loadList(std::vector<int> alist);
+	HBlock loadBlockRaw();
+	HBlock loadBlock(int i);
+
+	CDataManangerLoad();
+	~CDataManangerLoad();
+};
 
 
 
