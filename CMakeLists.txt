@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(AppMatch)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x  ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14  -stdlib=libc++ ")
 
 include_directories( AppMatch/AppMatch/include/ )
 
@@ -9,37 +9,18 @@ set(SOURCE_FILES
 
         AppMatch/AppMatch/AssertationEngine.cpp
         AppMatch/AppMatch/BlockInterpreter.cpp
-        AppMatch/AppMatch/BlockInterpreter.h
-        AppMatch/AppMatch/CAssertionDefinition.h
         AppMatch/AppMatch/CBase.cpp
-        AppMatch/AppMatch/CBase.h
-        AppMatch/AppMatch/CblockAssertion.h
-        AppMatch/AppMatch/CBlockBoolean.h
-        AppMatch/AppMatch/CBlockInterpreterRuntime.h
-        AppMatch/AppMatch/CBlockMatch.h
 
         AppMatch/AppMatch/CMatch.cpp
-        AppMatch/AppMatch/CMatch.h
-        AppMatch/AppMatch/ConstDefinitions.h
-        AppMatch/AppMatch/CProperties.h
-
         AppMatch/AppMatch/CreateInstanceInterpreter.cpp
-
-        AppMatch/AppMatch/CValueDefinitions.h
-        AppMatch/AppMatch/CVariableDefinition.h
-
-
         AppMatch/AppMatch/CInterpreterResolve.cpp
         AppMatch/AppMatch/AssertionValues.cpp
         AppMatch/AppMatch/Parser.cpp
-        AppMatch/AppMatch/Parser.h
-
         AppMatch/AppMatch/CVariableGlobals.cpp
         AppMatch/AppMatch/InterpreterQuery.cpp
         AppMatch/AppMatch/ParseRelation.cpp
         AppMatch/AppMatch/stdafx.cpp
-        AppMatch/AppMatch/stdafx.h
-        AppMatch/AppMatch/targetver.h
+
         AppMatch/AppMatch/testesParser.cpp
         AppMatch/AppMatch/CInterpreterKindTree.cpp
         AppMatch/AppMatch/CBlockDumpValues.cpp
@@ -57,6 +38,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testes_2.cpp
         AppMatch/AppMatch/testes_decide.cpp
         AppMatch/AppMatch/teste_action.cpp
+        AppMatch/AppMatch/testeSerialize.cpp
         AppMatch/AppMatch/AssertationVerbRelation.cpp
         AppMatch/AppMatch/ParserSelectorFunctional.cpp
         AppMatch/AppMatch/InterpreterListedFunctions.cpp
@@ -74,9 +56,15 @@ set(SOURCE_FILES
         AppMatch/AppMatch/sharedCast.cpp
         AppMatch/AppMatch/testes_Relation.cpp
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
+        AppMatch/AppMatch/CBlockSerialize.cpp
 
+        AppMatch/AppMatch/ParseDictionary.cpp
+        AppMatch/AppMatch/Parser_A.cpp
+        AppMatch/AppMatch/StaticDispatchFunctions.cpp
+        AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp
+        AppMatch/AppMatch/InterpreterRelationEngine.cpp
 
+        AppMatch/AppMatch/CDataMananger.cpp
+ )
 
-        AppMatch/AppMatch/ParseDictionary.cpp AppMatch/AppMatch/Parser_A.cpp AppMatch/AppMatch/StaticDispatchFunctions.cpp AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp AppMatch/AppMatch/InterpreterRelationEngine.cpp AppMatch/AppMatch/CBlockCommand.h AppMatch/AppMatch/CDataMananger.cpp AppMatch/AppMatch/CDataMananger.h)
-
-add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/ParserDictionary.h AppMatch/AppMatch/CDataMananger.cpp AppMatch/AppMatch/CDataMananger.h)
+add_executable(apx ${SOURCE_FILES})

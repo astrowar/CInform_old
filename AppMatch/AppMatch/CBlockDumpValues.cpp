@@ -29,6 +29,8 @@ void CBlockNoum::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), this->named.c_str());
 }
 
+
+
 void CBlockEnums::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Enum:");
 		for (auto e = values.begin(); e != values.end(); ++e) {

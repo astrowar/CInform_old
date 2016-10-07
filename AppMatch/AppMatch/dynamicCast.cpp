@@ -1,7 +1,6 @@
 #include "dynamicCast.h"
 
 
-
 CBlockEnums* asCBlockEnum(CBlock* c )
 { 
    if ( c->type() == BlockType::BlockEnums)

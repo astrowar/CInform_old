@@ -30,9 +30,7 @@ public:
     virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockUnderstandStatic; }
 
-	template <class HArchive>
-	static void load_and_construct(HArchive& ar, cereal::construct<CBlockUnderstandStatic>& construct);
-	HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
+	 HBlockMatchList argument_match; // Pode ser simples ou com a preposicao
     HBlock output_n;
 	int entryID;
     CBlockUnderstandStatic(int _entryID,HBlockMatchList _argument_match, HBlock _output_n) : argument_match(_argument_match),

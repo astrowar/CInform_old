@@ -1,9 +1,7 @@
 #pragma once
 #ifndef APPMATCH_SERIALREGISTER_H
 #define APPMATCH_SERIALREGISTER_H
-#include <new>
-#include <cereal/types/memory.hpp>
-#include <cereal/types/polymorphic.hpp>
+
 
 #include "BlockInterpreter.h"
 #include "CBlockMatch.h"
@@ -19,9 +17,5 @@
 #include "CBlockCommand.h"
 
 
-
-CEREAL_REGISTER_TYPE(CBlockKindOf);
-CEREAL_REGISTER_TYPE(CBlockNoum);
- 
 
 #endif

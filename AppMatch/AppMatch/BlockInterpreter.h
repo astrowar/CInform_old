@@ -4,90 +4,10 @@
 
 #include "CBase.h"
 
-#include <cereal/types/vector.hpp>
-#include <cereal/types/list.hpp>
-#include <cereal/archives/xml.hpp>
-
-#include <cereal/types/memory.hpp>
-#include <cereal/types/polymorphic.hpp>
-#include "CDataMananger.h"
 
 
-enum BlockType {	 
-	BlockKind,
-	Unresolved,
-	BlockKindOf,
-	BlockKindAction,
-	BlockKindThing,
-	BlockKindValue,
-	BlockListOfKind,
-	BlockNamedValue,
-	BlockVariable,
-	BlockInstanceVariable,
-	BlockList,
-	BlockList_OR,
-	BlockEnums,
-	BlockProperty,
-	BlockAssertion_isDefaultAssign,
-	BlockNoum,
-	BlockKind_InstanceVariable,
-	BlockAssertion_isDirectAssign,
-	BlockAssertion_canBe,
-	BlockAssertion_isKindOf,
-	BlockIsVerb,
-	BlockAssertion_isActionOf,
-	BlockIsNotVerb,
-	BlockMatchAny,
-	BlockMatchNamed,
-	BlockMatchList,
-	BlockMatchDirectIsNot,
-	BlockMatchKind,
-	BlockMatchProperty,
-	BlockMatchBlock,
-	BlockMatchOR,
-	BlockMatchAND,
-	BlockMatchDirectIs,
-	BlockMatchIsVerb,
-	BlockMatchIsNotVerb,
-	BlockAssertion_isNotDirectAssign,
-	BlockMatchNoum,
-	BlockBooleanAND,
-	BlockVerb,
-	BlockBooleanOR,
-	BlockBooleanNOT,
-	BlockSelector_All,
-	BlockSelector_Any,
-	BlockStaticDispatch,
-	BlockAction,
-	BlockActionCall,
-	VariableNamed,
-	BlockUnderstandDynamic,
-	BlockUnderstandStatic,
-	BlockToDecideWhether,
-	BlockToDecideIf,
-	BlockToDecideWhat_FirstNoum,
-	BlockToDecideWhat,
-	BlockToDecideOn,
-	BlockActionApply,
-	BlockKindOfName,
-	BlockArgumentInput,
-	BlockText,
-	BlockInstance,
-	BlockSimetricRelation,
-	BlockASimetricRelation,
-	BlockRelationInstance,
-	BlockVerbRelation,
-	BlockAssertion_isConstantAssign,
-	BlockAssertion_isForbiddenAssign,
-	BlockAssertion_isVariable,
-	BlockAssertion_isNamedValueOf,
-	BlockAssertion_InstanceVariable,
-	BlockAssertion_isInstanceOf,
-	BlockDinamicDispatch,
-	BlockNow
-};
 
-
+#include "BlockTypeEnum.hpp"
 
 
 
@@ -130,11 +50,8 @@ class CBlock {
 
 public:
     virtual void dump(string ident) = 0;
-	virtual void store(CDataManangerSave * m)
-	{
-		printf("NOT");
-	};
-	static  CBlock* load(CDataManangerSave * m) { return nullptr; };
+
+
 	virtual BlockType type() = 0;
     virtual ~CBlock() {
     }
@@ -142,6 +59,9 @@ public:
     virtual NoumDefinitions noumDefinitions() { return noum_nothing(); };
 
     void *operator new(size_t size);
+
+
+
 	//template <class HArchive> static void load_and_construct(HArchive& ar, cereal::construct<CBlock>& construct);
 };
 
@@ -153,7 +73,7 @@ class CUnresolved : public CBlock {
 	CUnresolved(string _contents);
 	
 	
-	virtual void store(CDataManangerSave * m) override;
+
 	 
 
 	virtual BlockType type() override { return BlockType::Unresolved; }
@@ -187,14 +107,10 @@ class CBlockNoum : public CBlock //retorna um valor generico
 public:
     void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockNoum     ; }
-	template<class Archive>
-	void serialize(Archive & ar)
-	{
-		ar(named);
-	}
+
 	CBlockNoum(){};
     CBlockNoum(string named);
-	virtual void store(CDataManangerSave * m) override;
+
     string named;
 
     virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
@@ -207,7 +123,7 @@ class CBlockKind : public CBlock  //retorna um valor generico porem Abstrado
 public:
     virtual bool isValue() = 0;
 	//virtual BlockType type() override { return BlockType::BlockKind; }
-	virtual void store(CDataManangerSave * m) override;
+
     CBlockKind(string _named) : named(_named) {};
     string named;
 
@@ -237,8 +153,7 @@ public:
     void dump(string ident) override;
 	 
 	virtual BlockType type() override { return BlockType::BlockKindOf; }
-	virtual void store(CDataManangerSave * m) override;
-    CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {}
+	  CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {}
 
  
 
@@ -257,8 +172,7 @@ public:
 	virtual BlockType type() override { return BlockType::BlockKindAction; }
     CBlockKindAction(string _baseActionName, HBlock _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {}
 
-	virtual void store(CDataManangerSave * m) override;
-	 
+
     string baseClasseName;
     HBlock applyTo;
 };
@@ -272,7 +186,6 @@ public:
 
     void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockKindValue; }
 
@@ -293,7 +206,6 @@ public:
 
     void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockKindThing; }
 
@@ -320,8 +232,7 @@ public:
 
 	CBlockListOfKind(HBlockKind _itemKind  ) : CBlockKind("list@"+ _itemKind->named) , itemKind(_itemKind){}
 
-	virtual void store(CDataManangerSave * m) override;
-	 
+
 	HBlockKind itemKind;
 	virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
 
@@ -336,7 +247,6 @@ class CBlockNamedValue : public CBlock //retorna um valor generico
 public:
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockNamedValue; }
 
@@ -354,7 +264,6 @@ class CBlockVariable : public CBlock //retorna um valor generico
 public:
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockVariable; }
 
@@ -373,7 +282,6 @@ class CBlockProperty : public CBlock //retorna um valor generico
 public:
     void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockProperty; }
     CBlockProperty(HBlock _prop, HBlock _obj);
@@ -390,7 +298,6 @@ class CBlockInstanceVariable : public CBlock //retorna um valor generico
 public:
     void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockInstanceVariable; }
 
@@ -412,7 +319,6 @@ class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
 public:
 	void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m)  override;
 
 	virtual BlockType type() override { return BlockType::BlockKind_InstanceVariable; }
 	CBlockKind_InstanceVariable(HBlockKind  _kind , HBlockInstanceVariable _variableNamed):kind(_kind), variableNamed(_variableNamed){}
@@ -432,7 +338,6 @@ class CBlockList : public CBlock //retorna um valor generico
 public:
     virtual void dump(string ident) override;
 
-	void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockList; }
     std::list<HBlock> lista;
@@ -467,7 +372,6 @@ public:
 
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockEnums; }
 
@@ -485,7 +389,6 @@ class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declarac
 public:
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockAssertion_InstanceVariable; }
 
@@ -515,7 +418,6 @@ class CBlockVerbRelation : public CBlock    //retorna uma declaracao
 public:
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockVerbRelation; }
 
@@ -564,7 +466,6 @@ class CBlockActionApply : public CBlock {
 public:
     virtual void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockActionApply; }
     HBlock noum1;
@@ -590,8 +491,7 @@ public:
 	CBlockDinamicDispatch(HBlockList _command) : commandList(_command) {}
     void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
-    virtual BlockType type() override { return BlockType::BlockDinamicDispatch; }
+	  virtual BlockType type() override { return BlockType::BlockDinamicDispatch; }
 };
 using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;
 
@@ -657,8 +557,7 @@ class CBlockVerb : public CBlock //retorna uma declaracao
 public:
 	void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
-	 
+
 	virtual BlockType type() override { return BlockType::BlockVerb; }
 	string named;
 private:
@@ -689,7 +588,6 @@ class CBlockSelector_All : public CBlockSelector //retorna uma declaracao
 public:
 	void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockSelector_All; }
 	CBlockSelector_All(HBlock _what) :CBlockSelector(_what) {}
@@ -704,7 +602,6 @@ class CBlockSelector_Any : public CBlockSelector //retorna uma declaracao
 public:
 	void dump(string ident) override;
 
-	virtual void store(CDataManangerSave * m) override;
 
 	virtual BlockType type() override { return BlockType::BlockSelector_Any; }
 	CBlockSelector_Any(HBlock _what) :CBlockSelector(_what) {}
