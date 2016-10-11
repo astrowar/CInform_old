@@ -1,9 +1,9 @@
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 #include <iostream>
-#include "CBlockInterpreterRuntime.h"
-#include "CblockAssertion.h"
-#include "QueryStack.h"
-#include "sharedCast.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CblockAssertion.hpp"
+#include "QueryStack.hpp"
+#include "sharedCast.hpp"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
-#include "BaseTest.h"
+#include "BaseTest.hpp"
 #include <cassert>
-#include "CDataMananger.h"
+#include "CDataMananger.hpp"
 #include <fstream>
 
 

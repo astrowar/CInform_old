@@ -3,12 +3,12 @@
 //
 
 
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 #include <iostream>
-#include "CBlockInterpreterRuntime.h"
-#include "CblockAssertion.h"
-#include "QueryStack.h"
-#include "CResultMatch.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CblockAssertion.hpp"
+#include "QueryStack.hpp"
+#include "CResultMatch.hpp"
 
 using namespace std;
 

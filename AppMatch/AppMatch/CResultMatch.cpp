@@ -1,4 +1,4 @@
-#include "CResultMatch.h"
+#include "CResultMatch.hpp"
 
 CResultMatch::CResultMatch(string s, HBlock b) : hasMatch(true)
 {

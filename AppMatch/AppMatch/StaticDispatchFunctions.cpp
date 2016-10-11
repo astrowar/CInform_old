@@ -1,14 +1,14 @@
 //
 // Created by Eraldo Rangel on 23/08/16.
 //
-#include "Parser.h"
+#include "Parser.hpp"
 #include <iostream>
 #include <algorithm>
 
-#include "CBlockInterpreterRuntime.h"
-#include "CBlockMatch.h"
-#include "CBlockBoolean.h"
-#include "CblockAssertion.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CBlockMatch.hpp"
+#include "CBlockBoolean.hpp"
+#include "CblockAssertion.hpp"
 
 staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(
         _argumentsMatch), action(_action) {

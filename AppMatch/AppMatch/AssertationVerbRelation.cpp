@@ -1,8 +1,8 @@
-#include "CBlockInterpreterRuntime.h"
+#include "CBlockInterpreterRuntime.hpp"
 #include <iostream>
-#include "QueryStack.h"
-#include "CResultMatch.h"
-#include "sharedCast.h"
+#include "QueryStack.hpp"
+#include "CResultMatch.hpp"
+#include "sharedCast.hpp"
 
 using namespace std; 
 

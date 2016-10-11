@@ -1,7 +1,7 @@
-#include "Parser.h"
+#include "Parser.hpp"
  
  
-#include "CBlockRelation.h"
+#include "CBlockRelation.hpp"
 
 string  parser_OtherCalledAs(HTerm term)
 {

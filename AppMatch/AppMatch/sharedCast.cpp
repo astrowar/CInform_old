@@ -1,4 +1,4 @@
-#include "sharedCast.h"
+#include "sharedCast.hpp"
 
 HBlockEnums asHBlockEnums(HBlock c )
 { 

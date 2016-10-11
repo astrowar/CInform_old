@@ -1,6 +1,6 @@
-#include "CBlockInterpreterRuntime.h"
+#include "CBlockInterpreterRuntime.hpp"
 #include <iostream>
-#include "sharedCast.h"
+#include "sharedCast.hpp"
 using namespace std;
 
 HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c )

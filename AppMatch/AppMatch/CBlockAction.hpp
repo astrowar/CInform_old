@@ -3,8 +3,8 @@
 #define APPMATCH_BLOCKACTION_H
 
 
-#include "BlockInterpreter.h"
-#include "CBlockNamedVariable.h"
+#include "BlockInterpreter.hpp"
+#include "CBlockNamedVariable.hpp"
 #include <string>
 
 

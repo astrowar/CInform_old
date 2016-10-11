@@ -2,12 +2,12 @@
 #ifndef CPARSER_H
 #define CPARSER_H
 
-#include "CBase.h"
-#include "BlockInterpreter.h"
-#include "CBlockMatch.h"
-#include "CMatch.h"
-#include "CBlockInterpreterRuntime.h"
-#include "CBlockRelation.h"
+#include "CBase.hpp"
+#include "BlockInterpreter.hpp"
+#include "CBlockMatch.hpp"
+#include "CMatch.hpp"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CBlockRelation.hpp"
 #include <condition_variable>
 
 

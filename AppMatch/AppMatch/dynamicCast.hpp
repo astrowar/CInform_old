@@ -1,12 +1,12 @@
-#include "BlockInterpreter.h"
-#include "CBlockAction.h"
-#include "CBlockUndestand.h"
-#include "CBlockDecideIf.h"
-#include "CBlockRelation.h"
-#include "BlockInstance.h"
-#include "CBlockDumpValues.h"
-#include "CBlockCommand.h"
-#include "CBlockBoolean.h"
+#include "BlockInterpreter.hpp"
+#include "CBlockAction.hpp"
+#include "CBlockUndestand.hpp"
+#include "CBlockDecideIf.hpp"
+#include "CBlockRelation.hpp"
+#include "BlockInstance.hpp"
+#include "CBlockDumpValues.hpp"
+#include "CBlockCommand.hpp"
+#include "CBlockBoolean.hpp"
 CBlockEnums* asCBlockEnum(CBlock* c );
 CBlockKind* asCBlockKind(CBlock* c );
 CUnresolved* asCBlockUnresolved(CBlock* c );

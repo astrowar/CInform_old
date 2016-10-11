@@ -1,5 +1,5 @@
-#include "BlockInterpreter.h"
-#include  "QueryStack.h"
+#include "BlockInterpreter.hpp"
+#include  "QueryStack.hpp"
 
  
 

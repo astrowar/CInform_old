@@ -1,14 +1,14 @@
-#include "Parser.h"
+#include "Parser.hpp"
 #include <iostream>
 #include <algorithm>
 
-#include "CBlockInterpreterRuntime.h"
-#include "CBlockMatch.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CBlockMatch.hpp"
  
-#include "CblockAssertion.h"
-#include "CBlockUndestand.h"
-#include "CBlockCommand.h"
-#include "sharedCast.h"
+#include "CblockAssertion.hpp"
+#include "CBlockUndestand.hpp"
+#include "CBlockCommand.hpp"
+#include "sharedCast.hpp"
 
 
 CParser::CParser(HBlockInterpreter _interpreter) {

@@ -52,86 +52,86 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CMatch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EqualsResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBase.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CblockAssertion.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockBoolean.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockDumpValues.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockInterpreterRuntime.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockMatch.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockInstance.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockInterpreter.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="CInterpreterKindTree.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockUndestand.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockRelation.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
     <ClInclude Include="GrammarParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CResultMatch.h">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockDecideIf.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockScope.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockAction.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockNamedVariable.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockCommand.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="sharedCast.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="dynamicCast.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CDataMananger.h">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="serialRegister.h">
+    <ClInclude Include="CMatch.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockInstance.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockInterpreter.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBase.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockAction.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CblockAssertion.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockBoolean.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockCommand.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockDecideIf.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockDumpValues.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockInterpreterRuntime.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockMatch.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockNamedVariable.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockRelation.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockScope.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockUndestand.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CDataMananger.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CInterpreterKindTree.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamicCast.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedCast.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.hpp">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="EqualsResult.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryStack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="serialRegister.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CResultMatch.hpp">
+      <Filter>Header Files\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,10 @@
 #ifndef _CMATCH_H
 #define _CMATCH_H
 
-#include "CBase.h"
+#include "CBase.hpp"
 #include <vector>
 #include <map>
-#include "EqualsResult.h"
+#include "EqualsResult.hpp"
 #include <functional>
 
 using MTermSet = std::vector<HTerm>;

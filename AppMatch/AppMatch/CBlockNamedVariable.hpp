@@ -2,7 +2,7 @@
 #ifndef APPMATCH_BLOCKNAMEDVAR_H
 #define APPMATCH_BLOCKNAMEDVAR_H
 
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 #include <string>
 
 

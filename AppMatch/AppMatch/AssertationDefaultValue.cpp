@@ -1,5 +1,5 @@
-#include "CBlockInterpreterRuntime.h"
-#include "sharedCast.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "sharedCast.hpp"
 #include <iostream>
 using namespace std;
 

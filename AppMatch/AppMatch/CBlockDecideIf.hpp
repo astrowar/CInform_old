@@ -1,38 +1,38 @@
 #pragma once
-#include "BlockInterpreter.h" 
-#include "CBlockMatch.h"
+#include "BlockInterpreter.hpp" 
+#include "CBlockMatch.hpp"
 
 
 
 class CBlockToDecide
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-    CBlockToDecide( )
-             {
-    }
+	CBlockToDecide( )
+			 {
+	}
 
-    virtual HTerm eval() { return nullptr; }
-    
+	virtual HTerm eval() { return nullptr; }
+	
 };
 
 
 
 class CBlockToDecideIf
-        : public CBlockToDecide  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+		: public CBlockToDecide  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {
 public:
-    CBlockToDecideIf(HBlockMatchIs _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
+	CBlockToDecideIf(HBlockMatchIs _queryToMatch, HBlock _decideBody)
+			: queryToMatch(_queryToMatch),
+			  decideBody(_decideBody) {
+	}
 
 	HBlockMatchIs queryToMatch;
-    HBlock decideBody;
+	HBlock decideBody;
 
-     
+	 
 
-    void dump(string ident) override;
+	void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockToDecideIf; }
 };
 
@@ -42,19 +42,19 @@ using HBlockToDecide = std::shared_ptr<CBlockToDecide>;
 
 
 class CBlockToDecideWhether
-        : public CBlockToDecide   
+		: public CBlockToDecide   
 {
 public:
 	CBlockToDecideWhether
-            (HBlockMatch _queryToMatch, HBlock _decideBody)
-            : queryToMatch(_queryToMatch),
-              decideBody(_decideBody) {
-    }
+			(HBlockMatch _queryToMatch, HBlock _decideBody)
+			: queryToMatch(_queryToMatch),
+			  decideBody(_decideBody) {
+	}
 
 	HBlockMatch queryToMatch;
-    HBlock decideBody;    
+	HBlock decideBody;    
 
-    void dump(string ident) override;
+	void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockToDecideWhether; }
 };
 
@@ -114,14 +114,14 @@ using HBlockToDecideWhat_FirstNoum = std::shared_ptr<CBlockToDecideWhat_FirstNou
 class CBlockToDecideOn : public CBlock  // bloco que equivale a um return no decide
 {
 public:
-    CBlockToDecideOn(HBlock _decideBody) : decideBody(_decideBody) {
-    }
+	CBlockToDecideOn(HBlock _decideBody) : decideBody(_decideBody) {
+	}
 
-    HBlock decideBody;
+	HBlock decideBody;
 
-    virtual HTerm eval() { return nullptr; }
+	virtual HTerm eval() { return nullptr; }
 
-    void dump(string ident) override;
+	void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockToDecideOn; }
 };
 

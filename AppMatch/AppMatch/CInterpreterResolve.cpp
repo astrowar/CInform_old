@@ -1,7 +1,7 @@
 
  
-#include "CBlockInterpreterRuntime.h"
-#include "sharedCast.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "sharedCast.hpp"
 #include <iostream>
 using namespace std;
 
@@ -45,61 +45,61 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 
 
 HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
-    for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-        if (HBlockAssertion_is v = asHBlockAssertion_is(*it)) {
-            if (v->get_obj() == obj) {
-                if (HBlockKind k = asHBlockKind(v->get_definition())) {
-                    return k;
-                }
-            }
-        }
-    }
-    return nullptr;
+	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
+		if (HBlockAssertion_is v = asHBlockAssertion_is(*it)) {
+			if (v->get_obj() == obj) {
+				if (HBlockKind k = asHBlockKind(v->get_definition())) {
+					return k;
+				}
+			}
+		}
+	}
+	return nullptr;
 }
 
 
 string CBlockInterpreter::BlockNoum(HBlock c_block) {
-    if (HBlockKind k0 = asHBlockKind(c_block)) {
-        return k0->named;
-    }
+	if (HBlockKind k0 = asHBlockKind(c_block)) {
+		return k0->named;
+	}
 
-    if (HBlockInstance k1 = asHBlockInstance(c_block)) {
-        return k1->named;
-    }
+	if (HBlockInstance k1 = asHBlockInstance(c_block)) {
+		return k1->named;
+	}
 
-    if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
-        return k2->named;
-    }
+	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
+		return k2->named;
+	}
 
-    if (HBlockNamedValue k3 = asHBlockNamedValue(c_block)) {
-        return k3->named;
-    }
+	if (HBlockNamedValue k3 = asHBlockNamedValue(c_block)) {
+		return k3->named;
+	}
 
-    if (HBlockVariable k4 = asHBlockVariable(c_block)) {
-        return k4->named;
-    }
+	if (HBlockVariable k4 = asHBlockVariable(c_block)) {
+		return k4->named;
+	}
 
-    if (HBlockNoum k5 = asHBlockNoum(c_block)) {
-        return k5->named;
-    }
+	if (HBlockNoum k5 = asHBlockNoum(c_block)) {
+		return k5->named;
+	}
 
 	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
 		return k6->named ;
 	}
 
 
-    return "";
+	return "";
 }
 
 
 
 HBlock CBlockInterpreter::resolve(CTerm *b) {
-    return make_shared<CBlockNoum>(b->repr());
+	return make_shared<CBlockNoum>(b->repr());
 }
 
 HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
-    //return new CBlockProperty( b , a);
-    return nullptr;
+	//return new CBlockProperty( b , a);
+	return nullptr;
 }
 
 HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
@@ -122,13 +122,13 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 
 
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
-    for (auto &defs : assertions) {
-        if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-            if (nn->named == n) {
-                return nn;
-            }
-        }
-    }
+	for (auto &defs : assertions) {
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+			if (nn->named == n) {
+				return nn;
+			}
+		}
+	}
 	if (auto kcustom = resolve_system_kind(n))
 	{
 		return kcustom;
@@ -136,7 +136,7 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 	 
 
 
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -191,7 +191,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 	{
 		return nullptr;
 	}
-    return nullptr;
+	return nullptr;
 
 
 }
@@ -221,14 +221,14 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 		if (lnoum != nullptr) return lnoum;
 	}
 
-    for (auto &defs : assertions) {
-        if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-            //std::cout << nn->named << std::endl;
-            if (nn->named == n) {
-                return defs->get_definition();
-            }
-        }
-    }
-    return nullptr;
+	for (auto &defs : assertions) {
+		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
+			//std::cout << nn->named << std::endl;
+			if (nn->named == n) {
+				return defs->get_definition();
+			}
+		}
+	}
+	return nullptr;
 }
 

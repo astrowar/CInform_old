@@ -2,10 +2,10 @@
 // Created by Eraldo Rangel on 18/08/16.
 //
 
-#include "CBlockInterpreterRuntime.h"
+#include "CBlockInterpreterRuntime.hpp"
 
-#include "BlockInterpreter.h"
-#include "sharedCast.h"
+#include "BlockInterpreter.hpp"
+#include "sharedCast.hpp"
 #include <iostream>
 
 using namespace std;

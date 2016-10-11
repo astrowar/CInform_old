@@ -2,14 +2,14 @@
 // Created by Eraldo Rangel on 23/08/16.
 //
 
-#include "Parser.h"
+#include "Parser.hpp"
 #include <iostream>
  
 
  
-#include "CBlockMatch.h"
-#include "CBlockBoolean.h"
-#include "CblockAssertion.h"
+#include "CBlockMatch.hpp"
+#include "CBlockBoolean.hpp"
+#include "CblockAssertion.hpp"
 
 
 

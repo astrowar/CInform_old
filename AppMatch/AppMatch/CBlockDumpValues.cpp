@@ -4,19 +4,19 @@
 
 
 
-#include "BlockInterpreter.h"
-#include "CBlockMatch.h"
-#include "CBlockBoolean.h"
+#include "BlockInterpreter.hpp"
+#include "CBlockMatch.hpp"
+#include "CBlockBoolean.hpp"
 
-#include "CBlockDumpValues.h"
-#include "CBlockUndestand.h"
+#include "CBlockDumpValues.hpp"
+#include "CBlockUndestand.hpp"
 
 
  
-#include "CBlockRelation.h"
-#include "CBlockScope.h"
-#include "CBlockCommand.h"
-#include "sharedCast.h"
+#include "CBlockRelation.hpp"
+#include "CBlockScope.hpp"
+#include "CBlockCommand.hpp"
+#include "sharedCast.hpp"
 
 
 using namespace std;

@@ -1,5 +1,5 @@
-#include "Parser.h"
-#include "sharedCast.h"
+#include "Parser.hpp"
+#include "sharedCast.hpp"
 #include <iostream>
 
 HBlockKindAction CParser::parse_AssertionAction_secondPart( HTerm  term)

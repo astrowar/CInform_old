@@ -1,7 +1,7 @@
 //
 // Created by eraldo.rangel on 12/09/2016.
 //
-#include "BaseTest.h"
+#include "BaseTest.hpp"
 #include <cassert>
 
 

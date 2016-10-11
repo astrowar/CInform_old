@@ -6,7 +6,7 @@
 #define APPMATCH_CBLOCKCOMMAND_H
 
 
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 
 class CBlockNow : public CBlock     //retorna uma declaracao
 {

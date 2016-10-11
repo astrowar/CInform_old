@@ -1,12 +1,12 @@
 //Executor de acoes 
 
-#include "CBlockInterpreterRuntime.h"
-#include "CResultMatch.h"
+#include "CBlockInterpreterRuntime.hpp"
+#include "CResultMatch.hpp"
 #include <memory>
 #include <iostream>
-#include "CBlockScope.h"
-#include "QueryStack.h"
-#include "sharedCast.h"
+#include "CBlockScope.hpp"
+#include "QueryStack.hpp"
+#include "sharedCast.hpp"
 using namespace std;
 
 

@@ -1,9 +1,9 @@
-#include "CBlockInterpreterRuntime.h"
+#include "CBlockInterpreterRuntime.hpp"
 #include <memory>
-#include "CResultMatch.h"
+#include "CResultMatch.hpp"
 #include <iostream>
-#include "QueryStack.h"
-#include "sharedCast.h"
+#include "QueryStack.hpp"
+#include "sharedCast.hpp"
 using namespace std;
 
 

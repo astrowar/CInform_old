@@ -1,7 +1,7 @@
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 #include <iostream>
-#include "CblockAssertion.h"
-#include "CBlockMatch.h"
+#include "CblockAssertion.hpp"
+#include "CBlockMatch.hpp"
 #include <cassert>
 
 using namespace std;

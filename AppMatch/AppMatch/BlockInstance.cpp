@@ -2,9 +2,9 @@
 // Created by Eraldo Rangel on 19/08/16.
 //
 
-#include "BlockInstance.h"
+#include "BlockInstance.hpp"
 #include <iostream>
-#include "sharedCast.h"
+#include "sharedCast.hpp"
 
 using  namespace  std   ;
 

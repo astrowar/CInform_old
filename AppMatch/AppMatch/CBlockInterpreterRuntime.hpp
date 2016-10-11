@@ -4,19 +4,19 @@
 #define CBLOCKRUNTIME_H
 
 
-#include "BlockInterpreter.h"
-#include "CblockAssertion.h"
-#include "CBlockMatch.h"
+#include "BlockInterpreter.hpp"
+#include "CblockAssertion.hpp"
+#include "CBlockMatch.hpp"
 #include <functional>
 #include <map>
-#include "CBlockUndestand.h"
+#include "CBlockUndestand.hpp"
 #include <condition_variable>
-#include "CBlockDecideIf.h"
-#include "CBlockScope.h"
+#include "CBlockDecideIf.hpp"
+#include "CBlockScope.hpp"
 #include <condition_variable>
-#include "CBlockAction.h"
-#include "CBlockRelation.h"
-#include "QueryStack.h"
+#include "CBlockAction.hpp"
+#include "CBlockRelation.hpp"
+#include "QueryStack.hpp"
 
  class CBlockAssertionBase;
 

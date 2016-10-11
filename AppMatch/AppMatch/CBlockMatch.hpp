@@ -4,8 +4,8 @@
 #define CBLOCKMATCH_H
 
 #include <iostream>
-#include "BlockInterpreter.h"
-#include "CBlockAction.h"
+#include "BlockInterpreter.hpp"
+#include "CBlockAction.hpp"
 
 class CBlockMatch
         : public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel

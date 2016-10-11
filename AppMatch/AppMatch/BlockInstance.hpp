@@ -5,9 +5,9 @@
 #ifndef APPMATCH_BLOCKINSTANCE_H
 #define APPMATCH_BLOCKINSTANCE_H
 
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 #include <string>
-#include "CBlockNamedVariable.h"
+#include "CBlockNamedVariable.hpp"
 
 class CBlockInstance : public CBlock //retorna um valor generico
 {

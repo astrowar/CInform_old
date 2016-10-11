@@ -1,12 +1,12 @@
 
-#include "CBlockInterpreterRuntime.h"
+#include "CBlockInterpreterRuntime.hpp"
 
-#include "CBlockMatch.h"
+#include "CBlockMatch.hpp"
 #include <iostream>
-#include "CBlockUndestand.h"
-#include "CBlockDecideIf.h"
-#include "CBlockRelation.h"
-#include "sharedCast.h"
+#include "CBlockUndestand.hpp"
+#include "CBlockDecideIf.hpp"
+#include "CBlockRelation.hpp"
+#include "sharedCast.hpp"
 using namespace std;
 
 void CBlockInterpreter::initialize() {

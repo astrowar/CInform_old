@@ -3,7 +3,7 @@
 #ifndef CBLOCKBOOLEAN_H
 #define CBLOCKBOOLEAN_H
 
-#include "BlockInterpreter.h"
+#include "BlockInterpreter.hpp"
 
 class CBlockBooleanAND
         : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )

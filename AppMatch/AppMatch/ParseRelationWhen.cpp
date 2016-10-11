@@ -1,7 +1,7 @@
-#include "Parser.h"
+#include "Parser.hpp"
 
 #include <iostream>
-#include "CBlockRelation.h"
+#include "CBlockRelation.hpp"
 
 
 HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm> term)

@@ -1,5 +1,5 @@
-#include "CBase.h"
-#include "EqualsResult.h"
+#include "CBase.hpp"
+#include "EqualsResult.hpp"
 
 CString::CString(std::string _s) : s(_s) {
 }

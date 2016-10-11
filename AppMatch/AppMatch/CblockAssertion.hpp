@@ -2,9 +2,9 @@
 #ifndef CBLOCKASSERTATION_H
 #define CBLOCKASSERTATION_H
 
-#include "BlockInterpreter.h"
-#include "BlockInstance.h"
-#include "CBlockAction.h"
+#include "BlockInterpreter.hpp"
+#include "BlockInstance.hpp"
+#include "CBlockAction.hpp"
 
 
 class CBlockAssertionBase : public CBlock //retorna uma declaracao
