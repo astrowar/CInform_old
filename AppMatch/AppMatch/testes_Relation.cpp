@@ -149,7 +149,7 @@ void testeRelation4() {
 	
 	 
 
-	auto ret_true_a = interpreter->query(parse.parser_stmt(" (cake recipe) produce cake ", ISLOG));
+	auto ret_true_a = interpreter->query(parse.parser_stmt(" (cake recipe) produce cake  ", ISLOG));
 	assert(ret_true_a == QEquals);
 
 	auto ret_true_b = interpreter->query(parse.parser_stmt(" soupe is produced by recipe2 ", ISLOG));
@@ -159,9 +159,14 @@ void testeRelation4() {
 	auto ret_false_c = interpreter->query(parse.parser_stmt(" recipe  of cake  is  recipe2  ", ISLOG));
 	assert(ret_false_c == QNotEquals);
 
-	interpreter->execute_now(parse.parser_stmt(" product of recipe2 is nothing ", ISLOG)); //ecluit uma relacao
+	interpreter->execute_now(parse.parser_stmt(" product of recipe2 is nothing ", ISLOG)); //exclui uma relacao
 	auto ret_false_d = interpreter->query(parse.parser_stmt(" soupe is produced by recipe2 ", ISLOG));
 	assert(ret_false_d == QNotEquals);
+
+
+	interpreter->execute_now(parse.parser_stmt(" (cake recipe)  is not produce  cake  ", ISLOG)); //exclui uma relacao
+	auto ret_false_e = interpreter->query(parse.parser_stmt(" cake is produced by (cake recipe) ", ISLOG));
+	assert(ret_false_e == QNotEquals);
 
 	return;
 

@@ -272,7 +272,7 @@ void testeParser_5f() {
 	//auto ret_true_a = interpreter->query(parse.parser_stmt("north points to exit of hall  ", ISLOG));
 
     auto ret_true_a = interpreter->query(parse.parser_stmt("hall exits to north   ", ISLOG));
-
+	assert(ret_true_a == QEquals);
    // auto ret_true_b = interpreter->query(parse.parser_stmt("garden exits to south   ", ISLOG));
 
 

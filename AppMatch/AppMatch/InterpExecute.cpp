@@ -48,6 +48,42 @@ bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope loca
 }
 
 
+bool CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry)
+{
+
+	// Eh uma relacao ??
+	for (auto & rv : verbRelationAssoc)
+	{
+		if (rv.first == vverb->verb)
+		{
+			auto relation_name = rv.second->relationNoum->named;
+			if (relation_name == "dynamic")
+			{
+				logError(" dynamic relations is READ ONLY ");
+				return false;
+			}
+			auto rel_find = this->staticRelation.find(relation_name);
+			if (rel_find != this->staticRelation.end())
+			{
+				if (rv.second->type() == BlockVerbDirectRelation)
+				{
+					HBlockRelationBase rel = rel_find->second;
+					this->unset_relation(rel, vverb->n1, vverb->n2, localsEntry);
+					return true;
+				}
+				else if (rv.second->type() == BlockVerbReverseRelation)
+				{
+					HBlockRelationBase rel = rel_find->second;
+					this->unset_relation(rel, vverb->n2, vverb->n1, localsEntry); // inverte a relacao
+					return true;
+				}
+			}
+		}
+
+	}
+	return false;
+}
+
 
 
 bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope localsEntry)
@@ -392,6 +428,13 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		if (execute_verb_set(vverb, localsEntry))
 			return true;
 	}
+
+	if (HBlockIsNotVerb vverb = asHBlockIsNotVerb(p)) {
+
+		if (execute_verb_unset(vverb, localsEntry))
+			return true;
+	}
+
 
 	if (HBlockAssertion_is vk = asHBlockAssertion_isDirectAssign (p)) {
 		HBlock obj = vk->get_obj();

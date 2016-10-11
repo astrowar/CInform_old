@@ -85,3 +85,42 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 
 	return false;
 }
+
+
+bool CBlockInterpreter::unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry)
+{
+	QueryStack stk;
+
+	 
+	 
+
+	//Remove relations 
+	for (auto it = relInstances.begin(); it != relInstances.end(); ++it)
+	{
+		auto & rel = *it;
+		if (rel->relation->named == relation->named)
+		{
+			if (query_is(rel->value1, n1, localsEntry, stk) == QueryResul::QEquals)
+				if (query_is(rel->value2, n2, localsEntry, stk) == QueryResul::QEquals)
+				{
+					it = relInstances.erase(it);
+					if (it == relInstances.end()) break;
+				}
+				
+			if (rel->relation->is_symetric())
+			{
+				if (query_is(rel->value1, n2, localsEntry, stk) == QueryResul::QEquals)
+					if (query_is(rel->value2, n1, localsEntry, stk) == QueryResul::QEquals)
+					{
+						it = relInstances.erase(it);
+						if (it == relInstances.end()) break;
+					}
+			}
+
+		}
+	}
+
+	 
+
+	return false;
+}

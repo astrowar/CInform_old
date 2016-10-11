@@ -114,6 +114,7 @@ class CBlockInterpreter {
 	bool is_nothing(HBlockNoum noum);
 	bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 	bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+	bool unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 public:
     CBlockInterpreter();
 
@@ -219,6 +220,7 @@ public:
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 	bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
 	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
+	bool execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
 	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
 	HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);
