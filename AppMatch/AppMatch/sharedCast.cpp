@@ -421,12 +421,33 @@ HBlockRelationInstance asHBlockRelationInstance(HBlock c )
         return std::static_pointer_cast<CBlockRelationInstance>(c);
    return nullptr;
 } 
-HBlockVerbRelation asHBlockVerbRelation(HBlock c )
+HBlockVerbDirectRelation asHBlockVerbDirectRelation(HBlock c )
 { 
-   if (c != nullptr && c->type() == BlockType::BlockVerbRelation)
-        return std::static_pointer_cast<CBlockVerbRelation>(c);
+   if (c != nullptr && c->type() == BlockType::BlockVerbDirectRelation)
+        return std::static_pointer_cast<CBlockVerbDirectRelation>(c);
    return nullptr;
 } 
+
+HBlockVerbReverseRelation asHBlockVerbReverseRelation(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockVerbReverseRelation)
+		return std::static_pointer_cast<CBlockVerbReverseRelation>(c);
+	return nullptr;
+}
+
+HBlockVerbRelation asHBlockVerbRelation(HBlock c)
+{
+	if (c == nullptr) return nullptr;
+	auto t = c->type();
+
+	if (t == BlockType::BlockVerbDirectRelation ||
+		t == BlockType::BlockVerbReverseRelation)
+		return std::static_pointer_cast<CBlockVerbRelation>(c);
+	return nullptr;
+}
+
+
+
 HBlockAssertion_isConstantAssign asHBlockAssertion_isConstantAssign(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockAssertion_isConstantAssign)

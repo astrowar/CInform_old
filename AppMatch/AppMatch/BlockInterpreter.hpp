@@ -413,15 +413,14 @@ public:
 
 
  
+ 
+
 
 class CBlockVerbRelation : public CBlock    //retorna uma declaracao
 {
 public:
-    virtual void dump(string ident) override;
-
-
-	virtual BlockType type() override { return BlockType::BlockVerbRelation; }
-
+   
+ 
     HBlock  verbNoum; // Pode ser simples ou com a preposicao
     HBlockNoum relationNoum;
 
@@ -429,6 +428,39 @@ public:
     CBlockVerbRelation(HBlock  _noum, HBlockNoum _relationNoum) : verbNoum((_noum)), relationNoum((_relationNoum)) {};
 };
 using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
+
+
+class CBlockVerbDirectRelation : public CBlockVerbRelation    //retorna uma declaracao
+{
+public:
+	virtual void dump(string ident) override;
+
+
+	virtual BlockType type() override { return BlockType::BlockVerbDirectRelation ; }
+
+ 
+	CBlockVerbDirectRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
+};
+using HBlockVerbDirectRelation = std::shared_ptr<CBlockVerbDirectRelation>;
+
+
+
+class CBlockVerbReverseRelation : public CBlockVerbRelation    //retorna uma declaracao
+{
+public:
+	virtual void dump(string ident) override;
+
+
+	virtual BlockType type() override { return BlockType::BlockVerbReverseRelation  ; }
+
+ 
+	CBlockVerbReverseRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
+};
+using HBlockVerbReverseRelation = std::shared_ptr<CBlockVerbReverseRelation>;
+
+
+
+
 
 
 

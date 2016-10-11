@@ -19,7 +19,7 @@ bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope loca
 	{
 		if (rv.first == vverb->verb)
 		{
-			auto relation_name = rv.second->named;
+			auto relation_name = rv.second->relationNoum->named;
 			if (relation_name == "dynamic")
 			{
 				logError(" dynamic relations is READ ONLY ");
@@ -28,9 +28,18 @@ bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope loca
 			auto rel_find = this->staticRelation.find(relation_name);
 			if (rel_find != this->staticRelation.end())
 			{
-				HBlockRelationBase rel = rel_find->second;
-				this->set_relation(rel, vverb->n1, vverb->n2);
-				return true;
+				if (rv.second->type() == BlockVerbDirectRelation)
+				{
+					HBlockRelationBase rel = rel_find->second;
+					this->set_relation(rel, vverb->n1, vverb->n2, localsEntry);
+					return true;
+				}
+				else if (rv.second->type() == BlockVerbReverseRelation)
+				{
+					HBlockRelationBase rel = rel_find->second;
+					this->set_relation(rel, vverb->n2, vverb->n1, localsEntry); // inverte a relacao
+					return true;
+				}
 			}
 		}
 
@@ -69,6 +78,12 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 		HBlock destination = prop_n->obj;
 		return assert_it_property(propNamed, destination, value,localsEntry);
 	}
+
+	/*if (HBlockProperty prop_n = asHBlockProperty(value)) {
+		HBlock propNamed = prop_n->prop;
+		HBlock destination = prop_n->obj;
+		return assert_it_property(propNamed, destination, obj, localsEntry);
+	}*/
 
 	//
 	if (HVariableNamed  var_n = asHVariableNamed(obj)) {
@@ -360,7 +375,10 @@ bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {
 	HRunLocalScope localsEntry = make_shared< CRunLocalScope >();
 	auto b =   execute_now(p, localsEntry);
-	if (b == false) logError( "fail to execute ");
+	if (b == false)
+	{
+		logError("fail to execute ");
+	}
 	return b;
 }
 

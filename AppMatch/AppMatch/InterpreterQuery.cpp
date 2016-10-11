@@ -104,7 +104,8 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
     if (HBlockInstance cinst = asHBlockInstance(propObj)) {
         if (HBlockNoum property_noum = asHBlockNoum(propname)) {
             HVariableNamed pvar = cinst->get_property(property_noum->named);
-            if (pvar != nullptr) {
+            if (pvar != nullptr) 
+			{
                 logMessage("property  is " );
                 if (pvar->value != nullptr)
                 {
@@ -121,6 +122,14 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
                 if (rprop == QEquals) return QEquals;
                 return QNotEquals;
             }
+			logMessage(" Dont have Property");
+			{
+				auto  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
+				if (result_prop == QEquals) return QEquals;
+				return QNotEquals;
+			}
+
+
         }
     }
     return QUndefined;

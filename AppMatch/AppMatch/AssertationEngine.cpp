@@ -44,9 +44,9 @@ bool CBlockInterpreter::queryIsVerbToRelation( HBlockMatch m)
 		auto cfind = verbRelationAssoc.find(vv->verb);
 		if (cfind != verbRelationAssoc.end())
 		{
-		   if (cfind->second->named != "dynamic")
+		   if (cfind->second->relationNoum->named  != "dynamic")
 		   {
-			  logError( "verb " + vv->verb + " belongs to relation " + cfind->second->named );
+			  logError( "verb " + vv->verb + " belongs to relation " + cfind->second->relationNoum->named);
 			   return true;
 		   }
 		}
@@ -226,43 +226,58 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 }
 
 
-bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock value,   HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry) {
 	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase,localsEntry);
+		HBlock nobj = resolve_noum(nbase, localsEntry);
 		if (nobj != nullptr) {
-			return assert_it_property(propname, nobj, value,localsEntry);
+			return assert_it_property(propname, nobj, value, localsEntry);
 		}
 		return false;
 	}
-	if (HBlockInstance cinst = asHBlockInstance(obj)) {
-		if (HBlockNoum property_noum = asHBlockNoum(propname)) {
-			HVariableNamed vv = cinst->get_property(property_noum->named);
-			if (vv == nullptr)
-			{
-				logMessage("Obje dont have " + property_noum->named + "property ");
-			}
-			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind,localsEntry));
-			if (instanceValueRefered) {
-				cinst->set_property(property_noum->named, instanceValueRefered);
-				return true;
-			}
-		}
-	}
 
-	if (HBlockAction cAction = asHBlockAction(obj)) {
-		if (HBlockNoum property_noum = asHBlockNoum(propname)) {
-			HVariableNamed vv = cAction->get_property(property_noum->named);
-			if (vv == nullptr)
+	if (HBlockNoum property_noum = asHBlockNoum(propname))
+	{
+		if (HBlockInstance cinst = asHBlockInstance(obj))
+		{
+			HVariableNamed vv = cinst->get_property(property_noum->named);
+			if (vv != nullptr)
 			{
-				 
+				HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
+				if (instanceValueRefered) {
+					cinst->set_property(property_noum->named, instanceValueRefered);
+					return true;
+				}
+			}
+			else
+			{
 				logMessage("Obje dont have " + property_noum->named + "property ");
 			}
-			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
-			if (instanceValueRefered) {
-				cAction->set_property(property_noum->named, instanceValueRefered);
-				return true;
-			}
+
 		}
+
+		if (HBlockAction cAction = asHBlockAction(obj))
+		{
+
+			HVariableNamed vv = cAction->get_property(property_noum->named);
+			if (vv != nullptr)
+			{
+				HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
+				if (instanceValueRefered) {
+					cAction->set_property(property_noum->named, instanceValueRefered);
+					return true;
+				}
+			}
+			else
+			{
+				logMessage("Obje dont have " + property_noum->named + "property ");
+			} 
+		}
+
+		{
+			bool set_prop_rel = set_relation_property(property_noum, obj, value, localsEntry);
+			if (set_prop_rel) return set_prop_rel;
+		}
+
 	}
 	return false;
 
@@ -351,8 +366,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 	}
 	if (HBlockVerbRelation dcverbImpl = asHBlockVerbRelation(p))
-	{ 
-
+	{
 		if (assert_newVerb(dcverbImpl)) return; 
 	}
 	  

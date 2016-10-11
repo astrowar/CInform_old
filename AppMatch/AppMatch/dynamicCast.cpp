@@ -367,12 +367,20 @@ CBlockRelationInstance* asCBlockRelationInstance(CBlock* c )
      return static_cast<CBlockRelationInstance*>(c);
    return nullptr;
 } 
-CBlockVerbRelation* asCBlockVerbRelation(CBlock* c )
+CBlockVerbRelation* asCBlockVerbDirectRelation(CBlock* c )
 { 
-   if ( c->type() == BlockType::BlockVerbRelation)
+   if ( c->type() == BlockType::BlockVerbDirectRelation)
      return static_cast<CBlockVerbRelation*>(c);
    return nullptr;
 } 
+
+CBlockVerbRelation* asCBlockVerbReverseRelation(CBlock* c)
+{
+	if (c->type() == BlockType::BlockVerbReverseRelation)
+		return static_cast<CBlockVerbRelation*>(c);
+	return nullptr;
+}
+
 CBlockAssertion_isConstantAssign* asCBlockAssertion_isConstantAssign(CBlock* c )
 { 
    if ( c->type() == BlockType::BlockAssertion_isConstantAssign)

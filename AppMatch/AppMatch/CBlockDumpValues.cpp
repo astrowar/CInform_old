@@ -537,11 +537,18 @@ void CBlockIsNotVerb::dump(string ident) {
 		this->n2->dump(ident + "       ");
 }
 
-void CBlockVerbRelation::dump(string ident) {
+void CBlockVerbDirectRelation::dump(string ident) {
 	printf("%s %s\n",ident.c_str() , "Verb  ");
 		this->verbNoum->dump(ident + "       ");
-	printf("%s %s\n",ident.c_str() , "Implies ");
+	printf("%s %s\n",ident.c_str() , "Implies Direct");
 		this->relationNoum->dump(ident + "       ");
+}
+
+void CBlockVerbReverseRelation::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Verb  ");
+	this->verbNoum->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Implies Reverse");
+	this->relationNoum->dump(ident + "       ");
 }
 
 void CVariableNamed::dump(string ident)

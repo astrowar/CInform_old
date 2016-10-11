@@ -140,7 +140,9 @@ public:
 
 	//Matchs 
 	HBlockMatchIsVerb parserMatchIsConditionVerb(HTerm term);
-    HBlockMatchIs parserMatchIsCondition(HTerm match);
+	HBlockVerbRelation STMT_verb_relation(HBlock a_verb, HTerm term);
+	HBlock STMT_relation_descr(HTerm term);
+	HBlockMatchIs parserMatchIsCondition(HTerm match);
     HBlockMatch  parser_MatchArgument(HTerm term);
 
 

@@ -49,7 +49,7 @@ class CBlockInterpreter {
 
 
 //Verb to relation
-	std::map<string, HBlockNoum > verbRelationAssoc;
+	std::map<string, HBlockVerbRelation > verbRelationAssoc;
 	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
  
 
@@ -96,6 +96,8 @@ class CBlockInterpreter {
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
 	bool setVerb(string cs, HBlock c_block, HBlock value);
+	QueryResul query_relation_instance(HBlockRelationInstance rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResul query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
@@ -108,7 +110,10 @@ class CBlockInterpreter {
  
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
-
+	bool set_relation_property(HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+	bool is_nothing(HBlockNoum noum);
+	bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+	bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 public:
     CBlockInterpreter();
 

@@ -36,58 +36,89 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 
 }
 
+QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+{
+	QueryResul query_2 = QUndefined;
+	if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+	{
+		if (QEquals == query_is(value, rr->value2, localsEntry, stk))
+		{
+			return QEquals;
+		}
+		query_2 = QNotEquals;
+		if (rr->relation->is_various_noum2() == false)
+		{
+			return QNotEquals;
+		}
+	}
+	else if (QUndefined == query_2)
+	{
+		if (QEquals == query_is(value, rr->value2, localsEntry, stk))
+		{
+			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+			{
+				return QEquals;
+			}
+			if (rr->relation->is_various_noum1() == false)
+			{
+				return QNotEquals;
+			}
+		}
+	}
+
+
+	if (rr->relation->is_symetric()) // Trocado
+	{
+		if (QEquals == query_is(c_block, rr->value2, localsEntry, stk))
+		{
+			if (QEquals == query_is(value, rr->value1, localsEntry, stk))
+			{
+				return QEquals;
+			}
+			if (rr->relation->is_various_noum2() == false)
+			{
+				return QNotEquals;
+			}
+		}
+	}
+
+	return QUndefined;
+}
+
+QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+{
+ 
+	// procupara pela relacao que tem um called que eh compativel com o property_noum
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->input_B->named == property_noum->named ) //Ok, this is 
+		{
+			QueryResul query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
+			if (query_inst != QUndefined) return query_inst;
+		}
+
+		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
+		{
+			QueryResul query_inst = query_relation_instance(rr, value, c_block,   localsEntry, stk);//reverse the property
+			if (query_inst != QUndefined) return query_inst;
+		}
+
+	}
+
+}
 
 QueryResul CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 	// Percorre todos e retorna o valor
 	for (auto &rr : relInstances)
 	{
-		if (rr->relation == rel)
+		if (rr->relation->named == rel->named)
 		{
-			QueryResul query_2 = QUndefined;
-			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
-			{
-				if (QEquals == query_is(value,rr->value2, localsEntry, stk))
-				{
-					return QEquals;
-				}
-				query_2 = QNotEquals;
-				if (rr->relation->is_various_noum1() == false)
-				{
-					return QNotEquals;
-				}
-			}
-			else if (QUndefined == query_2 )
-			{
-				if (QEquals == query_is(value, rr->value2, localsEntry, stk))
-				{
-					if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
-					{
-						return QEquals;
-					}
-					if (rr->relation->is_various_noum2() == false)
-					{
-						return QNotEquals;
-					}
-				}
-			}
+			QueryResul query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
+			if (query_inst != QUndefined) return query_inst;
 
-
-			if (rr->relation->is_symetric()) // Trocado
-			{
-				if (QEquals == query_is(c_block, rr->value2, localsEntry, stk))
-				{
-					if (QEquals == query_is(value, rr->value1, localsEntry, stk))
-					{
-						return QEquals;
-					}
-					if (rr->relation->is_various_noum1() == false)
-					{
-						return QNotEquals;
-					}
-				}
-			}
 		}
+			 
 	}
 	return QUndefined;
 }
@@ -106,16 +137,27 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	{
 		if (rv.first == vb)
 		{
-			auto relation_name = rv.second->named;
+			auto relation_name = rv.second->relationNoum->named;
 			if (relation_name != "dynamic")
 			{
 				auto rel_find = this->staticRelation.find(relation_name);
 				if (rel_find != this->staticRelation.end())
 				{
 					HBlockRelationBase rel = rel_find->second;
-					QueryResul rel_query = this->query_relation(rel,  c_block , value,localsEntry,stk);
-					if (rel_query == QEquals) return  QEquals;
-					return QNotEquals;
+
+					if (rv.second->type() == BlockVerbDirectRelation)
+					{
+						QueryResul rel_query = this->query_relation(rel, c_block, value, localsEntry, stk);
+						if (rel_query == QEquals) return  QEquals;
+						return QNotEquals;
+					}
+					else if (rv.second->type() == BlockVerbReverseRelation)
+					{
+						// inverte a busca aqui
+						QueryResul rel_query = this->query_relation(rel, value , c_block,   localsEntry, stk);
+						if (rel_query == QEquals) return  QEquals;
+						return QNotEquals;
+					}
 				}
 			}
 		}
@@ -251,7 +293,7 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
 
     // Existe essa relacao ??
-	verbRelationAssoc[vstr] = value->relationNoum;
+	verbRelationAssoc[vstr] = value ;
  
 
 	return true;

@@ -278,3 +278,22 @@ void testeParser_5f() {
 
     return;
 }
+
+void testeParser_5g() {
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("colour is a kind of value  ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("the colour are red, blue and green  ", ISLOG));
+
+	interpreter->execute_init(parse.parser_stmt("  block is an kind of thing ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("  block is usually blue  ", ISLOG));
+ 
+	
+	//Liquid is a kind of value.The liquids are water, milk, lemonade, and iced tea
+	interpreter->execute_init(parse.parser_stmt(" liquid is a kind of value", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("  the liquid are water, milk, lemonade and (iced tea ) ", ISLOG));
+
+	return;
+}

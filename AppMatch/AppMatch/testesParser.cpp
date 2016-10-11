@@ -344,14 +344,19 @@ int main() {
 		//testeParser_5d();
 		//testeParser_5f();
 		//testeParser_6();
+
+		testeParser_5g();
 	   //testeParser_7a();
 	   //testeParser_7b();
 		//testeParser_7c();
 		 //testeParser_7d();
 	  //testeParser_22();
 
-		testeRelation1();
-
+		//testeRelation1();
+		//testeRelation2();
+		//testeRelation3();
+		testeRelation3();
+		testeRelation4();
 	//	testeSerialize1();
 
 		logMessage( ".");
