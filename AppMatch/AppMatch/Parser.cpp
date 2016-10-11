@@ -1,5 +1,5 @@
 #include "Parser.hpp"
-#include <iostream>
+ 
 #include <algorithm>
 
 #include "CBlockInterpreterRuntime.hpp"
@@ -59,7 +59,7 @@ void CParser::set_Noum(NoumDefinitions ndef) {
 HBlockMatchIs CParser::parserMatchIsCondition(HTerm term)
 {
     // Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex 
-	//Default is a direct Asign
+    //Default is a direct Asign
     {
         std::vector<HPred> predList;
         predList.push_back(mkHPredAny("MatchBody"));
@@ -69,7 +69,7 @@ HBlockMatchIs CParser::parserMatchIsCondition(HTerm term)
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockMatch body = parser_MatchArgument(res.matchs["MatchBody"]);
-			HBlockMatch value = parser_MatchArgument(res.matchs["valueToCheck"]);
+            HBlockMatch value = parser_MatchArgument(res.matchs["valueToCheck"]);
             if (body != nullptr && value != nullptr) {
                 return std::make_shared<CBlockMatchDirectIs>(body, value);
             }
@@ -181,8 +181,8 @@ HBlock CParser::STMT_system_Assertion(std::vector<HTerm> term)
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
 HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
 
-	auto d_action = (DynamicDispatch_action(term));
-	if (d_action != nullptr) return d_action;
+    auto d_action = (DynamicDispatch_action(term));
+    if (d_action != nullptr) return d_action;
     
 
     auto p_action = STMT_understand_Action_Assertion_static(term);
@@ -205,13 +205,13 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
 
 HBlock CParser::parse_noum(std::vector<HTerm> term) {
     std::vector<HPred> predList;
-	 
+     
     //predList.push_back(undefinedArticle());
     predList.push_back(mkHPredAny("Noum"));
     MatchResult res = CMatch(term, predList);
 
     if (res.result == Equals) {
-		string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
+        string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
         return std::make_shared<CBlockNoum>(nstr);
     }
     return nullptr;
@@ -475,10 +475,11 @@ HBlock CParser::parser_stmt(string str) {
 }
 HBlock CParser::parser_stmt(string str,bool dump)
 {
-	HBlock b =  parser_stmt(str);
-	if (dump)
-	{		
-		b->dump(""); std::cout << std::endl;
-	}
-	return b;
+    HBlock b =  parser_stmt(str);
+    if (dump)
+    {		
+        b->dump("");  
+        printf("\n");
+    }
+    return b;
 }

@@ -1,6 +1,6 @@
 #include <vector>
 #include "Parser.hpp"
-#include <iostream>
+ 
 
 
 
@@ -144,7 +144,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
             return n1;
         }
     }
-	std::cout << "Argument:  " <<  (term)->repr() << std::endl;
+	//std::cout << "Argument:  " <<  (term)->repr() << std::endl;
     return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(CtoString(expandBract(term)->removeArticle())));
     return nullptr;
 }
@@ -153,7 +153,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 
 DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm> term) {
 
-    std::cout << "what:  " << get_repr(term) << std::endl;
+   // std::cout << "what:  " << get_repr(term) << std::endl;
     {
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
@@ -354,10 +354,10 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term)
 					output_noum = parser_expression(res.matchs["Subst"]);
 
 					//Interpretei 
-					std::cout << "Interpretei " << sTerm->repr()   << std::endl;
-					std::cout << "Como "   << std::endl;
+					logMessage("Interpretei " + sTerm->repr());
+					logMessage("Como ");
 					output_noum->dump("          ");
-					std::cout << "---" << std::endl;
+					logMessage("---");
 
 				}
 
@@ -443,7 +443,7 @@ std::list<HBlock> CParser::ToMatchList( std::vector<HPred> pvector, MatchResult 
 		}
 		else
 		{
-			std::cout << "error" << std::endl;
+			logError("error" );
 		}
 	}
 	return vlist;

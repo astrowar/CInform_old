@@ -1,7 +1,7 @@
  
 #include "CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
-#include <iostream>
+ 
 #include "sharedCast.hpp"
 using namespace std;
 
@@ -28,7 +28,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
             b = make_shared<CBlockKindValue>(called);
             bup = ktv;
         } else {
-            cout << "What ?? " << baseClasseName << endl;
+			logError("What ?? " + baseClasseName);
             throw "Error on derive a kind";
         }
 
@@ -150,7 +150,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
                 assertions.push_back(newDefi);
             }
 
-            cout << "new Kind add " << nbase->named <<  endl;
+			logMessage("new Kind add " + nbase->named);
             return true;
         }
 
@@ -175,7 +175,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
                         kindDefinitions.push_back(newDefi);
                         assertions.push_back(newDefi);
                     }
-                    cout << "new Kind add" << endl;
+					logMessage("new Kind add");
                 }
             }
             return true;
@@ -206,7 +206,8 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock value, HRunLocalSc
                 HBlockAssertion_isInstanceOf newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
-                cout << "new Instance add" << endl;
+                 
+				logMessage("new Instance add");
                 return true;
             }
             return false;

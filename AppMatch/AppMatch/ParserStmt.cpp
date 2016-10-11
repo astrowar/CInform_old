@@ -1,5 +1,5 @@
 #include "Parser.hpp"
-#include <iostream>
+ 
 
 
 HBlock CParser::parser_kind(HTerm term)
@@ -46,7 +46,7 @@ HBlock CParser::parser_expression(HTerm  term)
 		return r;
 	}
 	//return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
-	std::cout << term->repr() << std::endl; 
+	//std::cout << term->repr() << std::endl; 
 	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
 }
 

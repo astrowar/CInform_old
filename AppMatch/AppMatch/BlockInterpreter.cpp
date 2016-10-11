@@ -1,10 +1,20 @@
 #include "BlockInterpreter.hpp"
-#include <iostream>
+ 
 #include "CblockAssertion.hpp"
 #include "CBlockMatch.hpp"
 #include <cassert>
 
 using namespace std;
+
+void logError(std::string str)
+{
+	printf("%s\n", str.c_str());
+}
+void logMessage(std::string str)
+{
+	printf("%s\n", str.c_str());
+}
+
 
 NoumDefinitions noum_nothing() {
     return NoumDefinitions();
@@ -23,7 +33,7 @@ NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b) {
 
 void *CBlock::operator new(size_t size) {
 
-    cout << "    New Block: " << '\n';
+	
     return malloc(size);
 
 }

@@ -2,7 +2,7 @@
 // Created by Eraldo Rangel on 23/08/16.
 //
 #include "Parser.hpp"
-#include <iostream>
+ 
 #include <algorithm>
 #include <sstream>
 

@@ -13,7 +13,7 @@ void testeParser_6()//kind of value
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 		interpreter->execute_init(res);
 	}
@@ -31,7 +31,7 @@ void testeParser_6()//kind of value
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 		interpreter->execute_init(res);
 	}
@@ -42,7 +42,7 @@ void testeParser_6()//kind of value
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 		interpreter->execute_init(res);
 	}
@@ -67,7 +67,7 @@ void testeParser_6()//kind of value
 
 		string phase_1 = " ... ";
 	}
-	//std::cout << std::endl;
+	//std::cout );
 }
 
 
@@ -89,7 +89,7 @@ void testeParser_6a()//kind of value
 																			 std::make_shared<CBlockNoum>("book")),
 											std::make_shared<CBlockNoum>("red"));
 
-	std::cout << std::endl;
+	logMessage("");
 }
 
 
@@ -104,7 +104,7 @@ void testeParser_20() //custrom rlacions
 		if (ISLOG)
 		{
 			res->dump("");
-			std::cout << std::endl;
+			std::cout );
 		}
 	}
 
@@ -117,7 +117,7 @@ void testeParser_20() //custrom rlacions
 	//	if (ISLOG)
 	//	{
 	//		res->dump("");
-	//		std::cout << std::endl;
+	//		std::cout );
 	//	}
 	//}
 	//{
@@ -127,7 +127,7 @@ void testeParser_20() //custrom rlacions
 	//	if (ISLOG)
 	//	{
 	//		res->dump("");
-	//		std::cout << std::endl;
+	//		std::cout );
 	//	}
 	//}
 
@@ -139,29 +139,29 @@ void testeParser_20() //custrom rlacions
 	//	if (ISLOG)
 	//	{
 	//		res->dump("");
-	//		std::cout << std::endl;
+	//		std::cout );
 	//	}
 	//}
 	{
 		auto block = parse.parser_stmt("the verb able to open implies a opening relation");
 		if (ISLOG) {
 			block->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 	{
 		auto block = parse.parser_stmt("X is  able   to open   Z");
 		if (ISLOG) {
 			block->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
-	std::cout << "----------------------------------------" << std::endl;
+	logMessage( "----------------------------------------" );
 	{
 		auto block = parse.parser_stmt("to decide if (X    able   to open   Z) : (decides on true)");
 		if (ISLOG) {
 			block->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -173,7 +173,7 @@ void testeParser_20() //custrom rlacions
 		if (ISLOG)
 		{
 			res->dump("");
-			std::cout << std::endl;
+			std::cout );
 		}
 	}*/
 }
@@ -187,7 +187,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -197,7 +197,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -207,7 +207,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -217,7 +217,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -227,7 +227,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -237,7 +237,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 		{
@@ -246,7 +246,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -257,7 +257,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 		{
@@ -266,7 +266,7 @@ void testeParser_21() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -284,7 +284,7 @@ void testeParser_22() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -294,7 +294,7 @@ void testeParser_22() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -304,7 +304,7 @@ void testeParser_22() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -314,7 +314,7 @@ void testeParser_22() {
 			if (res == nullptr) throw "parse error";
 			if (ISLOG) {
 				res->dump("");
-				std::cout << std::endl;
+				logMessage("");
 			}
 		}
 
@@ -327,19 +327,19 @@ int main() {
 
   // for (int k = 0; k < 100; ++k)
 	{
-		 testeParser_listA();
-		 testeParser_listB();
+		// testeParser_listA();
+		// testeParser_listB();
 
 		// testeParser_actionC();
 	   // testeParser_2();
 	   // testeParser_2a();
 		//testeParser_3();
 		//testeParser_4();
-		 testeParser_5b();
-		 testeParser_5c();
-		 testeParser_5d();
-		 testeParser_5e();
-		 testeParser_5f();
+		// testeParser_5b();
+	//	 testeParser_5c();
+	//	 testeParser_5d();
+	//	 testeParser_5e();
+	//	 testeParser_5f();
 
 		//testeParser_5d();
 		//testeParser_5f();
@@ -352,9 +352,9 @@ int main() {
 
 		testeRelation1();
 
-		testeSerialize1();
+	//	testeSerialize1();
 
-		std::cout << ".";
+		logMessage( ".");
 	}
-	std::cout << std::endl;
+	logMessage("");
 }

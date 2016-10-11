@@ -1,5 +1,5 @@
 #include "CBlockInterpreterRuntime.hpp"
-#include <iostream>
+ 
 #include "sharedCast.hpp"
 using namespace std;
 
@@ -31,7 +31,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 					}
 					else
 					{
-						cout << "Whats is " << KTemplateItem->named << std::endl;
+						logMessage("Whats is " + KTemplateItem->named);
 					}
 				}
 			}
@@ -43,7 +43,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 		if (HBlockNoum nameVar = asHBlockNoum(obj)) {
 			HVariableNamed newVar = make_shared<CVariableNamed>(nameVar, kind, nullptr);
 
-			cout << "Add VAR " << newVar->name->named <<endl;
+			logMessage("Add VAR " + newVar->name->named);
 		 
 			global_variables.push_back(newVar);
 			return true;
@@ -54,7 +54,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 		}
 		else
 		{
-			cout << "Whats is ";
+			logMessage("Whats is ");
 			obj->dump("      ");
 		}
 	}

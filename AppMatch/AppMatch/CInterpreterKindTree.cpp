@@ -6,7 +6,7 @@
 
 #include "BlockInterpreter.hpp"
 #include "sharedCast.hpp"
-#include <iostream>
+ 
 
 using namespace std;
 
@@ -39,7 +39,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
 list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     list<HBlockKind> upperList;
 
-    cout << "U " << a->named << endl;
+	logMessage("U " + a->named);
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
         if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))

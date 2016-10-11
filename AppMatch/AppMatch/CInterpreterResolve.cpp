@@ -2,7 +2,7 @@
  
 #include "CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
-#include <iostream>
+ 
 using namespace std;
 
 
@@ -154,7 +154,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-			//std::cout << nn->named << std::endl;
+			//logMessage( nn->named << std::endl;
 			if (nn->named == n->named) {
 				return defs->get_definition();
 			}
@@ -163,7 +163,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
-			//std::cout << nn->named << std::endl;
+			//logMessage( nn->named << std::endl;
 			if (nnvar->name->named == n->named) {
 				return nnvar;
 			}
@@ -186,7 +186,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		return kcustom;
 	}
 
-	cout << "Fail to " << n->named << endl;
+	logError("Fail to " + n->named);
 	if (n->named == "D")
 	{
 		return nullptr;

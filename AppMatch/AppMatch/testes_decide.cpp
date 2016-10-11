@@ -14,13 +14,13 @@ void testeParser_7a()//dynamic match
     }
 
 	auto p = parse.parser_stmt("to decide what (thing) is (the best book) : diary ");
-	if (ISLOG) {p->dump("");std::cout << std::endl;	}
+	if (ISLOG) {p->dump(""); 	}
 	interpreter->execute_init(p);
 	 
     QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
                                             std::make_shared<CBlockNoum>("diary") );
 
-    std::cout << std::endl;
+   
 
 }
 
@@ -56,7 +56,7 @@ void testeParser_7b()//dynamic match
  
 	interpreter->execute_init(parse.parser_stmt("coin is made of silver ", ISLOG));
 	QueryResul q_qq=  interpreter->query(parse.parser_stmt("coin is made of gold  ", ISLOG));
-	std::cout << std::endl;
+ 
 
 }
 
@@ -92,11 +92,11 @@ void testeParser_7c()//dynamic match
 	});
 	for( auto s : slist)
 	{
-		std::cout << s << std::endl;
+		logMessage( s);
 		auto p = parse.parser_stmt(s, ISLOG);
 	}
 
-	std::cout << std::endl;
+	 
 }
 
 void testeParser_7d()// relation When
@@ -112,10 +112,10 @@ void testeParser_7d()// relation When
 	});
 	for (auto s : slist)
 	{
-		std::cout << s << std::endl;
+		logMessage(s);
 		auto p = parse.parser_stmt(s, ISLOG);
 
 	}
-	std::cout << std::endl;
+	 
 
 }

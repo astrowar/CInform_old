@@ -1,5 +1,5 @@
 #include "Parser.hpp"
-#include <iostream>
+ 
 
 
 HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
@@ -117,7 +117,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
             HBlock AValue = parser_expression_match(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
             auto r =  res.matchs["AValue"].get();
-			std::cout <<  r->repr() << std::endl;
+			logError(r->repr());
            // return std::make_shared<CBlockMatch>(AValue);
 			throw "un Implmeneted";
 			return nullptr;
@@ -149,7 +149,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
             HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
 			if (a_match)
 			{
-				std::cout << (res.matchs["RemainBody"]->repr()) << std::endl;
+				logMessage((res.matchs["RemainBody"]->repr()));
 				HBlock body = parser_expression(res.matchs["RemainBody"]);
 				return std::make_shared<CBlockToDecideIf>(a_match, body);
 			}
@@ -157,7 +157,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 			HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
 			if (vb_match)
 			{
-				std::cout << (res.matchs["RemainBody"]->repr()) << std::endl;
+				logMessage((res.matchs["RemainBody"]->repr()));
 				HBlock body = parser_expression(res.matchs["RemainBody"]);
 				return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 			}
@@ -166,7 +166,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
 			HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
 			if (w_match)
 			{
-				std::cout << (res.matchs["RemainBody"]->repr()) << std::endl;
+				logMessage((res.matchs["RemainBody"]->repr()));
 				HBlock body = parser_expression(res.matchs["RemainBody"]);
 				return std::make_shared<CBlockToDecideWhat>(w_match, body);
 			}

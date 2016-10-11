@@ -9,21 +9,21 @@ void testeParser_1() {
     phase_1 = "( book,  stone and  ( metal bird))  are  some things ";
     phase_1 = decompose_bracket(phase_1, "(");
     phase_1 = decompose_bracket(phase_1, ")");
-    std::cout << phase_1 << std::endl;
+   logMessage( phase_1);
 
     std::vector<HTerm> lst = decompose(phase_1);
     CList *lst_ptr = mk_CList_Literal(lst);
-    std::cout << lst_ptr->repr() << std::endl;
+	logMessage(lst_ptr->repr() );
     //MTermSetCombinatoriaList mlist = getCombinatorias(lst_ptr->asVector(), 3);
 
     auto vecList = lst_ptr->asVector();
     FuncCombinatoria f_disp = [](MTermSetCombinatoria &x) {
-        std::cout << get_repr(x) << std::endl;
+		logMessage(get_repr(x) );
         return false;
     };
     applyCombinatorias(vecList, 3, f_disp);
 
-    std::cout << "..." << std::endl;
+	logMessage("..." );
 }
 
 void testeParser_2() {
@@ -38,7 +38,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
          interpreter->execute_init(res);
     }
@@ -50,7 +50,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -62,7 +62,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -74,7 +74,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -86,7 +86,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -98,7 +98,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -112,7 +112,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -123,7 +123,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -134,7 +134,7 @@ void testeParser_2() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -147,7 +147,7 @@ void testeParser_2() {
 	assert(qclass_k);
 
     //bool qclass_i = interpreter->is_derivadeOf(std::make_shared<CBlockInstance>("diary"), std::make_shared<CBlockKindThing>("thing"));
-    std::cout << "Done" << std::endl;
+    logMessage( "Done" );
     return;
 }
 
@@ -186,7 +186,7 @@ void testeParser_2a() {
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
-            std::cout << std::endl;
+			logMessage("");
         }
         interpreter->execute_init(res);
     }
@@ -202,7 +202,7 @@ void testeParser_2a() {
 	assert(q_false_2 == QNotEquals);
 	assert(q_false_2n == QEquals);
 
-    std::cout << "Done" << std::endl;
+    logMessage( "Done" );
 
 	//interpreter->execute_init(parse.parser_stmt("element of  diary is air "));
 
@@ -218,6 +218,6 @@ void testeParser_2a() {
 	assert(q_true_3 == QEquals);
 	assert(q_true_4 == QNotEquals);
 	assert(q_true_5 == QNotEquals);
-    std::cout << "Done" << std::endl;
+    logMessage( "Done" );
     return;
 }

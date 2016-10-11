@@ -1,6 +1,6 @@
 #include "CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
-#include <iostream>
+ 
 using namespace std;
 
 
@@ -65,7 +65,8 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 			}
 			else
 			{
-				cout << "Kind " << prop_obj_kind->named << " Dont have a property called " << prop_name_noum->named << endl;
+				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
+			 
 			}
 		}
 	}
@@ -89,7 +90,8 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLoc
 
     } else if (HBlockKind kbase = asHBlockKind(obj)) {
         if (HBlockNoum nvalue = asHBlockNoum(value)) {
-            cout << kbase->named << "  " << nvalue->named << endl;
+             
+			logMessage(kbase->named + "  " + nvalue->named);
             //default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
         }
 

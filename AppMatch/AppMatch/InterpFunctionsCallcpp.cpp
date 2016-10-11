@@ -3,7 +3,7 @@
 #include "CBlockInterpreterRuntime.hpp"
 #include "CResultMatch.hpp"
 #include <memory>
-#include <iostream>
+ 
 #include "CBlockScope.hpp"
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"

@@ -3,7 +3,7 @@
 //
 
 #include "BlockInstance.hpp"
-#include <iostream>
+ 
 #include "sharedCast.hpp"
 
 using  namespace  std   ;
@@ -26,10 +26,7 @@ CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value
 {
 }
 
-void CBlockInstance::dump(string ident)
-{
-	cout << ident << "Instance: " << named << endl;
-}
+ 
 
 CBlockInstance::CBlockInstance( string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
 {
@@ -124,7 +121,7 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 
 		if (va->name->named == pnamed)
 		{
-			cout << pnamed << " has? " << va->name->named << endl;
+			logMessage(pnamed + " has? " + va->name->named);
 			return va;
 		}
 	}
@@ -138,7 +135,8 @@ void CBlockInstance::set_property(string  pnamed, HBlock value)
 
 		if (va->name->named == pnamed)
 		{
-			cout << named << " has? " << va->name->named << endl;
+			logMessage(pnamed + " has? " + va->name->named);
+			 
 			va->value = value;
 		}
 	}

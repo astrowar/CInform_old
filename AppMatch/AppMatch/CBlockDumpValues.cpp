@@ -21,6 +21,12 @@
 
 using namespace std;
 
+void CBlockInstance::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 
+}
+
+
 void CUnresolved::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "UNRESOLVED: ", this->contents.c_str());
 }

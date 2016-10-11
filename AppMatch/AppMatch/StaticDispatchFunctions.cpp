@@ -2,7 +2,7 @@
 // Created by Eraldo Rangel on 23/08/16.
 //
 #include "Parser.hpp"
-#include <iostream>
+ 
 #include <algorithm>
 
 #include "CBlockInterpreterRuntime.hpp"
@@ -65,7 +65,7 @@ int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch
         return a.matchPhase.size() > b.matchPhase.size();
     });
 
-    std::cout << "Dynamic Registed " << std::endl;
+   logMessage( "Dynamic Registed " );
     entry->dump("    ");
 
     return maxID + 1;
@@ -90,7 +90,7 @@ int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch
 		return a.matchPhase.size() > b.matchPhase.size();
 	});
 
-	std::cout << "Dynamic Registed " << std::endl;
+	logMessage("Dynamic Registed ");
 	entry->dump("    ");
 
 	return maxID + 1;

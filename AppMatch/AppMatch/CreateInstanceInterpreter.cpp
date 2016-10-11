@@ -1,5 +1,5 @@
 #include "CBlockInterpreterRuntime.hpp"
-#include <iostream>
+ 
 #include "sharedCast.hpp"
 using namespace std;
 
@@ -28,7 +28,7 @@ void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) 
     HBlock n = resolve_string(str,localsEntry);
     if (HBlockInstance nn = asHBlockInstance(n)) {
         for (auto &va : nn->anomimousSlots) {
-            cout << "====================" << endl;
+            
             if (HVariableSlotEnum venum = asHVariableSlotEnum(va)) {
 
                 venum->valueDefinition->dump("    ");
@@ -38,7 +38,7 @@ void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) 
             if (HVariableSlotBool vbool = asHVariableSlotBool(va)) {
 
                 vbool->valueDefinition->dump("    ");
-                cout << vbool->value << endl;
+                printf("%i ", vbool->value );
             }
         }
 
@@ -58,13 +58,13 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // inicia os fields CAN_BE
 
     list<HBlockKind> kinds = getUpperKinds(kind);
-    cout << "Up Kinds  " << endl;
+   /* cout << "Up Kinds  " << endl;
     for (auto &k : kinds) {
         cout << " ," << k->named;
 
     }
     cout << endl;
-    cout << " ----------------------------- " << endl;
+    cout << " ----------------------------- " << endl;*/
     for (auto &k : kinds) {
         for (auto &kvar : kind_variables) {
             if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {

@@ -4,7 +4,7 @@
 #include "CBlockInterpreterRuntime.hpp"
 #include "CResultMatch.hpp"
 #include <memory>
-#include <iostream>
+ 
 #include "CBlockScope.hpp"
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
@@ -22,7 +22,7 @@ bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope loca
 			auto relation_name = rv.second->named;
 			if (relation_name == "dynamic")
 			{
-				cout << " dynamic relations is READ ONLY " << std::endl;
+				logError(" dynamic relations is READ ONLY ");
 				return false;
 			}
 			auto rel_find = this->staticRelation.find(relation_name);
@@ -104,14 +104,16 @@ HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock p
 		{
 			HVariableNamed pvar = cinst->get_property(property_noum->named);
 			if (pvar != nullptr) {
-				cout << "property  is " << endl;
+			 
+				logMessage("property  is ");
 				if (pvar->value != nullptr)
 				{
 					return pvar->value;
 				}
 				else
 				{
-					cout << "     EMPTY" << endl;
+				 
+					logMessage("EMPTY  ");
 					return pvar->value;
 				}
 			}
@@ -267,14 +269,15 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 		auto result = (Match(d->input_n, p, localsEntry, stk));
 		if (result.hasMatch)
 		 {
-			 cout << "Dispatch " << endl;
+
 			 d->output_n->dump("            ");
 
 
 			 // Forma eh esta 
 			 for(auto &arg : result.maptch)
 			 {
-				 cout << "      Arg "<< arg.first  << "==" <<  endl;
+				 
+				 logMessage("      Arg " + arg.first + "==");
 				 arg.second->dump("                          ");
 			 }
 			 HRunLocalScope localsNext = make_shared< CRunLocalScope >();
@@ -288,7 +291,8 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 // eh um Match Named ???
 				 if (HBlockMatchNamed arg1_named = asHBlockMatchNamed(*arg_header_first))
 				 {
-					 cout << " named " << arg1_named->named  << " == " <<  endl;
+				 
+					 logMessage(" named " + arg1_named->named + " == ");
 
 					 result.maptch["noum1"]->dump("               ");					 
 				     auto obj_resolved = exec_eval (result.maptch["noum1"], localsEntry);
@@ -313,7 +317,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 					 // eh um Match Named ???
 					 if (HBlockMatchNamed arg2_named = asHBlockMatchNamed(*arg_header_second))
 					 {
-						 cout << " named " << arg2_named->named << " == " << endl;
+						 logMessage(" named " + arg2_named->named + " == ");
 						 result.maptch["noum2"]->dump("               ");
 
 						 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry);
@@ -356,7 +360,7 @@ bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {
 	HRunLocalScope localsEntry = make_shared< CRunLocalScope >();
 	auto b =   execute_now(p, localsEntry);
-	if (b == false) cout << "fail to execute ";
+	if (b == false) logError( "fail to execute ");
 	return b;
 }
 
@@ -384,7 +388,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
 		if (dispExec != nullptr)
 		{
-			cout << "EXEC     " << " == " << endl;
+			logMessage("EXEC     ");
 			dispExec->dump("        ");
 			return execute_now(dispExec->block , dispExec->locals);
 		}
@@ -394,7 +398,8 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 	{		 
 		 
 		{
-			cout << "CALL     " << vCall->action <<  endl;		
+			 
+			logMessage("CALL     " + vCall->action->named);
 			if (execute_system_action(vCall)) return true;
 			if (execute_user_action(vCall)) return true;
 			return false;

@@ -1,5 +1,5 @@
 #include "Parser.hpp"
-#include <iostream>
+ 
 
 
 
@@ -198,7 +198,7 @@ HBlockMatch CParser::parser_expression_match(HTerm  term)
 	if (CList *vlist = asCList(term.get())) {
 		auto r = parser_expression_match(vlist->asVector());
 		/*if (r == nullptr)
-		std::cout << term->repr() << std::endl;*/
+		logMessage( term->repr() << std::endl;*/
 		return r;
 	}
 	auto nn =  std::make_shared<CBlockNoum>(CtoString(term));
@@ -221,7 +221,8 @@ std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, Matc
 		}
 		else
 		{
-			std::cout << "error" << std::endl;
+			logError("error");
+			
 		}
 	}
 	return vlist;

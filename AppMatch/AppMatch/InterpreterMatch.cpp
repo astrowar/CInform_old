@@ -1,7 +1,7 @@
 #include "CBlockInterpreterRuntime.hpp"
 #include <memory>
 #include "CResultMatch.hpp"
-#include <iostream>
+ 
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
 using namespace std;
@@ -13,7 +13,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 {
 	if (M->matchList.size() != value->lista.size())
 	{
-		std::cout << "FAIL  size  " << std::endl;
+		logMessage("FAIL  size  ");
 		(M)->dump("    ");
 		(value)->dump("    ");
 		return   CResultMatch(false); //sizes must be equals
@@ -27,7 +27,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
 		if (r.hasMatch == false)
 		{
-			std::cout << "FAIL  item   " << std::endl;
+			logMessage("FAIL  item   ");
 			(*vit)->dump("    ");
 			(*mit)->dump("    ");
 			return   CResultMatch(false);
@@ -48,7 +48,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			if (auto cinner =  asHBlockNoum(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
-				cout << cinner->named << " == " <<  inner->named << endl;
+				logMessage(cinner->named + " == "+inner->named);
 				if (inner->named == cinner->named)
 				{
 				  return 	CResultMatch(true );

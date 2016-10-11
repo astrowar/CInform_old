@@ -2,7 +2,7 @@
 #include "CBlockMatch.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 #include "CResultMatch.hpp"
-#include <iostream>
+ 
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
 

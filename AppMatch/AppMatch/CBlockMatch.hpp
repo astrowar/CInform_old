@@ -3,9 +3,12 @@
 #ifndef CBLOCKMATCH_H
 #define CBLOCKMATCH_H
 
-#include <iostream>
+ 
 #include "BlockInterpreter.hpp"
 #include "CBlockAction.hpp"
+
+
+
 
 class CBlockMatch
         : public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
@@ -223,10 +226,12 @@ public:
 	virtual void dump(string ident) override; 
 	virtual BlockType type() override { return BlockType::BlockMatchIsVerb; }
 	std::string verb;
+	 
+
 	CBlockMatchIsVerb(string _verb , HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {
 		if (_verb == "from")
 		{
-			std::cout << "wrong" << std::endl;
+			logError("wrong");
 		}
 
 	};

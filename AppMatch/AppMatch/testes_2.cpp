@@ -10,7 +10,7 @@ void testeParser_3() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 	{
@@ -19,7 +19,7 @@ void testeParser_3() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 	//std::cout << "Done" << std::endl;
@@ -34,7 +34,7 @@ void testeParser_4() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -44,7 +44,7 @@ void testeParser_4() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -54,7 +54,7 @@ void testeParser_4() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -64,7 +64,7 @@ void testeParser_4() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -74,7 +74,7 @@ void testeParser_4() {
 	//"The torch has a brightness";
 	//	"The torch	is blazing";
 	//"The torch is lit";
-	// std::cout << std::endl;
+	// logMessage("");
 	return;
 }
 
@@ -87,7 +87,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 	{
@@ -96,7 +96,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -106,7 +106,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -116,7 +116,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -126,7 +126,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 
@@ -136,7 +136,7 @@ void testeParser_5() {
 		if (res == nullptr) throw "parse error";
 		if (ISLOG) {
 			res->dump("");
-			std::cout << std::endl;
+			logMessage("");
 		}
 	}
 }

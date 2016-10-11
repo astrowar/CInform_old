@@ -234,6 +234,8 @@ public:
     bool queryIsVerbToRelation(HBlockMatch m);
 
 
+
+	void logMessage(std::string  msg );
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

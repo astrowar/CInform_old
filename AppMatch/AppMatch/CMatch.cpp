@@ -1,11 +1,17 @@
 #include "CBase.hpp"
 #include <vector>
 #include "CMatch.hpp"
-#include <iostream>
+ 
 #include <memory>
 #include <functional>
 
-#define CMLOG false
+#undef CMLOG 
+
+
+#ifdef CMLOG
+#include <iostream>
+#endif
+
 
 std::string get_repr(MTermSet lst) {
     std::string q;
@@ -394,13 +400,13 @@ std::string CPred::repr() {
 
 bool CPredAtom::isSame(HTerm b) 
 {
-	if (b->type() == TermType::PredAtom)
-	{
-		CPredAtom *hlist = static_cast<CPredAtom*>(b.get());
-		{
-			return (equals(this->h.get(), hlist->h.get()) == Equals);
-		}
-	}
+    if (b->type() == TermType::PredAtom)
+    {
+        CPredAtom *hlist = static_cast<CPredAtom*>(b.get());
+        {
+            return (equals(this->h.get(), hlist->h.get()) == Equals);
+        }
+    }
     return false;
 }
 
@@ -476,13 +482,23 @@ EqualsResul CPredList::match(MTermSet &_h) {
     {
 
         if (_h.size() != plist.size()) {
-            if (CMLOG) std::cout << _h.size() << " !=  " << plist.size() << std::endl;
+
+            {
+#ifdef CMLOG
+                std::cout   << _h.size() << " !=  " << plist.size() << std::endl;
+#endif
+            }
             return NotEquals;
         }
         size_t n = plist.size();
         for (size_t j = 0; j < n; ++j) {
             if (this->plist[j]->match(_h[j]) != Equals) {
-                if (CMLOG) std::cout << "Diff   " << this->plist[j]->repr() << " !=  " << _h[j]->repr() << std::endl;
+            
+                {
+#ifdef CMLOG
+                    std::cout << "Diff   " << this->plist[j]->repr() << " !=  " << _h[j]->repr() << std::endl;
+#endif
+                }
                 return NotEquals;
             }
         }
@@ -553,13 +569,13 @@ CPredBoolean::CPredBoolean(const std::string &_named) : CPred(_named) {
 }
 
 bool CPredBooleanAnd::isSame(HTerm b) {
-	if (b->type() == TermType::PredBooleanAnd)
-	{
-		if (CPredBooleanAnd *v = static_cast<CPredBooleanAnd *>(b.get())) {
-			if (!this->b1->isSame(v->b1)) return false;
-			return this->b2->isSame(v->b2);
-		}
-	}
+    if (b->type() == TermType::PredBooleanAnd)
+    {
+        if (CPredBooleanAnd *v = static_cast<CPredBooleanAnd *>(b.get())) {
+            if (!this->b1->isSame(v->b1)) return false;
+            return this->b2->isSame(v->b2);
+        }
+    }
     return false;
 }
 
@@ -586,18 +602,18 @@ CPredBooleanAnd::CPredBooleanAnd(const std::string &_named, const HPred &c_pred,
 }
 
 bool CPredBooleanOr::isSame(HTerm b) {
-	if (b->type() == TermType::PredBooleanOr)
-	{
-		if (CPredBooleanOr *v = static_cast<CPredBooleanOr *>(b.get())) {
-			int n = blist.size();
-			if (v->blist.size() != n) return false;
+    if (b->type() == TermType::PredBooleanOr)
+    {
+        if (CPredBooleanOr *v = static_cast<CPredBooleanOr *>(b.get())) {
+            int n = blist.size();
+            if (v->blist.size() != n) return false;
 
-			for (int i = 0; i < n; ++i) {
-				if (!blist[i]->isSame(v->blist[i])) return false;
-			}
-			return true;
-		}
-	}
+            for (int i = 0; i < n; ++i) {
+                if (!blist[i]->isSame(v->blist[i])) return false;
+            }
+            return true;
+        }
+    }
     return false;
 
 }
@@ -759,13 +775,18 @@ MatchResult makeMatch(std::string named, HTerm value) {
 
 
 MatchResult CMatch_j(MTermSet &termo, CPred *predicate) {
-    if (CMLOG) std::cout << "Query|   " << predicate->repr() << " >> " << get_repr(termo);
+#ifdef CMLOG
+     std::cout << "Query|   " << predicate->repr() << " >> " << get_repr(termo);
+#endif
     bool has_match = (predicate->match(termo) == Equals);
+
+#ifdef CMLOG
     if (has_match) {
         if (CMLOG) std::cout << "   TRUE" << std::endl;
     } else {
         if (CMLOG) std::cout << "   FALSE" << std::endl;
     }
+#endif
     if (has_match) {
 
         return makeMatch(predicate->named, convertToTerm(termo));
@@ -806,7 +827,7 @@ MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPre
     //Test only the Literals, for early exit
     {
         MatchResult mm;
-	    // inicia com tudo OK
+        // inicia com tudo OK
         for (size_t i = 0; i < tn; ++i) {
             CPred *term_i = predicates_ptr[i];
             if (CPredAtom *v = asPredAtom(term_i )) {
@@ -846,15 +867,17 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates) {
     size_t npred = predicates.size();
     int a = lst.size();
 
+#ifdef CMLOG
     if (a == npred) {
-        if (CMLOG) std::cout << get_repr(lst) << std::endl;
-
+         std::cout << get_repr(lst) << std::endl;
     }
+#endif
 
     MTermSet expandContents = remove_boundaryListMark(lst);
 
     int b = expandContents.size();
 
+#ifdef CMLOG
     if (b == npred) {
         if (CMLOG) std::cout << get_repr(lst) << std::endl;
 
@@ -862,6 +885,7 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates) {
     if (a != b) {
         if (CMLOG) std::cout << "??" << std::endl;
     }
+#endif
 
     //std::cout << get_repr(lst) << std::endl;
     //std::cout << get_repr(remove_boundaryListMark(lst)) << std::endl;
@@ -874,7 +898,10 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates) {
     MatchResult mmResultMatch;
     FuncCombinatoria f_disp = [&](MTermSetCombinatoria &x) {
 
-        if (CMLOG) std::cout << std::endl;
+#ifdef CMLOG
+        std::cout << std::endl;
+#endif
+
         MatchResult mm = CMatch_combinacao(x, predicates_ptr);
         if (mm.result == Equals) {
             mmResultMatch = mm;
@@ -915,24 +942,24 @@ std::string get_repr(MatchResult r) {
 
 CPredAtom* asPredAtom(CTerm* c)
 {
-	if (c->type() == PredAtom) return static_cast<CPredAtom*>(c);
-	return nullptr;
+    if (c->type() == PredAtom) return static_cast<CPredAtom*>(c);
+    return nullptr;
 }
 
 CPredList* asPredList(CTerm* c)
 {	
-		if (c->type() == PredList) return static_cast<CPredList*>(c);
-		return nullptr;	
+        if (c->type() == PredList) return static_cast<CPredList*>(c);
+        return nullptr;	
 };
 
 CPredAny* asPredAny(CTerm* c)
 {
-	if (c->type() == TermType::PredAny) return static_cast<CPredAny*>(c);
-	return nullptr;
+    if (c->type() == TermType::PredAny) return static_cast<CPredAny*>(c);
+    return nullptr;
 };
 
 CPredWord* asPredWord(CTerm* c)
 {
-	if (c->type() == TermType::PredWord) return static_cast<CPredWord*>(c);
-	return nullptr;
+    if (c->type() == TermType::PredWord) return static_cast<CPredWord*>(c);
+    return nullptr;
 };

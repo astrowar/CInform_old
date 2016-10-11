@@ -1,5 +1,5 @@
 #include "CBlockInterpreterRuntime.hpp"
-#include <iostream>
+ 
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
 #include "sharedCast.hpp"
@@ -15,7 +15,7 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 
 	if (alist == verbAssertation.end())
 	{
-		cout << "verb  |"<< vb << "| is not defined" << endl;
+		logMessage("verb  |" + vb + "| is not defined");
 		return false;
 	}
 
@@ -140,7 +140,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	{
 		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(v->queryToMatch))
 		{
-			cout << vb <<  " =?= " << qVerb->verb << endl;
+			 
 			if (vb == qVerb->verb)
 			{
 				CResultMatch  result_obj = Match(qVerb->obj, c_block, localsEntry, stk);
@@ -163,7 +163,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	for(auto &dct : decides_what)
 	{
 		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(dct->queryToMatch)) {
-			cout << vb << " =?= " << qVerb->verb << endl;
+			//cout << vb << " =?= " << qVerb->verb << endl;
 			if (qVerb->verb == vb) {
 				HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
 				if (wvalued != nullptr) {
@@ -186,7 +186,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 			
 			if (vb == qVerb_N1->verb)
 			{
-				cout << vb << " =?= " << qVerb_N1->verb << endl;
+			//	cout << vb << " =?= " << qVerb_N1->verb << endl;
 				CResultMatch  result_value = Match(qVerb_N1->value, value, localsEntry, stk); // o resto da match ??
 				if (result_value.hasMatch)
 				{
@@ -247,7 +247,7 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 		return false;
 	}
 
-	cout << " new Verb |" <<vstr  <<"|"<< endl;
+	//cout << " new Verb |" <<vstr  <<"|"<< endl;
 	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
 
     // Existe essa relacao ??

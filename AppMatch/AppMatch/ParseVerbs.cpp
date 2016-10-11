@@ -1,6 +1,6 @@
 #include "Parser.hpp"
  
-#include <iostream>
+ 
 
 
 HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {

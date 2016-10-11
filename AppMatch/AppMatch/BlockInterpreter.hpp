@@ -9,7 +9,8 @@
 
 #include "BlockTypeEnum.hpp"
 
-
+void logMessage(std::string str);
+void logError(std::string str);
 
 class CBlockEnums;
 

@@ -1,5 +1,5 @@
 #include "BlockInterpreter.hpp"
-#include <iostream>
+ 
 #include "CBlockInterpreterRuntime.hpp"
 #include "CblockAssertion.hpp"
 #include "QueryStack.hpp"

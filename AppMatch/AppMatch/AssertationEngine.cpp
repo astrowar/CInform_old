@@ -2,7 +2,7 @@
 #include "CBlockInterpreterRuntime.hpp"
 
 #include "CBlockMatch.hpp"
-#include <iostream>
+ 
 #include "CBlockUndestand.hpp"
 #include "CBlockDecideIf.hpp"
 #include "CBlockRelation.hpp"
@@ -46,12 +46,18 @@ bool CBlockInterpreter::queryIsVerbToRelation( HBlockMatch m)
 		{
 		   if (cfind->second->named != "dynamic")
 		   {
-			   std::cout << "verb " << vv->verb << " belongs to relation " << cfind->second->named << std::endl;
+			  logError( "verb " + vv->verb + " belongs to relation " + cfind->second->named );
 			   return true;
 		   }
 		}
 	}
 	return false;
+}
+
+void CBlockInterpreter::logMessage(std::string msg)
+{
+	printf("%s\n", msg.c_str());
+
 }
 
 
@@ -212,10 +218,9 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 		}
 	}
 
-	cout << "Unable to set " << endl;
-	value->dump("    ");
-	cout << "to -------------- " << endl;
-	kind->dump("    ");
+	logError("Unable to set ");
+	//value->dump("    ");	
+	//kind->dump("    ");
 	return nullptr;
 
 }
@@ -234,7 +239,7 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
 			HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv == nullptr)
 			{
-				cout << "Obje dont have " << property_noum->named << "property " <<  endl;
+				logMessage("Obje dont have " + property_noum->named + "property ");
 			}
 			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind,localsEntry));
 			if (instanceValueRefered) {
@@ -249,7 +254,8 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
 			HVariableNamed vv = cAction->get_property(property_noum->named);
 			if (vv == nullptr)
 			{
-				cout << "Obje dont have " << property_noum->named << "property " << endl;
+				 
+				logMessage("Obje dont have " + property_noum->named + "property ");
 			}
 			HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
 			if (instanceValueRefered) {
@@ -364,6 +370,6 @@ void CBlockInterpreter::execute_init(HBlock p) {
 	}
 
 
-	cout << "not found block definition " << endl;
+	logError("not found block definition ");
 	return;
 }
