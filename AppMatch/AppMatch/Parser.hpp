@@ -257,6 +257,18 @@ public:
     HBlock STMT_system_Assertion(std::vector<HTerm> term);
 
 	HBlock sys_now_action(std::vector<HTerm> term);
+
+    HBlock parser_text(string str, bool dump);
+
+	HBlock parser_text(string str);
+
+    std::vector<string> split_new_lines(string &str) const;
+
+	HBlock STMT_control_flux(HTerm term);
+
+	HBlock  parser_if_condition(HTerm term);
+
+	HBlock parser_control_if(HTerm term);
 };
 
 

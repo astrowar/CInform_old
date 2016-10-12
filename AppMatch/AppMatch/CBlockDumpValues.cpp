@@ -136,8 +136,11 @@ void CBlockKind_InstanceVariable::dump(string ident)
 
 void CBlockList::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "List: ");
-		for (auto e = lista.begin(); e != lista.end(); ++e) {
-			(*e)->dump(ident + "   ");
+		for (auto e = lista.begin(); e != lista.end(); ++e)
+        {   if ((*e) == nullptr) printf("%s NULL\n",ident.c_str()  );
+            else {
+                (*e)->dump(ident + "   ");
+            }
 		}
 }
 

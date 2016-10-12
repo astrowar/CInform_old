@@ -345,6 +345,8 @@ int main() {
 		//testeParser_5f();
 		//testeParser_6();
 
+
+
 		testeParser_5g();
 	   //testeParser_7a();
 	   //testeParser_7b();
@@ -358,7 +360,7 @@ int main() {
 		testeRelation3();
 		testeRelation4();
 	//	testeSerialize1();
-
+        testeParser_10();
 		logMessage( ".");
 	}
 	logMessage("");

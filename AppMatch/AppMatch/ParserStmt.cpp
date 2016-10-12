@@ -94,9 +94,15 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 	return nullptr;
 }
 HBlock CParser::parser_stmt(std::vector<HTerm> lst)
-{  
+{
+
+
+	HBlock rblock_control_flux = (STMT_control_flux(lst));
+	if (rblock_control_flux != nullptr) return rblock_control_flux;
 
 	//Apenas os termos que iniciam uma sentenca completa
+
+
 
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/

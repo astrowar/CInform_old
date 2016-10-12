@@ -288,6 +288,7 @@ void testeParser_5g() {
 	interpreter->execute_init(parse.parser_stmt("the colour are red, blue and green  ", ISLOG));
 
 	interpreter->execute_init(parse.parser_stmt("  block is an kind of thing ", ISLOG));
+	interpreter->execute_init(parse.parser_stmt("  block has a colour ", ISLOG));
 	interpreter->execute_init(parse.parser_stmt("  block is usually blue  ", ISLOG));
  
 	

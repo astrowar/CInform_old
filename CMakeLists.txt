@@ -65,6 +65,6 @@ set(SOURCE_FILES
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
 
         AppMatch/AppMatch/CDataMananger.cpp
- )
+        AppMatch/AppMatch/testes_3.cpp AppMatch/AppMatch/Parser_ControlFlux.cpp)
 
-add_executable(apx ${SOURCE_FILES})
+add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/testes_3.cpp AppMatch/AppMatch/Parser_ControlFlux.cpp)

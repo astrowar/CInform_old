@@ -483,3 +483,62 @@ HBlock CParser::parser_stmt(string str,bool dump)
     }
     return b;
 }
+
+
+
+HBlock CParser::parser_text(string str )
+{
+    // quebra o text  em linhas e processa as linhas separadamente
+    auto vlist = split_new_lines(str);
+    std::list<HBlock > blist ;
+    for(auto &v : vlist)
+    {
+        blist.push_back( parser_stmt( v) );
+    }
+
+    return  std::make_shared< CBlockList > ( blist );
+
+
+}
+
+std::vector<string> CParser::split_new_lines(string &str) const {
+    auto p1 = str.begin();
+    auto p2 = str.begin();
+    std::vector<string> sentences;
+    while (p2 != str.end())
+    {
+        if (*p2 =='\n')
+        {
+            sentences.push_back( string(p1,p2));
+            printf("%s\n", sentences.back().c_str());
+            p1 = p2;
+            ++p1;
+            p2 = p1;
+            if (p2 == str.end()) break;
+        }
+        ++p2;
+    }
+    if(p1 != p2 )
+    {
+        sentences.push_back( string(p1,p2));
+        printf("%s\n", sentences.back().c_str());
+    }
+    return sentences;
+}
+
+//interprete varias linhas de texto
+HBlock CParser::parser_text(string str,bool dump)
+{
+    HBlock b =  parser_text(str);
+    if (b) {
+        if (dump) {
+            b->dump("");
+            printf("\n");
+        }
+    }
+    else
+    {
+        printf("Parser Error\n");
+    }
+    return b;
+}

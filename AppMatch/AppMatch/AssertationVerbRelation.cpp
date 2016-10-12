@@ -104,7 +104,7 @@ QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, 
 		}
 
 	}
-
+ return QUndefined;
 }
 
 QueryResul CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)

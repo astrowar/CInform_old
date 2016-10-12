@@ -37,6 +37,12 @@ void testeParser_5g();
 void testeParser_6();
 
 
+//Blocks
+void testeParser_10();
+void testeParser_11();
+void testeParser_12();
+
+
 void testeParser_7a();
 void testeParser_7b();
 void testeParser_7c();

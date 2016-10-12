@@ -96,6 +96,7 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLoc
         }
 
         default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, value));
+		return true;
     }
 
     return false;
