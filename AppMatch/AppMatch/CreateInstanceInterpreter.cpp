@@ -17,6 +17,7 @@ HVariableSlotBool asHVariableSlotBool(HVariableSlot c )
     return nullptr;
 }
 
+ 
 
 
 void CBlockInterpreter::dump_instance(string str )

@@ -8,6 +8,7 @@
 #include "CBlockDumpValues.hpp"
 #include "CBlockCommand.hpp"
 #include "CBlockBoolean.hpp"
+#include "CBlockControlFlux.hpp" 
 
 HBlockEnums asHBlockEnums(HBlock c ); 
 HBlockKind asHBlockKind(HBlock c ); 
@@ -100,3 +101,5 @@ HBlockNow asHBlockNow(HBlock c );
 
 HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c );
 HVariableSlotBool asHVariableSlotBool(HVariableSlot c );
+
+HBlockControlToken aHBlockControlToken (HBlock c);

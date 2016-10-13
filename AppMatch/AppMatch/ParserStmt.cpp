@@ -97,8 +97,7 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
 {
 
 
-	HBlock rblock_control_flux = (STMT_control_flux(lst));
-	if (rblock_control_flux != nullptr) return rblock_control_flux;
+ 
 
 	//Apenas os termos que iniciam uma sentenca completa
 

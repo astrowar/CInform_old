@@ -141,7 +141,7 @@ public:
 	//Matchs 
 	HBlockMatchIsVerb parserMatchIsConditionVerb(HTerm term);
 	HBlockVerbRelation STMT_verb_relation(HBlock a_verb, HTerm term);
-	HBlock STMT_relation_descr(HTerm term);
+ 
 	HBlockMatchIs parserMatchIsCondition(HTerm match);
     HBlockMatch  parser_MatchArgument(HTerm term);
 
@@ -260,15 +260,18 @@ public:
 
     HBlock parser_text(string str, bool dump);
 
+	std::list<HBlock> group_tokens(std::list<HBlock>  lst);
 	HBlock parser_text(string str);
 
-    std::vector<string> split_new_lines(string &str) const;
+  
 
-	HBlock STMT_control_flux(HTerm term);
+	 
 
 	HBlock  parser_if_condition(HTerm term);
-
-	HBlock parser_control_if(HTerm term);
+	HBlockList parser_control_else(std::vector<HTerm> term);
+	HBlockList parser_control_end(std::vector<HTerm> term)  ;
+	HBlockList parser_control_if(std::vector<HTerm> term);
+	HBlockList STMT_control_flux(std::vector<HTerm> term);
 };
 
 

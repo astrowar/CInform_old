@@ -467,12 +467,12 @@ HBlock CParser::parser_stmt(string str) {
     str = decompose_bracket(str, "(");
     str = decompose_bracket(str, ")");
     str = decompose_bracket(str, ",");
-
     std::vector<HTerm> lst = decompose(str);
-    return parser_stmt(lst);
-
-
+    return parser_stmt(lst); 
 }
+
+
+
 HBlock CParser::parser_stmt(string str,bool dump)
 {
     HBlock b =  parser_stmt(str);
@@ -484,24 +484,7 @@ HBlock CParser::parser_stmt(string str,bool dump)
     return b;
 }
 
-
-
-HBlock CParser::parser_text(string str )
-{
-    // quebra o text  em linhas e processa as linhas separadamente
-    auto vlist = split_new_lines(str);
-    std::list<HBlock > blist ;
-    for(auto &v : vlist)
-    {
-        blist.push_back( parser_stmt( v) );
-    }
-
-    return  std::make_shared< CBlockList > ( blist );
-
-
-}
-
-std::vector<string> CParser::split_new_lines(string &str) const {
+std::vector<string>  split_new_lines(const string &str)   {
     auto p1 = str.begin();
     auto p2 = str.begin();
     std::vector<string> sentences;
@@ -523,8 +506,44 @@ std::vector<string> CParser::split_new_lines(string &str) const {
         sentences.push_back( string(p1,p2));
         printf("%s\n", sentences.back().c_str());
     }
-    return sentences;
+   return sentences;
 }
+ 
+
+HBlock CParser::parser_text(string str )
+{
+    // quebra o text  em linhas e processa as linhas separadamente
+    auto vlist = split_new_lines(str);
+    std::list<HBlock > blist ;
+    for(auto &v : vlist)
+    {
+		str = decompose_bracket(str, "(");
+		str = decompose_bracket(str, ")");
+		str = decompose_bracket(str, ",");
+		std::vector<HTerm> lst = decompose(str);
+
+
+		HBlockList rblock_control_flux = STMT_control_flux(lst);
+		if (rblock_control_flux != nullptr)
+		{
+			blist.insert(blist.end(), rblock_control_flux->lista.begin(), rblock_control_flux->lista.end());
+			continue;
+		}
+		
+		HBlock  rblock_stmt = parser_stmt(lst);
+		if (rblock_stmt != nullptr)
+		{
+			blist.push_back(rblock_stmt);
+		}
+    }
+
+	std::list< HBlock > blist_next = group_tokens(blist);
+
+    return  std::make_shared< CBlockList > (blist_next);
+
+
+}
+
 
 //interprete varias linhas de texto
 HBlock CParser::parser_text(string str,bool dump)

@@ -133,6 +133,9 @@
     <ClInclude Include="CResultMatch.hpp">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="CBlockControlFlux.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -293,6 +296,12 @@
     </ClCompile>
     <ClCompile Include="CBlockSerialize.cpp">
       <Filter>Source Files\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser_ControlFlux.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Parse_TokensGroup.cpp">
+      <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

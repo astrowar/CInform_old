@@ -496,3 +496,10 @@ HBlockNow asHBlockNow(HBlock c )
         return std::static_pointer_cast<CBlockNow>(c);
    return nullptr;
 } 
+
+HBlockControlToken aHBlockControlToken(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockControlToken)
+		return std::static_pointer_cast<CBlockControlToken>(c);
+	return nullptr;
+}

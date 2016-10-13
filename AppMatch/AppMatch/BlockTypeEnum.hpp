@@ -77,6 +77,8 @@ enum BlockType {
 	BlockAssertion_InstanceVariable,
 	BlockAssertion_isInstanceOf,
 	BlockDinamicDispatch,
-	BlockNow
+	BlockNow,
+	BlockControlIF,
+	BlockControlToken
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

@@ -163,6 +163,7 @@
     <ClInclude Include="BlockInstance.hpp" />
     <ClInclude Include="BlockInterpreter.hpp" />
     <ClInclude Include="CBlockCommand.hpp" />
+    <ClInclude Include="CBlockControlFlux.hpp" />
     <ClInclude Include="CBlockDecideIf.hpp" />
     <ClInclude Include="CBlockNamedVariable.hpp" />
     <ClInclude Include="CBlockRelation.hpp" />
@@ -227,9 +228,11 @@
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="ParserTextEntry.cpp" />
     <ClCompile Include="Parser_A.cpp" />
+    <ClCompile Include="Parser_ControlFlux.cpp" />
     <ClCompile Include="Parser_Decide.cpp" />
     <ClCompile Include="Parser_expression_match.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />
+    <ClCompile Include="Parse_TokensGroup.cpp" />
     <ClCompile Include="QueryItem.cpp" />
     <ClCompile Include="sharedCast.cpp" />
     <ClCompile Include="StaticDispatchFunctions.cpp" />

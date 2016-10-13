@@ -16,6 +16,8 @@
 #include "CBlockRelation.hpp"
 #include "CBlockScope.hpp"
 #include "CBlockCommand.hpp"
+#include "CBlockControlFlux.hpp"
+
 #include "sharedCast.hpp"
 
 
@@ -700,4 +702,21 @@ void CBlockNow::dump(string ident) {
 		this->assertation->dump(ident + "       ");
 	}
 
+}
+
+
+void CBlockControlToken::dump(string ident)
+{
+	printf("%s %s  %s\n", ident.c_str(), "Token " , this->token.c_str());
+}
+
+void CBlockControlIF::dump(string ident)
+{
+	printf("%s  %s\n", ident.c_str(), "IF  " );
+	{
+		this->block_if->dump(ident + "       ");
+		this->block_then->dump(ident + "       ");
+		this->block_else->dump(ident + "       ");
+		
+	}
 }
