@@ -36,6 +36,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testeLista.cpp
         AppMatch/AppMatch/testes_1.cpp
         AppMatch/AppMatch/testes_2.cpp
+
         AppMatch/AppMatch/testes_decide.cpp
         AppMatch/AppMatch/teste_action.cpp
         AppMatch/AppMatch/testeSerialize.cpp
@@ -65,6 +66,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
 
         AppMatch/AppMatch/CDataMananger.cpp
+        AppMatch/AppMatch/Parse_TokensGroup.cpp
         AppMatch/AppMatch/testes_3.cpp AppMatch/AppMatch/Parser_ControlFlux.cpp)
 
-add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/testes_3.cpp AppMatch/AppMatch/Parser_ControlFlux.cpp)
+add_executable(apx ${SOURCE_FILES}   )

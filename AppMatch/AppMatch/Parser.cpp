@@ -517,10 +517,10 @@ HBlock CParser::parser_text(string str )
     std::list<HBlock > blist ;
     for(auto &v : vlist)
     {
-		str = decompose_bracket(str, "(");
-		str = decompose_bracket(str, ")");
-		str = decompose_bracket(str, ",");
-		std::vector<HTerm> lst = decompose(str);
+		auto vstr = decompose_bracket(v, "(");
+        vstr = decompose_bracket(v, ")");
+        vstr = decompose_bracket(v, ",");
+		std::vector<HTerm> lst = decompose(vstr);
 
 
 		HBlockList rblock_control_flux = STMT_control_flux(lst);

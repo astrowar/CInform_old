@@ -159,7 +159,10 @@ HBlockList  CParser::parser_control_end(std::vector<HTerm> term)
 
 
 HBlockList  CParser::parser_control_if(std::vector<HTerm> term) {
-	{
+
+
+    {
+
 		static std::vector<HPred> predList = {};
 		if (predList.empty()) {
 			predList.push_back(mk_HPredLiteral("if"));
@@ -167,7 +170,8 @@ HBlockList  CParser::parser_control_if(std::vector<HTerm> term) {
 			predList.push_back(mk_HPredLiteral("then"));
 		}
 		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
+		if (res.result == Equals)
+        {
 			HBlock ACondition = parser_if_condition(res.matchs["Condition"]);
 			auto token_if = std::make_shared<CBlockControlToken >("if");
 			auto token_then = std::make_shared<CBlockControlToken >("then");

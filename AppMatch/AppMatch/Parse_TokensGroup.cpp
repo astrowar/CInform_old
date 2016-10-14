@@ -32,7 +32,7 @@ bool isToken(Token tk1 , std::vector<HBlock>::iterator  b)
 
 HBlock setCombinatoriaToken_2( std::vector<HBlock>  lst , std::function<HBlock(std::vector<HBlock> , std::vector<HBlock> )> func_2)
 {
-	int n = lst.size();
+	auto n = lst.size();
 	if (n < 2) return nullptr;
 	for(int i = 1; i<n ;++i )
 	{
@@ -49,7 +49,7 @@ HBlock setCombinatoriaToken_2( std::vector<HBlock>  lst , std::function<HBlock(s
 
 HBlock setCombinatoriaToken_1S1(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend, Token tk1, AnySequence tk2, Token tk3, std::function<HBlock(Token, std::vector<HBlock>, Token)> func_1S1)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 3) return nullptr;
 
 	if (isToken(tk1, vbegin + 0))
@@ -66,7 +66,7 @@ HBlock setCombinatoriaToken_1S1(std::vector<HBlock>::iterator  vbegin, std::vect
 
 HBlock setCombinatoriaToken_1S1S(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend,  Token tk1, AnySequence S2, Token tk3, AnySequence S3, std::function<HBlock(Token, std::vector<HBlock>, Token , std::vector<HBlock>)> func_1S1S)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 4) return nullptr;
 
 	if (isToken(tk1, vbegin + 0))
@@ -89,7 +89,7 @@ HBlock setCombinatoriaToken_1S1S(std::vector<HBlock>::iterator  vbegin, std::vec
 // if then end
 HBlock setCombinatoriaToken_1S1S1(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend, Token tk1, AnySequence S2, Token tk3, AnySequence S3, Token tk5, std::function<HBlock(Token, std::vector<HBlock>, Token, std::vector<HBlock> , Token)> func_1S1S1)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 3) return nullptr;
 
 	if (isToken(tk1, vbegin + 0 ))
@@ -113,7 +113,7 @@ HBlock setCombinatoriaToken_1S1S1(std::vector<HBlock>::iterator  vbegin, std::ve
 // if then end remanden
 HBlock setCombinatoriaToken_1S1S1S(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend, Token tk1, AnySequence S2, Token tk3, AnySequence S3, Token tk5, AnySequence S6, std::function<HBlock(Token, std::vector<HBlock>, Token, std::vector<HBlock>, Token, std::vector<HBlock>)> func_1S1S1S)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 3) return nullptr;
 
 	if (isToken(tk1, vbegin + 0))
@@ -145,7 +145,7 @@ HBlock setCombinatoriaToken_1S1S1S(std::vector<HBlock>::iterator  vbegin, std::v
 
 HBlock setCombinatoriaToken_1S1S1S1(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend, Token tk1, AnySequence S2, Token tk3, AnySequence S3, Token tk5, AnySequence S6 , Token tk7, std::function<HBlock(Token, std::vector<HBlock>, Token, std::vector<HBlock>, Token,std::vector<HBlock>, Token )> func_1S1S1S1)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 4) return nullptr;
 
 	if (isToken(tk1, vbegin + 0)) // confirma o primeiro token
@@ -176,7 +176,7 @@ HBlock setCombinatoriaToken_1S1S1S1(std::vector<HBlock>::iterator  vbegin, std::
 // if then else end remaiden
 HBlock setCombinatoriaToken_1S1S1S1S(std::vector<HBlock>::iterator  vbegin, std::vector<HBlock>::iterator  vend, Token tk1, AnySequence S2, Token tk3, AnySequence S3, Token tk5, AnySequence S6, Token tk7, AnySequence S8, std::function<HBlock(Token, std::vector<HBlock>, Token, std::vector<HBlock>, Token, std::vector<HBlock>, Token, std::vector<HBlock>)> func_1S1S1S1S)
 {
-	int n = (vend - vbegin);
+	auto n = (vend - vbegin);
 	if (n < 4) return nullptr;
 
 	if (isToken(tk1, vbegin + 0)) // confirma o primeiro token		 
@@ -214,7 +214,7 @@ HBlock setCombinatoriaToken_1S1S1S1S(std::vector<HBlock>::iterator  vbegin, std:
 
 std::list<HBlock> scan_token_any(std::vector<HBlock>::iterator  vbegin , std::vector<HBlock>::iterator  vend )
 {
-	
+	std::list<HBlock> retList;
 	auto pos = vbegin;
 	while( pos != vend)
 	{
@@ -227,12 +227,12 @@ std::list<HBlock> scan_token_any(std::vector<HBlock>::iterator  vbegin , std::ve
 			  HBlock ret = setCombinatoriaToken_1S1S1S1S(pos, vend, Token("if"), AnySequence("condition" ), Token("then"), AnySequence("seq_then"), Token("else"), AnySequence("seq_end"), Token("end"), AnySequence("seq_remainden"), func_1S1S1S1S);
 			  if (ret != nullptr)
 			  {
-				  
+				  retList.insert(retList.end(), ret );
 			  }
 		  }
 		}
 	}
-
+	return  retList;
 }
 
 
@@ -244,21 +244,22 @@ std::list<HBlock> goupe_non_tokens(std::list<HBlock> lst)
 	std::list<HBlock> retList;
 	for( auto &v : lst )
 	{
-		if (v->type() == BlockControlToken )
-		{
-			if (current_block->lista.empty() ==false ) //so add se tiver algo
+		if (v->type() == BlockControlToken ) {
+			if (!current_block->lista.empty()) //so add se tiver algo
 			{
 				retList.push_back(current_block);
-				current_block   = std::make_shared<CBlockList>(std::list<HBlock>());
+				current_block = std::make_shared<CBlockList>(std::list<HBlock>());
 			}
-			else
-			{
-				current_block->lista.push_back(v);
-			}
+			retList.push_back(v);
 		}
+			else
+		{
+			current_block->lista.push_back(v);
+		}
+
 	}
 	//add os que restaram
-	if (current_block->lista.empty() == false)
+	if (!current_block->lista.empty())
 	{
 		retList.push_back(current_block);		 
 	}
@@ -269,11 +270,11 @@ std::list<HBlock> goupe_non_tokens(std::list<HBlock> lst)
 std::list<HBlock> CParser::group_tokens(std::list<HBlock>  lst)
 {
 	//primeiro passo .. agrupa todos os stms que nao sao tokens
-	lst = goupe_non_tokens(lst );
+	auto rlst = goupe_non_tokens(lst );
 	// Agrupa os tokens baseado em seus delimidadores 
-	std::vector<HBlock>  vec(lst.begin(), lst.end());
-	scan_token_any(vec.begin(), vec.end());
+	std::vector<HBlock>  vec=std::vector<HBlock> (rlst.begin(), rlst.end());
+	rlst =  scan_token_any(vec.begin(), vec.end());
 
 
-	return lst;
+	return rlst;
 }
