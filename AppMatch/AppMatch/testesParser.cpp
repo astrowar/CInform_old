@@ -322,6 +322,41 @@ void testeParser_22() {
 }
 
 
+void testeParser_10() {
+
+	CParser parse(std::make_shared<CBlockInterpreter>());
+	{
+		string ss1 =
+			R"(
+thing is an kind
+book is a thing
+diary can be big or small 
+  
+)";
+		parse.parser_text(ss1, true);
+	}
+	
+	{
+		string ss1 =
+			R"(
+if x > 10 :
+  let x = 10 
+  let y =y +1
+  if y > 4 :
+     y = 0
+else:
+  let x = x + 1  
+end
+to call x :
+   try call system
+   try call user
+)";
+		parse.parser_text(ss1, true);
+	}
+
+	return;
+}
+
 int main() {
 	// testeParser_1();
 
@@ -347,7 +382,7 @@ int main() {
 
 
 
-		testeParser_5g();
+		//testeParser_5g();
 	   //testeParser_7a();
 	   //testeParser_7b();
 		//testeParser_7c();
@@ -357,8 +392,8 @@ int main() {
 		//testeRelation1();
 		//testeRelation2();
 		//testeRelation3();
-		testeRelation3();
-		testeRelation4();
+		//testeRelation3();
+		//testeRelation4();
 	//	testeSerialize1();
         testeParser_10();
 		logMessage( ".");

@@ -11,6 +11,30 @@
 #include <condition_variable>
 
 
+class SourceLine
+{
+public:
+	int linenumber;
+	string filename;	
+	string line;
+	SourceLine(string _filename, int _linenumber, string _line):line(_line),linenumber(_linenumber),filename(_filename){}
+};
+
+
+class GroupLines;
+using HGroupLines = std::shared_ptr<GroupLines>;
+class GroupLines
+{
+public:
+	int identarion;
+	std::vector<SourceLine> lines;
+	HGroupLines inner;
+	HGroupLines next;
+	HGroupLines prev;
+};
+
+
+
 class ParserResult
 {
  
@@ -261,6 +285,10 @@ public:
     HBlock parser_text(string str, bool dump);
 
 	std::list<HBlock> group_tokens(std::list<HBlock>  lst);
+	HGroupLines get_identation_groups(string filename, std::vector<string> vlines);
+
+	HBlock parser_GroupLine(std::string line, HGroupLines inner);
+	std::list<HBlock> parser_GroupLines(HGroupLines pivot);
 	HBlock parser_text(string str);
 
   

@@ -278,3 +278,173 @@ std::list<HBlock> CParser::group_tokens(std::list<HBlock>  lst)
 
 	return rlst;
 }
+
+//vai percorrend os next ate achar alguem
+std::list<HGroupLines>::iterator  find_next_level( int ident ,std::list<HGroupLines>::iterator  gbegin, std::list<HGroupLines>::iterator  gend)
+{
+	for (auto it = gbegin; it != gend; ++it)
+	{
+		if ((*it)->identarion == ident) return it;
+	}
+	return gend;
+}
+HGroupLines make_hierarchical_tree_it(std::list<HGroupLines>::iterator  gbegin, std::list<HGroupLines>::iterator  gend )
+{
+	HGroupLines pivot = *gbegin;
+	pivot->next = nullptr;	
+	pivot->inner = nullptr;
+		
+	for (auto it = gbegin; it != gend; ++it)
+	{
+		if (*it != pivot)
+		{
+			if ((*it)->identarion > pivot->identarion)
+			{
+				auto pnext =  find_next_level(pivot->identarion, it, gend);
+				pivot->inner = make_hierarchical_tree_it(it, gend);
+				if (pnext == gend)
+				{
+					pivot->next = nullptr;
+					return pivot;
+				}
+				else
+				{
+					pivot->next = *pnext;
+					pivot = pivot->next;
+				}
+			}
+			else if ((*it)->identarion > pivot->identarion)
+			{
+				
+			}
+
+		}
+
+	}
+	return pivot;
+	
+}
+std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer  )
+{
+	 
+	  
+	for (auto it = buffer.begin(); it != buffer.end(); ++it)
+	{
+		int identLevel = (*it)->identarion;
+		auto inext = std::next(it);
+		if (inext != buffer.end())		
+		{
+			(*it)->inner = nullptr;
+			(*it)->next = nullptr;
+			//o proximo esta no nivel abaixo ?
+			int lvMin = identLevel; //para validar regiao invalida
+			if ((*inext)->identarion > identLevel)
+			{
+				(*it)->inner = *inext; 
+				lvMin = (*inext)->identarion;
+			}
+		
+
+
+			//acha o proximo do mesmo nivel
+			for (auto jt = inext; jt != buffer.end(); ++jt)
+			{
+				int lv = (*jt)->identarion;
+				if ( lv > identLevel && lv < lvMin)
+				{
+					auto lineGroup = (*jt);
+					logMessage("Identation Error at " + std::to_string( lineGroup->lines.front().linenumber ));
+					
+					return std::list<HGroupLines>();
+				}
+				if (lv == identLevel)
+				{
+					(*it)->next = *jt;
+					break;
+				}
+				else if (lv < identLevel)
+				{				
+					break; //nao tem .... nivel igual.. apenas maior
+				}
+			}
+			
+		}
+
+
+	}
+	return buffer;
+	 
+		
+
+	 
+}
+
+void logGroupLines( HGroupLines   pivot , string offset )
+{
+	printf("{\n");
+	while (pivot != nullptr)
+	{
+		for (auto &s : (pivot)->lines)
+		{
+			logMessage(  s.line );
+		}
+		if (pivot->inner != nullptr)
+		{
+			
+			logGroupLines(pivot->inner, offset + "   ");
+			
+		}
+		pivot = pivot->next;
+		
+	}
+	printf("}\n");
+}
+
+
+ HGroupLines  CParser::get_identation_groups(string filename,  std::vector<string> vlines)
+{
+	std::list<HGroupLines> buffer;
+	
+	int lineNumber = 0;
+	for(auto &v : vlines)
+	{
+		lineNumber++;
+		if (v.find_first_not_of(' ') != std::string::npos)
+		{
+			 
+			int ns = v.size();
+			int i = 0;
+			for (i = 0; i < ns; ++i)
+			{
+				if (v[i] != ' ') break;
+			}
+
+
+			HGroupLines g = std::make_shared<GroupLines>();
+			g->identarion = i;
+			g->lines.push_back(SourceLine( filename, lineNumber, v));
+			g->inner = nullptr;
+			g->next = nullptr;
+			buffer.push_back(g);
+		}
+
+	}
+	buffer = make_hierarchical_tree(buffer);
+	if (buffer.empty()) return nullptr;
+	/*printf("------------------------------------------------\n");
+	logGroupLines(buffer.front(), "");
+	printf("------------------------------------------------\n");*/
+
+	/*printf("\n");
+	for (auto it = buffer.begin(); it != buffer.end(); ++it)
+	{
+		printf("%i \n", (*it)->identarion);
+		for (auto &s : (*it)->lines)
+		{
+			logMessage(s.line);
+		}
+	}*/
+	//return std::vector<HGroupLines>(buffer.begin(), buffer.end());
+	return buffer.front();
+
+}

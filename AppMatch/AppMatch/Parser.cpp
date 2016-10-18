@@ -509,19 +509,74 @@ std::vector<string>  split_new_lines(const string &str)   {
    return sentences;
 }
  
+ HBlock  CParser::parser_GroupLine( std::string v , HGroupLines inner)
+{
+	auto vstr = decompose_bracket(v, "(");
+	vstr = decompose_bracket(v, ")");
+	vstr = decompose_bracket(v, ",");
+	std::vector<HTerm> lst = decompose(vstr);
+
+
+	HBlock  rblock_stmt = parser_stmt(lst);	 
+	return rblock_stmt;
+}
+
+std::list<HBlock> CParser::parser_GroupLines(HGroupLines pivot  )
+{
+	std::list<HBlock> retBlocks;
+	if (pivot == nullptr)
+	{
+		return retBlocks;
+	}
+
+	while (pivot != nullptr)
+	{
+		for (auto it = pivot->lines.begin(); it != pivot->lines.end(); ++it)
+		{
+			HBlock blk;
+			std::string rawLine = it->line;
+			auto inext = std::next(it);
+			HGroupLines _inner = nullptr;
+			if (inext == pivot->lines.end()) _inner = pivot->inner;
+			blk = parser_GroupLine(rawLine, _inner);
+			if (blk == nullptr)
+			{
+				logError("Parser Error at " + std::to_string(pivot->lines.front().linenumber));
+				return std::list<HBlock>();
+			}
+			retBlocks.push_back(blk);
+
+		}
+		pivot = pivot->next;
+		if (pivot == nullptr) break;
+	}
+	return retBlocks;
+
+}
 
 HBlock CParser::parser_text(string str )
 {
     // quebra o text  em linhas e processa as linhas separadamente
     auto vlist = split_new_lines(str);
-    std::list<HBlock > blist ;
-    for(auto &v : vlist)
+	HGroupLines pivot =  get_identation_groups("__FILE__",vlist);
+	if (pivot == nullptr)
+	{
+		return nullptr;
+	}
+	 
+    std::list<HBlock> blist = parser_GroupLines(pivot); 
+	return  std::make_shared< CBlockList >(blist);
+
+
+
+   /* for(auto &v : vlist)
     {
 		auto vstr = decompose_bracket(v, "(");
         vstr = decompose_bracket(v, ")");
         vstr = decompose_bracket(v, ",");
 		std::vector<HTerm> lst = decompose(vstr);
 
+		
 
 		HBlockList rblock_control_flux = STMT_control_flux(lst);
 		if (rblock_control_flux != nullptr)
@@ -539,7 +594,7 @@ HBlock CParser::parser_text(string str )
 
 	std::list< HBlock > blist_next = group_tokens(blist);
 
-    return  std::make_shared< CBlockList > (blist_next);
+    return  std::make_shared< CBlockList > (blist_next);*/
 
 
 }
