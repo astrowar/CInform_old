@@ -708,15 +708,89 @@ void CBlockNow::dump(string ident) {
 void CBlockControlToken::dump(string ident)
 {
 	printf("%s %s  %s\n", ident.c_str(), "Token " , this->token.c_str());
+	{
+		if (contents != nullptr)
+		   this->contents->dump(ident + "       ");
+	}
 }
 
 void CBlockControlIF::dump(string ident)
 {
-	printf("%s  %s\n", ident.c_str(), "IF  " );
+	printf("%s %s\n", ident.c_str(), "IF  " );
 	{
-		this->block_if->dump(ident + "       ");
-		this->block_then->dump(ident + "       ");
-		this->block_else->dump(ident + "       ");
+		  this->block_if->dump(ident + "       ");
+		  printf("%s %s\n", ident.c_str(), "THEN  ");
+		  this->block_then->dump(ident + "       ");
+
+		  if (this->block_else != nullptr)
+		  {
+			  printf("%s %s\n", ident.c_str(), "ELSE  ");
+			  this->block_else->dump(ident + "       ");
+		  }
 		
 	}
+}
+
+
+void CBlockControlUnless::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "UNLESS  ");
+	{
+		this->block_if->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "THEN  ");
+		this->block_then->dump(ident + "       ");
+
+		if (this->block_else != nullptr)
+		{
+			printf("%s %s\n", ident.c_str(), "ELSE  ");
+			this->block_else->dump(ident + "       ");
+		}
+
+	}
+}
+void CBlockControlSelect::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "SELECT  ");
+	{
+		this->block_seletor->dump(ident + "       ");
+		for (auto &e : this->block_selectList)
+		{
+			e->dump(ident + "       ");
+		}
+
+		if (this->block_else != nullptr)
+		{
+			printf("%s %s\n", ident.c_str(), "ELSE  ");
+			this->block_else->dump(ident + "       ");
+		}
+	}
+}
+
+ 
+void CBlockControlSelectItem::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "SELECT ITEM  ");
+	{
+		this->block_seletor->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "BODY  ");
+		this->block_execute->dump(ident + "       "); 
+	}
+}
+
+void CBlockComandList::dump(string ident)
+{
+	if (lista.size() ==1 )
+	{
+		lista.front()->dump(ident);
+	}
+	else
+	{
+		printf("%s %s\n", ident.c_str(), "CommandList  ");
+		for (auto &kv : lista)
+		{
+			kv->dump(ident + "       ");
+			printf("\n");
+		}
+	}
+
 }

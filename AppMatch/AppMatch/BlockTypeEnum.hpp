@@ -79,6 +79,9 @@ enum BlockType {
 	BlockDinamicDispatch,
 	BlockNow,
 	BlockControlIF,
-	BlockControlToken
+	BlockControlToken,
+	BlockComandList,
+	BlockControlSelect,
+	BlockControlSelectItem
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

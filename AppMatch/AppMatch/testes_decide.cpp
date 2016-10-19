@@ -6,15 +6,15 @@ void testeParser_7a()//dynamic match
 {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
     CParser parse(interpreter);
-
+ 
     {
-        interpreter->execute_init(parse.parser_stmt("thing is a kind "));
-        interpreter->execute_init(parse.parser_stmt("book is a thing "));
-        interpreter->execute_init(parse.parser_stmt("diary is a thing "));
+        interpreter->execute_init(parse.Parser_Stmt("thing is a kind ", ISLOG));
+        interpreter->execute_init(parse.Parser_Stmt("book is a thing ", ISLOG));
+        interpreter->execute_init(parse.Parser_Stmt("diary is a thing ", ISLOG));
     }
 
-	auto p = parse.parser_stmt("to decide what (thing) is (the best book) : diary ");
-	if (ISLOG) {p->dump(""); 	}
+	auto p = parse.Parser_Stmt("to decide what (thing) is (the best book) : diary ", ISLOG);
+ 
 	interpreter->execute_init(p);
 	 
     QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
@@ -29,19 +29,19 @@ void testeParser_7b()//dynamic match
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
-
+	ErrorInfo err;
 	{
-		interpreter->execute_init(parse.parser_stmt("thing is a kind "));
-		interpreter->execute_init(parse.parser_stmt("book is a thing "));
-		interpreter->execute_init(parse.parser_stmt("diary is a thing "));
-		interpreter->execute_init(parse.parser_stmt("coin is a thing "));
+		interpreter->execute_init(parse.Parser_Stmt("thing is a kind ", ISLOG));
+		interpreter->execute_init(parse.Parser_Stmt("book is a thing ", ISLOG));
+		interpreter->execute_init(parse.Parser_Stmt("diary is a thing ", ISLOG));
+		interpreter->execute_init(parse.Parser_Stmt("coin is a thing ", ISLOG));
 
-		interpreter->execute_init(parse.parser_stmt("atom is a kind  "));
-		interpreter->execute_init(parse.parser_stmt("silver is a kind of atom "));
-		interpreter->execute_init(parse.parser_stmt("gold is a kind of atom "));
+		interpreter->execute_init(parse.Parser_Stmt("atom is a kind  ", ISLOG));
+		interpreter->execute_init(parse.Parser_Stmt("silver is a kind of atom ", ISLOG));
+		interpreter->execute_init(parse.Parser_Stmt("gold is a kind of atom ", ISLOG));
 	}
 
-	auto p = parse.parser_stmt("to decide what (thing) is (the best book) : diary " , ISLOG);
+	auto p = parse.Parser_Stmt("to decide what (thing) is (the best book) : diary " , ISLOG );
 	 
 	interpreter->execute_init(p);
 
@@ -51,11 +51,11 @@ void testeParser_7b()//dynamic match
 
 
 
-	interpreter->execute_init(parse.parser_stmt("he verb made of implies the materiality relation", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("he verb made of implies the materiality relation", ISLOG ));
 	 
  
-	interpreter->execute_init(parse.parser_stmt("coin is made of silver ", ISLOG));
-	QueryResul q_qq=  interpreter->query(parse.parser_stmt("coin is made of gold  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("coin is made of silver ", ISLOG ));
+	QueryResul q_qq=  interpreter->query(parse.Parser_Stmt("coin is made of gold  ", ISLOG ));
  
 
 }
@@ -67,16 +67,16 @@ void testeParser_7c()//dynamic match
 	CParser parse(interpreter);
 
 	{
-		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG);
+		auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG );
 	}
 	{
-		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to another", ISLOG);
+		auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to another", ISLOG);
 	}
 	{
-		auto p = parse.parser_stmt("Pet-ownership relates various animals to ( a person called the owner)", ISLOG);
+		auto p = parse.Parser_Stmt("Pet-ownership relates various animals to ( a person called the owner)", ISLOG);
 	}
 	{
-		auto p = parse.parser_stmt("Fanciness relates  ( a thing called X) to each other in groups", ISLOG);
+		auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to each other in groups", ISLOG);
 	}
 
 
@@ -93,7 +93,7 @@ void testeParser_7c()//dynamic match
 	for( auto s : slist)
 	{
 		logMessage( s);
-		auto p = parse.parser_stmt(s, ISLOG);
+		auto p = parse.Parser_Stmt(s, ISLOG);
 	}
 
 	 
@@ -113,7 +113,7 @@ void testeParser_7d()// relation When
 	for (auto s : slist)
 	{
 		logMessage(s);
-		auto p = parse.parser_stmt(s, ISLOG);
+		auto p = parse.Parser_Stmt(s, ISLOG);
 
 	}
 	 

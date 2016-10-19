@@ -103,3 +103,5 @@ HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c );
 HVariableSlotBool asHVariableSlotBool(HVariableSlot c );
 
 HBlockControlToken aHBlockControlToken (HBlock c);
+HBlockControlIF aHBlockControlIF(HBlock c);
+HBlockControlSelectItem aHBlockControlSelectItem(HBlock c);

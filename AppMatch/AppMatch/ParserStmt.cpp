@@ -93,12 +93,13 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 
 	return nullptr;
 }
-HBlock CParser::parser_stmt(std::vector<HTerm> lst)
+HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo *err)
 {
 
-
+	HBlock rblock_system_control = (STMT_control_flux(lst,inner , err));
+	if (rblock_system_control != nullptr) return rblock_system_control;
  
-
+	if (err->hasError) return nullptr;
 	//Apenas os termos que iniciam uma sentenca completa
 
 
@@ -106,19 +107,19 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
 
-	HBlock rblock_system_stmt = (STMT_system_Assertion(lst));
+	HBlock rblock_system_stmt = (STMT_system_Assertion(lst  ));
 	if (rblock_system_stmt != nullptr) return rblock_system_stmt;
 
-    HBlock rblock_understand_1 = (STMT_understand_Assertion(lst));
+    HBlock rblock_understand_1 = (STMT_understand_Assertion(lst  ));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
-	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst));
+	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst ));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 
-    HBlock rblock_verb_1n = (STMT_verb_Assertion_N(lst));
+    HBlock rblock_verb_1n = (STMT_verb_Assertion_N(lst ));
     if (rblock_verb_1n != nullptr) return rblock_verb_1n;
 
-    HBlock rblock_verb_1 = (STMT_verb_Assertion(lst));
+    HBlock rblock_verb_1 = (STMT_verb_Assertion(lst ));
     if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
     HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst)); //To define ...
@@ -138,7 +139,7 @@ HBlock CParser::parser_stmt(std::vector<HTerm> lst)
     if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
     
-  
+    
 
     return nullptr;
 

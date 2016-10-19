@@ -9,6 +9,10 @@
 #include "CBlockInterpreterRuntime.hpp"
 #include "CBlockRelation.hpp"
 #include <condition_variable>
+#include "CBlockCommand.hpp"
+#include <condition_variable>
+#include "CBlockControlFlux.hpp"
+#include <condition_variable>
 
 
 class SourceLine
@@ -20,6 +24,18 @@ public:
 	SourceLine(string _filename, int _linenumber, string _line):line(_line),linenumber(_linenumber),filename(_filename){}
 };
 
+class ErrorInfo
+{
+public:
+	bool hasError;
+	string msg;
+	//SourceLine errorLine;
+
+	ErrorInfo() : hasError(false), msg("") {}
+	ErrorInfo(string _msg) : hasError(true), msg(_msg) {}
+
+	void setError(string cs) { msg =  cs; hasError = true; }
+};
 
 class GroupLines;
 using HGroupLines = std::shared_ptr<GroupLines>;
@@ -187,7 +203,18 @@ public:
 	 
 	HBlock parseAssertion_isDecide(std::vector<HTerm> term);
 	HBlock parserBoolean(  HTerm  term);
+	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
+	 
+	HBlock Parser_Stmt(string str, bool dump);
+	 
+	HBlock parser_stmt(string str, bool dump, ErrorInfo* err);
 	
+	HBlock parser_GroupLine(std::string v, HGroupLines inner, ErrorInfo* err);
+	HBlockComandList parser_stmt_inner(HGroupLines inner, ErrorInfo* err);
+	std::list<HBlock >  post_process_tokens(std::list< HBlock > list, ErrorInfo* err);
+	 
+	std::list<HBlock> parser_GroupLines(HGroupLines pivot, ErrorInfo* err);
+	 
 	HBlock STMT_Definition_Assertion(std::vector<HTerm> term);
 	HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
 	HBlockMatch parser_MatchArgument(std::vector<HTerm> term);
@@ -246,12 +273,11 @@ public:
 	HBlock STMT_canBe_Assertion(std::vector<HTerm> lst);
 	HBlockInstanceVariable  CProperty_called(HTerm term);
 	HBlock STMT_hasAn_Assertion(std::vector<HTerm> lst);
+	HBlock parser_stmt(HTerm term, HGroupLines inner, ErrorInfo* err);
  
-	HBlock parser_stmt(std::vector<HTerm> lst);
-	HBlock parser_stmt(HTerm term);
+	 
 	HBlock parserBoolean(std::vector<HTerm> term);
-	HBlock parser_stmt(string str);
-	HBlock parser_stmt(string str, bool dump);
+ 
 
 	HBlock parser_kind(HTerm term); 
 	HBlock parser_kind_or_instance(HTerm term);
@@ -262,7 +288,9 @@ public:
 	HBlock parser_expression(HTerm term);
 	HBlock text_entry(std::vector<HTerm> lst);
 	HBlock parser_expression(std::vector<HTerm>  term);
-
+	HBlock parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo* err);
+	 
+	 
 	HBlockArgumentInput parser_KindCalled(HTerm term);
 	HBlock STMT_relates_Assertion(std::vector<HTerm> term);
 	HBlock STMT_relates_AssertionWhen(std::vector<HTerm> term);
@@ -282,24 +310,32 @@ public:
 
 	HBlock sys_now_action(std::vector<HTerm> term);
 
-    HBlock parser_text(string str, bool dump);
+	HBlock parser_text(string str, ErrorInfo* err);
+	HBlock parser_text(string str, bool dump);
 
 	std::list<HBlock> group_tokens(std::list<HBlock>  lst);
-	HGroupLines get_identation_groups(string filename, std::vector<string> vlines);
+	HGroupLines get_identation_groups(string filename, std::vector<string> vlines, ErrorInfo* err);
+ 
 
-	HBlock parser_GroupLine(std::string line, HGroupLines inner);
-	std::list<HBlock> parser_GroupLines(HGroupLines pivot);
-	HBlock parser_text(string str);
+ 
+	 
+ 
 
   
 
 	 
 
-	HBlock  parser_if_condition(HTerm term);
-	HBlockList parser_control_else(std::vector<HTerm> term);
-	HBlockList parser_control_end(std::vector<HTerm> term)  ;
-	HBlockList parser_control_if(std::vector<HTerm> term);
-	HBlockList STMT_control_flux(std::vector<HTerm> term);
+ 
+	HBlock parser_if_condition(HTerm term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_else(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_end(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_if(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock parser_control_unless(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	std::list<HBlockControlSelectItem> get_CBlockControlSelectItem(HBlockComandList shared_ptr, ErrorInfo* err);
+	HBlockControlSelect parser_control_select(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock STMT_control_flux(std::vector<HTerm> term, HBlock prev, HGroupLines inner, ErrorInfo* err);
+	HBlockControlSelectItem parser_control_select_item(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock  STMT_control_flux(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 };
 
 

@@ -192,6 +192,7 @@
   <ItemGroup>
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="CBlockCommand.cpp" />
     <ClCompile Include="CBlockSerialize.cpp" />
     <ClCompile Include="CDataMananger.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />

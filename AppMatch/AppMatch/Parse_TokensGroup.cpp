@@ -324,7 +324,7 @@ HGroupLines make_hierarchical_tree_it(std::list<HGroupLines>::iterator  gbegin, 
 	return pivot;
 	
 }
-std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer  )
+std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer, ErrorInfo *err)
 {
 	 
 	  
@@ -353,6 +353,7 @@ std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer  
 				if ( lv > identLevel && lv < lvMin)
 				{
 					auto lineGroup = (*jt);
+					err->setError("Identation Error at " + std::to_string(lineGroup->lines.front().linenumber));
 					logMessage("Identation Error at " + std::to_string( lineGroup->lines.front().linenumber ));
 					
 					return std::list<HGroupLines>();
@@ -401,7 +402,7 @@ void logGroupLines( HGroupLines   pivot , string offset )
 }
 
 
- HGroupLines  CParser::get_identation_groups(string filename,  std::vector<string> vlines)
+ HGroupLines  CParser::get_identation_groups(string filename,  std::vector<string> vlines, ErrorInfo *err)
 {
 	std::list<HGroupLines> buffer;
 	
@@ -429,7 +430,7 @@ void logGroupLines( HGroupLines   pivot , string offset )
 		}
 
 	}
-	buffer = make_hierarchical_tree(buffer);
+	buffer = make_hierarchical_tree(buffer,err);
 	if (buffer.empty()) return nullptr;
 	/*printf("------------------------------------------------\n");
 	logGroupLines(buffer.front(), "");

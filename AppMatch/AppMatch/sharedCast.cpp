@@ -503,3 +503,17 @@ HBlockControlToken aHBlockControlToken(HBlock c)
 		return std::static_pointer_cast<CBlockControlToken>(c);
 	return nullptr;
 }
+
+HBlockControlIF aHBlockControlIF(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockControlIF)
+		return std::static_pointer_cast<CBlockControlIF>(c);
+	return nullptr;
+}
+
+HBlockControlSelectItem aHBlockControlSelectItem(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockControlSelectItem)
+		return std::static_pointer_cast<CBlockControlSelectItem>(c);
+	return nullptr;
+}

@@ -437,9 +437,9 @@ HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm> lst) {
 
 
 
-HBlock CParser::parser_stmt(HTerm term) {
+HBlock CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *err) {
     if (CList *vlist = asCList(term.get())) {
-        auto r = parser_stmt(vlist->asVector());
+        auto r = parser_stmt_inner(vlist->asVector(),inner,err);
         /*if (r == nullptr)
             std::cout << term->repr() << std::endl;*/
 
@@ -463,19 +463,23 @@ HBlock CParser::parserBoolean(HTerm term) {
 }
 
 
-HBlock CParser::parser_stmt(string str) {
+HBlock CParser::parser_stmt_str(string str, HGroupLines inner, ErrorInfo *err) {
     str = decompose_bracket(str, "(");
     str = decompose_bracket(str, ")");
     str = decompose_bracket(str, ",");
     std::vector<HTerm> lst = decompose(str);
-    return parser_stmt(lst); 
+    return parser_stmt_inner(lst,inner,err);
 }
 
 
-
-HBlock CParser::parser_stmt(string str,bool dump)
+HBlock CParser::Parser_Stmt(string str, bool dump )
 {
-    HBlock b =  parser_stmt(str);
+	ErrorInfo err;
+		return parser_stmt(str, dump, &err);
+}
+HBlock CParser::parser_stmt(string str,bool dump,ErrorInfo *err)
+{
+    HBlock b = parser_stmt_str(str,nullptr, err); //nao tem inner
     if (dump)
     {		
         b->dump("");  
@@ -509,20 +513,81 @@ std::vector<string>  split_new_lines(const string &str)   {
    return sentences;
 }
  
- HBlock  CParser::parser_GroupLine( std::string v , HGroupLines inner)
+ HBlock  CParser::parser_GroupLine( std::string v , HGroupLines inner, ErrorInfo *err)
 {
 	auto vstr = decompose_bracket(v, "(");
 	vstr = decompose_bracket(v, ")");
 	vstr = decompose_bracket(v, ",");
+	vstr = decompose_bracket(v, ":");
 	std::vector<HTerm> lst = decompose(vstr);
-
-
-	HBlock  rblock_stmt = parser_stmt(lst);	 
+	HBlock  rblock_stmt = parser_stmt_inner (lst, inner , err);
+	if (err->hasError) return nullptr; 
 	return rblock_stmt;
 }
 
-std::list<HBlock> CParser::parser_GroupLines(HGroupLines pivot  )
+ HBlockComandList CParser::parser_stmt_inner(HGroupLines inner, ErrorInfo *err)
 {
+	std::list<HBlock> retBlocks;
+	if (inner == nullptr)
+	{
+		return nullptr;
+	}
+
+	while (inner != nullptr)
+	{
+		for (auto it = inner->lines.begin(); it != inner->lines.end(); ++it)
+		{
+			HBlock blk;
+			std::string rawLine = it->line;
+			auto inext = std::next(it);
+			HGroupLines _inner = nullptr;
+			if (inext == inner->lines.end()) _inner = inner->inner;
+			blk = parser_GroupLine(rawLine, _inner, err);
+			if (err->hasError)
+			{
+				logError(err->msg+ " at line "+ std::to_string(inner->lines.front().linenumber)); 
+				return nullptr;
+			}
+
+			if (blk == nullptr)
+			{
+			
+				logError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
+				err->setError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
+				return nullptr;
+			}
+			retBlocks.push_back(blk);
+
+		}
+		inner = inner->next;
+		if (inner == nullptr) break;
+	}
+
+	retBlocks = post_process_tokens(retBlocks ,  err );
+	if (err->hasError)
+	{
+		err->msg = err->msg + "at line " + std::to_string(inner->lines.front().linenumber);
+	}
+
+
+	return  std::make_shared< CBlockComandList >(retBlocks);
+
+}
+std::list<HBlock> CParser::parser_GroupLines(HGroupLines pivot, ErrorInfo *err)
+{
+
+	auto r = parser_stmt_inner(pivot, err);
+	if (r!=nullptr)
+	{
+		logError(err->msg);
+		return r->lista;
+	}
+
+	return std::list<HBlock>();
+
+
+	 
+/*
 	std::list<HBlock> retBlocks;
 	if (pivot == nullptr)
 	{
@@ -538,10 +603,12 @@ std::list<HBlock> CParser::parser_GroupLines(HGroupLines pivot  )
 			auto inext = std::next(it);
 			HGroupLines _inner = nullptr;
 			if (inext == pivot->lines.end()) _inner = pivot->inner;
-			blk = parser_GroupLine(rawLine, _inner);
+			blk = parser_GroupLine(rawLine, _inner, err);
+			if (err->hasError)   return std::list<HBlock>();
 			if (blk == nullptr)
 			{
 				logError("Parser Error at " + std::to_string(pivot->lines.front().linenumber));
+				err->setError("Parser Error at " + std::to_string(pivot->lines.front().linenumber));
 				return std::list<HBlock>();
 			}
 			retBlocks.push_back(blk);
@@ -551,21 +618,24 @@ std::list<HBlock> CParser::parser_GroupLines(HGroupLines pivot  )
 		if (pivot == nullptr) break;
 	}
 	return retBlocks;
-
+*/
 }
 
-HBlock CParser::parser_text(string str )
+HBlock CParser::parser_text(string str , ErrorInfo *err)
 {
+	 
     // quebra o text  em linhas e processa as linhas separadamente
     auto vlist = split_new_lines(str);
-	HGroupLines pivot =  get_identation_groups("__FILE__",vlist);
+	HGroupLines pivot =  get_identation_groups("__FILE__",vlist,err);
+	if (err->hasError) return nullptr;
 	if (pivot == nullptr)
 	{
 		return nullptr;
 	}
 	 
-    std::list<HBlock> blist = parser_GroupLines(pivot); 
-	return  std::make_shared< CBlockList >(blist);
+    auto blist  = parser_stmt_inner(pivot,err); 
+	if (err->hasError) return nullptr;
+	return  blist;
 
 
 
@@ -601,9 +671,10 @@ HBlock CParser::parser_text(string str )
 
 
 //interprete varias linhas de texto
-HBlock CParser::parser_text(string str,bool dump)
+HBlock CParser::parser_text(string str, bool dump )
 {
-    HBlock b =  parser_text(str);
+	ErrorInfo err;
+    HBlock b =  parser_text(str,&err);
     if (b) {
         if (dump) {
             b->dump("");

@@ -34,43 +34,31 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         string phase_1 = "thing is a kind ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+         
          interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
         string phase_1 = "book is a kind of thing ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+         
         interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
         string phase_1 = "magic object is a kind  ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+         
         interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
         string phase_1 = "special book is a kind of book ";
-        auto res = parse.parser_stmt(phase_1);
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
         if (res == nullptr) throw "parse error";
         if (ISLOG) {
             res->dump("");
@@ -82,60 +70,40 @@ void testeParser_2() {
     {
         CParser parse(interpreter);
         string phase_1 = "special book is a kind of magic object ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+       
         interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
         string phase_1 = "diary is a special book ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+        
         interpreter->execute_init(res);
     }
 
     {
         CParser parse(interpreter);
-        interpreter->execute_init(parse.parser_stmt("metal  is a kind "));
+        interpreter->execute_init(parse.Parser_Stmt("metal  is a kind ", ISLOG));
 
         string phase_1 = "(chopper, iron )  are kinds of metal  ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+        
         interpreter->execute_init(res);
     }
     {
         CParser parse(interpreter);
         string phase_1 = "rare metal  is a kind  of metal ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+        
         interpreter->execute_init(res);
     }
     {
         CParser parse(interpreter);
         string phase_1 = "(gold, silver )  are kinds of rare metal  ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+        
         interpreter->execute_init(res);
     }
 
@@ -155,26 +123,26 @@ void testeParser_2a() {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
     CParser parse(interpreter);
 
-    interpreter->execute_init(parse.parser_stmt("thing is a kind  "));
-    interpreter->execute_init(parse.parser_stmt("book is a kind of thing "));
+    interpreter->execute_init(parse.Parser_Stmt("thing is a kind  ", ISLOG));
+    interpreter->execute_init(parse.Parser_Stmt("book is a kind of thing ", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("kelement is a kind  "));
-	interpreter->execute_init(parse.parser_stmt("fire is a kelement "));
-	interpreter->execute_init(parse.parser_stmt("air is a kelement "));
+	interpreter->execute_init(parse.Parser_Stmt("kelement is a kind  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("fire is a kelement ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("air is a kelement ", ISLOG));
 
-    interpreter->execute_init(parse.parser_stmt("book  can be normal , huge or  small")); 
-	interpreter->execute_init(parse.parser_stmt("thing has a thing called element"));	
+    interpreter->execute_init(parse.Parser_Stmt("book  can be normal , huge or  small", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("thing has a thing called element", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("fire is a kelement "));
-	interpreter->execute_init(parse.parser_stmt("air is a kelement "));
+	interpreter->execute_init(parse.Parser_Stmt("fire is a kelement ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("air is a kelement ", ISLOG));
  
-	interpreter->execute_init(parse.parser_stmt(" element of thing is usually fire "));
-	interpreter->execute_init(parse.parser_stmt(" element of book is usually air "));
+	interpreter->execute_init(parse.Parser_Stmt(" element of thing is usually fire ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt(" element of book is usually air ", ISLOG));
 
-    interpreter->execute_init(parse.parser_stmt("book can be read"));
+    interpreter->execute_init(parse.Parser_Stmt("book can be read", ISLOG));
 
-	interpreter->execute_init(parse.parser_stmt("diary is a book"));
-	interpreter->execute_init(parse.parser_stmt("rock is a thing"));
+	interpreter->execute_init(parse.Parser_Stmt("diary is a book", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("rock is a thing", ISLOG));
 
   
 	QueryResul q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
@@ -182,12 +150,8 @@ void testeParser_2a() {
 
     {
         string phase_1 = "diary is not read ";
-        auto res = parse.parser_stmt(phase_1);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+        auto res = parse.Parser_Stmt(phase_1, ISLOG);
+        
         interpreter->execute_init(res);
     }
 
@@ -204,7 +168,7 @@ void testeParser_2a() {
 
     logMessage( "Done" );
 
-	//interpreter->execute_init(parse.parser_stmt("element of  diary is air "));
+	//interpreter->execute_init(parse.Parser_Stmt("element of  diary is air "));
 
 	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
 	QueryResul q_true_2 = interpreter->query_is_extern(propV,	std::make_shared<CBlockNoum>("air"));
