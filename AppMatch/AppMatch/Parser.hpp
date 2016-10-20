@@ -308,6 +308,7 @@ public:
 
     HBlock STMT_system_Assertion(std::vector<HTerm> term);
 
+	HBlock sys_say_action(std::vector<HTerm> term);
 	HBlock sys_now_action(std::vector<HTerm> term);
 
 	HBlock parser_text(string str, ErrorInfo* err);

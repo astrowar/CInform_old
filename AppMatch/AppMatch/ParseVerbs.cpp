@@ -4,7 +4,9 @@
 
 
 HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
-    {
+    
+ 
+	{
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;
         predList.push_back(mkHPredAny("N1"));
@@ -64,7 +66,7 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(verbList);
         predList.push_back(mkHPredAny("N2"));
-
+		 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
@@ -73,6 +75,7 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
             return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
 
         }
+	 
     }
 
     return nullptr;

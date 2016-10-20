@@ -133,6 +133,22 @@ std::vector<HTerm> expandTerm( HTerm term)
     return {term};
 }
 
+HBlock CParser::sys_say_action(std::vector<HTerm> term)  
+{
+	std::vector<HPred> predList;
+	predList.push_back(mk_HPredLiteral("say"));
+	predList.push_back(mkHPredAny("Body"));
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		auto nterms = expandTerm(res.matchs["Body"]);
+		HBlock value = parser_expression(nterms);
+		HBlockAction say_Action = std::make_shared<CBlockAction>("say_text");
+		return std::make_shared<CBlockActionCall>(say_Action, value, nullptr);
+	}
+	return nullptr;
+}
+
 HBlock CParser::sys_now_action(std::vector<HTerm> term) {
     {
         std::vector<HPred> predList;
@@ -171,6 +187,9 @@ HBlock CParser::sys_now_action(std::vector<HTerm> term) {
 //Processa os smtm que sao do sistema
 HBlock CParser::STMT_system_Assertion(std::vector<HTerm> term)
 {
+	auto d_say = (sys_say_action(term));
+	if (d_say != nullptr) return d_say;
+
 
             auto d_now = (sys_now_action(term));
             if (d_now != nullptr) return d_now;
@@ -516,9 +535,9 @@ std::vector<string>  split_new_lines(const string &str)   {
  HBlock  CParser::parser_GroupLine( std::string v , HGroupLines inner, ErrorInfo *err)
 {
 	auto vstr = decompose_bracket(v, "(");
-	vstr = decompose_bracket(v, ")");
-	vstr = decompose_bracket(v, ",");
-	vstr = decompose_bracket(v, ":");
+	vstr = decompose_bracket(vstr, ")");
+	vstr = decompose_bracket(vstr, ",");
+	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
 	HBlock  rblock_stmt = parser_stmt_inner (lst, inner , err);
 	if (err->hasError) return nullptr; 
@@ -566,7 +585,10 @@ std::vector<string>  split_new_lines(const string &str)   {
 	retBlocks = post_process_tokens(retBlocks ,  err );
 	if (err->hasError)
 	{
-		err->msg = err->msg + "at line " + std::to_string(inner->lines.front().linenumber);
+		if (inner != nullptr)
+		{
+			err->msg = err->msg + "at line " + std::to_string(inner->lines.front().linenumber);
+		}
 	}
 
 

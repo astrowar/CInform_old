@@ -104,4 +104,6 @@ HVariableSlotBool asHVariableSlotBool(HVariableSlot c );
 
 HBlockControlToken aHBlockControlToken (HBlock c);
 HBlockControlIF aHBlockControlIF(HBlock c);
+HBlockControlSelect aHBlockControlSelect(HBlock c);
 HBlockControlSelectItem aHBlockControlSelectItem(HBlock c);
+HBlockComandList asHBlockComandList(HBlock c);

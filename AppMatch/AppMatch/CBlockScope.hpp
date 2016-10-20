@@ -38,6 +38,7 @@ public:
 using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
 
+HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn);
 
 class CExecutionBlock
 {

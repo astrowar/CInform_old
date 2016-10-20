@@ -669,6 +669,17 @@ std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalS
 	return localsNext;
 }
 
+HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn)
+{
+	HRunLocalScope ret = std::make_shared< CRunLocalScope > ();
+	for(auto it : _inn->locals )
+	{
+		ret->locals.push_back(it);
+	}
+	return ret;
+
+}
+
 void CExecutionBlock::dump(string ident) const
 {
 	printf("%s %s\n", ident.c_str(), "ExecutionBlock "); 

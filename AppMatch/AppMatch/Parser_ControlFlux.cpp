@@ -123,7 +123,33 @@ HBlock   CParser::parser_if_condition(HTerm term , HGroupLines inner, ErrorInfo 
 }
 
 HBlock   CParser::parser_control_else(std::vector<HTerm> term,   HGroupLines inner, ErrorInfo *err) {
-    {
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+			predList.push_back(mk_HPredLiteral_OR("else", { "else" , "otherwise" }));
+			predList.push_back(mk_HPredLiteral(":"));
+			predList.push_back(mkHPredAny("body"));
+
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+			
+
+			HBlock ABody = parser_stmt(res.matchs["body"], inner, err);
+			if (ABody == nullptr || inner != nullptr)
+			{
+				err->setError("error on Select Item ");
+				return nullptr;
+			}
+			auto token_else = std::make_shared<CBlockControlToken >("else", ABody);
+			return token_else;
+
+			// return std::make_shared<CBlockList  >( std::list<HBlock>({ token_else } )    );
+		}
+	}
+	
+	{
         static std::vector<HPred> predList = {};
         if (predList.empty()) {
 			predList.push_back(mk_HPredLiteral_OR("else", { "else" , "otherwise" }));
@@ -142,23 +168,7 @@ HBlock   CParser::parser_control_else(std::vector<HTerm> term,   HGroupLines inn
            // return std::make_shared<CBlockList  >( std::list<HBlock>({ token_else } )    );
         }
     }
-	{
-		static std::vector<HPred> predList = {};
-		if (predList.empty()) {
-			predList.push_back(mk_HPredLiteral_OR("else", { "else:" , "otherwise:" }));
-		}
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-
-
-			HBlock executeBlock = parser_stmt_inner(inner, err);
-			if (executeBlock == nullptr)  return nullptr;
-			auto token_else = std::make_shared<CBlockControlToken >("else", executeBlock);
-			return token_else;
-
-			// return std::make_shared<CBlockList  >( std::list<HBlock>({ token_else } )    );
-		}
-	}
+	 
 
     return nullptr;
 }
@@ -308,16 +318,44 @@ HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm> 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock ASeletor = parser_expression(res.matchs["object"]);
+			
 			HBlock ABody = parser_stmt (  res.matchs["body"] , inner , err);
+			if (ABody == nullptr || inner != nullptr)
+			{
+				logMessage( res.matchs["body"]->repr());				 
+				err->setError("error on Select Item ");
+				return nullptr;
+			}
+			HBlock ASeletor = parser_expression(res.matchs["object"]);
+			return  std::make_shared<CBlockControlSelectItem  >(ASeletor, ABody );			
+		}
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+			predList.push_back(mk_HPredLiteral("--"));
+			predList.push_back(mkHPredAny("object"));
+			predList.push_back(mk_HPredLiteral(":"));
+			 
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock ASeletor = parser_expression(res.matchs["object"]);
+			
+			HBlockComandList ABody = parser_stmt_inner(inner, err);
+			if (ABody == nullptr)
+			{
+				err->setError("missing if block  ");
+				return nullptr;
+			}
 			if (ABody == nullptr)
 			{
 				err->setError("error on Select Item ");
 				return nullptr;
 			}
-
-			return  std::make_shared<CBlockControlSelectItem  >(ASeletor, ABody );
-			
+			return  std::make_shared<CBlockControlSelectItem  >(ASeletor, ABody);
 		}
 	}
 
@@ -333,9 +371,7 @@ HBlock  CParser::STMT_control_flux(std::vector<HTerm> term ,   HGroupLines inner
 
 //identifica os IF, then ,else, while ,case , select da vida
 
-	HBlock rblock_if = (parser_control_if(term,inner, err ));
-	if (err->hasError) return nullptr;
-    if (rblock_if != nullptr) return rblock_if; 
+	 
 
 
 	HBlock rblock_select = (parser_control_select(term, inner, err));
@@ -347,8 +383,11 @@ HBlock  CParser::STMT_control_flux(std::vector<HTerm> term ,   HGroupLines inner
 	if (err->hasError) return nullptr;
 	if (rblock_select_item != nullptr) return rblock_select_item;
 
-	//HBlockList rblock_then = (parser_control_then(term));
- //   if (rblock_then != nullptr) return rblock_then;
+
+	HBlock rblock_if = (parser_control_if(term, inner, err));
+	if (err->hasError) return nullptr;
+	if (rblock_if != nullptr) return rblock_if;
+	
 
 	 
 	 
@@ -390,6 +429,12 @@ std::list<HBlock >   CParser::post_process_tokens(std::list< HBlock  >  lst, Err
 					if (HBlockControlIF controlIF = aHBlockControlIF(*iprev))
 					{
 						controlIF->block_else = tk->contents;
+						it = lst.erase(it);
+						it = lst.begin(); // reinicia 
+					}
+					else if (HBlockControlSelect controlSelect = aHBlockControlSelect(*iprev))
+					{
+						controlSelect->block_else = tk->contents;
 						it = lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}

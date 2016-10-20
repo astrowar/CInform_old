@@ -782,9 +782,9 @@ MatchResult CMatch_j(MTermSet &termo, CPred *predicate) {
 
 #ifdef CMLOG
     if (has_match) {
-        if (CMLOG) std::cout << "   TRUE" << std::endl;
+        std::cout << "   TRUE" << std::endl;
     } else {
-        if (CMLOG) std::cout << "   FALSE" << std::endl;
+        std::cout << "   FALSE" << std::endl;
     }
 #endif
     if (has_match) {
@@ -879,11 +879,11 @@ MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates) {
 
 #ifdef CMLOG
     if (b == npred) {
-        if (CMLOG) std::cout << get_repr(lst) << std::endl;
+        std::cout << get_repr(lst) << std::endl;
 
     }
     if (a != b) {
-        if (CMLOG) std::cout << "??" << std::endl;
+         std::cout << "??" << std::endl;
     }
 #endif
 

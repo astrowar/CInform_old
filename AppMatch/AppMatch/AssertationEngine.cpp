@@ -313,6 +313,16 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 
 	  HRunLocalScope localsEntry = nullptr;
+
+	  if (HBlockComandList cmdList = asHBlockComandList(p)) 
+	  {
+		for(auto it : cmdList->lista)
+		{
+			execute_init(it);
+		}
+		return;
+	  }
+
 	if (HBlockAssertion_isNotDirectAssign v = asHBlockAssertion_isNotDirectAssign(p)) {
 		HBlock obj = v->get_obj();
 		HBlock value = v->get_definition();
@@ -385,5 +395,6 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 
 	logError("not found block definition ");
+	p->dump("");
 	return;
 }

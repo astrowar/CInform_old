@@ -511,9 +511,25 @@ HBlockControlIF aHBlockControlIF(HBlock c)
 	return nullptr;
 }
 
+HBlockControlSelect aHBlockControlSelect(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockControlSelect )
+		return std::static_pointer_cast<CBlockControlSelect>(c);
+	return nullptr;
+}
+ 
+
 HBlockControlSelectItem aHBlockControlSelectItem(HBlock c)
 {
 	if (c != nullptr && c->type() == BlockType::BlockControlSelectItem)
 		return std::static_pointer_cast<CBlockControlSelectItem>(c);
 	return nullptr;
 }
+
+HBlockComandList asHBlockComandList(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockComandList)
+		return std::static_pointer_cast<CBlockComandList>(c);
+	return nullptr;
+}
+ 

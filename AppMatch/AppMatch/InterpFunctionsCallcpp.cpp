@@ -22,6 +22,15 @@ bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 			return true;
 		}
 	}
+	if (v_call->action->named == "say")
+	{
+		if (HBlockText  ntext = asHBlockText(v_call->noum1))
+		{
+			printf("root$ %s \n", ntext->contents.c_str());
+			return true;
+		}
+	}
+
 	return false;
 }
  

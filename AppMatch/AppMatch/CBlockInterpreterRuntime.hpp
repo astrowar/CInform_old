@@ -237,8 +237,8 @@ public:
 	bool execute_user_action(HBlockActionCall v_call);
 	//Executa este bloco !
 	bool execute_now(HBlock p, HRunLocalScope localsEntry);
-
-    bool queryIsVerbToRelation(HBlockMatch m);
+	bool execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack stk);
+	bool queryIsVerbToRelation(HBlockMatch m);
 
 
 

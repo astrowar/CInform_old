@@ -1,6 +1,7 @@
  
 
 #include "BaseTest.hpp"
+#include <cassert>
 
 void testeParser_6()//kind of value
 {
@@ -281,18 +282,18 @@ void testeParser_22() {
 
 void testeParser_10() {
 
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	
 	{
+		CParser parse(std::make_shared<CBlockInterpreter>()); 
 		string ss1 =
 			R"(
-thing is an kind
-book is a thing
-diary can be big or small 
+the verb ( points to )  implies a  dynamic relation
+now x points to b
   
 )";
 		parse.parser_text(ss1, true);
 	}
-	
+ 
 	{
 		string ss1 =
 			R"(
@@ -304,6 +305,7 @@ if x is 10 :
 else :
   a is z
 )";
+		CParser parse(std::make_shared<CBlockInterpreter>()); 
 		parse.parser_text(ss1, true);
 	}
 
@@ -318,6 +320,7 @@ if x is 10:
     if y is 10: 
        error is true 
 )";
+		CParser parse(std::make_shared<CBlockInterpreter>()); 
 		parse.parser_text(ss1, true);
 	}
 
@@ -326,14 +329,56 @@ if x is 10:
 		string ss1 =
 			R"(
 if x is :
-   -- a :  x is b
-   -- b :  x is c
-   -- c :  x is a
-else:
-   x is a   
+   -- a :   x is b
+   -- b :   x is c
+   -- c :  
+           x is a
+           y is b  
+else:  
+     x is b
 )";
+		CParser parse(std::make_shared<CBlockInterpreter>()); 
 		parse.parser_text(ss1, true);
 	}
+
+	printf("========================================\n");
+	{
+		HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+		CParser parse(interpreter);
+		
+		parse.parser_text("the verb (points to)  implies a  dynamic relation", true);
+		string ss1 =
+			R"(
+the verb (points to)  implies a  dynamic relation
+value is a kind of value
+x is a value
+x can be a , b or c
+x is c
+)";
+		string ss2 =
+			R"(
+if x is :
+   -- a : now x points to b
+   -- b : now x is c
+   -- c :  
+         now x is a
+          
+else:  
+   say  ( text error )
+)";
+		 
+		auto stmt =  parse.parser_text(ss1, true);
+		interpreter->execute_init( stmt );
+		auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));		 
+		assert(ret_e == QEquals);
+
+		interpreter->execute_now(parse.parser_text(ss2, true));
+
+		auto ret_e2 = interpreter->query(parse.Parser_Stmt(" x is a  ", ISLOG));
+		assert(ret_e == QEquals);
+	}
+
+
 	return;
 }
 

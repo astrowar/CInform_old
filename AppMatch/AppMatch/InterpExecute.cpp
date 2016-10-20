@@ -414,14 +414,36 @@ bool CBlockInterpreter::execute_now(HBlock p) //executa STMT
 	if (b == false)
 	{
 		logError("fail to execute ");
+		p->dump("");
+		logError("");
 	}
 	return b;
 }
 
-
-bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //executa STMT
+bool CBlockInterpreter::execute_now(HBlock p, HRunLocalScope localsEntry) //executa STMT
+{
+	QueryStack stk;
+	return execute_now(p, localsEntry, stk);
+}
+bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack stk ) //executa STMT
 {	 
+	if (HBlockComandList  vCommandList= asHBlockComandList(p))
+	{
+		auto nextLocals = copy_CRunLocalScope(localsEntry);
+		for(auto cmd : vCommandList->lista)
+		{
+			auto pret = execute_now(cmd, nextLocals, stk);
+			if (pret == false)
+			{
+				logError("fail to execute ");
+				p->dump("");
+				logError("");
+				return false;
+			}
+		}
+		return true;
 
+	}
 	 
 	if (HBlockIsVerb vverb = asHBlockIsVerb (p)) {
  
@@ -439,7 +461,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 	if (HBlockAssertion_is vk = asHBlockAssertion_isDirectAssign (p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
-		execute_set(obj, value,localsEntry);
+		return execute_set(obj, value,localsEntry);
 	}
 
 
@@ -455,8 +477,8 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		}
 	}
 
-	if (HBlockActionCall  vCall =asHBlockActionCall (p))
-	{		 
+	if (HBlockActionCall  vCall = asHBlockActionCall (p))
+	{	 
 		 
 		{
 			 
@@ -467,7 +489,49 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry ) //ex
 		}
 	}
 
-	
+	if (HBlockControlIF  vControlIf =  aHBlockControlIF(p))
+	{
+
+		auto qResult =  query (vControlIf->block_if, localsEntry, stk);
+		if (qResult == QEquals)
+		{
+			  return execute_now(vControlIf->block_then, localsEntry, stk);
+		}
+		else
+		{
+			if (vControlIf->block_else !=nullptr)
+			{
+				return execute_now(vControlIf->block_else, localsEntry, stk);
+			}
+		}
+		return true;
+		
+	}
+
+	if (HBlockControlSelect  vControlSelect = aHBlockControlSelect(p))
+	{
+		for (auto item : vControlSelect->block_selectList)
+		{
+			auto qResult = query_is(vControlSelect->block_seletor, item->block_seletor, localsEntry, stk);
+			if (qResult == QEquals)
+			{
+				return execute_now(item->block_execute, localsEntry, stk);
+			}
+		}
+		//Execute the else
+		if (vControlSelect->block_else != nullptr)
+		{
+			return execute_now(vControlSelect->block_else, localsEntry, stk);
+		}
+
+		return true;
+
+	}
+
+	if (HBlockNow  vNow = asHBlockNow (p)) 
+	{
+		return execute_now( vNow->assertation, localsEntry,stk);
+	}
 
 
 	return false;
