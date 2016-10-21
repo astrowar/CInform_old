@@ -65,6 +65,7 @@ QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct,
 		auto localsHeader = std::make_shared< CRunLocalScope >(result.maptch);
 		HRunLocalScope localsNext = newScope( localsHeader , localsHeader );
 
+ 
 		auto rr =  query(dct->decideBody, localsNext, stk);
 		if (rr == QEquals) return  QEquals;
 		return QNotEquals;

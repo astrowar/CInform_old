@@ -137,10 +137,15 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 
 QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
-    if (HBlockProperty cproperty = asHBlockProperty(c_block)) {
-        if (HBlockNoum cnn = asHBlockNoum(cproperty->obj)) {
-            auto resolved = resolve_noum(cnn,localsEntry);
-            if (resolved != nullptr) {
+
+		
+		if (HBlockProperty cproperty = asHBlockProperty(c_block)) 
+		{
+        if (HBlockNoum cnn = asHBlockNoum(cproperty->obj)) 
+		{
+            auto resolved = resolve_noum(cnn,localsEntry);			
+            if (resolved != nullptr) 
+			{ 
                 return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, stk);
             }
             return QUndefined;
@@ -492,13 +497,35 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 
     if (HBlockIsVerb is_verb = asHBlockIsVerb(q) )
     {
-    return 	query_verb(is_verb, localsEntry , stk);
+       return 	query_verb(is_verb, localsEntry , stk);
 
     }
-    if (HBlockAssertion_is q_assign = asHBlockAssertion_is(q))
-    {
-        return query_is(q_assign->get_obj(), q_assign->get_definition(), localsEntry, stk);
-    }
+		if (HBlockAssertion_isDirectAssign q_dir_assign = asHBlockAssertion_isDirectAssign(q))
+		{
+
+			return query_is(q_dir_assign->get_obj(), q_dir_assign->get_definition(), localsEntry, stk);
+		}
+    
+
+		if ( HBlockAssertion_isNotDirectAssign q_not_dir = asHBlockAssertion_isNotDirectAssign(q))
+		{
+			auto rr =  query_is(q_not_dir->get_obj(), q_not_dir->get_definition(), localsEntry, stk);
+			if (rr == QEquals) return QNotEquals;
+			if (rr == QNotEquals) return QEquals;
+			return QUndefined;
+		}
+
+	//Booleans
+	if (HBlockBooleanAND q_bool_and = asHBlockBooleanAND(q))
+	{
+		auto result_A = query(q_bool_and->input_A, localsEntry, stk);
+		if (result_A == QNotEquals) return  QNotEquals;
+		if (result_A == QUndefined) return  QNotEquals;
+		auto result_B = query(q_bool_and->input_B, localsEntry, stk);		 
+		if (result_B == QNotEquals) return  QNotEquals;
+		if (result_B == QUndefined) return  QNotEquals;
+		return QEquals;
+	}
     return QUndefined;
 
 }

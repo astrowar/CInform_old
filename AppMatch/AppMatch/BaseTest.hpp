@@ -58,4 +58,9 @@ void testeRelation6();
 void testeRelation7();
 
 
+void testeExecute1();
+void testeExecute2();
+void testeExecute3();
+void testeExecute4();
+
 void testeSerialize1();

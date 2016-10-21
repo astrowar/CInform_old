@@ -157,7 +157,7 @@ class CParser
 {
 
 	std::vector<NoumDefinition> nregisters;
-	HBlockInterpreter interpreter;
+	HBlockInterpreter interpreter_inner;
 
 	std::map<string, HBlock > verbToRelation;
 	std::shared_ptr<CPredBooleanOr>  verbList;

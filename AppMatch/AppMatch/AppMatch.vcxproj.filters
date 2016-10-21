@@ -306,5 +306,8 @@
     <ClCompile Include="CBlockCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testes_execute.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -367,12 +367,12 @@ else:
    say  ( text error )
 )";
 		 
-		auto stmt =  parse.parser_text(ss1, true);
+		auto stmt =  parse.parser_text(ss1, ISLOG);
 		interpreter->execute_init( stmt );
 		auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));		 
 		assert(ret_e == QEquals);
 
-		interpreter->execute_now(parse.parser_text(ss2, true));
+		interpreter->execute_now(parse.parser_text(ss2, ISLOG));
 
 		auto ret_e2 = interpreter->query(parse.Parser_Stmt(" x is a  ", ISLOG));
 		assert(ret_e == QEquals);
@@ -420,8 +420,12 @@ int main() {
 		//testeRelation3();
 		//testeRelation4();
 	//	testeSerialize1();
-        testeParser_10();
+        //testeParser_10();
+		testeExecute1();
 		logMessage( ".");
 	}
 	logMessage("");
 }
+
+
+

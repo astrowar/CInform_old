@@ -140,6 +140,15 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 
 }
 
+HBlock CBlockInterpreter::resolve_if_noum(HBlock  n, HRunLocalScope localsEntry)
+{
+	if (auto anoum = asHBlockNoum(n))
+	{
+		return resolve_noum(anoum,localsEntry);
+	}
+	return n;
+}
+
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry) {
 
 
@@ -149,14 +158,17 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 
 	if (localsEntry != nullptr) {
 		auto lnoum = localsEntry->resolve(n->named);
-		if (lnoum != nullptr) return lnoum;
+		if (lnoum != nullptr)
+		{			
+			return resolve_if_noum(lnoum,localsEntry);
+		}
 	}
 
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//logMessage( nn->named << std::endl;
 			if (nn->named == n->named) {
-				return defs->get_definition();
+				return resolve_if_noum(defs->get_definition(), localsEntry);
 			}
 		}
 	}
@@ -165,7 +177,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//logMessage( nn->named << std::endl;
 			if (nnvar->name->named == n->named) {
-				return nnvar;
+				return resolve_if_noum( nnvar, localsEntry);
 			}
 		}
 	}
@@ -173,7 +185,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 	for (auto &adefs : actions_header) {
 
 		if (adefs->named == n->named) {
-			return adefs;
+			return resolve_if_noum(adefs,localsEntry);
 		}
 
 	}
@@ -183,7 +195,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 	//Custom Resolvers
 
 	if (auto kcustom = resolve_system_kind(n->named)) {
-		return kcustom;
+		return resolve_if_noum(kcustom,localsEntry);
 	}
 
 	logError("Fail to " + n->named);

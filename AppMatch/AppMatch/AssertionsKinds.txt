@@ -117,3 +117,13 @@ if (one K) are Mt
 if (two K) are Mt
 if ((four or more) K ) are Mt
 if ((more than six) K ) are Mt
+
+
+
+
+Todo
+
+melhorar os decide , incluindo rather than
+
+
+melhorar o To Action with ... pois isso eh uma parte essencial do sistema

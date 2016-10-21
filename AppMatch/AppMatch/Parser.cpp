@@ -12,7 +12,7 @@
 
 
 CParser::CParser(HBlockInterpreter _interpreter) {
-    interpreter = _interpreter;
+    
     {
         std::list<HPred> alist;
         verbList = std::make_shared<CPredBooleanOr>("verbList", alist);
@@ -432,6 +432,8 @@ HBlockInstanceVariable CParser::CProperty_called(HTerm term) {
 
 HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm> lst) {
     std::vector<HPred> predList;
+
+	logMessage(get_repr(lst));
     predList.push_back(mkHPredAny("Target"));
     predList.push_back(mk_HPredLiteral("has"));
     predList.push_back(undefinedArticle());
@@ -507,7 +509,31 @@ HBlock CParser::parser_stmt(string str,bool dump,ErrorInfo *err)
     return b;
 }
 
+std::vector<std::string> split_string(const std::string& str, const std::string& delimiter)
+{
+	std::vector<std::string> strings;
+
+	std::string::size_type pos = 0;
+	std::string::size_type prev = 0;
+	while ((pos = str.find(delimiter, prev)) != std::string::npos)
+	{
+		strings.push_back(str.substr(prev, pos - prev));
+		prev = pos + 1;
+	}
+
+	// To get the last substring (or only, if delimiter is not found)
+	strings.push_back(str.substr(prev));
+
+	return strings;
+}
+
+
+
 std::vector<string>  split_new_lines(const string &str)   {
+
+	return  split_string(str, "\n");
+	 
+
     auto p1 = str.begin();
     auto p2 = str.begin();
     std::vector<string> sentences;
@@ -540,7 +566,16 @@ std::vector<string>  split_new_lines(const string &str)   {
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
 	HBlock  rblock_stmt = parser_stmt_inner (lst, inner , err);
-	if (err->hasError) return nullptr; 
+	if (rblock_stmt ==nullptr)
+	{
+		logError("|" + vstr+"|");
+		logError("parser Error :" + v );
+	}
+	if (err->hasError)
+	{
+		logError("parser Error :" + v);
+		return nullptr;
+	}
 	return rblock_stmt;
 }
 
@@ -561,18 +596,21 @@ std::vector<string>  split_new_lines(const string &str)   {
 			auto inext = std::next(it);
 			HGroupLines _inner = nullptr;
 			if (inext == inner->lines.end()) _inner = inner->inner;
-			blk = parser_GroupLine(rawLine, _inner, err);
-			if (err->hasError)
-			{
-				logError(err->msg+ " at line "+ std::to_string(inner->lines.front().linenumber)); 
-				return nullptr;
-			}
+			 
 
+			blk = parser_GroupLine(rawLine, _inner, err);
 			if (blk == nullptr)
 			{
 			
 				logError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
 				err->setError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
+				return nullptr;
+			}
+
+			if (err->hasError)
+			{
+				 
+				logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));
 				return nullptr;
 			}
 			retBlocks.push_back(blk);
@@ -583,14 +621,21 @@ std::vector<string>  split_new_lines(const string &str)   {
 	}
 
 	retBlocks = post_process_tokens(retBlocks ,  err );
-	if (err->hasError)
-	{
-		if (inner != nullptr)
-		{
+	if (retBlocks.empty())
+	{	 
+		
+			logError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
 			err->msg = err->msg + "at line " + std::to_string(inner->lines.front().linenumber);
+		
+	}
+	if (retBlocks.empty())
+	{
+		if (err->hasError)
+		{
+			logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));
+			return nullptr;
 		}
 	}
-
 
 	return  std::make_shared< CBlockComandList >(retBlocks);
 

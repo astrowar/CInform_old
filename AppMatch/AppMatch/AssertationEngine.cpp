@@ -311,6 +311,11 @@ bool CBlockInterpreter::assert_it_not_Value(HBlock obj, HBlock value, HRunLocalS
 
 void CBlockInterpreter::execute_init(HBlock p) {
 
+	if (p == nullptr)
+	{
+		logError("empty init block ");
+		return;
+	}
 
 	  HRunLocalScope localsEntry = nullptr;
 
@@ -365,7 +370,7 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		if (assert_it_valuesDefinitions(obj, value,localsEntry)) return;
 		if (assert_it_action(obj, value)) return;
 		 
-
+		p->dump("  ");
 		throw "undefined block";
 	} else if (HBlockAssertion_InstanceVariable ivar = asHBlockAssertion_InstanceVariable(p)) {
 		HBlock obj = ivar->noum;

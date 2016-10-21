@@ -244,6 +244,7 @@
     <ClCompile Include="testes_1.cpp" />
     <ClCompile Include="testes_2.cpp" />
     <ClCompile Include="testes_decide.cpp" />
+    <ClCompile Include="testes_execute.cpp" />
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
   </ItemGroup>

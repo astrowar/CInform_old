@@ -200,6 +200,7 @@ public:
  
 
     HBlockKind resolve_kind(string n);
+	HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry);
 	HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
 
 	HBlock resolve_noum_as_variable(HBlockNoum n);
