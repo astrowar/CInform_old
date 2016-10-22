@@ -59,11 +59,7 @@ void testeParser_2() {
         CParser parse(interpreter);
         string phase_1 = "special book is a kind of book ";
         auto res = parse.Parser_Stmt(phase_1, ISLOG);
-        if (res == nullptr) throw "parse error";
-        if (ISLOG) {
-            res->dump("");
-			logMessage("");
-        }
+
         interpreter->execute_init(res);
     }
 

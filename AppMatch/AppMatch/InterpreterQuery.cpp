@@ -573,9 +573,7 @@ HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
 }
 
 HTerm CBlockInterpreter::execute(HBlock b) {
-    if (b == nullptr) {
-        throw "parse error";
-    }
+    assert(b != nullptr);
 
     if (asHBlockAssertion_is(b) != nullptr)
         return executeAssertion(asHBlockAssertion_is(b));

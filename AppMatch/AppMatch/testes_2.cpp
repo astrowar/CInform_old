@@ -7,20 +7,12 @@ void testeParser_3() {
 	{
 		string phase_1 = "eat  is (an action  applying to (an thing ) )";
 		auto res = parse.Parser_Stmt(phase_1,ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 	{
 		string phase_1 = "(cut ) is    an action   applying to (an thing ) and (a Cutter)   ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 	//std::cout << "Done" << std::endl;
 	return;
@@ -31,41 +23,25 @@ void testeParser_4() {
 	{
 		string phase_1 = "a thing can be discovered or secret";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "( a person ) has a (table-name) called (the opinion-table)";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "the (singing action) has a (text) called the (lyric sung)";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "the torch has a brightness ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 
@@ -84,60 +60,36 @@ void testeParser_5() {
 	{
 		string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 	{
 		string phase_1 = "to decide what (person) is the (brother to/of (sibling - a person)) : (decide on (son of ( fater of sibling) )  ) ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "to decide if X is greater than Y : (decide on ( X > Y) )    ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "to decide if X is sucessor of Y : (decide on ( X   == Y + 1) )    ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "to decide what number  is sucessor of Y : (decide on (  Y + 1) )    ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 
 	{
 		string phase_1 = "to decide what (indexed text) is ((T - text) doubled) : (decide on T T ) ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
 	}
 }
 

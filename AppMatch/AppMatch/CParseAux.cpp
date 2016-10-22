@@ -77,7 +77,9 @@ string CtoString(CTerm  *value)
 			return CtoString(lst);
 		}
 	}
-	throw "error on Term";
+
+    assert(false);
+    return "";
 
 }
 

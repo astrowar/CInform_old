@@ -22,7 +22,7 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 				return AdjetiveMatch;
 				//return std::make_shared<CBlockMatchDirectIs>(c1, AdjetiveMatch);
 				//return std::make_shared<CBlockMatch>(body);
-				throw "un Implmeneted";
+
 				return nullptr;
 			}
 		}
@@ -53,7 +53,8 @@ HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
 				//return AdjetiveMatch;
 				return std::make_shared<CBlockMatchIsVerb>(vrepr, c1, AdjetiveMatch);
 				//return std::make_shared<CBlockMatch>(body);
-				throw "un Implmeneted";
+
+
 				return nullptr;
 			}
 		}
@@ -119,7 +120,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
             auto r =  res.matchs["AValue"].get();
 			logError(r->repr());
            // return std::make_shared<CBlockMatch>(AValue);
-			throw "un Implmeneted";
+
 			return nullptr;
         }
     }

@@ -71,7 +71,7 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 		if (queryIsVerbToRelation(dct_w->queryToMatch))
 		{
 
-			throw "Verb is Assigned to an static Relation ";
+			return false;
 		}
 
 		decides_what.push_back(dct_w);
@@ -83,7 +83,7 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 	{
 		if (queryIsVerbToRelation(dct_if->queryToMatch))
 		{
-			throw "Verb is Assigned to an static Relation ";
+			return false;
 		}
 		decides_if.push_back(dct_if);
 		return true;
@@ -93,7 +93,7 @@ bool CBlockInterpreter::assert_decideBlock(HBlockToDecide dct) {
 	{
 		if (queryIsVerbToRelation(dct_noum1->queryToMatch))
 		{
-			throw "Verb is Assigned to an static Relation ";
+			return false;
 		}
 
 		decides_noum1.push_back(dct_noum1);
@@ -353,10 +353,14 @@ void CBlockInterpreter::execute_init(HBlock p) {
 	else if (HBlockAssertion_isVariable  vGlobal  = asHBlockAssertion_isVariable(p)) {
 
 
-		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) return;
+		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) {
+			return;
+		}
 		else
 		{
-			throw "undefined variable block";
+			//throw error
+			logError("Undefined error");
+			return ;
 		}
 	}
 
@@ -369,9 +373,11 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		if (assert_it_instance(obj, value,localsEntry)) return;
 		if (assert_it_valuesDefinitions(obj, value,localsEntry)) return;
 		if (assert_it_action(obj, value)) return;
-		 
+
+		logError("Undefined error");
 		p->dump("  ");
-		throw "undefined block";
+		//throw "undefined block";
+		return ;
 	} else if (HBlockAssertion_InstanceVariable ivar = asHBlockAssertion_InstanceVariable(p)) {
 		HBlock obj = ivar->noum;
 		HBlock value = ivar->instance_variable;

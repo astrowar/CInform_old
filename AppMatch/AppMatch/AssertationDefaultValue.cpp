@@ -50,7 +50,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 	}
 	if (HBlockInstance prop_obj_inst = asHBlockInstance(prop->obj))
 	{
-		throw "cant assign Ususally to Instances";
+		logError( "cant assign Ususally to Instances");
 		return false;
 	}
 
@@ -82,7 +82,7 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLoc
         }
         return false;
     } else if (HBlockInstance ibase = asHBlockInstance(obj)) {
-        throw "cant assign Ususally to Instances";
+        logError( "cant assign Ususally to Instances");
     } else if (HBlockProperty pbase = asHBlockProperty(obj)) {
 
 		return assert_property_defaultValue(pbase, value,localsEntry);

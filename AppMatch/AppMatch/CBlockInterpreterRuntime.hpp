@@ -95,7 +95,9 @@ class CBlockInterpreter {
 	HBlockInstance new_Instance(string named, HBlockKind kind);
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
-	bool setVerb(string cs, HBlock c_block, HBlock value);
+	bool exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry);
+	bool  setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry );
+	bool setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry);
 	QueryResul query_relation_instance(HBlockRelationInstance rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
@@ -219,7 +221,7 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
-	bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
+	//bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
 	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
 	bool execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
 	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);

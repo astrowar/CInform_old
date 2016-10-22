@@ -11,8 +11,7 @@ void testeParser_6()//kind of value
 	{
 		string phase_1 = "a limb is a kind of value";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		 
+
 		interpreter->execute_init(res);
 	}
 
@@ -26,19 +25,15 @@ void testeParser_6()//kind of value
 	{
 		string phase_1 = "an aspect ratio is a kind of value";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		 
+
 		interpreter->execute_init(res);
 	}
 
 	{
 		string phase_1 = "   blue, green, yellow  and red are color ";
 		auto res = parse.Parser_Stmt(phase_1, ISLOG);
-		if (res == nullptr) throw "parse error";
-		if (ISLOG) {
-			res->dump("");
-			logMessage("");
-		}
+
+
 		interpreter->execute_init(res);
 	}
 
@@ -170,61 +165,37 @@ void testeParser_21() {
 		{
 			string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 
 		{
 			string phase_1 = "coin is stuck to box";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 
 		{
 			string phase_1 = "the verb ( visible by ) implies a visibility relation";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 
 		{
 			string phase_1 = "definition : (a thing is visible by other) if ( ( it is stuck to the noun) and (it is not within the location ) )";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 
 		{
 			string phase_1 = "definition : (a thing is in same room ) if ( ( location of it  ) is ( location of player ) )";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 
 		{
 			string phase_1 = "definition : (a thing is hide ) if ( it is not visible by player ) and ( it is in same room )";
 			auto res = parse.Parser_Stmt(phase_1, ISLOG);
-			if (res == nullptr) throw "parse error";
-			if (ISLOG) {
-				res->dump("");
-				logMessage("");
-			}
+
 		}
 		{
 			string phase_1 = "definition : (a thing is in ( place : location )  ) if ( location of it is place ) ";
@@ -421,7 +392,7 @@ int main() {
 		//testeRelation4();
 	//	testeSerialize1();
         //testeParser_10();
-		testeExecute1();
+		testeExecute2();
 		logMessage( ".");
 	}
 	logMessage("");

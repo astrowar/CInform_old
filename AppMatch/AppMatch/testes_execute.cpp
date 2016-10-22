@@ -30,6 +30,11 @@ limbo is a room
 location is a room that varies
 location is hall
 
+Connection relates (a room ) to  ( a room )
+the verb connect   implies a  Connection relation
+
+hall connect garden
+
 )";
 	//definition : ( ( route called PATH ) points to ( room called R ) ) if ( ( destination of PATH ) is R )
 	string ss2 =
@@ -69,6 +74,46 @@ else:
 	interpreter->execute_now(parse.Parser_Stmt("location is garden ", ISLOG));
 	auto ret_points_garden = interpreter->query(parse.Parser_Stmt("door is viable exit  ", ISLOG));
 	assert(ret_points_garden == QNotEquals);
+
+	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
+	assert(ret_connect_init == QEquals);
+
+	return;
+}
+
+
+void testeExecute2()
+{
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	string ss1 =
+			R"(
+
+room is a kind
+garden is a room
+hall is a room
+
+
+
+Connection relates ( a room ) to  ( a room )
+the verb connect   implies a  Connection relation
+
+hall connect garden
+
+)";
+
+
+	auto stmt = parse.parser_text(ss1, ISLOG);
+
+	interpreter->execute_init(stmt);
+
+
+	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
+	assert(ret_connect_init == QEquals);
+
+	auto ret_connect_b = interpreter->query(parse.Parser_Stmt("garden connect hall  ", ISLOG));
+	assert(ret_connect_b == QNotEquals  );
 
 	return;
 }

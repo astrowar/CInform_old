@@ -29,7 +29,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
             bup = ktv;
         } else {
 			logError("What ?? " + baseClasseName);
-            throw "Error on derive a kind";
+            return pair<HBlockKind, HBlockKind>(nullptr, nullptr);;
         }
 
     }

@@ -4,13 +4,92 @@
 #include "CResultMatch.hpp"
 #include "sharedCast.hpp"
 
-using namespace std; 
+using namespace std;
 
 
-
-bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
+bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry )
 {
-	
+    for (auto &rr : relInstances)
+    {
+        if (rr->relation->named == relationNamed)
+        {
+            {
+                QueryStack stk;
+                auto r1 = query_is(rr->value1, c_block, localsEntry, stk );
+                if (r1 != QEquals) continue;
+
+                auto r2 = query_is(rr->value2, value, localsEntry, stk);
+                if (r2 != QEquals) continue;
+
+                return true;
+            }
+        }
+    }
+//verifica com simetria
+    for (auto &rr : relInstances)
+    {
+        if(rr->relation->is_symetric()) {
+            if (rr->relation->named == relationNamed) {
+                {
+                    QueryStack stk;
+                    auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
+                    if (r1 != QEquals) continue;
+
+                    auto r2 = query_is(rr->value1, value, localsEntry, stk);
+                    if (r2 != QEquals) continue;
+
+                    return true;
+                }
+            }
+        }
+    }
+    return false ;
+}
+bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry )
+        {
+
+                for (auto & rv : verbRelationAssoc)
+                {
+                    if (rv.first == vb)
+                    {
+                        //tem uma relacao com esse verbo
+
+                        auto relation_name = rv.second->relationNoum->named;
+                        if (relation_name != "dynamic")
+                        {
+                            auto rel_find = this->staticRelation.find(relation_name);
+                            if (rel_find != this->staticRelation.end())
+                            {
+                                HBlockRelationBase rel = rel_find->second;
+
+                                bool ex = exist_relation( relation_name, c_block, value , localsEntry );
+                                if (ex == false )
+                                {
+//bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+
+                                    set_relation(rel, c_block, value, localsEntry );
+                                }
+                                return true ;
+                            }
+
+                        }
+                        else {
+                            return false; //relacoes dinamicas nao podem ser SETADAS
+                        }
+                    }
+
+                }
+            return false;
+        }
+
+bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry)
+{
+
+    bool q = setVerbRelation(vb, c_block, value, localsEntry);
+    if (q) return true ;
+
+
+
 	auto alist = verbAssertation.find(vb);
 
 	if (alist == verbAssertation.end())
@@ -18,6 +97,7 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value)
 		logMessage("verb  |" + vb + "| is not defined");
 		return false;
 	}
+
 
 	{
 		std::list<HBlockAssertion_is> &decList = alist->second;
@@ -269,7 +349,7 @@ bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock ob
 			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry);
 		}		
 	}
-	return setVerb(verbNamed, obj, value);
+	return setVerb(verbNamed, obj, value,localsEntry);
 
 	return false;
 }
@@ -283,9 +363,10 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 	//verifica se ja existe esse verbo
 
 	auto vfind = verbAssertation.find(vstr);
-	if (vfind != verbAssertation.end() )
+	if  (vfind != verbAssertation.end() )
 	{
-		throw  "Verb is Assigned";
+		//throw  "Verb is Assigned";
+		logError( "Verb is Assigned");
 		return false;
 	}
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(AppMatch)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14  -stdlib=libc++ ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fno-exceptions -fno-rtti  -stdlib=libc++ ")
 
 include_directories( AppMatch/AppMatch/include/ )
 
@@ -36,6 +36,8 @@ set(SOURCE_FILES
         AppMatch/AppMatch/testeLista.cpp
         AppMatch/AppMatch/testes_1.cpp
         AppMatch/AppMatch/testes_2.cpp
+        AppMatch/AppMatch/testes_execute.cpp
+
 
         AppMatch/AppMatch/testes_decide.cpp
         AppMatch/AppMatch/teste_action.cpp
@@ -67,6 +69,6 @@ set(SOURCE_FILES
 
         AppMatch/AppMatch/CDataMananger.cpp
         AppMatch/AppMatch/Parse_TokensGroup.cpp
-        AppMatch/AppMatch/testes_3.cpp AppMatch/AppMatch/Parser_ControlFlux.cpp)
+         AppMatch/AppMatch/Parser_ControlFlux.cpp)
 
 add_executable(apx ${SOURCE_FILES}   )
