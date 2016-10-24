@@ -41,6 +41,11 @@ bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope loca
 					return true;
 				}
 			}
+			else
+			{
+				//verbis not set to an relation
+				logError("verb "+ vverb->verb + " not set to an relation");
+			}
 		}
 
 	}

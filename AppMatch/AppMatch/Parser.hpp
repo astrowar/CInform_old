@@ -201,7 +201,7 @@ public:
 
  
 	 
-	HBlock parseAssertion_isDecide(std::vector<HTerm> term);
+	HBlock parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
 	HBlock parserBoolean(  HTerm  term);
 	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
 	 
@@ -228,7 +228,7 @@ public:
 	HBlock parseAssertionFirstTerm_Compose(HTerm term);
 	HBlock parseAssertionFirstTerm(HTerm match);
 	HBlock parseAssertionEnumSecondTerm(HTerm term);
-	HBlock STMT_Decide_Assertion(std::vector<HTerm> lst);
+	HBlock STMT_Decide_Assertion(std::vector<HTerm> lst,   HGroupLines inner, ErrorInfo *err);
 	
 	
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);

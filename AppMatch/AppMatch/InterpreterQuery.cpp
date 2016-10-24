@@ -7,6 +7,7 @@
 #include "CResultMatch.hpp"
 #include "dynamicCast.hpp"
 #include "sharedCast.hpp"
+#include <cassert>
 
 using namespace std;
 
@@ -202,7 +203,9 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     if (HBlockNoum nnoum = asHBlockNoum(c_block1))
     {
         HBlock resolved = resolve_noum(nnoum,localsEntry);
-        if (resolved) {
+        if (resolved) 
+		{
+
             return query_is(c_block, resolved,localsEntry, stk);
         }
     }

@@ -72,6 +72,10 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 		if (is_nothing(noum_2  ) == false)
 		{
 			auto value_2 = resolve_noum(noum_2, localsEntry);
+			if (value_2 == nullptr)
+			{
+				logMessage("unable to resolve :" + noum_2->named);
+			}
 			relInstances.push_back(std::make_shared<CBlockRelationInstance>(relation, n1, value_2));
 			 
 		}

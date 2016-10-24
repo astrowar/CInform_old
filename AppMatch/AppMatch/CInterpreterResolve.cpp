@@ -164,10 +164,23 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		}
 	}
 
+	//eh uma instancia de alguem ??
+	for (auto &a_inst : instancias) 
+	{
+		 
+		if (a_inst->named == n->named)
+		{
+			return a_inst;
+		}
+	}
+
+	
+
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-			//logMessage( nn->named << std::endl;
-			if (nn->named == n->named) {
+			//logMessage("assertation named : " + nn->named );
+			if (nn->named == n->named) 
+			{
 				return resolve_if_noum(defs->get_definition(), localsEntry);
 			}
 		}

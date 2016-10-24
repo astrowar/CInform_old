@@ -40,6 +40,11 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 	HBlockMatch match =   (dct->queryToMatch);
 
 	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
+	printf("\n");
+	match->dump("  ");
+	printf("Match for \n");
+	c_block->dump("  ");
+
 	if (result.hasMatch ) 
 	{
  

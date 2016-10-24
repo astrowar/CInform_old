@@ -156,10 +156,10 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		{
 			predList.push_back(mkHPredAny("relationName"));
 			predList.push_back(mk_HPredLiteral("relates"));
-			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mk_HPredLiteral_OR("various",{"various","many"}));
 			predList.push_back(mkHPredAny("K1"));
 			predList.push_back(mk_HPredLiteral("to"));
-			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mk_HPredLiteral_OR("various", { "various","many" }));
 			predList.push_back(mkHPredAny("K2"));
 		}
 		
@@ -189,7 +189,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 		{
 			predList.push_back(mkHPredAny("relationName"));
 			predList.push_back(mk_HPredLiteral("relates"));
-			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mk_HPredLiteral_OR("various", { "various","many" }));
 			predList.push_back(mkHPredAny("K1"));
 			predList.push_back(mk_HPredLiteral("to"));
 			predList.push_back(mkHPredAny("K2"));
@@ -220,7 +220,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 			predList.push_back(mk_HPredLiteral("relates"));
 			predList.push_back(mkHPredAny("K1"));
 			predList.push_back(mk_HPredLiteral("to"));
-			predList.push_back(mk_HPredLiteral("various"));
+			predList.push_back(mk_HPredLiteral_OR("various", { "various","many" }));
 			predList.push_back(mkHPredAny("K2"));
 		}
 

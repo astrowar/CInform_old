@@ -139,9 +139,7 @@ void testeParser_5d() {
 	interpreter->execute_init(parse.Parser_Stmt("apple is  lit  ", ISLOG));
 	//it->ei->p.ps()
 	//interpreter->execute_init(parse.Parser_Stmt("the verb ( in same ) implies a equality relation ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("the verb ( in same ) implies a dynamic relation ", ISLOG));
-	 
-
+	interpreter->execute_init(parse.Parser_Stmt("the verb ( in same ) implies a dynamic relation ", ISLOG)); 
 	interpreter->execute_init(parse.Parser_Stmt("definition : ( (lit thing called T ) is in same ( room called R ) ) if ( (location of T ) is R )", ISLOG));
 
 	//interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is oposite of ( thing called X ) :  X   ", ISLOG));
@@ -249,4 +247,19 @@ void testeParser_5g() {
 	interpreter->execute_init(parse.Parser_Stmt("  the liquid are water, milk, lemonade and (iced tea ) ", ISLOG));
 
 	return;
+}
+
+
+void testeParser_5_all()
+{
+	testeParser_5b();
+	testeParser_5c();
+	testeParser_5d();
+	testeParser_5e();
+	testeParser_5f();
+	testeParser_5g();
+
+	testeParser_7a();
+	testeParser_7b();
+	testeParser_7c();
 }

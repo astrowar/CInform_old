@@ -131,50 +131,97 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
 
 
 
-HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term) {
+HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) {
 
    
-
-    {
-		static std::vector<HPred> predList = {};
-		if (predList.empty())
+	if (inner == nullptr)
+	{
 		{
-			predList.push_back(mk_HPredLiteral("to"));
-			predList.push_back(mk_HPredLiteral("decide"));
-			predList.push_back(mkHPredAny("Match"));
-			predList.push_back(mk_HPredLiteral(":"));
-			predList.push_back(mkHPredAny("RemainBody"));
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("to"));
+				predList.push_back(mk_HPredLiteral("decide"));
+				predList.push_back(mkHPredAny("Match"));
+				predList.push_back(mk_HPredLiteral(":"));
+				predList.push_back(mkHPredAny("RemainBody"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals) {
+				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
+				if (a_match)
+				{
+					logMessage((res.matchs["RemainBody"]->repr()));
+					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					return std::make_shared<CBlockToDecideIf>(a_match, body);
+				}
+
+				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
+				if (vb_match)
+				{
+					logMessage((res.matchs["RemainBody"]->repr()));
+					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
+				}
+
+
+				HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
+				if (w_match)
+				{
+					logMessage((res.matchs["RemainBody"]->repr()));
+					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					return std::make_shared<CBlockToDecideWhat>(w_match, body);
+				}
+
+
+			}
 		}
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
-			if (a_match)
+	}
+
+	if (inner != nullptr)
+	{
+		//Com bloco inner 
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
 			{
-				logMessage((res.matchs["RemainBody"]->repr()));
-				HBlock body = parser_expression(res.matchs["RemainBody"]);
-				return std::make_shared<CBlockToDecideIf>(a_match, body);
+				predList.push_back(mk_HPredLiteral("to"));
+				predList.push_back(mk_HPredLiteral("decide"));
+				predList.push_back(mkHPredAny("Match"));
+				predList.push_back(mk_HPredLiteral(":"));
+
 			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals) {
+				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
+				if (a_match)
+				{
+					HBlockComandList body = parser_stmt_inner(inner, err);
+					return std::make_shared<CBlockToDecideIf>(a_match, body);
+				}
 
-			HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
-			if (vb_match)
-			{
-				logMessage((res.matchs["RemainBody"]->repr()));
-				HBlock body = parser_expression(res.matchs["RemainBody"]);
-				return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
+				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
+				if (vb_match)
+				{
+
+					HBlockComandList body = parser_stmt_inner(inner, err);
+					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
+				}
+
+
+				HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
+				if (w_match)
+				{
+
+					HBlockComandList body = parser_stmt_inner(inner, err);
+					return std::make_shared<CBlockToDecideWhat>(w_match, body);
+				}
+
+
 			}
+		}
+	}
 
-
-			HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
-			if (w_match)
-			{
-				logMessage((res.matchs["RemainBody"]->repr()));
-				HBlock body = parser_expression(res.matchs["RemainBody"]);
-				return std::make_shared<CBlockToDecideWhat>(w_match, body);
-			}
-
-
-        }
-    }
 
     return nullptr;
 }

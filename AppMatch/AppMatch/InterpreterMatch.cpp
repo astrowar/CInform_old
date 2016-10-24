@@ -39,7 +39,36 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 	return rAccm;
 
 }
+
+
+HBlockList getCompoundNoumAsList(HBlockNoum noum)
+{
+	std::list<HBlock> noums;
+	auto str = noum->named;
+	const std::string delimiter = " ";
+	//std::vector<std::string> split_string(const std::string& str, const std::string& delimiter)
+	{
+		 
+
+		std::string::size_type pos = 0;
+		std::string::size_type prev = 0;
+		while ((pos = str.find(delimiter, prev)) != std::string::npos)
+		{
+			string ssi = str.substr(prev, pos - prev);
+			noums.push_back(make_shared<CBlockNoum>(ssi));
+			prev = pos + 1;
+		}
+
+		// To get the last substring (or only, if delimiter is not found)
+		string sss = str.substr(prev);
+		noums.push_back(make_shared<CBlockNoum>(sss));
+
+	 
+	}
+
+	return  make_shared<CBlockList>(noums);
  
+}
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
 {
 	if (auto   mAtom = asHBlockMatchNoum(M))
@@ -103,10 +132,14 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		{
 			return MatchList(mList, vList,localsEntry ,stk);
 		}
-		else
+		if (HBlockNoum   noumCompound = asHBlockNoum(value))
 		{
-			return CResultMatch(false);
-		}
+			HBlockList   vNoumList = getCompoundNoumAsList(noumCompound);
+			return MatchList(mList, vNoumList, localsEntry, stk);
+		}		
+		
+		return CResultMatch(false);
+		
 	}
 
 	if (HBlockMatchAND   mAnnd = asHBlockMatchAND(M))

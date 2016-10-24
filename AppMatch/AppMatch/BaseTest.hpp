@@ -33,6 +33,7 @@ void testeParser_5d();
 void testeParser_5e();
 void testeParser_5f();
 void testeParser_5g();
+void testeParser_5_all();
 
 void testeParser_6();
 
@@ -56,7 +57,7 @@ void testeRelation4();
 void testeRelation5();
 void testeRelation6();
 void testeRelation7();
-
+void testeRelation_all();
 
 void testeExecute1();
 void testeExecute2();

@@ -195,7 +195,35 @@ HBlock   CParser::parser_control_end(std::vector<HTerm> term, HGroupLines inner,
 
 HBlock  CParser::parser_control_if(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) 
 {
+	if(inner == nullptr)
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+			predList.push_back(mk_HPredLiteral("if"));
+			predList.push_back(mkHPredAny("Condition"));
+			predList.push_back(mk_HPredLiteral(":"));
+			predList.push_back(mkHPredAny("body"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
 
+
+			HBlock ACondition = parser_if_condition(res.matchs["Condition"], inner, err);
+
+			HBlock ABody = parser_stmt(res.matchs["body"], nullptr, err); // aqui tem erro
+			if (ABody == nullptr  )
+			{
+				logError(res.matchs["body"]->repr());
+				err->setError("error on body   ");
+				return nullptr;
+			} 
+			auto control_if = std::make_shared<CBlockControlIF >(ACondition, ABody, nullptr);
+			return control_if;
+		}
+
+	}
+	
     {
 		static std::vector<HPred> predList = {};
 		if (predList.empty()) {
@@ -265,6 +293,9 @@ std::list<HBlockControlSelectItem> CParser::get_CBlockControlSelectItem(HBlockCo
 
 HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
 {
+	 
+
+
 	{
 		static std::vector<HPred> predList = {};
 		if (predList.empty()) {

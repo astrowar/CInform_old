@@ -125,7 +125,7 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, Err
     HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst)); //To define ...
     if (rblock_definition_1 != nullptr) return rblock_definition_1;
 
-    HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst));
+    HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst,inner, err));
     if (rblock_decide_1 != nullptr) return rblock_decide_1;
   
 

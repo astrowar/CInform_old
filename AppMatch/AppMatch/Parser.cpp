@@ -303,8 +303,9 @@ HBlock CParser::parseAssertionEnumSecondTerm(HTerm term) {
     return c_list;
 }
 
-HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm> lst) {
-    HBlock assert_decide = parseAssertion_isDecide(lst);
+HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo *err)
+{
+    HBlock assert_decide = parseAssertion_isDecide(lst,inner,err);
     if (assert_decide != nullptr) {
         return assert_decide;
     }

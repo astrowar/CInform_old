@@ -193,11 +193,36 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
 
 
 
-bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
-    if (HBlockNoum nvalue = asHBlockNoum(value)) {
-        if (HBlockNoum nobj = asHBlockNoum(obj)) {
-            HBlock nn = resolve_noum(nvalue,localsEntry);
-            if (HBlockKind k = asHBlockKind(nn)) {
+bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLocalScope localsEntry) {
+
+	if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
+	{
+		HBlock bbase = resolve_noum(nbaseKind, localsEntry);
+		if (bbase != nullptr)
+		{
+			return assert_it_instance(obj, bbase, localsEntry);
+		}
+		else
+		{
+			logError("Kind not found " + nbaseKind->named);
+			return false;
+		}
+	}
+
+	if (HBlockList nobjList = asHBlockList(obj))
+	{
+		for (auto &e : nobjList->lista) {
+			assert_it_instance(e, baseKind, localsEntry);
+		}
+		return true;
+	}
+    
+ 
+        if (HBlockNoum nobj = asHBlockNoum(obj)) 
+		{
+           
+            if (HBlockKind k = asHBlockKind(baseKind)) 
+			{
                 //HBlockInstance binstance = make_shared<CBlockInstance>(nobj->named);
 
                 HBlockInstance binstance = new_Instance(nobj->named, k);
@@ -207,21 +232,16 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock value, HRunLocalSc
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
                  
-				logMessage("new Instance add");
+				logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
                 return true;
             }
-            return false;
+           
         }
 
-            //Many instances
-        else if (HBlockList nobjList = asHBlockList(obj)) {
-            for (auto &e : nobjList->lista) {
-                assert_it_instance(e, value,localsEntry);
-            }
-            return true;
-        }
+          
+        
 
-    }
+    
 
     return false;
 }
@@ -236,8 +256,7 @@ bool CBlockInterpreter::assert_it_valuesDefinitions(HBlock c_block, HBlock value
         {
             // nn eh um value Kind ??
             HBlock nobj = resolve_noum(nn,localsEntry);
-            if (HBlockKind nkind = asHBlockKind(
-                    nobj)) //mas na verdade o primeiro eh um kind ja definido
+            if (HBlockKind nkind = asHBlockKind( nobj)) //mas na verdade o primeiro eh um kind ja definido
             {
                 for (auto &v : vlist->lista) {
                     assert_it_instance(v, nkind,localsEntry);

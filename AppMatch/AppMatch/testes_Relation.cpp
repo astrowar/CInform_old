@@ -83,7 +83,7 @@ void testeRelation2() {
 	auto ret_false_a = interpreter->query(parse.Parser_Stmt(" box contains key ", ISLOG));
 	auto ret_true_b = interpreter->query(parse.Parser_Stmt(" box contains book ", ISLOG));
 
-	assert(ret_false_a == QEquals);
+	assert(ret_false_a == QNotEquals);
 	assert(ret_true_b == QEquals);
 	return;
 }
@@ -171,4 +171,12 @@ void testeRelation4() {
 	return;
 
 
+}
+
+void testeRelation_all()
+{
+	testeRelation1(); 
+	testeRelation2(); 
+	testeRelation3(); 
+	testeRelation4(); 
 }
