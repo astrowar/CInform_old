@@ -114,21 +114,15 @@ void testeParser_7d()// relation When
     "Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X",
         "Nearness relates (a room called A) to (a room called B) when the number of moves from B to A is less than 3",
         "Materiality relates (a thing called X) to (a material called Y) when Y is the material of X",
-        "Divisibility relates (a numbercalled N) to (a number called M) when remainder after dividing M by N is 0"
+        "Divisibility relates (a number called N) to (a number called M) when remainder after dividing M by N is 0"
     });
     for (auto s : slist)
     {
         logMessage(s);
-        //auto p = parse.Parser_Stmt(s, ISLOG);
+         auto p = parse.Parser_Stmt(s, ISLOG);
 
     }
-     
-
- 
-    //interpreter->execute_init(parse.Parser_Stmt("language is a kind of value ", ISLOG));
-    //interpreter->execute_init(parse.Parser_Stmt(" language are English, Zubian and Perplexish ", ISLOG));
-    //auto qa =   interpreter->query(parse.Parser_Stmt(" English is a  language  ", ISLOG));
-    //return;
+      
 
     string slong = R"(
 person is an kind
@@ -136,7 +130,7 @@ woman is a kind of person
 Zora is an woman
 language is a kind of value
 language are English, Zubian and Perplexish 
-speaking relates ( a person ) to various (  language )
+speaking relates ( a person ) to   various  (  language )
 the verb  speak  implies the speaking relation
 Zora speak English
 Zora speak Zubian

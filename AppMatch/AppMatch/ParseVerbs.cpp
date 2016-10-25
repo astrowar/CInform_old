@@ -52,10 +52,15 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
-            HBlock n2 = parser_expression(res.matchs["N2"]);
-			auto vrepr = CtoString( expandBract(res.matchs[verbList->named]) );
-	        
-            return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+			if (n1 != nullptr)
+			{
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				}
+			}
 
         }
     }
@@ -70,9 +75,15 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
-            HBlock n2 = parser_expression(res.matchs["N2"]);
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-            return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+			if (n1 != nullptr)
+			{
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				}
+			}
 
         }
 	 

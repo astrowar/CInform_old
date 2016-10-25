@@ -121,10 +121,11 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 	QueryResul query_2 = QUndefined;
 	if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
 	{
-		if (QEquals == query_is(value, rr->value2, localsEntry, stk))
+		if (QEquals == query_is(rr->value2 , value,  localsEntry, stk))
 		{
 			return QEquals;
 		}
+		 
 		query_2 = QNotEquals;
 		if (rr->relation->is_various_noum2() == false)
 		{
@@ -133,7 +134,7 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 	}
 	else if (QUndefined == query_2)
 	{
-		if (QEquals == query_is(value, rr->value2, localsEntry, stk))
+		if (QEquals == query_is(rr->value2 , value,  localsEntry, stk))
 		{
 			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
 			{
@@ -149,7 +150,7 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 
 	if (rr->relation->is_symetric()) // Trocado
 	{
-		if (QEquals == query_is(c_block, rr->value2, localsEntry, stk))
+		if (QEquals == query_is(rr->value2 , c_block,  localsEntry, stk))
 		{
 			if (QEquals == query_is(value, rr->value1, localsEntry, stk))
 			{

@@ -209,12 +209,54 @@ HBlockMatchAND asHBlockMatchAND(HBlock c )
         return std::static_pointer_cast<CBlockMatchAND>(c);
    return nullptr;
 } 
+
+HBlockMatch asHBlockMatch(HBlock c)
+{
+	if (c == nullptr) return nullptr;
+	auto t = c->type();
+
+	if (t == BlockType::BlockMatchAny ||
+		t == BlockType::BlockMatchAND ||
+		t == BlockType::BlockMatchOR ||
+		t == BlockType::BlockMatchBlock ||
+		t == BlockType::BlockMatchDirectIs ||
+		t == BlockType::BlockMatchDirectIsNot ||
+		t == BlockType::BlockMatchIsNotVerb ||
+		t == BlockType::BlockMatchIsVerb ||
+		t == BlockType::BlockMatchKind ||
+		t == BlockType::BlockMatchList ||
+		t == BlockType::BlockMatchNamed ||
+		t == BlockType::BlockMatchNoum ||
+		t == BlockType::BlockMatchWhich ||
+		t == BlockType::BlockMatchWhichNot ||
+		t == BlockType::BlockMatchNoum ||
+		t == BlockType::BlockMatchProperty)
+		return std::static_pointer_cast<CBlockMatch>(c);
+	return nullptr;
+}
+
 HBlockMatchDirectIs asHBlockMatchDirectIs(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockMatchDirectIs)
         return std::static_pointer_cast<CBlockMatchDirectIs>(c);
    return nullptr;
 } 
+
+HBlockMatchWhich asHBlockMatchWhich(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockMatchWhich)
+		return std::static_pointer_cast<CBlockMatchWhich>(c);
+	return nullptr;
+}
+
+HBlockMatchWhichNot asHBlockMatchWhichNot(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockMatchWhichNot)
+		return std::static_pointer_cast<CBlockMatchWhichNot>(c);
+	return nullptr;
+}
+
+
 HBlockMatchIsVerb asHBlockMatchIsVerb(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockMatchIsVerb)

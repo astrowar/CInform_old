@@ -69,6 +69,12 @@ HBlockList getCompoundNoumAsList(HBlockNoum noum)
 	return  make_shared<CBlockList>(noums);
  
 }
+
+bool is_article(std::string s)
+{
+	if (s == "a" || s == "an" || s == "the" || s == "some") return true;
+	return false;
+}
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
 {
 	if (auto   mAtom = asHBlockMatchNoum(M))
@@ -87,10 +93,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				return CResultMatch(rcc == QEquals);
 				 
 			}
-	}
-
-	if (auto  mAtom = asHBlockMatchNoum(M))
-	{
+ 
+	 
 		if (auto inner =  asHBlockNoum(mAtom->inner))
 		{
 			if (auto vNoumm =  asHBlockNoum(value))
@@ -126,6 +130,29 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		return mres;
 	}
 
+	//Noum composto que forma um noum conecido no sistema
+	if (HBlockMatchList   mList = asHBlockMatchList(M))
+	{
+		bool is_compound_noum = true ;
+		for (auto m : mList->matchList) {if (m->type() != BlockMatchNoum)is_compound_noum = false;}
+		if (is_compound_noum)
+		{			
+			HBlockNoum noum  = make_shared<CBlockNoum>("");
+			for (auto m : mList->matchList)
+			{
+				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
+				if (is_article(cnoum->inner->named)) continue;
+				if (noum->named == "") 
+				    { noum->named = cnoum->inner->named; }
+				else 
+				    { noum->named = noum->named + " " + cnoum->inner->named; }
+			}
+
+			auto rr = query_is(value, noum, localsEntry, stk);
+			if (rr == QEquals)   return CResultMatch( true );
+		}
+	}
+
 	if (HBlockMatchList   mList = asHBlockMatchList(M))
 	{
 		if (HBlockList   vList = asHBlockList(value))
@@ -136,11 +163,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		{
 			HBlockList   vNoumList = getCompoundNoumAsList(noumCompound);
 			return MatchList(mList, vNoumList, localsEntry, stk);
-		}		
-		
+		}
 		return CResultMatch(false);
-		
 	}
+
+	 
+
 
 	if (HBlockMatchAND   mAnnd = asHBlockMatchAND(M))
 	{
@@ -179,24 +207,29 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	// Customized verb
 	if (HBlockMatchIsVerb    mVerb = asHBlockMatchIsVerb(M))
 	{
-		if (HBlockIsVerb    vVerb = asHBlockIsVerb(value))
 		{
-			CResultMatch mres = Match(mVerb->obj, vVerb->n1, localsEntry, stk);
-			if (mres.hasMatch)
+			if (HBlockIsVerb    vVerb = asHBlockIsVerb(value))
 			{
-				CResultMatch mres_k = Match(mVerb->value, vVerb->n2 , localsEntry,stk);
-				if (mres_k.hasMatch)
+				CResultMatch mres = Match(mVerb->obj, vVerb->n1, localsEntry, stk);
+				if (mres.hasMatch)
 				{
-					mres.append(mres_k);
-					return mres;
+					CResultMatch mres_k = Match(mVerb->value, vVerb->n2, localsEntry, stk);
+					if (mres_k.hasMatch)
+					{
+						mres.append(mres_k);
+						return mres;
+					}
 				}
-			}
-			else
-			{
-				return CResultMatch(false);
-			}
+				else
+				{
+					return CResultMatch(false);
+				}
 
+			}
 		}
+		 
+		 
+		 
 	}
 
 
@@ -229,6 +262,61 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		}
 		 
 	 
+
+	if (HBlockMatchWhich   mWhich = asHBlockMatchWhich(M))
+	{
+		{
+			CResultMatch mres = Match(mWhich->obj, value, localsEntry, stk);
+			if (mres.hasMatch)
+			{
+				if (mWhich->verb == "is")
+				{
+					//auto vv = make_shared<CBlockAssertion_isDirectAssign>( value, mWhich->value);
+					auto qverb = query_is(value, mWhich->value, localsEntry, stk);
+					if (qverb == QEquals)
+					{
+						return mres;
+					}
+				}
+				else
+				{
+					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhich->verb, value, mWhich->value);
+					auto qverb = query_verb(vv, localsEntry, stk);
+					if (qverb == QEquals)
+					{
+						return mres;
+					}
+				}
+			} 
+		} 
+	}
+
+	if (HBlockMatchWhichNot   mWhichNot = asHBlockMatchWhichNot(M))
+	{
+		{
+			CResultMatch mres = Match(mWhichNot->obj, value, localsEntry, stk);
+			if (mres.hasMatch)
+			{
+				if (mWhichNot->verb == "is")
+				{
+					auto qverb = query_is(value, mWhichNot->value, localsEntry, stk);
+					if (qverb != QEquals)
+					{
+						return mres;
+					}
+				}
+				else
+				{
+					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhichNot->verb, value, mWhichNot->value);
+					auto qverb = query_verb(vv, localsEntry, stk);
+					if (qverb != QEquals)
+					{
+						return mres;
+					}
+				}
+			} 
+		} 
+	}
 	
 	return CResultMatch(false);
 }

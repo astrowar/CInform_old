@@ -247,6 +247,7 @@
     <ClCompile Include="testes_execute.cpp" />
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
+    <ClCompile Include="teste_selector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

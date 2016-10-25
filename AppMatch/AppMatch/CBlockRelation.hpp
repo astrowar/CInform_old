@@ -94,8 +94,27 @@ public:
 
 	CBlockRelationInstance(HBlockRelationBase _relation, HBlock _value1 , HBlock  _value2) : relation( _relation), value1(_value1), value2(_value2)
 	{
+
 	}
 
 };
 using HBlockRelationInstance = std::shared_ptr<CBlockRelationInstance>;
 
+
+
+class CBlockConditionalRelation : public CBlockRelationBase
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockConditionalRelation; }
+	CBlockConditionalRelation(HBlockRelationBase  _relation, HBlock  _coditional) : CBlockRelationBase(_relation->named, _relation->input_A, _relation->input_B, false, false)
+	{
+
+	}
+
+	HBlockRelationBase  relation;
+	HBlock coditional;
+	virtual bool is_symetric()override { return false; } // is never simetric
+
+};
+using HBlockConditionalRelation = std::shared_ptr<CBlockConditionalRelation>;

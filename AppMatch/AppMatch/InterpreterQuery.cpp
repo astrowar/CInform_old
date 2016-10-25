@@ -193,6 +193,7 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
     return QUndefined;
 }
 
+ 
 
 
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
@@ -214,12 +215,23 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     {
         HBlock resolved = resolve_noum(nnoum, localsEntry);
         if (resolved) {
-            return query_is(resolved , c_block1 , localsEntry, stk);
+			return query_is(resolved, c_block1, localsEntry, stk);
         }
     }
     
 
-    
+	if (HBlockMatch matchBlock = asHBlockMatch  (c_block1))
+	{
+		 auto r_mtch =  Match(matchBlock, c_block, localsEntry, stk);
+		 if (r_mtch.hasMatch)
+		 {
+			 return QEquals;			 
+		 }
+		 printf("Query Fail \n");
+		 c_block->dump("  ");
+		 c_block1->dump("  ");
+		 return QUndefined;
+	}
 
 
     
@@ -299,6 +311,8 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 
 
+
+
     for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it) {
         if (HBlockToDecide tdef = asHBlockToDecide(*it)) {
 
@@ -341,6 +355,11 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
             }
         }
     }
+
+	// Falta definir os Query Filters Match
+	printf("Query Fail \n");
+	c_block->dump("  ");
+	c_block1->dump("  ");
     return QUndefined;
 
 }
@@ -492,6 +511,8 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
         }
     }
 
+	 
+
 
     if (HBlockIsNotVerb is_nverb = asHBlockIsNotVerb(q))
     {
@@ -528,6 +549,13 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 		if (result_B == QNotEquals) return  QNotEquals;
 		if (result_B == QUndefined) return  QNotEquals;
 		return QEquals;
+	}
+	if (HBlockBooleanNOT q_bool_not = asHBlockBooleanNOT (q))
+	{
+		auto result_A = query(q_bool_not->input_A, localsEntry, stk);
+		if (result_A == QNotEquals) return  QEquals;
+		if (result_A == QEquals) return  QNotEquals;
+		return result_A;
 	}
     return QUndefined;
 

@@ -357,8 +357,7 @@ int main() {
 	// testeParser_1();
 
 	//testeParser_7b();
-	testeParser_7d();
-	return 0;
+	 
   // for (int k = 0; k < 100; ++k)
 	{
 		// testeParser_listA();
@@ -379,7 +378,7 @@ int main() {
 		//testeParser_5f();
 		//testeParser_6();
 
-		testeParser_5_all();
+		//testeParser_5_all();
 
 		//testeParser_5g();
 	   //testeParser_7a();
@@ -393,11 +392,12 @@ int main() {
 		//testeRelation3();
 		//testeRelation3();
 		//testeRelation4();
-		testeRelation_all();
+		//testeRelation_all();
 
 	//	testeSerialize1();
         //testeParser_10();
-		testeExecute2();
+		//testeExecute2();
+		testeSelector_all();
 		logMessage( ".");
 	}
 	logMessage("");

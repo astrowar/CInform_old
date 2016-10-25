@@ -82,6 +82,10 @@ enum BlockType {
 	BlockControlToken,
 	BlockComandList,
 	BlockControlSelect,
-	BlockControlSelectItem
+	BlockControlSelectItem,
+	BlockConditionalRelation,
+	BlockMatchNOT,
+	BlockMatchWhich,
+	BlockMatchWhichNot
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

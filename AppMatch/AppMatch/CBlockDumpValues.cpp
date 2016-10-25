@@ -211,6 +211,12 @@ void CBlockMatchAND::dump(string ident)
 	printf("%s %s\n",ident.c_str() , "          ]");
 }
 
+void CBlockMatchNOT::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Match NOT [");
+	this->input->dump(ident + "       ");
+}
+
 void CBlockMatchOR::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str() , "Match OR [");
@@ -277,6 +283,24 @@ void CBlockMatchProperty::dump(string ident)
 
 	}
 
+}
+
+void CBlockMatchWhich::dump(string ident)
+{
+	this->obj->dump(ident + "       ");
+	printf("%s Which: %s\n", ident.c_str(), verb.c_str());
+	{		
+		this->value->dump(ident + "       ");
+	}
+}
+
+void CBlockMatchWhichNot::dump(string ident)
+{
+	this->obj->dump(ident + "       ");
+	printf("%s Which Not: %s\n", ident.c_str(), verb.c_str());
+	{
+		this->value->dump(ident + "       ");
+	}
 }
 
 void CBlockActionApply::dump(string ident) {
@@ -360,13 +384,19 @@ void CBlockBooleanAND::dump(string ident) {
 }
 
 void CBlockBooleanOR::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Boolean OR");
+	{
+		this->input_A->dump(ident + "       ");
+		this->input_B->dump(ident + "       ");
+	}
+}
+
+void CBlockBooleanNOT::dump(string ident) 
+{
 	printf("%s %s\n", ident.c_str(), "Boolean NOT");
 	{
 		this->input_A->dump(ident + "       ");
 	}
-}
-
-void CBlockBooleanNOT::dump(string ident) {
 }
 
 void CBlockActionCall::dump(string ident) {
@@ -707,12 +737,20 @@ void CBlockRelationInstance::dump(string ident)
 	}
 }
 
+void CBlockConditionalRelation::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Relation Coditional ", this->relation->named.c_str());	
+		this->relation->dump(ident + "       ");
+	printf("%s When \n", ident.c_str());
+		this->coditional->dump(ident + "       ");
+	
+}
+
 void CBlockNow::dump(string ident) {
 	printf("%s %s\n" , ident.c_str(), "Now "  );
 	{
 		this->assertation->dump(ident + "       ");
 	}
-
 }
 
 

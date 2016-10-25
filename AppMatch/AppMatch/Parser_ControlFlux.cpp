@@ -4,8 +4,8 @@
 #include "Parser.hpp"
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
-
-HBlock   CParser::parser_if_condition(HTerm term , HGroupLines inner, ErrorInfo *err)
+ 
+HBlock   CParser::parser_if_condition(HTerm term  )
 {
     {
         std::vector<HPred> predList;
@@ -17,83 +17,68 @@ HBlock   CParser::parser_if_condition(HTerm term , HGroupLines inner, ErrorInfo 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            HBlock AValue = parser_if_condition(res.matchs["AValue"], inner , err );
+            HBlock AValue = parser_if_condition(res.matchs["AValue"]  );
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_if_condition(res.matchs["BValue"], inner, err);
+            HBlock BValue = parser_if_condition(res.matchs["BValue"] );
             if (BValue == nullptr) return nullptr;
 
-            return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
+            return std::make_shared<CBlockBooleanOR>(AValue, BValue);
         }
     }
+	 
 
+	{
+		std::vector<HPred> predList;
 
-    {
-        std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verb_IS());
+		predList.push_back(mk_HPredLiteral("not"));
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("BValue"));
 
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(verb_IS());
-        predList.push_back(mkHPredAny("BValue"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals)
-        {
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
-            if (AValue == nullptr) return nullptr;
+			HBlock AValue = parser_expression(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_expression(res.matchs["BValue"]);
-            if (BValue == nullptr) return nullptr;
+			HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
+			return std::make_shared<CBlockBooleanNOT>(vbool);
 
-            return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
-        }
-    }
+		}
+	}
+	{
+		std::vector<HPred> predList;
 
-    {
-        std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verb_IS());
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("BValue"));
 
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(mk_HPredLiteral("not"));
-        predList.push_back(verb_IS());
-        predList.push_back(mkHPredAny("BValue"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals)
-        {
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
-            if (AValue == nullptr) return nullptr;
+			HBlock AValue = parser_expression(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_expression(res.matchs["BValue"]);
-            if (BValue == nullptr) return nullptr;
+			HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
 
-            return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
-        }
-    }
+			return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
+		}
+	}
 
+  
 
-    {
-        std::vector<HPred> predList;
-
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("BValue"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals)
-        {
-            auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
-            if (AValue == nullptr) return nullptr;
-
-            HBlock  BValue = parser_expression(res.matchs["BValue"]);
-            if (BValue == nullptr) return nullptr;
-
-            return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
-        }
-    }
-
-
-    {
+   
+ {
         std::vector<HPred> predList;
 
         predList.push_back(mkHPredAny("AValue"));
@@ -109,14 +94,82 @@ HBlock   CParser::parser_if_condition(HTerm term , HGroupLines inner, ErrorInfo 
             HBlock AValue = parser_expression(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock  BValue = parser_expression(res.matchs["BValue"]);
+            HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+            if (BValue == nullptr) return nullptr;
+			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
+			return std::make_shared<CBlockBooleanNOT>(vbool);
+       
+        }
+    }
+    {
+        std::vector<HPred> predList;
+
+        predList.push_back(mkHPredAny("AValue"));
+        predList.push_back(verbList);
+        predList.push_back(mkHPredAny("BValue"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals)
+        {
+            auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+
+            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            if (AValue == nullptr) return nullptr;
+
+            HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
         }
     }
 
-    return parser_expression( term); //default ...
+
+    {
+        std::vector<HPred> predList;
+
+        predList.push_back(mkHPredAny("AValue"));
+        predList.push_back(mk_HPredLiteral("not"));
+        predList.push_back(verb_IS());
+        predList.push_back(mkHPredAny("BValue"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals)
+        {
+            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            if (AValue == nullptr) return nullptr;
+
+            HBlock BValue = parser_expression_match(res.matchs["BValue"]);
+            if (BValue == nullptr) return nullptr;
+
+            auto vbool =  std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
+			return std::make_shared<CBlockBooleanNOT>(vbool);
+        }
+    }
+
+
+
+	   {
+        std::vector<HPred> predList;
+
+        predList.push_back(mkHPredAny("AValue"));
+        predList.push_back(verb_IS());
+        predList.push_back(mkHPredAny("BValue"));
+
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals)
+        {
+            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            if (AValue == nullptr) return nullptr;
+
+            HBlock BValue = parser_expression_match(res.matchs["BValue"]);
+            if (BValue == nullptr) return nullptr;
+
+            return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
+        }
+    }
+
+	 
+    return parser_expression ( term); //default ...
 
     return nullptr;
 
@@ -209,7 +262,7 @@ HBlock  CParser::parser_control_if(std::vector<HTerm> term, HGroupLines inner, E
 		{
 
 
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"], inner, err);
+			HBlock ACondition = parser_if_condition(res.matchs["Condition"] );
 
 			HBlock ABody = parser_stmt(res.matchs["body"], nullptr, err); // aqui tem erro
 			if (ABody == nullptr  )
@@ -234,7 +287,7 @@ HBlock  CParser::parser_control_if(std::vector<HTerm> term, HGroupLines inner, E
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
         {
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"],   inner, err);
+			HBlock ACondition = parser_if_condition(res.matchs["Condition"]);
 			HBlock executeBlock = parser_stmt_inner(inner, err);
 			if (executeBlock == nullptr)
 			{
@@ -260,7 +313,7 @@ HBlock  CParser::parser_control_unless(std::vector<HTerm> term, HGroupLines inne
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"], inner, err);
+			HBlock ACondition = parser_if_condition(res.matchs["Condition"]);
 			HBlock executeBlock = parser_stmt_inner(inner, err);
 			if (executeBlock == nullptr)
 			{

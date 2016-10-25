@@ -206,6 +206,7 @@ public:
 	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
 	 
 	HBlock Parser_Stmt(string str, bool dump);
+	HBlock Parser_Condition(string str, bool dump); // Apenas para testes
 	 
 	HBlock parser_stmt(string str, bool dump, ErrorInfo* err);
 	
@@ -297,8 +298,10 @@ public:
 	HBlock  DynamicDispatch_action(std::vector<HTerm> term);
 	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm> term);
 	HBlockMatch parse_match_noum(std::vector<HTerm> term);
+	HBlockMatch parse_Which_Verb_Match(std::vector<HTerm> term);
 	HBlockMatch parse_AssertionVerb_Match(std::vector<HTerm> term);
-	HBlockMatchIs parse_AssertionDirectAssign_Match(std::vector<HTerm> term);
+	HBlockMatch  parse_Which_DirectAssign_Match(std::vector<HTerm> term);
+	HBlockMatch  parse_AssertionDirectAssign_Match(std::vector<HTerm> term);
 	HBlockMatch parser_Verb_Match(std::vector<HTerm> term);
 	HBlockMatch parser_expression_match(HTerm term);
 	std::list<HBlockMatch> ToMatchListMatc(std::vector<HPred> pvector, MatchResult result);
@@ -327,14 +330,14 @@ public:
 	 
 
  
-	HBlock parser_if_condition(HTerm term, HGroupLines inner, ErrorInfo* err);
+	HBlock parser_if_condition(HTerm term );
 	HBlock  parser_control_else(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 	HBlock  parser_control_end(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 	HBlock  parser_control_if(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 	HBlock parser_control_unless(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 	std::list<HBlockControlSelectItem> get_CBlockControlSelectItem(HBlockComandList shared_ptr, ErrorInfo* err);
 	HBlockControlSelect parser_control_select(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
-	HBlock STMT_control_flux(std::vector<HTerm> term, HBlock prev, HGroupLines inner, ErrorInfo* err);
+	 
 	HBlockControlSelectItem parser_control_select_item(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 	HBlock  STMT_control_flux(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
 };

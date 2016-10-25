@@ -65,3 +65,5 @@ void testeExecute3();
 void testeExecute4();
 
 void testeSerialize1();
+
+void testeSelector_all();

@@ -270,7 +270,14 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
-					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
+
+					auto condition = parser_if_condition(res.matchs["Condition"]);
+
+					auto relation =   std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
+
+					logError(" Coditional relations is deprecated, use dynamic verbs");
+					return nullptr;
+					return std::make_shared<CBlockConditionalRelation>(relation, condition);
 				}
 			}
 		}

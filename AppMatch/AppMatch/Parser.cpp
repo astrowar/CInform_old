@@ -222,16 +222,28 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_noum(std::vector<HTerm> term) {
+HBlock CParser::parse_noum(std::vector<HTerm> term) 
+{
+
+	// anula se tiver uma palavra chave reservada
+	
+
+
     std::vector<HPred> predList;
      
     //predList.push_back(undefinedArticle());
     predList.push_back(mkHPredAny("Noum"));
     MatchResult res = CMatch(term, predList);
 
-    if (res.result == Equals) {
+    if (res.result == Equals) 
+	{
         string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
-        return std::make_shared<CBlockNoum>(nstr);
+		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+		{
+			return nullptr;
+		}
+
+		return std::make_shared<CBlockNoum>(nstr);
     }
     return nullptr;
 }
@@ -499,6 +511,27 @@ HBlock CParser::Parser_Stmt(string str, bool dump )
 	ErrorInfo err;
 		return parser_stmt(str, dump, &err);
 }
+
+HTerm convertToTerm(MTermSet &m);
+HBlock CParser::Parser_Condition(string str, bool dump)
+{
+	ErrorInfo err;
+	
+	str = decompose_bracket(str, "(");
+	str = decompose_bracket(str, ")");
+	str = decompose_bracket(str, ",");
+	std::vector<HTerm> lst = decompose(str);
+	auto term = convertToTerm(lst);
+	auto b = parser_if_condition(term);
+	if (dump)
+	{
+		b->dump(" ");
+		printf("\n");
+	}
+	return b;
+}
+
+
 HBlock CParser::parser_stmt(string str,bool dump,ErrorInfo *err)
 {
     HBlock b = parser_stmt_str(str,nullptr, err); //nao tem inner

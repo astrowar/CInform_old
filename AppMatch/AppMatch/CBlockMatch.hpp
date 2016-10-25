@@ -130,6 +130,22 @@ public:
 
 using HBlockMatchAND = std::shared_ptr<CBlockMatchAND>;
 
+// NOT 
+class CBlockMatchNOT
+	: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchNOT; }
+
+	// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
+
+	 HBlockMatch  input;
+
+	CBlockMatchNOT( HBlockMatch  _input) : CBlockMatch(), input(_input) {};
+};
+
+using HBlockMatchNOT = std::shared_ptr<CBlockMatchNOT>;
 
 
 
@@ -262,5 +278,27 @@ public:
 
 };
 using HBlockMatchProperty = std::shared_ptr<CBlockMatchProperty>;
+
+
+class CBlockMatchWhich : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchWhich; }
+	std::string verb;
+	CBlockMatchWhich(string _verb, HBlockMatch  _obj , HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
+};
+using HBlockMatchWhich = std::shared_ptr<CBlockMatchWhich>;
+
+class CBlockMatchWhichNot : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchWhichNot; }
+	std::string verb;
+	CBlockMatchWhichNot(string _verb, HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verb(_verb) {};
+};
+using HBlockMatchWhichNot = std::shared_ptr<CBlockMatchWhichNot>;
+
 
 #endif //CBLOCKMATCH_H

@@ -45,15 +45,17 @@ HBlockMatchBlock asHBlockMatchBlock(HBlock c );
 HBlockMatchOR asHBlockMatchOR(HBlock c ); 
 HBlockMatchAND asHBlockMatchAND(HBlock c ); 
 HBlockMatchDirectIs asHBlockMatchDirectIs(HBlock c ); 
+HBlockMatchWhich asHBlockMatchWhich(HBlock c);
+HBlockMatchWhichNot asHBlockMatchWhichNot(HBlock c);
 HBlockMatchIsVerb asHBlockMatchIsVerb(HBlock c ); 
 HBlockMatchIsNotVerb asHBlockMatchIsNotVerb(HBlock c );
+HBlockMatchNoum asHBlockMatchNoum(HBlock c ); 
 
-
-
+HBlockMatch asHBlockMatch(HBlock c);
 
 
 HBlockAssertion_isNotDirectAssign asHBlockAssertion_isNotDirectAssign(HBlock c ); 
-HBlockMatchNoum asHBlockMatchNoum(HBlock c ); 
+
 HBlockBooleanAND asHBlockBooleanAND(HBlock c ); 
 HBlockVerb asHBlockVerb(HBlock c ); 
 HBlockBooleanOR asHBlockBooleanOR(HBlock c ); 
