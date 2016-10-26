@@ -100,12 +100,33 @@ void testeParser_5b() {
 	CParser parse(interpreter);
 	interpreter->execute_init(parse.Parser_Stmt("thing is a kind  ", ISLOG)); 
 	interpreter->execute_init(parse.Parser_Stmt("apple is a thing  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("orange is a thing  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("coal is a thing  ", ISLOG));
 
 	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is oposite of ( far item ) :  ( special item )    ", ISLOG));
 	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is ( special item ) :   apple    ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is connected of ( far item ) :  ( special item )    ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is ( next item ) of apple :  orange   ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is ( previous item ) of apple :   orange    ", ISLOG));
+
 
 	auto ret = interpreter->query(parse.Parser_Stmt("( special item ) is apple  ", ISLOG));
+	assert(ret == QEquals);
 	auto ret_2 = interpreter->query(parse.Parser_Stmt("( far item ) is apple  ", ISLOG));
+	assert(ret_2 == QUndefined); // what is far item ??
+
+	//now set far item 
+ 
+	interpreter->execute_init(parse.Parser_Stmt("( far item ) is a thing that varies  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt("( far item ) is orange  ", ISLOG));
+	auto ret_3 = interpreter->query(parse.Parser_Stmt("oposite of orange is apple  ", ISLOG));
+	assert(ret_3 == QEquals);
+
+	
+	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing  ) is oposite of ( oposite of ( thing called X ) ) :  X   ", ISLOG));
+	auto ret_4 = interpreter->query(parse.Parser_Stmt("( oposite of ( oposite of coal ) ) is coal  ", ISLOG)); 
+	assert(ret_4 == QEquals);
+
 	return;
 
 }

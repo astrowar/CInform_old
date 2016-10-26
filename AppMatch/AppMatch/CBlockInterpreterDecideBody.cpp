@@ -37,14 +37,25 @@ HBlock CBlockInterpreter::getDecidedWhether(HBlock c_block, HBlock c_block1, HBl
 }
 
 HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
+	
+	
 	HBlockMatch match =   (dct->queryToMatch);
 
-	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
-	printf("\n");
-	match->dump("  ");
-	printf("Match for \n");
-	c_block->dump("  ");
+	if (stk.isQuery("is", c_block, dct)) return nullptr;
+	stk.addQuery("is", c_block, dct);
 
+	if (stk.size() > 30 )
+	{
+		stk.dump();
+		printf("huge");
+	}
+
+	printf("\n");
+	c_block->dump("  ");
+	//printf("Match for \n");
+	match->dump("  ");
+	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
+	 
 	if (result.hasMatch ) 
 	{
  
@@ -54,6 +65,13 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 
 
 		//Execute body
+		 
+		if ( HBlockNoum anoum  = asHBlockNoum( dct->decideBody ))
+		{
+			dct->decideBody->dump("  ");
+			auto qresolved =   resolve_noum(anoum, localsNext);
+			if (qresolved != nullptr)  return qresolved;
+		}
 		return dct->decideBody;
 	}
 
@@ -63,6 +81,10 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 
 QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
 {
+	//stack overflow 
+	if (stk.isQuery("is", c_block, dct)) return QUndefined;
+	stk.addQuery("is", c_block, dct);
+
 	if(localsEntry != nullptr) localsEntry->dump("   ");
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 	if (result.hasMatch)

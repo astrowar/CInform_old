@@ -13,9 +13,9 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 {
 	if (M->matchList.size() != value->lista.size())
 	{
-		logMessage("FAIL  size  ");
-		(M)->dump("    ");
-		(value)->dump("    ");
+		//logMessage("FAIL  size  ");
+		//(M)->dump("    ");
+		//(value)->dump("    ");
 		return   CResultMatch(false); //sizes must be equals
 	}
 	auto mit = M->matchList.begin();
@@ -27,9 +27,9 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
 		if (r.hasMatch == false)
 		{
-			logMessage("FAIL  item   ");
-			(*vit)->dump("    ");
-			(*mit)->dump("    ");
+			//logMessage("FAIL  item   ");
+			//(*vit)->dump("    ");
+			//(*mit)->dump("    ");
 			return   CResultMatch(false);
 		}
 		rAccm.append(r);
@@ -66,7 +66,14 @@ HBlockList getCompoundNoumAsList(HBlockNoum noum)
 	 
 	}
 
-	return  make_shared<CBlockList>(noums);
+	/*printf("Noum To list \n");
+	noum->dump("   ");
+	printf("is converted to \n");*/
+
+	auto q = make_shared<CBlockList>(noums);
+	// q->dump("    ");
+	//printf("\n");
+	return q;
  
 }
 
@@ -137,19 +144,36 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		for (auto m : mList->matchList) {if (m->type() != BlockMatchNoum)is_compound_noum = false;}
 		if (is_compound_noum)
 		{			
-			HBlockNoum noum  = make_shared<CBlockNoum>("");
+			string nnoum = "";
 			for (auto m : mList->matchList)
 			{
 				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
 				if (is_article(cnoum->inner->named)) continue;
-				if (noum->named == "") 
-				    { noum->named = cnoum->inner->named; }
+				if (nnoum == "")
+				    {
+						nnoum = cnoum->inner->named; }
 				else 
-				    { noum->named = noum->named + " " + cnoum->inner->named; }
+				    {
+						nnoum = nnoum + " " + cnoum->inner->named;
+				}
 			}
 
-			auto rr = query_is(value, noum, localsEntry, stk);
-			if (rr == QEquals)   return CResultMatch( true );
+			if (HBlockNoum   noumCompound = asHBlockNoum(value))
+			{
+				if (nnoum == noumCompound->named)
+				{
+					 return CResultMatch(true);
+				}
+			}
+
+			auto resolved =  resolve_noum(std::make_shared<CBlockNoum>( nnoum),localsEntry);
+			if (resolved)
+			{
+				auto rr = query_is(value, resolved , localsEntry, stk);
+				if (rr == QEquals)   return CResultMatch(true);
+			}
+			 
+
 		}
 	}
 

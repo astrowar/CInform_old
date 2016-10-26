@@ -312,5 +312,11 @@
     <ClCompile Include="teste_selector.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
+    <ClCompile Include="BlockisSame.cpp">
+      <Filter>Source Files\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="CInterpreterEvaluate.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -246,6 +246,7 @@ public:
 
 
 	void logMessage(std::string  msg );
+	HBlock evaluate_values(HBlock q, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

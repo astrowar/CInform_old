@@ -211,7 +211,7 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 		return resolve_if_noum(kcustom,localsEntry);
 	}
 
-	logError("Fail to " + n->named);
+	//logError("Fail to " + n->named);
 	if (n->named == "D")
 	{
 		return nullptr;

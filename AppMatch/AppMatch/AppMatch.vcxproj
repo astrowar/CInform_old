@@ -192,9 +192,11 @@
   <ItemGroup>
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
+    <ClCompile Include="BlockisSame.cpp" />
     <ClCompile Include="CBlockCommand.cpp" />
     <ClCompile Include="CBlockSerialize.cpp" />
     <ClCompile Include="CDataMananger.cpp" />
+    <ClCompile Include="CInterpreterEvaluate.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />
     <ClCompile Include="CResultMatch.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />

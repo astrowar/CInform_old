@@ -21,4 +21,6 @@ public:
 	void addQuery(string vb, HBlock b1, HBlock b2);
 	bool isQuery(HBlockVerb _verb, HBlock b1, HBlock b2);
 	bool isQuery(string _verb, HBlock b1, HBlock b2);
+	int size() const;
+	void dump();
 };

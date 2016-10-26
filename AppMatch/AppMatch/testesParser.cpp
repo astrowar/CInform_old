@@ -378,7 +378,7 @@ int main() {
 		//testeParser_5f();
 		//testeParser_6();
 
-		//testeParser_5_all();
+		 testeParser_5_all();
 
 		//testeParser_5g();
 	   //testeParser_7a();
@@ -392,7 +392,7 @@ int main() {
 		//testeRelation3();
 		//testeRelation3();
 		//testeRelation4();
-		//testeRelation_all();
+		 testeRelation_all();
 
 	//	testeSerialize1();
         //testeParser_10();
@@ -404,6 +404,7 @@ int main() {
 }
 
 
+  #ifdef __EMSCRIPTEN__
 
 //api_example.c
 #include<stdio.h>
@@ -424,3 +425,4 @@ void sayHi() {
 		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
 	}
 }
+#endif

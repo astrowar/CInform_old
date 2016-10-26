@@ -61,7 +61,7 @@ public:
 
     void *operator new(size_t size);
 
-
+	bool isSame(CBlock* b1, CBlock* b2) const;
 
 	//template <class HArchive> static void load_and_construct(HArchive& ar, cereal::construct<CBlock>& construct);
 };
@@ -278,7 +278,7 @@ public:
 
 using HBlockVariable = std::shared_ptr<CBlockVariable>;
 
-class CBlockProperty : public CBlock //retorna um valor generico
+class  CBlockProperty : public CBlock //retorna um valor generico
 {
 public:
     void dump(string ident) override;
