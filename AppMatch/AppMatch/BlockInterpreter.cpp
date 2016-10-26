@@ -2,6 +2,7 @@
  
 #include "CblockAssertion.hpp"
 #include "CBlockMatch.hpp"
+#include <cstdlib>
 #include <cassert>
 
 using namespace std;

@@ -64,11 +64,14 @@ set(SOURCE_FILES
         AppMatch/AppMatch/ParseDictionary.cpp
         AppMatch/AppMatch/Parser_A.cpp
         AppMatch/AppMatch/StaticDispatchFunctions.cpp
-        AppMatch/AppMatch/CParseAux.cpp AppMatch/AppMatch/testes_Relation.cpp
+        AppMatch/AppMatch/CParseAux.cpp
+        AppMatch/AppMatch/testes_Relation.cpp
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
 
+        AppMatch/AppMatch/teste_selector.cpp
         AppMatch/AppMatch/CDataMananger.cpp
         AppMatch/AppMatch/Parse_TokensGroup.cpp
-         AppMatch/AppMatch/Parser_ControlFlux.cpp)
+         AppMatch/AppMatch/Parser_ControlFlux.cpp
+        )
 
 add_executable(apx ${SOURCE_FILES}   )

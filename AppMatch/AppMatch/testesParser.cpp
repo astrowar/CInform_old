@@ -405,3 +405,22 @@ int main() {
 
 
 
+//api_example.c
+#include<stdio.h>
+#include<emscripten.h>
+
+
+extern "C"
+{
+   void sayHi();
+}
+
+EMSCRIPTEN_KEEPALIVE
+void sayHi() {
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	{
+		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
+	}
+}
