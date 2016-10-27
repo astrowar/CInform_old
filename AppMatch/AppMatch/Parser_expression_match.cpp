@@ -234,6 +234,7 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm> term) {
 		predList.push_back(verbList);
 		predList.push_back(mkHPredAny("N2"));
 
+		logMessage(get_repr(term));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);

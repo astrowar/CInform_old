@@ -484,6 +484,11 @@ HBlock CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *err) {
 }
 
 
+ 
+
+
+
+
 HBlock CParser::parserBoolean(HTerm term) {
     if (CList *vlist = asCList(term.get())) {
         auto r = parserBoolean(vlist->asVector());
@@ -512,8 +517,26 @@ HBlock CParser::Parser_Stmt(string str, bool dump )
 	ErrorInfo err;
 		return parser_stmt(str, dump, &err);
 }
-
 HTerm convertToTerm(MTermSet &m);
+HBlock CParser::Parser_Expression(string str, bool dump)
+{
+	ErrorInfo err;
+	str = decompose_bracket(str, "(");
+	str = decompose_bracket(str, ")");
+	str = decompose_bracket(str, ",");
+	std::vector<HTerm> lst = decompose(str);
+	auto term = convertToTerm(lst);
+	auto b = parser_expression(term);
+	if (dump)
+	{
+		b->dump(" ");
+		printf("\n");
+	}
+	return b;
+}
+
+
+
 HBlock CParser::Parser_Condition(string str, bool dump)
 {
 	ErrorInfo err;
@@ -600,6 +623,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 	vstr = decompose_bracket(vstr, ",");
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
+	 
 	HBlock  rblock_stmt = parser_stmt_inner (lst, inner , err);
 	if (rblock_stmt ==nullptr)
 	{

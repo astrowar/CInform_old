@@ -63,27 +63,9 @@ HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
 }
 
 
-HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
+HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("if"));
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(verb_IS());
-        predList.push_back(mkHPredAny("BValue"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) 
-		{
-			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
-            if (AValue == nullptr) return nullptr;
-
-			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
-            if (BValue == nullptr) return nullptr;
-
-            return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
-        }
-    }
+    
 
 
 	{
@@ -108,6 +90,25 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
 		}
 	}
 
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("if"));
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("BValue"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
+		}
+	}
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("if"));
@@ -131,7 +132,8 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term)
 
 
 
-HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) {
+HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) 
+{
 
    
 	if (inner == nullptr)
@@ -148,7 +150,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 			}
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
-				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
+				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"] );
 				if (a_match)
 				{
 					logMessage((res.matchs["RemainBody"]->repr()));
@@ -174,6 +176,9 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 				}
 
 
+				 
+
+
 			}
 		}
 	}
@@ -182,6 +187,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 	{
 		//Com bloco inner 
 		{
+			logMessage(get_repr(term));
 			static std::vector<HPred> predList = {};
 			if (predList.empty())
 			{
@@ -194,14 +200,14 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
 				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
-				if (a_match)
+				if (a_match!=nullptr )
 				{
 					HBlockComandList body = parser_stmt_inner(inner, err);
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
 				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
-				if (vb_match)
+				if (vb_match != nullptr)
 				{
 
 					HBlockComandList body = parser_stmt_inner(inner, err);
@@ -210,7 +216,7 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 
 
 				HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
-				if (w_match)
+				if (w_match != nullptr)
 				{
 
 					HBlockComandList body = parser_stmt_inner(inner, err);
@@ -224,6 +230,12 @@ HBlock CParser::parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inn
 
 
     return nullptr;
+}
+
+
+HBlock CParser::parseAssertion_isDecide (std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+{
+	return parseAssertion_isDecide_inLine(term, inner, err);
 }
 
 HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {

@@ -24,14 +24,18 @@ std::vector<HTerm> decompose(std::string phase) {
 	std::stringstream test(phase);
 	std::string segment;
 	std::vector<HTerm> seglist;
-	while (getline(test, segment, ' ')) {
-
-		if (segment.length() > 0) {
-			if (segment[0] != ' ') {
+	while (getline(test, segment, ' ')) 
+	{
+		if (segment.length() > 0) 
+		{
+			if (segment[0] != ' ' && segment[0] != '\t' && segment[0] != '\r')
+			{
+				 
 				seglist.push_back(make_string(segment));
 			}
 		}
 	}
+	
 	return seglist;
 }
 

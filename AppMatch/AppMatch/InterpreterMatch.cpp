@@ -166,7 +166,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 			}
 
-			auto resolved =  resolve_noum(std::make_shared<CBlockNoum>( nnoum),localsEntry);
+			auto resolved =  resolve_noum(std::make_shared<CBlockNoum>( nnoum),localsEntry ,std::list<std::string>());
 			if (resolved)
 			{
 				auto rr = query_is(value, resolved , localsEntry, stk);

@@ -357,6 +357,8 @@ int main() {
 	// testeParser_1();
 
 	//testeParser_7b();
+	testeExecute_all();
+	return 0 ;
 	 
   // for (int k = 0; k < 100; ++k)
 	{
@@ -397,6 +399,7 @@ int main() {
 	//	testeSerialize1();
         //testeParser_10();
 		//testeExecute2();
+		 testeExecute_all();
 		testeSelector_all();
 		logMessage( ".");
 	}

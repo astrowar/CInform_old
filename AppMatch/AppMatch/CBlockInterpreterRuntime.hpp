@@ -112,7 +112,7 @@ class CBlockInterpreter {
  
  
 	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
-	bool set_relation_property(HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+	
 	bool is_nothing(HBlockNoum noum);
 	bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 	bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
@@ -156,10 +156,10 @@ public:
  
 	bool assert_it_instance(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	bool assert_it_valuesDefinitions(HBlock c_block, HBlock value, HRunLocalScope localsEntry);
- 
 
- 
+
 	std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry);
+	std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 	HBlockKind getKindOf(HBlockInstance obj);
 	string BlockNoum(HBlock c_block); 
    // bool MatchOld(HBlock c_block, HBlockMatch m);
@@ -202,9 +202,9 @@ public:
  
 
     HBlockKind resolve_kind(string n);
-	HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry);
+	HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 	HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
-
+	HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 	HBlock resolve_noum_as_variable(HBlockNoum n);
 	HBlock resolve_string(string n, HRunLocalScope localsEntry);
  
@@ -246,7 +246,11 @@ public:
 
 
 	void logMessage(std::string  msg );
+	
+	HBlock evaluate_relation_property(HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
+	HBlock evaluate_propertyValue(HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
 	HBlock evaluate_values(HBlock q, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
+	HBlock evaluate_values(HBlock c_block);
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

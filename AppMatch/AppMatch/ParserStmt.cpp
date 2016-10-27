@@ -116,6 +116,9 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, Err
 	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst ));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 
+	HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst, inner, err));
+	if (rblock_decide_1 != nullptr) return rblock_decide_1;
+
     HBlock rblock_verb_1n = (STMT_verb_Assertion_N(lst ));
     if (rblock_verb_1n != nullptr) return rblock_verb_1n;
 
@@ -125,8 +128,8 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, Err
     HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst)); //To define ...
     if (rblock_definition_1 != nullptr) return rblock_definition_1;
 
-    HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst,inner, err));
-    if (rblock_decide_1 != nullptr) return rblock_decide_1;
+   // HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst,inner, err));
+   // if (rblock_decide_1 != nullptr) return rblock_decide_1;
   
 
     HBlock rblock_assert_1 = (parser_Declaration_Assertion(lst));
@@ -139,7 +142,7 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, Err
     if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
     
-    
+	logError(get_repr(lst));
 
     return nullptr;
 

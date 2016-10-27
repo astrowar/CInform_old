@@ -102,60 +102,116 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
 
 QueryResul
 CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
-    if (HBlockInstance cinst = asHBlockInstance(propObj)) {
-        if (HBlockNoum property_noum = asHBlockNoum(propname)) {
-            HVariableNamed pvar = cinst->get_property(property_noum->named);
-            if (pvar != nullptr) 
-			{
-                logMessage("property  is " );
-                if (pvar->value != nullptr)
-                {
-                    pvar->value->dump("  ");
-                }
-                else
-                {
-                    logMessage("    EMPTY   ");
-                     
-                }
+    
+	printf("query for peoperty   ================================\n");
+	propObj->dump(" ");
+	printf(" IS \n");
+	c_block1->dump(" ");
+	printf("....................................\n");
 
-                c_block1->dump("  ");
-                auto rprop = query_is(pvar->value, c_block1,localsEntry ,stk);
-                if (rprop == QEquals) return QEquals;
-                return QNotEquals;
-            }
-			logMessage(" Dont have Property");
+	if (HBlockNoum property_noum = asHBlockNoum(propname))
+	{
+		if (HBlockInstance cinst = asHBlockInstance(propObj))
+		{
+
 			{
-				auto  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
-				if (result_prop != QUndefined) return result_prop;
-				return QUndefined;
+				HVariableNamed pvar = cinst->get_property(property_noum->named);
+				if (pvar != nullptr)
+				{
+					logMessage("property  is ");
+					if (pvar->value != nullptr)
+					{
+						pvar->value->dump("  ");
+					}
+					else
+					{
+						logMessage("    EMPTY   ");
+
+					}
+
+					c_block1->dump("  ");
+					auto rprop = query_is(pvar->value, c_block1, localsEntry, stk);
+					if (rprop == QEquals) return QEquals;
+					return QNotEquals;
+				}
+				logMessage(" Dont have Property");
+				{
+					auto  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
+
+					printf("query for peoperty   ================================\n");
+					propObj->dump(" ");
+					printf(" IS %s \n", property_noum->named.c_str());
+					c_block1->dump(" ");
+					printf("....................................\n");
+
+					if (result_prop != QUndefined) return result_prop;
+					return QUndefined;
+				}
+
+
 			}
-
-
-        }
-    }
+		}
+	}
+	else
+	{
+		logError("some mistake where\n");
+		return QUndefined;
+	}
     return QUndefined;
 }
 
 
-QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
+QueryResul CBlockInterpreter::query_is_propertyOf_value(HBlock c_property, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
 
-		
-		if (HBlockProperty cproperty = asHBlockProperty(c_block)) 
-		{
-        if (HBlockNoum cnn = asHBlockNoum(cproperty->obj)) 
-		{
-            auto resolved = resolve_noum(cnn,localsEntry);			
-            if (resolved != nullptr) 
-			{ 
-                return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, stk);
-            }
-            return QUndefined;
 
-        }
-        // property of What ??
-        return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, localsEntry, stk); 
-    }
-    return QUndefined;
+	if (HBlockNoum cnoum_1 = asHBlockNoum(c_block1))
+	{
+		auto resolved = resolve_noum(cnoum_1, localsEntry);
+		return query_is_propertyOf_value(c_property, resolved, localsEntry, stk);
+	}
+
+	if (HBlockNoum cnoum_2 = asHBlockNoum(c_property))
+	{
+		auto resolved = resolve_noum(cnoum_2, localsEntry);
+		return query_is_propertyOf_value(resolved, c_block1, localsEntry, stk);
+	}
+
+
+	 
+	if (HBlockProperty cproperty = asHBlockProperty(c_property))
+	{
+		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
+		{
+			auto resolved = resolve_noum(cnn, localsEntry);
+			if (resolved != nullptr)
+			{
+				return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, stk);
+			}
+			return QUndefined;
+
+		}
+		// property of What ??
+		return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, localsEntry, stk);
+	}
+
+	if (HBlockProperty cproperty = asHBlockProperty(c_block1))
+	{
+		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
+		{
+			auto resolved = resolve_noum(cnn, localsEntry);
+			if (resolved != nullptr)
+			{
+				return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_property, localsEntry, stk);
+			}
+			return QUndefined;
+
+		}
+		// property of What ??
+		return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_property, localsEntry, stk);
+	}
+
+
+	return QUndefined;
 
 }
 
@@ -198,10 +254,18 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
+
+	printf("QUERY ??\n");
+	c_block->dump(" ");
+	c_block1->dump(" ");
+	printf(".................................\n");
+
 	if (c_block->isSame(c_block.get(), c_block1.get() ))
 	{
 		return QEquals;
 	}
+	if (c_block == nullptr) return QUndefined;
+	if (c_block1 == nullptr) return QUndefined;
 
 	if (stk.isQuery("is", c_block, c_block1 )) return QUndefined;
     stk.addQuery("is", c_block, c_block1);
@@ -363,6 +427,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 	}
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
+		break;
         if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it)) {
             if (query_is_same(c_block, qdef->get_obj(), localsEntry, stk) == QEquals) {
                 auto r = query_is(qdef->get_definition(), c_block1,localsEntry, stk);
@@ -544,12 +609,20 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
     }
 		if (HBlockAssertion_isDirectAssign q_dir_assign = asHBlockAssertion_isDirectAssign(q))
 		{
+			auto vr1 = resolve_if_noum(q_dir_assign->get_obj() , localsEntry , std::list<std::string>() );
+			auto vr2 = resolve_if_noum(q_dir_assign->get_definition(), localsEntry, std::list<std::string>());
 
-			if (q_dir_assign->isSame(q_dir_assign->get_obj().get(), q_dir_assign->get_definition().get()))
+			if (q_dir_assign->isSame(vr1.get(), vr2.get()))
+			{
+			return QEquals;
+			}
+			return query_is(vr1,vr2, localsEntry, stk);
+			
+			/*if (q_dir_assign->isSame(q_dir_assign->get_obj().get(), q_dir_assign->get_definition().get()))
 			{
 				return QEquals;
 			}
-			return query_is(q_dir_assign->get_obj(), q_dir_assign->get_definition(), localsEntry, stk);
+			return query_is(q_dir_assign->get_obj(), q_dir_assign->get_definition(), localsEntry, stk);*/
 		}
     
 

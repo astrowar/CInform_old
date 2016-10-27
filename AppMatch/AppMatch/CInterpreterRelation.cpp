@@ -71,7 +71,7 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 	{
 		if (is_nothing(noum_2  ) == false)
 		{
-			auto value_2 = resolve_noum(noum_2, localsEntry);
+			auto value_2 = resolve_noum(noum_2, localsEntry , std::list<std::string>() );
 			if (value_2 == nullptr)
 			{
 				logMessage("unable to resolve :" + noum_2->named);

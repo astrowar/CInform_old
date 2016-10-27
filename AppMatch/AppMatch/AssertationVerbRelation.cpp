@@ -115,7 +115,7 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLoca
 	}
 
 }
-
+ 
 QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 	QueryResul query_2 = QUndefined;
@@ -168,7 +168,12 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 
 QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
- 
+	logMessage("query for Relation property called "+ property_noum->named + "   ================================\n");
+	c_block->dump(" ");
+	printf(" OF \n");
+	value->dump(" ");
+	printf("....................................\n");
+
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
 	{

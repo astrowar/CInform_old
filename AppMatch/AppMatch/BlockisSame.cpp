@@ -97,6 +97,8 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 bool CBlock::isSame(CBlock* b1,CBlock* b2) const
 {
 	if (b1 == b2) return true;
+	if (b1 == nullptr && b2 != nullptr) return false;
+	if (b2 == nullptr && b1 != nullptr) return false;
 	if (b1->type() != b2->type()) return false;
 
 

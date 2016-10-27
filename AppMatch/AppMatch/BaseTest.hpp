@@ -63,6 +63,7 @@ void testeExecute1();
 void testeExecute2();
 void testeExecute3();
 void testeExecute4();
+void testeExecute_all();
 
 void testeSerialize1();
 

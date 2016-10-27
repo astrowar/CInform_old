@@ -121,7 +121,7 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 
 		if (va->name->named == pnamed)
 		{
-			logMessage(pnamed + " has? " + va->name->named);
+			//logMessage(pnamed + " has? " + va->name->named);
 			return va;
 		}
 	}
@@ -135,8 +135,7 @@ void CBlockInstance::set_property(string  pnamed, HBlock value)
 
 		if (va->name->named == pnamed)
 		{
-			logMessage(pnamed + " has? " + va->name->named);
-			 
+			//logMessage(pnamed + " has? " + va->name->named);			 
 			va->value = value;
 		}
 	}

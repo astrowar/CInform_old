@@ -235,7 +235,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 		if (HBlockNoum nn = asHBlockNoum(c_block))
 		{
-			auto  obj = resolve_noum(nn,localsEntry);
+			auto  obj = resolve_noum(nn,localsEntry, std::list<std::string>());
 			return  exec_eval(obj , localsEntry);
 		}
 

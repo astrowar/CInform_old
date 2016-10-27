@@ -195,17 +195,20 @@ public:
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
 	HBlockMatch parser_What_Which_Assertion(HTerm term);
 	HBlockMatchIs parser_What_Which_Verb_Assertion(HTerm term);
-	HBlockMatchIs parser_Match_IF_Assertion(HTerm term);
+	HBlockMatchIs parser_Match_IF_Assertion(HTerm term );
  
 
 
  
 	 
+	HBlock parseAssertion_isDecide_inLine(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
+	HBlock parseAssertion_isDecide_Block(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
 	HBlock parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
 	HBlock parserBoolean(  HTerm  term);
 	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
 	 
 	HBlock Parser_Stmt(string str, bool dump);
+	HBlock Parser_Expression(string str, bool dump);
 	HBlock Parser_Condition(string str, bool dump); // Apenas para testes
 	 
 	HBlock parser_stmt(string str, bool dump, ErrorInfo* err);
@@ -275,8 +278,9 @@ public:
 	HBlockInstanceVariable  CProperty_called(HTerm term);
 	HBlock STMT_hasAn_Assertion(std::vector<HTerm> lst);
 	HBlock parser_stmt(HTerm term, HGroupLines inner, ErrorInfo* err);
- 
 	 
+ 
+
 	HBlock parserBoolean(std::vector<HTerm> term);
  
 
