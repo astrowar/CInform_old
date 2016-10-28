@@ -22,7 +22,7 @@
 //under half
 //a number alone, as in "three swans"
 
-HBlockSelector   CParser::parser_List_selector(std::vector<HTerm> term)
+HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 {
 	{
 		// is a kind definition ??

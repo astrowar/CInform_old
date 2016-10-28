@@ -12,11 +12,11 @@ using MTermSet = std::vector<HTerm>;
 using MTermSetCombinatoria = std::vector<MTermSet>;
 using MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
 
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> &lst, size_t n);
+MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n);
 
 using FuncCombinatoria = std::function<bool(MTermSetCombinatoria &)>; //true == (please, stop)
 
-void applyCombinatorias(std::vector<HTerm> &lst, size_t n, FuncCombinatoria &func);
+void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria &func);
 
 std::string get_repr(MTermSetCombinatoriaList lst);
 

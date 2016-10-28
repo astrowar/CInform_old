@@ -3,7 +3,7 @@
  
 
 
-HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm> term) {
+HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
     
  
 	{
@@ -159,7 +159,7 @@ HBlockVerbRelation CParser::STMT_verb_relation(HBlock a_verb, HTerm term)
 	return nullptr;
 }
  
-HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
+HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm>&  term) {
     auto L_the_verb = mkHPredList("vinitial", {mk_HPredLiteral("the"), mk_HPredLiteral("verb")});
     auto L_verb = mk_HPredLiteral("verb");
     {
@@ -220,7 +220,7 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
 
 }
 
-HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
+HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
 
     auto L_the_verb = mkHPredList("vinitial", {mk_HPredLiteral("the"), mk_HPredLiteral("verb")});
     auto L_verb = mk_HPredLiteral("verb");

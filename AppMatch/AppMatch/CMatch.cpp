@@ -148,7 +148,7 @@ bool isListValid(MTermSet &Comb) {
     return isListValid_count(Comb);
 }
 
-MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> &terms, size_t n) //num termos que restam
+MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm>& terms, size_t n) //num termos que restam
 {
     if (n == 1) {
         return getCombinatoriasGroup(terms); // apenas uma combinacao eh possivel
@@ -177,7 +177,7 @@ MTermSetCombinatoriaList getCombinatoriasRec(std::vector<HTerm> &terms, size_t n
     return accTerms;
 }
 
-MTermSetCombinatoria getUnicCombination(std::vector<HTerm> &lst) {
+MTermSetCombinatoria getUnicCombination(std::vector<HTerm>& lst) {
     MTermSetCombinatoria comb;
     for (auto it = lst.begin(); it != lst.end(); ++it) {
         comb.push_back({*it});
@@ -185,7 +185,7 @@ MTermSetCombinatoria getUnicCombination(std::vector<HTerm> &lst) {
     return comb;
 }
 
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> &lst, size_t n) {
+MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n) {
     if (lst.size() < n) {
         return MTermSetCombinatoriaList(); // impossivel ..
     }
@@ -198,7 +198,7 @@ MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm> &lst, size_t n) {
 
 
 //cada termo eh um MTermSet
-bool applyCombinatoriasUnitary(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, FuncCombinatoria &func) {
+bool applyCombinatoriasUnitary(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, FuncCombinatoria &func) {
     MTermSetCombinatoria uniq(partial_in.begin(), partial_in.end());
     for (auto it = terms.begin(); it != terms.end(); ++it) {
         if (!isListValid(uniq)) return false;
@@ -209,7 +209,7 @@ bool applyCombinatoriasUnitary(MTermSetCombinatoria &partial_in, std::vector<HTe
 }
 
 //todos os termos formam um MTermSet que forma um MTermSetCombinatoria que forma um MTermSetCombinatoriaList 
-bool applyCombinatoriasGroup(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, FuncCombinatoria &func) {
+bool applyCombinatoriasGroup(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, FuncCombinatoria &func) {
     if (!isListValid(terms)) return false;
     partial_in.push_back(terms);
     bool hasFound = func(partial_in);
@@ -217,7 +217,7 @@ bool applyCombinatoriasGroup(MTermSetCombinatoria &partial_in, std::vector<HTerm
     return hasFound;
 }
 
-bool applyCombinatoriasRec(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, size_t n,
+bool applyCombinatoriasRec(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, size_t n,
                            FuncCombinatoria &func) //num termos que restam
 {
 
@@ -255,7 +255,7 @@ bool applyCombinatoriasRec(MTermSetCombinatoria &partial_in, std::vector<HTerm> 
 
 }
 
-void applyCombinatorias(std::vector<HTerm> &lst, size_t n, FuncCombinatoria &func) {
+void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria &func) {
 
     if (lst.size() < n) {
         return; // impossivel ..
@@ -275,7 +275,7 @@ void applyCombinatorias(std::vector<HTerm> &lst, size_t n, FuncCombinatoria &fun
 
 
 bool
-applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, std::vector<CPred *> &preds,
+applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, std::vector<CPred *> &preds,
                              int pos, FuncCombinatoria &func) {
     if (preds[pos]->match(terms) != NotEquals) {
         if (!isListValid(terms)) return false;
@@ -287,7 +287,7 @@ applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm
     return false;
 }
 
-bool applyCombinatoriasRecSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm> &terms, size_t n,
+bool applyCombinatoriasRecSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, size_t n,
                                 std::vector<CPred *> &preds, int pos, FuncCombinatoria &func) //num termos que restam
 {
 
@@ -327,7 +327,7 @@ bool applyCombinatoriasRecSmart(MTermSetCombinatoria &partial_in, std::vector<HT
 }
 
 
-void applyCombinatorias_smart(std::vector<HTerm> &lst, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func) {
+void applyCombinatorias_smart(std::vector<HTerm>& lst, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func) {
 
     if (lst.size() < n) {
         return; // impossivel ..

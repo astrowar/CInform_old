@@ -4,7 +4,7 @@
 #include "CBlockRelation.hpp"
 
 
-HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm> term)
+HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 {
 	//Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X.
 	{

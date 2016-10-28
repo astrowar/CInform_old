@@ -175,7 +175,7 @@ HBlock   CParser::parser_if_condition(HTerm term  )
 
 }
 
-HBlock   CParser::parser_control_else(std::vector<HTerm> term,   HGroupLines inner, ErrorInfo *err) {
+HBlock   CParser::parser_control_else(std::vector<HTerm>& term,   HGroupLines inner, ErrorInfo *err) {
 	{
 		static std::vector<HPred> predList = {};
 		if (predList.empty()) {
@@ -227,7 +227,7 @@ HBlock   CParser::parser_control_else(std::vector<HTerm> term,   HGroupLines inn
 }
 
 
-HBlock   CParser::parser_control_end(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+HBlock   CParser::parser_control_end(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	//{
 	//	static std::vector<HPred> predList = {};
@@ -246,7 +246,7 @@ HBlock   CParser::parser_control_end(std::vector<HTerm> term, HGroupLines inner,
 }
 
 
-HBlock  CParser::parser_control_if(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) 
+HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err) 
 {
 	if(inner == nullptr)
 	{
@@ -300,7 +300,7 @@ HBlock  CParser::parser_control_if(std::vector<HTerm> term, HGroupLines inner, E
 	}
 	return nullptr;
 }
-HBlock  CParser::parser_control_unless(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+HBlock  CParser::parser_control_unless(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 
 	{
@@ -344,7 +344,7 @@ std::list<HBlockControlSelectItem> CParser::get_CBlockControlSelectItem(HBlockCo
 	return ret;
 }
 
-HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	 
 
@@ -389,7 +389,7 @@ HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm> term, HGr
 
 
 
-HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -450,7 +450,7 @@ HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm> 
 
 
 
-HBlock  CParser::STMT_control_flux(std::vector<HTerm> term ,   HGroupLines inner, ErrorInfo *err)
+HBlock  CParser::STMT_control_flux(std::vector<HTerm>& term ,   HGroupLines inner, ErrorInfo *err)
 {
 
 //identifica os IF, then ,else, while ,case , select da vida

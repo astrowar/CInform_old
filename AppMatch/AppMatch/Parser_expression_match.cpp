@@ -3,7 +3,7 @@
 
 
 
-HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm> term) 
+HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm>&  term)
 {
 	{
 
@@ -28,7 +28,7 @@ HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm> term)
 	return nullptr;
 }
 
-HBlockMatch CParser::parse_match_noum(std::vector<HTerm> term) {
+HBlockMatch CParser::parse_match_noum(std::vector<HTerm>&  term) {
 	std::vector<HPred> predList;
  
 	predList.push_back(mkHPredAny("Noum"));
@@ -47,7 +47,7 @@ HBlockMatch CParser::parse_match_noum(std::vector<HTerm> term) {
 	return nullptr;
 }
 
-HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm> term) {
+HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
@@ -154,7 +154,7 @@ HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm> term) {
 }
 
 
-HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm> term) {
+HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
@@ -256,7 +256,7 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm> term) {
 
 
 
-HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm> term) {
+HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm>&  term) {
 	{
 		// is a kind definition ??
 
@@ -322,7 +322,7 @@ HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm> term) {
 
 
 
-HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm> term) {
+HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm>&  term) {
 	{
 		// is a kind definition ??
 	 
@@ -384,7 +384,7 @@ HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm> term
 
 
 
-HBlockMatch   CParser::parser_Verb_Match(std::vector<HTerm> term)
+HBlockMatch   CParser::parser_Verb_Match(std::vector<HTerm>&  term)
 {
 
 	HBlockMatch aWVerb = parse_Which_Verb_Match(term);
@@ -453,7 +453,7 @@ std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, Matc
 }
 
 
-HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm> term) {
+HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm>&  term) {
 
 	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it)
 	{
@@ -472,7 +472,7 @@ HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm> term) {
 
 
 
-HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
+HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
 {
 
 	{
@@ -566,7 +566,7 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>    term)
 
 
 
-HBlockMatch CParser::parser_expression_match(std::vector<HTerm>   lst)
+HBlockMatch CParser::parser_expression_match(std::vector<HTerm>&    lst)
 {
 
  

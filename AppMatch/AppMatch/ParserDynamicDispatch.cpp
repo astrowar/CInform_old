@@ -41,7 +41,7 @@ HBlockStaticDispatch CParser::getStaticDispatchResolve(HTerm term) //Determina s
 
 }
 
-HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm> term )
+HBlockMatch CParser::parser_MatchArgument(std::vector<HTerm>&  term )
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -151,7 +151,7 @@ HBlockMatch CParser::parser_MatchArgument(HTerm term)
 
 
 
-DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm> term) {
+DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>&  term) {
 
    // std::cout << "what:  " << get_repr(term) << std::endl;
     {
@@ -310,7 +310,7 @@ HBlock CParser::STMT_understand_generic_redirect( HTerm  term, HBlock  output_te
 
 
 
-HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm> term) {
+HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm>&  term) {
 
     {
 		static std::vector<HPred> predList = {};
@@ -450,7 +450,7 @@ std::list<HBlock> CParser::ToMatchList( std::vector<HPred> pvector, MatchResult 
 }
 
 
-HBlock CParser::DynamicDispatch_action(std::vector<HTerm> term) {
+HBlock CParser::DynamicDispatch_action(std::vector<HTerm>&  term) {
 
 	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it)
 	{

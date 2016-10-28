@@ -132,7 +132,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 
 
 
-HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err) 
+HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 
    
@@ -233,12 +233,12 @@ HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm> term, HGroupLi
 }
 
 
-HBlock CParser::parseAssertion_isDecide (std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err)
+HBlock CParser::parseAssertion_isDecide (std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 	return parseAssertion_isDecide_inLine(term, inner, err);
 }
 
-HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm> term) {
+HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
 
     {
 		static std::vector<HPred> predList = {};

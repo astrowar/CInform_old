@@ -82,7 +82,7 @@ HBlockMatchIs CParser::parserMatchIsCondition(HTerm term)
  
 
 
-HBlock CParser::parse_toDecide_Entry(std::vector<HTerm> term) {
+HBlock CParser::parse_toDecide_Entry(std::vector<HTerm>&  term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("to"));
@@ -92,7 +92,7 @@ HBlock CParser::parse_toDecide_Entry(std::vector<HTerm> term) {
     }
 }
 
-HBlock CParser::parse_toDecide_Ret(std::vector<HTerm> term) {
+HBlock CParser::parse_toDecide_Ret(std::vector<HTerm>&  term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("decide"));
@@ -108,7 +108,7 @@ HBlock CParser::parse_toDecide_Ret(std::vector<HTerm> term) {
     return nullptr;
 }
 
-HBlock CParser::parser_decides_Assertion(std::vector<HTerm> term) {
+HBlock CParser::parser_decides_Assertion(std::vector<HTerm>&  term) {
 
     HBlock verb_decideIn = parse_toDecide_Entry(term);
     if (verb_decideIn != nullptr) {
@@ -134,7 +134,7 @@ std::vector<HTerm> expandTerm( HTerm term)
     return {term};
 }
 
-HBlock CParser::sys_say_action(std::vector<HTerm> term)  
+HBlock CParser::sys_say_action(std::vector<HTerm>&  term)  
 {
 	std::vector<HPred> predList;
 	predList.push_back(mk_HPredLiteral("say"));
@@ -150,7 +150,7 @@ HBlock CParser::sys_say_action(std::vector<HTerm> term)
 	return nullptr;
 }
 
-HBlock CParser::sys_now_action(std::vector<HTerm> term) {
+HBlock CParser::sys_now_action(std::vector<HTerm>&  term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("now"));
@@ -186,7 +186,7 @@ HBlock CParser::sys_now_action(std::vector<HTerm> term) {
 
 
 //Processa os smtm que sao do sistema
-HBlock CParser::STMT_system_Assertion(std::vector<HTerm> term)
+HBlock CParser::STMT_system_Assertion(std::vector<HTerm>& term)
 {
 	auto d_say = (sys_say_action(term));
 	if (d_say != nullptr) return d_say;
@@ -199,7 +199,7 @@ HBlock CParser::STMT_system_Assertion(std::vector<HTerm> term)
 }
 
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
-HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
+HBlock CParser::STMT_understand_Assertion(std::vector<HTerm>&  term) {
 
     auto d_action = (DynamicDispatch_action(term));
     if (d_action != nullptr) return d_action;
@@ -212,7 +212,7 @@ HBlock CParser::STMT_understand_Assertion(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
+HBlock CParser::parse_removeArticle(std::vector<HTerm>& term) {
     if (term.size() > 1) {
 
         if (mk_HPredLiteral("the")->match(term.front()) == Equals) {
@@ -223,7 +223,7 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_noum(std::vector<HTerm> term) 
+HBlock CParser::parse_noum(std::vector<HTerm>& term) 
 {
 
 	// anula se tiver uma palavra chave reservada
@@ -249,7 +249,7 @@ HBlock CParser::parse_noum(std::vector<HTerm> term)
     return nullptr;
 }
 
-HBlockAssertion_isInstanceOf CParser::parseAssertion_isInstanceOf(std::vector<HTerm> term) {
+HBlockAssertion_isInstanceOf CParser::parseAssertion_isInstanceOf(std::vector<HTerm>& term) {
     //Injstance is Alwares derivadefrom a Kind
     {
         // is a kind definition ??
@@ -316,7 +316,7 @@ HBlock CParser::parseAssertionEnumSecondTerm(HTerm term) {
     return c_list;
 }
 
-HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo *err)
+HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
     HBlock assert_decide = parseAssertion_isDecide(lst,inner,err);
     if (assert_decide != nullptr) {
@@ -328,7 +328,7 @@ HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm> lst, HGroupLines inner,
 
 
 
-HBlockProperty CParser::parse_PropertyOf(std::vector<HTerm> term) {
+HBlockProperty CParser::parse_PropertyOf(std::vector<HTerm>& term) {
     {
 
         std::vector<HPred> predList;
@@ -393,7 +393,7 @@ HBlockEnums CParser::parseAssertion_EnumTerms(HTerm enumList) {
 }
 
 
-HBlock CParser::STMT_canBe_Assertion(std::vector<HTerm> lst) {
+HBlock CParser::STMT_canBe_Assertion(std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
     predList.push_back(mkHPredAny("Target"));
     predList.push_back(mk_HPredLiteral("can"));
@@ -444,7 +444,7 @@ HBlockInstanceVariable CParser::CProperty_called(HTerm term) {
 }
 
 
-HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm> lst) {
+HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
 
 	logMessage(get_repr(lst));

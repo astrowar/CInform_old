@@ -18,7 +18,7 @@ HBlock CParser::parser_assertionTarger(HTerm term)
  
 
 
-HBlock   CParser::parser_VerbAssign(std::vector<HTerm> term)
+HBlock   CParser::parser_VerbAssign(std::vector<HTerm>& term)
 {
 
 	HBlock aVerb = parse_AssertionVerb(term);
@@ -50,7 +50,7 @@ HBlock CParser::parser_expression(HTerm  term)
 	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
 }
 
-HBlock CParser::parser_expression(std::vector<HTerm>   lst)
+HBlock CParser::parser_expression(std::vector<HTerm>&   lst)
 {
 
 	HBlock rblock_textEntry = (text_entry(lst));
@@ -93,7 +93,7 @@ HBlock CParser::parser_expression(std::vector<HTerm>   lst)
 
 	return nullptr;
 }
-HBlock CParser::parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo *err)
+HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
 
 	HBlock rblock_system_control = (STMT_control_flux(lst,inner , err));

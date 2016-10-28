@@ -191,7 +191,7 @@ public:
 	int registerStaticDispatch(int entryId, HBlockMatchList  argumentMatch, HBlock body );
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entryMatch );
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry, HBlock ret);
-	ParserResult parser_AssertionKind(std::vector<HTerm> lst);
+	ParserResult parser_AssertionKind(std::vector<HTerm>&  lst);
 	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
 	HBlockMatch parser_What_Which_Assertion(HTerm term);
 	HBlockMatchIs parser_What_Which_Verb_Assertion(HTerm term);
@@ -201,9 +201,9 @@ public:
 
  
 	 
-	HBlock parseAssertion_isDecide_inLine(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
-	HBlock parseAssertion_isDecide_Block(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
-	HBlock parseAssertion_isDecide(std::vector<HTerm> term, HGroupLines inner, ErrorInfo *err);
+	HBlock parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+	HBlock parseAssertion_isDecide_Block(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+	HBlock parseAssertion_isDecide(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 	HBlock parserBoolean(  HTerm  term);
 	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
 	 
@@ -219,10 +219,10 @@ public:
 	 
 	std::list<HBlock> parser_GroupLines(HGroupLines pivot, ErrorInfo* err);
 	 
-	HBlock STMT_Definition_Assertion(std::vector<HTerm> term);
+	HBlock STMT_Definition_Assertion(std::vector<HTerm>&  term);
 	HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
-	HBlockMatch parser_MatchArgument(std::vector<HTerm> term);
-	HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm> term)  ;
+	HBlockMatch parser_MatchArgument(std::vector<HTerm>&  term);
+	HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm>& term)  ;
 	HBlockList  parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep );
 	HBlockList  parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, HBlockList  CList);
 	HBlockList  parseAssertionFirstTerm_COMMA_AND(HTerm term, HBlockList  CList);
@@ -232,91 +232,93 @@ public:
 	HBlock parseAssertionFirstTerm_Compose(HTerm term);
 	HBlock parseAssertionFirstTerm(HTerm match);
 	HBlock parseAssertionEnumSecondTerm(HTerm term);
-	HBlock STMT_Decide_Assertion(std::vector<HTerm> lst,   HGroupLines inner, ErrorInfo *err);
+	HBlock STMT_Decide_Assertion(std::vector<HTerm>& lst,   HGroupLines inner, ErrorInfo *err);
 	
 	
 	DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
-	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm> term);
+	DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm>&  term);
 	HBlock STMT_understand_generic_redirect(HTerm term, HBlock output_term);
 	 
  
-	HBlock STMT_understand_Action_Assertion_static(std::vector<HTerm> term);
-	HBlock parse_toDecide_Entry(std::vector<HTerm> term);
-	HBlock parse_toDecide_Ret(std::vector<HTerm> term);
-	HBlock parser_decides_Assertion(std::vector<HTerm> term);
+	HBlock STMT_understand_Action_Assertion_static(std::vector<HTerm>&  term);
+	HBlock parse_toDecide_Entry(std::vector<HTerm>&  term);
+	HBlock parse_toDecide_Ret(std::vector<HTerm>&  term);
+	HBlock parser_decides_Assertion(std::vector<HTerm>&  term);
 	std::list<HBlock> ToMatchList(std::vector<HPred> pvector, MatchResult result);
-	HBlock STMT_understand_Assertion(std::vector<HTerm> term);
-	HBlock STMT_verb_Assertion_N(std::vector<HTerm> term);
-	HBlock STMT_verb_Assertion(std::vector<HTerm> lst);
+	HBlock STMT_understand_Assertion(std::vector<HTerm>&  term);
+	HBlock STMT_verb_Assertion_N(std::vector<HTerm>&  term);
+	HBlock STMT_verb_Assertion(std::vector<HTerm>&  lst);
 
 	HBlockEnums  parseAssertion_EnumTerms(  HTerm  elist);
 
 
-	HBlockAssertion_is parse_AssertionVerb(std::vector<HTerm> term);
+	HBlockAssertion_is parse_AssertionVerb(std::vector<HTerm>&  term);
 	HBlockKindAction parse_AssertionAction_secondPart(HTerm term);
 	HBlock parse_AssertionAction(std::vector<HTerm> term);
-	HBlock parse_AssertionIsVariable(std::vector<HTerm> lst);
+	HBlock parse_AssertionIsVariable(std::vector<HTerm>&  lst);
 	HBlockKindOfName parse_KindOf(HTerm term);
-	HBlock parse_AssertionIsKindOf(std::vector<HTerm> term);
-	HBlock parse_AssertionValuesOf(std::vector<HTerm> term);
-	HBlock parse_AssertionDefaultAssign(std::vector<HTerm> term);
-	HBlockAssertion_is   parse_AssertionDirectAssign(std::vector<HTerm> term);
+	HBlock parse_AssertionIsKindOf(std::vector<HTerm>&  term);
+	HBlock parse_AssertionValuesOf(std::vector<HTerm>&  term);
+	HBlock parse_AssertionDefaultAssign(std::vector<HTerm>&  term);
+	HBlockAssertion_is   parse_AssertionDirectAssign(std::vector<HTerm>&  term);
 
 
-	HBlock   parser_VerbAssign(std::vector<HTerm> term);
+	HBlock   parser_VerbAssign(std::vector<HTerm>& term);
 
 
 
-	HBlock parse_removeArticle(std::vector<HTerm> term);
-	HBlock parse_List_AND(std::vector<HTerm> term);
-	HBlock parse_List_OR(std::vector<HTerm> term);
-	HBlock parse_noum(std::vector<HTerm> term);
-	HBlock parser_Declaration_Assertion(std::vector<HTerm> lst);
-	HBlockProperty  parse_PropertyOf(std::vector<HTerm> term);
+	HBlock parse_removeArticle(std::vector<HTerm>& term);
+	HBlock parse_List_AND(std::vector<HTerm>&  term);
+	HBlock parse_List_OR(std::vector<HTerm>&  term);
+	HBlock parse_noum(std::vector<HTerm>& term);
+	HBlock parser_Declaration_Assertion(std::vector<HTerm>&  lst);
+	HBlockProperty  parse_PropertyOf(std::vector<HTerm>& term);
  
-	HBlock STMT_canBe_Assertion(std::vector<HTerm> lst);
+	HBlock STMT_canBe_Assertion(std::vector<HTerm>& lst);
 	HBlockInstanceVariable  CProperty_called(HTerm term);
-	HBlock STMT_hasAn_Assertion(std::vector<HTerm> lst);
+	HBlock STMT_hasAn_Assertion(std::vector<HTerm>& lst);
 	HBlock parser_stmt(HTerm term, HGroupLines inner, ErrorInfo* err);
 	 
  
 
-	HBlock parserBoolean(std::vector<HTerm> term);
+	HBlock parserBoolean(std::vector<HTerm>&  term);
  
 
 	HBlock parser_kind(HTerm term); 
 	HBlock parser_kind_or_instance(HTerm term);
 	HBlock parser_valueReference(HTerm term);
 	HBlock parser_assertionTarger(HTerm term);
-	HBlockSelector parser_List_selector(std::vector<HTerm> term);
+	HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
 	HBlockSelector parser_List_selector(HTerm term);
 	HBlock parser_expression(HTerm term);
-	HBlock text_entry(std::vector<HTerm> lst);
-	HBlock parser_expression(std::vector<HTerm>  term);
-	HBlock parser_stmt_inner(std::vector<HTerm> lst, HGroupLines inner, ErrorInfo* err);
+	HBlock parser_expression(std::vector<HTerm>& lst);
+	HBlock parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
+	HBlock text_entry(std::vector<HTerm>&  lst);
+ 
+ 
 	 
 	 
 	HBlockArgumentInput parser_KindCalled(HTerm term);
-	HBlock STMT_relates_Assertion(std::vector<HTerm> term);
-	HBlock STMT_relates_AssertionWhen(std::vector<HTerm> term);
-	HBlock  DynamicDispatch_action(std::vector<HTerm> term);
-	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm> term);
-	HBlockMatch parse_match_noum(std::vector<HTerm> term);
-	HBlockMatch parse_Which_Verb_Match(std::vector<HTerm> term);
-	HBlockMatch parse_AssertionVerb_Match(std::vector<HTerm> term);
-	HBlockMatch  parse_Which_DirectAssign_Match(std::vector<HTerm> term);
-	HBlockMatch  parse_AssertionDirectAssign_Match(std::vector<HTerm> term);
-	HBlockMatch parser_Verb_Match(std::vector<HTerm> term);
+	HBlock STMT_relates_Assertion(std::vector<HTerm>&  term);
+	HBlock STMT_relates_AssertionWhen(std::vector<HTerm>&  term);
+	HBlock  DynamicDispatch_action(std::vector<HTerm>&  term);
+	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm>&  term);
+	HBlockMatch parse_match_noum(std::vector<HTerm>&  term);
+	HBlockMatch parse_Which_Verb_Match(std::vector<HTerm>&  term);
+	HBlockMatch parse_AssertionVerb_Match(std::vector<HTerm>&  term);
+	HBlockMatch  parse_Which_DirectAssign_Match(std::vector<HTerm>&  term);
+	HBlockMatch  parse_AssertionDirectAssign_Match(std::vector<HTerm>&  term);
+	HBlockMatch parser_Verb_Match(std::vector<HTerm>&  term);
 	HBlockMatch parser_expression_match(HTerm term);
 	std::list<HBlockMatch> ToMatchListMatc(std::vector<HPred> pvector, MatchResult result);
-	HBlockMatch DynamicDispatch_action_match(std::vector<HTerm> term);
-	HBlockMatch parse_match_list(std::vector<HTerm> term);
-	HBlockMatch parser_expression_match(std::vector<HTerm> lst);
+	HBlockMatch DynamicDispatch_action_match(std::vector<HTerm>&  term);
+	HBlockMatch parse_match_list(std::vector<HTerm>&  term);
+	HBlockMatch parser_expression_match(std::vector<HTerm>&  lst);
 
-    HBlock STMT_system_Assertion(std::vector<HTerm> term);
+    HBlock STMT_system_Assertion(std::vector<HTerm>& term);
 
-	HBlock sys_say_action(std::vector<HTerm> term);
-	HBlock sys_now_action(std::vector<HTerm> term);
+	HBlock sys_say_action(std::vector<HTerm>&  term);
+	HBlock sys_now_action(std::vector<HTerm>&  term);
 
 	HBlock parser_text(string str, ErrorInfo* err);
 	HBlock parser_text(string str, bool dump);
@@ -335,15 +337,15 @@ public:
 
  
 	HBlock parser_if_condition(HTerm term );
-	HBlock  parser_control_else(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
-	HBlock  parser_control_end(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
-	HBlock  parser_control_if(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
-	HBlock parser_control_unless(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_else(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_end(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
+	HBlock  parser_control_if(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
+	HBlock parser_control_unless(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
 	std::list<HBlockControlSelectItem> get_CBlockControlSelectItem(HBlockComandList shared_ptr, ErrorInfo* err);
-	HBlockControlSelect parser_control_select(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlockControlSelect parser_control_select(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
 	 
-	HBlockControlSelectItem parser_control_select_item(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
-	HBlock  STMT_control_flux(std::vector<HTerm> term, HGroupLines inner, ErrorInfo* err);
+	HBlockControlSelectItem parser_control_select_item(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
+	HBlock  STMT_control_flux(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
 };
 
 

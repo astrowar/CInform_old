@@ -54,7 +54,7 @@ HBlockList CParser::parseAssertionFirstTerm_COMMA_OR(HTerm term, HBlockList CLis
 
 
 
-HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
+HBlock CParser::parse_List_AND(std::vector<HTerm>& term) {
     {
         auto sep = mk_HPredLiteral("and");
         std::vector<HPred> predList;
@@ -101,7 +101,7 @@ HBlock CParser::parse_List_AND(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_List_OR(std::vector<HTerm> term) {
+HBlock CParser::parse_List_OR(std::vector<HTerm>& term) {
 	{
 		auto sep = mk_HPredLiteral("or");
 		std::vector<HPred> predList;

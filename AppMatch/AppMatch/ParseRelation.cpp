@@ -67,7 +67,7 @@ HBlockArgumentInput CParser::parser_KindCalled(HTerm term)
 	return nullptr;
 }
 
-HBlock CParser::STMT_relates_Assertion(std::vector<HTerm> term)
+HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 {
 
 	// Simetricos em grupo

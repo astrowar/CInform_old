@@ -3,7 +3,7 @@
  
 #include "Parser.hpp"
 
-HBlock CParser::text_entry(std::vector<HTerm> term)
+HBlock CParser::text_entry(std::vector<HTerm>&  term)
 {
 	{
 		 

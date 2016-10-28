@@ -13,7 +13,7 @@
 
 
 
-HBlock CParser::parserBoolean(std::vector<HTerm> term) {
+HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("not"));
@@ -60,7 +60,7 @@ HBlock CParser::parserBoolean(std::vector<HTerm> term) {
 
 
 
-ParserResult CParser::parser_AssertionKind(std::vector<HTerm> lst) {
+ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
     predList.push_back(mkHPredAny("Object"));
     predList.push_back(mk_HPredLiteral_OR("Verb", {"is", "are"}));
