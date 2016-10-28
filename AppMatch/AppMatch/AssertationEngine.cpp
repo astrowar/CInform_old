@@ -323,10 +323,9 @@ void CBlockInterpreter::execute_init(HBlock p) {
 	  {
 		for(auto it : cmdList->lista)
 		{
-			printf("Exec : \n");
-			it->dump("  ");
+ 
 			execute_init(it);
-			printf("end : \n");
+	 
 		}
 		return;
 	  }

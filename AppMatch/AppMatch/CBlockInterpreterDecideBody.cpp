@@ -12,7 +12,11 @@ HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
 {
 	HRunLocalScope localsNext = nullptr;
 
-	 
+	//printf("fuse contexts .....\n");
+	//if (oldEntry != nullptr) oldEntry->dump(" ");
+	//printf("with .....\n");
+	//if (headerEntry != nullptr) headerEntry->dump(" ");
+	//printf("end .....\n");
 	{
 		auto localsHeaderOut = std::make_shared< CRunLocalScope >();
 		for (auto e : headerEntry->locals)
@@ -33,8 +37,17 @@ HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
 			{
 				localsHeaderOut->locals.emplace_back(e.first, e.second);
 			}
+		}
+		if (oldEntry != nullptr) //tem no old ma nao no new
+		{
+			for (auto e : oldEntry->locals)
+			{
+				localsHeaderOut->locals.emplace_back(e.first, e.second);
+			}
+
 
 		}
+
 		return localsHeaderOut;
 	}
 
@@ -77,10 +90,7 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 		printf("huge");
 	}
 
-	printf("\n");
-	c_block->dump("  ");
-	//printf("Match for \n");
-	match->dump("  ");
+ 
 	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
 	 
 	if (result.hasMatch ) 
@@ -95,7 +105,7 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 		 
 		if ( HBlockNoum anoum  = asHBlockNoum( dct->decideBody ))
 		{
-			dct->decideBody->dump("  ");
+		 
 			auto qresolved =   resolve_noum(anoum, localsNext);
 			if (qresolved != nullptr)  return qresolved;
 		}
@@ -115,18 +125,18 @@ QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct,
 	}
 	stk.addQuery("decide", c_block, dct);
 	
-	if(localsEntry != nullptr) localsEntry->dump("   ");
+	//if(localsEntry != nullptr) localsEntry->dump("   ");
 
 
 
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 
 		
-	printf("MATCH ? ===========================\n");
+	/*printf("MATCH ? ===========================\n");
 	dct->queryToMatch->dump(" ");
 	printf(" ->  \n");
 	c_block->dump(" ");
-	printf(".....................................\n");
+	printf(".....................................\n");*/
 	if (result.hasMatch)
 	{
 		auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
@@ -134,7 +144,9 @@ QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct,
 		 
 		auto rr =  query(dct->decideBody, localsNext, stk);
 		if (rr == QEquals) return QEquals;
-		//return QNotEquals;
+ 
+
+		return QNotEquals; // deve decidir 
 		 
 
 	}

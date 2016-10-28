@@ -168,11 +168,7 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 
 QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
-	logMessage("query for Relation property called "+ property_noum->named + "   ================================\n");
-	c_block->dump(" ");
-	printf(" OF \n");
-	value->dump(" ");
-	printf("....................................\n");
+ 
 
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
@@ -271,14 +267,32 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 			 
 			if (vb == qVerb->verb)
 			{
+
 				CResultMatch  result_obj = Match(qVerb->obj, c_block, localsEntry, stk);
 				if (result_obj.hasMatch)
 				{
-					CResultMatch  result_value = Match(qVerb->value, value, localsEntry , stk);
+					auto locals_obj = std::make_shared< CRunLocalScope >(result_obj.maptch);
+					HRunLocalScope localsNext = newScope(localsEntry, locals_obj);
+				 
+
+					CResultMatch  result_value = Match(qVerb->value, value, localsNext, stk);
 					if (result_value.hasMatch)
 					{
+						 
+						auto locals_value = std::make_shared< CRunLocalScope >(result_value.maptch);
+
+						 
+						HRunLocalScope localsNext_value = newScope(localsNext,  locals_value);
+
+					 
+						auto rr = query(v->decideBody, localsNext_value, stk);
+						if (rr == QEquals) return QEquals;
+						
+						 
+						return QNotEquals;
+
 						//return v->decideBody;
-						return QueryResul::QEquals;
+						//return QueryResul::QEquals;
 					}
 
 				}
@@ -319,8 +333,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 				if (result_value.hasMatch)
 				{
 					auto  obj_resolved = v->decideBody;
-					value->dump("   ");
-					obj_resolved->dump("  ");
+ 
 					
 					return query_is(c_block, obj_resolved,localsEntry,stk );
 				}

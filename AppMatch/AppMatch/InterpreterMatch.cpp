@@ -90,7 +90,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			if (auto cinner =  asHBlockNoum(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
-				logMessage(cinner->named + " == "+inner->named);
+				//logMessage(cinner->named + " == "+inner->named);
 				if (inner->named == cinner->named)
 				{
 				  return 	CResultMatch(true );
@@ -261,12 +261,28 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		if (HBlockAssertion_isDirectAssign   vDirect = asHBlockAssertion_isDirectAssign(value))
 		{
-			CResultMatch mres = Match(mDirect->obj, vDirect->get_obj(),localsEntry  , stk);
+
+			auto vr1 = resolve_if_noum(vDirect->get_obj(), localsEntry, std::list<std::string>());
+			if (vr1 == nullptr) vr1 = vDirect->get_obj();
+			auto vr2 = resolve_if_noum(vDirect->value, localsEntry, std::list<std::string>());
+			if (vr2 == nullptr) vr2 = vDirect->value;
+
+
+			CResultMatch mres = Match(mDirect->obj, vr1,localsEntry  , stk);
 			if (mres.hasMatch)
 			{
-				CResultMatch mres_k = Match(mDirect->value, vDirect->value , localsEntry ,stk);
+
+				auto locals_obj = std::make_shared< CRunLocalScope >(mres.maptch);
+				auto localsNext = newScope(localsEntry, locals_obj);
+
+
+				CResultMatch mres_k = Match(mDirect->value, vr2 , localsEntry ,stk);
 				if (mres_k.hasMatch)
 				{
+
+					auto locals_value = std::make_shared< CRunLocalScope >(mres_k.maptch);
+					localsNext = newScope(localsNext, locals_value);
+
 					mres.append(mres_k);
 					return mres;
 
@@ -274,6 +290,17 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}	
 			else
 			{
+				//printf("Match Fail =============================\n");
+
+				//mDirect->obj->dump("  ");
+				//vDirect->get_obj()->dump("  ");
+				//if (localsEntry != nullptr)
+				//{
+				//	printf("LETs   \n");
+				//	localsEntry->dump("");
+				//}
+				//printf(".........................................\n");
+
 				return CResultMatch(false);
 			}
 		}

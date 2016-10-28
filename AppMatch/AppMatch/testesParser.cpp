@@ -357,11 +357,12 @@ int main() {
 	// testeParser_1();
 
 	//testeParser_7b();
-	testeExecute_all();
-	return 0 ;
+//	testeExecute_all();
+	//return 0 ;
 	 
-  // for (int k = 0; k < 100; ++k)
+   for (int k = 0; k < 100; ++k)
 	{
+		testeExecute_all();
 		// testeParser_listA();
 		// testeParser_listB();
 

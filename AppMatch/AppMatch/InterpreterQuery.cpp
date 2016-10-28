@@ -103,11 +103,7 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
 QueryResul
 CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
-	printf("query for peoperty   ================================\n");
-	propObj->dump(" ");
-	printf(" IS \n");
-	c_block1->dump(" ");
-	printf("....................................\n");
+	 
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
@@ -118,18 +114,19 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				HVariableNamed pvar = cinst->get_property(property_noum->named);
 				if (pvar != nullptr)
 				{
-					logMessage("property  is ");
-					if (pvar->value != nullptr)
-					{
-						pvar->value->dump("  ");
-					}
-					else
-					{
-						logMessage("    EMPTY   ");
+					// logMessage("property  is ");
+					//if (pvar->value != nullptr)
+					//{
+					//	pvar->value->dump("  ");
+					//}
+					//else
+					//{
+					//	logMessage("    EMPTY   ");
 
-					}
+					//}
+					//c_block1->dump("  ");
 
-					c_block1->dump("  ");
+
 					auto rprop = query_is(pvar->value, c_block1, localsEntry, stk);
 					if (rprop == QEquals) return QEquals;
 					return QNotEquals;
@@ -138,11 +135,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				{
 					auto  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
 
-					printf("query for peoperty   ================================\n");
-					propObj->dump(" ");
-					printf(" IS %s \n", property_noum->named.c_str());
-					c_block1->dump(" ");
-					printf("....................................\n");
+ 
 
 					if (result_prop != QUndefined) return result_prop;
 					return QUndefined;
@@ -254,11 +247,7 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
-
-	printf("QUERY ??\n");
-	c_block->dump(" ");
-	c_block1->dump(" ");
-	printf(".................................\n");
+ 
 
 	if (c_block->isSame(c_block.get(), c_block1.get() ))
 	{
@@ -439,10 +428,10 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
         }
     }
 
-	// Falta definir os Query Filters Match
-	printf("Query Fail \n");
-	c_block->dump("  ");
-	c_block1->dump("  ");
+	 
+	 
+
+ 
     return QUndefined;
 
 }
@@ -563,16 +552,35 @@ QueryResul CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HRunLocalS
 
 QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk)
 {
+	for (auto dctIF : decides_if)
+	{
+		QueryResul dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
+		if (dctValueWrap_1 != QUndefined)
+		{
+			return  dctValueWrap_1;
+		}
+	}
+
+
     for (HBlockToDecideWhat &e : decides_what)
     {
       CResultMatch  reMatch = Match(e->queryToMatch, q, localsEntry, stk);
       if (reMatch.hasMatch )
       {
-          return QEquals;
+ 
+		  auto localsHeaderC = std::make_shared< CRunLocalScope >(reMatch.maptch);
+		  HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
+
+		  auto rr = query(e->decideBody, localsNext, stk);
+		  if (rr == QEquals) return QEquals;
+
+          return QNotEquals;
           //return   e->decideBody;
       }
 
     }
+
+ 
 
     return QUndefined;
 
@@ -580,11 +588,13 @@ QueryResul CBlockInterpreter::query_decides(HBlock q, HRunLocalScope localsEntry
 
 
 
-
+ 
 
 QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack stk  )
 {
-    
+ 
+
+  /*  
     for (auto dctIF : decides_if)
     {
         QueryResul dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
@@ -592,31 +602,37 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
         {
             return  dctValueWrap_1;
         }
-    }
+    }*/
 
 	 
 
 
     if (HBlockIsNotVerb is_nverb = asHBlockIsNotVerb(q))
     {
-        return  query_not_verb(is_nverb, localsEntry , stk);
+		auto retv = query_not_verb(is_nverb, localsEntry , stk);
+		if (retv != QUndefined) return retv;
     }
 
     if (HBlockIsVerb is_verb = asHBlockIsVerb(q) )
     {
-       return 	query_verb(is_verb, localsEntry , stk);
+       auto retv = query_verb(is_verb, localsEntry , stk);
+	   if (retv != QUndefined) return retv;
 
     }
 		if (HBlockAssertion_isDirectAssign q_dir_assign = asHBlockAssertion_isDirectAssign(q))
 		{
 			auto vr1 = resolve_if_noum(q_dir_assign->get_obj() , localsEntry , std::list<std::string>() );
+			if (vr1 == nullptr) vr1 = q_dir_assign->get_obj();
 			auto vr2 = resolve_if_noum(q_dir_assign->get_definition(), localsEntry, std::list<std::string>());
-
+			if (vr2 == nullptr) vr2 = q_dir_assign->get_definition();
 			if (q_dir_assign->isSame(vr1.get(), vr2.get()))
 			{
 			return QEquals;
 			}
-			return query_is(vr1,vr2, localsEntry, stk);
+			auto ret =  query_is(vr1,vr2, localsEntry, stk);
+			if (ret != QUndefined) return ret;
+
+			 
 			
 			/*if (q_dir_assign->isSame(q_dir_assign->get_obj().get(), q_dir_assign->get_definition().get()))
 			{
@@ -636,8 +652,13 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 			auto rr =  query_is(q_not_dir->get_obj(), q_not_dir->get_definition(), localsEntry, stk);
 			if (rr == QEquals) return QNotEquals;
 			if (rr == QNotEquals) return QEquals;
-			return QUndefined;
+		 
 		}
+
+
+
+		 
+
 
 	//Booleans
 	if (HBlockBooleanAND q_bool_and = asHBlockBooleanAND(q))
@@ -657,6 +678,16 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 		if (result_A == QEquals) return  QNotEquals;
 		return result_A;
 	}
+
+	for (auto dctIF : decides_if)
+	{
+		QueryResul dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
+		if (dctValueWrap_1 != QUndefined)
+		{
+			return  dctValueWrap_1;
+		}
+	}
+
     return QUndefined;
 
 }

@@ -2,7 +2,7 @@
 #include "Parser.hpp"
  
 
-#define ISLOG true
+#define ISLOG false
 
 
 std::vector<HTerm> decompose(string phase);;

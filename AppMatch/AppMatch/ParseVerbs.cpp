@@ -186,11 +186,11 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm> term) {
 				HTerm listExpand =  expandBract(res.matchs["VerbList"]);
 				plist = asCList(listExpand.get());
 
-				if (  plist->lst.back()->repr() =="of" )
+				/*if (  plist->lst.back()->repr() =="of" )
 				{
 					logError("verb of a relation cannot end with OF ");
 					return nullptr;
-				}
+				}*/
 
                 HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
 
@@ -241,11 +241,11 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
 
         if (res.result == Equals) {
 
-			if (res.matchs["Aux"]->repr() =="of")
+			/*if (res.matchs["Aux"]->repr() =="of")
 			{
 				logError("verb of a relation cannot end with OF ");
 				return nullptr;
-			}
+			}*/
             HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
@@ -285,11 +285,11 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             HBlock a_verb = clist;
             HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
 
-			if (res.matchs["Aux"]->repr() == "of")
+			/*if (res.matchs["Aux"]->repr() == "of")
 			{
 				logError("verb of a relation cannot end with OF ");
 				return nullptr;
-			}
+			}*/
 
             auto verbMatch = (mkHPredList("VerbMatch", {
                     mk_HPredLiteral(res.matchs["Verb"]->repr()),
@@ -324,11 +324,11 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             HBlock a_verb = vaux.first;
             HPred verbMatch = vaux.second;
 
-			if (vaux.second->repr() == "of")
+			/*if (vaux.second->repr() == "of")
 			{
 				logError("verb of a relation cannot end with OF ");
 				return nullptr;
-			}
+			}*/
 
 
            // HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
@@ -357,11 +357,11 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm> term) {
             HBlock a_verb = vaux.first;
             HPred verbMatch = vaux.second;
 
-			if (vaux.second->repr() == "of")
+		/*	if (vaux.second->repr() == "of")
 			{
 				logError("verb of a relation cannot end with OF ");
 				return nullptr;
-			}
+			}*/
 
 
             //HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());

@@ -53,4 +53,8 @@ public:
 	void dump(string ident) const;
 };
 
+
+HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
 using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
+
+
