@@ -195,7 +195,7 @@ HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
 				auto seletor = parser_Seletor(res.matchs["Seletor"]);
 				if (seletor != nullptr)
 				{
-					CBlockFilter 
+					//CBlockListComputed( )
 				}
 			}
 		}
@@ -219,7 +219,7 @@ HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
 				auto seletor = parser_Seletor(res.matchs["Seletor"]);
 				if (seletor != nullptr)
 				{
-
+					//CBlockSelector( ) 
 				}
 			}
 		}
