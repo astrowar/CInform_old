@@ -18,6 +18,9 @@ HBlock CParser::parser_assertionTarger(HTerm term)
  
 
 
+ 
+ 
+
 HBlock   CParser::parser_VerbAssign(std::vector<HTerm>& term)
 {
 
@@ -59,6 +62,14 @@ HBlock CParser::parser_expression(std::vector<HTerm>&   lst)
 
 	HBlock rblock_dynamicEntry_1 = (DynamicDispatch_action(lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
+
+
+	HBlock rblock_Lookup = (DynamicLookup_Relation(lst));
+	if (rblock_Lookup != nullptr) return rblock_Lookup;
+
+
+	HBlock rblock_VLookup = (DynamicLookup_Verb(lst));
+	if (rblock_VLookup != nullptr) return rblock_VLookup;
 
 	HBlock rblock_assert_1 = (parser_VerbAssign(lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;

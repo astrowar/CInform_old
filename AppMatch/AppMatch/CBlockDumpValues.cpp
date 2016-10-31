@@ -373,6 +373,12 @@ void CBlockToDecideOn::dump(string ident) {
 	}
 }
 
+void CBlockBooleanValue::dump(string ident)
+{
+	if (state) { printf("%s %s\n", ident.c_str(), "Boolean TRUE"); }
+	else { printf("%s %s\n", ident.c_str(), "Boolean FALSE"); }	
+}
+
 void CBlockBooleanAND::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Boolean ");
 	{
@@ -745,6 +751,28 @@ void CBlockConditionalRelation::dump(string ident)
 		this->coditional->dump(ident + "       ");
 	
 }
+
+void CBlockRelationLookup::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Relation LookUp  By", this->relation.c_str() );
+	{
+		this->value1->dump(ident + "       ");
+		this->value2->dump(ident + "       ");
+
+	}
+}
+
+void CBlockVerbLookup::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Verb LookUp  By", this->verb.c_str());
+	{
+		this->value1->dump(ident + "       ");
+		this->value2->dump(ident + "       ");
+
+	}
+}
+
+ 
 
 void CBlockNow::dump(string ident) {
 	printf("%s %s\n" , ident.c_str(), "Now "  );

@@ -173,10 +173,88 @@ void testeRelation4() {
 
 }
 
+
+//Tem um padrao aqui 
+// A kind which ( Seletor ) 
+// onde  Seletor pode ser a relation or a verb seletor
+// a room which ( relates to hall by Connection )
+// all kind which ( Seletor )
+// if X is a kind which ( Seletor )
+
+void testeRelation5()  //relations lockup
+{
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	string ss1 =
+		R"(
+route is a kind 
+room is a kind 
+thing is a kind 
+route has a room called destination
+garden is a room
+hall is a room 
+lab is a room 
+exit is a route
+destination of exit is garden
+ 
+Connection relates ( a room ) to each other
+the verb connect   implies a  Connection relation 
+hall connect garden
+garden connect hall
+lab connect hall
+a talent is a kind of thing
+strength, courage, luck, scent, honor, spirit and freedom is talent
+
+Inner relates many ( a thing ) to (a room )
+the verb in  implies a  Inner relation 
+
+courage is in lab
+honor is in garden
+freedom is in hall
+scent is in hall
+)";
+
+	 interpreter->execute_init(parse.parser_text(ss1, ISLOG) );
+	
+	 for (auto& rr : interpreter->getRelations()) rr->dump("");
+	 
+	 auto pBlock = parse.Parser_Expression("a room which hall relates to by Connection ", ISLOG);
+	// auto res_q1 = interpreter->query(parse.Parser_Expression("  hall connect garden  ", ISLOG));
+	// auto target_q = interpreter->exec_eval(parse.Parser_Expression("a room which hall  relates to by Connection ", ISLOG), nullptr);
+	// target_q->dump("");
+
+	// auto target_q2 = interpreter->exec_eval(parse.Parser_Expression("a room which  relates to garden by Connection ", ISLOG), nullptr);
+	// target_q2->dump("");
+
+	 auto target_q3 = interpreter->exec_eval(parse.Parser_Expression("a room which  relates to hall by Connection ", ISLOG), nullptr);
+	 target_q3->dump("");
+
+	 auto target_q4 = interpreter->exec_eval(parse.Parser_Expression("a room which courage relates to by Inner ", ISLOG), nullptr);
+	 target_q4->dump("");
+
+	 auto target_q5 = interpreter->exec_eval(parse.Parser_Expression("a talent which relates to hall by Inner ", ISLOG), nullptr);
+	 target_q5->dump("");
+
+	 //things which are in the teapot
+	 //people who can see the mouse
+
+	 auto target_v1 = interpreter->exec_eval(parse.Parser_Expression("talent which are in hall", ISLOG), nullptr);
+	 target_v1->dump("");
+
+	 printf("----------------\n");
+	 auto target_v2 = interpreter->exec_eval(parse.Parser_Expression("room which connect hall", ISLOG), nullptr);
+	 target_v2->dump("");
+
+
+	 return;
+}
+
 void testeRelation_all()
 {
-	testeRelation1(); 
+	 testeRelation1(); 
 	testeRelation2(); 
 	testeRelation3(); 
 	testeRelation4(); 
+	testeRelation5();
 }

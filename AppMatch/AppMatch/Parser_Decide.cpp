@@ -238,6 +238,35 @@ HBlock CParser::parseAssertion_isDecide (std::vector<HTerm>&  term, HGroupLines 
 	return parseAssertion_isDecide_inLine(term, inner, err);
 }
 
+
+HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+{
+	if (inner == nullptr)
+	{
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("decide"));
+				predList.push_back(mk_HPredLiteral("on"));
+				predList.push_back(mkHPredAny("ExpressionBody"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals) 
+			{
+					logMessage((res.matchs["ExpressionBody"]->repr()));
+					HBlock body = parser_expression(res.matchs["ExpressionBody"]);
+					return std::make_shared<CBlockToDecideOn>( body);
+			}
+		}
+	}
+	 
+		return nullptr;
+	 
+
+
+}
+
 HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
 
     {

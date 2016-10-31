@@ -101,15 +101,20 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 		HRunLocalScope localsNext = newScope( localsHeader , localsHeader );
 
 
-		//Execute body
-		 
+		//Execute body		 
+
 		if ( HBlockNoum anoum  = asHBlockNoum( dct->decideBody ))
-		{
-		 
+		{		 
 			auto qresolved =   resolve_noum(anoum, localsNext);
 			if (qresolved != nullptr)  return qresolved;
 		}
-		return dct->decideBody;
+
+		auto r = exec_eval(dct->decideBody, localsNext);
+		if (HBlockToDecideOn adecided = asHBlockToDecideOn(r))
+		{
+			return adecided->decideBody;
+		}
+		return r;
 	}
 
 	return nullptr;
@@ -132,19 +137,45 @@ QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct,
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 
 		
-	/*printf("MATCH ? ===========================\n");
+	printf("MATCH ? ===========================\n");
 	dct->queryToMatch->dump(" ");
 	printf(" ->  \n");
 	c_block->dump(" ");
-	printf(".....................................\n");*/
+	printf(".....................................\n");
 	if (result.hasMatch)
 	{
 		auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
 		HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
 		 
-		auto rr =  query(dct->decideBody, localsNext, stk);
-		if (rr == QEquals) return QEquals;
+		//auto rr =  query(dct->decideBody, localsNext, stk);
+		//if (rr == QEquals) return QEquals;
  
+		auto rdecided  = exec_eval(dct->decideBody, localsNext );
+		
+		if ( rdecided == nullptr) return QUndefined; //decide on nothing
+		if (HBlockToDecideOn ndecide = asHBlockToDecideOn(rdecided))
+		{
+			//verifica se eh true ou false 
+			if (HBlockNoum ndecideValue = asHBlockNoum( ndecide->decideBody)  )
+			{
+				if (ndecideValue->named == "true") return QEquals;
+				if (ndecideValue->named == "false") return QNotEquals;	
+				if (ndecideValue->named == "nothing") return QUndefined;
+			}	
+			if (ndecide->decideBody == nullptr)
+			{
+				return QUndefined;
+			}
+
+			if (HBlockBooleanValue boolValuen   = asHBlockBooleanValue(ndecide->decideBody))
+			{
+				if (boolValuen->state) return QEquals;
+				else  return QNotEquals;
+			}
+
+			logError("Error on decided return value ");
+			return QUndefined;
+		}
 
 		return QNotEquals; // deve decidir 
 		 

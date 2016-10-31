@@ -232,12 +232,70 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 {
+	if (c_block == nullptr)
+	{
+		return nullptr;
+	}
+	
+
+	if (localsEntry) localsEntry->dump("");
+	if (HBlockComandList nlist = asHBlockComandList (c_block))
+	{
+		HBlock ret_out = nullptr;
+		for (auto e : nlist->lista)
+		{
+			auto ret = exec_eval(e, localsEntry);
+			if (ret != nullptr)
+			{
+				ret_out = ret;
+				if (ret_out->type() == BlockToDecideOn) return ret_out;
+			}
+		}
+		return  ret_out;
+	}
+
+
+	if (HBlockControlIF cIF = asHBlockControlIF(c_block))
+	{
+		HBlock ret = nullptr;
+		 
+		auto r = query(cIF->block_if, localsEntry, QueryStack());
+		if (r == QEquals)
+		{
+			return exec_eval( cIF->block_then , localsEntry );
+		}
+		else
+		{
+			if (cIF->block_else != nullptr)
+			{
+				return exec_eval(cIF->block_else, localsEntry);
+			}
+			return nullptr;
+		}
+	}
+
+	if (HBlockToDecideOn ndecide = asHBlockToDecideOn(c_block))
+	{
+		
+		auto r = exec_eval(ndecide->decideBody,localsEntry);
+		return std::make_shared<CBlockToDecideOn>(r);
+	}
 
 		if (HBlockNoum nn = asHBlockNoum(c_block))
 		{
+			if (nn->named == "nothing") return nn;
 			auto  obj = resolve_noum(nn,localsEntry, std::list<std::string>());
-			return  exec_eval(obj , localsEntry);
+			if (obj != nullptr)
+			{
+				return  exec_eval(obj, localsEntry);
+			}
 		}
+
+		if (HBlockBooleanValue nbool = asHBlockBooleanValue(c_block))
+		{
+			return nbool;
+		}
+
 
 		if (HBlockInstance nIns = asHBlockInstance(c_block))
 		{
@@ -283,7 +341,28 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 			return rList;
 		}
 
+		//resolve To decides
+		for (auto dct : decides_what) 
+		{
+			auto dctValueWrap = getDecidedValueOf(c_block, dct, localsEntry, QueryStack());
+			if (dctValueWrap != nullptr)
+			{
+				return dctValueWrap;
+			}
+		}
+
+		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
+		{
+			return lookup_relation(nrlookup, localsEntry);
+		}
+		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
+		{
+			return lookup_verb(nvlookup, localsEntry);
+		}
+
+
 		// Bla ! 
+		c_block->dump("");
 		return nullptr;
 }
 

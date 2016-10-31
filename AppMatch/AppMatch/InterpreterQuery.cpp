@@ -14,6 +14,11 @@ using namespace std;
 
 
 
+std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
+{
+	return  relInstances;
+}
+
 CBlockInterpreter::CBlockInterpreter() {
 }
 
@@ -264,20 +269,24 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
     if (HBlockNoum nnoum = asHBlockNoum(c_block1))
     {
         HBlock resolved = resolve_noum(nnoum,localsEntry);
-        if (resolved) 
+        if (resolved != nullptr) 
 		{
-
             return query_is(c_block, resolved,localsEntry, stk);
         }
+		logError("unresolved " + nnoum->named);
     }
 
-    if (HBlockNoum nnoum = asHBlockNoum(c_block))
+    if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
     {
-        HBlock resolved = resolve_noum(nnoum, localsEntry);
-        if (resolved) {
+        HBlock resolved = resolve_noum(nnoum2, localsEntry);
+        if (resolved) 
+		{
 			return query_is(resolved, c_block1, localsEntry, stk);
         }
+		logError("unresolved " + nnoum2->named);
     }
+
+
 	if (HBlockInstance cinst1 = asHBlockInstance (c_block))
 		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
 		{
@@ -292,9 +301,10 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		 {
 			 return QEquals;			 
 		 }
-		/* printf("Match Fail \n");
-		 c_block->dump("  ");
-		 c_block1->dump("  ");*/
+		 //printf("Match Fail \n");
+		 //c_block->dump("  ");
+		 //c_block1->dump("  ");
+
 		 return QUndefined;
 	}
 

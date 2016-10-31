@@ -276,7 +276,7 @@ HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, 
 		}
 
 	}
-	
+	else 
     {
 		static std::vector<HPred> predList = {};
 		if (predList.empty()) {

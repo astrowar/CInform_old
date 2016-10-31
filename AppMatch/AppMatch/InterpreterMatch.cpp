@@ -102,11 +102,11 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}
  
 	 
-		if (auto inner =  asHBlockNoum(mAtom->inner))
+		if (auto inner_2 =  asHBlockNoum(mAtom->inner))
 		{
 			if (auto vNoumm =  asHBlockNoum(value))
 			{
-				if (vNoumm->named == inner->named)
+				if (vNoumm->named == inner_2->named)
 				{
 					return CResultMatch( true );
 				}
@@ -116,12 +116,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
-				auto r = query_is(cInst, inner, localsEntry, stk);
+				auto r = query_is(cInst, inner_2, localsEntry, stk);
 				return CResultMatch(r == QEquals);
 
 			}
 
-			auto rcc = query_is(value, inner, localsEntry, stk);
+			auto rcc = query_is(value, inner_2, localsEntry, stk);
 			return CResultMatch(rcc == QEquals);
 		}
 

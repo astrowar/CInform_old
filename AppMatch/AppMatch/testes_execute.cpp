@@ -190,16 +190,30 @@ void testeExecute4()
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 
+	string ss1 =
+		R"(
+object is a kind 
+book is a object
+key is a object
+box is a object
+target is a object that varies
+target is box 
+)";
+
+	interpreter->execute_init(parse.parser_text(ss1, ISLOG));
 
 	string ss2 =
 		R"(
-to decide if time is short:   
-   if (( time of day) is after 10 PM) : 
-          say (text ok)
+if ( target ) is key :
+   decide on book
+else : 
+   decide on target
 )";
-	interpreter->execute_init(parse.parser_text(ss2, ISLOG));
 
-	auto ret_true_a = interpreter->query(parse.Parser_Stmt("time is short  ", ISLOG));
+	
+
+	auto target_q = interpreter->exec_eval(parse.parser_text(ss2, true), nullptr);
+	target_q->dump("");
 	//assert(ret_true_a == QEquals);
 	return;
 }

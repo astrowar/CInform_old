@@ -48,6 +48,11 @@ void testeParser_7a();
 void testeParser_7b();
 void testeParser_7c();
 void testeParser_7d();
+
+void testeParser_7e();
+void testeParser_7f();
+void testeParser_7g();
+
 void testeParser_21();
 
 void testeRelation1();

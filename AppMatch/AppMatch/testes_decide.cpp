@@ -150,3 +150,72 @@ Zora speak Zubian
       auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
       assert(q4 == QEquals);
 }
+
+
+void testeParser_7e()
+{
+	string slong = R"(
+person is an kind
+woman is an kind of person
+Zora is an woman
+Mary is an woman
+
+language is a kind of value
+language are English, Zubian and Perplexish 
+speaking relates ( a person ) to   various  (  language )
+the verb  speak  implies the speaking relation
+
+
+Mary speak Zubian
+
+to decide  what ( person   ) is (the best person) :
+   if Zora speak Zubian :
+      decide on Zora
+   else:
+      decide on Mary   
+
+to decide  if ( person called P  ) is ( suitable ) :
+   if P speak Zubian :
+      decide on true
+   if P speak English :
+      decide on false
+   decide on nothing
+
+to decide  if ( person called P  ) is oposite of ( person called Q )  :
+   if P is Zora  :
+      if Q is Mary  :
+         decide on true 
+   if P is Mary  :
+      if Q is Zora  :
+         decide on true 
+   decide on false
+
+
+)";
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	interpreter->execute_init(parse.parser_text(slong, ISLOG));
+
+	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
+	//qr->dump("");
+
+	//auto q3 = interpreter->query(parse.Parser_Stmt("best person is Mary  ", ISLOG));
+	//assert(q3 == QEquals);
+
+	auto q4 = interpreter->query(parse.Parser_Stmt(" Mary is suitable ", ISLOG));
+	assert(q4 == QEquals);
+
+	auto q5 = interpreter->query(parse.Parser_Stmt(" Zora is suitable ", ISLOG));
+	assert(q5 != QEquals);
+
+	auto q6 = interpreter->query(parse.Parser_Stmt(" Zora is oposite of Mary ", ISLOG));
+	assert(q6 == QEquals);
+
+
+
+	return;
+
+}
+
+ 

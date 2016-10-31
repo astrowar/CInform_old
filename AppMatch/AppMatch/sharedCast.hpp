@@ -74,6 +74,7 @@ HBlockToDecideIf asHBlockToDecideIf(HBlock c );
 HBlockToDecideWhat_FirstNoum asHBlockToDecideWhat_FirstNoum(HBlock c ); 
 HBlockToDecideWhat asHBlockToDecideWhat(HBlock c ); 
 HBlockToDecideOn asHBlockToDecideOn(HBlock c );
+HBlockBooleanValue asHBlockBooleanValue(HBlock c);
 HBlockToDecide asHBlockToDecide(HBlock c );
 
 HBlockActionApply asHBlockActionApply(HBlock c ); 
@@ -109,3 +110,6 @@ HBlockControlIF aHBlockControlIF(HBlock c);
 HBlockControlSelect aHBlockControlSelect(HBlock c);
 HBlockControlSelectItem aHBlockControlSelectItem(HBlock c);
 HBlockComandList asHBlockComandList(HBlock c);
+HBlockControlIF asHBlockControlIF(HBlock c);
+HBlockRelationLookup asHBlockRelationLookup(HBlock c);
+HBlockVerbLookup asHBlockVerbLookup(HBlock c);

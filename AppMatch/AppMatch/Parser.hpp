@@ -204,6 +204,7 @@ public:
 	HBlock parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 	HBlock parseAssertion_isDecide_Block(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 	HBlock parseAssertion_isDecide(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+	HBlock parseAssertion_DecideOn(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err);
 	HBlock parserBoolean(  HTerm  term);
 	HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
 	 
@@ -288,6 +289,8 @@ public:
 	HBlock parser_kind_or_instance(HTerm term);
 	HBlock parser_valueReference(HTerm term);
 	HBlock parser_assertionTarger(HTerm term);
+	HBlock DynamicLookup_Relation(std::vector<HTerm>& term);
+	HBlock DynamicLookup_Verb(std::vector<HTerm>& term);
 	HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
 	HBlockSelector parser_List_selector(HTerm term);
 	HBlock parser_expression(HTerm term);
@@ -301,6 +304,10 @@ public:
 	HBlockArgumentInput parser_KindCalled(HTerm term);
 	HBlock STMT_relates_Assertion(std::vector<HTerm>&  term);
 	HBlock STMT_relates_AssertionWhen(std::vector<HTerm>&  term);
+	HBlock parser_Seletor(HTerm term, HBlockMatch muteVariable);
+	HBlock parser_Seletor(HTerm term, HBlock muteVariable);
+	HBlock parser_Seletor(HTerm term);
+	HBlock parser_Seletor(std::vector<HTerm>& term);
 	HBlock  DynamicDispatch_action(std::vector<HTerm>&  term);
 	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm>&  term);
 	HBlockMatch parse_match_noum(std::vector<HTerm>&  term);

@@ -383,6 +383,16 @@ HBlockToDecideOn asHBlockToDecideOn(HBlock c )
         return std::static_pointer_cast<CBlockToDecideOn>(c);
    return nullptr;
 }
+
+HBlockBooleanValue asHBlockBooleanValue(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockBooleanValue)
+		return std::static_pointer_cast<CBlockBooleanValue>(c);
+	return nullptr;
+}
+
+
+
 HBlockToDecide asHBlockToDecide(HBlock c )
 {
     if (c == nullptr) return nullptr;
@@ -572,6 +582,25 @@ HBlockComandList asHBlockComandList(HBlock c)
 {
 	if (c != nullptr && c->type() == BlockType::BlockComandList)
 		return std::static_pointer_cast<CBlockComandList>(c);
+	return nullptr;
+}
+HBlockControlIF asHBlockControlIF(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockControlIF )
+		return std::static_pointer_cast<CBlockControlIF>(c);
+	return nullptr;
+}
+HBlockRelationLookup asHBlockRelationLookup(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockRelationLookup)
+		return std::static_pointer_cast<CBlockRelationLookup>(c);
+	return nullptr;
+}
+ 
+HBlockVerbLookup asHBlockVerbLookup(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockVerbLookup)
+		return std::static_pointer_cast<CBlockVerbLookup>(c);
 	return nullptr;
 }
  

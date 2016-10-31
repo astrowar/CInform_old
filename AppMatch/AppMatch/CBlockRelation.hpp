@@ -118,3 +118,50 @@ public:
 
 };
 using HBlockConditionalRelation = std::shared_ptr<CBlockConditionalRelation>;
+
+
+ 
+enum NoumLocation {
+	FirstNoum,
+	SecondNoum
+};
+
+class CBlockRelationLookup : public CBlock
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockRelationLookup ; }
+	string relation;
+	HBlockMatch value1;
+	HBlockMatch value2;
+	NoumLocation term_to_query;
+
+	CBlockRelationLookup(string _relation,  HBlockMatch _value1, HBlockMatch  _value2 , NoumLocation _term_to_query ) : relation(_relation), value1(_value1), value2(_value2), term_to_query(_term_to_query)
+	{
+
+	}
+
+};
+using HBlockRelationLookup = std::shared_ptr<CBlockRelationLookup>;
+
+
+
+ 
+
+class CBlockVerbLookup : public CBlock
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockVerbLookup; }
+	string verb;
+	HBlockMatch value1;
+	HBlockMatch value2;
+	NoumLocation term_to_query;
+
+	CBlockVerbLookup(string _verb, HBlockMatch _value1, HBlockMatch  _value2, NoumLocation _term_to_query) : verb(_verb), value1(_value1), value2(_value2), term_to_query(_term_to_query)
+	{
+
+	}
+
+};
+using HBlockVerbLookup = std::shared_ptr<CBlockVerbLookup>;

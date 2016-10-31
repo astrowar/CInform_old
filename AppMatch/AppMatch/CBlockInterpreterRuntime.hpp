@@ -95,6 +95,14 @@ class CBlockInterpreter {
 	HBlockInstance new_Instance(string named, HBlockKind kind);
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
+	HBlockList lookup_relation_List(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+	HBlock lookup_relation_X_Y_1(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+	HBlock lookup_relation_X_Y_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+	HBlock lookup_relation_XS_Y_1(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+	HBlock lookup_relation_X_YS_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+	HBlock lookup_relation(HBlockRelationLookup rLookup, HRunLocalScope localsEntry);
+	HBlock lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
+
 	bool exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry);
 	bool  setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry );
 	bool setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry);
@@ -118,6 +126,9 @@ class CBlockInterpreter {
 	bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 	bool unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 public:
+
+	std::list<HBlockRelationInstance > getRelations();
+
     CBlockInterpreter();
 
     ~CBlockInterpreter();

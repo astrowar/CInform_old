@@ -6,6 +6,270 @@
 
 using namespace std;
 
+ 
+
+
+//retorn  o primeiro termo
+HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_block, HBlock value,  HRunLocalScope localsEntry)
+{
+
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+	 
+
+			{
+				QueryStack stk;
+				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1 != QEquals) continue;
+
+ 
+
+				auto r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2 != QEquals) continue;
+				return rr->value1;
+			}
+
+		}
+	}
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			if (rr->relation->is_symetric()) 
+			{
+				{
+					QueryStack stk;
+					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1 != QEquals) continue;
+
+					auto r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2 != QEquals) continue;
+					return rr->value2;
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+//retorn  o segundo termo
+HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+{
+
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			{
+				QueryStack stk;
+ 
+				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1 != QEquals) continue;
+
+ 
+
+				auto r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2 != QEquals) continue;
+				return rr->value2;
+			}
+		}
+	}
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			if (rr->relation->is_symetric())
+			{
+				{
+					QueryStack stk;
+					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1 != QEquals) continue;
+
+					auto r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2 != QEquals) continue;
+					return rr->value1;
+				}
+			}
+		}
+	}
+
+
+	return nullptr;
+}
+
+
+//retorn  o primeiro termo
+HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+{
+	std::list<HBlock> lst;
+
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			{
+				QueryStack stk;
+				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1 != QEquals) continue;
+
+				auto r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2 != QEquals) continue;
+				lst.push_back(rr->value1);
+			}
+		}
+	}
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			if (rr->relation->is_symetric())
+			{
+				{
+					QueryStack stk;
+					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1 != QEquals) continue;
+
+					auto r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2 != QEquals) continue;
+					lst.push_back(rr->value2);
+				}
+			}
+		}
+	}
+
+	return std::make_shared<CBlockList>(lst);
+}
+
+//retorn  o segundo termo
+HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+{
+	std::list<HBlock> lst;
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+		{
+			{
+				QueryStack stk;
+				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1 != QEquals) continue;
+
+				auto r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2 != QEquals) continue;
+				lst.push_back(rr->value2);
+			}
+
+		}
+	}
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->named == relationNamed)
+
+		{
+			if (rr->relation->is_symetric())
+			{
+				{
+					QueryStack stk;
+					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1 != QEquals) continue;
+
+					auto r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2 != QEquals) continue;
+					lst.push_back(rr->value1);
+				}
+			}
+		}
+	}
+
+
+	return std::make_shared<CBlockList>(lst);
+}
+
+
+ 
+
+HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry)
+{
+
+	auto rel_find = this->staticRelation.find(rLookup->relation);
+	if (rel_find != this->staticRelation.end())
+	{
+		auto rel = rel_find->second;
+		if (rLookup->term_to_query == FirstNoum)
+		{
+			if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+			return lookup_relation_X_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+
+		}
+		if (rLookup->term_to_query == SecondNoum)
+		{
+			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+			return lookup_relation_X_Y_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+		}
+
+	}
+	return nullptr;
+
+}
+
+
+HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
+{
+	for (auto & rv : verbRelationAssoc)
+	{
+		if (rv.first == vLookup->verb )
+		{
+			//tem uma relacao com esse verbo
+
+			auto relation_name = rv.second->relationNoum->named;
+			{
+
+
+				auto rel_find = this->staticRelation.find(relation_name);
+				if (rel_find != this->staticRelation.end())
+				{
+					HBlockRelationBase rel = rel_find->second;
+
+					auto val1 = vLookup->value1;
+					auto val2 = vLookup->value2;
+
+
+					if (rv.second->type() == BlockVerbReverseRelation)
+					{
+						std::swap(val1, val2);
+
+					}
+
+
+
+					if (vLookup->term_to_query == FirstNoum)
+					{
+						if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(relation_name, val1,val2, localsEntry);
+						return lookup_relation_X_Y_1(relation_name, val1, val2, localsEntry);
+
+					}
+					if (vLookup->term_to_query == SecondNoum)
+					{
+						if (rel->is_various_noum2()) return lookup_relation_X_YS_2(relation_name, val1, val2, localsEntry);
+						return lookup_relation_X_Y_2(relation_name, val1, val2, localsEntry);
+					}
+
+				}
+
+			}
+		}
+	}
+	 
+	return nullptr;
+
+}
+
+
+
+
+
 
 bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry )
 {

@@ -5,6 +5,22 @@
 
 #include "BlockInterpreter.hpp"
 
+
+class CBlockBooleanValue
+	: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+{
+public:
+	CBlockBooleanValue(bool _state):state(_state) {}
+
+	bool state;
+	 
+
+	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockBooleanValue; }
+};
+using HBlockBooleanValue = std::shared_ptr<CBlockBooleanValue>;
+
+
 class CBlockBooleanAND
         : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 {

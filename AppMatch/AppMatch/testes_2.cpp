@@ -283,4 +283,8 @@ void testeParser_5_all()
 	testeParser_7a();
 	testeParser_7b();
 	testeParser_7c();
+
+	testeParser_7d();
+	testeParser_7e();
+	//testeParser_7f();
 }

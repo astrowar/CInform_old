@@ -356,9 +356,13 @@ else:
 int main() {
 	// testeParser_1();
 
-	//testeParser_7b();
+	//testeExecute4();
+	
+	testeRelation5();
+	//testeParser_7e();
+
 //	testeExecute_all();
-	//return 0 ;
+	return 0 ;
 	 
    for (int k = 0; k < 100; ++k)
 	{

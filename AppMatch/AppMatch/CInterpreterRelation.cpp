@@ -47,6 +47,14 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
 				}
+				if  (rel->relation->is_symetric())
+				{
+					if (query_is(rel->value2, n1, localsEntry, stk) == QueryResul::QEquals)
+					{
+						it = relInstances.erase(it);
+						if (it == relInstances.end()) break;
+					}
+				}
 			}
 		}
 	}
@@ -61,6 +69,14 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 				{
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
+				}
+				if (rel->relation->is_symetric())
+				{
+					if (query_is(rel->value1, n2, localsEntry, stk) == QueryResul::QEquals)
+					{
+						it = relInstances.erase(it);
+						if (it == relInstances.end()) break;
+					}
 				}
 			}
 		}

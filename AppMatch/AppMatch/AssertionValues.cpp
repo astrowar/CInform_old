@@ -195,6 +195,14 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
 
 bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLocalScope localsEntry) {
 
+	if (HBlockList nobjList = asHBlockList(obj))
+	{
+		for (auto &e : nobjList->lista) {
+			assert_it_instance(e, baseKind, localsEntry);
+		}
+		return true;
+	}
+
 	if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
 	{
 		HBlock bbase = resolve_noum(nbaseKind, localsEntry);
@@ -209,14 +217,7 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLoca
 		}
 	}
 
-	if (HBlockList nobjList = asHBlockList(obj))
-	{
-		for (auto &e : nobjList->lista) {
-			assert_it_instance(e, baseKind, localsEntry);
-		}
-		return true;
-	}
-    
+	 
  
         if (HBlockNoum nobj = asHBlockNoum(obj)) 
 		{

@@ -322,6 +322,13 @@ HBlock CParser::STMT_Decide_Assertion(std::vector<HTerm>& lst, HGroupLines inner
     if (assert_decide != nullptr) {
         return assert_decide;
     }
+
+	HBlock assert_decide_on = parseAssertion_DecideOn(lst, inner, err);
+	if (assert_decide_on != nullptr)
+	{
+		return assert_decide_on;
+	}
+
     return nullptr;
 
 }
@@ -656,7 +663,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 			HGroupLines _inner = nullptr;
 			if (inext == inner->lines.end()) _inner = inner->inner;
 			 
-
+			logMessage(rawLine);
 			blk = parser_GroupLine(rawLine, _inner, err);
 			if (blk == nullptr)
 			{

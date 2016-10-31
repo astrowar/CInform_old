@@ -160,6 +160,11 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 }
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry ,std::list<std::string>  noumsToResolve ) 
 {
+	if (n->named == "true") return std::make_shared<CBlockBooleanValue>(true);
+	if (n->named == "false") return std::make_shared<CBlockBooleanValue>(false);
+	if (n->named == "yes") return std::make_shared<CBlockBooleanValue>(true);
+	if (n->named == "no") return std::make_shared<CBlockBooleanValue>(false);
+
 	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), n->named) != noumsToResolve.end())
 	{
 		return nullptr;
