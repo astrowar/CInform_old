@@ -232,7 +232,7 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLoca
                 HBlockAssertion_isInstanceOf newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
-                 
+				instancias.push_back(binstance);
 				logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
                 return true;
             }

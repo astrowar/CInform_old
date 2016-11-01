@@ -356,9 +356,9 @@ else:
 int main() {
 	// testeParser_1();
 
-	//testeExecute4();
+	testeExecute_all();
 	
-	testeRelation5();
+	//testeRelation5();
 	//testeParser_7e();
 
 //	testeExecute_all();

@@ -229,6 +229,7 @@ scent is in hall
 
 	 auto target_q3 = interpreter->exec_eval(parse.Parser_Expression("a room which  relates to hall by Connection ", ISLOG), nullptr);
 	 target_q3->dump("");
+	 
 
 	 auto target_q4 = interpreter->exec_eval(parse.Parser_Expression("a room which courage relates to by Inner ", ISLOG), nullptr);
 	 target_q4->dump("");

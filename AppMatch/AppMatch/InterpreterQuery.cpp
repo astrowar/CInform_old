@@ -93,7 +93,8 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
 
     if (HBlockInstance cinst = asHBlockInstance(c_block))
         if (HBlockNoum value = asHBlockNoum(c_block1)) {
-            if (cinst->has_slot(value)) {
+            if (cinst->has_slot(value)) 
+			{
                 logMessage( cinst->named+ "  " + value->named);
                 if (cinst->is_set(value)) {
                     return QEquals;
@@ -258,23 +259,32 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 	{
 		return QEquals;
 	}
-	if (c_block == nullptr) return QUndefined;
-	if (c_block1 == nullptr) return QUndefined;
+	if (c_block == nullptr)
+	{
+		return QUndefined;
+	}
+	if (c_block1 == nullptr)
+	{
+		return QUndefined;
+	}
 
-	if (stk.isQuery("is", c_block, c_block1 )) return QUndefined;
+	if (stk.isQuery("is", c_block, c_block1))
+	{
+		return QUndefined;
+	}
     stk.addQuery("is", c_block, c_block1);
 	
 
     //resolve It
-    if (HBlockNoum nnoum = asHBlockNoum(c_block1))
-    {
-        HBlock resolved = resolve_noum(nnoum,localsEntry);
-        if (resolved != nullptr) 
+	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
+	{
+		HBlock resolved = resolve_noum(nnoum, localsEntry);
+		if (resolved != nullptr)
 		{
-            return query_is(c_block, resolved,localsEntry, stk);
-        }
-		logError("unresolved " + nnoum->named);
-    }
+			return query_is(c_block, resolved, localsEntry, stk);
+		}
+
+	}
 
     if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
     {
@@ -283,7 +293,7 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 		{
 			return query_is(resolved, c_block1, localsEntry, stk);
         }
-		logError("unresolved " + nnoum2->named);
+ 
     }
 
 
@@ -698,6 +708,11 @@ QueryResul CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryS
 		}
 	}
 
+	if (HBlockComandList q_cmd = asHBlockComandList(q))
+	{
+		logError("cannot query a Command list ");
+		assert(false);
+	}
     return QUndefined;
 
 }

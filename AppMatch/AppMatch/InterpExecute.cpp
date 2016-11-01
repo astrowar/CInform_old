@@ -10,6 +10,39 @@
 #include "sharedCast.hpp"
 using namespace std;
 
+std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry)
+{
+   // matched objects is valid only for some things	
+	if (HBlockNoum nbase = asHBlockNoum(seletor)) 
+	{
+		HBlock nobj = resolve_noum(nbase, localsEntry);
+		if (nobj == nullptr) return std::list<HBlock>();
+		return getMatchedObjects(nobj, localsEntry);
+	}
+	if (HBlockInstance nInst = asHBlockInstance(seletor))
+	{
+		return  {nInst};
+	}
+
+	if (HBlockKind  nKind = asHBlockKind(seletor))
+	{
+		auto ret = std::list<HBlock>();
+		for(auto &r : assertions)
+		{
+			if (HBlockAssertion_isInstanceOf inst2 = asHBlockAssertion_isInstanceOf(r))
+			{	 
+
+				if (is_derivadeOf(inst2->noum, nKind, localsEntry))
+				{
+					ret.push_back(inst2->noum);
+				}
+			}
+		}
+		return ret;
+	}
+
+	return std::list<HBlock>();
+}
 
 bool CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry)
 {
@@ -89,24 +122,71 @@ bool CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope
 	return false;
 }
 
-
-
-bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope localsEntry)
+bool CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
-	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase,localsEntry);
-		if (nobj != nullptr) {
-			return assert_it_Value(nobj, value,localsEntry);
-
+	if (HBlockEvery nevery = asHBlockEvery(obj))
+	{
+		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
+		for (auto r : matchedObjects)
+		{
+		 
+			execute_unset(r, value, localsEntry);
 		}
+		return true;
 
 	}
+	if (HBlockInstance nInst = asHBlockInstance(obj)) {
+		if (HBlockNoum nbase = asHBlockNoum(value)) {
+			HBlock nobj = resolve_noum(nbase, localsEntry);
+			if (nobj == nullptr)
+			{
+				nInst->unset(nbase);
+				return true;
+			}
+		}
+	}
+
+
+	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
+		//HBlock propNamed = prop_n->prop;
+		//HBlock destination = prop_n->obj;
+		//return assert_it_property(propNamed, destination, value, localsEntry);
+		logError("Unable to Unset a property");
+	}
+
+	return false;
+}
+
+
+bool CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+{
+
+
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+		HBlock nobj = resolve_noum(nbase, localsEntry);
+		if (nobj != nullptr) {
+			return assert_it_Value(nobj, value, localsEntry);
+		}
+	}
+
+	if (HBlockEvery nevery = asHBlockEvery(obj))
+	{ 
+		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
+		for (auto r : matchedObjects)
+		{
+		 
+			execute_set(r, value, localsEntry);
+		}
+		return true;
+
+	}
+
 
 	// value tem que ser uma instancia, propriedade ou variavel
 
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
 		if (HBlockNoum nbase = asHBlockNoum(value)) {
-			HBlock nobj = resolve_noum(nbase,localsEntry);
+			HBlock nobj = resolve_noum(nbase, localsEntry);
 			if (nobj == nullptr)
 			{
 				nInst->set(nbase);
@@ -117,7 +197,7 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
 		HBlock propNamed = prop_n->prop;
 		HBlock destination = prop_n->obj;
-		return assert_it_property(propNamed, destination, value,localsEntry);
+		return assert_it_property(propNamed, destination, value, localsEntry);
 	}
 
 	/*if (HBlockProperty prop_n = asHBlockProperty(value)) {
@@ -130,7 +210,7 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 	if (HVariableNamed  var_n = asHVariableNamed(obj)) {
 
 		HBlock destination = var_n->value;
-		if (value_can_be_assign_to(value, var_n->kind,localsEntry))
+		if (value_can_be_assign_to(value, var_n->kind, localsEntry))
 		{
 			if (HBlockList   val_list = asHBlockList(value))
 			{
@@ -145,7 +225,7 @@ bool CBlockInterpreter::execute_set(HBlock obj, HBlock value,  HRunLocalScope lo
 			}
 			return true;
 		}
-		 
+
 	}
 
 
@@ -236,10 +316,10 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 	{
 		return nullptr;
 	}
-	
+
 
 	if (localsEntry) localsEntry->dump("");
-	if (HBlockComandList nlist = asHBlockComandList (c_block))
+	if (HBlockComandList nlist = asHBlockComandList(c_block))
 	{
 		HBlock ret_out = nullptr;
 		for (auto e : nlist->lista)
@@ -258,11 +338,11 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 	if (HBlockControlIF cIF = asHBlockControlIF(c_block))
 	{
 		HBlock ret = nullptr;
-		 
+
 		auto r = query(cIF->block_if, localsEntry, QueryStack());
 		if (r == QEquals)
 		{
-			return exec_eval( cIF->block_then , localsEntry );
+			return exec_eval(cIF->block_then, localsEntry);
 		}
 		else
 		{
@@ -274,96 +354,142 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 		}
 	}
 
+	{
+		if (HBlockAssertion_isDirectAssign nDirect = asHBlockAssertion_isDirectAssign(c_block))
+		{
+			auto q = query(nDirect, localsEntry, QueryStack());
+			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			return std::make_shared<CBlockNoum>("false");
+		}
+
+
+		if (HBlockIsVerb  nVerbDirect = asHBlockIsVerb(c_block))
+		{
+			auto q = query(nVerbDirect, localsEntry, QueryStack());
+			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			return std::make_shared<CBlockNoum>("false");
+		}
+
+
+		if (HBlockAssertion_isNotDirectAssign nDirectv = asHBlockAssertion_isNotDirectAssign(c_block))
+		{
+			auto q = query(nDirectv, localsEntry, QueryStack());
+			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			return std::make_shared<CBlockNoum>("false");
+		}
+
+
+		if (HBlockIsNotVerb  nVerbDirectv = asHBlockIsNotVerb(c_block))
+		{
+			auto q = query(nVerbDirectv, localsEntry, QueryStack());
+			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			return std::make_shared<CBlockNoum>("false");
+		}
+	}
+
+
 	if (HBlockToDecideOn ndecide = asHBlockToDecideOn(c_block))
 	{
-		
-		auto r = exec_eval(ndecide->decideBody,localsEntry);
+
+		auto r = exec_eval(ndecide->decideBody, localsEntry);
 		return std::make_shared<CBlockToDecideOn>(r);
 	}
 
-		if (HBlockNoum nn = asHBlockNoum(c_block))
+	if (HBlockNoum nn = asHBlockNoum(c_block))
+	{
+		if (nn->named == "nothing") return nn;
+		auto  obj = resolve_noum(nn, localsEntry, std::list<std::string>());
+		if (obj != nullptr)
 		{
-			if (nn->named == "nothing") return nn;
-			auto  obj = resolve_noum(nn,localsEntry, std::list<std::string>());
-			if (obj != nullptr)
+			return  exec_eval(obj, localsEntry);
+		}
+	}
+
+	if (HBlockBooleanValue nbool = asHBlockBooleanValue(c_block))
+	{
+		return nbool;
+	}
+
+
+	if (HBlockInstance nIns = asHBlockInstance(c_block))
+	{
+		return nIns;
+	}
+
+	if (HBlockKind kIns = asHBlockKind(c_block))
+	{
+		return kIns;
+	}
+
+	if (auto  kvar = asHVariableNamed(c_block))
+	{
+		return kvar->value;
+	}
+
+
+
+	if (auto  kprop = asHBlockProperty(c_block))
+	{
+		auto instancia = exec_eval(kprop->obj, localsEntry);
+		if (HBlockInstance objInst = asHBlockInstance(instancia))
+			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
-				return  exec_eval(obj, localsEntry);
+				HVariableNamed pvar = objInst->get_property(propNoum->named);
+				return pvar->value;
 			}
-		}
+		return nullptr;
+	}
 
-		if (HBlockBooleanValue nbool = asHBlockBooleanValue(c_block))
+	if (HBlockNamedValue nvalue = asHBlockNamedValue(c_block))
+	{
+		return nvalue;
+	}
+
+	if (auto  kList = asHBlockList(c_block))
+	{
+		auto rList = std::make_shared<CBlockList>(std::list<HBlock>());
+		for (auto &e : kList->lista)
 		{
-			return nbool;
+			rList->lista.push_back(exec_eval(e, localsEntry));
 		}
+		return rList;
+	}
 
-
-		if (HBlockInstance nIns = asHBlockInstance(c_block))
+	//resolve To decides
+	for (auto dct : decides_what)
+	{
+		auto dctValueWrap = getDecidedValueOf(c_block, dct, localsEntry, QueryStack());
+		if (dctValueWrap != nullptr)
 		{
-			return nIns;
+			return dctValueWrap;
 		}
+	}
 
-		if (HBlockKind kIns = asHBlockKind(c_block))
-		{
-			return kIns;
-		}
+	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
+	{
 
-		if (auto  kvar= asHVariableNamed(c_block))
-		{
-			return kvar->value ;
-		}
-
-		
-
-		if (auto  kprop = asHBlockProperty (c_block))
-		{
-			auto instancia = exec_eval(kprop->obj, localsEntry);
-			if (HBlockInstance objInst = asHBlockInstance(instancia))
-				if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
-				{
-					HVariableNamed pvar = objInst->get_property(propNoum->named);
-					return pvar->value;
-				}
-			return nullptr;
-		}
-
-		if (HBlockNamedValue nvalue = asHBlockNamedValue(c_block))
-		{
-			return nvalue;
-		}
-
-		if (auto  kList = asHBlockList  (c_block))
-		{
-			auto rList = std::make_shared<CBlockList>(std::list<HBlock>());
-			for(auto &e : kList->lista)
-			{
-				rList->lista.push_back(exec_eval(e,localsEntry));
-			}
-			return rList;
-		}
-
-		//resolve To decides
-		for (auto dct : decides_what) 
-		{
-			auto dctValueWrap = getDecidedValueOf(c_block, dct, localsEntry, QueryStack());
-			if (dctValueWrap != nullptr)
-			{
-				return dctValueWrap;
-			}
-		}
-
-		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
+		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
 		{
 			return lookup_relation(nrlookup, localsEntry);
 		}
-		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
+		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(nrWhere->what))
 		{
 			return lookup_verb(nvlookup, localsEntry);
 		}
+	}
+
+	if (HBlockNow  bNow = asHBlockNow(c_block))
+	{
+		execute_now(bNow->assertation, localsEntry);
+		return bNow->assertation->get_obj();
+	}
 
 
-		// Bla ! 
-		c_block->dump("");
-		return nullptr;
+
+
+	// Bla ! 
+	c_block->dump("");
+	return nullptr;
 }
 
 
@@ -549,6 +675,14 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 	}
 
 
+	if (HBlockAssertion_is vk = asHBlockAssertion_isNotDirectAssign(p)) {
+		HBlock obj = vk->get_obj();
+		HBlock value = vk->get_definition();
+		return execute_unset(obj, value, localsEntry);
+	}
+
+
+
 	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
 	{
 		//determina quem eh o action do dynamica dispatch
@@ -616,6 +750,8 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 	{
 		return execute_now( vNow->assertation, localsEntry,stk);
 	}
+
+
 
 
 	return false;

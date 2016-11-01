@@ -20,6 +20,17 @@ public:
 
 using HBlockNow = std::shared_ptr<CBlockNow>;
 
+class CBlockEvery : public CBlock     //retorna uma declaracao tal qual o comando se aplica a todos do tipo interno
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockEvery; }
+
+	HBlock assertation;
+	CBlockEvery(HBlock _n) : assertation(_n) {};
+};
+
+using HBlockEvery = std::shared_ptr<CBlockEvery>;
 
 class CBlockComandList : public CBlock     //retorna uma declaracao
 {

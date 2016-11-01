@@ -290,6 +290,7 @@ public:
 	HBlock parser_valueReference(HTerm term);
 	HBlock parser_assertionTarger(HTerm term);
 	HBlock DynamicLookup_Relation(std::vector<HTerm>& term);
+	HBlock parser_SeletorVerb(HTerm term, HBlockMatch muteVariable);
 	HBlock DynamicLookup_Verb(std::vector<HTerm>& term);
 	HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
 	HBlockSelector parser_List_selector(HTerm term);
@@ -304,10 +305,10 @@ public:
 	HBlockArgumentInput parser_KindCalled(HTerm term);
 	HBlock STMT_relates_Assertion(std::vector<HTerm>&  term);
 	HBlock STMT_relates_AssertionWhen(std::vector<HTerm>&  term);
-	HBlock parser_Seletor(HTerm term, HBlockMatch muteVariable);
-	HBlock parser_Seletor(HTerm term, HBlock muteVariable);
-	HBlock parser_Seletor(HTerm term);
-	HBlock parser_Seletor(std::vector<HTerm>& term);
+	HBlock parser_SeletorRelation(HTerm term, HBlockMatch muteVariable);
+	HBlock parser_SeletorTerm(HTerm term, HBlockMatch muteVariable);
+	HBlock DynamicLookup_Seletor(std::vector<HTerm>& term);
+ 
 	HBlock  DynamicDispatch_action(std::vector<HTerm>&  term);
 	HBlockMatchProperty parse_PropertyOf_Match(std::vector<HTerm>&  term);
 	HBlockMatch parse_match_noum(std::vector<HTerm>&  term);
@@ -325,6 +326,12 @@ public:
     HBlock STMT_system_Assertion(std::vector<HTerm>& term);
 
 	HBlock sys_say_action(std::vector<HTerm>&  term);
+	HBlock parser_loop_A(HTerm& term);
+	HBlockAssertion_is parse_Loop_AssertionVerb(HTerm& term, NoumLocation nlocation);
+	HBlockAssertion_is parse_Loop_AssertionVerb(HTerm& term);
+	HBlockAssertion_is parser_loop_B(HTerm& term, HBlock mutedVariable);
+	 
+	HBlock sys_now_loop(std::vector<HTerm>& term);
 	HBlock sys_now_action(std::vector<HTerm>&  term);
 
 	HBlock parser_text(string str, ErrorInfo* err);

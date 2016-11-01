@@ -780,7 +780,13 @@ void CBlockNow::dump(string ident) {
 		this->assertation->dump(ident + "       ");
 	}
 }
-
+ 
+void CBlockEvery::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Every ");
+	{
+		this->assertation->dump(ident + "       ");
+	}
+}
 
 void CBlockControlToken::dump(string ident)
 {
@@ -870,4 +876,12 @@ void CBlockComandList::dump(string ident)
 		}
 	}
 
+}
+
+void CBlockSelector_Where::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Seletor WHERE  ");
+	{
+		this->what->dump(ident + "       ");		
+	}
 }

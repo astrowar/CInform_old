@@ -369,6 +369,8 @@ void CBlockInterpreter::execute_init(HBlock p) {
 	else if (HBlockAssertion_is vk = asHBlockAssertion_is(p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
+		 
+
 		//Static Definition de uma instancia derivado
 		if (assert_it_Value(obj, value,localsEntry)) return;
 		if (assert_it_kind(obj, value,localsEntry)) return;

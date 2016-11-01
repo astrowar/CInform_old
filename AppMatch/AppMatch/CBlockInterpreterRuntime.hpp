@@ -232,9 +232,11 @@ public:
 
 	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	std::list<HBlock> getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry);
 	//bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
 	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
 	bool execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
+	bool execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
 	HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);

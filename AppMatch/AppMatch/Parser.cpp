@@ -150,8 +150,289 @@ HBlock CParser::sys_say_action(std::vector<HTerm>&  term)
 	return nullptr;
 }
 
-HBlock CParser::sys_now_action(std::vector<HTerm>&  term) {
+//Parser o loop da primeira parte
+HBlock  CParser::parser_loop_A( HTerm&  term)
+{
+	
+	//pode ser um kind, um kindo com verbo associado
+	auto nterms = expandTerm( term );
+	{
+		HBlockAssertion_is now_verb = parse_AssertionVerb(nterms);
+		if (now_verb != nullptr)
+		{
+			return  (now_verb);
+		}
+	} 
+
+	{
+		HBlockAssertion_is now_is = parse_AssertionDirectAssign(nterms);
+		if (now_is != nullptr)
+		{
+			return  (now_is);
+		}
+	}
+
+	return parse_noum(nterms);
+
+}
+
+//parse a segunda parte do iterator
+HBlockAssertion_is CParser::parse_Loop_AssertionVerb(HTerm&  term , NoumLocation nlocation  )
+{
+	logMessage(term->repr());
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(verb_IS_NOT());
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("N2"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+		 
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
+				}
+			}
+		}
+	}
+
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(mk_HPredLiteral("not"));
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("N2"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			 
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
+				}
+			}
+
+		}
+	}
+
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(verb_IS());
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("N2"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			
+			{
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				}
+			}
+
+		}
+	}
+
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(verbList);
+		predList.push_back(mkHPredAny("N2"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			 
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				
+				HBlock n2 = parser_expression(res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				}
+			}
+
+		}
+
+	}
+
+
+
+	{
+		// is a kind definition ??
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(verb_IS_NOT());
+			predList.push_back(mkHPredAny("Value"));
+		}
+
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals) {
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				if (n1 != nullptr)
+				{
+					HBlock value = parser_expression(res.matchs["Value"]);
+					if (value != nullptr)
+					{
+						if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+						return std::make_shared<CBlockAssertion_isNotDirectAssign>(n1, value);
+					}
+				}
+			}
+		}
+	}
+
+	{
+		// is a kind definition ??
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(verb_IS());
+			predList.push_back(mkHPredAny("Value"));
+		}
+
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals) {
+			HBlock n1 = parser_expression(res.matchs["N1"]);
+			if (n1 != nullptr)
+			{ 
+				HBlock value = parser_expression(res.matchs["Value"]);
+				if (value != nullptr)
+				{
+					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
+					return std::make_shared<CBlockAssertion_isDirectAssign>(n1, value);
+				}
+
+			}
+		}
+	}
+
+
+	 
+
+	return nullptr;
+
+
+}
+
+HBlock CParser::sys_now_loop(std::vector<HTerm>&  term)
+{
+	
+	// now every room is lighted
+	// now every lamp is blazing	
+	// now every good woman is in the Salon
+	// now every thing carried by the player is in the impound
+
+
+	// now the player carries every thing which is in the tomb
+	// now the table supports every stripper who is in New Jersey
+	// now Wilfred admires every woman
+
+	static std::vector<HPred> predList ={};
+	if (predList.empty())
+	{
+		predList.push_back(mk_HPredLiteral("now"));
+		predList.push_back(mk_HPredLiteral("every"));
+		predList.push_back(mkHPredAny("Assertion"));
+		//predList.push_back(verb_IS());
+		//predList.push_back(mkHPredAny("Seletor_B"));
+	}
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		//auto nterms = expandTerm(res.matchs["Assertion"]);
+		//parse_AssertionVerb
+		//parse_AssertionDirectAssign
+
+		{
+			HBlockAssertion_is now_verb = parse_Loop_AssertionVerb(res.matchs["Assertion"],FirstNoum);
+			if (now_verb != nullptr)
+			{
+			 
+				return std::make_shared<CBlockNow >(now_verb);
+			}
+		}
+
+
+		/*{
+			HBlockAssertion_is now_is = parse_Loop_AssertionDirectAssign(nterms);
+			if (now_is != nullptr)
+			{
+				return std::make_shared<CBlockNow >(now_is);
+			}
+		}*/
+
+
+		/*if (auto iterator = parser_loop_A(res.matchs["Seletor_A"]) )
+		{
+			if (auto body = parser_loop_B(res.matchs["Seletor_B"] , iterator ))
+			{
+				return std::make_shared<CBlockNow >(  body);
+
+			}
+		} */
+	}
+
+	return nullptr;
+}
+
+HBlock CParser::sys_now_action(std::vector<HTerm>&  term) 
+{
+
+	if ( auto nloop = sys_now_loop(term ))
+	{
+		return nloop;
+	}
+
     {
+
+		    // now every room is lighted
+			// now every lamp is blazing
+			// now Wilfred admires every woman
+			// now every good woman is in the Salon
+			// now everything carried by the player is in the impound
+			// now the player carries every thing which is in the tomb
+			// now the table supports every stripper who is in New Jersey
+
+
+
+
+
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("now"));
         predList.push_back(mkHPredAny("Assertion"));

@@ -100,7 +100,7 @@ HBlockAssertion_InstanceVariable asHBlockAssertion_InstanceVariable(HBlock c );
 HBlockAssertion_isInstanceOf asHBlockAssertion_isInstanceOf(HBlock c ); 
 HBlockDinamicDispatch asHBlockDinamicDispatch(HBlock c ); 
 HBlockNow asHBlockNow(HBlock c );
-
+HBlockEvery asHBlockEvery(HBlock c);
 
 HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c );
 HVariableSlotBool asHVariableSlotBool(HVariableSlot c );
@@ -113,3 +113,4 @@ HBlockComandList asHBlockComandList(HBlock c);
 HBlockControlIF asHBlockControlIF(HBlock c);
 HBlockRelationLookup asHBlockRelationLookup(HBlock c);
 HBlockVerbLookup asHBlockVerbLookup(HBlock c);
+HBlockSelector_Where asHBlockSelector_Where(HBlock c);

@@ -608,10 +608,9 @@ class CBlockSelector : public CBlock //retorna uma declaracao
 {
 public:	 
 	HBlock what;
-	CBlockSelector(HBlock _what) :what(_what) {};
-
-
+	CBlockSelector(HBlock _what) :what(_what) {}; 
 };
+
 using HBlockSelector = std::shared_ptr<CBlockSelector>;
 
 
@@ -642,9 +641,21 @@ public:
 using HBlockSelector_Any = std::shared_ptr<CBlockSelector_Any>;
 
 
-//Resistes all classes in cereal
+ 
 
  
+
+class CBlockSelector_Where : public CBlockSelector //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+
+
+	virtual BlockType type() override { return BlockType::BlockSelector_Where; }
+	CBlockSelector_Where(HBlock _what) :CBlockSelector(_what) {}
+};
+using HBlockSelector_Where = std::shared_ptr<CBlockSelector_Where>;
+
 
 
 

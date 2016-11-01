@@ -549,6 +549,13 @@ HBlockNow asHBlockNow(HBlock c )
    return nullptr;
 } 
 
+HBlockEvery asHBlockEvery(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockEvery)
+		return std::static_pointer_cast<CBlockEvery>(c);
+	return nullptr;
+}
+
 HBlockControlToken aHBlockControlToken(HBlock c)
 {
 	if (c != nullptr && c->type() == BlockType::BlockControlToken)
@@ -604,3 +611,10 @@ HBlockVerbLookup asHBlockVerbLookup(HBlock c)
 	return nullptr;
 }
  
+
+HBlockSelector_Where asHBlockSelector_Where(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockSelector_Where)
+		return std::static_pointer_cast<CBlockSelector_Where>(c);
+	return nullptr;
+}

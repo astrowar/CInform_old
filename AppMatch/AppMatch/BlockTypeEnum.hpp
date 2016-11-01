@@ -89,6 +89,8 @@ enum BlockType {
 	BlockMatchWhichNot,
 	BlockBooleanValue,
 	BlockRelationLookup,
-	BlockVerbLookup
+	BlockVerbLookup,
+	BlockSelector_Where,
+	BlockEvery
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

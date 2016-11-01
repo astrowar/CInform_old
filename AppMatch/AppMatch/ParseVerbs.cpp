@@ -8,12 +8,14 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
  
 	{
         // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(verb_IS_NOT());
-        predList.push_back(verbList);
-        predList.push_back(mkHPredAny("N2"));
-
+        std::vector<HPred> predList ={};
+		 
+		{
+			predList.push_back(mkHPredAny("N1"));
+			predList.push_back(verb_IS_NOT());
+			predList.push_back(verbList);
+			predList.push_back(mkHPredAny("N2"));
+		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
@@ -25,7 +27,8 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
 
     {
         // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
+		std::vector<HPred> predList = {};
+	 
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(mk_HPredLiteral("not"));
         predList.push_back(verbList);
@@ -43,7 +46,8 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
 
     {
         // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
+		std::vector<HPred> predList = {};
+		 
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(verb_IS());
         predList.push_back(verbList);
@@ -67,7 +71,8 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
 
     {
         // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
+		std::vector<HPred> predList = {};
+		 
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(verbList);
         predList.push_back(mkHPredAny("N2"));
@@ -98,7 +103,8 @@ HBlockMatchIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 {
 	//Tambem pode ser um verbo definido
 	{
-		std::vector<HPred> predList;
+		std::vector<HPred> predList = {};
+	 
 		predList.push_back(mkHPredAny("MatchBody"));
 		predList.push_back(verb_IS());
 		predList.push_back(verbList);
@@ -116,9 +122,11 @@ HBlockMatchIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 		}
 	}
 
-{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("MatchBody"));		
+
+	{
+		std::vector<HPred> predList = {};
+	 
+		predList.push_back(mkHPredAny("MatchBody"));
 		predList.push_back(verbList);
 		predList.push_back(mkHPredAny("valueToCheck"));
 
@@ -138,10 +146,12 @@ return nullptr;
 
 HBlockVerbRelation CParser::STMT_verb_relation(HBlock a_verb, HTerm term)
 {
-	   std::vector<HPred> predList;
-	predList.push_back(mk_HPredLiteral("reverse"));
-	predList.push_back(mkHPredAny("Relation"));
-
+	std::vector<HPred> predList = {};
+	if (predList.empty())
+	{
+		predList.push_back(mk_HPredLiteral("reverse"));
+		predList.push_back(mkHPredAny("Relation"));
+	}
 	MatchResult res = CMatch(term, predList);
 
 	if (res.result == Equals) {
@@ -164,15 +174,18 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm>&  term) {
     auto L_verb = mk_HPredLiteral("verb");
     {
 
-		std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("VerbList"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("VerbList"));
+			auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies"),
+														  mkHPredBooleanOr("article", mk_HPredLiteral("a"),
+																		   mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
+			predList.push_back(L_the_verb_1);
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -226,17 +239,20 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
     auto L_verb = mk_HPredLiteral("verb");
     {
 
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mkHPredAny("Aux"));
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			predList.push_back(mkHPredAny("Aux"));
 
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+			auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies"),
+														  mkHPredBooleanOr("article", mk_HPredLiteral("a"),
+																		   mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
+			predList.push_back(L_the_verb_1);
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -267,13 +283,16 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
 
     {
 
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mkHPredAny("Aux"));
-        predList.push_back(mk_HPredLiteral("implies"));
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			predList.push_back(mkHPredAny("Aux"));
+			predList.push_back(mk_HPredLiteral("implies"));
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -306,16 +325,19 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
     {
         //Teste de carga
 
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies"),
+														  mkHPredBooleanOr("article", mk_HPredLiteral("a"),
+																		   mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
 
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+			predList.push_back(L_the_verb_1);
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -343,12 +365,15 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
     {
         //Teste de carga
 
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        predList.push_back(mk_HPredLiteral("implies"));
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			predList.push_back(mk_HPredLiteral("implies"));
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -374,16 +399,19 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
     }
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_1 = mkHPredList("implies_a", {mk_HPredLiteral("implies"),
-                                                      mkHPredBooleanOr("article", mk_HPredLiteral("a"),
-                                                                       mk_HPredLiteral("an"), mk_HPredLiteral("the"))});
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			auto L_the_verb_1 = mkHPredList("implies_a", { mk_HPredLiteral("implies"),
+														  mkHPredBooleanOr("article", mk_HPredLiteral("a"),
+																		   mk_HPredLiteral("an"), mk_HPredLiteral("the")) });
 
-        predList.push_back(L_the_verb_1);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+			predList.push_back(L_the_verb_1);
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -432,13 +460,16 @@ HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
     }
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
-        predList.push_back(mkHPredAny("Verb"));
-        auto L_the_verb_4 = mk_HPredLiteral("implies");
-        predList.push_back(L_the_verb_4);
-        predList.push_back(mkHPredAny("Relation"));
-        predList.push_back(mk_HPredLiteral("relation"));
+		std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredBooleanOr("kindpart", L_the_verb, L_verb));
+			predList.push_back(mkHPredAny("Verb"));
+			auto L_the_verb_4 = mk_HPredLiteral("implies");
+			predList.push_back(L_the_verb_4);
+			predList.push_back(mkHPredAny("Relation"));
+			predList.push_back(mk_HPredLiteral("relation"));
+		}
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {

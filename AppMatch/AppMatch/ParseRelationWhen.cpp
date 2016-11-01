@@ -2,6 +2,7 @@
 
  
 #include "CBlockRelation.hpp"
+#include "CBlockBoolean.hpp"
 
 
 HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
@@ -41,7 +42,7 @@ HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 
 }
 
-HBlock   CParser::parser_Seletor( HTerm   term , HBlockMatch muteVariable  )
+HBlock   CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariable  )
 {
 
 	//relation 
@@ -111,8 +112,48 @@ HBlock   CParser::parser_Seletor( HTerm   term , HBlockMatch muteVariable  )
 
 }
 
+HBlock   CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVariable)
+{
+	
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("S1"));
+			predList.push_back(mk_HPredLiteral("and"));
+			predList.push_back(mkHPredAny("S2"));
 
-HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto arg1 = parser_SeletorTerm(res.matchs["S1"],muteVariable);
+			if (arg1 != nullptr)
+			{
+				auto arg2 = parser_SeletorTerm(res.matchs["Seletor"], muteVariable);
+				if (arg2 != nullptr)
+				{
+
+					  return  std::make_shared<CBlockBooleanAND>(arg1, arg2);
+				}
+			}
+		}
+	}
+
+
+
+
+	auto rrel = parser_SeletorRelation(term, muteVariable);
+	if (rrel != nullptr) return rrel;
+	auto rverb = parser_SeletorVerb(term, muteVariable);
+	if (rverb != nullptr) return rverb;
+
+	return nullptr;
+}
+ 
+
+
+HBlock   CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 {
 	/*{
 		 static std::vector<HPred> predList = {};
@@ -192,10 +233,12 @@ HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
 			auto arg1 = parser_MatchArgument(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto seletor = parser_Seletor(res.matchs["Seletor"]);
+				auto seletor = parser_SeletorTerm(res.matchs["Seletor"] , arg1);
 				if (seletor != nullptr)
 				{
 					//CBlockListComputed( )
+					logError("not implemented");
+					return nullptr;
 				}
 			}
 		}
@@ -216,10 +259,11 @@ HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
 			auto arg1 = parser_MatchArgument(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto seletor = parser_Seletor(res.matchs["Seletor"]);
+				auto seletor = parser_SeletorTerm(res.matchs["Seletor"],arg1);
 				if (seletor != nullptr)
 				{
-					//CBlockSelector( ) 
+					
+					return std::make_shared<CBlockSelector_Where>(seletor );
 				}
 			}
 		}
@@ -229,54 +273,45 @@ HBlock   CParser::DynamicLookup_Relation(std::vector<HTerm>& term)
 
 
  
-
-
-HBlock   CParser::DynamicLookup_Verb(std::vector<HTerm>& term)
+HBlock   CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
 {
-	 
-	// TODO colocar os verbos de negacao
-	 
 
+	// TODO implementar os NOT 
 	{
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
-		{
-			predList.push_back(mkHPredAny("K1"));
-			predList.push_back(mk_What_Which());
+		{ 
 			predList.push_back(verb_IS());
 			predList.push_back(verbList);
 			predList.push_back(mkHPredAny("K2"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
-		{
-			auto n1 = parser_MatchArgument(res.matchs["K1"]);
+		{		 
 			auto n2 = parser_expression_match(res.matchs["K2"]);
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-			return std::make_shared<CBlockVerbLookup>(vrepr, n1, n2, FirstNoum);
-		} 
+			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
+		}
 	}
 
 	{
- 
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mkHPredAny("K1"));
-			predList.push_back(mk_What_Which());			
+			//Sem o IS
 			predList.push_back(verbList);
 			predList.push_back(mkHPredAny("K2"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto n1 = parser_MatchArgument(res.matchs["K1"]);
 			auto n2 = parser_expression_match(res.matchs["K2"]);
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-			return std::make_shared<CBlockVerbLookup>(vrepr, n1, n2, FirstNoum);
+			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}
-	}
-
-
+	} 
 	return nullptr;
 }
+ 
+
+ 

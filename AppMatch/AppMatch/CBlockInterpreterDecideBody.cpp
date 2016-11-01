@@ -151,12 +151,18 @@ QueryResul CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct,
 		//if (rr == QEquals) return QEquals;
  
 		auto rdecided  = exec_eval(dct->decideBody, localsNext );
-		
+		if (HBlockNoum ndecideRet= asHBlockNoum(rdecided ))
+		{
+			if (ndecideRet->named == "true") return QEquals;
+			if (ndecideRet->named == "false") return QNotEquals;
+			if (ndecideRet->named == "nothing") return QUndefined;
+		}
+
 		if ( rdecided == nullptr) return QUndefined; //decide on nothing
 		if (HBlockToDecideOn ndecide = asHBlockToDecideOn(rdecided))
 		{
 			//verifica se eh true ou false 
-			if (HBlockNoum ndecideValue = asHBlockNoum( ndecide->decideBody)  )
+			if (HBlockNoum ndecideValue = asHBlockNoum(ndecide->decideBody))
 			{
 				if (ndecideValue->named == "true") return QEquals;
 				if (ndecideValue->named == "false") return QNotEquals;	

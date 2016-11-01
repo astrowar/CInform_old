@@ -30,7 +30,7 @@ CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value
 
 CBlockInstance::CBlockInstance( string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
 {
-	//assert(_named[0] != '[');
+	 
 }
 
 void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )

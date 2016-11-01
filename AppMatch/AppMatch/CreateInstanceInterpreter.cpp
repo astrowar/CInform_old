@@ -55,7 +55,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // nova instance e inicializa os fields
 
     HBlockInstance c = make_shared<CBlockInstance>(named, kind);
-
+	 
     // inicia os fields CAN_BE
 
     list<HBlockKind> kinds = getUpperKinds(kind);
@@ -131,7 +131,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 
 
 
-	
+	 
 
     return c;
 

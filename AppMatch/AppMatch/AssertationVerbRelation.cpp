@@ -243,7 +243,6 @@ HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope l
 					}
 
 
-
 					if (vLookup->term_to_query == FirstNoum)
 					{
 						if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(relation_name, val1,val2, localsEntry);
