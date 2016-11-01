@@ -38,6 +38,7 @@ public:
     };
 
     virtual EqualsResul match(MTermSet &h) = 0;
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin , std::vector<HTerm>::iterator vend ) = 0;
 
     virtual EqualsResul match(HTerm h) = 0;
 
@@ -60,6 +61,8 @@ public:
 
     virtual EqualsResul match(MTermSet &_h) override;
 
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+
     virtual EqualsResul match(HTerm h) override;
 };
 
@@ -75,7 +78,7 @@ public:
     CPredList(std::string _named, std::initializer_list<HPred> plist);
 
     virtual EqualsResul match(MTermSet &_h) override;
-
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
     virtual EqualsResul match(HTerm h) override;
 };
 
@@ -89,7 +92,7 @@ public:
     CPredAny(std::string _named);;
 
     virtual EqualsResul match(MTermSet &_h) override;
-
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
     virtual EqualsResul match(HTerm h) override;
 };
 
@@ -103,7 +106,7 @@ public:
     CPredWord(std::string _named);;
 
     virtual EqualsResul match(MTermSet &_h) override;
-
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
     virtual EqualsResul match(HTerm h) override;
 };
 
@@ -120,7 +123,7 @@ public:
 	virtual TermType type() override { return TermType::PredBooleanAnd; }
 
     virtual EqualsResul match(MTermSet &h) override;
-
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
     virtual EqualsResul match(HTerm h) override;
 
     CPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
@@ -146,7 +149,7 @@ public:
     CPredBooleanOr(const std::string &_named, std::list<HPred> plist);
 
     virtual EqualsResul match(MTermSet &h) override;
-
+	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
     virtual EqualsResul match(HTerm h) override;
 
 public:
@@ -195,7 +198,7 @@ public:
 
 MatchResult makeMatch(std::string named, HTerm value);
 
-MatchResult CMatch(std::vector<HTerm> lst, std::vector<HPred> predicates);
+MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
 
 MatchResult CMatch(HTerm term, std::vector<HPred> predicates);
 

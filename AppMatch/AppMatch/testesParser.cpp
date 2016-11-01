@@ -356,54 +356,19 @@ else:
 int main() {
 	// testeParser_1();
 
-	testeExecute_all();
+	 
 	
 	//testeRelation5();
 	//testeParser_7e();
 
 //	testeExecute_all();
-	return 0 ;
+ 
 	 
    for (int k = 0; k < 100; ++k)
 	{
-		testeExecute_all();
-		// testeParser_listA();
-		// testeParser_listB();
-
-		// testeParser_actionC();
-	   // testeParser_2();
-	   // testeParser_2a();
-		//testeParser_3();
-		//testeParser_4();
-		// testeParser_5b();
-	//	 testeParser_5c();
-	//	 testeParser_5d();
-	//	 testeParser_5e();
-	//	 testeParser_5f();
-
-		//testeParser_5d();
-		//testeParser_5f();
-		//testeParser_6();
-
-		 testeParser_5_all();
-
-		//testeParser_5g();
-	   //testeParser_7a();
-	   //testeParser_7b();
-		//testeParser_7c();
-		 //testeParser_7d();
-	  //testeParser_22();
-
-		//testeRelation1();
-		//testeRelation2();
-		//testeRelation3();
-		//testeRelation3();
-		//testeRelation4();
-		 testeRelation_all();
-
-	//	testeSerialize1();
-        //testeParser_10();
-		//testeExecute2();
+		testeExecute_all();	 
+		 testeParser_5_all();		 
+		 testeRelation_all(); 
 		 testeExecute_all();
 		testeSelector_all();
 		logMessage( ".");
