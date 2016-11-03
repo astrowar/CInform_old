@@ -360,6 +360,15 @@ public:
 	 
 	HBlockControlSelectItem parser_control_select_item(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
 	HBlock  STMT_control_flux(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
+
+
+	std::list<HBlockVerbConjugation> get_verb_conjugations(std::string verb) const;
+	HBlock STMT_register_verb(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
+	string expression_adapt_viewPoint(HTerm& term);
+	string expression_adapt_tense(HTerm& term);
+	HBlock expression_adapt_verb_inner(HTerm& term);
+	HBlock expression_adapt_verb(std::vector<HTerm>& term);
+	 
 };
 
 
@@ -371,9 +380,12 @@ MTermSet remove_boundaryListMark(MTermSet& m);
 string get_repr(MTermSet lst);
 HPred verb_IS_NOT();
 HPred mk_HPredLiteral( string str );
+ 
+ 
 HPred verb_IS();
 HPred undefinedArticle();
 HPred mk_HPredLiteral_OR(string _named , std::initializer_list<string> alist );
+
 HPred mk_What_Which();
 HTerm expandBract(HTerm term);
 std::vector<HTerm> get_tail(std::vector<HTerm>& qlist);

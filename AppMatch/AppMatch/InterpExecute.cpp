@@ -485,6 +485,17 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 	}
 
 
+	if (HBlockVerb nVerb = asHBlockVerb(c_block))
+	{
+		return nVerb;
+	}
+
+	if (HBlockVerbAdapt nVerbAdp = asHBlockVerbAdapt(c_block))
+	{
+		return adapt_verb(nVerbAdp, localsEntry);
+		
+	}
+
 
 
 	// Bla ! 

@@ -58,6 +58,7 @@ HBlockAssertion_isNotDirectAssign asHBlockAssertion_isNotDirectAssign(HBlock c )
 
 HBlockBooleanAND asHBlockBooleanAND(HBlock c ); 
 HBlockVerb asHBlockVerb(HBlock c ); 
+HBlockVerbAdapt asHBlockVerbAdapt(HBlock c);
 HBlockBooleanOR asHBlockBooleanOR(HBlock c ); 
 HBlockBooleanNOT asHBlockBooleanNOT(HBlock c ); 
 HBlockSelector_All asHBlockSelector_All(HBlock c ); 

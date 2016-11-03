@@ -584,20 +584,46 @@ using HBlockProp = std::shared_ptr<CBlockProp>;
 
 
  
+//===========================================
+// Verbos e suas conjugacoes 
+
+class CBlockVerbConjugation : public CBlock //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockVerbConjugation; }
+	string word;
+	string tense; //tense string based on language
+	 
+	CBlockVerbConjugation(  string _word , string _tense  ) :word(_word  ) , tense(_tense)   {}; 
+};
+using HBlockVerbConjugation = std::shared_ptr<CBlockVerbConjugation>;
+
 
 class CBlockVerb : public CBlock //retorna uma declaracao
 {
 public:
-	void dump(string ident) override;
-
-
+	void dump(string ident) override; 
 	virtual BlockType type() override { return BlockType::BlockVerb; }
 	string named;
-private:
-	CBlockVerb(string _named) :named(_named) {};
-	 
+	std::list<HBlockVerbConjugation> conjugations;
+	CBlockVerb(string _named, std::list<HBlockVerbConjugation> _conjugations ) :named(_named) , conjugations(_conjugations) {};
 };
 using HBlockVerb = std::shared_ptr<CBlockVerb>;
+
+
+
+class CBlockVerbAdapt : public CBlock //retorna uma declaracao
+{
+public:
+	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockVerbAdapt; }
+	string verb;
+	string tense;	 
+	string viewPoint;
+	CBlockVerbAdapt(string _verb, string _tense , string _viewPoint  ) :verb(_verb), tense(_tense) , viewPoint(_viewPoint) {};
+};
+using HBlockVerbAdapt = std::shared_ptr<CBlockVerbAdapt>;
 
 
 

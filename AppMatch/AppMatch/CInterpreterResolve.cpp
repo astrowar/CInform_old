@@ -158,46 +158,55 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 {
 	return resolve_noum(n, localsEntry, std::list<std::string>());
 }
-HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry ,std::list<std::string>  noumsToResolve ) 
-{
-	if (n->named == "true") return std::make_shared<CBlockBooleanValue>(true);
-	if (n->named == "false") return std::make_shared<CBlockBooleanValue>(false);
-	if (n->named == "yes") return std::make_shared<CBlockBooleanValue>(true);
-	if (n->named == "no") return std::make_shared<CBlockBooleanValue>(false);
 
-	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), n->named) != noumsToResolve.end())
+ 
+
+HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
+{
+	return resolve_string_noum(n->named, localsEntry, noumsToResolve);
+}
+
+
+HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
+{
+	if (named == "true") return std::make_shared<CBlockBooleanValue>(true);
+	if (named == "false") return std::make_shared<CBlockBooleanValue>(false);
+	if (named == "yes") return std::make_shared<CBlockBooleanValue>(true);
+	if (named == "no") return std::make_shared<CBlockBooleanValue>(false);
+
+	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), named) != noumsToResolve.end())
 	{
 		return nullptr;
 	}
-	noumsToResolve.push_front(n->named);
+	noumsToResolve.push_front(named);
 
 	// eh um kind de alguma coisa ?
 
-	if (localsEntry != nullptr) 
+	if (localsEntry != nullptr)
 	{
-		auto lnoum = localsEntry->resolve(n->named);
+		auto lnoum = localsEntry->resolve(named);
 		if (lnoum != nullptr)
-		{			
-			return resolve_if_noum(lnoum,localsEntry, noumsToResolve );
+		{
+			return resolve_if_noum(lnoum, localsEntry, noumsToResolve);
 		}
 	}
 
 	//eh uma instancia de alguem ??
-	for (auto &a_inst : instancias) 
+	for (auto &a_inst : instancias)
 	{
-		 
-		if (a_inst->named == n->named)
+
+		if (a_inst->named == named)
 		{
 			return a_inst;
 		}
 	}
 
-	
+
 
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-			//logMessage("assertation named : " + nn->named );
-			if (nn->named == n->named) 
+			//logMessage("assertation named : " + nnamed );
+			if (nn->named == named)
 			{
 				return resolve_if_noum(defs->get_definition(), localsEntry, noumsToResolve);
 			}
@@ -206,17 +215,17 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry 
 
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
-			//logMessage( nn->named << std::endl;
-			if (nnvar->name->named == n->named) {
-				return resolve_if_noum( nnvar, localsEntry, noumsToResolve);
+			//logMessage( nnamed << std::endl;
+			if (nnvar->name->named == named) {
+				return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
 			}
 		}
 	}
 
 	for (auto &adefs : actions_header) {
 
-		if (adefs->named == n->named) {
-			return resolve_if_noum(adefs,localsEntry, noumsToResolve);
+		if (adefs->named == named) {
+			return resolve_if_noum(adefs, localsEntry, noumsToResolve);
 		}
 
 	}
@@ -225,12 +234,28 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry 
 
 	//Custom Resolvers
 
-	if (auto kcustom = resolve_system_kind(n->named)) {
-		return resolve_if_noum(kcustom,localsEntry, noumsToResolve);
+	if (auto kcustom = resolve_system_kind(named)) {
+		return resolve_if_noum(kcustom, localsEntry, noumsToResolve);
 	}
 
-	//logError("Fail to " + n->named);
-	if (n->named == "D")
+	if (strncmp(named.c_str(), "verb ", 5) == 0)
+	{
+		int np = named.size();
+		std::string vremaind = named.substr(5, np);
+		logMessage(vremaind);
+		for (auto &v : verbs)
+		{
+			if (v->named == vremaind)
+			{
+				logMessage(" verb " + vremaind);
+				return v;
+			}
+		}
+	}
+
+
+	//logError("Fail to " + named);
+	if (named == "D")
 	{
 		return nullptr;
 	}
@@ -238,6 +263,8 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry 
 
 
 }
+
+
 
 HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) 
 {

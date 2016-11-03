@@ -293,6 +293,16 @@ HBlockVerb asHBlockVerb(HBlock c )
         return std::static_pointer_cast<CBlockVerb>(c);
    return nullptr;
 } 
+HBlockVerbAdapt asHBlockVerbAdapt(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockVerbAdapt)
+		return std::static_pointer_cast<CBlockVerbAdapt>(c);
+	return nullptr;
+}
+
+ 
+
+
 HBlockBooleanOR asHBlockBooleanOR(HBlock c )
 { 
    if (c != nullptr && c->type() == BlockType::BlockBooleanOR)

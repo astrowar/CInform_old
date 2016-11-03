@@ -3,6 +3,7 @@
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
 #include "sharedCast.hpp"
+#include <algorithm>
 
 using namespace std;
 
@@ -637,7 +638,26 @@ bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock ob
 }
 
 
+bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
+{
+	// verifica se ja esxite esse verb
 
+	auto vfind = std::find_if(verbs.begin(),verbs.end() ,
+	[&verb_dec](const HBlockVerb& t) { return t->named == verb_dec->named; }
+	);
+	 
+	if (vfind != verbs.end())
+	{
+		//throw  "Verb is Assigned";		
+		logError("Verb is Registed");
+		return false ;
+	}
+	//nao tem esse verbo
+ 
+	verbs.push_back(verb_dec);
+
+	return true;
+}
 
 bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 {
@@ -652,11 +672,12 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 		return false;
 	}
 
+	
 	//cout << " new Verb |" <<vstr  <<"|"<< endl;
 	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
 
     // Existe essa relacao ??
-	verbRelationAssoc[vstr] = value ;
+	verbRelationAssoc[ vstr ] = value ;
  
 
 	return true;

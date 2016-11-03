@@ -49,6 +49,7 @@ class CBlockInterpreter {
 
 
 //Verb to relation
+	std::list<  HBlockVerb > verbs;
 	std::map<string, HBlockVerbRelation > verbRelationAssoc;
 	std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
  
@@ -125,6 +126,8 @@ class CBlockInterpreter {
 	bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 	bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
 	bool unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+	string adapt_verb_inner(string verb, string conjug, string person, HRunLocalScope localsEntry);
+	HBlockNoum adapt_verb(HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
 public:
 
 	std::list<HBlockRelationInstance > getRelations();
@@ -186,8 +189,9 @@ public:
 	QueryResul query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry);
+	bool insert_newVerb(HBlockVerb verb_dec);
  
- 
+
 
 	QueryResul query(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
 	QueryResul query(HBlock  vquery);
@@ -216,6 +220,7 @@ public:
 	HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 	HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
 	HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
+	HBlock resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
 	HBlock resolve_noum_as_variable(HBlockNoum n);
 	HBlock resolve_string(string n, HRunLocalScope localsEntry);
  

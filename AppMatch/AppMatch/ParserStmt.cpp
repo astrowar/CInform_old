@@ -59,6 +59,10 @@ HBlock CParser::parser_expression(std::vector<HTerm>&   lst)
 	HBlock rblock_textEntry = (text_entry(lst));
 	if (rblock_textEntry != nullptr) return rblock_textEntry;
 
+	HBlock adapt_verb = expression_adapt_verb(lst);
+	if (adapt_verb != nullptr) {
+		return adapt_verb;
+	}
 
 	HBlock rblock_dynamicEntry_1 = (DynamicDispatch_action(lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
@@ -94,7 +98,10 @@ HBlock CParser::parser_expression(std::vector<HTerm>&   lst)
 		return noum_propOF;
 	}
 
- 
+	 
+	 
+
+
 
     HBlock noum_Assign = parse_noum(lst);
     if (noum_Assign != nullptr) {
@@ -151,6 +158,8 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, Er
     HBlock rblock_assert_2 = (STMT_canBe_Assertion(lst));
     if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
+	HBlock rblock_register_verb = (STMT_register_verb(lst, inner, err));
+	if (rblock_register_verb != nullptr) return rblock_register_verb;
     
 	logError(get_repr(lst));
 

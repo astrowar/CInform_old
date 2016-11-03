@@ -188,12 +188,14 @@
     <ClInclude Include="sharedCast.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="verb_en.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssertationDefaultValue.cpp" />
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="BlockisSame.cpp" />
     <ClCompile Include="CBlockCommand.cpp" />
+    <ClCompile Include="CBlockInterpreter_Verb_En.cpp" />
     <ClCompile Include="CBlockSerialize.cpp" />
     <ClCompile Include="CDataMananger.cpp" />
     <ClCompile Include="CInterpreterEvaluate.cpp" />
@@ -234,6 +236,8 @@
     <ClCompile Include="Parser_ControlFlux.cpp" />
     <ClCompile Include="Parser_Decide.cpp" />
     <ClCompile Include="Parser_expression_match.cpp" />
+    <ClCompile Include="Parser_RegisterVerb.cpp" />
+    <ClCompile Include="Parser_VerbTable_en.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />
     <ClCompile Include="Parse_TokensGroup.cpp" />
     <ClCompile Include="QueryItem.cpp" />
@@ -250,6 +254,7 @@
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
     <ClCompile Include="teste_selector.cpp" />
+    <ClCompile Include="teste_verb.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

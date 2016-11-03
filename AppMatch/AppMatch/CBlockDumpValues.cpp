@@ -661,8 +661,20 @@ void CBlockUnderstandDynamic::dump(string ident)
 void CBlockVerb::dump(string ident)
 {
 	printf("%s verb %s\n",ident.c_str() ,   named.c_str());
+	for (auto &c : conjugations)
+		c->dump(ident + "       ");
+}
+void CBlockVerbAdapt::dump(string ident)
+{
+	printf("%s verb adapt for (%s)  in (%s) to (%s)\n", ident.c_str(), verb.c_str() , tense.c_str() , viewPoint.c_str());
+
 }
 
+
+void CBlockVerbConjugation::dump(string ident)
+{
+	printf("%s vb conjg ( %6s )  :  %s \n", ident.c_str(), tense.c_str(),    word.c_str()  );
+}
 
 void CBlockSelector_All::dump(string ident)
 {

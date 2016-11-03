@@ -407,6 +407,11 @@ void CBlockInterpreter::execute_init(HBlock p) {
 		if (assert_newRelation(dn_relation)) return;
 
 	}
+	if (HBlockVerb    reg_verb = asHBlockVerb (p))
+	{
+		 if (insert_newVerb(reg_verb)) return;
+
+	}
 
 
 	logError("not found block definition ");

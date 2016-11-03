@@ -73,3 +73,5 @@ void testeExecute_all();
 void testeSerialize1();
 
 void testeSelector_all();
+
+void testeVerb_all();
