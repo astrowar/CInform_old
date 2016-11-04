@@ -18,10 +18,12 @@ std::list<HBlockVerbConjugation> CParser::get_verb_conjugations(std::string verb
 		if (verb_eng.verbs[i].verb == verb)
 		{
 			auto &ventry = verb_eng.verbs[i];
+			int nk = ventry.tenses.size();
 			for (auto &ve : ventry.tenses)
 			{
 				auto vj = std::make_shared<CBlockVerbConjugation>(  std::string( ve.world ), std::string(ve.tense));
 				vlist.push_back(vj);
+				 
 			} 
 			break;
 		}
@@ -136,13 +138,13 @@ string CParser::expression_adapt_viewPoint(HTerm& term)
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("third "),mk_HPredLiteral("person"),mk_HPredLiteral("plural") };
+		static std::vector<HPred> predList = { mk_HPredLiteral("third"),mk_HPredLiteral("person"),mk_HPredLiteral("plural") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "3P";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("third "),mk_HPredLiteral("person"),mk_HPredLiteral("singular") };
+		static std::vector<HPred> predList = { mk_HPredLiteral("third"),mk_HPredLiteral("person"),mk_HPredLiteral("singular") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "3S";
 	}
@@ -201,6 +203,18 @@ string CParser::expression_adapt_tense(HTerm& term)
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)  return    ("VBG");
+
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("present"));
+
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)  return    ("VBP");
 
 	}
 
@@ -318,7 +332,7 @@ HBlock CParser::expression_adapt_verb_inner( HTerm& term)
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
 				auto vp = expression_adapt_viewPoint(res.matchs["ViewPoint"]);
 				if (vp == "") return nullptr;
-				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VB", vp);
+				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VBP", vp);
 				return vbase;
 			}
 		}
@@ -338,7 +352,7 @@ HBlock CParser::expression_adapt_verb_inner( HTerm& term)
 			{
 				auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				//auto vrepr = parser_verb_noum( term );				
-				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VB", "default");
+				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VBP", "default");
 				return vbase;
 			}
 		}

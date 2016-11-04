@@ -251,6 +251,8 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 				return v;
 			}
 		}
+		logError(" verb " + vremaind+" not registed");
+		return nullptr;
 	}
 
 
