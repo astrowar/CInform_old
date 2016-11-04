@@ -70,7 +70,8 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 HBlockSelector CParser::parser_List_selector(HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
-		auto r = parser_List_selector(vlist->asVector());		 
+		auto v =vlist->asVector();
+		auto r = parser_List_selector(v);
 		return r;
 	}
 	return nullptr; // isso porque nao vale 1 unico termo como seletor

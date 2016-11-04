@@ -294,8 +294,9 @@ public:
 	HBlock DynamicLookup_Verb(std::vector<HTerm>& term);
 	HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
 	HBlockSelector parser_List_selector(HTerm term);
+	HBlock parser_expression_lst(std::vector<HTerm>& lst);
 	HBlock parser_expression(HTerm term);
-	HBlock parser_expression(std::vector<HTerm>& lst);
+
 	HBlock parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
 	HBlock text_entry(std::vector<HTerm>&  lst);
  

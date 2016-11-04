@@ -12,10 +12,10 @@ for l in lns:
 
      cmd = "emcc -s ELIMINATE_DUPLICATE_FUNCTIONS=1 -s DISABLE_EXCEPTION_CATCHING=1 -s NO_FILESYSTEM=1 -std=c++14 -fno-exceptions -fno-rtti  -stdlib=libc++  -Oz "+ fullp + " -o obj/"+ fp
      #print cmd
-     #print cmd
-     #os.system(cmd)
+     print cmd
+     os.system(cmd)
      obj  = obj +" obj/"+ fp
 
-cmdLink = "emcc -s EXPORTED_FUNCTIONS='[\"_sayHi\"]' -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='[\"sayHi\"]'  -s DISABLE_EXCEPTION_CATCHING=1 -s NO_FILESYSTEM=1   -Oz -o a.out.js " + obj
+cmdLink = "emcc -s EXPORTED_FUNCTIONS='[\"_sayHi\", \"_sayStr\" ]' -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='[\"sayHi\",\"sayStr\"]'  -s DISABLE_EXCEPTION_CATCHING=1 -s NO_FILESYSTEM=1   -Oz -o a.out.js " + obj
 print(cmdLink)
 os.system( cmdLink  )

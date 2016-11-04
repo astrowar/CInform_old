@@ -67,6 +67,13 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CParseAux.cpp
         AppMatch/AppMatch/testes_Relation.cpp
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
+        AppMatch/AppMatch/BlockisSame.cpp
+        AppMatch/AppMatch/CInterpreterEvaluate.cpp
+        AppMatch/AppMatch/CBlockInterpreter_Verb_En.cpp
+        AppMatch/AppMatch/Parser_RegisterVerb.cpp
+        AppMatch/AppMatch/Parser_VerbTable_en.cpp
+        AppMatch/AppMatch/teste_verb.cpp
+
 
         AppMatch/AppMatch/teste_selector.cpp
         AppMatch/AppMatch/CDataMananger.cpp

@@ -143,7 +143,7 @@ HBlock CParser::sys_say_action(std::vector<HTerm>&  term)
 	if (res.result == Equals)
 	{
 		auto nterms = expandTerm(res.matchs["Body"]);
-		HBlock value = parser_expression(nterms);
+		HBlock value = parser_expression_lst(nterms);
 		HBlockAction say_Action = std::make_shared<CBlockAction>("say_text");
 		return std::make_shared<CBlockActionCall>(say_Action, value, nullptr);
 	}
@@ -497,7 +497,8 @@ HBlock CParser::parse_removeArticle(std::vector<HTerm>& term) {
     if (term.size() > 1) {
 
         if (mk_HPredLiteral("the")->match(term.front()) == Equals) {
-            return parser_expression(get_tail(term));
+            auto gtail = get_tail(term);
+            return parser_expression_lst(gtail);
         }
     }
     return nullptr;
@@ -735,7 +736,7 @@ HBlockInstanceVariable CParser::CProperty_called(HTerm term) {
 HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
 
-	logMessage(get_repr(lst));
+
     predList.push_back(mkHPredAny("Target"));
     predList.push_back(mk_HPredLiteral("has"));
     predList.push_back(undefinedArticle());
@@ -762,7 +763,8 @@ HBlock CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
 
 HBlock CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *err) {
     if (CList *vlist = asCList(term.get())) {
-        auto r = parser_stmt_inner(vlist->asVector(),inner,err);
+        auto v = vlist->asVector();
+        auto r = parser_stmt_inner(v,inner,err);
         /*if (r == nullptr)
             std::cout << term->repr() << std::endl;*/
 
@@ -779,7 +781,8 @@ HBlock CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *err) {
 
 HBlock CParser::parserBoolean(HTerm term) {
     if (CList *vlist = asCList(term.get())) {
-        auto r = parserBoolean(vlist->asVector());
+        auto v = vlist->asVector();
+        auto r = parserBoolean(v);
         if (r != nullptr) {
             return r;
         } else {

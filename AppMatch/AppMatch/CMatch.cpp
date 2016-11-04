@@ -473,7 +473,8 @@ void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::ve
 
 	if (isize  == n) {
 
-		MTermSetCombinatoria unip = { getUnicCombination(std::vector<HTerm>(vbegin,vend)) };
+        auto vv = (std::vector<HTerm>(vbegin,vend));
+		MTermSetCombinatoria unip = { getUnicCombination ( vv) };
 		func(unip); // apenas uma combinacao eh possivel
 		return;
 	}
@@ -1046,7 +1047,8 @@ MatchResult CMatch_LI(std::vector<HTerm> term, HPred predicate) {
 MatchResult CMatch_IL(HTerm term, std::vector<HPred> predicate) {
     CList *lst = asCList(term.get());
     if (lst != nullptr) {
-        return CMatch(lst->asVector(), predicate);
+        auto vv = lst->asVector();
+        return CMatch( vv , predicate);
     }
     return MatchResult();
 }
@@ -1164,7 +1166,8 @@ MatchResult CMatch(HTerm term, std::vector<HPred> predicates) {
 
     CList *lst =asCList(term.get());
     if (lst != nullptr) {
-        return CMatch(lst->asVector(), predicates); // trata como uma lista
+        auto v = lst->asVector();
+        return CMatch( v, predicates); // trata como uma lista
     }
     return MatchResult();;
 }

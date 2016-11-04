@@ -43,7 +43,8 @@ HBlock   CParser::parser_VerbAssign(std::vector<HTerm>& term)
 HBlock CParser::parser_expression(HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
-		auto r = parser_expression(vlist->asVector());
+		auto rvector = vlist->asVector();
+		auto r = parser_expression_lst(rvector);
 		/*if (r == nullptr)
 		std::cout << term->repr() << std::endl;*/
 		return r;
@@ -53,7 +54,7 @@ HBlock CParser::parser_expression(HTerm  term)
 	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
 }
 
-HBlock CParser::parser_expression(std::vector<HTerm>&   lst)
+HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
 {
 
 	HBlock rblock_textEntry = (text_entry(lst));

@@ -389,6 +389,7 @@ int main() {
 extern "C"
 {
    void sayHi();
+   void sayStr(char* str);
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -398,6 +399,16 @@ void sayHi() {
 
 	{
 		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
+	}
+}
+
+void sayStr(char* str) {
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	{
+	std::string line (str);
+		interpreter->execute_init(parse.Parser_Stmt( line , ISLOG));
 	}
 }
 #endif
