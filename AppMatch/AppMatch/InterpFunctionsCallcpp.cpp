@@ -1,12 +1,13 @@
 //Executor de acoes 
 
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "CResultMatch.hpp"
 #include <memory>
  
 #include "CBlockScope.hpp"
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
 
@@ -38,6 +39,8 @@ bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call)
 {
 	 
+	logMessage("EXEC CALL ! ");
+	v_call->dump("");
 
 	return false;
 }

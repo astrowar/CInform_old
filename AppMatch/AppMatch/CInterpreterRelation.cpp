@@ -1,7 +1,8 @@
 
 
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "sharedCast.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 
 bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 {

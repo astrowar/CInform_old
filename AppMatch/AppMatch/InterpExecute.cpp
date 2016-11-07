@@ -1,13 +1,14 @@
 
 //Executor de acoes 
 
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "CResultMatch.hpp"
 #include <memory>
  
 #include "CBlockScope.hpp"
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
 std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry)
@@ -552,7 +553,12 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 logMessage("      Arg " + arg.first + "==");
 				 arg.second->dump("                          ");
 			 }
-			 HRunLocalScope localsNext = make_shared< CRunLocalScope >();
+			 HRunLocalScope localsNext = make_shared< CRunLocalScope >( );
+
+			 HRunLocalScope locals_obj_1 = nullptr; //local que vem do argumento 1 
+			 HRunLocalScope locals_obj_2 = nullptr; //locals que vem do argumento 2
+
+
 			 // Argumentos batem com os matchs dos argumentos ??
 			 HBlock ref_Arg_1 = nullptr;
 			 HBlock ref_Arg_2 = nullptr;
@@ -579,7 +585,26 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 					 {
 						 continue; //Este match nao serve .. Proximo
 					 }
-				 } 
+				 }
+				 else //match noum ??
+				 {
+					 if (HBlockMatch  arg1_match_required =  *arg_header_first)
+					 {
+						 arg1_match_required->dump(" ");						  
+						 auto obj_resolved = exec_eval(result.maptch["noum1"], localsEntry);
+						 auto result_arg1_requ = Match(arg1_match_required , obj_resolved, localsEntry, stk);						 
+						 if (result_arg1_requ.hasMatch)
+						 {
+							 ref_Arg_1 = obj_resolved;
+							 locals_obj_1 = std::make_shared< CRunLocalScope >(result_arg1_requ.maptch);
+							 locals_obj_1->locals.push_back(std::pair<string, HBlock>("noum1" , obj_resolved));
+						 }
+						 else
+						 {
+							 continue; 
+						 }
+					 }
+				 }
 
 
 
@@ -606,6 +631,26 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 
 						 
 					 }
+					 else //match noum ??
+					 {
+						 if (HBlockMatch  arg2_match_required = *arg_header_second)
+						 {
+							 arg2_match_required->dump(" ");
+							 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry);
+							 auto result_arg2_requ = Match(arg2_match_required, obj_resolved, localsEntry, stk);
+							 if (result_arg2_requ.hasMatch)
+							 {
+								 ref_Arg_2 = obj_resolved;
+								 locals_obj_2 = std::make_shared< CRunLocalScope >(result_arg2_requ.maptch);
+								 locals_obj_2->locals.push_back(std::pair<string, HBlock>("noum2", obj_resolved));
+							 }
+							 else
+							 {
+								 continue;
+							 }
+						 }
+					 }
+
 
 				 }
 			 }
@@ -616,7 +661,12 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 
 			 if (HBlockAction actionCall = asHBlockAction (output_block))
 			 {
-				return  make_shared< CExecutionBlock >(make_shared< CRunLocalScope >() , std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
+				
+				 auto locals_obj = std::make_shared< CRunLocalScope >(result.maptch);
+				 HRunLocalScope localsNextp = newScope(localsEntry, locals_obj);
+				 
+
+				return  make_shared< CExecutionBlock >(localsNextp, std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
 
 			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, output_block);
@@ -686,6 +736,9 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 	}
 
 
+	 
+
+
 	if (HBlockAssertion_is vk = asHBlockAssertion_isNotDirectAssign(p)) {
 		HBlock obj = vk->get_obj();
 		HBlock value = vk->get_definition();
@@ -696,6 +749,9 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 
 	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
 	{
+		logMessage("what is called ?     ");
+		vdyn->dump("  ");
+		
 		//determina quem eh o action do dynamica dispatch
 		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
 		if (dispExec != nullptr)
@@ -763,6 +819,12 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 	}
 
 
+	if (HBlockDinamicDispatch  vdispAtion = asHBlockDinamicDispatch(p))
+	{
+		
+		return true;
+	}
+	 
 
 
 	return false;

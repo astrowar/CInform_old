@@ -1,7 +1,7 @@
 
 #include "BlockInterpreter.hpp"
-#include "CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 
 HBlock  CBlockInterpreter::evaluate_relation_property(HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function< HBlock(HBlock, HRunLocalScope, QueryStack) > isSuitable)
 {

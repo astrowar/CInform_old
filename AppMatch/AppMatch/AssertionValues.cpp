@@ -1,8 +1,10 @@
  
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "sharedCast.hpp"
  
 #include "sharedCast.hpp"
+#include "CBlockInterpreterRuntime.hpp"
+
 using namespace std;
 
 
@@ -28,7 +30,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
             b = make_shared<CBlockKindValue>(called);
             bup = ktv;
         } else {
-			logError("What ?? " + baseClasseName);
+            logError("What ?? " + baseClasseName);
             return pair<HBlockKind, HBlockKind>(nullptr, nullptr);;
         }
 
@@ -44,13 +46,13 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 
 bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
-	execute_set(obj, value,localsEntry);
+    execute_set(obj, value,localsEntry);
 
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
         HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_Value(nobj, value,localsEntry);
-		 
+         
         }
      
     }
@@ -59,7 +61,7 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
         if (HBlockNoum nbase = asHBlockNoum(value)) {
             HBlock nobj = resolve_noum(nbase,localsEntry);
             if (nobj == nullptr) 
-			{
+            {
                 nInst->set(nbase);
                 return true;
             }
@@ -76,11 +78,11 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
         return assert_it_property(propNamed, destination, value,localsEntry);
     }
 
-	if (HVariableNamed  var_n = asHVariableNamed(obj)) {
-		 
-		HBlock destination = var_n->value;
-		if (value_can_be_assign_to(value , var_n->kind,localsEntry))
-		{
+    if (HVariableNamed  var_n = asHVariableNamed(obj)) {
+         
+        HBlock destination = var_n->value;
+        if (value_can_be_assign_to(value , var_n->kind,localsEntry))
+        {
             if (HBlockList   val_list = asHBlockList(value))
             {
                 //list is passed as copy
@@ -92,10 +94,10 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
             else {
                 var_n->value = value;
             }
-			return true;
-		}
-		//return assert_it_property(propNamed, destination, value);
-	}
+            return true;
+        }
+        //return assert_it_property(propNamed, destination, value);
+    }
 
 
     return false;
@@ -105,26 +107,26 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
 
 bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value) 
 {
-	if (HBlockKindAction   act = asHBlockKindAction(value)) {
-		if (HBlockAction abase = asHBlockAction(obj)) { 
-			actions_header.push_back(abase);
-			return true;
-		}
-	}
+    if (HBlockKindAction   act = asHBlockKindAction(value)) {
+        if (HBlockAction abase = asHBlockAction(obj)) { 
+            actions_header.push_back(abase);
+            return true;
+        }
+    }
 
 
-	if (HBlockKindAction   act = asHBlockKindAction(value)) {
-		if (HBlockNoum nbase = asHBlockNoum(obj)) {
+    if (HBlockKindAction   act = asHBlockKindAction(value)) {
+        if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-			auto haction = make_shared<CBlockAction >(nbase->named);
-			//actions_header.push_back(haction);
-			return assert_it_action(haction, value);
-		}
-	}
+            auto haction = make_shared<CBlockAction >(nbase->named);
+            //actions_header.push_back(haction);
+            return assert_it_action(haction, value);
+        }
+    }
 
 
 
-	return false;
+    return false;
 }
 
 bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope localsEntry) {
@@ -150,7 +152,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
                 assertions.push_back(newDefi);
             }
 
-			logMessage("new Kind add " + nbase->named);
+            logMessage("new Kind add " + nbase->named);
             return true;
         }
 
@@ -175,7 +177,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
                         kindDefinitions.push_back(newDefi);
                         assertions.push_back(newDefi);
                     }
-					logMessage("new Kind add");
+                    logMessage("new Kind add");
                 }
             }
             return true;
@@ -184,10 +186,10 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
 
     }
    
-	
-	
-	
-	return false;
+    
+    
+    
+    return false;
 
 }
 
@@ -195,35 +197,35 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
 
 bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLocalScope localsEntry) {
 
-	if (HBlockList nobjList = asHBlockList(obj))
-	{
-		for (auto &e : nobjList->lista) {
-			assert_it_instance(e, baseKind, localsEntry);
-		}
-		return true;
-	}
+    if (HBlockList nobjList = asHBlockList(obj))
+    {
+        for (auto &e : nobjList->lista) {
+            assert_it_instance(e, baseKind, localsEntry);
+        }
+        return true;
+    }
 
-	if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
-	{
-		HBlock bbase = resolve_noum(nbaseKind, localsEntry);
-		if (bbase != nullptr)
-		{
-			return assert_it_instance(obj, bbase, localsEntry);
-		}
-		else
-		{
-			logError("Kind not found " + nbaseKind->named);
-			return false;
-		}
-	}
+    if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
+    {
+        HBlock bbase = resolve_noum(nbaseKind, localsEntry);
+        if (bbase != nullptr)
+        {
+            return assert_it_instance(obj, bbase, localsEntry);
+        }
+        else
+        {
+            logError("Kind not found " + nbaseKind->named);
+            return false;
+        }
+    }
 
-	 
+     
  
         if (HBlockNoum nobj = asHBlockNoum(obj)) 
-		{
+        {
            
             if (HBlockKind k = asHBlockKind(baseKind)) 
-			{
+            {
                 //HBlockInstance binstance = make_shared<CBlockInstance>(nobj->named);
 
                 HBlockInstance binstance = new_Instance(nobj->named, k);
@@ -232,8 +234,8 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLoca
                 HBlockAssertion_isInstanceOf newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
-				instancias.push_back(binstance);
-				logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
+                instancias.push_back(binstance);
+                logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
                 return true;
             }
            
@@ -271,6 +273,6 @@ bool CBlockInterpreter::assert_it_valuesDefinitions(HBlock c_block, HBlock value
 
 bool CBlockInterpreter::assert_newUnderstand(HBlockUnderstandDynamic value)
 {
-	dynamic_understand.push_back(value);
-	return true;
+    dynamic_understand.push_back(value);
+    return true;
 }

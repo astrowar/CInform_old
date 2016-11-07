@@ -6,17 +6,21 @@ void testeParser_actionA()
 	CParser parse(interpreter);
 
 	interpreter->execute_init(parse.Parser_Stmt("thing is a kind  ", ISLOG));
+	interpreter->execute_init(parse.Parser_Stmt(" apple is a thing  ", ISLOG));
+
 	interpreter->execute_init(parse.Parser_Stmt("eat_this  is ( an action  applying to ( an thing ) )", ISLOG));
 	 
 	// interpreter->execute_init(parse.Parser_Stmt("understand : next to   [ thing  ] as X ", ISLOG));
-	 interpreter->execute_init(parse.Parser_Stmt("understand : eat  [ a thing ] as eat_this ", ISLOG));
-	 interpreter->execute_init(parse.Parser_Stmt("understand : bite all [  thing called X ] as  eat  X  ", ISLOG));
+	printf("===========================================================\n"); 
+	interpreter->execute_init(parse.Parser_Stmt("understand : eat  ( a thing ) as eat_this ", ISLOG));
+	// interpreter->execute_init(parse.Parser_Stmt("understand : bite all [  thing called X ] as  eat  X  ", ISLOG));
 
-	interpreter->execute_init(parse.Parser_Stmt(" apple is a thing  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("  bite all apple ", ISLOG));
+	//interpreter->execute_init(parse.Parser_Stmt(" apple is a thing  ", ISLOG));
+	//interpreter->execute_init(parse.Parser_Stmt("  bite all apple ", ISLOG));
 
 	//interpreter->execute_init(parse.Parser_Stmt("book is a object  ", ISLOG));
-	//interpreter->execute_init(parse.Parser_Stmt("box is a object  ", ISLOG));
+	printf("===========================================================\n");
+	interpreter->execute_now(parse.Parser_Stmt("eat apple   ", ISLOG));
 
 	return;
 }
@@ -36,7 +40,10 @@ void testeParser_actionB()
 	interpreter->execute_init(parse.Parser_Stmt("understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
 	interpreter->execute_init(parse.Parser_Stmt("understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B ", ISLOG));
 
-	interpreter->execute_now(parse.Parser_Stmt(" insert ( apple and box )  intro  box ", ISLOG));
+	interpreter->execute_now(parse.Parser_Stmt(" insert ( apple and box )  intro  box ", true));
+
+
+	 
 
 	return;
 }
@@ -66,4 +73,11 @@ void testeParser_actionC()
 
 
 	return;
+}
+
+void testAction_all()
+{
+	testeParser_actionA(); 
+	//testeParser_actionB(); 
+	//testeParser_actionC();
 }

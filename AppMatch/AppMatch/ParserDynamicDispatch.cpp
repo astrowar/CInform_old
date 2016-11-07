@@ -160,13 +160,13 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 		{
 
 			predList.push_back(mkHPredAny("verb"));
-			predList.push_back(mk_HPredLiteral("["));
+			//predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind1"));
-			predList.push_back(mk_HPredLiteral("]"));
+			//predList.push_back(mk_HPredLiteral("]"));
 			predList.push_back(mkHPredAny("with_word"));
-			predList.push_back(mk_HPredLiteral("["));
+			//predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind2"));
-			predList.push_back(mk_HPredLiteral("]"));
+			//predList.push_back(mk_HPredLiteral("]"));
 		}
 
 
@@ -197,12 +197,12 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 		if (predList.empty())
 		{
 			predList.push_back(mkHPredAny("verb"));
-			predList.push_back(mk_HPredLiteral("["));
+			//predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind1"));
-			predList.push_back(mk_HPredLiteral("]"));
+		//	predList.push_back(mk_HPredLiteral("]"));
 			predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind2"));
-			predList.push_back(mk_HPredLiteral("]"));
+			//predList.push_back(mk_HPredLiteral("]"));
 		}
 
 
@@ -233,9 +233,9 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 		{
 			predList.push_back(mkHPredAny("verb"));
 			predList.push_back(mkHPredAny("aux"));
-			predList.push_back(mk_HPredLiteral("["));
+		//	predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind1"));
-			predList.push_back(mk_HPredLiteral("]"));
+		//	predList.push_back(mk_HPredLiteral("]"));
 		}
 
 		MatchResult res = CMatch(term, predList);
@@ -267,9 +267,9 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 		if (predList.empty())
 		{
 			predList.push_back(mkHPredAny("verb"));
-			predList.push_back(mk_HPredLiteral("["));
+	//		predList.push_back(mk_HPredLiteral("["));
 			predList.push_back(mkHPredAny("kind1"));
-			predList.push_back(mk_HPredLiteral("]"));
+	//		predList.push_back(mk_HPredLiteral("]"));
 		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
@@ -280,7 +280,9 @@ DispatchArguments CParser::parser_buildMatchBlock_actionInput(std::vector<HTerm>
 
             //HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
 			HBlockMatch c2 = parser_MatchArgument(res.matchs["kind1"]);
-			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
+			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>()); //este eh o match estatico .. ie .. aquele usado pelo parser para identificar as chamadas estaticas
+						
+
             std::vector<HPred> replcList;
             replcList.push_back(mk_HPredLiteral(res.matchs["verb"]->repr()));
             replcList.push_back(mkHPredAny("noum1"));

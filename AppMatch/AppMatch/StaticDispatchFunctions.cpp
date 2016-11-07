@@ -5,10 +5,11 @@
  
 #include <algorithm>
 
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "CBlockMatch.hpp"
 #include "CBlockBoolean.hpp"
 #include "CblockAssertion.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 
 staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(
         _argumentsMatch), action(_action) {

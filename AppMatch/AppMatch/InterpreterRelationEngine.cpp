@@ -5,11 +5,11 @@
 
 #include "BlockInterpreter.hpp"
  
-#include "CBlockInterpreterRuntime.hpp"
+
 #include "CblockAssertion.hpp"
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
-
+#include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
 bool CBlockInterpreter::assert_newRelation(HBlockRelationBase rel) {
