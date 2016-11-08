@@ -306,15 +306,22 @@ void CBlockMatchWhichNot::dump(string ident)
 void CBlockActionApply::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Action applyTo ");
 	{
-		this->noum1->dump(ident + "       ");
-		printf("%s %s\n", ident.c_str(), "With ");
-			this->noum2->dump(ident + "       ");
+		if (noum1 != nullptr)
+		{
+			this->noum1->dump(ident + "       ");
+			if (this->noum2 != nullptr)
+			{
+				printf("%s %s\n", ident.c_str(), "With ");
+				this->noum2->dump(ident + "       ");
+			}
+		}
 
 	}
 }
 
 void CBlockAction::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Action ", this->named.c_str());
+	for(auto nn: this->namedSlots) nn->dump(ident + "       ");
 
 
 }

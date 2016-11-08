@@ -165,17 +165,34 @@ public:
 
 using HBlockKindOf = std::shared_ptr<CBlockKindOf>;
 
+
+
+class CBlockActionApply : public CBlock {
+public:
+	virtual void dump(string ident) override;
+
+
+	virtual BlockType type() override { return BlockType::BlockActionApply; }
+	HBlock noum1;
+	HBlock noum2;
+
+	CBlockActionApply(HBlock _noum1, HBlock _noum2);
+};
+
+using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
+
+
 class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
 {
 public:
     void dump(string ident) override;
 	 
 	virtual BlockType type() override { return BlockType::BlockKindAction; }
-    CBlockKindAction(string _baseActionName, HBlock _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {}
+    CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {}
 
 
     string baseClasseName;
-    HBlock applyTo;
+	HBlockActionApply applyTo;
 };
 
 using HBlockKindAction = std::shared_ptr<CBlockKindAction>;
@@ -495,19 +512,7 @@ class CBlockFilterList : public CBlockFilter {
 };
 
 
-class CBlockActionApply : public CBlock {
-public:
-    virtual void dump(string ident) override;
-
-
-	virtual BlockType type() override { return BlockType::BlockActionApply; }
-    HBlock noum1;
-    HBlock noum2;
-
-    CBlockActionApply(HBlock _noum1, HBlock _noum2);
-};
-
-using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
+ 
 
 
  

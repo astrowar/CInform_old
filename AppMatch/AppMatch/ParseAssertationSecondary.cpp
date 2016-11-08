@@ -18,12 +18,55 @@ HBlockKindAction CParser::parse_AssertionAction_secondPart( HTerm  term)
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlock applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
+			HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
 			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
 			return std::make_shared<CBlockKindAction>("", applyTO);
 
 		}
 	}
+
+
+	{
+		// and action applying to [one visible thing and requiring light]
+
+		//std::cout << term->repr() << std::endl;
+		std::vector<HPred> predList;
+		predList.push_back(undefinedArticle());
+		predList.push_back(mk_HPredLiteral("action"));
+		predList.push_back(mk_HPredLiteral("applying"));
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mk_HPredLiteral("nothing"));
+		
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			//HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
+			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
+			
+			HBlockActionApply applyTO =  std::make_shared<CBlockActionApply>( nullptr , nullptr );
+			return std::make_shared<CBlockKindAction>("", applyTO);
+
+		}
+	}
+	{
+		// and action applying to [one visible thing and requiring light]
+
+		//std::cout << term->repr() << std::endl;
+		std::vector<HPred> predList;
+		predList.push_back(undefinedArticle());
+		predList.push_back(mk_HPredLiteral("action"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			//HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
+			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
+
+			HBlockActionApply applyTO = std::make_shared<CBlockActionApply>(nullptr, nullptr);
+			return std::make_shared<CBlockKindAction>("", applyTO);
+
+		}
+	}
+
 	return nullptr;
 }
 HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {

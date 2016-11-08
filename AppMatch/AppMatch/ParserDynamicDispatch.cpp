@@ -451,6 +451,66 @@ std::list<HBlock> CParser::ToMatchList( std::vector<HPred> pvector, MatchResult 
 	return vlist;
 }
 
+HBlock CParser::TryDispatch_action(std::vector<HTerm>&  term) 
+{
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("try"));			
+			predList.push_back(mkHPredAny("Action"));						
+			predList.push_back(mkHPredAny("noum1"));
+			predList.push_back(mkHPredAny("noum2"));
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!			
+			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr());
+			auto nn2 = std::make_shared<CBlockNoum>(res.matchs["noum2"]->repr());
+
+			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc , nn1, nn2  ); //An Action !!!
+			return actionCall;
+		}
+	}
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("try"));
+			predList.push_back(mkHPredAny("Action"));
+			predList.push_back(mkHPredAny("noum1")); 
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!			
+			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr()); 
+			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc, nn1, nullptr); //An Action !!!
+			return actionCall;
+		}
+	}
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("try"));
+			predList.push_back(mkHPredAny("Action")); 
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!		 
+			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc, nullptr, nullptr); //An Action !!!
+			return actionCall;
+		}
+	}
+	return nullptr;
+}
 
 HBlock CParser::DynamicDispatch_action(std::vector<HTerm>&  term) {
 

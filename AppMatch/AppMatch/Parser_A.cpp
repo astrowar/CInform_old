@@ -76,7 +76,7 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
     return std::move(ParserResult(res));
 }
 
-HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
+HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
     {
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;
@@ -111,7 +111,7 @@ HBlock CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = parser_kind(res.matchs["kind1"]);
-            return std::make_shared<CBlockActionApply>(n1, std::make_shared<CBlockNoum>("Nothing"));
+            return std::make_shared<CBlockActionApply>(n1, nullptr );
         }
     }
 

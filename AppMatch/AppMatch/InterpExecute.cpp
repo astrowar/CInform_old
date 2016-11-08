@@ -417,6 +417,12 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 		return nIns;
 	}
 
+	if (HBlockAction nAction = asHBlockAction(c_block))
+	{
+		return nAction;
+	}
+
+
 	if (HBlockKind kIns = asHBlockKind(c_block))
 	{
 		return kIns;
@@ -497,7 +503,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 		
 	}
 
-
+	 
 
 	// Bla ! 
 	c_block->dump("");

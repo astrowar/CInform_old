@@ -1044,7 +1044,10 @@ HBlock CParser::parser_text(string str , ErrorInfo *err)
     // quebra o text  em linhas e processa as linhas separadamente
     auto vlist = split_new_lines(str);
 	HGroupLines pivot =  get_identation_groups("__FILE__",vlist,err);
-	if (err->hasError) return nullptr;
+	if (err->hasError)
+	{
+		return nullptr;
+	}
 	if (pivot == nullptr)
 	{
 		return nullptr;

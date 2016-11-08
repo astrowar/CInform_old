@@ -192,7 +192,7 @@ public:
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entryMatch );
 	int registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry, HBlock ret);
 	ParserResult parser_AssertionKind(std::vector<HTerm>&  lst);
-	HBlock parse_AssertionAction_ApplyngTo(HTerm term);
+	HBlockActionApply parse_AssertionAction_ApplyngTo(HTerm term);
 	HBlockMatch parser_What_Which_Assertion(HTerm term);
 	HBlockMatchIs parser_What_Which_Verb_Assertion(HTerm term);
 	HBlockMatchIs parser_Match_IF_Assertion(HTerm term );
@@ -246,6 +246,7 @@ public:
 	HBlock parse_toDecide_Ret(std::vector<HTerm>&  term);
 	HBlock parser_decides_Assertion(std::vector<HTerm>&  term);
 	std::list<HBlock> ToMatchList(std::vector<HPred> pvector, MatchResult result);
+	HBlock TryDispatch_action(std::vector<HTerm>& term);
 	HBlock STMT_understand_Assertion(std::vector<HTerm>&  term);
 	HBlock STMT_verb_Assertion_N(std::vector<HTerm>&  term);
 	HBlock STMT_verb_Assertion(std::vector<HTerm>&  lst);

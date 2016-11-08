@@ -75,9 +75,40 @@ void testeParser_actionC()
 	return;
 }
 
+
+
+void testeParser_actionD()
+{
+	// Eating Rule transcipt
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	string s_eating = R"(
+thing is a kind
+apple is a thing
+eating is   an action applying to ( an  thing )  
+
+understand : eat  ( a thing ) as eating 
+
+)";
+	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
+	
+	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
+	auto e = interpreter->exec_eval(parse.Parser_Expression(" eating ", ISLOG), nullptr);
+	e->dump("");
+
+	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr);
+	interpreter->execute_now(parse.Parser_Expression("try eating apple ", ISLOG), nullptr);
+	
+
+	return;
+}
+
 void testAction_all()
 {
-	testeParser_actionA(); 
+	//testeParser_actionA(); 
 	//testeParser_actionB(); 
 	//testeParser_actionC();
+	testeParser_actionD();
 }

@@ -107,22 +107,22 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
 
 bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value) 
 {
-    if (HBlockKindAction   act = asHBlockKindAction(value)) {
-        if (HBlockAction abase = asHBlockAction(obj)) { 
-            actions_header.push_back(abase);
-            return true;
-        }
-    }
+	if (HBlockKindAction   act = asHBlockKindAction(value))
+	{
+		if (HBlockAction abase = asHBlockAction(obj))
+		{
+			actions_header.push_back(abase);
+			actions_parameters[abase->named] = act;
+			return true;
+		}
 
+		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-    if (HBlockKindAction   act = asHBlockKindAction(value)) {
-        if (HBlockNoum nbase = asHBlockNoum(obj)) {
-
-            auto haction = make_shared<CBlockAction >(nbase->named);
-            //actions_header.push_back(haction);
-            return assert_it_action(haction, value);
-        }
-    }
+			auto haction = make_shared<CBlockAction >(nbase->named);
+			//actions_header.push_back(haction);
+			return assert_it_action(haction, value);
+		}
+	}
 
 
 

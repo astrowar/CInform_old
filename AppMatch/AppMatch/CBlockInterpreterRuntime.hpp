@@ -74,6 +74,8 @@ class CBlockInterpreter {
 
 
 	std::vector<HBlockAction> actions_header;
+	std::map<std::string, HBlockKindAction > actions_parameters;
+ 
 	std::vector<HBlockUnderstandDynamic> dynamic_understand;
 
 
