@@ -370,7 +370,8 @@ public:
 	string expression_adapt_tense(HTerm& term);
 	HBlock expression_adapt_verb_inner(HTerm& term);
 	HBlock expression_adapt_verb(std::vector<HTerm>& term);
-	 
+	HBlockMatch parser_actionMatch(HTerm& term);
+	HBlock STMT_Action_Controls(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
 };
 
 

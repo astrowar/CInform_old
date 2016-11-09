@@ -183,6 +183,21 @@ public :
 
     HBlockAction input;
 };
+using HBlockMatchAction = std::shared_ptr<CBlockMatchAction>;
+
+class CBlockMatchActionCall : public CBlockMatch // um bloco que serve para dar Match em uma Acao
+{
+public:
+	CBlockMatchActionCall(HBlockMatchAction _action , HBlockMatch _argument1 , HBlockMatch _argument2 )
+		: CBlockMatch(), action(_action), argument1(_argument1), argument2(_argument2) {	}
+
+	HBlockMatchAction action;
+	HBlockMatch argument1;
+	HBlockMatch argument2;
+};
+using HBlockMatchActionCall = std::shared_ptr<CBlockMatchActionCall>;
+
+
 
 
 

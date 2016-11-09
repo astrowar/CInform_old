@@ -11,6 +11,18 @@
 using namespace std;
 
 
+bool CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+{
+	// busca por algum before que eh compativel com esta regra e aplica ela
+
+
+	return true;
+}
+
+
+
+
+
 bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 {
 	v_call->action->dump(" " );
@@ -36,7 +48,7 @@ bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 }
  
 
-bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call)
+bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
 {
 	 
 	logMessage("EXEC CALL ! ");
@@ -60,6 +72,24 @@ bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call)
 			if (v_call->noum2 == nullptr  && ap.second->applyTo->noum2 != nullptr) continue;
 			if (v_call->noum1 != nullptr  && ap.second->applyTo->noum1 == nullptr) continue;
 			if (v_call->noum2 != nullptr  && ap.second->applyTo->noum2 == nullptr) continue;
+
+
+			//verifica se os argumentos sao compativeis
+
+			if (v_call->noum1 != nullptr)
+			{
+				auto qarg1 = query_is(v_call->noum1, ap.second->applyTo->noum1, localsEntry, stk);
+				if (qarg1 != QEquals) continue; 
+			}
+
+
+			if (v_call->noum2 != nullptr)
+			{
+				auto qarg2 = query_is(v_call->noum2, ap.second->applyTo->noum2, localsEntry, stk);
+				if (qarg2 != QEquals) continue;
+			}
+
+
 			kaction = ap.second;
 			break;
 		}
@@ -69,12 +99,14 @@ bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call)
 		return false;
 	}
 	
+	
+
 
 	kaction->dump(" ");
 	//Para executar a acao devo ir  na ordem
 
 	//Before
-
+	execute_phase_before(v_call, localsEntry, stk);
 	//Instead
 
 	//Check
@@ -87,5 +119,5 @@ bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call)
 
 	//Report
 
-	return false;
+	return true;
 }

@@ -256,8 +256,10 @@ public:
  
  
 	bool execute_now(HBlock c_block);
+	bool execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
 	bool execute_system_action(HBlockActionCall v_call);
-	bool execute_user_action(HBlockActionCall v_call);
+	bool  execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+	
 	//Executa este bloco !
 	bool execute_now(HBlock p, HRunLocalScope localsEntry);
 	bool execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack stk);

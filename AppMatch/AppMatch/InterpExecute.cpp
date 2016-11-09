@@ -775,7 +775,7 @@ bool CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, Query
 			 
 			logMessage("CALL     " + vCall->action->named);
 			if (execute_system_action(vCall)) return true;
-			if (execute_user_action(vCall)) return true;
+			if (execute_user_action(vCall,localsEntry, stk)) return true;
 			return false;
 		}
 	}

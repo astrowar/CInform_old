@@ -333,5 +333,8 @@
     <ClCompile Include="CBlockInterpreter_Verb_En.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
+    <ClCompile Include="Parser_ActionControl.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -134,6 +134,11 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, Er
     HBlock rblock_understand_1 = (STMT_understand_Assertion(lst  ));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
+	HBlock rblock_action_controls = (STMT_Action_Controls(lst, inner, err));
+	if (rblock_action_controls != nullptr) return rblock_action_controls;
+
+
+
 	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst ));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 

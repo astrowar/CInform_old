@@ -233,6 +233,7 @@
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="ParserTextEntry.cpp" />
     <ClCompile Include="Parser_A.cpp" />
+    <ClCompile Include="Parser_ActionControl.cpp" />
     <ClCompile Include="Parser_ControlFlux.cpp" />
     <ClCompile Include="Parser_Decide.cpp" />
     <ClCompile Include="Parser_expression_match.cpp" />

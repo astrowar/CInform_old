@@ -479,6 +479,10 @@ HBlock CParser::STMT_system_Assertion(std::vector<HTerm>& term)
     return nullptr;
 }
 
+ 
+
+
+
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
 HBlock CParser::STMT_understand_Assertion(std::vector<HTerm>&  term) {
 

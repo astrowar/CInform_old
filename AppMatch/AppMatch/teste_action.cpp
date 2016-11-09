@@ -86,10 +86,16 @@ void testeParser_actionD()
 
 	string s_eating = R"(
 thing is a kind
+person is a kind
 apple is a thing
+bob is a person
 eating is   an action applying to ( an  thing )  
 
 understand : eat  ( a thing ) as eating 
+
+
+Before eating apple :
+  say  (text will eat apple)
 
 )";
 	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
@@ -100,7 +106,7 @@ understand : eat  ( a thing ) as eating
 
 	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr);
 	interpreter->execute_now(parse.Parser_Expression("try eating apple ", ISLOG), nullptr);
-	
+	interpreter->execute_now(parse.Parser_Expression("try eating bob ", ISLOG), nullptr);
 
 	return;
 }
