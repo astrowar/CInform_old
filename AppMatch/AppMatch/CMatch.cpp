@@ -706,6 +706,17 @@ EqualsResul CPredList::match(std::vector<HTerm>::iterator vbegin, std::vector<HT
 }
 
 
+EqualsResul CPredList::match(HTerm h) 
+{
+	CList *lst = asCList(h.get());
+	if (lst != nullptr) {
+
+		MTermSet v = lst->asVector();
+		return this->match( v );
+	}
+	return NotEquals;
+}
+
 
 bool CPredAny::isSame(HTerm h) {
 
@@ -721,6 +732,7 @@ std::string CPredAny::repr() {
 
 CPredAny::CPredAny(std::string _named) : CPred(_named) {
 }
+
 
 EqualsResul CPredAny::match(MTermSet &_h) {
     return Equals;

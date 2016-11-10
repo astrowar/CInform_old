@@ -21,8 +21,8 @@ HBlockMatch CParser::parser_actionMatch(HTerm & term)
 		if (res.result == Equals)
 		{
 
-			HBlockMatchActionCall actionCall = std::make_shared<CBlockMatchActionCall>(nullptr, nullptr, nullptr);
-			return actionCall;
+			//HBlockMatchActionCall actionCall = std::make_shared<CBlockMatchActionCall>(nullptr, nullptr, nullptr);
+			//return actionCall;
 		}
 	}
 
