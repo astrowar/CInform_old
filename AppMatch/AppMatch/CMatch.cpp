@@ -705,15 +705,7 @@ EqualsResul CPredList::match(std::vector<HTerm>::iterator vbegin, std::vector<HT
 	return Equals;
 }
 
-EqualsResul CPredList::match(HTerm h) {
-    CList *lst = asCList(h.get());
-    if (lst != nullptr) {
-        auto asVector = lst->asVector();
-        return this->match(asVector); //chama o termo superior
 
-    }
-    return NotEquals;
-}
 
 bool CPredAny::isSame(HTerm h) {
 
