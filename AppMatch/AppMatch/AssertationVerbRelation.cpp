@@ -682,3 +682,13 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 
 	return true;
 }
+
+
+//Event Hanle
+
+bool CBlockInterpreter::insert_newEventHandle(HBlockEventHandle event_handle)
+{
+	event_handles.push_back(event_handle);
+	return true;
+}
+ 

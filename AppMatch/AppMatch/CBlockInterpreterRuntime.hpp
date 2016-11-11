@@ -17,8 +17,9 @@
 #include "CBlockAction.hpp"
 #include "CBlockRelation.hpp"
 #include "QueryStack.hpp"
+#include "CBlockCommand.hpp"
 
- class CBlockAssertionBase;
+class CBlockAssertionBase;
 
 class CBlockAssertion_is;
 
@@ -27,8 +28,16 @@ using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
 
 
-
 class CResultMatch;
+
+
+class PhaseResult
+{
+public:
+	PhaseResult(bool _hasExecuted);
+	bool hasExecuted;
+};
+
 
 class CBlockInterpreter {
 
@@ -74,9 +83,12 @@ class CBlockInterpreter {
 
 
 	std::vector<HBlockAction> actions_header;
-	std::map<std::string, HBlockKindAction > actions_parameters;
- 
+	std::map<std::string, HBlockKindAction > actions_parameters; 
 	std::vector<HBlockUnderstandDynamic> dynamic_understand;
+
+	//Event handles
+	std::vector<HBlockEventHandle> event_handles;
+	 
 
 
     QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
@@ -116,6 +128,7 @@ class CBlockInterpreter {
 
 
 	bool assert_newVerb(HBlockVerbRelation value);
+	bool insert_newEventHandle(HBlockEventHandle event_handle);
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
  
 	CResultMatch MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk);
@@ -241,10 +254,10 @@ public:
 	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 	std::list<HBlock> getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry);
 	//bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
-	bool execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
-	bool execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
-	bool execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry);
-	bool execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+	PhaseResult execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);
+	PhaseResult execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
+	PhaseResult execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+	PhaseResult execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
 	HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);
 	HBlock exec_eval_assertations(HBlock c_block, HRunLocalScope localsEntry, std::function<HBlock(HBlock)> is_accetable);
@@ -255,14 +268,14 @@ public:
  
  
  
-	bool execute_now(HBlock c_block);
-	bool execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
-	bool execute_system_action(HBlockActionCall v_call);
-	bool  execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+	PhaseResult execute_now(HBlock c_block);
+	PhaseResult execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+	PhaseResult execute_system_action(HBlockActionCall v_call);
+	PhaseResult  execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
 	
 	//Executa este bloco !
-	bool execute_now(HBlock p, HRunLocalScope localsEntry);
-	bool execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack stk);
+	PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry);
+	PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack stk);
 	bool queryIsVerbToRelation(HBlockMatch m);
 
 

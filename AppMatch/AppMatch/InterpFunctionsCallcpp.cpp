@@ -11,28 +11,74 @@
 using namespace std;
 
 
-bool CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
 {
 	// busca por algum before que eh compativel com esta regra e aplica ela
+	for(auto evh : event_handles)
+	{
+		if (evh->stage == StageBefore)
+		{
+			
+			QueryResul qAction = query_is(v_call->action , evh->eventToObserve->action , localsEntry, stk);
+			if (qAction == QEquals)
+			{
+				QueryResul qarg1 = QEquals;
+				QueryResul qarg2 = QEquals;
+				
+				if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) continue;
+				if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) continue;
+
+				if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) continue;
+				if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) continue;
+
+				HRunLocalScope next_vars = nullptr;
+				if (evh->eventToObserve->argument1 != nullptr)
+				{
+					auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
+					if (r1.hasMatch == false) continue;
+
+					  next_vars = std::make_shared< CRunLocalScope >(r1.maptch);
+					  HRunLocalScope tmp_vars = newScope(localsEntry, next_vars);
+					  next_vars = tmp_vars;
+				}
+
+				
+				if (evh->eventToObserve->argument2 != nullptr)
+				{
+					auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
+					if (r2.hasMatch == false) continue;
+
+					auto next_vars_2 = std::make_shared< CRunLocalScope >(r2.maptch);
+					HRunLocalScope tmp_vars = newScope(next_vars, next_vars_2);
+					next_vars = tmp_vars; 
+				}
+
+				//next vars contem as variaveis 
+				  this->execute_now(evh->body, next_vars, stk);
+			  
+			}
 
 
-	return true;
+		}
+	}
+
+	return PhaseResult(true); ;
 }
 
 
 
 
 
-bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
+PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 {
-	v_call->action->dump(" " );
+	 
 
 	if (v_call->action->named == "say_text")
 	{
 		if (HBlockText  ntext = asHBlockText(v_call->noum1))
 		{
 			printf("root$ %s \n", ntext->contents.c_str());
-			return true;
+			return PhaseResult(true);;
 		}
 	}
 	if (v_call->action->named == "say")
@@ -40,29 +86,29 @@ bool CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 		if (HBlockText  ntext = asHBlockText(v_call->noum1))
 		{
 			printf("root$ %s \n", ntext->contents.c_str());
-			return true;
+			return PhaseResult(true);;
 		}
 	}
 
-	return false;
+	return PhaseResult(false);;
 }
  
 
-bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
 {
 	 
-	logMessage("EXEC CALL ! ");
-	v_call->dump("");
+	 
+	 
 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
 	for (auto &ah : actions_header)
 	{
 		if (ah->named == v_call->action->named)
 		{
-			ah->dump(" ");
+		//	ah->dump(" ");
 		}
 	}
-	printf("===============================\n");
+	 
 	HBlockKindAction kaction = nullptr;
 	for (auto &ap : actions_parameters)
 	{
@@ -96,13 +142,13 @@ bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalSc
 
 	}
 	if (kaction == nullptr) {
-		return false;
+		return PhaseResult(false);;
 	}
 	
 	
 
 
-	kaction->dump(" ");
+ 
 	//Para executar a acao devo ir  na ordem
 
 	//Before
@@ -119,5 +165,5 @@ bool CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalSc
 
 	//Report
 
-	return true;
+	return PhaseResult(true);
 }

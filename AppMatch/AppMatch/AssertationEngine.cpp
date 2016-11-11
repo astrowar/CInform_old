@@ -414,6 +414,12 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 	}
 
+	if (HBlockEventHandle    reg_event_handle = asHBlockEventHandle(p))
+	{
+		if (insert_newEventHandle(reg_event_handle)) return;
+
+	}
+
 
 	logError("not found block definition ");
 	p->dump("");

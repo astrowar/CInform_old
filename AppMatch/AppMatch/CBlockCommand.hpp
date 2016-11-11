@@ -7,6 +7,7 @@
 
 
 #include "BlockInterpreter.hpp"
+#include "CBlockMatch.hpp"
 
 class CBlockNow : public CBlock     //retorna uma declaracao
 {
@@ -43,6 +44,37 @@ public:
 };
 
 using HBlockComandList = std::shared_ptr<CBlockComandList>;
+
+
+
+
+
+
+
+// Blocos que definem os Event Handles das acoes
+
+enum EventHandleStage {
+	StageBefore,
+	StageAfter,
+	StageReport
+};
+
+
+class CBlockEventHandle : public CBlock     //retorna uma declaracao
+{
+public:
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockEventHandle; }
+	
+	CBlockEventHandle(EventHandleStage _stage, HBlockMatchActionCall  _eventToObserve , HBlockComandList _body ) : eventToObserve(_eventToObserve), body(_body), stage(_stage) {};
+	HBlockMatchActionCall  eventToObserve;
+	HBlockComandList body;
+	EventHandleStage stage;
+};
+
+using HBlockEventHandle = std::shared_ptr<CBlockEventHandle>;
+
+
 
 
 #endif //APPMATCH_CBLOCKCOMMAND_H

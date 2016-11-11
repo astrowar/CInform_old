@@ -110,7 +110,7 @@ public:
 	virtual BlockType type() override { return BlockType::BlockNoum     ; }
 
 	CBlockNoum(){};
-    CBlockNoum(string named);
+    CBlockNoum(string _named)  ;
 
     string named;
 

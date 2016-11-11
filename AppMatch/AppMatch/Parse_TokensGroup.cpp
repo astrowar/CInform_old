@@ -32,9 +32,9 @@ bool isToken(Token tk1 , std::vector<HBlock>::iterator  b)
 
 HBlock setCombinatoriaToken_2( std::vector<HBlock>  lst , std::function<HBlock(std::vector<HBlock> , std::vector<HBlock> )> func_2)
 {
-	auto n = lst.size();
+	unsigned int  n = lst.size();
 	if (n < 2) return nullptr;
-	for(int i = 1; i<n ;++i )
+	for(unsigned int  i = 1; i< n ;++i )
 	{
 		std::vector<HBlock> a = std::vector<HBlock>(lst.begin(), lst.begin() + i);
 		std::vector<HBlock> b = std::vector<HBlock>(lst.begin()+i, lst.end() );

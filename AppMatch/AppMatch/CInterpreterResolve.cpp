@@ -71,6 +71,10 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 		return k1->named;
 	}
 
+	if (HBlockAction   kaa = asHBlockAction (c_block)) {
+		return kaa->named;
+	}
+
 	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
 		return k2->named;
 	}
@@ -195,13 +199,19 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	//eh uma instancia de alguem ??
 	for (auto &a_inst : instancias)
 	{
-
 		if (a_inst->named == named)
 		{
 			return a_inst;
 		}
 	}
 
+	for (auto &a_action : actions_header)
+	{
+		if (a_action->named == named )
+		{
+			return a_action;
+		}
+	}
 
 
 	for (auto &defs : assertions) {
