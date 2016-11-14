@@ -99,6 +99,30 @@ using HBlockControlSelect = std::shared_ptr<CBlockControlSelect>;
 
 
 
+//=================== Stop continue action
+
+enum PhaseResultFlag {
+	actionContinue,
+	actionStop,
+	ruleSucess,
+	ruleFail
+	
+};
+
+class CBlockExecutionResultFlag //classe que diz que aqui tem um TOKEN especifico de controle
+	: public CBlock
+{
+public:
+	CBlockExecutionResultFlag(PhaseResultFlag _flag, HBlock _contents)
+		: flag(_flag), contents(_contents) {}
+
+	PhaseResultFlag flag;
+	HBlock contents;
+
+	void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockExecutionResultFlag; }
+};
+using HBlockExecutionResultFlag = std::shared_ptr<CBlockExecutionResultFlag>;
 
  
 

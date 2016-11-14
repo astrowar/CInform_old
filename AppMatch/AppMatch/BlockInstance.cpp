@@ -46,6 +46,11 @@ void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
 
 void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
+	//verifica se ja nao existe algo assim
+	for(auto s : this->namedSlots)
+	{
+		if (s->name->named == called->named) return; //ja tem um slot com esse nome 
+	}
 	this->namedSlots.push_back(make_shared< CVariableNamed>(called, kind, nullptr));
 }
 
@@ -118,7 +123,6 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
-
 		if (va->name->named == pnamed)
 		{
 			//logMessage(pnamed + " has? " + va->name->named);

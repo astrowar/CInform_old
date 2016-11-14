@@ -1,4 +1,5 @@
 #include "sharedCast.hpp"
+#include "CBlockNumber.hpp"
 
 HBlockEnums asHBlockEnums(HBlock c )
 { 
@@ -410,16 +411,24 @@ HBlockBooleanValue asHBlockBooleanValue(HBlock c)
 }
 
 
-
+HBlockNumber asHBlockNumber(HBlock c)
+{
+	if (c == nullptr) return nullptr;
+	auto t = c->type();
+	if (t == BlockType::BlockIntegerNumber ||
+		t == BlockType::BlockFactionalNumber  )
+		return std::static_pointer_cast<CBlockNumber>(c);
+	return nullptr;
+}
 HBlockToDecide asHBlockToDecide(HBlock c )
 {
     if (c == nullptr) return nullptr;
     auto t = c->type() ;
-    if( c->type() == BlockType::BlockToDecideIf ||
-            c->type() == BlockType::BlockToDecideOn ||
-            c->type() == BlockType::BlockToDecideWhat ||
-            c->type() == BlockType::BlockToDecideWhat_FirstNoum ||
-            c->type() == BlockType::BlockToDecideWhether )
+    if(    t == BlockType::BlockToDecideIf ||
+           t == BlockType::BlockToDecideOn ||
+           t == BlockType::BlockToDecideWhat ||
+           t == BlockType::BlockToDecideWhat_FirstNoum ||
+           t == BlockType::BlockToDecideWhether )
         return std::static_pointer_cast<CBlockToDecide>(c);
     return nullptr;
 }
@@ -636,3 +645,15 @@ HBlockSelector_Where asHBlockSelector_Where(HBlock c)
 		return std::static_pointer_cast<CBlockSelector_Where>(c);
 	return nullptr;
 }
+
+
+
+
+HBlockExecutionResultFlag asHBlockExecutionResultFlag(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockExecutionResultFlag)
+		return std::static_pointer_cast<CBlockExecutionResultFlag>(c);
+	return nullptr;
+}
+
+ 

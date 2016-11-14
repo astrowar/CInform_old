@@ -19,6 +19,7 @@
 #include "CBlockControlFlux.hpp"
 
 #include "sharedCast.hpp"
+#include "CBlockNumber.hpp"
 
 
 using namespace std;
@@ -880,6 +881,23 @@ void CBlockControlSelect::dump(string ident)
 	}
 }
 
+
+ 
+
+void CBlockExecutionResultFlag::dump(string ident)
+{
+
+	if (this->flag == actionContinue) printf("%s %s\n", ident.c_str(), "ResultFlag Action Continue");
+	if (this->flag == actionStop) printf("%s %s\n", ident.c_str(), "ResultFlag Action Stop");
+	if (this->flag == ruleSucess) printf("%s %s\n", ident.c_str(), "ResultFlag Rule Sucess");
+	if (this->flag == ruleFail) printf("%s %s\n", ident.c_str(), "ResultFlag Rule Fail");
+  
+	if (this->contents)
+	{
+		this->contents->dump(ident + "       ");
+	}
+}
+
  
 void CBlockControlSelectItem::dump(string ident)
 {
@@ -914,9 +932,13 @@ void CBlockComandList::dump(string ident)
  
 void CBlockEventHandle::dump(string ident)
 {
-	if (this->stage == StageBefore) printf("%s %s\n", ident.c_str(), "Event Before Handle ");
-	if (this->stage == StageAfter ) printf("%s %s\n", ident.c_str(), "Event After  Handle ");
+	if (this->stage == StageInstead) printf("%s %s\n", ident.c_str(), "Event Instead Handle ");
+	if (this->stage == StageCheck) printf("%s %s\n", ident.c_str(), "Event Check  Handle ");
+	if (this->stage == StageBefore) printf("%s %s\n", ident.c_str(), "Event Before Handle ");	
+	if (this->stage == StageCarryOut ) printf("%s %s\n", ident.c_str(), "Event Carry Out  Handle ");
+	if (this->stage == StageAfter) printf("%s %s\n", ident.c_str(), "Event After  Handle ");
 	if (this->stage == StageReport) printf("%s %s\n", ident.c_str(), "Event Report Handle ");
+
 
 	
 	this->eventToObserve->dump(ident + "       ");
@@ -929,4 +951,15 @@ void CBlockSelector_Where::dump(string ident)
 	{
 		this->what->dump(ident + "       ");		
 	}
+}
+
+
+void   CBlockIntegerNumber::dump(string ident)
+{
+	printf("%s %s %i\n", ident.c_str(), "Number " , value );
+}
+
+void   CBlockFactionalNumber::dump(string ident)
+{
+	printf("%s %s %8.3f\n", ident.c_str(), "Number ", value);
 }

@@ -11,6 +11,81 @@
 using namespace std;
 
 
+PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+{
+
+
+
+	QueryResul qAction = query_is(v_call->action, evh->eventToObserve->action, localsEntry, stk);
+	if (qAction == QEquals)
+	{
+		QueryResul qarg1 = QEquals;
+		QueryResul qarg2 = QEquals;
+
+		if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) return PhaseResult(false); ;
+		if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) return PhaseResult(false);
+		if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) return PhaseResult(false); ;
+		if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) return PhaseResult(false); ;
+
+		HRunLocalScope next_vars = nullptr;
+		if (evh->eventToObserve->argument1 != nullptr)
+		{
+			auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
+			if (r1.hasMatch == false) return PhaseResult(false); ;
+			next_vars = std::make_shared< CRunLocalScope >(r1.maptch);
+			HRunLocalScope tmp_vars = newScope(localsEntry, next_vars);
+			next_vars = tmp_vars;
+		}
+
+
+		if (evh->eventToObserve->argument2 != nullptr)
+		{
+			auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
+			if (r2.hasMatch == false) return PhaseResult(false); ;
+			auto next_vars_2 = std::make_shared< CRunLocalScope >(r2.maptch);
+			HRunLocalScope tmp_vars = newScope(next_vars, next_vars_2);
+			next_vars = tmp_vars;
+		}
+
+		//next vars contem as variaveis 
+		PhaseResult  rx = this->execute_now(evh->body, next_vars, stk);
+
+		if (rx.hasExecuted)
+		{
+			return rx;
+		}
+	}
+	return PhaseResult(false); 
+}
+
+		 
+ 
+PhaseResult CBlockInterpreter::execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+{
+
+	for (auto evh : event_handles)
+	{
+		if (evh->stage == StageCheck)
+		{
+			auto rx = execute_phase_any(evh, v_call, localsEntry, stk);
+			if (rx.result)
+			{
+				if (HBlockExecutionResultFlag  flag = asHBlockExecutionResultFlag(rx.result) )
+				{
+					if (flag->flag == actionStop  )
+					{
+						return rx;
+					} 
+				}
+			}
+		}
+	}
+
+	return PhaseResult(false);
+
+}
+
+
 PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
 {
 	// busca por algum before que eh compativel com esta regra e aplica ela
@@ -27,7 +102,6 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				
 				if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) continue;
 				if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) continue;
-
 				if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) continue;
 				if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) continue;
 
@@ -36,7 +110,6 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				{
 					auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
 					if (r1.hasMatch == false) continue;
-
 					  next_vars = std::make_shared< CRunLocalScope >(r1.maptch);
 					  HRunLocalScope tmp_vars = newScope(localsEntry, next_vars);
 					  next_vars = tmp_vars;
@@ -47,15 +120,18 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				{
 					auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
 					if (r2.hasMatch == false) continue;
-
 					auto next_vars_2 = std::make_shared< CRunLocalScope >(r2.maptch);
 					HRunLocalScope tmp_vars = newScope(next_vars, next_vars_2);
 					next_vars = tmp_vars; 
 				}
 
 				//next vars contem as variaveis 
-				  this->execute_now(evh->body, next_vars, stk);
+				PhaseResult  rx =  this->execute_now(evh->body, next_vars, stk);
 			  
+				if (rx.hasExecuted)
+				{
+					
+				}
 			}
 
 
@@ -151,11 +227,30 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
  
 	//Para executar a acao devo ir  na ordem
 
+	//Check
+	PhaseResult res_ck = execute_phase_check(v_call, localsEntry, stk);
+	if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(res_ck.result))
+	{
+		if (flag_ck->flag == actionStop)
+		{
+			return res_ck;
+		}
+	}
+
+
 	//Before
-	execute_phase_before(v_call, localsEntry, stk);
+	PhaseResult res_before =  execute_phase_before(v_call, localsEntry, stk);
+	if (HBlockExecutionResultFlag  flag_bf = asHBlockExecutionResultFlag(res_before.result))
+	{
+		if (flag_bf->flag == actionStop)
+		{
+			return res_before;
+		}
+	}
+
 	//Instead
 
-	//Check
+	
 
 	//Daqui para  frente a acao eh sucesso 
 

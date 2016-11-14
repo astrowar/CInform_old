@@ -139,6 +139,12 @@
     <ClInclude Include="verb_en.hpp">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
+    <ClInclude Include="CMatchListValid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlockNumber.hpp">
+      <Filter>Header Files\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -335,6 +341,18 @@
     </ClCompile>
     <ClCompile Include="Parser_ActionControl.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="teste_values.cpp">
+      <Filter>Source Files\Testes</Filter>
+    </ClCompile>
+    <ClCompile Include="CMatchCombinatoria.cpp">
+      <Filter>Source Files\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="CMatchListValid.cpp">
+      <Filter>Source Files\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlockNumber.cpp">
+      <Filter>Source Files\Block</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

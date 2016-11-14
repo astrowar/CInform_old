@@ -213,6 +213,9 @@ CPredAny* asPredAny(CTerm* c);
 CPredWord * asPredWord(CTerm* c);
 
 
+HTerm convertToTerm(MTermSet &m);
+
+
 
 
 #endif

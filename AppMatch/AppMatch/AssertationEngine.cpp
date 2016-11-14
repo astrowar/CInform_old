@@ -8,6 +8,7 @@
 #include "CBlockRelation.hpp"
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
+#include "CBlockNumber.hpp"
 using namespace std;
 
 void CBlockInterpreter::initialize() {
@@ -141,9 +142,9 @@ bool CBlockInterpreter::assert_has_variable(HBlock obj, HBlock value,   HRunLoca
 		
 		if (HBlockInstanceVariable iVariableNamed = asHBlockInstanceVariable(value)) {
 			if (HBlockKind_InstanceVariable variable_ = make_shared<CBlockKind_InstanceVariable>(nKind, iVariableNamed))
-			{
-			 
+			{			 
 				kind_named_variables.push_back(variable_);
+				add_namedVariableToAllinstances(  variable_);
 				return true;
 			}
 		}
@@ -195,6 +196,18 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 			return nullptr;
 		}
 	}
+
+
+	if (HBlockNumber cNumber = asHBlockNumber(value))
+	{
+		if (HBlockKindValue kNumber = asHBlockKindValue(kind))
+		{
+			if ((kNumber->named == "number")) return cNumber;
+			return nullptr;
+		}
+	}
+
+
 
 
 	if (HBlockNoum cnn = asHBlockNoum(value)) {

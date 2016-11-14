@@ -60,6 +60,11 @@ HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
 	HBlock rblock_textEntry = (text_entry(lst));
 	if (rblock_textEntry != nullptr) return rblock_textEntry;
 
+
+
+	 
+	 
+
 	HBlock adapt_verb = expression_adapt_verb(lst);
 	if (adapt_verb != nullptr) {
 		return adapt_verb;

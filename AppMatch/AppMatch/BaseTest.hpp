@@ -75,3 +75,4 @@ void testeSerialize1();
 void testeSelector_all();
 
 void testeVerb_all();
+void testValues_all();

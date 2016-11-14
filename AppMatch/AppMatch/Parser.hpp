@@ -341,17 +341,10 @@ public:
 
 	std::list<HBlock> group_tokens(std::list<HBlock>  lst);
 	HGroupLines get_identation_groups(string filename, std::vector<string> vlines, ErrorInfo* err);
- 
 
- 
-	 
- 
 
-  
-
-	 
-
- 
+	HBlock expression_resultflag(std::vector<HTerm>& term);
+	HBlock stmt_resultflag(std::vector<HTerm>& term);
 	HBlock parser_if_condition(HTerm term );
 	HBlock  parser_control_else(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);
 	HBlock  parser_control_end(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo* err);

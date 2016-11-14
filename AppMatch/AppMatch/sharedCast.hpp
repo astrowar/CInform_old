@@ -9,6 +9,7 @@
 #include "CBlockCommand.hpp"
 #include "CBlockBoolean.hpp"
 #include "CBlockControlFlux.hpp" 
+#include "CBlockNumber.hpp"
 
 HBlockEnums asHBlockEnums(HBlock c ); 
 HBlockKind asHBlockKind(HBlock c ); 
@@ -116,3 +117,8 @@ HBlockControlIF asHBlockControlIF(HBlock c);
 HBlockRelationLookup asHBlockRelationLookup(HBlock c);
 HBlockVerbLookup asHBlockVerbLookup(HBlock c);
 HBlockSelector_Where asHBlockSelector_Where(HBlock c);
+
+
+HBlockNumber asHBlockNumber(HBlock c);
+
+HBlockExecutionResultFlag asHBlockExecutionResultFlag(HBlock c);

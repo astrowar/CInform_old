@@ -5,7 +5,25 @@
  #include "CBlockInterpreterRuntime.hpp"
 #include <algorithm>
 #include <cstring>
+#include <locale>
+#include "CBlockNumber.hpp"
 using namespace std;
+
+
+bool CBlockInterpreter::isSameString(string s1 , string s2)
+{
+	if (s1 == s2) return true;
+	if (( s1.size() ==  s2.size()) && (tolower( s1[0]) == tolower(s2[0])))
+	{
+		int n = s1.size();
+		for(int j = 0 ; j< n ;++j )
+		{
+			if (tolower(s1[j]) != tolower(s2[j])) return false;
+		}
+		return true;
+	}
+	return false;
+}
 
 std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
@@ -121,6 +139,15 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 	}
 
 	{
+		if (n == "number") {
+			return  std::make_shared<CBlockKindValue>("number");
+		}
+
+	}
+
+	 
+
+	{
 		if (n == "action") {
 			return  std::make_shared<CBlockKindValue>("action");
 		}
@@ -172,13 +199,26 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry,
 	return resolve_string_noum(n->named, localsEntry, noumsToResolve);
 }
 
+bool  is_number(const std::string  s)
+{
+	auto start = s.begin() + (s[0] == '-');
+	return
+		!s.empty() &&
+		s.end() == std::find_if(start, s.end(), [](char c) 
+	{
+		return (isdigit(c)==false ) && (c != '.');
+	}) && 
+		std::count(start, s.end(), '.') <= 1;
+
+}
+
 
 HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
-	if (named == "true") return std::make_shared<CBlockBooleanValue>(true);
-	if (named == "false") return std::make_shared<CBlockBooleanValue>(false);
-	if (named == "yes") return std::make_shared<CBlockBooleanValue>(true);
-	if (named == "no") return std::make_shared<CBlockBooleanValue>(false);
+	if (isSameString(named , "true")) return std::make_shared<CBlockBooleanValue>(true);
+	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
+	if (isSameString(named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
+	if (isSameString(named , "no")) return std::make_shared<CBlockBooleanValue>(false);
 
 	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), named) != noumsToResolve.end())
 	{
@@ -208,7 +248,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 	for (auto &a_action : actions_header)
 	{
-		if (a_action->named == named )
+		if (isSameString( a_action->named , named ))
 		{
 			return a_action;
 		}
@@ -218,7 +258,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//logMessage("assertation named : " + nnamed );
-			if (nn->named == named)
+			if (isSameString(nn->named ,named))
 			{
 				return resolve_if_noum(defs->get_definition(), localsEntry, noumsToResolve);
 			}
@@ -228,7 +268,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//logMessage( nnamed << std::endl;
-			if (nnvar->name->named == named) {
+			if (isSameString(nnvar->name->named , named)) {
 				return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
 			}
 		}
@@ -236,7 +276,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 	for (auto &adefs : actions_header) {
 
-		if (adefs->named == named) {
+		if (isSameString(adefs->named , named)) {
 			return resolve_if_noum(adefs, localsEntry, noumsToResolve);
 		}
 
@@ -257,7 +297,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		logMessage(vremaind);
 		for (auto &v : verbs)
 		{
-			if (v->named == vremaind)
+			if (isSameString(v->named , vremaind))
 			{
 				logMessage(" verb " + vremaind);
 				return v;
@@ -267,6 +307,14 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		return nullptr;
 	}
 
+
+
+	if (is_number( named ) )
+	{
+		int jValue = atoi(named.c_str());
+		return  make_shared<CBlockIntegerNumber>(jValue);
+
+	}
 
 	//logError("Fail to " + named);
 	if (named == "D")
@@ -285,7 +333,7 @@ HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n)
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
-			if (nnvar->name->named == n->named)
+			if (isSameString(nnvar->name->named, n->named))
 			{
 				return nnvar;
 			}

@@ -226,6 +226,10 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 			}
 			return true;
 		}
+		else
+		{
+			return false;
+		}
 
 	}
 
@@ -828,6 +832,12 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		return PhaseResult(true);
 	}
 	 
+	if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(p))
+	{
+		auto qres=  PhaseResult(true);
+		qres.result == flag_ck;
+		return qres;
+	}
 
 
 	return PhaseResult(false);

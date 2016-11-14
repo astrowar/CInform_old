@@ -5,6 +5,52 @@
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
  
+
+
+HBlock CParser::stmt_resultflag(std::vector<HTerm>&   term)
+{
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+
+			predList.push_back(mk_HPredLiteral("stop"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+			predList.push_back(mk_HPredLiteral("with"));
+			predList.push_back(mkHPredAny("BValue"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock BValue = parser_expression(res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			return std::make_shared<CBlockExecutionResultFlag>( PhaseResultFlag::actionStop , BValue);
+		}
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) 
+		{
+			predList.push_back(mk_HPredLiteral("stop"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+		}
+	 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::actionStop, nullptr);
+		}
+	}
+
+
+	return nullptr;
+
+}
+
+
 HBlock   CParser::parser_if_condition(HTerm term  )
 {
     {
@@ -455,7 +501,9 @@ HBlock  CParser::STMT_control_flux(std::vector<HTerm>& term ,   HGroupLines inne
 
 //identifica os IF, then ,else, while ,case , select da vida
 
-	 
+	HBlock rblock_flagreturn = (stmt_resultflag(term ));
+	if (err->hasError) return nullptr;
+	if (rblock_flagreturn != nullptr) return rblock_flagreturn;
 
 
 	HBlock rblock_select = (parser_control_select(term, inner, err));

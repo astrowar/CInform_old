@@ -43,7 +43,7 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
         if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
-            if (nbase->named == a->named)  //  A -> X
+            if ( nbase->named == a->named)  //  A -> X
             {
                 if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
 

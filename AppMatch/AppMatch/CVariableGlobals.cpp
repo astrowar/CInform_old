@@ -14,6 +14,12 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 		{
 			return assert_it_variableGlobal(obj, kindr);
 		}
+		else
+		{
+			logMessage("Whats is ");
+			kindname->dump("      ");
+			return false;
+		}
 	}
 
 	
@@ -59,6 +65,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 			obj->dump("      ");
 		}
 	}
+
 
 	return false;
 }

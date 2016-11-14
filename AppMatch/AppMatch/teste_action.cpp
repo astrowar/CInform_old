@@ -102,10 +102,12 @@ eating is   an action applying to ( an  thing )
 understand : eat  ( a thing ) as eating 
 
 before eating ( thing called X  which is edible ) :
-  say  (text eaten !)
+  say  (text will eat !)
+  stop the action
+ 
   
-before eating ( thing called X  which is not edible ) :
-  say  (text i cant eat this !)
+carry out eating ( thing called X  which is edible ) :
+  say  (text eaten !)
 
 )";
 	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));

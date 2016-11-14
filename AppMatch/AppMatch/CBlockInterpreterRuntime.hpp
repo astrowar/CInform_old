@@ -36,6 +36,7 @@ class PhaseResult
 public:
 	PhaseResult(bool _hasExecuted);
 	bool hasExecuted;
+	HBlock result;
 };
 
 
@@ -107,6 +108,8 @@ class CBlockInterpreter {
 	bool is_derivadeOf(HBlockInstance a, HBlockKind b, HRunLocalScope localsEntry);
  
 	void dump_instance(string str, HRunLocalScope localsEntry);
+	void add_defaultValueVariableToAllinstances(HBlockAssertion_isDefaultAssign hdefault);
+	void add_namedVariableToAllinstances(HBlockKind_InstanceVariable variable_);
 	HBlockInstance new_Instance(string named, HBlockKind kind);
 
     void assign_variable_to_instance(HBlockAssertionBase kvar);
@@ -166,6 +169,7 @@ public:
     bool assert_decideBlock(HBlockToDecide dct);
 	bool assert_has_variable(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	bool is_all_items_of_kind(HBlockList listvalues, HBlockKind kind, HRunLocalScope localsEntry);
+	bool kind_has_property_called_inner(HBlockKind kind, string propertyNamed, std::list<std::basic_string<char>> kindsUsed);
 	bool kind_has_property_called(HBlockKind kind, string propertyNamed);
 	bool assert_property_defaultValue(HBlockProperty prop, HBlock value, HRunLocalScope localsEntry);
 	bool assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry);
@@ -269,6 +273,9 @@ public:
  
  
 	PhaseResult execute_now(HBlock c_block);
+	PhaseResult execute_phase_any(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+	PhaseResult execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+	PhaseResult execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
 	PhaseResult execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
 	PhaseResult execute_system_action(HBlockActionCall v_call);
 	PhaseResult  execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
@@ -286,10 +293,14 @@ public:
 	HBlock evaluate_propertyValue(HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
 	HBlock evaluate_values(HBlock q, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
 	HBlock evaluate_values(HBlock c_block);
+
+	bool isSameString(string s1, string s2);
 };
 
 using HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;
 
 
+//Aux 
+ 
  
 #endif

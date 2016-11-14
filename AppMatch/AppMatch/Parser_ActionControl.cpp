@@ -51,6 +51,8 @@ HBlockMatchActionCall CParser::parser_actionMatch(HTerm & term)
 	return nullptr;
 }
 
+ 
+
 HBlock CParser::STMT_Action_Controls(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 
@@ -68,12 +70,141 @@ HBlock CParser::STMT_Action_Controls(std::vector<HTerm>& term, HGroupLines inner
 			if (res.result == Equals)
 			{
 				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
-				HBlockComandList executeBlock = parser_stmt_inner(inner, err);
-				HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>( EventHandleStage::StageBefore, amatch, executeBlock);
-				return actionCallEv;
-
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageBefore, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
 			}
+		}
 
+
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("after"));
+				predList.push_back(mkHPredAny("ActionMatch"));
+				predList.push_back(mk_HPredLiteral(":"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageAfter, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
+			}
+		}
+
+
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("check"));
+				predList.push_back(mkHPredAny("ActionMatch"));
+				predList.push_back(mk_HPredLiteral(":"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageCheck, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
+			}
+		}
+
+
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("report"));
+				predList.push_back(mkHPredAny("ActionMatch"));
+				predList.push_back(mk_HPredLiteral(":"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageReport, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
+			}
+		}
+
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("instead"));
+				predList.push_back(mkHPredAny("ActionMatch"));
+				predList.push_back(mk_HPredLiteral(":"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageInstead, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
+			}
+		}
+
+
+		{
+			static std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("carry"));
+				predList.push_back(mk_HPredLiteral("out"));
+				predList.push_back(mkHPredAny("ActionMatch"));
+				predList.push_back(mk_HPredLiteral(":"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockMatchActionCall   amatch = CParser::parser_actionMatch(res.matchs["ActionMatch"]);
+				if (amatch != nullptr)
+				{
+					HBlockComandList executeBlock = parser_stmt_inner(inner, err);
+					if (executeBlock != nullptr)
+					{
+						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageCarryOut, amatch, executeBlock);
+						return actionCallEv;
+					}
+				}
+			}
 		}
 	}
 

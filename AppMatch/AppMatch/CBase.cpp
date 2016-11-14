@@ -1,5 +1,6 @@
 #include "CBase.hpp"
 #include "EqualsResult.hpp"
+#include <algorithm>
 
 CString::CString(std::string _s) : s(_s) {
 }
@@ -11,6 +12,16 @@ std::string CString::repr() {
 EqualsResul equals(CString *c1, CString *c2) {
     if (c1 == nullptr || c2 == nullptr) return Undefined;
     if (c1->s == c2->s) return Equals;
+	if ((c1->s.size() == c2->s.size()) && (tolower(c1->s[0]) == tolower(c2->s[0])))
+	{
+		int n = c1->s.size();
+		for (int j = 0; j< n; ++j)
+		{
+			if (tolower(c1->s[j]) != tolower(c2->s[j])) return NotEquals;
+		}
+		return Equals;
+	}
+
     return NotEquals;
 }
 

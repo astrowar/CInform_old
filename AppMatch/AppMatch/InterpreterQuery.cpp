@@ -90,7 +90,7 @@ QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1, HRu
 
 PhaseResult::PhaseResult(bool _hasExecuted): hasExecuted(_hasExecuted)
 {
-	
+	result = nullptr;
 }
 
 QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1 , QueryStack stk) {

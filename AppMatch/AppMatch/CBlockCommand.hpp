@@ -56,7 +56,10 @@ using HBlockComandList = std::shared_ptr<CBlockComandList>;
 enum EventHandleStage {
 	StageBefore,
 	StageAfter,
-	StageReport
+	StageReport,
+	StageCheck,
+	StageInstead,
+	StageCarryOut
 };
 
 

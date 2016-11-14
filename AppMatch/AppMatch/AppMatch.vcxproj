@@ -166,6 +166,7 @@
     <ClInclude Include="CBlockControlFlux.hpp" />
     <ClInclude Include="CBlockDecideIf.hpp" />
     <ClInclude Include="CBlockNamedVariable.hpp" />
+    <ClInclude Include="CBlockNumber.hpp" />
     <ClInclude Include="CBlockRelation.hpp" />
     <ClInclude Include="CBase.hpp" />
     <ClInclude Include="CblockAssertion.hpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="CDataMananger.hpp" />
     <ClInclude Include="CInterpreterKindTree.hpp" />
     <ClInclude Include="CMatch.hpp" />
+    <ClInclude Include="CMatchListValid.hpp" />
     <ClInclude Include="CResultMatch.hpp" />
     <ClInclude Include="dynamicCast.hpp" />
     <ClInclude Include="EqualsResult.hpp" />
@@ -196,10 +198,13 @@
     <ClCompile Include="BlockisSame.cpp" />
     <ClCompile Include="CBlockCommand.cpp" />
     <ClCompile Include="CBlockInterpreter_Verb_En.cpp" />
+    <ClCompile Include="CBlockNumber.cpp" />
     <ClCompile Include="CBlockSerialize.cpp" />
     <ClCompile Include="CDataMananger.cpp" />
     <ClCompile Include="CInterpreterEvaluate.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />
+    <ClCompile Include="CMatchCombinatoria.cpp" />
+    <ClCompile Include="CMatchListValid.cpp" />
     <ClCompile Include="CResultMatch.cpp" />
     <ClCompile Include="CVariableGlobals.cpp" />
     <ClCompile Include="dynamicCast.cpp" />
@@ -255,6 +260,7 @@
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
     <ClCompile Include="teste_selector.cpp" />
+    <ClCompile Include="teste_values.cpp" />
     <ClCompile Include="teste_verb.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
