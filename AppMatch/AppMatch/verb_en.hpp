@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VERBENG
+#define VERBENG
 
 typedef struct VERBTENSE
 {
@@ -19,7 +20,10 @@ VERBDEF;
 typedef struct VERBTABLE
 {
 	VERBDEF* verbs;
-	size_t numEntries;
+	long numEntries;
 }VERBTABLE;
 
 VERBTABLE verb_table();
+
+
+#endif
