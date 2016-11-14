@@ -88,6 +88,11 @@ QueryResul CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1, HRu
 //    return query_is(c_block, c_block1, stk);
 //}
 
+PhaseResult::PhaseResult(bool _hasExecuted): hasExecuted(_hasExecuted)
+{
+	
+}
+
 QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1 , QueryStack stk) {
 
     
@@ -96,7 +101,7 @@ QueryResul CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock 
         if (HBlockNoum value = asHBlockNoum(c_block1)) {
             if (cinst->has_slot(value)) 
 			{
-                logMessage( cinst->named+ "  " + value->named);
+               
                 if (cinst->is_set(value)) {
                     return QEquals;
                 }
@@ -138,7 +143,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 					if (rprop == QEquals) return QEquals;
 					return QNotEquals;
 				}
-				logMessage(" Dont have Property");
+				logError (" Dont have Property");
 				{
 					auto  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
 

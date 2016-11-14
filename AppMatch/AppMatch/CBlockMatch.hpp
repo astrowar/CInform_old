@@ -188,12 +188,18 @@ using HBlockMatchAction = std::shared_ptr<CBlockMatchAction>;
 class CBlockMatchActionCall : public CBlockMatch // um bloco que serve para dar Match em uma Acao
 {
 public:
-	CBlockMatchActionCall(HBlockMatchAction _action , HBlockMatch _argument1 , HBlockMatch _argument2 )
+	CBlockMatchActionCall(HBlockMatch _action , HBlockMatch _argument1 , HBlockMatch _argument2 )
 		: CBlockMatch(), action(_action), argument1(_argument1), argument2(_argument2) {	}
 
-	HBlockMatchAction action;
+	HBlockMatch action; //action name or ... etc ... ex: before ( geting or puting) an thing intro portal
 	HBlockMatch argument1;
 	HBlockMatch argument2;
+
+
+	virtual void dump(string ident) override;
+	virtual BlockType type() override { return BlockType::BlockMatchActionCall; }
+
+
 };
 using HBlockMatchActionCall = std::shared_ptr<CBlockMatchActionCall>;
 

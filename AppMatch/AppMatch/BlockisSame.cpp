@@ -24,6 +24,15 @@ bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 	if (b1->named == b2->named) return true;
 	return false;
 }
+
+bool isSame_BlockAction(CBlockAction * b1, CBlockAction* b2)
+{
+	if (b1->named == b2->named) return true;
+	return false;
+}
+
+
+ 
  
 bool isSame_BlockMatchNoum(CBlockMatchNoum* b1, CBlockMatchNoum* b2)
 {
@@ -104,6 +113,7 @@ bool CBlock::isSame(CBlock* b1,CBlock* b2) const
 
 	if (b1->type() == BlockNoum)  return isSame_BlockNoum( static_cast<CBlockNoum*>(b1),  static_cast<CBlockNoum*>(b2));
 	if (b1->type() == BlockInstance)  return isSame_BlockInstance(static_cast<CBlockInstance*>(b1), static_cast<CBlockInstance*>(b2));
+	if (b1->type() == BlockAction)  return isSame_BlockAction(static_cast<CBlockAction*>(b1), static_cast<CBlockAction*>(b2));
 	if (b1->type() == BlockKindThing)  return isSame_BlockKindThing(static_cast<CBlockKindThing*>(b1), static_cast<CBlockKindThing*>(b2));
 	if (b1->type() == BlockMatchNoum)  return isSame_BlockMatchNoum(static_cast<CBlockMatchNoum*>(b1), static_cast<CBlockMatchNoum*>(b2));
 	if (b1->type() == BlockInstanceVariable)  return isSame_BlockInstanceVariable(static_cast<CBlockInstanceVariable*>(b1), static_cast<CBlockInstanceVariable*>(b2));

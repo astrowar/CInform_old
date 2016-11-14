@@ -228,6 +228,18 @@ void CBlockMatchOR::dump(string ident)
 	printf("%s %s\n",ident.c_str() , "          ]");
 }
 
+
+ 
+
+void CBlockMatchActionCall::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Match Action Call : ");
+	{
+		this->action->dump(ident + "       ");
+		if(this->argument1!=nullptr) this->argument1->dump(ident + "       ");
+		if (this->argument2 != nullptr) this->argument2->dump(ident + "       ");
+	}
+}
 void CBlockMatchBlock::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str() , "Match Block: ");
@@ -287,8 +299,8 @@ void CBlockMatchProperty::dump(string ident)
 
 void CBlockMatchWhich::dump(string ident)
 {
-	this->obj->dump(ident + "       ");
-	printf("%s Which: %s\n", ident.c_str(), verb.c_str());
+	this->obj->dump(ident );
+	printf("       %s Which: %s\n", ident.c_str(), verb.c_str());
 	{		
 		this->value->dump(ident + "       ");
 	}
@@ -879,6 +891,8 @@ void CBlockControlSelectItem::dump(string ident)
 	}
 }
 
+
+
 void CBlockComandList::dump(string ident)
 {
 	if (lista.size() ==1 )
@@ -895,6 +909,18 @@ void CBlockComandList::dump(string ident)
 		}
 	}
 
+}
+
+ 
+void CBlockEventHandle::dump(string ident)
+{
+	if (this->stage == StageBefore) printf("%s %s\n", ident.c_str(), "Event Before Handle ");
+	if (this->stage == StageAfter ) printf("%s %s\n", ident.c_str(), "Event After  Handle ");
+	if (this->stage == StageReport) printf("%s %s\n", ident.c_str(), "Event Report Handle ");
+
+	
+	this->eventToObserve->dump(ident + "       ");
+	this->body->dump(ident + "       ");
 }
 
 void CBlockSelector_Where::dump(string ident)

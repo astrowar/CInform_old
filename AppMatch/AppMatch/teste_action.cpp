@@ -76,7 +76,8 @@ void testeParser_actionC()
 }
 
 
-
+//TODO add  usually is not X  
+//TODO add  rarrally  is X  
 void testeParser_actionD()
 {
 	// Eating Rule transcipt
@@ -86,27 +87,37 @@ void testeParser_actionD()
 
 	string s_eating = R"(
 thing is a kind
+thing can be edible
+ 
 person is a kind
 apple is a thing
+orange is a thing
 bob is a person
+
+apple is edible 
+orange is not edible
+
 eating is   an action applying to ( an  thing )  
 
 understand : eat  ( a thing ) as eating 
 
-
-Before eating apple :
-  say  (text will eat apple)
+before eating ( thing called X  which is edible ) :
+  say  (text eaten !)
+  
+before eating ( thing called X  which is not edible ) :
+  say  (text i cant eat this !)
 
 )";
 	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
 	
 	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
 	auto e = interpreter->exec_eval(parse.Parser_Expression(" eating ", ISLOG), nullptr);
-	e->dump("");
+	 
 
-	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr);
-	interpreter->execute_now(parse.Parser_Expression("try eating apple ", ISLOG), nullptr);
-	interpreter->execute_now(parse.Parser_Expression("try eating bob ", ISLOG), nullptr);
+	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	// Try eh um STMT
+	interpreter->execute_now(parse.Parser_Stmt("try eating apple ", ISLOG), nullptr);
+	interpreter->execute_now(parse.Parser_Stmt("try eating orange ", ISLOG), nullptr);
 
 	return;
 }

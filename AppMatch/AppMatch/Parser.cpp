@@ -179,7 +179,7 @@ HBlock  CParser::parser_loop_A( HTerm&  term)
 //parse a segunda parte do iterator
 HBlockAssertion_is CParser::parse_Loop_AssertionVerb(HTerm&  term , NoumLocation nlocation  )
 {
-	logMessage(term->repr());
+ 
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
@@ -951,7 +951,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 			HGroupLines _inner = nullptr;
 			if (inext == inner->lines.end()) _inner = inner->inner;
 			 
-			logMessage(rawLine);
+		 
 			blk = parser_GroupLine(rawLine, _inner, err);
 			if (blk == nullptr)
 			{

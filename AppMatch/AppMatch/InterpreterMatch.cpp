@@ -14,7 +14,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 {
 	if (M->matchList.size() != value->lista.size())
 	{
-		//logMessage("FAIL  size  ");
+		 
 		//(M)->dump("    ");
 		//(value)->dump("    ");
 		return   CResultMatch(false); //sizes must be equals
@@ -27,8 +27,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 		if (mit == M->matchList.end()) break;
 		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
 		if (r.hasMatch == false)
-		{
-			//logMessage("FAIL  item   ");
+		{ 	 
 			//(*vit)->dump("    ");
 			//(*mit)->dump("    ");
 			return   CResultMatch(false);
@@ -67,13 +66,10 @@ HBlockList getCompoundNoumAsList(HBlockNoum noum)
 	 
 	}
 
-	/*printf("Noum To list \n");
-	noum->dump("   ");
-	printf("is converted to \n");*/
+	 
 
 	auto q = make_shared<CBlockList>(noums);
-	// q->dump("    ");
-	//printf("\n");
+	 
 	return q;
  
 }
@@ -91,7 +87,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			if (auto cinner =  asHBlockNoum(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
-				//logMessage(cinner->named + " == "+inner->named);
+				 
 				if (inner->named == cinner->named)
 				{
 				  return 	CResultMatch(true );
@@ -120,6 +116,14 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				auto r = query_is(cInst, inner_2, localsEntry, stk);
 				return CResultMatch(r == QEquals);
 
+			}
+
+
+			if (auto cAction = asHBlockAction (value))
+			{ 
+				if (cAction->named == inner_2->named) return CResultMatch( true );
+				auto r = query_is(cAction, inner_2, localsEntry, stk);
+				return CResultMatch(r == QEquals); 
 			}
 
 			auto rcc = query_is(value, inner_2, localsEntry, stk);
@@ -324,11 +328,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				if (mWhich->verb == "is")
 				{
 					//auto vv = make_shared<CBlockAssertion_isDirectAssign>( value, mWhich->value);
+
 					auto qverb = query_is(value, mWhich->value, localsEntry, stk);
 					if (qverb == QEquals)
 					{
 						return mres;
-					}
+					}		
+					return CResultMatch(false);
 				}
 				else
 				{
@@ -356,6 +362,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 					{
 						return mres;
 					}
+					 
 				}
 				else
 				{

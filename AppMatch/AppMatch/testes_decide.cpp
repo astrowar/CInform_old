@@ -148,7 +148,7 @@ Zora speak Zubian
       assert(q3 == QEquals);
 
       auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
-      assert(q4 == QEquals);
+      assert(q4.hasExecuted );
 }
 
 

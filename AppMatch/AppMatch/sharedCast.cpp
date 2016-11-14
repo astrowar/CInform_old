@@ -300,7 +300,15 @@ HBlockVerbAdapt asHBlockVerbAdapt(HBlock c)
 	return nullptr;
 }
 
- 
+HBlockEventHandle asHBlockEventHandle(HBlock c)
+{
+	if (c != nullptr && c->type() == BlockType::BlockEventHandle )
+		return std::static_pointer_cast<CBlockEventHandle>(c);
+	return nullptr;
+}
+
+
+
 
 
 HBlockBooleanOR asHBlockBooleanOR(HBlock c )

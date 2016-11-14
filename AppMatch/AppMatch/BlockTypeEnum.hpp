@@ -93,6 +93,8 @@ enum BlockType {
 	BlockSelector_Where,
 	BlockEvery,
 	BlockVerbConjugation,
-	BlockVerbAdapt
+	BlockVerbAdapt,
+	BlockMatchActionCall,
+	BlockEventHandle
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

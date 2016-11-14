@@ -91,7 +91,7 @@ bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLoc
     } else if (HBlockKind kbase = asHBlockKind(obj)) {
         if (HBlockNoum nvalue = asHBlockNoum(value)) {
              
-			logMessage(kbase->named + "  " + nvalue->named);
+			 
             //default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
         }
 

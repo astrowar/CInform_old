@@ -68,8 +68,7 @@ HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
 	HBlock rblock_dynamicEntry_1 = (DynamicDispatch_action(lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
 
-	HBlock rblock_tryEntry_1 = (TryDispatch_action(lst));
-	if (rblock_tryEntry_1 != nullptr) return rblock_tryEntry_1;
+	 
 
 
 	HBlock rblock_Lookup = (DynamicLookup_Seletor(lst));
@@ -123,7 +122,8 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, Er
 	if (err->hasError) return nullptr;
 	//Apenas os termos que iniciam uma sentenca completa
 
-
+	HBlock rblock_tryEntry_1 = (TryDispatch_action(lst));
+	if (rblock_tryEntry_1 != nullptr) return rblock_tryEntry_1;
 
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
