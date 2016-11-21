@@ -366,8 +366,10 @@ MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPre
 
 void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend , size_t n, std::vector<CPred *> preds, FuncCombinatoria &func)
 {
-	auto isize = vend - vbegin;
-	if (isize   < n) {
+	size_t isize = abs(vend - vbegin);
+	
+	if (isize   < n) 
+	{
 		return; // impossivel ..
 	}
 

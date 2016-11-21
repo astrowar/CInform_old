@@ -132,7 +132,7 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
 {
 	{
-		if (n == "text") {
+		if (isSameString( n , "text")) {
 			return  std::make_shared<CBlockKindValue>("text");
 		}
 
@@ -156,11 +156,26 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 	return nullptr;
 }
 
+HBlockKind CBlockInterpreter::resolve_user_kind(string n)
+{
+	
+	for (auto &defs : assertions)
+	{ 
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+			if ( isSameString( nn->named , n)) {
+				return nn;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
 	for (auto &defs : assertions) {
 		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-			if (nn->named == n) {
+			if (isSameString(nn->named, n)) {
 				return nn;
 			}
 		}
@@ -289,6 +304,11 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	if (auto kcustom = resolve_system_kind(named)) {
 		return resolve_if_noum(kcustom, localsEntry, noumsToResolve);
 	}
+
+	if (auto ukcustom = resolve_user_kind(named)) {
+		return resolve_if_noum(ukcustom, localsEntry, noumsToResolve);
+	}
+
 
 	if (strncmp(named.c_str(), "verb ", 5) == 0)
 	{

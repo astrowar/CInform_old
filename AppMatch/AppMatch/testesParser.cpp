@@ -366,7 +366,7 @@ int main() {
  
 	testAction_all();
 	//testeVerb_all();
-	return 0;
+	//return 0;
 
    for (int k = 0; k < 100; ++k)
 	{
@@ -375,6 +375,7 @@ int main() {
 		 testeRelation_all(); 
 		 testeExecute_all();
 		testeSelector_all();
+		testAction_all();
 		logMessage( ".");
 	}
 	logMessage("");

@@ -123,7 +123,7 @@ HBlockAssertion_is asHBlockAssertion_is(HBlock c ) {
     if (t == BlockType::BlockAssertion_canBe ||
         t == BlockType::BlockAssertion_isKindOf ||
         t == BlockType::BlockAssertion_isInstanceOf ||
-        t == BlockType::BlockAssertion_isNamedValueOf ||
+       
         t == BlockType::BlockAssertion_isNamedValueOf ||
         t == BlockType::BlockAssertion_isDefaultAssign ||
         t == BlockType::BlockAssertion_isConstantAssign ||

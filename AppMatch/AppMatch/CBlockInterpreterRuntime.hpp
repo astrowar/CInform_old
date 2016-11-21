@@ -230,7 +230,9 @@ public:
 
     HBlock resolve_of(HBlock b, HBlock a);
 	HBlockKind resolve_system_kind(string n);
+	HBlockKind resolve_user_kind(string n);
  
+
 	bool is_derivadeOf(HBlockKind a, HBlockKind b);
 
  

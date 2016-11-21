@@ -318,11 +318,13 @@ HBlock CParser::STMT_understand_Action_Assertion_static(std::vector<HTerm>&  ter
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("understand"));
+			predList = { mk_HPredLiteral("understand") , mk_HPredLiteral(":") ,mkHPredAny("What") ,mk_HPredLiteral("as") ,mkHPredAny("Subst") };
+
+		/*	predList.push_back(mk_HPredLiteral("understand"));
 			predList.push_back(mk_HPredLiteral(":"));
 			predList.push_back(mkHPredAny("What"));
 			predList.push_back(mk_HPredLiteral("as"));
-			predList.push_back(mkHPredAny("Subst"));
+			predList.push_back(mkHPredAny("Subst"));*/
 		}
 
         MatchResult res = CMatch(term, predList);

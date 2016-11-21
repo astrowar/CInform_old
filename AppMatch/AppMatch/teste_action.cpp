@@ -115,7 +115,7 @@ carry out eating ( thing called X  which is edible ) :
 	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
 	auto e = interpreter->exec_eval(parse.Parser_Expression(" eating ", ISLOG), nullptr);
 	 
-
+	e->dump("");
 	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
 	interpreter->execute_now(parse.Parser_Stmt("try eating apple ", ISLOG), nullptr);
