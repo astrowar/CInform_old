@@ -763,10 +763,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 
 	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
-	{
-		 
-		vdyn->dump("  ");
-		
+	{ 
 		//determina quem eh o action do dynamica dispatch
 		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
 		if (dispExec != nullptr)

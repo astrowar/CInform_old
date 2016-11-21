@@ -166,7 +166,54 @@ carry out eating ( thing called X  which is edible ) :
 	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
 	interpreter->execute_now(parse.Parser_Stmt("try eating apple ", ISLOG), nullptr);
-	interpreter->execute_now(parse.Parser_Stmt("try eating orange ", ISLOG), nullptr);
+	interpreter->execute_now(parse.Parser_Stmt("eat    orange ", ISLOG), nullptr);
+
+	return;
+}
+
+
+ 
+//este teste indruduz o conceito de Protocols ( kind of action )
+// de tal forma que uma acao X pode ser um protocolo . protocolos nao tem assinatura de acao
+// mas uma acao especifica tem uma assinatura
+// se uma dada acao se encaivar na deficiao da acao que define um protocolo ... trate a acao como uma invocao daquele protocolo
+// os protocolos sao invocados DEPOIS das acoes especificas.
+// Ex   shot someone is a a hurting
+//      se o player executar o shot em algo, nao so procesa os events handles de shot
+//      se o player atirar em alguem, processa os handle de shot e depois os de hurt, intercalados
+//      ie  check shot, check hurt, before shot, before hurt,  carry on shot, carry on hurt ....
+
+void testeParser_actionF()
+{
+	// Eating Rule transcipt
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	string s_eating = R"(
+thing is a kind
+thing can be edible
+ 
+person is a kind
+apple is a thing
+orange is a thing
+
+speech is an kind of action  
+ 
+asking someone about something is speech
+telling someone about something is speech
+answering someone that something is speech
+asking someone for something is speech 
+
+
+)";
+
+	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
+
+	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	// Try eh um STMT
+	interpreter->execute_now(parse.Parser_Stmt("try eating apple ", ISLOG), nullptr);
+	interpreter->execute_now(parse.Parser_Stmt("eat    orange ", ISLOG), nullptr);
 
 	return;
 }
