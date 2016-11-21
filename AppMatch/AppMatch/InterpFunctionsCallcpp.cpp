@@ -129,8 +129,8 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				PhaseResult  rx =  this->execute_now(evh->body, next_vars, stk);
 			  
 				if (rx.hasExecuted)
-				{
-					
+				{					 
+					return rx;
 				}
 			}
 
@@ -142,6 +142,29 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 }
 
 
+
+PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+{
+	for (auto evh : event_handles)
+	{
+		if (evh->stage == StageCarryOut)
+		{
+			auto rx = execute_phase_any(evh, v_call, localsEntry, stk);
+			if (rx.result)
+			{
+				if (HBlockExecutionResultFlag  flag = asHBlockExecutionResultFlag(rx.result))
+				{
+					if (flag->flag == actionStop)
+					{
+						return rx;
+					}
+				}
+			}
+		}
+	}
+
+	return PhaseResult(false);
+}
 
 
 
@@ -255,6 +278,15 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
 	//Daqui para  frente a acao eh sucesso 
 
 	//CarryOut
+	PhaseResult res_carryOut = execute_phase_carryOut(v_call, localsEntry, stk);
+	if (HBlockExecutionResultFlag  flag_co = asHBlockExecutionResultFlag(res_carryOut.result))
+	{
+		if (flag_co->flag == actionStop)
+		{
+			return res_carryOut;
+		}
+	}
+
 
 	//After
 

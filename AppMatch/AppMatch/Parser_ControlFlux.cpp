@@ -45,7 +45,21 @@ HBlock CParser::stmt_resultflag(std::vector<HTerm>&   term)
 		}
 	}
 
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("continue"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+		}
 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::actionContinue, nullptr);
+		}
+	}
 	return nullptr;
 
 }

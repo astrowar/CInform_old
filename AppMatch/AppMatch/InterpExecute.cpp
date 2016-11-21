@@ -718,7 +718,13 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 				logError("");
 				return false;
 			}
-			rs_result = pret;
+			rs_result = pret;			
+			
+			if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(rs_result.result))
+			{
+				return rs_result;
+			}
+			
 		}
 		return rs_result;
 
@@ -835,7 +841,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(p))
 	{
 		auto qres=  PhaseResult(true);
-		qres.result == flag_ck;
+		qres.result = flag_ck;
 		return qres;
 	}
 

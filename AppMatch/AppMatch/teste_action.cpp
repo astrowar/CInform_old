@@ -101,9 +101,10 @@ eating is   an action applying to ( an  thing )
 
 understand : eat  ( a thing ) as eating 
 
-before eating ( thing called X  which is edible ) :
-  say  (text will eat !)
+before eating ( thing called X  which is not edible ) :
+  say  (text i cant eat  this !)
   stop the action
+  
  
   
 carry out eating ( thing called X  which is edible ) :
@@ -124,10 +125,58 @@ carry out eating ( thing called X  which is edible ) :
 	return;
 }
 
+
+void testeParser_actionE()
+{
+	// Eating Rule transcipt
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	string s_eating = R"(
+thing is a kind
+thing can be edible
+ 
+person is a kind
+apple is a thing
+orange is a thing
+ 
+
+apple is edible 
+orange is not edible
+
+eating is   an action applying to ( an  thing )  
+
+understand : eat  ( a thing ) as eating 
+
+before eating ( thing called X   ) :  
+  if X is edible  :
+     say ( text  i will eat )
+     continue the action
+  say ( text  what ? )
+      
+  
+carry out eating ( thing called X  which is edible ) :
+  say  (text eaten !)
+
+)";
+
+	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
+ 
+	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	// Try eh um STMT
+	interpreter->execute_now(parse.Parser_Stmt("try eating apple ", ISLOG), nullptr);
+	interpreter->execute_now(parse.Parser_Stmt("try eating orange ", ISLOG), nullptr);
+
+	return;
+}
+
+
 void testAction_all()
 {
 	//testeParser_actionA(); 
 	//testeParser_actionB(); 
 	//testeParser_actionC();
-	testeParser_actionD();
+	//testeParser_actionD();
+	testeParser_actionE();
 }
