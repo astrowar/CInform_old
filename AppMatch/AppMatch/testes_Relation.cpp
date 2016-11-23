@@ -271,7 +271,7 @@ to decide if getting requires a touchable noun :
    decide on true
 
 before getting ( an thing called T ) :
-  if getting requires   touchable noun : 
+  if getting requires touchable noun : 
         say (text unable to take )
         stop the action
 

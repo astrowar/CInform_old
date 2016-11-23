@@ -21,11 +21,20 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 	}
 	auto mit = M->matchList.begin();
 	auto vit = value->lista.begin();
+	 
+	auto localsHeaderCurrent = std::make_shared< CRunLocalScope >( );
+	HRunLocalScope localsEntryNext = newScope( localsEntry , localsHeaderCurrent );
+
 	CResultMatch rAccm = CResultMatch(true);
 	while (true)
 	{
 		if (mit == M->matchList.end()) break;
-		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
+
+		//cada item da lista, usa os matchs que ja estao resolvidos ate o momento
+		localsHeaderCurrent = std::make_shared< CRunLocalScope >(rAccm.maptch);
+		localsEntryNext = newScope(localsEntry, localsHeaderCurrent);
+
+		CResultMatch r = Match(*mit, *vit, localsEntryNext, stk);
 		if (r.hasMatch == false)
 		{ 	 
 			//(*vit)->dump("    ");
@@ -33,6 +42,9 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 			return   CResultMatch(false);
 		}
 		rAccm.append(r);
+		
+ 
+
 		++mit;
 		++vit;
 	}
@@ -256,7 +268,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 			}
 
-			auto resolved =  resolve_noum(std::make_shared<CBlockNoum>( nnoum),localsEntry ,std::list<std::string>());
+			auto resolved = resolve_string_noum(   nnoum ,localsEntry ,std::list<std::string>());
 			if (resolved)
 			{
 				auto rr = query_is(value, resolved , localsEntry, stk);

@@ -7,4 +7,8 @@ enum EqualsResul {
 enum QueryResul {
     QUndefined = -1, QEquals = 1, QNotEquals = 0
 };
+
+ 
+
+
 #endif

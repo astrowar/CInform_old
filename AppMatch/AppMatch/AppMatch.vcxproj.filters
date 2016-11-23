@@ -354,5 +354,8 @@
     <ClCompile Include="CBlockNumber.cpp">
       <Filter>Source Files\Block</Filter>
     </ClCompile>
+    <ClCompile Include="CBlockInterpreterRuntime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

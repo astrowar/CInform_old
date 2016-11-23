@@ -200,6 +200,7 @@
     <ClCompile Include="AssertationEngine.cpp" />
     <ClCompile Include="BlockisSame.cpp" />
     <ClCompile Include="CBlockCommand.cpp" />
+    <ClCompile Include="CBlockInterpreterRuntime.cpp" />
     <ClCompile Include="CBlockInterpreter_Verb_En.cpp" />
     <ClCompile Include="CBlockNumber.cpp" />
     <ClCompile Include="CBlockSerialize.cpp" />

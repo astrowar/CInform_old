@@ -40,6 +40,16 @@ public:
 };
 
 
+class QueryResultContext // resultado da query incluindo variaveis do Match
+{
+public:
+	QueryResul result;
+	std::map<string, HBlock> matchedResult;
+	QueryResultContext(QueryResul r);
+	QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult);
+};
+
+
 class CBlockInterpreter {
 
     std::vector<HBlock> program; // main program .. to run IT
