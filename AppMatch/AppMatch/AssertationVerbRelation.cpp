@@ -549,16 +549,49 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 						HRunLocalScope localsNext_value = newScope(localsNext,  locals_value);
 
 					 
-						auto rr = query(v->decideBody, localsNext_value, stk);
-						if (rr == QEquals) return QEquals;
+						auto rr_eval = exec_eval(v->decideBody, localsNext_value);
+						//auto rr = query(v->decideBody, localsNext_value, stk);
+						//if (rr == QEquals) return QEquals;
+
+						rr_eval->dump("");
 						
+						if (HBlockToDecideOn dctval =   asHBlockToDecideOn( rr_eval ) )
+						{
+							if (HBlockBooleanValue bbValue = asHBlockBooleanValue(dctval->decideBody))
+							{
+								if  (true == bbValue->state) { return QEquals; }
+								if (false ==bbValue->state) { return QNotEquals; }
+							} 
+							else
+							{
+								logError("Decide Block must return Decide On True or Decide On False");
+							
+							}
+						}
+						else
+						{
+							logError("Decide Block must return Decide On  ");
+
+						}
 						 
 						return QNotEquals;
 
 						//return v->decideBody;
 						//return QueryResul::QEquals;
 					}
+					else
+					{
+						logMessage("not Equals");
+						qVerb->value->dump("");
+						value->dump("");
+					}
 
+				}
+				else
+				{
+					logMessage("not Equals");
+					qVerb->obj->dump("");
+					c_block->dump("");
 				}
 			}
 		}

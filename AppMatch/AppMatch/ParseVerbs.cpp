@@ -93,7 +93,10 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
         }
 	 
     }
+	//logMessage( verbList->repr() );
+	 
 
+	//logMessage( get_repr(term) );
     return nullptr;
 }
 

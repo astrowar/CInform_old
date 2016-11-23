@@ -55,32 +55,42 @@ void testeParser_listB()
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
 
-	interpreter->execute_init(parse.Parser_Stmt("object is a kind  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("distance is a kind of value ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("object has a distance ", ISLOG));
+	string s_price = R"(
+
+object is a kind 
+distance is a kind of value 
+object has a distance
+
+book is a object 
+box is a object
+diary is a object
 
 
-	interpreter->execute_init(parse.Parser_Stmt("book is a object  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("box is a object  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("diary is a object  ", ISLOG));
+far is a distance
+near is a distance 
+closest is a distance 
 
-	interpreter->execute_init(parse.Parser_Stmt("far is a distance  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("near is a distance  ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("closest is a distance  ", ISLOG));
+distance of book  is far 
+distance of box  is far 
+distance of diary  is near 
 
+items is a list of object  that varies
+items is  ( diary, book and box )
 
-	 
+ 
 
-	interpreter->execute_init(parse.Parser_Stmt("distance of book  is far ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("distance of box  is far ", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("distance of diary  is near ", ISLOG));
-
-
-	interpreter->execute_init(parse.Parser_Stmt("items is a list of object  that varies", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt("items is  ( diary, book and box )", ISLOG));
-
-	QueryResul q_all_of = interpreter->query(parse.Parser_Stmt(" (all distance of items ) is (near or far)   ", ISLOG));
+)";
+  
+	auto q_all_of = interpreter->exec_eval(parse.Parser_Expression(" all distance of items   ", true), nullptr );
+	
+	q_all_of->dump("");
 
 
 	return;
+}
+
+void testeParser_listAll(void )
+{
+	testeParser_listB();
+
 }

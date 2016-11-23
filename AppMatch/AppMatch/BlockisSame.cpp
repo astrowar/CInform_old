@@ -21,7 +21,8 @@ bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
 }
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 {
-	if (b1->named == b2->named) return true;
+	if (b1->named != b2->named) return false;
+	if (b1->id != b2->id) return false;
 	return false;
 }
 

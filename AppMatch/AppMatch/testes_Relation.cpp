@@ -251,11 +251,49 @@ scent is in hall
 	 return;
 }
 
+
+void testeRelation6()  //relations  with actions
+{
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+	string ss1 =
+		R"(
+ 
+thing is a kind 
+getting  is   an action applying to ( an  thing )  
+apple is an thing 
+orange is an thing 
+
+the verb ( requires ) implies a dynamic relation 
+ 
+to decide if getting requires a touchable noun : 
+   decide on true
+
+before getting ( an thing called T ) :
+  if getting requires   touchable noun : 
+        say (text unable to take )
+        stop the action
+
+carry out getting an thing  :
+   say (text taken ! )
+
+)";
+	interpreter->execute_init(parse.parser_text(ss1, true));
+
+	//auto target_v2 = interpreter->exec_eval(parse.Parser_Expression("getting  requires  touchable noun", true), nullptr);
+	//target_v2->dump("");
+
+	interpreter->execute_now(parse.Parser_Stmt("try getting orange ", ISLOG), nullptr);
+
+	return;
+}
 void testeRelation_all()
 {
-	 testeRelation1(); 
-	testeRelation2(); 
-	testeRelation3(); 
-	testeRelation4(); 
-	testeRelation5();
+	//testeRelation1(); 
+	//testeRelation2(); 
+	//testeRelation3(); 
+	//testeRelation4(); 
+	//testeRelation5();
+	testeRelation6();
 }

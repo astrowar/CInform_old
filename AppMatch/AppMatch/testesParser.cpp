@@ -359,12 +359,12 @@ int main() {
 	//testValues_all();
 	//return 0;
 	
-	//testeRelation5();
+	testeRelation_all();
 	//testeParser_7e();
 
 //	testeExecute_all();
- 
-	testAction_all();
+	//testeParser_listAll();
+	//testAction_all();
 	//testeVerb_all();
 	return 0;
 

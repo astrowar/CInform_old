@@ -79,8 +79,92 @@ bool is_article(std::string s)
 	if (s == "a" || s == "an" || s == "the" || s == "some") return true;
 	return false;
 }
+
+
+std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
+{
+	 
+	if (lst.empty()) return lst;
+	std::list<HBlockMatch>::iterator init_ptr = lst.begin();
+	while (init_ptr != lst.end())
+	{
+		if (auto mnoum = asHBlockMatchNoum(*init_ptr))
+		{
+			if (is_article(mnoum->inner->named))
+			{
+				++init_ptr;
+				if (init_ptr == lst.end()) break;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	return 	std::list<HBlockMatch>(init_ptr, lst.end());
+}
+
+
+CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack stk)
+{
+	
+	if (auto mnoum = asHBlockMatchNoum(mValue))
+	{
+		return  Match(M, mnoum->inner, localsEntry, stk);
+	}
+
+	if (auto mlist = asHBlockMatchList(mValue))
+	{		
+		if (auto mbaseList = asHBlockMatchList(M))
+		{
+
+			auto it_list1 = remove_article(mlist->matchList);
+			auto it_list2 = remove_article(mbaseList->matchList);
+			// Confere cada item do match com os item do M
+			if (it_list1.size() != it_list2.size())
+			{				  
+				return CResultMatch(false); // tamanhos diferentes
+			}
+			auto it1 = it_list1.begin();
+			auto it2 = it_list2.begin();
+			for(;it1 != it_list1.end();++it1,++it2)
+			{
+				CResultMatch rit = isEquivalenteMatch(*it2, *it1, localsEntry, stk);
+				if (rit.hasMatch==false )
+				{
+					return CResultMatch(false);
+				}
+			}
+			return CResultMatch(true);
+
+
+		}
+		else
+		{
+			// uma lista contra uma nao lista ? o que pode ser
+			logError("Something unespected");			
+			return CResultMatch(false);
+
+		}
+	}
+
+	return CResultMatch(false);
+}
+
+
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
 {
+	if (auto vMatch = asHBlockMatch(value))
+	{
+		// Hummm ... um match contra outro match ...
+		CResultMatch mres = isEquivalenteMatch(M, vMatch, localsEntry, stk);
+		if (mres.hasMatch)		return 	CResultMatch(true);
+		return CResultMatch(false );
+		
+	}
+	 
+	// Pois pode ser que um deles seja uma lista de noum e o parser interpretou como um Match List
+
 	if (auto   mAtom = asHBlockMatchNoum(M))
 	{
 		if (auto inner =  asHBlockNoum(mAtom->inner))
@@ -94,6 +178,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 
 				auto rcc = query_is(cinner, inner, localsEntry, stk);
+				 
 				return CResultMatch(rcc == QEquals);
 				 
 			}

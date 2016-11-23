@@ -15,7 +15,7 @@ public:
     virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockInstance; }
 
-    CBlockInstance(string _named, HBlockKind base);
+    CBlockInstance(string _named, int id, HBlockKind base);
 
     void newEnumVariableSlot(HBlockEnums definition);
 
@@ -35,7 +35,8 @@ public:
 
     QueryResul is_set(HBlockNoum value);
 
-    string named;
+    string named; // nome public
+	int id;  // id unico para cada instancia .. serve para saber se estamos a falar da mesma instancia
     HBlockKind baseKind;
 
     virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
@@ -59,13 +60,13 @@ using HBlockInstance = std::shared_ptr<CBlockInstance>;
 
 
 
-class CBlockText : public CBlockInstance //retorna um valor generico
+class CBlockText : public CBlock //retorna um valor generico
 {
 public:
 	virtual void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::BlockText; }
 	std::string contents;
-	CBlockText(std::string _contents) :CBlockInstance( "text", std::make_shared<CBlockKindValue>("text") ), contents(_contents) {}
+	CBlockText(std::string _contents   )  :  contents(_contents) {}
 };
 using HBlockText = std::shared_ptr<CBlockText>;
 

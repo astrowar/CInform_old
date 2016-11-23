@@ -89,10 +89,10 @@ class CBlockInterpreter {
 
 	//Event handles
 	std::vector<HBlockEventHandle> event_handles;
-	 
+	int instancia_id;
 
 
-    QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
 	QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
  
 	QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
@@ -135,6 +135,7 @@ class CBlockInterpreter {
 	bool assert_it_variableGlobal(HBlock obj, HBlock value);
  
 	CResultMatch MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk);
+	CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack stk);
 	CResultMatch Match(HBlockMatch M, HBlock value,HRunLocalScope localsEntry, QueryStack stk);
  
  

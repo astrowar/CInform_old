@@ -13,7 +13,7 @@
 using namespace std;
 
 
-
+bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2);
 
 std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 {
@@ -21,6 +21,7 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 }
 
 CBlockInterpreter::CBlockInterpreter() {
+	instancia_id = 0;
 }
 
 CBlockInterpreter::~CBlockInterpreter() {
@@ -260,6 +261,7 @@ QueryResul CBlockInterpreter::query_is_Variable_value(HBlock c_block, HBlock c_b
 QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
  
+	 
 
 	if (c_block->isSame(c_block.get(), c_block1.get() ))
 	{
@@ -433,13 +435,33 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
 
 	{
 		if (HBlockInstance ninst_1 = asHBlockInstance(c_block))
-			if (HBlockInstance ninst_2 = asHBlockInstance(c_block1)) {
-				if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind) {
-					if (ninst_1 == ninst_2) return QEquals;
+			if (HBlockInstance ninst_2 = asHBlockInstance(c_block1)) 
+			{
+				if (isSame_BlockInstance(ninst_1.get(), ninst_2.get()))
+				{
+					return QEquals;
 				}
+				/*if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind) {
+					if (ninst_1 == ninst_2) return QEquals;
+				}*/
 
 			}
 	}
+
+	{
+		if (HBlockAction act = asHBlockAction(c_block))
+			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
+			{
+				if (isSameString(kval->named ,  "action"))
+				{
+					return QEquals;
+				}
+				
+
+			}
+	}
+
+
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 		break;
@@ -454,8 +476,9 @@ QueryResul CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLoca
         }
     }
 
-	 
-	 
+	logMessage("I cant query");
+	c_block->dump("");
+	c_block1->dump("");
 
  
     return QUndefined;

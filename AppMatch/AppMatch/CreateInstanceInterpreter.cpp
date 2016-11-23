@@ -103,7 +103,8 @@ void CBlockInterpreter::add_namedVariableToAllinstances(HBlockKind_InstanceVaria
 HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // nova instance e inicializa os fields
 
-    HBlockInstance c = make_shared<CBlockInstance>(named, kind);
+    HBlockInstance c = make_shared<CBlockInstance>(named, instancia_id, kind);
+	instancia_id++;
 	 
     // inicia os fields CAN_BE
 

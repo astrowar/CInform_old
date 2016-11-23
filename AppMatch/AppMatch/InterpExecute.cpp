@@ -334,6 +334,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 			{
 				ret_out = ret;
 				if (ret_out->type() == BlockToDecideOn) return ret_out;
+				
 			}
 		}
 		return  ret_out;
@@ -788,15 +789,20 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	{
 
 		auto qResult =  query (vControlIf->block_if, localsEntry, stk);
+
+		vControlIf->block_if->dump("");
+
 		if (qResult == QEquals)
 		{
 			  return execute_now(vControlIf->block_then, localsEntry, stk);
 		}
 		else
 		{
-			if (vControlIf->block_else !=nullptr)
+			if (vControlIf->block_else != nullptr)
 			{
-				return execute_now(vControlIf->block_else, localsEntry, stk);
+				vControlIf->block_else->dump("");
+				auto r =  execute_now(vControlIf->block_else, localsEntry, stk);
+				return r;
 			}
 		}
 		return PhaseResult(true);
