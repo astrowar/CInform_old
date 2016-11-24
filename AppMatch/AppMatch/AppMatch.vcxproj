@@ -188,6 +188,7 @@
     <ClInclude Include="EqualsResult.hpp" />
     <ClInclude Include="GrammarParser.h" />
     <ClInclude Include="Parser.hpp" />
+    <ClInclude Include="ParserPlural.hpp" />
     <ClInclude Include="QueryStack.hpp" />
     <ClInclude Include="serialRegister.hpp" />
     <ClInclude Include="sharedCast.hpp" />
@@ -246,6 +247,7 @@
     <ClCompile Include="Parser_ControlFlux.cpp" />
     <ClCompile Include="Parser_Decide.cpp" />
     <ClCompile Include="Parser_expression_match.cpp" />
+    <ClCompile Include="Parser_Plurals_En.cpp" />
     <ClCompile Include="Parser_RegisterVerb.cpp" />
     <ClCompile Include="Parser_VerbTable_en.cpp" />
     <ClCompile Include="ParseVerbs.cpp" />

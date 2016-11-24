@@ -353,6 +353,23 @@ else:
 	return;
 }
 
+void testeParser_plural() {
+
+
+	{
+		CParser parse(std::make_shared<CBlockInterpreter>());
+
+		string ss1 =
+			R"(
+plural of passaro is passaros
+caixas is plural of caixa 
+  
+)";
+		parse.parser_text(ss1, true);
+	}
+}
+
+
 int main() {
 	// testeParser_1();
 

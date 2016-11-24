@@ -145,6 +145,9 @@
     <ClInclude Include="CBlockNumber.hpp">
       <Filter>Header Files\Block</Filter>
     </ClInclude>
+    <ClInclude Include="ParserPlural.hpp">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -356,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="CBlockInterpreterRuntime.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser_Plurals_En.cpp">
+      <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

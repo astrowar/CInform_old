@@ -112,7 +112,7 @@ public:
 	CBlockNoum(){};
     CBlockNoum(string _named)  ;
 
-    string named;
+    const string named;
 
     virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
@@ -126,7 +126,7 @@ public:
 	//virtual BlockType type() override { return BlockType::BlockKind; }
 
     CBlockKind(string _named) : named(_named) {};
-    string named;
+    const string named;
 
     virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 };
