@@ -189,9 +189,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				  return 	CResultMatch(true );
 				}
 
-				auto rcc = query_is(cinner, inner, localsEntry, stk);
+				QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
 				 
-				return CResultMatch(rcc == QEquals);
+				return CResultMatch(rcc.result == QEquals);
 				 
 			}
  
@@ -210,8 +210,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
-				auto r = query_is(cInst, inner_2, localsEntry, stk);
-				return CResultMatch(r == QEquals);
+				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
+				return CResultMatch(r.result == QEquals);
 
 			}
 
@@ -219,12 +219,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			if (auto cAction = asHBlockAction (value))
 			{ 
 				if (cAction->named == inner_2->named) return CResultMatch( true );
-				auto r = query_is(cAction, inner_2, localsEntry, stk);
-				return CResultMatch(r == QEquals); 
+				QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
+				return CResultMatch(r.result == QEquals); 
 			}
 
-			auto rcc = query_is(value, inner_2, localsEntry, stk);
-			return CResultMatch(rcc == QEquals);
+			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
+			return CResultMatch(rcc.result == QEquals);
 		}
 
 	}
@@ -271,8 +271,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			auto resolved = resolve_string_noum(   nnoum ,localsEntry ,std::list<std::string>());
 			if (resolved)
 			{
-				auto rr = query_is(value, resolved , localsEntry, stk);
-				if (rr == QEquals)   return CResultMatch(true);
+				QueryResultContext rr = query_is(value, resolved , localsEntry, stk);
+				if (rr.result == QEquals)   return CResultMatch(true);
 			}
 			 
 
@@ -317,8 +317,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		if (HBlockProperty    vProp = asHBlockProperty(value))
 		{
 
-			auto rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
-			if (rProp == QEquals)
+			QueryResultContext rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
+			if (rProp.result == QEquals)
 			{
 				CResultMatch mres =  Match(mProp->obj, vProp->obj, localsEntry, stk);
 				return mres;
@@ -426,8 +426,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				{
 					//auto vv = make_shared<CBlockAssertion_isDirectAssign>( value, mWhich->value);
 
-					auto qverb = query_is(value, mWhich->value, localsEntry, stk);
-					if (qverb == QEquals)
+					QueryResultContext qverb = query_is(value, mWhich->value, localsEntry, stk);
+					if (qverb.result == QEquals)
 					{
 						return mres;
 					}		
@@ -436,8 +436,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				else
 				{
 					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhich->verb, value, mWhich->value);
-					auto qverb = query_verb(vv, localsEntry, stk);
-					if (qverb == QEquals)
+					QueryResultContext qverb = query_verb(vv, localsEntry, stk);
+					if (qverb.result == QEquals)
 					{
 						return mres;
 					}
@@ -454,8 +454,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				if (mWhichNot->verb == "is")
 				{
-					auto qverb = query_is(value, mWhichNot->value, localsEntry, stk);
-					if (qverb != QEquals)
+					QueryResultContext qverb = query_is(value, mWhichNot->value, localsEntry, stk);
+					if (qverb.result != QEquals)
 					{
 						return mres;
 					}
@@ -464,8 +464,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				else
 				{
 					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhichNot->verb, value, mWhichNot->value);
-					auto qverb = query_verb(vv, localsEntry, stk);
-					if (qverb != QEquals)
+					QueryResultContext qverb = query_verb(vv, localsEntry, stk);
+					if (qverb.result != QEquals)
 					{
 						return mres;
 					}

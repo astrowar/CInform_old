@@ -22,11 +22,11 @@ void testeParser_listA()
 
      interpreter->execute_init(parse.Parser_Stmt("the verb listed in implies the listed_in relation", ISLOG));
 
-	 QueryResul q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("target"), std::make_shared<CBlockNoum>("book"));
-	 assert(q_true == QEquals);
+	 auto q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("target"), std::make_shared<CBlockNoum>("book"));
+	 assert(q_true.result == QEquals);
 
-	 QueryResul q_true_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("book"), std::make_shared<CBlockNoum>("target"));
-	 assert(q_true_2 == QEquals);
+	 auto q_true_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("book"), std::make_shared<CBlockNoum>("target"));
+	 assert(q_true_2.result == QEquals);
 
 	interpreter->execute_init(parse.Parser_Stmt("items is a list of object  that varies", ISLOG));
 	//interpreter->execute_init(parse.Parser_Stmt("list of prohibited items is a list of object  that varies", ISLOG));
@@ -34,18 +34,18 @@ void testeParser_listA()
     interpreter->execute_init(parse.Parser_Stmt("items is  ( diary, book and box )", ISLOG));
 
     std::list<HBlock> alist = {noum("book"), noum("box")};
-    QueryResul q_true_3 = interpreter->query_is_extern(noum("items"), std::make_shared<CBlockList>(  alist));
+	auto q_true_3 = interpreter->query_is_extern(noum("items"), std::make_shared<CBlockList>(  alist));
    // assert(q_true_3 == QEquals);
 
 
-    QueryResul q_qq=  interpreter->query(parse.Parser_Stmt("target is listed in items", ISLOG));
+	auto q_qq=  interpreter->query(parse.Parser_Stmt("target is listed in items", ISLOG));
 
 
-	QueryResul q_select = interpreter->query(parse.Parser_Stmt(" diary is ( low or medium ) ", ISLOG));
+	auto q_select = interpreter->query(parse.Parser_Stmt(" diary is ( low or medium ) ", ISLOG));
 
 
-	QueryResul q_all_of = interpreter->query(parse.Parser_Stmt(" ( all items ) are object ", ISLOG));
-	QueryResul q_any_of = interpreter->query(parse.Parser_Stmt(" ( any items ) are red ", ISLOG));
+	auto q_all_of = interpreter->query(parse.Parser_Stmt(" ( all items ) are object ", ISLOG));
+	auto q_any_of = interpreter->query(parse.Parser_Stmt(" ( any items ) are red ", ISLOG));
 
     return  ;
 

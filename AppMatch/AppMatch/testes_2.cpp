@@ -110,22 +110,22 @@ void testeParser_5b() {
 	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing ) is ( previous item ) of apple :   orange    ", ISLOG));
 
 
-	auto ret = interpreter->query(parse.Parser_Stmt("( special item ) is apple  ", ISLOG));
-	assert(ret == QEquals);
-	auto ret_2 = interpreter->query(parse.Parser_Stmt("( far item ) is apple  ", ISLOG));
-	assert(ret_2 == QUndefined); // what is far item ??
+	QueryResultContext ret = interpreter->query(parse.Parser_Stmt("( special item ) is apple  ", ISLOG));
+	assert(ret.result == QEquals);
+	QueryResultContext ret_2 = interpreter->query(parse.Parser_Stmt("( far item ) is apple  ", ISLOG));
+	assert(ret_2.result == QUndefined); // what is far item ??
 
 	//now set far item 
  
 	interpreter->execute_init(parse.Parser_Stmt("( far item ) is a thing that varies  ", ISLOG));
 	interpreter->execute_init(parse.Parser_Stmt("( far item ) is orange  ", ISLOG));
-	auto ret_3 = interpreter->query(parse.Parser_Stmt("oposite of orange is apple  ", ISLOG));
-	assert(ret_3 == QEquals);
+	QueryResultContext ret_3 = interpreter->query(parse.Parser_Stmt("oposite of orange is apple  ", ISLOG));
+	assert(ret_3.result == QEquals);
 
 	
 	interpreter->execute_init(parse.Parser_Stmt("to decide what ( thing  ) is oposite of ( oposite of ( thing called X ) ) :  X   ", ISLOG));
-	auto ret_4 = interpreter->query(parse.Parser_Stmt("( oposite of ( oposite of coal ) ) is coal  ", ISLOG)); 
-	assert(ret_4 == QEquals);
+	QueryResultContext ret_4 = interpreter->query(parse.Parser_Stmt("( oposite of ( oposite of coal ) ) is coal  ", ISLOG));
+	assert(ret_4.result == QEquals);
 
 	return;
 
@@ -243,7 +243,7 @@ void testeParser_5f() {
 	//auto ret_true_a = interpreter->query(parse.Parser_Stmt("north points to exit of hall  ", ISLOG));
 
     auto ret_true_a = interpreter->query(parse.Parser_Stmt("hall exits to north   ", ISLOG));
-	assert(ret_true_a == QEquals);
+	assert(ret_true_a.result == QEquals);
    // auto ret_true_b = interpreter->query(parse.Parser_Stmt("garden exits to south   ", ISLOG));
 
 

@@ -88,11 +88,11 @@ box contains a book
 
 	auto query_block = parse.Parser_Stmt("box contains book  ", ISLOG);
 	auto ret_points = interpreter->query(query_block);
-	assert(ret_points == QEquals);
+	assert(ret_points.result == QEquals);
 
 
 	auto ret_cc = interpreter->query(parse.Parser_Stmt("book is  contained by box   ", ISLOG));
-	assert(ret_cc == QEquals);
+	assert(ret_cc.result == QEquals);
 
 
 	auto verb_cc = interpreter->exec_eval(parse.Parser_Expression("the verb provoke", ISLOG), nullptr);

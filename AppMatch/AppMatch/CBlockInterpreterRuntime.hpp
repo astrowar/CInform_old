@@ -43,7 +43,7 @@ public:
 class QueryResultContext // resultado da query incluindo variaveis do Match
 {
 public:
-	QueryResul result;
+	const QueryResul result;
 	std::map<string, HBlock> matchedResult;
 	QueryResultContext(QueryResul r);
 	QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult);
@@ -102,14 +102,14 @@ class CBlockInterpreter {
 	int instancia_id;
 
 
-	QueryResul query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
-	QueryResul query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack stk);
+	QueryResultContext query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
  
-	QueryResul query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_is_Variable_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_is_propertyOf_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_is_Variable_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
  
-	QueryResul query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query(HBlockAssertion_is q, HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query(HBlockAssertion_is q, HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack stk);
  
 	// QueryResul queryVerb(string vb, HBlock c_block, HBlock value, QueryStack stk);
 
@@ -134,10 +134,10 @@ class CBlockInterpreter {
 	bool exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry);
 	bool  setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry );
 	bool setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry);
-	QueryResul query_relation_instance(HBlockRelationInstance rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_relation_instance(HBlockRelationInstance rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
 
 	bool assert_newVerb(HBlockVerbRelation value);
@@ -149,7 +149,7 @@ class CBlockInterpreter {
 	CResultMatch Match(HBlockMatch M, HBlock value,HRunLocalScope localsEntry, QueryStack stk);
  
  
-	QueryResul queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
 	
 	bool is_nothing(HBlockNoum noum);
 	bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
@@ -209,22 +209,22 @@ public:
    // bool MatchOld(HBlock c_block, HBlockMatch m);
     HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
 	HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
 
 
-	QueryResul Selector_all(HBlock aList, HRunLocalScope localsEntry ,std::function<QueryResul(HBlock)> selector );
-	QueryResul Selector_any(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResul(HBlock)> selector );
-	QueryResul get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext Selector_all(HBlock aList, HRunLocalScope localsEntry ,std::function<QueryResultContext(HBlock)> selector );
+	QueryResultContext Selector_any(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(HBlock)> selector );
+	QueryResultContext get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
 	bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	bool insert_newVerb(HBlockVerb verb_dec);
  
 
 
-	QueryResul query(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
-	QueryResul query(HBlock  vquery);
+	QueryResultContext query(HBlock q, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query(HBlock  vquery);
 
  
  
@@ -263,12 +263,12 @@ public:
  
 	HBlock value_can_be_assign_to(HBlock value, HBlockKind kind, HRunLocalScope localsEntry);
 	bool assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry);
-	QueryResul query_is_List(CBlock *c_block, CBlock *c_block1);
+	QueryResultContext query_is_List(CBlock *c_block, CBlock *c_block1);
 
 
 
-	QueryResul query_is_extern(HBlock c_block, HBlock c_block1 );
-	QueryResul query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+	QueryResultContext query_is_extern(HBlock c_block, HBlock c_block1 );
+	QueryResultContext query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 	std::list<HBlock> getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry);
 	//bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
 	PhaseResult execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry);

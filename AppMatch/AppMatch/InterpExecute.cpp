@@ -292,7 +292,8 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 		if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it))
 		{
-			if (query_is_same(c_block, qdef->get_obj(), localsEntry, stk) == QEquals) 
+			auto qcc = query_is_same(c_block, qdef->get_obj(), localsEntry, stk);
+			if (qcc.result == QEquals) 
 			{				
 			HBlock br = (is_accetable(qdef->get_definition()));
 			if (br !=nullptr)
@@ -346,7 +347,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 		HBlock ret = nullptr;
 
 		auto r = query(cIF->block_if, localsEntry, QueryStack());
-		if (r == QEquals)
+		if (r.result == QEquals)
 		{
 			return exec_eval(cIF->block_then, localsEntry);
 		}
@@ -363,32 +364,32 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 	{
 		if (HBlockAssertion_isDirectAssign nDirect = asHBlockAssertion_isDirectAssign(c_block))
 		{
-			auto q = query(nDirect, localsEntry, QueryStack());
-			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			QueryResultContext q = query(nDirect, localsEntry, QueryStack());
+			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
 			return std::make_shared<CBlockNoum>("false");
 		}
 
 
 		if (HBlockIsVerb  nVerbDirect = asHBlockIsVerb(c_block))
 		{
-			auto q = query(nVerbDirect, localsEntry, QueryStack());
-			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			QueryResultContext q = query(nVerbDirect, localsEntry, QueryStack());
+			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
 			return std::make_shared<CBlockNoum>("false");
 		}
 
 
 		if (HBlockAssertion_isNotDirectAssign nDirectv = asHBlockAssertion_isNotDirectAssign(c_block))
 		{
-			auto q = query(nDirectv, localsEntry, QueryStack());
-			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			QueryResultContext q = query(nDirectv, localsEntry, QueryStack());
+			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
 			return std::make_shared<CBlockNoum>("false");
 		}
 
 
 		if (HBlockIsNotVerb  nVerbDirectv = asHBlockIsNotVerb(c_block))
 		{
-			auto q = query(nVerbDirectv, localsEntry, QueryStack());
-			if (q == QEquals) return std::make_shared<CBlockNoum>("true");
+			QueryResultContext q = query(nVerbDirectv, localsEntry, QueryStack());
+			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
 			return std::make_shared<CBlockNoum>("false");
 		}
 	}
@@ -788,11 +789,11 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	if (HBlockControlIF  vControlIf =  aHBlockControlIF(p))
 	{
 
-		auto qResult =  query (vControlIf->block_if, localsEntry, stk);
+		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk);
 
 		vControlIf->block_if->dump("");
 
-		if (qResult == QEquals)
+		if (qResult.result == QEquals)
 		{
 			  return execute_now(vControlIf->block_then, localsEntry, stk);
 		}
@@ -813,8 +814,8 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	{
 		for (auto item : vControlSelect->block_selectList)
 		{
-			auto qResult = query_is(vControlSelect->block_seletor, item->block_seletor, localsEntry, stk);
-			if (qResult == QEquals)
+			QueryResultContext qResult = query_is(vControlSelect->block_seletor, item->block_seletor, localsEntry, stk);
+			if (qResult.result == QEquals)
 			{
 				return execute_now(item->block_execute, localsEntry, stk);
 			}

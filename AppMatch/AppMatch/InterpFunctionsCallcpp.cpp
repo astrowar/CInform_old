@@ -16,8 +16,8 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 
 
 
-	QueryResul qAction = query_is(v_call->action, evh->eventToObserve->action, localsEntry, stk);
-	if (qAction == QEquals)
+	QueryResultContext qAction = query_is(v_call->action, evh->eventToObserve->action, localsEntry, stk);
+	if (qAction.result == QEquals)
 	{
 		QueryResul qarg1 = QEquals;
 		QueryResul qarg2 = QEquals;
@@ -94,8 +94,8 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 		if (evh->stage == StageBefore)
 		{
 			
-			QueryResul qAction = query_is(v_call->action , evh->eventToObserve->action , localsEntry, stk);
-			if (qAction == QEquals)
+			QueryResultContext qAction = query_is(v_call->action , evh->eventToObserve->action , localsEntry, stk);
+			if (qAction.result == QEquals)
 			{
 				QueryResul qarg1 = QEquals;
 				QueryResul qarg2 = QEquals;
@@ -223,15 +223,15 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
 
 			if (v_call->noum1 != nullptr)
 			{
-				auto qarg1 = query_is(v_call->noum1, ap.second->applyTo->noum1, localsEntry, stk);
-				if (qarg1 != QEquals) continue; 
+				QueryResultContext qarg1 = query_is(v_call->noum1, ap.second->applyTo->noum1, localsEntry, stk);
+				if (qarg1.result != QEquals) continue; 
 			}
 
 
 			if (v_call->noum2 != nullptr)
 			{
-				auto qarg2 = query_is(v_call->noum2, ap.second->applyTo->noum2, localsEntry, stk);
-				if (qarg2 != QEquals) continue;
+				QueryResultContext qarg2 = query_is(v_call->noum2, ap.second->applyTo->noum2, localsEntry, stk);
+				if (qarg2.result != QEquals) continue;
 			}
 
 

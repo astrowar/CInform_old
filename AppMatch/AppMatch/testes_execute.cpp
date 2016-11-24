@@ -64,21 +64,21 @@ else:
 
 	auto query_block = parse.Parser_Stmt("door points to garden  ", ISLOG);
 	auto ret_points = interpreter->query(query_block);
-	assert(ret_points == QEquals);
+	assert(ret_points.result == QEquals);
 
 	 
 	auto ret_points_q = interpreter->query(parse.Parser_Stmt("door points to hall  ", ISLOG));
-	assert(ret_points_q == QNotEquals);
+	assert(ret_points_q.result == QNotEquals);
 
 	auto ret_points_init = interpreter->query(parse.Parser_Stmt("door is viable exit ", ISLOG));
-	assert(ret_points_init == QEquals);
+	assert(ret_points_init.result == QEquals);
 
 	interpreter->execute_now(parse.Parser_Stmt("location is garden ", ISLOG));
 	auto ret_points_garden = interpreter->query(parse.Parser_Stmt("door is viable exit  ", ISLOG));
-	assert(ret_points_garden == QNotEquals);
+	assert(ret_points_garden.result == QNotEquals);
 
 	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
-	assert(ret_connect_init == QEquals);
+	assert(ret_connect_init.result == QEquals);
 
 	return;
 }
@@ -108,10 +108,10 @@ hall connect garden
 
 
 	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
-	assert(ret_connect_init == QEquals);
+	assert(ret_connect_init.result == QEquals);
 
 	auto ret_connect_b = interpreter->query(parse.Parser_Stmt("garden connect hall  ", ISLOG));
-	assert(ret_connect_b == QNotEquals  );
+	assert(ret_connect_b.result == QNotEquals  );
 
 	return;
 }
@@ -178,8 +178,8 @@ west is a direction
 	auto ret_true_a = interpreter->query(parse.Parser_Stmt("north is  opposite  of south  ", ISLOG));
 	auto ret_true_b = interpreter->query(parse.Parser_Stmt("south is  opposite  of north  ", ISLOG));
 	 auto ret_true_ba = interpreter->query(parse.Parser_Stmt(" south is  opposite  of ( opposite of  south ) ", ISLOG));
-	assert(ret_true_a == QEquals);
-	assert(ret_true_ba == QEquals);
+	assert(ret_true_a.result == QEquals);
+	assert(ret_true_ba.result == QEquals);
  
 	 
  
@@ -254,17 +254,17 @@ luck is normal
 		//target_q->dump("");
 		//assert(ret_true_a == QEquals);
 		auto res_2 = interpreter->query(parse.Parser_Stmt("box is huge ", true));
-		assert(res_2 == QEquals);
+		assert(res_2.result == QEquals);
 	}
 
 	if (true)
 	{
 		auto res_3 = interpreter->query(parse.Parser_Stmt("courage is not normal ", true));
-		assert(res_3 == QNotEquals);
+		assert(res_3.result == QNotEquals);
 		//string ss3 = R"(now every talent is not normal )"; 
 		interpreter->exec_eval(parse.parser_text("now every talent is not  normal", true), nullptr);
-		res_3 = interpreter->query(parse.Parser_Stmt("courage is not normal ", true));
-		assert(res_3 == QEquals);
+		 auto  res_4 = interpreter->query(parse.Parser_Stmt("courage is not normal ", true));
+		assert(res_4.result == QEquals);
 	}
 
 	return;

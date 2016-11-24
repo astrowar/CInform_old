@@ -17,7 +17,7 @@ void testeParser_7a()//dynamic match
  
     interpreter->execute_init(p);
      
-    QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
+	QueryResultContext q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
                                             std::make_shared<CBlockNoum>("diary") );
 
    
@@ -45,24 +45,24 @@ void testeParser_7b()//dynamic match
      
     interpreter->execute_init(p);
 
-    QueryResul q_fa = interpreter->query(parse.Parser_Stmt("best book is diary   ", ISLOG));
+    QueryResultContext q_fa = interpreter->query(parse.Parser_Stmt("best book is diary   ", ISLOG));
         
 
-    assert(q_fa == QEquals);
+    assert(q_fa.result == QEquals);
 
     interpreter->execute_init(parse.Parser_Stmt("materiality relates (a thing ) to (an atom )", ISLOG));
     interpreter->execute_init(parse.Parser_Stmt("the verb made of implies the materiality relation", ISLOG ));
      
  
     interpreter->execute_init(parse.Parser_Stmt("coin is made of silver ", ISLOG ));
-    QueryResul q_false=  interpreter->query(parse.Parser_Stmt("coin is made of gold  ", ISLOG ));
-    assert(q_false != QEquals);
-    QueryResul q_true = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
-    assert(q_true == QEquals);
+	QueryResultContext q_false=  interpreter->query(parse.Parser_Stmt("coin is made of gold  ", ISLOG ));
+    assert(q_false.result != QEquals);
+	QueryResultContext q_true = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
+    assert(q_true.result == QEquals);
 
     interpreter->execute_now(parse.Parser_Stmt("coin is made of gold ", ISLOG));
-    QueryResul q_false_2 = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
-    assert(q_false_2 != QEquals);
+	QueryResultContext q_false_2 = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
+    assert(q_false_2.result != QEquals);
     
 }
 
@@ -144,10 +144,10 @@ Zora speak Zubian
      // assert(q1 == QEquals);
       //auto q2 = interpreter->query(parse.Parser_Stmt(" English is a  language  ", ISLOG)); 
       //assert(q2 == QEquals);
-      auto q3 =  interpreter->query(parse.Parser_Stmt("Zora speak English  ", ISLOG)); 
-      assert(q3 == QEquals);
+	  QueryResultContext q3 =  interpreter->query(parse.Parser_Stmt("Zora speak English  ", ISLOG));
+      assert(q3.result == QEquals);
 
-      auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
+	  auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
       assert(q4.hasExecuted );
 }
 
@@ -203,14 +203,14 @@ to decide  if ( person called P  ) is oposite of ( person called Q )  :
 	//auto q3 = interpreter->query(parse.Parser_Stmt("best person is Mary  ", ISLOG));
 	//assert(q3 == QEquals);
 
-	auto q4 = interpreter->query(parse.Parser_Stmt(" Mary is suitable ", ISLOG));
-	assert(q4 == QEquals);
+	QueryResultContext q4 = interpreter->query(parse.Parser_Stmt(" Mary is suitable ", ISLOG));
+	assert(q4.result == QEquals);
 
-	auto q5 = interpreter->query(parse.Parser_Stmt(" Zora is suitable ", ISLOG));
-	assert(q5 != QEquals);
+	QueryResultContext q5 = interpreter->query(parse.Parser_Stmt(" Zora is suitable ", ISLOG));
+	assert(q5.result != QEquals);
 
-	auto q6 = interpreter->query(parse.Parser_Stmt(" Zora is oposite of Mary ", ISLOG));
-	assert(q6 == QEquals);
+	QueryResultContext q6 = interpreter->query(parse.Parser_Stmt(" Zora is oposite of Mary ", ISLOG));
+	assert(q6.result == QEquals);
 
 
 

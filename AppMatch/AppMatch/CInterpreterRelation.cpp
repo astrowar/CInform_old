@@ -43,14 +43,16 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 			auto & rel = *it;
 			if (rel->relation->named ==  relation->named)
 			{
-				if ( query_is(rel->value1 , n1 ,localsEntry, stk) == QueryResul::QEquals  )
+				QueryResultContext qcc = query_is(rel->value1, n1, localsEntry, stk);
+				if ( qcc.result== QueryResul::QEquals  ) 
 				{
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
 				}
 				if  (rel->relation->is_symetric())
 				{
-					if (query_is(rel->value2, n1, localsEntry, stk) == QueryResul::QEquals)
+					QueryResultContext qc2 = query_is(rel->value2, n1, localsEntry, stk);
+					if ( qc2.result == QueryResul::QEquals)
 					{
 						it = relInstances.erase(it);
 						if (it == relInstances.end()) break;
@@ -66,14 +68,16 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 			auto & rel = *it;
 			if (rel->relation->named == relation->named)
 			{
-				if (query_is(rel->value2, n2, localsEntry, stk) == QueryResul::QEquals)
+				QueryResultContext qcc = query_is(rel->value2, n2, localsEntry, stk);
+				if (qcc.result == QueryResul::QEquals)
 				{
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
 				}
 				if (rel->relation->is_symetric())
 				{
-					if (query_is(rel->value1, n2, localsEntry, stk) == QueryResul::QEquals)
+					auto qc2 = query_is(rel->value1, n2, localsEntry, stk);
+					if ( qc2.result == QueryResul::QEquals)
 					{
 						it = relInstances.erase(it);
 						if (it == relInstances.end()) break;
@@ -121,21 +125,29 @@ bool CBlockInterpreter::unset_relation(HBlockRelationBase relation, HBlock n1, H
 		auto & rel = *it;
 		if (rel->relation->named == relation->named)
 		{
-			if (query_is(rel->value1, n1, localsEntry, stk) == QueryResul::QEquals)
-				if (query_is(rel->value2, n2, localsEntry, stk) == QueryResul::QEquals)
+			QueryResultContext qcc = query_is(rel->value1, n1, localsEntry, stk);
+			if (qcc.result == QueryResul::QEquals)
+			{
+				QueryResultContext qc3 = query_is(rel->value2, n2, localsEntry, stk);
+				if (qc3.result == QueryResul::QEquals) 
 				{
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
 				}
+			}
 				
 			if (rel->relation->is_symetric())
 			{
-				if (query_is(rel->value1, n2, localsEntry, stk) == QueryResul::QEquals)
-					if (query_is(rel->value2, n1, localsEntry, stk) == QueryResul::QEquals)
+				QueryResultContext qc2 = query_is(rel->value1, n2, localsEntry, stk);
+				if (qc2.result == QueryResul::QEquals)
+				{
+					QueryResultContext qc3 = query_is(rel->value2, n1, localsEntry, stk);
+					if ( qc3.result == QueryResul::QEquals)
 					{
 						it = relInstances.erase(it);
 						if (it == relInstances.end()) break;
 					}
+				}
 			}
 
 		}

@@ -39,10 +39,10 @@ void testeParser_6()//kind of value
 
 	{
 		interpreter->execute_init(parse.Parser_Stmt("black is a color", ISLOG));
-		QueryResul q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
+		auto q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
 												 std::make_shared<CBlockNoum>("light"));
 		interpreter->execute_init(parse.Parser_Stmt("black is dark", ISLOG));
-		QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
+		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
 												std::make_shared<CBlockNoum>("light"));
 
 		string phase_1 = " ... ";
@@ -52,7 +52,7 @@ void testeParser_6()//kind of value
 		interpreter->execute_init(parse.Parser_Stmt("warm color is usually warm", ISLOG));
 
 		interpreter->execute_init(parse.Parser_Stmt("red is a warm color", ISLOG));
-		QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("red"),
+		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("red"),
 												std::make_shared<CBlockNoum>("warm"));
 
 		string phase_1 = " ... ";
@@ -75,7 +75,7 @@ void testeParser_6a()//kind of value
 		interpreter->execute_init(parse.Parser_Stmt("color of book is red ", ISLOG));
 	}
 
-	QueryResul q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
+	auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
 																			 std::make_shared<CBlockNoum>("book")),
 											std::make_shared<CBlockNoum>("red"));
 
@@ -341,12 +341,12 @@ else:
 		auto stmt =  parse.parser_text(ss1, ISLOG);
 		interpreter->execute_init( stmt );
 		auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));		 
-		assert(ret_e == QEquals);
+		assert(ret_e.result == QEquals);
 
 		interpreter->execute_now(parse.parser_text(ss2, ISLOG));
 
 		auto ret_e2 = interpreter->query(parse.Parser_Stmt(" x is a  ", ISLOG));
-		assert(ret_e == QEquals);
+		assert(ret_e.result == QEquals);
 	}
 
 

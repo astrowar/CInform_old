@@ -32,20 +32,20 @@ box is in hall
 
 	printf("---------------------------------------------\n");
 	auto ret_true_a = interpreter->query(parse.Parser_Condition(sentence_0, ISLOG));
-	assert(ret_true_a == QEquals);
+	assert(ret_true_a.result == QEquals);
 	
 	auto ret_true_b = interpreter->query(parse.Parser_Condition(sentence_1, ISLOG));
-	assert(ret_true_b == QEquals);
+	assert(ret_true_b.result == QEquals);
 
 	
 	auto ret_true_c = interpreter->query(parse.Parser_Condition(sentence_2, ISLOG));
-	assert(ret_true_c == QEquals);
+	assert(ret_true_c.result == QEquals);
 
 	auto ret_true_d = interpreter->query(parse.Parser_Condition(sentence_3, ISLOG));
-	assert(ret_true_d == QEquals);
+	assert(ret_true_d.result == QEquals);
 
 	auto ret_true_e = interpreter->query(parse.Parser_Condition(sentence_4, ISLOG));
-	assert(ret_true_e == QEquals);
+	assert(ret_true_e.result == QEquals);
 
 
 

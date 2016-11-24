@@ -7,7 +7,7 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
-QueryResul CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk)
 {
 	
 	if (HBlockNoum   nnoum2 = asHBlockNoum(n2))
@@ -26,7 +26,8 @@ QueryResul CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocal
 	{
 		 for( auto &hb : val_list->lista )
 		 {
-			 if (query_is(n1, hb, localsEntry, stk) == QEquals) return QEquals;
+			 QueryResultContext qcc = query_is(n1, hb, localsEntry, stk);
+			 if ( qcc.result == QEquals) return QEquals;
 		 }
 		 return QNotEquals;
 	}

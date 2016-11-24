@@ -1,12 +1,11 @@
 #include "CBlockInterpreterRuntime.hpp"
 
-QueryResultContext::QueryResultContext(QueryResul r)
+QueryResultContext::QueryResultContext(QueryResul r) : result(r)
 {
-	result = r;
 }
 
-QueryResultContext::QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult)
+QueryResultContext::QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult) : result(r)
 {
-	result = r;
+	 
 	matchedResult = _matchedResult;
 }

@@ -54,10 +54,10 @@ void testeRelation1() {
     auto ret_false_c = interpreter->query(parse.Parser_Stmt(" key unlock garden ", ISLOG));
     auto ret_true_d = interpreter->query(parse.Parser_Stmt(" box is unlocked by key ", ISLOG)); 
 
-	assert(ret_true_a == QEquals);
-	assert(ret_false_b == QNotEquals);
-	assert(ret_false_c == QNotEquals);
-	assert(ret_true_d == QEquals);
+	assert(ret_true_a.result == QEquals);
+	assert(ret_false_b.result == QNotEquals);
+	assert(ret_false_c.result == QNotEquals);
+	assert(ret_true_d.result == QEquals);
 
     return;
 }
@@ -83,8 +83,8 @@ void testeRelation2() {
 	auto ret_false_a = interpreter->query(parse.Parser_Stmt(" box contains key ", ISLOG));
 	auto ret_true_b = interpreter->query(parse.Parser_Stmt(" box contains book ", ISLOG));
 
-	assert(ret_false_a == QNotEquals);
-	assert(ret_true_b == QEquals);
+	assert(ret_false_a.result == QNotEquals);
+	assert(ret_true_b.result == QEquals);
 	return;
 }
 
@@ -112,14 +112,14 @@ void testeRelation3() {
 
 
 	auto ret_true_a = interpreter->query(parse.Parser_Stmt(" recipe1 produces cake ", ISLOG)); 
-	assert(ret_true_a == QEquals);
+	assert(ret_true_a.result == QEquals);
 	 
 	auto ret_true_b = interpreter->query(parse.Parser_Stmt(" product of recipe2 is soupe ", ISLOG));
-	assert(ret_true_b == QEquals);
+	assert(ret_true_b.result == QEquals);
 
 
 	auto ret_true_c = interpreter->query(parse.Parser_Stmt(" recipe  of cake  is  recipe1  ", ISLOG));
-	assert(ret_true_c == QEquals);
+	assert(ret_true_c.result == QEquals);
 
 	return;
 }
@@ -150,23 +150,23 @@ void testeRelation4() {
 	 
 
 	auto ret_true_a = interpreter->query(parse.Parser_Stmt(" (cake recipe) produce cake  ", ISLOG));
-	assert(ret_true_a == QEquals);
+	assert(ret_true_a.result == QEquals);
 
 	auto ret_true_b = interpreter->query(parse.Parser_Stmt(" soupe is produced by recipe2 ", ISLOG));
-	assert(ret_true_b == QEquals);
+	assert(ret_true_b.result == QEquals);
 
 
 	auto ret_false_c = interpreter->query(parse.Parser_Stmt(" recipe  of cake  is  recipe2  ", ISLOG));
-	assert(ret_false_c == QNotEquals);
+	assert(ret_false_c.result == QNotEquals);
 
 	interpreter->execute_now(parse.Parser_Stmt(" product of recipe2 is nothing ", ISLOG)); //exclui uma relacao
 	auto ret_false_d = interpreter->query(parse.Parser_Stmt(" soupe is produced by recipe2 ", ISLOG));
-	assert(ret_false_d == QNotEquals);
+	assert(ret_false_d.result == QNotEquals);
 
 
 	interpreter->execute_now(parse.Parser_Stmt(" (cake recipe)  is not produce  cake  ", ISLOG)); //exclui uma relacao
 	auto ret_false_e = interpreter->query(parse.Parser_Stmt(" cake is produced by (cake recipe) ", ISLOG));
-	assert(ret_false_e == QNotEquals);
+	assert(ret_false_e.result == QNotEquals);
 
 	return;
 

@@ -10,14 +10,16 @@ HBlock  CBlockInterpreter::evaluate_relation_property(HBlock c_block, HBlockNoum
 	{
 		if (rr->relation->input_B->named == property_noum->named) //Ok, this is 
 		{
-			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+			QueryResultContext qcc = query_is(c_block, rr->value1, localsEntry, stk);
+			if (QEquals == qcc.result )
 			{
 				return isSuitable(rr->value2, localsEntry, stk);
 			}
 		}
 		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
 		{
-			if (QEquals == query_is(c_block, rr->value2, localsEntry, stk))
+			QueryResultContext qcc = query_is(c_block, rr->value2, localsEntry, stk);
+			if (QEquals == qcc.result)
 			{
 				return isSuitable(rr->value1, localsEntry, stk);
 			}
