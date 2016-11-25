@@ -70,7 +70,8 @@ QueryResultContext CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_blo
     string name2 = BlockNoum(c_block1);
     if (name1 == "" || name2 == "") return QUndefined;
     //std::cout << name1 << "  " << name2 << std::endl;
-    if (name1 == name2) {
+    if ( isSameString(name1 ,name2)) 
+	{
         return QEquals;
     }
     return QNotEquals;
@@ -104,14 +105,19 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
 			{
                
                 if (cinst->is_set(value)) {
-                    return QEquals;
+                    return QueryResultContext(QEquals);
                 }
-                return QNotEquals;
+                return QueryResultContext(QNotEquals);
             }
         }
-    return QUndefined;
+    return QueryResultContext(QUndefined);
 
 }
+
+
+
+
+
 
 QueryResultContext
 CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
@@ -120,6 +126,24 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
+
+		//eh plural de algo ?
+
+		if (isSameString(property_noum->named , "plural" ))
+		{			
+			string c = BlockNoum(propObj);			
+			if (c != "")
+			{
+				HBlockNoum plural_named = get_plural_of(c);
+				if (plural_named != nullptr)
+				{
+					return query_is(plural_named, c_block1, localsEntry, stk);
+				}
+			}
+			return QueryResultContext(QUndefined);
+		}
+
+
 		if (HBlockInstance cinst = asHBlockInstance(propObj))
 		{
 
@@ -146,12 +170,9 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				}
 				logError (" Dont have Property");
 				{
-					QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk);
-
- 
-
+					QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk); 
 					if (result_prop.result != QUndefined) return result_prop;
-					return QUndefined;
+					return QueryResultContext(QUndefined);
 				}
 
 
@@ -161,9 +182,9 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 	else
 	{
 		logError("some mistake where\n");
-		return QUndefined;
+		return QueryResultContext(QUndefined);
 	}
-    return QUndefined;
+    return QueryResultContext(QUndefined);
 }
 
 

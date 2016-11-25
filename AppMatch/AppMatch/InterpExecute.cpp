@@ -443,6 +443,21 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 	if (auto  kprop = asHBlockProperty(c_block))
 	{
+		{
+			//check for plural
+			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
+			{
+				if ( isSameString(propNoum->named, "plural"))
+				{
+					string c = BlockNoum(kprop->obj);
+					if (c != "")
+					{
+						return  get_plural_of(c);
+					}					 
+				}
+			}
+		}
+
 		auto instancia = exec_eval(kprop->obj, localsEntry);
 		if (HBlockInstance objInst = asHBlockInstance(instancia))
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))

@@ -97,7 +97,12 @@ class CBlockInterpreter {
 	std::map<std::string, HBlockKindAction > actions_parameters; 
 	std::vector<HBlockUnderstandDynamic> dynamic_understand;
 
-	//Event handles
+//Plural
+	std::list<  std::pair< HBlockNoum, HBlockNoum > > plural_assertations;
+ 
+
+
+//Event handles
 	std::vector<HBlockEventHandle> event_handles;
 	int instancia_id;
 
@@ -196,6 +201,7 @@ public:
 
 
 	std::pair<HBlockKind, HBlockKind> create_derivadeKind(string called, string baseName);
+	bool assert_assertation(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	bool assert_it_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
  
 	bool assert_it_instance(HBlock obj, HBlock value, HRunLocalScope localsEntry);
@@ -262,6 +268,7 @@ public:
 
  
 	HBlock value_can_be_assign_to(HBlock value, HBlockKind kind, HRunLocalScope localsEntry);
+	bool set_plural_property(HBlock noum_singular, HBlock noum_plural, HRunLocalScope localsEntry);
 	bool assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry);
 	QueryResultContext query_is_List(CBlock *c_block, CBlock *c_block1);
 
@@ -308,6 +315,7 @@ public:
 	HBlock evaluate_values(HBlock q, HRunLocalScope localsEntry, QueryStack stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack)> isSuitable);
 	HBlock evaluate_values(HBlock c_block);
 
+	HBlockNoum get_plural_of(string s);
 	bool isSameString(string s1, string s2);
 };
 

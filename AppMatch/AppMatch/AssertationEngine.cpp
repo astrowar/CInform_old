@@ -240,17 +240,43 @@ HBlock CBlockInterpreter::value_can_be_assign_to(HBlock value, HBlockKind kind, 
 }
 
 
+
+bool CBlockInterpreter::set_plural_property(HBlock  _singular, HBlock  _plural, HRunLocalScope localsEntry)
+{
+	if ( HBlockNoum noum_singular = asHBlockNoum( _singular ) )
+	{
+		if ( HBlockNoum noum_plural = asHBlockNoum( _plural ) )
+		{			 
+			plural_assertations.push_back(make_pair(noum_singular, noum_plural));
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+
 bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry) {
 	if (HBlockNoum nbase = asHBlockNoum(obj)) {
 		HBlock nobj = resolve_noum(nbase, localsEntry);
-		if (nobj != nullptr) {
+		if (nobj != nullptr) 
+		{
 			return assert_it_property(propname, nobj, value, localsEntry);
 		}
-		return false;
+		  
 	}
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
+
+		if (isSameString(property_noum->named, "plural"))
+		{
+			bool set_prop_plural = set_plural_property(obj, value, localsEntry);
+			if (set_prop_plural) return set_prop_plural;
+		}
+
+
 		if (HBlockInstance cinst = asHBlockInstance(obj))
 		{
 			HVariableNamed vv = cinst->get_property(property_noum->named);
@@ -286,12 +312,14 @@ bool CBlockInterpreter::assert_it_property(HBlock propname, HBlock obj, HBlock v
 				logMessage("Obje dont have " + property_noum->named + "property ");
 			} 
 		}
+	 
 
 		{
 			bool set_prop_rel = set_relation_property(property_noum, obj, value, localsEntry);
 			if (set_prop_rel) return set_prop_rel;
 		}
 
+		 
 	}
 	return false;
 
@@ -382,16 +410,8 @@ void CBlockInterpreter::execute_init(HBlock p) {
 
 	else if (HBlockAssertion_is vk = asHBlockAssertion_is(p)) {
 		HBlock obj = vk->get_obj();
-		HBlock value = vk->get_definition();
-		 
-
-		//Static Definition de uma instancia derivado
-		if (assert_it_Value(obj, value,localsEntry)) return;
-		if (assert_it_kind(obj, value,localsEntry)) return;
-		if (assert_it_instance(obj, value,localsEntry)) return;
-		if (assert_it_valuesDefinitions(obj, value,localsEntry)) return;
-		if (assert_it_action(obj, value)) return;
-
+		HBlock value = vk->get_definition(); 
+		if (assert_assertation(obj, value, localsEntry)) return;		
 		logError("Undefined error");
 		p->dump("  ");
 		//throw "undefined block";

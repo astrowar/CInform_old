@@ -39,10 +39,23 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 
 }
 
+bool CBlockInterpreter::assert_assertation(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+{
 
+ 
+ 
+		//Static Definition de uma instancia derivado
+		if (assert_it_Value(obj, value, localsEntry)) return true ;
+		if (assert_it_kind(obj, value, localsEntry)) return true;
+		if (assert_it_instance(obj, value, localsEntry)) return true;
+		if (assert_it_valuesDefinitions(obj, value, localsEntry)) return true;
+		if (assert_it_action(obj, value)) return true;
 
+		logError("Undefined error");
+		 
+		return false ;
 
-
+	}
 
 bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {

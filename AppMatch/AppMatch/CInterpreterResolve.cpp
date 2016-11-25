@@ -10,6 +10,23 @@
 using namespace std;
 
 
+
+
+HBlockNoum  CBlockInterpreter::get_plural_of( string s )
+{
+	for(auto v : plural_assertations)
+	{
+		
+		if (isSameString(v.first->named, s))
+		{
+			return v.second ;
+		}
+	}
+	return nullptr;
+}
+
+
+
 bool CBlockInterpreter::isSameString(string s1 , string s2)
 {
 	if (s1 == s2) return true;
@@ -91,7 +108,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 	}
 
 	if (HBlockAction   kaa = asHBlockAction (c_block)) {
-		return kaa->named;
+		return   kaa->named;
 	}
 
 	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
@@ -111,7 +128,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 	}
 
 	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
-		return k6->named ;
+		return   k6->named ;
 	}
 
 
@@ -194,10 +211,8 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 HBlock CBlockInterpreter::resolve_if_noum(HBlock  n, HRunLocalScope localsEntry,std::list<std::string>  noumsToResolve)
 {
 	if (auto anoum = asHBlockNoum(n))
-	{
-		 
-		 return resolve_noum(anoum, localsEntry, noumsToResolve );
-	 
+	{		 
+		 return resolve_noum(anoum, localsEntry, noumsToResolve );	 
 	}
 	return n;
 }

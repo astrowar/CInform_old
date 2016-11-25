@@ -356,18 +356,28 @@ else:
 
 void testeParser_plural() {
 
-
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	{
-		CParser parse(std::make_shared<CBlockInterpreter>());
+		CParser parse(interpreter);
 
 		string ss1 =
 			R"(
 plural of passaro is passaros
-caixas is plural of caixa 
+plural of caixa  is caixas
+plural of brother in law is brothers in law
   
 )";
-		parse.parser_text(ss1, true);
+		auto pp =  parse.parser_text(ss1, true);
+		interpreter->execute_init(pp);
+
+		auto rt = interpreter->exec_eval(parse.Parser_Expression(" plural of caixa ", ISLOG),nullptr);
+		rt->dump("");
+
+		rt = interpreter->exec_eval(parse.Parser_Expression(" plural of brother in law ", ISLOG), nullptr);
+		rt->dump("");
 	}
+	logMessage("...");
+	return;
 }
 
 void testePlurals()
@@ -380,6 +390,9 @@ void testePlurals()
 	printf("ox -> %s \n", c_oxen);
 	printf("hooves <- %s \n", c_hooves);
 	printf("done \n");
+
+
+	testeParser_plural();
 	return;
 }
 
