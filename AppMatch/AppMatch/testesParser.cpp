@@ -2,6 +2,7 @@
 
 #include "BaseTest.hpp"
 #include <cassert>
+#include "ParserPlural.hpp"
 
 void testeParser_6()//kind of value
 {
@@ -369,8 +370,25 @@ caixas is plural of caixa
 	}
 }
 
+void testePlurals()
+{
+
+	auto ptable = plura_table();
+	char* c_oxen = plural_of("ox", &ptable);
+	char* c_hooves = singular_of("hooves", &ptable);
+
+	printf("ox -> %s \n", c_oxen);
+	printf("hooves <- %s \n", c_hooves);
+	printf("done \n");
+	return;
+}
+
 
 int main() {
+
+	
+	testePlurals();
+	return 0;
 	// testeParser_1();
 
 	//testValues_all();

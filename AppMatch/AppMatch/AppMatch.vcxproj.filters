@@ -363,5 +363,8 @@
     <ClCompile Include="Parser_Plurals_En.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="ParserPlural_table.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

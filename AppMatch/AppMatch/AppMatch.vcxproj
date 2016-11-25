@@ -239,6 +239,7 @@
     <ClCompile Include="ParserDynamicDispatch.cpp" />
     <ClCompile Include="ParseRelation.cpp" />
     <ClCompile Include="ParseRelationWhen.cpp" />
+    <ClCompile Include="ParserPlural_table.cpp" />
     <ClCompile Include="ParserSelectorFunctional.cpp" />
     <ClCompile Include="ParserStmt.cpp" />
     <ClCompile Include="ParserTextEntry.cpp" />
