@@ -16,7 +16,7 @@ void testeSerialize1() {
 
 
 
-	auto p = (parse.Parser_Stmt("puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
+	auto p = (Statement::Parser_Stmt(&parse,"puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
 	
 	//data_d_mananger.store( std::make_shared<CBlockNoum>("teste") );
 

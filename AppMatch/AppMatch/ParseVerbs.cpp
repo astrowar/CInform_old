@@ -3,7 +3,8 @@ using namespace CBlocking;
  
 
 
-HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
+HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std::vector<HTerm>&  term)
+{
     
  
 	{
@@ -13,14 +14,14 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  t
 		{
 			predList.push_back(mkHPredAny("N1"));
 			predList.push_back(verb_IS_NOT());
-			predList.push_back(verbList);
+			predList.push_back(p->verbList);
 			predList.push_back(mkHPredAny("N2"));
 		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
-            HBlock n2 = parser_expression(res.matchs["N2"]);
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
+            HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
             return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
         }
     }
@@ -31,14 +32,14 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  t
 	 
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(mk_HPredLiteral("not"));
-        predList.push_back(verbList);
+        predList.push_back(p->verbList);
         predList.push_back(mkHPredAny("N2"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
-            HBlock n2 = parser_expression(res.matchs["N2"]);
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
+            HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
             return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
 
         }
@@ -50,18 +51,18 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  t
 		 
         predList.push_back(mkHPredAny("N1"));
         predList.push_back(verb_IS());
-        predList.push_back(verbList);
+        predList.push_back(p->verbList);
         predList.push_back(mkHPredAny("N2"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
 				}
 			}
@@ -74,18 +75,18 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  t
 		std::vector<HPred> predList = {};
 		 
         predList.push_back(mkHPredAny("N1"));
-        predList.push_back(verbList);
+        predList.push_back(p->verbList);
         predList.push_back(mkHPredAny("N2"));
 		 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_assertionTarger(res.matchs["N1"]);
+            HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
 				}
 			}

@@ -36,7 +36,7 @@ HBlockSelector   NSParser::CParser::parser_List_selector(std::vector<HTerm>&  te
 
 		if (res.result == Equals)
 		{
-			HBlock noum = parser_assertionTarger(res.matchs["List"]);
+			HBlock noum = Expression::parser_assertionTarger(res.matchs["List"]);
 			if (noum == nullptr) return nullptr;
 			return std::make_shared<CBlockSelector_All>(noum);
 		}
@@ -54,7 +54,7 @@ HBlockSelector   NSParser::CParser::parser_List_selector(std::vector<HTerm>&  te
 
 		if (res.result == Equals)
 		{
-			HBlock noum = parser_assertionTarger(res.matchs["List"]);
+			HBlock noum = Expression::parser_assertionTarger(res.matchs["List"]);
 			if (noum == nullptr) return nullptr;
 			return std::make_shared<CBlockSelector_Any>(noum);
 		}

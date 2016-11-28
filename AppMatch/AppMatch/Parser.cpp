@@ -62,49 +62,6 @@ void NSParser::CParser::set_Noum(NoumDefinitions ndef) {
  
 
 
-HBlock NSParser::CParser::parse_toDecide_Entry(std::vector<HTerm>&  term) {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("to"));
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral(":"));
-        return nullptr;
-    }
-}
-
-HBlock NSParser::CParser::parse_toDecide_Ret(std::vector<HTerm>&  term) {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral("on"));
-        predList.push_back(mkHPredAny("Subst"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = parser_expression(res.matchs["Subst"]);
-            if (n1 == nullptr) return nullptr;
-            return std::make_shared<CBlockToDecideOn>(n1);
-        }
-    }
-    return nullptr;
-}
-
-HBlock NSParser::CParser::parser_decides_Assertion(std::vector<HTerm>&  term) {
-
-    HBlock verb_decideIn = parse_toDecide_Entry(term);
-    if (verb_decideIn != nullptr) {
-        return verb_decideIn;
-    }
-
-    HBlock verb_decideRet = parse_toDecide_Ret(term);
-    if (verb_decideRet != nullptr) {
-        return verb_decideRet;
-    }
-
-    return nullptr;
-
-
-}
-
 std::vector<HTerm> expandTerm( HTerm term)
 {
     if (CList* clist =  asCList( term.get() ) )
@@ -114,7 +71,7 @@ std::vector<HTerm> expandTerm( HTerm term)
     return {term};
 }
 
-HBlock NSParser::CParser::sys_say_action(std::vector<HTerm>&  term)  
+HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  term)
 {
 	std::vector<HPred> predList;
 	predList.push_back(mk_HPredLiteral("say"));
@@ -123,7 +80,7 @@ HBlock NSParser::CParser::sys_say_action(std::vector<HTerm>&  term)
 	if (res.result == Equals)
 	{
 		auto nterms = expandTerm(res.matchs["Body"]);
-		HBlock value = parser_expression_lst(nterms);
+		HBlock value = Expression::parser_expression_lst(p,nterms);
 		HBlockAction say_Action = std::make_shared<CBlockAction>("say_text");
 		return std::make_shared<CBlockActionCall>(say_Action, value, nullptr);
 	}
@@ -157,7 +114,7 @@ HBlock  NSParser::CParser::parser_loop_A( HTerm&  term)
 }
 
 //parse a segunda parte do iterator
-HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , NoumLocation nlocation  )
+HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * p, HTerm&  term , NoumLocation nlocation  )
 {
  
 	{
@@ -165,20 +122,20 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(verb_IS_NOT());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 		 
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
 					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
 				}
 			}
@@ -190,20 +147,20 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_HPredLiteral("not"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			 
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
 					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsNotVerb>(vrepr, n1, n2);
 				}
 			}
@@ -216,20 +173,20 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(verb_IS());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			
 			{
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
 					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
 				}
 			}
@@ -241,21 +198,21 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			 
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
 				
-				HBlock n2 = parser_expression(res.matchs["N2"]);
+				HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
 					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
 				}
 			}
@@ -279,12 +236,12 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals) {
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
 				if (n1 != nullptr)
 				{
-					HBlock value = parser_expression(res.matchs["Value"]);
+					HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
 					if (value != nullptr)
 					{
 						if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
@@ -308,10 +265,10 @@ HBlockAssertion_is NSParser::CParser::parse_Loop_AssertionVerb(HTerm&  term , No
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals) {
-			HBlock n1 = parser_expression(res.matchs["N1"]);
+			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{ 
-				HBlock value = parser_expression(res.matchs["Value"]);
+				HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
 				if (value != nullptr)
 				{
 					if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
@@ -464,32 +421,32 @@ HBlock NSParser::CParser::STMT_system_Assertion(std::vector<HTerm>& term)
 
 
 //Uma das rotinas mais importantes. Ela altera  o proprio parser
-HBlock NSParser::CParser::STMT_understand_Assertion(std::vector<HTerm>&  term) {
+HBlock NSParser::ParseAssertion::STMT_understand_Assertion(CParser * p, std::vector<HTerm>&  term) {
 
-    auto d_action = (DynamicDispatch_action(term));
+    auto d_action = (DynamicDispatch::DynamicDispatch_action(p,term));
     if (d_action != nullptr) return d_action;
     
 
-    auto p_action = STMT_understand_Action_Assertion_static(term);
+    auto p_action = DynamicDispatch::STMT_understand_Action_Assertion_static(p,term);
     if (p_action != nullptr) return p_action;
 
     return nullptr;
 }
 
 
-HBlock NSParser::CParser::parse_removeArticle(std::vector<HTerm>& term) {
+HBlock NSParser::ParseAssertion::parse_removeArticle(CParser * p, std::vector<HTerm>& term) {
     if (term.size() > 1) {
 
         if (mk_HPredLiteral("the")->match(term.front()) == Equals) {
             auto gtail = get_tail(term);
-            return parser_expression_lst(gtail);
+            return Expression::parser_expression_lst(p,gtail);
         }
     }
     return nullptr;
 }
 
 
-HBlock NSParser::CParser::parse_noum(std::vector<HTerm>& term) 
+HBlock NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& term)
 {
 
 	// anula se tiver uma palavra chave reservada
@@ -552,9 +509,9 @@ HBlockAssertion_isInstanceOf NSParser::CParser::parseAssertion_isInstanceOf(std:
 
 
 
-HBlock NSParser::CParser::parseAssertionFirstTerm_Compose(HTerm term) {
+HBlock NSParser::ParseAssertion::parseAssertionFirstTerm_Compose(CParser *p, HTerm term) {
     HBlockList c_list = std::make_shared<CBlockList>(std::list<HBlock>());
-    c_list = parseAssertionFirstTerm_COMMA_AND(term, c_list);
+    c_list = ParseList::parseAssertionFirstTerm_COMMA_AND(p,term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
         swap(rt, c_list->lista.front());
@@ -565,14 +522,14 @@ HBlock NSParser::CParser::parseAssertionFirstTerm_Compose(HTerm term) {
 }
 
 
-HBlock NSParser::CParser::parseAssertionFirstTerm(HTerm term) {
-    return parseAssertionFirstTerm_Compose(term);
+HBlock NSParser::ParseAssertion::parseAssertionFirstTerm(CParser *p, HTerm term) {
+    return parseAssertionFirstTerm_Compose(p,term);
 }
 
 
-HBlock NSParser::CParser::parseAssertionEnumSecondTerm(HTerm term) {
+HBlock NSParser::ParseAssertion::parseAssertionEnumSecondTerm(CParser *p, HTerm term) {
     HBlockList c_list = std::make_shared<CBlockList>(std::list<HBlock>());
-    c_list = parseAssertionFirstTerm_COMMA_OR(term, c_list);
+    c_list = ParseList::parseAssertionFirstTerm_COMMA_OR(p,term, c_list);
     if (c_list->lista.size() == 1) {
         HBlock rt;
         swap(rt, c_list->lista.front());
@@ -582,14 +539,14 @@ HBlock NSParser::CParser::parseAssertionEnumSecondTerm(HTerm term) {
     return c_list;
 }
 
-HBlock NSParser::CParser::STMT_Decide_Assertion(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::ParseAssertion::STMT_Decide_Assertion(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
-    HBlock assert_decide = parseAssertion_isDecide(lst,inner,err);
+    HBlock assert_decide = ParseDecide::parseAssertion_isDecide(p,lst,inner,err);
     if (assert_decide != nullptr) {
         return assert_decide;
     }
 
-	HBlock assert_decide_on = parseAssertion_DecideOn(lst, inner, err);
+	HBlock assert_decide_on = ParseDecide::parseAssertion_DecideOn(p,lst, inner, err);
 	if (assert_decide_on != nullptr)
 	{
 		return assert_decide_on;
@@ -601,7 +558,7 @@ HBlock NSParser::CParser::STMT_Decide_Assertion(std::vector<HTerm>& lst, HGroupL
 
 
 
-HBlockProperty NSParser::CParser::parse_PropertyOf(std::vector<HTerm>& term) {
+HBlockProperty NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
     {
 
         std::vector<HPred> predList;
@@ -610,9 +567,9 @@ HBlockProperty NSParser::CParser::parse_PropertyOf(std::vector<HTerm>& term) {
         predList.push_back(mkHPredAny("obj"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock a = parser_expression(res.matchs["property"]);
+            HBlock a = Expression::parser_expression(p,res.matchs["property"]);
             if (a != nullptr) {
-                HBlock b = parser_expression(res.matchs["obj"]);
+                HBlock b = Expression::parser_expression(p,res.matchs["obj"]);
                 if (b != nullptr) {
                     //HBlockNoum  object_Name = std::make_shared<CBlockNoum>(res.matchs["obj"]->removeArticle()->repr());
                     return std::make_shared<CBlockProperty>(a, b);
@@ -650,10 +607,10 @@ HBlockProperty NSParser::CParser::parse_PropertyOf(std::vector<HTerm>& term) {
 }
 
 
-HBlockEnums NSParser::CParser::parseAssertion_EnumTerms(HTerm enumList) {
+HBlockEnums NSParser::ParseAssertion::parseAssertion_EnumTerms(CParser * p, HTerm enumList) {
 
     HBlockList elist = std::make_shared<CBlockList>(std::list<HBlock>());
-    elist = parseAssertionFirstTerm_COMMA_OR(enumList, elist);
+    elist = ParseList::parseAssertionFirstTerm_COMMA_OR(p,enumList, elist);
     if (elist->lista.empty()) {
         return nullptr;
     }
@@ -666,7 +623,7 @@ HBlockEnums NSParser::CParser::parseAssertion_EnumTerms(HTerm enumList) {
 }
 
 
-HBlock NSParser::CParser::STMT_canBe_Assertion(std::vector<HTerm>& lst) {
+HBlock NSParser::ParseAssertion::STMT_canBe_Assertion(CParser * p, std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
     predList.push_back(mkHPredAny("Target"));
     predList.push_back(mk_HPredLiteral("can"));
@@ -676,14 +633,14 @@ HBlock NSParser::CParser::STMT_canBe_Assertion(std::vector<HTerm>& lst) {
 
     if (res.result != Equals) return nullptr;
 
-    HBlockEnums definitionSecond = parseAssertion_EnumTerms(res.matchs["EnumValues"]);
+    HBlockEnums definitionSecond = parseAssertion_EnumTerms(p,res.matchs["EnumValues"]);
     if (definitionSecond == nullptr) {
         return nullptr;
     }
 
     
 
-    HBlock defintionFirst_Noum = parser_assertionTarger(res.matchs["Target"]);
+    HBlock defintionFirst_Noum = Expression::parser_assertionTarger(p,res.matchs["Target"]);
     if (defintionFirst_Noum != nullptr) {
         return std::make_shared<CBlockAssertion_canBe>(defintionFirst_Noum, definitionSecond);
     }
@@ -691,7 +648,7 @@ HBlock NSParser::CParser::STMT_canBe_Assertion(std::vector<HTerm>& lst) {
     return nullptr;
 }
 
-HBlockInstanceVariable NSParser::CParser::CProperty_called(HTerm term) {
+HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, HTerm term) {
     {
         // the torch has a brightness called brightnessLevel ;
         std::vector<HPred> predList;
@@ -717,7 +674,7 @@ HBlockInstanceVariable NSParser::CParser::CProperty_called(HTerm term) {
 }
 
 
-HBlock NSParser::CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
+HBlock NSParser::ParseAssertion::STMT_hasAn_Assertion(CParser * p, std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
 
 
@@ -731,13 +688,13 @@ HBlock NSParser::CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
         return nullptr;
     }
 
-    HBlockInstanceVariable definitionProperty_kindAndName = CProperty_called(res.matchs["KindAndName"]);
+    HBlockInstanceVariable definitionProperty_kindAndName = CProperty_called(p,res.matchs["KindAndName"]);
     if (definitionProperty_kindAndName == nullptr) {
         return nullptr;
     }
 
     //HBlockNoum  defintionFirst_KindOrInstance = std::make_shared<CBlockNoum>( res.matchs["Target"]->removeArticle()->repr());
-    HBlock defintionFirst_KindOrInstance = parser_kind_or_instance(res.matchs["Target"]);
+    HBlock defintionFirst_KindOrInstance = Expression::parser_kind_or_instance(p,res.matchs["Target"]);
 
     return std::make_shared<CBlockAssertion_InstanceVariable>(defintionFirst_KindOrInstance,
                                                               definitionProperty_kindAndName);
@@ -745,10 +702,10 @@ HBlock NSParser::CParser::STMT_hasAn_Assertion(std::vector<HTerm>& lst) {
 
 
 
-HBlock NSParser::CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *err) {
+HBlock NSParser::Statement::parser_stmt(CParser * p, HTerm term, HGroupLines inner, ErrorInfo *err) {
     if (CList *vlist = asCList(term.get())) {
         auto v = vlist->asVector();
-        auto r = parser_stmt_inner(v,inner,err);
+        auto r = parser_stmt_inner(p,v,inner,err);
         /*if (r == nullptr)
             std::cout << term->repr() << std::endl;*/
 
@@ -763,37 +720,28 @@ HBlock NSParser::CParser::parser_stmt(HTerm term, HGroupLines inner, ErrorInfo *
 
 
 
-HBlock NSParser::CParser::parserBoolean(HTerm term) {
-    if (CList *vlist = asCList(term.get())) {
-        auto v = vlist->asVector();
-        auto r = parserBoolean(v);
-        if (r != nullptr) {
-            return r;
-        } else {
-            //	std::cout << term->repr() << std::endl;
-        }
-
-    }
-    return parser_expression(term);
-}
 
 
-HBlock NSParser::CParser::parser_stmt_str(string str, HGroupLines inner, ErrorInfo *err) {
+
+HBlock NSParser::Statement::parser_stmt_str(CParser * p, string str, HGroupLines inner, ErrorInfo *err) {
     str = decompose_bracket(str, "(");
     str = decompose_bracket(str, ")");
     str = decompose_bracket(str, ",");
     std::vector<HTerm> lst = decompose(str);
-    return parser_stmt_inner(lst,inner,err);
+    return Statement::parser_stmt_inner(p,lst,inner,err);
 }
 
 
-HBlock NSParser::CParser::Parser_Stmt(string str, bool dump )
+HBlock NSParser::Statement::Parser_Stmt(CParser * p, string str, bool dump )
 {
 	ErrorInfo err;
-		return parser_stmt(str, dump, &err);
+		return Statement::parser_stmt(p,str, dump, &err);
 }
+
 HTerm convertToTerm(MTermSet &m);
-HBlock NSParser::CParser::Parser_Expression(string str, bool dump)
+
+
+HBlock NSParser::Expression::Parser_Expression(CParser * p, string str, bool dump)
 {
 	ErrorInfo err;
 	str = decompose_bracket(str, "(");
@@ -801,7 +749,7 @@ HBlock NSParser::CParser::Parser_Expression(string str, bool dump)
 	str = decompose_bracket(str, ",");
 	std::vector<HTerm> lst = decompose(str);
 	auto term = convertToTerm(lst);
-	auto b = parser_expression(term);
+	auto b = Expression::parser_expression(p,term);
 	if (dump)
 	{
 		b->dump(" ");
@@ -831,9 +779,9 @@ HBlock NSParser::CParser::Parser_Condition(string str, bool dump)
 }
 
 
-HBlock NSParser::CParser::parser_stmt(string str,bool dump,ErrorInfo *err)
+HBlock NSParser::Statement::parser_stmt(CParser *p, string str,bool dump,ErrorInfo *err)
 {
-    HBlock b = parser_stmt_str(str,nullptr, err); //nao tem inner
+    HBlock b = Statement::parser_stmt_str(p,str,nullptr, err); //nao tem inner
     if (dump)
     {		
         b->dump("");  
@@ -891,7 +839,7 @@ std::vector<string>  split_new_lines(const string &str)   {
    return sentences;
 }
  
- HBlock  NSParser::CParser::parser_GroupLine( std::string v , HGroupLines inner, ErrorInfo *err)
+ HBlock  NSParser::Statement::parser_GroupLine(CParser * p, std::string v , HGroupLines inner, ErrorInfo *err)
 {
 	auto vstr = decompose_bracket(v, "(");
 	vstr = decompose_bracket(vstr, ")");
@@ -899,7 +847,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
 	 
-	HBlock  rblock_stmt = parser_stmt_inner (lst, inner , err);
+	HBlock  rblock_stmt = parser_stmt_inner (p,lst, inner , err);
 	if (rblock_stmt ==nullptr)
 	{
 		logError("|" + vstr+"|");
@@ -913,7 +861,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 	return rblock_stmt;
 }
 
- HBlockComandList NSParser::CParser::parser_stmt_inner(HGroupLines inner, ErrorInfo *err)
+ HBlockComandList NSParser::Statement::parser_stmt_inner(CParser * p, HGroupLines inner, ErrorInfo *err)
 {
 	std::list<HBlock> retBlocks;
 	if (inner == nullptr)
@@ -932,7 +880,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 			if (inext == inner->lines.end()) _inner = inner->inner;
 			 
 		 
-			blk = parser_GroupLine(rawLine, _inner, err);
+			blk = parser_GroupLine(p,rawLine, _inner, err);
 			if (blk == nullptr)
 			{
 			
@@ -954,7 +902,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 		if (inner == nullptr) break;
 	}
 
-	retBlocks = post_process_tokens(retBlocks ,  err );
+	retBlocks = ControlFlux::post_process_tokens(p,retBlocks ,  err );
 	if (retBlocks.empty())
 	{	 
 		

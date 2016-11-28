@@ -4,7 +4,7 @@
 using namespace CBlocking;
 using namespace Interpreter;
 
-HBlockKindAction NSParser::CParser::parse_AssertionAction_secondPart( HTerm  term)
+HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_secondPart(CParser * p,  HTerm  term)
 {
 	
 	{
@@ -20,7 +20,7 @@ HBlockKindAction NSParser::CParser::parse_AssertionAction_secondPart( HTerm  ter
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
+			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p,res.matchs["ApplyRemainder"]);
 			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
 			return std::make_shared<CBlockKindAction>("", applyTO);
 
@@ -71,7 +71,7 @@ HBlockKindAction NSParser::CParser::parse_AssertionAction_secondPart( HTerm  ter
 
 	return nullptr;
 }
-HBlock NSParser::CParser::parse_AssertionAction(std::vector<HTerm> term) {
+HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<HTerm> term) {
 
     {
         // and action applying to [one visible thing and requiring light]
@@ -86,9 +86,9 @@ HBlock NSParser::CParser::parse_AssertionAction(std::vector<HTerm> term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 	 
-			HBlockKindAction applyTO = parse_AssertionAction_secondPart(res.matchs["ApplyRemainder"]);
+			HBlockKindAction applyTO = ParseAssertionSecondary::parse_AssertionAction_secondPart(p,res.matchs["ApplyRemainder"]);
 			if (applyTO == nullptr) return nullptr;
-			HBlock noum = parser_assertionTarger(res.matchs["ActionName"]);
+			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["ActionName"]);
 			if (noum == nullptr) return nullptr;
 
 			{
@@ -101,7 +101,7 @@ HBlock NSParser::CParser::parse_AssertionAction(std::vector<HTerm> term) {
 
 				//	std::cout << "found " << actionMatch->repr()  << std::endl;
 
-				actionPredList->blist.push_back(actionMatch);
+				p->actionPredList->blist.push_back( actionMatch);
 				return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
 
 			}
@@ -117,7 +117,7 @@ HBlock NSParser::CParser::parse_AssertionAction(std::vector<HTerm> term) {
 }
 
 
-HBlock NSParser::CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
+HBlock NSParser::ParseAssertion::parse_AssertionIsVariable(CParser * p, std::vector<HTerm>& term) {
 	 
 
 
@@ -138,8 +138,8 @@ HBlock NSParser::CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
 
         if (res.result == Equals) {
 
-            HBlock noumVariable = parser_expression(res.matchs["VariableNoum"]);
-            HBlock baseKind = parser_kind(res.matchs["KindBase"]);
+            HBlock noumVariable = Expression::parser_expression(p,res.matchs["VariableNoum"]);
+            HBlock baseKind = Expression::parser_kind(p,res.matchs["KindBase"]);
             return std::make_shared<CBlockAssertion_isVariable>(noumVariable, baseKind);
         }
     }
@@ -147,7 +147,7 @@ HBlock NSParser::CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
 
 }
 
-HBlockKindOfName NSParser::CParser::parse_KindOf( HTerm  term)
+HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term)
 {
 	{
 		 
@@ -182,7 +182,7 @@ HBlockKindOfName NSParser::CParser::parse_KindOf( HTerm  term)
 
 }
 
-HBlock NSParser::CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
+HBlock NSParser::ParseAssertion::parse_AssertionIsKindOf(CParser * p, std::vector<HTerm>& term) {
 	{
 		// is a default ??
 		std::vector<HPred> predList;
@@ -194,9 +194,9 @@ HBlock NSParser::CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
 
 		if (res.result == Equals) {
 
-			HBlock value = parse_KindOf(res.matchs["KindDef"]);
+			HBlock value = parse_KindOf(p,res.matchs["KindDef"]);
 			if (value == nullptr) return nullptr;
-			HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
 			if (noum == nullptr) return nullptr;
 			return std::make_shared<CBlockAssertion_isDirectAssign>(noum, value);
 		}
@@ -206,7 +206,7 @@ HBlock NSParser::CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
 
 }
 
-HBlock NSParser::CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
+HBlock NSParser::ParseAssertion::parse_AssertionValuesOf(CParser * p, std::vector<HTerm>& term) {
 
     // The colors are blue, green, yellow, and red.
     // The textures are rough, stubbly and smooth.
@@ -232,8 +232,8 @@ HBlock NSParser::CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
         if (res.result == Equals) {
             //KindValue must exist 
 
-            HBlock valueName = parser_expression(res.matchs["valueName"]);
-            HBlock valueKind = parser_kind(res.matchs["valueKind"]);
+            HBlock valueName = Expression::parser_expression(p,res.matchs["valueName"]);
+            HBlock valueKind = Expression::parser_kind(p,res.matchs["valueKind"]);
             return std::make_shared<CBlockAssertion_isNamedValueOf>(valueName, valueKind);
 
 
@@ -243,7 +243,7 @@ HBlock NSParser::CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
 }
 
 
-HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term) {
+HBlock NSParser::ParseAssertion::parse_AssertionDefaultAssign(CParser *p, std::vector<HTerm>& term) {
 
     {
         // is a default ??
@@ -256,9 +256,9 @@ HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term)
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+            HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
             if (noum == nullptr) return nullptr;
-            HBlock value = parser_expression(res.matchs["Value"]);
+            HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
             if (value == nullptr) return nullptr;
             return std::make_shared<CBlockAssertion_isDefaultAssign>(noum, value);
         }
@@ -275,9 +275,9 @@ HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term)
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+            HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
             if (noum == nullptr) return nullptr;
-            HBlock value = parser_expression(res.matchs["Value"]);
+            HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
             if (value == nullptr) return nullptr;
             return std::make_shared<CBlockAssertion_isConstantAssign>(noum, value);
         }
@@ -294,9 +294,9 @@ HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term)
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+            HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
             if (noum == nullptr) return nullptr;
-            HBlock value = parser_expression(res.matchs["Value"]);
+            HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
             if (value == nullptr) return nullptr;
             return std::make_shared<CBlockAssertion_isForbiddenAssign>(noum, value);
         }
@@ -308,7 +308,7 @@ HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term)
 
 
 
-HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HTerm>& term) {
+HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser * p, std::vector<HTerm>& term) {
     {
         // is a kind definition ??
 		static std::vector<HPred> predList = {};
@@ -322,9 +322,9 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HT
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+            HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
             if (noum == nullptr) return nullptr;
-            HBlock value = parser_expression(res.matchs["Value"]);
+            HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
             if (value == nullptr) return nullptr;
             return std::make_shared<CBlockAssertion_isNotDirectAssign>(noum, value);
         }
@@ -344,7 +344,7 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HT
 
         if (res.result == Equals) {
 
-            HBlock value = parser_expression(res.matchs["Value"]);
+            HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
             if (value == nullptr) return nullptr;
 
             if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) {
@@ -354,12 +354,12 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HT
 
                 HPred actionMatch = convert_to_predicate(sterm.get());
                 //	std::cout << "found " << actionMatch->repr()  << std::endl;
-                actionPredList->blist.push_back(actionMatch);
+                p->actionPredList->blist.push_back(actionMatch);
 
                 return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, value);
 
             } else {
-                HBlock noum = parser_assertionTarger(res.matchs["Noum"]);
+                HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
                 if (noum == nullptr) return nullptr;
                 return std::make_shared<CBlockAssertion_isDirectAssign>(noum, value);
             }
@@ -374,40 +374,40 @@ HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HT
 
 
 
-HBlock NSParser::CParser::parser_Declaration_Assertion(std::vector<HTerm>& lst)
+HBlock NSParser::ParseAssertion::parser_Declaration_Assertion(CParser * p, std::vector<HTerm>& lst)
 {
 
-    HBlock verb_Assign = parse_AssertionVerb(lst);
+    HBlock verb_Assign = parse_AssertionVerb(p,lst);
     if (verb_Assign != nullptr) {
         return verb_Assign;
     }
 
-    HBlock action_Assign = parse_AssertionAction(lst);
+    HBlock action_Assign = parse_AssertionAction(p,lst);
     if (action_Assign != nullptr) {
         return action_Assign;
     }
 
-    HBlock assert_variable = parse_AssertionIsVariable(lst);
+    HBlock assert_variable = parse_AssertionIsVariable(p,lst);
     if (assert_variable != nullptr) {
         return assert_variable;
     }
 
-    HBlock assert_kindof = parse_AssertionIsKindOf(lst);
+    HBlock assert_kindof = parse_AssertionIsKindOf(p,lst);
     if (assert_kindof != nullptr) {
         return assert_kindof;
     }
 
-    HBlock assert_values = parse_AssertionValuesOf(lst);
+    HBlock assert_values = parse_AssertionValuesOf(p,lst);
     if (assert_values != nullptr) {
         return assert_values;
     }
 
-    HBlock assert_DefaultAssign = parse_AssertionDefaultAssign(lst);
+    HBlock assert_DefaultAssign = parse_AssertionDefaultAssign(p,lst);
     if (assert_DefaultAssign != nullptr) {
         return assert_DefaultAssign;
     }
 
-    HBlock assert_Assign = parse_AssertionDirectAssign(lst);
+    HBlock assert_Assign = parse_AssertionDirectAssign(p,lst);
     if (assert_Assign != nullptr) {
         return assert_Assign;
     }

@@ -12,12 +12,12 @@ void testeParser_7a()//dynamic match
     CParser parse(interpreter);
  
     {
-        interpreter->execute_init(parse.Parser_Stmt("thing is a kind ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("book is a thing ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("diary is a thing ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a thing ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"diary is a thing ", ISLOG));
     }
 
-    auto p = parse.Parser_Stmt("to decide what (thing) is (the best book) : diary ", ISLOG);
+    auto p = Statement::Parser_Stmt(&parse,"to decide what (thing) is (the best book) : diary ", ISLOG);
  
     interpreter->execute_init(p);
      
@@ -35,37 +35,37 @@ void testeParser_7b()//dynamic match
     CParser parse(interpreter);
      
     {
-        interpreter->execute_init(parse.Parser_Stmt("thing is a kind ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("book is a thing ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("diary is a thing ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("coin is a thing ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a thing ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"diary is a thing ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"coin is a thing ", ISLOG));
 
-        interpreter->execute_init(parse.Parser_Stmt("atom is a kind  ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("silver is a kind of atom ", ISLOG));
-        interpreter->execute_init(parse.Parser_Stmt("gold is a kind of atom ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"atom is a kind  ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"silver is a kind of atom ", ISLOG));
+        interpreter->execute_init(Statement::Parser_Stmt(&parse,"gold is a kind of atom ", ISLOG));
     }
 
-    auto p = parse.Parser_Stmt("to decide what (thing) is (  best book) : diary " , ISLOG );
+    auto p = Statement::Parser_Stmt(&parse,"to decide what (thing) is (  best book) : diary " , ISLOG );
      
     interpreter->execute_init(p);
 
-    QueryResultContext q_fa = interpreter->query(parse.Parser_Stmt("best book is diary   ", ISLOG));
+    QueryResultContext q_fa = interpreter->query(Statement::Parser_Stmt(&parse,"best book is diary   ", ISLOG));
         
 
     assert(q_fa.result == QEquals);
 
-    interpreter->execute_init(parse.Parser_Stmt("materiality relates (a thing ) to (an atom )", ISLOG));
-    interpreter->execute_init(parse.Parser_Stmt("the verb made of implies the materiality relation", ISLOG ));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"materiality relates (a thing ) to (an atom )", ISLOG));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb made of implies the materiality relation", ISLOG ));
      
  
-    interpreter->execute_init(parse.Parser_Stmt("coin is made of silver ", ISLOG ));
-	QueryResultContext q_false=  interpreter->query(parse.Parser_Stmt("coin is made of gold  ", ISLOG ));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"coin is made of silver ", ISLOG ));
+	QueryResultContext q_false=  interpreter->query(Statement::Parser_Stmt(&parse,"coin is made of gold  ", ISLOG ));
     assert(q_false.result != QEquals);
-	QueryResultContext q_true = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
+	QueryResultContext q_true = interpreter->query(Statement::Parser_Stmt(&parse,"coin is made of silver  ", ISLOG));
     assert(q_true.result == QEquals);
 
-    interpreter->execute_now(parse.Parser_Stmt("coin is made of gold ", ISLOG));
-	QueryResultContext q_false_2 = interpreter->query(parse.Parser_Stmt("coin is made of silver  ", ISLOG));
+    interpreter->execute_now(Statement::Parser_Stmt(&parse,"coin is made of gold ", ISLOG));
+	QueryResultContext q_false_2 = interpreter->query(Statement::Parser_Stmt(&parse,"coin is made of silver  ", ISLOG));
     assert(q_false_2.result != QEquals);
     
 }
@@ -77,16 +77,16 @@ void testeParser_7c()//dynamic match
     CParser parse(interpreter);
 
     {
-        auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG );
+        auto p = Statement::Parser_Stmt(&parse,"Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG );
     }
     {
-        auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to another", ISLOG);
+        auto p = Statement::Parser_Stmt(&parse,"Fanciness relates  ( a thing called X) to another", ISLOG);
     }
     {
-        auto p = parse.Parser_Stmt("Pet-ownership relates various animals to ( a person called the owner)", ISLOG);
+        auto p = Statement::Parser_Stmt(&parse,"Pet-ownership relates various animals to ( a person called the owner)", ISLOG);
     }
     {
-        auto p = parse.Parser_Stmt("Fanciness relates  ( a thing called X) to each other in groups", ISLOG);
+        auto p = Statement::Parser_Stmt(&parse,"Fanciness relates  ( a thing called X) to each other in groups", ISLOG);
     }
 
 
@@ -103,7 +103,7 @@ void testeParser_7c()//dynamic match
     for( auto s : slist)
     {
         logMessage( s);
-        auto p = parse.Parser_Stmt(s, ISLOG);
+        auto p = Statement::Parser_Stmt(&parse,s, ISLOG);
     }
 
      
@@ -123,7 +123,7 @@ void testeParser_7d()// relation When
     for (auto s : slist)
     {
         logMessage(s);
-         auto p = parse.Parser_Stmt(s, ISLOG);
+         auto p = Statement::Parser_Stmt(&parse,s, ISLOG);
 
     }
       
@@ -144,11 +144,11 @@ Zora speak Zubian
 
       interpreter->execute_init(parse.parser_text ( slong, ISLOG));
       
-      //auto q1 = interpreter->query(parse.Parser_Stmt(" Zora is a  person  ", ISLOG));
+      //auto q1 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is a  person  ", ISLOG));
      // assert(q1 == QEquals);
-      //auto q2 = interpreter->query(parse.Parser_Stmt(" English is a  language  ", ISLOG)); 
+      //auto q2 = interpreter->query(Statement::Parser_Stmt(&parse," English is a  language  ", ISLOG)); 
       //assert(q2 == QEquals);
-	  QueryResultContext q3 =  interpreter->query(parse.Parser_Stmt("Zora speak English  ", ISLOG));
+	  QueryResultContext q3 =  interpreter->query(Statement::Parser_Stmt(&parse,"Zora speak English  ", ISLOG));
       assert(q3.result == QEquals);
 
 	  auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
@@ -204,16 +204,16 @@ to decide  if ( person called P  ) is oposite of ( person called Q )  :
 	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
 	//qr->dump("");
 
-	//auto q3 = interpreter->query(parse.Parser_Stmt("best person is Mary  ", ISLOG));
+	//auto q3 = interpreter->query(Statement::Parser_Stmt(&parse,"best person is Mary  ", ISLOG));
 	//assert(q3 == QEquals);
 
-	QueryResultContext q4 = interpreter->query(parse.Parser_Stmt(" Mary is suitable ", ISLOG));
+	QueryResultContext q4 = interpreter->query(Statement::Parser_Stmt(&parse," Mary is suitable ", ISLOG));
 	assert(q4.result == QEquals);
 
-	QueryResultContext q5 = interpreter->query(parse.Parser_Stmt(" Zora is suitable ", ISLOG));
+	QueryResultContext q5 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is suitable ", ISLOG));
 	assert(q5.result != QEquals);
 
-	QueryResultContext q6 = interpreter->query(parse.Parser_Stmt(" Zora is oposite of Mary ", ISLOG));
+	QueryResultContext q6 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is oposite of Mary ", ISLOG));
 	assert(q6.result == QEquals);
 
 

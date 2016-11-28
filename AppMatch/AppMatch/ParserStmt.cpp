@@ -2,18 +2,18 @@
 using namespace CBlocking;
 
 
-HBlock NSParser::CParser::parser_kind(HTerm term)
+HBlock NSParser::Expression::parser_kind(CParser *p, HTerm term)
 {
 
-	return parser_expression(term);
+	return Expression::parser_expression(p,term);
 }
-HBlock NSParser::CParser::parser_kind_or_instance(HTerm term) { return parser_expression(term); }
-HBlock NSParser::CParser::parser_valueReference(HTerm term) { return parser_expression(term); }
-HBlock NSParser::CParser::parser_assertionTarger(HTerm term)
+HBlock NSParser::Expression::parser_kind_or_instance(CParser *p, HTerm term) { return Expression::parser_expression(p,term); }
+HBlock NSParser::Expression::parser_valueReference(CParser *p, HTerm term) { return Expression::parser_expression(p,term); }
+HBlock NSParser::Expression::parser_assertionTarger(CParser *p, HTerm term)
 {
-	HBlock pdet =  parser_List_selector(term);
+	HBlock pdet =  parser_List_selector(p,term);
 	if (pdet != nullptr) return pdet;
-	return parser_expression(term);
+	return Expression::parser_expression(p,term);
 }
  
 
@@ -86,22 +86,22 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
 
-	HBlock noumListAND_Assign = parse_List_AND(lst);
+	HBlock noumListAND_Assign = ParseList::parse_List_AND(p,lst);
     if (noumListAND_Assign != nullptr) {
         return noumListAND_Assign;
     }
 
-	HBlock noumListOR_Assign = parse_List_OR(lst);
+	HBlock noumListOR_Assign = ParseList::parse_List_OR(p,lst);
 	if (noumListOR_Assign != nullptr) {
 		return noumListOR_Assign;
 	}
 
-    HBlock detnoum_Assign = parse_removeArticle(lst);
+    HBlock detnoum_Assign = ParseAssertion::parse_removeArticle(p,lst);
     if (detnoum_Assign != nullptr) {
         return detnoum_Assign;
     }
 
-	HBlock noum_propOF = parse_PropertyOf(lst);
+	HBlock noum_propOF = ParseAssertion::parse_PropertyOf(p,lst);
 	if (noum_propOF != nullptr) {
 		return noum_propOF;
 	}
@@ -111,7 +111,7 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 
 
 
-    HBlock noum_Assign = parse_noum(lst);
+    HBlock noum_Assign = ParseAssertion::parse_noum(p,lst);
     if (noum_Assign != nullptr) {
         return noum_Assign;
     }
@@ -137,7 +137,7 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	HBlock rblock_system_stmt = (STMT_system_Assertion(lst  ));
 	if (rblock_system_stmt != nullptr) return rblock_system_stmt;
 
-    HBlock rblock_understand_1 = (STMT_understand_Assertion(lst  ));
+    HBlock rblock_understand_1 = (ParseAssertion::STMT_understand_Assertion(p,lst  ));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
 	HBlock rblock_action_controls = (ParseAction::STMT_Action_Controls(p,lst, inner, err));
@@ -145,10 +145,10 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 
 
 
-	HBlock rblock_relatesTo = (STMT_relates_Assertion(lst ));
+	HBlock rblock_relatesTo = (ParseRelation::STMT_relates_Assertion(p,lst ));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 
-	HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst, inner, err));
+	HBlock rblock_decide_1 = (ParseAssertion::STMT_Decide_Assertion(p,lst, inner, err));
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 
     HBlock rblock_verb_1n = (STMT_verb_Assertion_N(lst ));
@@ -157,20 +157,20 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
     HBlock rblock_verb_1 = (STMT_verb_Assertion(lst ));
     if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
-    HBlock rblock_definition_1 = (STMT_Definition_Assertion(lst)); //To define ...
+    HBlock rblock_definition_1 = (ParseDecide::STMT_Definition_Assertion(p,lst)); //To define ...
     if (rblock_definition_1 != nullptr) return rblock_definition_1;
 
    // HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst,inner, err));
    // if (rblock_decide_1 != nullptr) return rblock_decide_1;
   
 
-    HBlock rblock_assert_1 = (parser_Declaration_Assertion(lst));
+    HBlock rblock_assert_1 = (ParseAssertion::parser_Declaration_Assertion(p,lst));
     if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
-    HBlock rblock_assert_hasA = (STMT_hasAn_Assertion(lst));
+    HBlock rblock_assert_hasA = (ParseAssertion::STMT_hasAn_Assertion(p,lst));
     if (rblock_assert_hasA != nullptr) return rblock_assert_hasA;
 
-    HBlock rblock_assert_2 = (STMT_canBe_Assertion(lst));
+    HBlock rblock_assert_2 = (ParseAssertion::STMT_canBe_Assertion(p,lst));
     if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
 	HBlock rblock_register_verb = (STMT_register_verb(lst, inner, err));

@@ -80,21 +80,21 @@ box contains a book
 	interpreter->execute_init(stmt);
 
 
-	//auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));
+	//auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));
 	//	assert(ret_e == QEquals);
 
-	//auto ret_dst = interpreter->query(parse.Parser_Stmt("destination of door is garden  ", ISLOG));
+	//auto ret_dst = interpreter->query(Statement::Parser_Stmt(&parse,"destination of door is garden  ", ISLOG));
 	//assert(ret_dst == QEquals);
 
 
 
 
-	auto query_block = parse.Parser_Stmt("box contains book  ", ISLOG);
+	auto query_block = Statement::Parser_Stmt(&parse,"box contains book  ", ISLOG);
 	auto ret_points = interpreter->query(query_block);
 	assert(ret_points.result == QEquals);
 
 
-	auto ret_cc = interpreter->query(parse.Parser_Stmt("book is  contained by box   ", ISLOG));
+	auto ret_cc = interpreter->query(Statement::Parser_Stmt(&parse,"book is  contained by box   ", ISLOG));
 	assert(ret_cc.result == QEquals);
 
 

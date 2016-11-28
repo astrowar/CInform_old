@@ -74,7 +74,7 @@ namespace NSParser
 
 		ParserResult(ParserResult&& other)
 		{
-			// pilfer other�s resource
+			// pilfer other,s resource
 			std::swap(result, other.result);
 			swap(block, other.block);
 			other.block = nullptr;
@@ -198,23 +198,16 @@ namespace NSParser
 		int registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlocking::HBlockMatch entry, CBlocking::HBlock ret);
 		ParserResult parser_AssertionKind(std::vector<HTerm>&  lst);
 		CBlocking::HBlockActionApply parse_AssertionAction_ApplyngTo(HTerm term);
-		CBlocking::HBlockMatch parser_What_Which_Assertion(HTerm term);
-		CBlocking::HBlockMatchIs parser_What_Which_Verb_Assertion(HTerm term);
-		CBlocking::HBlockMatchIs parser_Match_IF_Assertion(HTerm term);
+ 
 
 
 
 
 
-		CBlocking::HBlock parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
-		CBlocking::HBlock parseAssertion_isDecide_Block(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
-		CBlocking::HBlock parseAssertion_isDecide(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
-		CBlocking::HBlock parseAssertion_DecideOn(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err);
-		CBlocking::HBlock parserBoolean(HTerm  term);
-		CBlocking::HBlock parser_stmt_str(string str, HGroupLines inner, ErrorInfo* err);
-
-		CBlocking::HBlock Parser_Stmt(string str, bool dump);
-		CBlocking::HBlock Parser_Expression(string str, bool dump);
+	 
+	 
+	 
+ 
 		CBlocking::HBlock Parser_Condition(string str, bool dump); // Apenas para testes
 
 		CBlocking::HBlock parser_stmt(string str, bool dump, ErrorInfo* err);
@@ -229,12 +222,7 @@ namespace NSParser
 		CBlocking::HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
 		//CBlocking::HBlockMatch parser_MatchArgument(std::vector<HTerm>&  term);
 		CBlocking::HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm>& term);
-		CBlocking::HBlockList  parseAssertion_Strict_COMMA_Supl(HTerm term, HPred sep);
-		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_Supl(HTerm term, HPred sep, CBlocking::HBlockList  CList);
-		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_AND(HTerm term, CBlocking::HBlockList  CList);
-		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_OR(HTerm term, CBlocking::HBlockList  CList);
-		CBlocking::HBlockList  parse_Strict_COMMA_AND(HTerm term);
-		CBlocking::HBlockList  parse_Strict_COMMA_OR(HTerm term);
+ 
 		CBlocking::HBlock parseAssertionFirstTerm_Compose(HTerm term);
 		CBlocking::HBlock parseAssertionFirstTerm(HTerm match);
 		CBlocking::HBlock parseAssertionEnumSecondTerm(HTerm term);
@@ -275,8 +263,7 @@ namespace NSParser
 
 
 		CBlocking::HBlock parse_removeArticle(std::vector<HTerm>& term);
-		CBlocking::HBlock parse_List_AND(std::vector<HTerm>&  term);
-		CBlocking::HBlock parse_List_OR(std::vector<HTerm>&  term);
+  
 		CBlocking::HBlock parse_noum(std::vector<HTerm>& term);
 		CBlocking::HBlock parser_Declaration_Assertion(std::vector<HTerm>&  lst);
 		CBlocking::HBlockProperty  parse_PropertyOf(std::vector<HTerm>& term);
@@ -291,32 +278,18 @@ namespace NSParser
 		CBlocking::HBlock parserBoolean(std::vector<HTerm>&  term);
 
 
-		CBlocking::HBlock parser_kind(HTerm term);
-		CBlocking::HBlock parser_kind_or_instance(HTerm term);
-		CBlocking::HBlock parser_valueReference(HTerm term);
-		CBlocking::HBlock parser_assertionTarger(HTerm term);
-		CBlocking::HBlock DynamicLookup_Relation(std::vector<HTerm>& term);
-		CBlocking::HBlock parser_SeletorVerb(HTerm term, CBlocking::HBlockMatch muteVariable);
-		CBlocking::HBlock DynamicLookup_Verb(std::vector<HTerm>& term);
+ 
+	 
 		CBlocking::HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
 		CBlocking::HBlockSelector parser_List_selector(HTerm term);
-		CBlocking::HBlock parser_expression_lst(std::vector<HTerm>& lst);
-		CBlocking::HBlock parser_expression(HTerm term);
+ 
 
-		CBlocking::HBlock parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
+	 
 		CBlocking::HBlock text_entry(std::vector<HTerm>&  lst);
 
 
 
-
-		CBlocking::HBlockArgumentInput parser_KindCalled(HTerm term);
-		CBlocking::HBlock STMT_relates_Assertion(std::vector<HTerm>&  term);
-		CBlocking::HBlock STMT_relates_AssertionWhen(std::vector<HTerm>&  term);
-		CBlocking::HBlock parser_SeletorRelation(HTerm term, CBlocking::HBlockMatch muteVariable);
-		CBlocking::HBlock parser_SeletorTerm(HTerm term, CBlocking::HBlockMatch muteVariable);
-		CBlocking::HBlock DynamicLookup_Seletor(std::vector<HTerm>& term);
-
-		CBlocking::HBlock  DynamicDispatch_action(std::vector<HTerm>&  term);
+ 
 		 
 	 
  
@@ -366,7 +339,13 @@ namespace NSParser
 	namespace Expression
 	{
 		CBlocking::HBlock  parser_expression(CParser *p, HTerm term);
-		CBlocking::HBlock   parser_expression_lst(CParser *p, std::vector<HTerm>&   lst);
+		CBlocking::HBlock  parser_expression_lst(CParser *p, std::vector<HTerm>&   lst);
+
+		CBlocking::HBlock parser_kind(CParser *p, HTerm term);
+		CBlocking::HBlock parser_kind_or_instance(CParser *p, HTerm term);
+		CBlocking::HBlock parser_valueReference(CParser *p, HTerm term);
+		CBlocking::HBlock parser_assertionTarger(CParser *p, HTerm term);
+		CBlocking::HBlock  Parser_Expression(CParser * p, string str, bool dump);
 	}
 
 	namespace ExpressionMatch
@@ -402,7 +381,13 @@ namespace NSParser
 		CBlocking::HBlock parser_stmt(CParser * p, HTerm term, HGroupLines inner, ErrorInfo* err);
 		CBlocking::HBlockComandList parser_stmt_inner(CParser * p, HGroupLines inner, ErrorInfo* err);
 		CBlocking::HBlock  parser_stmt_inner(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err);
-	 
+		CBlocking::HBlock  parserBoolean(CParser * p, HTerm term);
+		CBlocking::HBlock  parserBoolean(CParser * p, std::vector<HTerm>& term);
+
+		CBlocking::HBlock  parser_stmt_str(CParser * p, string str, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock  Parser_Stmt(CParser * p, string str, bool dump);
+		CBlocking::HBlock   parser_GroupLine(CParser * p, std::string v, HGroupLines inner, ErrorInfo *err);
+ 
 	}
 
 	namespace DynamicDispatch
@@ -425,6 +410,8 @@ namespace NSParser
 	{
 		CBlocking::HBlockMatchActionCall  parser_actionMatch(CParser * p, HTerm & term);
 		CBlocking::HBlock  STMT_Action_Controls(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err);
+	
+		CBlocking::HBlock  sys_say_action(CParser * p, std::vector<HTerm>&  term);
 	}
 
 	namespace ParseRelation
@@ -449,8 +436,66 @@ namespace NSParser
 		CBlocking::HBlock parseAssertion_DecideOn(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock STMT_Definition_Assertion(CParser * p, std::vector<HTerm>&  term);
 
+		CBlocking::HBlock  parse_toDecide_Entry(CParser * p, std::vector<HTerm>&  term);
+		CBlocking::HBlock  parse_toDecide_Ret(CParser * p, std::vector<HTerm>&  term);
+		CBlocking::HBlock  parser_decides_Assertion(CParser * p, std::vector<HTerm>&  term);
 	}
 
+	namespace ParseAssertion
+	{
+
+		CBlocking::HBlockAssertion_is parse_Loop_AssertionVerb(CParser * p, HTerm&  term, CBlocking::NoumLocation nlocation);
+		CBlocking::HBlock  STMT_understand_Assertion(CParser * p, std::vector<HTerm>&  term);
+		CBlocking::HBlock parse_removeArticle(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  parse_noum(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  STMT_Decide_Assertion(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlockProperty  parse_PropertyOf(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  STMT_Decide_Assertion(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlockProperty  parse_PropertyOf(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlockInstanceVariable  CProperty_called(CParser * p, HTerm term);
+		CBlocking::HBlock  STMT_hasAn_Assertion(CParser * p, std::vector<HTerm>& lst);
+		CBlocking::HBlockEnums  parseAssertion_EnumTerms(CParser * p, HTerm enumList);
+		CBlocking::HBlock  STMT_canBe_Assertion(CParser * p, std::vector<HTerm>& lst);
+		CBlocking::HBlockInstanceVariable  CProperty_called(CParser * p, HTerm term);
+		CBlocking::HBlock  STMT_hasAn_Assertion(CParser * p, std::vector<HTerm>& lst);
+		CBlocking::HBlockList   parseAssertionFirstTerm_COMMA_Supl(CParser * p, HTerm term, HPred sep, CBlocking::HBlockList cList);
+		CBlocking::HBlockAssertion_is  parse_AssertionVerb(CParser *p, std::vector<HTerm>&  term);
+		CBlocking::HBlock parseAssertionFirstTerm(CParser *p, HTerm term);
+		CBlocking::HBlock parseAssertionFirstTerm_Compose(CParser *p, HTerm term);
+		CBlocking::HBlock parseAssertionEnumSecondTerm(CParser *p, HTerm term);
+		CBlocking::HBlockActionApply  parse_AssertionAction_ApplyngTo(CParser * p, HTerm term);
+		ParserResult  parser_AssertionKind(CParser * p, std::vector<HTerm>& lst);
+		CBlocking::HBlock  parser_Declaration_Assertion(CParser * p, std::vector<HTerm>& lst);
+		CBlocking::HBlockAssertion_is  parse_AssertionDirectAssign(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  parse_AssertionDefaultAssign(CParser *p, std::vector<HTerm>& term);
+		CBlocking::HBlock  parse_AssertionValuesOf(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  parse_AssertionAction(CParser * p, std::vector<HTerm> term);
+		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlockKindOfName  parse_KindOf(CParser * p, HTerm  term);
+		CBlocking::HBlock  parse_AssertionIsKindOf(CParser * p, std::vector<HTerm>& term);
+
+
+	}
+
+	namespace ParseAssertionSecondary
+	{
+		CBlocking::HBlockKindAction  parse_AssertionAction_secondPart(CParser * p, HTerm  term);
+ 
+	}
+
+	
+
+	namespace ParseList
+	{
+		CBlocking::HBlockList  parseAssertion_Strict_COMMA_Supl(CParser * p, HTerm term, HPred sep);
+		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_AND(CParser * p, HTerm term, CBlocking::HBlockList CList);
+		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_OR(CParser * p, HTerm term, CBlocking::HBlockList CList);
+		CBlocking::HBlock  parse_List_AND(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  parse_List_OR(CParser * p, std::vector<HTerm>& term);
+
+		CBlocking::HBlockList  parse_Strict_COMMA_AND(CParser * p, HTerm term);
+		CBlocking::HBlockList  parse_Strict_COMMA_OR(CParser * p, HTerm term);
+	}
 };
 
 	std::vector<HTerm> decompose(string phase);

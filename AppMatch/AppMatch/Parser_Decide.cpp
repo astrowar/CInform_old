@@ -290,14 +290,14 @@ HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector
 			HBlockMatchIsVerb  v_match = ExpressionMatch::parserMatchIsConditionVerb (p,res.matchs["Match"]);
 			if (v_match != nullptr)
 			{
-				HBlock body = parserBoolean(p, res.matchs["LogicalBody"]);
+				HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(v_match, body);
 			}
 
 			HBlockMatchIs a_match = ExpressionMatch::parserMatchIsCondition(p,res.matchs["Match"]);
 			if (a_match != nullptr)
 			{
-				HBlock body = parserBoolean(p, res.matchs["LogicalBody"]);
+				HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(a_match, body);
 			}
 			return nullptr;
@@ -305,6 +305,58 @@ HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector
     }
     return nullptr;
 }
+
+
+
+
+
+
+HBlock NSParser::ParseDecide::parse_toDecide_Entry(CParser * p, std::vector<HTerm>&  term) 
+{
+    {
+        std::vector<HPred> predList;
+        predList.push_back(mk_HPredLiteral("to"));
+        predList.push_back(mk_HPredLiteral("decide"));
+        predList.push_back(mk_HPredLiteral(":"));
+        return nullptr;
+    }
+}
+
+HBlock NSParser::ParseDecide::parse_toDecide_Ret(CParser * p, std::vector<HTerm>&  term) {
+    {
+        std::vector<HPred> predList;
+        predList.push_back(mk_HPredLiteral("decide"));
+        predList.push_back(mk_HPredLiteral("on"));
+        predList.push_back(mkHPredAny("Subst"));
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = Expression::parser_expression(p,res.matchs["Subst"]);
+            if (n1 == nullptr) return nullptr;
+            return std::make_shared<CBlockToDecideOn>(n1);
+        }
+    }
+    return nullptr;
+}
+
+HBlock NSParser::ParseDecide::parser_decides_Assertion(CParser * p, std::vector<HTerm>&  term) 
+{
+
+    HBlock verb_decideIn = parse_toDecide_Entry(p,term);
+    if (verb_decideIn != nullptr) {
+        return verb_decideIn;
+    }
+
+    HBlock verb_decideRet = parse_toDecide_Ret(p,term);
+    if (verb_decideRet != nullptr) {
+        return verb_decideRet;
+    }
+
+    return nullptr;
+
+
+}
+
+
 
 
 

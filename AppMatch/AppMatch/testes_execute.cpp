@@ -61,28 +61,28 @@ else:
 	interpreter->execute_init(stmt);
 	
 
-	//auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));
+	//auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));
 //	assert(ret_e == QEquals);
 
-	//auto ret_dst = interpreter->query(parse.Parser_Stmt("destination of door is garden  ", ISLOG));
+	//auto ret_dst = interpreter->query(Statement::Parser_Stmt(&parse,"destination of door is garden  ", ISLOG));
 	//assert(ret_dst == QEquals);
 
-	auto query_block = parse.Parser_Stmt("door points to garden  ", ISLOG);
+	auto query_block = Statement::Parser_Stmt(&parse,"door points to garden  ", ISLOG);
 	auto ret_points = interpreter->query(query_block);
 	assert(ret_points.result == QEquals);
 
 	 
-	auto ret_points_q = interpreter->query(parse.Parser_Stmt("door points to hall  ", ISLOG));
+	auto ret_points_q = interpreter->query(Statement::Parser_Stmt(&parse,"door points to hall  ", ISLOG));
 	assert(ret_points_q.result == QNotEquals);
 
-	auto ret_points_init = interpreter->query(parse.Parser_Stmt("door is viable exit ", ISLOG));
+	auto ret_points_init = interpreter->query(Statement::Parser_Stmt(&parse,"door is viable exit ", ISLOG));
 	assert(ret_points_init.result == QEquals);
 
-	interpreter->execute_now(parse.Parser_Stmt("location is garden ", ISLOG));
-	auto ret_points_garden = interpreter->query(parse.Parser_Stmt("door is viable exit  ", ISLOG));
+	interpreter->execute_now(Statement::Parser_Stmt(&parse,"location is garden ", ISLOG));
+	auto ret_points_garden = interpreter->query(Statement::Parser_Stmt(&parse,"door is viable exit  ", ISLOG));
 	assert(ret_points_garden.result == QNotEquals);
 
-	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
+	auto ret_connect_init = interpreter->query(Statement::Parser_Stmt(&parse,"hall connect garden ", ISLOG));
 	assert(ret_connect_init.result == QEquals);
 
 	return;
@@ -112,10 +112,10 @@ hall connect garden
 	interpreter->execute_init(stmt);
 
 
-	auto ret_connect_init = interpreter->query(parse.Parser_Stmt("hall connect garden ", ISLOG));
+	auto ret_connect_init = interpreter->query(Statement::Parser_Stmt(&parse,"hall connect garden ", ISLOG));
 	assert(ret_connect_init.result == QEquals);
 
-	auto ret_connect_b = interpreter->query(parse.Parser_Stmt("garden connect hall  ", ISLOG));
+	auto ret_connect_b = interpreter->query(Statement::Parser_Stmt(&parse,"garden connect hall  ", ISLOG));
 	assert(ret_connect_b.result == QNotEquals  );
 
 	return;
@@ -167,22 +167,22 @@ west is a direction
 
 	
 
-	//interpreter->execute_init(parse.Parser_Stmt("to decide what ( room  ) is oposite of ( oposite of ( room called X ) ) :  X   ", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"to decide what ( room  ) is oposite of ( oposite of ( room called X ) ) :  X   ", ISLOG));
 	//auto ret_3 = interpreter->evaluate_values(parse.Parser_Expression("oposite of ( oposite of  garden) ", ISLOG));
 	//printf("=============================\n");
 	//ret_3->dump(" ");
 
 
-	interpreter->execute_init(parse.Parser_Stmt("to decide if ( direction called Y ) is opposite of (  direction called X )   :  X is opposite of Y   ", ISLOG));	
-	interpreter->execute_init(parse.Parser_Stmt("south is  opposte by  north", ISLOG));
-	interpreter->execute_init(parse.Parser_Stmt(" west  is opposte by  east ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"to decide if ( direction called Y ) is opposite of (  direction called X )   :  X is opposite of Y   ", ISLOG));	
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"south is  opposte by  north", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse," west  is opposte by  east ", ISLOG));
 
 	//auto ret_4 = interpreter->evaluate_values(parse.Parser_Expression("oposite of north  ", ISLOG));
 	//printf("=============================\n");
 	//ret_4->dump(" ");
-	auto ret_true_a = interpreter->query(parse.Parser_Stmt("north is  opposite  of south  ", ISLOG));
-	auto ret_true_b = interpreter->query(parse.Parser_Stmt("south is  opposite  of north  ", ISLOG));
-	 auto ret_true_ba = interpreter->query(parse.Parser_Stmt(" south is  opposite  of ( opposite of  south ) ", ISLOG));
+	auto ret_true_a = interpreter->query(Statement::Parser_Stmt(&parse,"north is  opposite  of south  ", ISLOG));
+	auto ret_true_b = interpreter->query(Statement::Parser_Stmt(&parse,"south is  opposite  of north  ", ISLOG));
+	 auto ret_true_ba = interpreter->query(Statement::Parser_Stmt(&parse," south is  opposite  of ( opposite of  south ) ", ISLOG));
 	assert(ret_true_a.result == QEquals);
 	assert(ret_true_ba.result == QEquals);
  
@@ -254,21 +254,21 @@ luck is normal
 
 	if(true){
 		string ss2 = R"(now every object is huge)";
-		auto res_q = interpreter->query(parse.Parser_Stmt("box is small ", true));
+		auto res_q = interpreter->query(Statement::Parser_Stmt(&parse,"box is small ", true));
 		auto target_q = interpreter->exec_eval(parse.parser_text(ss2, true), nullptr);
 		//target_q->dump("");
 		//assert(ret_true_a == QEquals);
-		auto res_2 = interpreter->query(parse.Parser_Stmt("box is huge ", true));
+		auto res_2 = interpreter->query(Statement::Parser_Stmt(&parse,"box is huge ", true));
 		assert(res_2.result == QEquals);
 	}
 
 	if (true)
 	{
-		auto res_3 = interpreter->query(parse.Parser_Stmt("courage is not normal ", true));
+		auto res_3 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_3.result == QNotEquals);
 		//string ss3 = R"(now every talent is not normal )"; 
 		interpreter->exec_eval(parse.parser_text("now every talent is not  normal", true), nullptr);
-		 auto  res_4 = interpreter->query(parse.Parser_Stmt("courage is not normal ", true));
+		 auto  res_4 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_4.result == QEquals);
 	}
 

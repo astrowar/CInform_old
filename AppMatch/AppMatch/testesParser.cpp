@@ -15,48 +15,48 @@ void testeParser_6()//kind of value
 
 	{
 		string phase_1 = "a limb is a kind of value";
-		auto res = parse.Parser_Stmt(phase_1, ISLOG);
+		auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		interpreter->execute_init(res);
 	}
 
 	{
-		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("color can be light or dark", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("color can be cold or warm", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("color is usually light", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is a kind of value", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color can be light or dark", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color can be cold or warm", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is usually light", ISLOG));
 	}
 
 	{
 		string phase_1 = "an aspect ratio is a kind of value";
-		auto res = parse.Parser_Stmt(phase_1, ISLOG);
+		auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		interpreter->execute_init(res);
 	}
 
 	{
 		string phase_1 = "   blue, green, yellow  and red are color ";
-		auto res = parse.Parser_Stmt(phase_1, ISLOG);
+		auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 
 		interpreter->execute_init(res);
 	}
 
 	{
-		interpreter->execute_init(parse.Parser_Stmt("black is a color", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"black is a color", ISLOG));
 		auto q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
 												 std::make_shared<CBlockNoum>("light"));
-		interpreter->execute_init(parse.Parser_Stmt("black is dark", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"black is dark", ISLOG));
 		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
 												std::make_shared<CBlockNoum>("light"));
 
 		string phase_1 = " ... ";
 	}
 	{
-		interpreter->execute_init(parse.Parser_Stmt("warm color is a  kind of color", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("warm color is usually warm", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"warm color is a  kind of color", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"warm color is usually warm", ISLOG));
 
-		interpreter->execute_init(parse.Parser_Stmt("red is a warm color", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"red is a warm color", ISLOG));
 		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("red"),
 												std::make_shared<CBlockNoum>("warm"));
 
@@ -72,12 +72,12 @@ void testeParser_6a()//kind of value
 	CParser parse(interpreter);
 
 	{
-		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("blue, green, yellow  and red are color", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("thing is a kind ", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("book is a thing", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("book has a color", ISLOG));
-		interpreter->execute_init(parse.Parser_Stmt("color of book is red ", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is a kind of value", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"blue, green, yellow  and red are color", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind ", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a thing", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"book has a color", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color of book is red ", ISLOG));
 	}
 
 	auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
@@ -94,7 +94,7 @@ void testeParser_20() //custrom rlacions
 	CParser parse(std::make_shared<CBlockInterpreter>());
 	/*{
 		std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
-		auto res = parse.Parser_Stmt(phase_1);
+		auto res = Statement::Parser_Stmt(&parse,phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
 		{
@@ -107,7 +107,7 @@ void testeParser_20() //custrom rlacions
 
 	//{
 	//	std::string phase_1 = "the verb inside of implies a reverse container relation";
-	//	auto res = parse.Parser_Stmt(phase_1);
+	//	auto res = Statement::Parser_Stmt(&parse,phase_1);
 	//	if (res == nullptr) throw "parse error";
 	//	if (ISLOG)
 	//	{
@@ -117,7 +117,7 @@ void testeParser_20() //custrom rlacions
 	//}
 	//{
 	//	std::string phase_1 = "the verb contains implies a container relation";
-	//	auto res = parse.Parser_Stmt(phase_1);
+	//	auto res = Statement::Parser_Stmt(&parse,phase_1);
 	//	if (res == nullptr) throw "parse error";
 	//	if (ISLOG)
 	//	{
@@ -129,7 +129,7 @@ void testeParser_20() //custrom rlacions
 
 	//{
 	//	std::string phase_1 = "book contains text";
-	//	auto res = parse.Parser_Stmt(phase_1);
+	//	auto res = Statement::Parser_Stmt(&parse,phase_1);
 	//	if (res == nullptr) throw "parse error";
 	//	if (ISLOG)
 	//	{
@@ -138,23 +138,23 @@ void testeParser_20() //custrom rlacions
 	//	}
 	//}
 	{
-		auto block = parse.Parser_Stmt("the verb able to open implies a opening relation", ISLOG);
+		auto block = Statement::Parser_Stmt(&parse,"the verb able to open implies a opening relation", ISLOG);
 		 
 	}
 	{
-		auto block = parse.Parser_Stmt("X is  able   to open   Z", ISLOG);
+		auto block = Statement::Parser_Stmt(&parse,"X is  able   to open   Z", ISLOG);
 		 
 	}
 	logMessage( "----------------------------------------" );
 	{
-		auto block = parse.Parser_Stmt("to decide if (X    able   to open   Z) : (decides on true)", ISLOG);
+		auto block = Statement::Parser_Stmt(&parse,"to decide if (X    able   to open   Z) : (decides on true)", ISLOG);
 		 
 	}
 
 
 	/*{
 		std::string phase_1 = "let L be the (list of ( things fancier than/of/in/on 20 ) ) )";
-		auto res = parse.Parser_Stmt(phase_1);
+		auto res = Statement::Parser_Stmt(&parse,phase_1);
 		if (res == nullptr) throw "parse error";
 		if (ISLOG)
 		{
@@ -169,54 +169,54 @@ void testeParser_21() {
 	{
 		{
 			string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 
 		{
 			string phase_1 = "coin is stuck to box";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 
 		{
 			string phase_1 = "the verb ( visible by ) implies a visibility relation";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 
 		{
 			string phase_1 = "definition : (a thing is visible by other) if ( ( it is stuck to the noun) and (it is not within the location ) )";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 
 		{
 			string phase_1 = "definition : (a thing is in same room ) if ( ( location of it  ) is ( location of player ) )";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 
 		{
 			string phase_1 = "definition : (a thing is hide ) if ( it is not visible by player ) and ( it is in same room )";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
 		}
 		{
 			string phase_1 = "definition : (a thing is in ( place : location )  ) if ( location of it is place ) ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
 		{
 			string phase_1 = "the verb made of implies the materiality relation ";
 
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 		{
 			string phase_1 = "coin is made of golden";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
@@ -230,25 +230,25 @@ void testeParser_22() {
 	{
 		{
 			string phase_1 = " use_with is an action applying to (one thing) and (a thing)  ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
 		{
 			string phase_1 = "understand : use  [ a thing ] as use_with ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
 		{
 			string phase_1 = "understand : use  [ a thing  - keyer ] with [ a thing ] as use_with ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
 		{
 			string phase_1 = "  use key with box ";
-			auto res = parse.Parser_Stmt(phase_1, ISLOG);
+			auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 			 
 		}
 
@@ -345,12 +345,12 @@ else:
 		 
 		auto stmt =  parse.parser_text(ss1, ISLOG);
 		interpreter->execute_init( stmt );
-		auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));		 
+		auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));		 
 		assert(ret_e.result == QEquals);
 
 		interpreter->execute_now(parse.parser_text(ss2, ISLOG));
 
-		auto ret_e2 = interpreter->query(parse.Parser_Stmt(" x is a  ", ISLOG));
+		auto ret_e2 = interpreter->query(Statement::Parser_Stmt(&parse," x is a  ", ISLOG));
 		assert(ret_e.result == QEquals);
 	}
 
@@ -453,7 +453,7 @@ void sayHi() {
 	CParser parse(interpreter);
 
 	{
-		interpreter->execute_init(parse.Parser_Stmt("color is a kind of value", ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is a kind of value", ISLOG));
 	}
 }
 
@@ -463,7 +463,7 @@ void sayStr(char* str) {
 
 	{
 	std::string line (str);
-		interpreter->execute_init(parse.Parser_Stmt( line , ISLOG));
+		interpreter->execute_init(Statement::Parser_Stmt(&parse, line , ISLOG));
 	}
 }
 #endif
