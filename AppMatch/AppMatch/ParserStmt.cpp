@@ -2,14 +2,14 @@
 using namespace CBlocking;
 
 
-HBlock CParser::parser_kind(HTerm term)
+HBlock NSParser::CParser::parser_kind(HTerm term)
 {
 
 	return parser_expression(term);
 }
-HBlock CParser::parser_kind_or_instance(HTerm term) { return parser_expression(term); }
-HBlock CParser::parser_valueReference(HTerm term) { return parser_expression(term); }
-HBlock CParser::parser_assertionTarger(HTerm term)
+HBlock NSParser::CParser::parser_kind_or_instance(HTerm term) { return parser_expression(term); }
+HBlock NSParser::CParser::parser_valueReference(HTerm term) { return parser_expression(term); }
+HBlock NSParser::CParser::parser_assertionTarger(HTerm term)
 {
 	HBlock pdet =  parser_List_selector(term);
 	if (pdet != nullptr) return pdet;
@@ -21,7 +21,7 @@ HBlock CParser::parser_assertionTarger(HTerm term)
  
  
 
-HBlock   CParser::parser_VerbAssign(std::vector<HTerm>& term)
+HBlock   NSParser::CParser::parser_VerbAssign(std::vector<HTerm>& term)
 {
 
 	HBlock aVerb = parse_AssertionVerb(term);
@@ -40,11 +40,11 @@ HBlock   CParser::parser_VerbAssign(std::vector<HTerm>& term)
 }
 
 
-HBlock CParser::parser_expression(HTerm  term)
+HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
 		auto rvector = vlist->asVector();
-		auto r = parser_expression_lst(rvector);
+		auto r = parser_expression_lst(p,rvector);
 		/*if (r == nullptr)
 		std::cout << term->repr() << std::endl;*/
 		return r;
@@ -54,7 +54,7 @@ HBlock CParser::parser_expression(HTerm  term)
 	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
 }
 
-HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
+HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTerm>&   lst)
 {
 
 	HBlock rblock_textEntry = (text_entry(lst));
@@ -70,7 +70,7 @@ HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
 		return adapt_verb;
 	}
 
-	HBlock rblock_dynamicEntry_1 = (DynamicDispatch_action(lst));
+	HBlock rblock_dynamicEntry_1 = (DynamicDispatch::DynamicDispatch_action(p,lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
 
 	 
@@ -118,16 +118,17 @@ HBlock CParser::parser_expression_lst(std::vector<HTerm>&   lst)
 
 	return nullptr;
 }
-HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
+ 
 
-	HBlock rblock_system_control = (STMT_control_flux(lst,inner , err));
+	HBlock rblock_system_control = (ControlFlux::STMT_control_flux(p,lst,inner , err));
 	if (rblock_system_control != nullptr) return rblock_system_control;
  
 	if (err->hasError) return nullptr;
 	//Apenas os termos que iniciam uma sentenca completa
 
-	HBlock rblock_tryEntry_1 = (TryDispatch_action(lst));
+	HBlock rblock_tryEntry_1 = (DynamicDispatch::TryDispatch_action(p,lst));
 	if (rblock_tryEntry_1 != nullptr) return rblock_tryEntry_1;
 
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
@@ -139,7 +140,7 @@ HBlock CParser::parser_stmt_inner(std::vector<HTerm>& lst, HGroupLines inner, Er
     HBlock rblock_understand_1 = (STMT_understand_Assertion(lst  ));
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
-	HBlock rblock_action_controls = (STMT_Action_Controls(lst, inner, err));
+	HBlock rblock_action_controls = (ParseAction::STMT_Action_Controls(p,lst, inner, err));
 	if (rblock_action_controls != nullptr) return rblock_action_controls;
 
 

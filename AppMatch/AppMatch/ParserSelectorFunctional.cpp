@@ -22,7 +22,7 @@ using namespace CBlocking;
 //under half
 //a number alone, as in "three swans"
 
-HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
+HBlockSelector   NSParser::CParser::parser_List_selector(std::vector<HTerm>&  term)
 {
 	{
 		// is a kind definition ??
@@ -67,7 +67,7 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 
  
 
-HBlockSelector CParser::parser_List_selector(HTerm  term)
+HBlockSelector NSParser::CParser::parser_List_selector(HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
 		auto v =vlist->asVector();

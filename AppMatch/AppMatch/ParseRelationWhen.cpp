@@ -5,7 +5,7 @@
 #include "CBlockBoolean.hpp"
 using namespace CBlocking;
 
-HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
+HBlock NSParser::CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 {
 	//Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X.
 	{
@@ -42,7 +42,7 @@ HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 
 }
 
-HBlock   CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariable  )
+HBlock   NSParser::CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariable  )
 {
 
 	//relation 
@@ -65,7 +65,7 @@ HBlock   CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariabl
 			{
 
 				{
-					auto arg2 = parser_MatchArgument(res.matchs["K2"]);
+					auto arg2 = ExpressionMatch::parser_MatchArgument(res.matchs["K2"]);
 					if (arg2 != nullptr)
 					{
 						return  std::make_shared<CBlockRelationLookup>(rname, arg2, muteVariable, SecondNoum);
@@ -96,7 +96,7 @@ HBlock   CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariabl
 			{
 		 
 				{
-					auto arg2 = parser_MatchArgument(res.matchs["K2"]);
+					auto arg2 = ExpressionMatch::parser_MatchArgument(res.matchs["K2"]);
 					if (arg2 != nullptr)
 					{
 						return  std::make_shared<CBlockRelationLookup>(rname, muteVariable, arg2, FirstNoum);
@@ -112,7 +112,7 @@ HBlock   CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariabl
 
 }
 
-HBlock   CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVariable)
+HBlock   NSParser::CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVariable)
 {
 	
 	{
@@ -153,7 +153,7 @@ HBlock   CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVariable)
  
 
 
-HBlock   CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
+HBlock   NSParser::CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 {
 	/*{
 		 static std::vector<HPred> predList = {};
@@ -230,7 +230,7 @@ HBlock   CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = parser_MatchArgument(res.matchs["K1"]);
+			auto arg1 = ExpressionMatch::parser_MatchArgument(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
 				auto seletor = parser_SeletorTerm(res.matchs["Seletor"] , arg1);
@@ -256,7 +256,7 @@ HBlock   CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = parser_MatchArgument(res.matchs["K1"]);
+			auto arg1 = ExpressionMatch::parser_MatchArgument(res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
 				auto seletor = parser_SeletorTerm(res.matchs["Seletor"],arg1);
@@ -273,7 +273,7 @@ HBlock   CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 
 
  
-HBlock   CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
+HBlock   NSParser::CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
 {
 
 	// TODO implementar os NOT 
@@ -288,7 +288,7 @@ HBlock   CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{		 
-			auto n2 = parser_expression_match(res.matchs["K2"]);
+			auto n2 = ExpressionMatch::parser_expression_match(res.matchs["K2"]);
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}
@@ -305,7 +305,7 @@ HBlock   CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto n2 = parser_expression_match(res.matchs["K2"]);
+			auto n2 = ExpressionMatch::parser_expression_match(res.matchs["K2"]);
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}

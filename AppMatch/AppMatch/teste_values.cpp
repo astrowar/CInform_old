@@ -3,6 +3,9 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
+
+
 void testValues_1()
 {
 	

@@ -7,7 +7,7 @@
 #include  "verb_en.hpp"
 using namespace CBlocking;
 
-std::list<HBlockVerbConjugation> CParser::get_verb_conjugations(std::string verb) const
+std::list<HBlockVerbConjugation> NSParser::CParser::get_verb_conjugations(std::string verb) const
 {
 	static const VERBTABLE verb_eng = verb_table(); 
 	int  n = verb_eng.numEntries;
@@ -34,7 +34,7 @@ std::list<HBlockVerbConjugation> CParser::get_verb_conjugations(std::string verb
 }
 
 //register verb funciona como um load especifico de um conjunto de verbos
-HBlock CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)
+HBlock NSParser::CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)
 { 
 	{
 		static std::vector<HPred> predList = {};
@@ -96,7 +96,7 @@ HBlock CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLines inner, 
 
  
  
-string CParser::expression_adapt_viewPoint(HTerm& term)
+string NSParser::CParser::expression_adapt_viewPoint(HTerm& term)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -152,7 +152,7 @@ string CParser::expression_adapt_viewPoint(HTerm& term)
 	return "";
 }
 
-string CParser::expression_adapt_tense(HTerm& term)
+string NSParser::CParser::expression_adapt_tense(HTerm& term)
 {
 	
 
@@ -260,7 +260,7 @@ string CParser::expression_adapt_tense(HTerm& term)
 	return CtoString(expandBract( term));
 
 }
-HBlock CParser::expression_adapt_verb_inner( HTerm& term)
+HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -363,7 +363,7 @@ HBlock CParser::expression_adapt_verb_inner( HTerm& term)
 }
  
 
-HBlock CParser::expression_adapt_verb(std::vector<HTerm>& term)
+HBlock NSParser::CParser::expression_adapt_verb(std::vector<HTerm>& term)
 {
 	{
 		static std::vector<HPred> predList = {};

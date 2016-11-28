@@ -4,6 +4,8 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
+
 
 void testeParser_3() {
 	CParser parse(std::make_shared<CBlockInterpreter>());

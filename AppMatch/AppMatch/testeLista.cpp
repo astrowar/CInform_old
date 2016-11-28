@@ -4,6 +4,8 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
+
 
 HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoum>(n); };
 

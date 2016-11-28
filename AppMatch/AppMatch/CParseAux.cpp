@@ -12,7 +12,7 @@ using namespace Interpreter;
  
 
 
-std::string decompose_bracket(std::string phase, std::string dlm) {
+std::string  decompose_bracket(std::string phase, std::string dlm) {
 
 	size_t b = phase.find(dlm);
 	if (b != std::string::npos) {

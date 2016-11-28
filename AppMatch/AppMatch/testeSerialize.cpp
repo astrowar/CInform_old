@@ -5,6 +5,8 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
+
 
 void testeSerialize1() {
 

@@ -2,8 +2,144 @@
 using namespace CBlocking;
 
 
+HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm term)
+{
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("ListKind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
+			//cterm eh uma lista ??
+			if (CList* clist = asCList(cterm))
+			{
+				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
+				for (auto &ci : clist->lst)
+				{
+					auto  str_i = ci->removeArticle()->repr();
+					HBlockMatch mi = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(str_i));
+					mmlist->matchList.push_back(mi);
+				}
+				//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["ListKind"]->removeArticle()->repr()));
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), mmlist);
+				return n1;
+			}
+		}
+	}
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
 
-HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm>&  term)
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("-"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+	//std::cout << "Argument:  " <<  (term)->repr() << std::endl;
+	return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(CtoString(expandBract(term)->removeArticle())));
+	return nullptr;
+}
+
+
+
+HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, std::vector<HTerm>&  term)
+{
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("called"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("kind"));
+			predList.push_back(mk_HPredLiteral("-"));
+			predList.push_back(mkHPredAny("var_named"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
+				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+
+
+	return nullptr;
+}
+
+
+
+
+HBlockMatchIs NSParser::ExpressionMatch::parserMatchIsCondition(CParser *p, HTerm term)
+{
+	// Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex 
+	//Default is a direct Asign
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("MatchBody"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("valueToCheck"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch body = parser_MatchArgument(p,res.matchs["MatchBody"]);
+			HBlockMatch value = parser_MatchArgument(p,res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				return std::make_shared<CBlockMatchDirectIs>(body, value);
+			}
+		}
+	}
+	return nullptr;
+}
+
+
+
+HBlockMatchProperty  NSParser::ExpressionMatch::parse_PropertyOf_Match(CParser *p, std::vector<HTerm>&  term)
 {
 	{
 
@@ -16,9 +152,9 @@ HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm>&  term)
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlock a = parser_expression(res.matchs["property"]);
+			HBlock a = Expression::parser_expression(p,res.matchs["property"]);
 			if (a != nullptr) {
-				HBlockMatch b = parser_expression_match(res.matchs["obj"]);
+				HBlockMatch b = parser_expression_match(p,res.matchs["obj"]);
 				if (b != nullptr) {					 
 					return std::make_shared<CBlockMatchProperty>(a, b);
 				}
@@ -28,7 +164,7 @@ HBlockMatchProperty  CParser::parse_PropertyOf_Match(std::vector<HTerm>&  term)
 	return nullptr;
 }
 
-HBlockMatch CParser::parse_match_noum(std::vector<HTerm>&  term) {
+HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<HTerm>&  term) {
 	std::vector<HPred> predList;
  
 	predList.push_back(mkHPredAny("Noum"));
@@ -48,25 +184,26 @@ HBlockMatch CParser::parse_match_noum(std::vector<HTerm>&  term) {
 	return nullptr;
 }
 
-HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
+HBlockMatch NSParser::ExpressionMatch::parse_Which_Verb_Match(CParser *p, std::vector<HTerm>&  term) 
+{
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_What_Which());
 		predList.push_back(verb_IS_NOT());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					//return std::make_shared<CBlockMatchIsNotVerb>(vrepr, n1, n2);
 					auto ww = std::make_shared<CBlockMatchWhichNot>(vrepr, n1, n2);
 					return ww;
@@ -81,18 +218,18 @@ HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_What_Which());
 		predList.push_back(mk_HPredLiteral("not"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					auto ww = std::make_shared<CBlockMatchWhichNot>(vrepr, n1, n2);
 					return  ww;
 				}
@@ -107,18 +244,18 @@ HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_What_Which());
 		predList.push_back(verb_IS());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					auto ww = std::make_shared<CBlockMatchWhich>(vrepr, n1, n2);
 					return ww;
 				}
@@ -132,17 +269,17 @@ HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_What_Which());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					auto ww = std::make_shared<CBlockMatchWhich>(vrepr, n1, n2);
 					return ww;
 				}
@@ -155,24 +292,24 @@ HBlockMatch CParser::parse_Which_Verb_Match(std::vector<HTerm>&  term) {
 }
 
 
-HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
+HBlockMatch NSParser::ExpressionMatch::parse_AssertionVerb_Match(CParser *p, std::vector<HTerm>&  term) {
 	{
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(verb_IS_NOT());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockMatchIsNotVerb>(vrepr, n1, n2);
 					
 				}
@@ -185,18 +322,18 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(mk_HPredLiteral("not"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockMatchIsNotVerb>(vrepr, n1, n2);
 					
 				}
@@ -209,18 +346,18 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
 		predList.push_back(verb_IS());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockMatchIsVerb>(vrepr, n1, n2);
 					
 				}
@@ -232,19 +369,19 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
 		// and action applying to [one visible thing and requiring light]
 		std::vector<HPred> predList;
 		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("N2"));
 
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 					return std::make_shared<CBlockMatchIsVerb>(vrepr, n1, n2);
 					
 				}
@@ -257,7 +394,7 @@ HBlockMatch CParser::parse_AssertionVerb_Match(std::vector<HTerm>&  term) {
 
 
 
-HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm>&  term) {
+HBlockMatch   NSParser::ExpressionMatch::parse_Which_DirectAssign_Match(CParser *p, std::vector<HTerm>&  term) {
 	{
 		// is a kind definition ??
 
@@ -273,10 +410,10 @@ HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm>&  term)
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals) {
-			HBlockMatch noum = parser_expression_match(res.matchs["Noum"]);
+			HBlockMatch noum = parser_expression_match(p,res.matchs["Noum"]);
 			if (noum != nullptr)
 			{
-				HBlockMatch value = parser_expression_match(res.matchs["Value"]);
+				HBlockMatch value = parser_expression_match(p,res.matchs["Value"]);
 				if (value != nullptr)
 				{
 					//return std::make_shared<CBlockMatchDirectIsNot>(noum, value);
@@ -301,11 +438,11 @@ HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm>&  term)
 
 		if (res.result == Equals) {
 
-			HBlockMatch value = parser_expression_match(res.matchs["Value"]);
+			HBlockMatch value = parser_expression_match(p,res.matchs["Value"]);
 			if (value != nullptr) 
 
 			{
-				HBlockMatch noum = parser_expression_match(res.matchs["Noum"]);
+				HBlockMatch noum = parser_expression_match(p,res.matchs["Noum"]);
 				if (noum != nullptr)
 				{
 					//return std::make_shared<CBlockMatchDirectIs>(noum, value);
@@ -323,7 +460,7 @@ HBlockMatch   CParser::parse_Which_DirectAssign_Match(std::vector<HTerm>&  term)
 
 
 
-HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm>&  term) {
+HBlockMatch   NSParser::ExpressionMatch::parse_AssertionDirectAssign_Match(CParser *p, std::vector<HTerm>&  term) {
 	{
 		// is a kind definition ??
 	 
@@ -338,10 +475,10 @@ HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm>&  te
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals) {
-			HBlockMatch noum = parser_expression_match(res.matchs["Noum"]);
+			HBlockMatch noum = parser_expression_match(p,res.matchs["Noum"]);
 			if (noum != nullptr)
 			{
-				HBlockMatch value = parser_expression_match(res.matchs["Value"]);
+				HBlockMatch value = parser_expression_match(p,res.matchs["Value"]);
 				if (value != nullptr)
 				{
 					 return std::make_shared<CBlockMatchDirectIsNot>(noum, value);
@@ -364,10 +501,10 @@ HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm>&  te
 
 		if (res.result == Equals) {
 
-			HBlockMatch value = parser_expression_match(res.matchs["Value"]);
+			HBlockMatch value = parser_expression_match(p,res.matchs["Value"]);
 			if (value != nullptr) 
 			{
-				HBlockMatch noum = parser_expression_match(res.matchs["Noum"]);
+				HBlockMatch noum = parser_expression_match(p,res.matchs["Noum"]);
 				if (noum != nullptr)
 				{
 					return std::make_shared<CBlockMatchDirectIs>(noum, value);
@@ -385,29 +522,29 @@ HBlockMatch   CParser::parse_AssertionDirectAssign_Match(std::vector<HTerm>&  te
 
 
 
-HBlockMatch   CParser::parser_Verb_Match(std::vector<HTerm>&  term)
+HBlockMatch   NSParser::ExpressionMatch::parser_Verb_Match(CParser *p, std::vector<HTerm>&  term)
 {
 
-	HBlockMatch aWVerb = parse_Which_Verb_Match(term);
+	HBlockMatch aWVerb = parse_Which_Verb_Match(p,term);
 	if (aWVerb != nullptr)
 	{
 		return aWVerb;
 	}
 
-	HBlockMatch aWDirect = parse_Which_DirectAssign_Match (term);
+	HBlockMatch aWDirect = parse_Which_DirectAssign_Match (p,term);
 	if (aWDirect != nullptr)
 	{
 		return aWDirect;
 	}
 
 
-	HBlockMatch aVerb = parse_AssertionVerb_Match(term);
+	HBlockMatch aVerb = parse_AssertionVerb_Match(p,term);
 	if (aVerb != nullptr)
 	{
 		return aVerb;
 	}
 
-	HBlockMatch aDirect = parse_AssertionDirectAssign_Match(term);
+	HBlockMatch aDirect = parse_AssertionDirectAssign_Match(p,term);
 	if (aDirect != nullptr)
 	{
 		return aDirect;
@@ -418,11 +555,11 @@ HBlockMatch   CParser::parser_Verb_Match(std::vector<HTerm>&  term)
 
 
 
-HBlockMatch CParser::parser_expression_match(HTerm  term)
+HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
 		auto v = vlist->asVector();
-		auto r = parser_expression_match(v);
+		auto r = parser_expression_match(p,v);
 		/*if (r == nullptr)
 		logMessage( term->repr() << std::endl;*/
 		return r;
@@ -431,7 +568,7 @@ HBlockMatch CParser::parser_expression_match(HTerm  term)
 	return std::make_shared<CBlockMatchNoum>(nn);
 }
 
-std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, MatchResult result)
+std::list<HBlockMatch> NSParser::ExpressionMatch::ToMatchListMatc(CParser *p, std::vector<HPred> pvector, MatchResult result)
 {
 	std::list<HBlockMatch> vlist;
 	for (size_t j = 0; j< pvector.size(); ++j)
@@ -442,7 +579,7 @@ std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, Matc
 		}
 		else if (CPredAny * vAny = asPredAny(pvector[j].get()))
 		{
-			HBlockMatch n1 = parser_expression_match(result.matchs[vAny->named]);
+			HBlockMatch n1 = parser_expression_match(p,result.matchs[vAny->named]);
 			vlist.push_back(n1);
 		}
 		else
@@ -455,15 +592,15 @@ std::list<HBlockMatch> CParser::ToMatchListMatc(std::vector<HPred> pvector, Matc
 }
 
 
-HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm>&  term) {
+HBlockMatch NSParser::ExpressionMatch::DynamicDispatch_action_match(CParser *p, std::vector<HTerm>&  term) {
 
-	for (auto it = sentenceDispatch.begin(); it != sentenceDispatch.end(); ++it)
+	for (auto it = p->sentenceDispatch.begin(); it != p->sentenceDispatch.end(); ++it)
 	{
 
 		MatchResult res_action = CMatch(term, it->matchPhase);
 		if (res_action.result == Equals)
 		{			 
-			std::list<HBlockMatch> resList = ToMatchListMatc(it->matchPhase, res_action);
+			std::list<HBlockMatch> resList = ToMatchListMatc(p,it->matchPhase, res_action);
 			auto clistResults = std::make_shared<CBlockMatchList>(resList);
 			return 	clistResults;
 		}
@@ -474,7 +611,7 @@ HBlockMatch CParser::DynamicDispatch_action_match(std::vector<HTerm>&  term) {
 
 
 
-HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
+HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<HTerm>&     term)
 {
 
 	{
@@ -491,16 +628,16 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					HBlockMatch n3 = parser_expression_match(res.matchs["N3"]);
+					HBlockMatch n3 = parser_expression_match(p,res.matchs["N3"]);
 					if (n3 != nullptr)
 					{
-						HBlockMatch n4 = parser_expression_match(res.matchs["N4"]);
+						HBlockMatch n4 = parser_expression_match(p,res.matchs["N4"]);
 						if (n4 != nullptr)
 						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2, n3 , n4});
 					}
@@ -526,13 +663,13 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					HBlockMatch n3 = parser_expression_match(res.matchs["N3"]);
+					HBlockMatch n3 = parser_expression_match(p,res.matchs["N3"]);
 					return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 ,n3 });
 				}
 			}
@@ -553,10 +690,10 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
 		if (res.result == Equals) 
 		{
 			
-			HBlockMatch n1 = parser_expression_match(res.matchs["N1"]);
+			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				HBlockMatch n2 = parser_expression_match(res.matchs["N2"]);
+				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 					return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 });
 			}
@@ -568,36 +705,36 @@ HBlockMatch CParser::parse_match_list(std::vector<HTerm>&     term)
 
 
 
-HBlockMatch CParser::parser_expression_match(std::vector<HTerm>&    lst)
+HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::vector<HTerm>&    lst)
 {
 
  
 
-	HBlockMatch  rblock_dynamicEntry_1 = (DynamicDispatch_action_match(lst));
+	HBlockMatch  rblock_dynamicEntry_1 = (DynamicDispatch_action_match(p,lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
 
-	HBlockMatch rblock_assert_1 = (parser_Verb_Match(lst));
+	HBlockMatch rblock_assert_1 = (parser_Verb_Match(p,lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;
 
 
-	HBlockMatch noum_propOF = parse_PropertyOf_Match(lst);
+	HBlockMatch noum_propOF = parse_PropertyOf_Match(p,lst);
 	if (noum_propOF != nullptr) {
 		return noum_propOF;
 	}
 
 	 
 
-	HBlockMatch arg_Assign = parser_MatchArgument(lst);
+	HBlockMatch arg_Assign = parser_MatchArgument(p,lst);
 	if (arg_Assign != nullptr) {
 		return arg_Assign;
 	}
 
-	HBlockMatch list_Assign = parse_match_list(lst);
+	HBlockMatch list_Assign = parse_match_list(p,lst);
 	if (list_Assign != nullptr) {
 		return list_Assign;
 	}
 
-	HBlockMatch noum_Assign = parse_match_noum(lst);
+	HBlockMatch noum_Assign = parse_match_noum(p,lst);
 	if (noum_Assign != nullptr) {
 		return noum_Assign;
 	}

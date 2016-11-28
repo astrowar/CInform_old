@@ -2,7 +2,7 @@
 using namespace CBlocking;
 
 
-HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
+HBlockMatch NSParser::CParser::parser_What_Which_Assertion(HTerm term) {
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mk_What_Which());
@@ -13,8 +13,8 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 
-			HBlockMatch  c1 = parser_MatchArgument(res.matchs["kindReturn"]);
-			HBlockMatch  AdjetiveMatch = parser_expression_match(res.matchs["RemainderQuery"]);
+			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(res.matchs["kindReturn"]);
+			HBlockMatch  AdjetiveMatch = ExpressionMatch::parser_expression_match(res.matchs["RemainderQuery"]);
 
 			if (AdjetiveMatch != nullptr)
 			{
@@ -30,7 +30,7 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 	return nullptr;
 }
 
-HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
+HBlockMatchIs NSParser::CParser::parser_What_Which_Verb_Assertion(HTerm term) {
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mk_What_Which());
@@ -63,7 +63,7 @@ HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
 }
 
 
-HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
+HBlockMatchIs NSParser::CParser::parser_Match_IF_Assertion(HTerm term )
 {
     
 
@@ -80,10 +80,10 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 		{
 			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
 
-			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlockMatch BValue = ExpressionMatch::parser_expression_match(res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockMatchIsVerb >(vrepr, AValue, BValue);
@@ -100,10 +100,10 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlockMatch BValue = ExpressionMatch::parser_expression_match(res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
@@ -116,7 +116,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = parser_expression_match(res.matchs["AValue"]);
+            HBlock AValue = ExpressionMatch::parser_expression_match(res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
             auto r =  res.matchs["AValue"].get();
 			logError(r->repr());
@@ -132,7 +132,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 
 
 
-HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 
    
@@ -233,13 +233,13 @@ HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroup
 }
 
 
-HBlock CParser::parseAssertion_isDecide (std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::CParser::parseAssertion_isDecide (std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 	return parseAssertion_isDecide_inLine(term, inner, err);
 }
 
 
-HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 	if (inner == nullptr)
 	{
@@ -267,7 +267,7 @@ HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines i
 
 }
 
-HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
+HBlock NSParser::CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
 
     {
 		static std::vector<HPred> predList = {};
@@ -284,14 +284,14 @@ HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 
-			HBlockMatchIsVerb  v_match = parserMatchIsConditionVerb (res.matchs["Match"]);
+			HBlockMatchIsVerb  v_match = ExpressionMatch::parserMatchIsConditionVerb (res.matchs["Match"]);
 			if (v_match != nullptr)
 			{
 				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(v_match, body);
 			}
 
-			HBlockMatchIs a_match = parserMatchIsCondition(res.matchs["Match"]);
+			HBlockMatchIs a_match = ExpressionMatch::parserMatchIsCondition(res.matchs["Match"]);
 			if (a_match != nullptr)
 			{
 				HBlock body = parserBoolean(res.matchs["LogicalBody"]);

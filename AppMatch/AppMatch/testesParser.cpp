@@ -6,6 +6,7 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
 
 void testeParser_6()//kind of value
 {
@@ -404,7 +405,7 @@ int main() {
 
 	
 	testePlurals();
-	return 0;
+ 
 	// testeParser_1();
 
 	//testValues_all();
@@ -417,7 +418,7 @@ int main() {
 	//testeParser_listAll();
 	//testAction_all();
 	//testeVerb_all();
-	return 0;
+ 
 
    for (int k = 0; k < 100; ++k)
 	{

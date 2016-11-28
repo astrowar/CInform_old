@@ -4,7 +4,7 @@
 using namespace CBlocking;
 using namespace Interpreter;
 
-HBlockKindAction CParser::parse_AssertionAction_secondPart( HTerm  term)
+HBlockKindAction NSParser::CParser::parse_AssertionAction_secondPart( HTerm  term)
 {
 	
 	{
@@ -71,7 +71,7 @@ HBlockKindAction CParser::parse_AssertionAction_secondPart( HTerm  term)
 
 	return nullptr;
 }
-HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {
+HBlock NSParser::CParser::parse_AssertionAction(std::vector<HTerm> term) {
 
     {
         // and action applying to [one visible thing and requiring light]
@@ -117,7 +117,7 @@ HBlock CParser::parse_AssertionAction(std::vector<HTerm> term) {
 }
 
 
-HBlock CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
+HBlock NSParser::CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
 	 
 
 
@@ -147,7 +147,7 @@ HBlock CParser::parse_AssertionIsVariable(std::vector<HTerm>& term) {
 
 }
 
-HBlockKindOfName CParser::parse_KindOf( HTerm  term)
+HBlockKindOfName NSParser::CParser::parse_KindOf( HTerm  term)
 {
 	{
 		 
@@ -182,7 +182,7 @@ HBlockKindOfName CParser::parse_KindOf( HTerm  term)
 
 }
 
-HBlock CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
+HBlock NSParser::CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
 	{
 		// is a default ??
 		std::vector<HPred> predList;
@@ -206,7 +206,7 @@ HBlock CParser::parse_AssertionIsKindOf(std::vector<HTerm>& term) {
 
 }
 
-HBlock CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
+HBlock NSParser::CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
 
     // The colors are blue, green, yellow, and red.
     // The textures are rough, stubbly and smooth.
@@ -243,7 +243,7 @@ HBlock CParser::parse_AssertionValuesOf(std::vector<HTerm>& term) {
 }
 
 
-HBlock CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term) {
+HBlock NSParser::CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term) {
 
     {
         // is a default ??
@@ -308,7 +308,7 @@ HBlock CParser::parse_AssertionDefaultAssign(std::vector<HTerm>& term) {
 
 
 
-HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm>& term) {
+HBlockAssertion_is NSParser::CParser::parse_AssertionDirectAssign(std::vector<HTerm>& term) {
     {
         // is a kind definition ??
 		static std::vector<HPred> predList = {};
@@ -374,7 +374,7 @@ HBlockAssertion_is CParser::parse_AssertionDirectAssign(std::vector<HTerm>& term
 
 
 
-HBlock CParser::parser_Declaration_Assertion(std::vector<HTerm>& lst)
+HBlock NSParser::CParser::parser_Declaration_Assertion(std::vector<HTerm>& lst)
 {
 
     HBlock verb_Assign = parse_AssertionVerb(lst);

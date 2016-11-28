@@ -3,7 +3,7 @@ using namespace CBlocking;
  
 
 
-HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
+HBlockAssertion_is NSParser::CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
     
  
 	{
@@ -102,23 +102,24 @@ HBlockAssertion_is CParser::parse_AssertionVerb(std::vector<HTerm>&  term) {
 
 
 
-HBlockMatchIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
+HBlockMatchIsVerb  NSParser::ExpressionMatch::parserMatchIsConditionVerb(CParser* p,HTerm term)
 {
+ 
 	//Tambem pode ser um verbo definido
 	{
 		std::vector<HPred> predList = {};
 	 
 		predList.push_back(mkHPredAny("MatchBody"));
 		predList.push_back(verb_IS());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("valueToCheck"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch body = parser_MatchArgument(res.matchs["MatchBody"]);
-			HBlockMatch value = parser_MatchArgument(res.matchs["valueToCheck"]);
+			HBlockMatch body = ExpressionMatch::parser_MatchArgument(p,res.matchs["MatchBody"]);
+			HBlockMatch value = ExpressionMatch::parser_MatchArgument(p,res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
-				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
 				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
 			}
@@ -130,15 +131,15 @@ HBlockMatchIsVerb CParser::parserMatchIsConditionVerb(HTerm term)
 		std::vector<HPred> predList = {};
 	 
 		predList.push_back(mkHPredAny("MatchBody"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("valueToCheck"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch body = parser_MatchArgument(res.matchs["MatchBody"]);
-			HBlockMatch value = parser_MatchArgument(res.matchs["valueToCheck"]);
+			HBlockMatch body = ExpressionMatch::parser_MatchArgument(p,res.matchs["MatchBody"]);
+			HBlockMatch value = ExpressionMatch::parser_MatchArgument(p,res.matchs["valueToCheck"]);
 			if (body != nullptr && value != nullptr) {
-				auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
 			}
 		}
@@ -147,7 +148,7 @@ return nullptr;
 }
 
 
-HBlockVerbRelation CParser::STMT_verb_relation(HBlock a_verb, HTerm term)
+HBlockVerbRelation NSParser::CParser::STMT_verb_relation(HBlock a_verb, HTerm term)
 {
 	std::vector<HPred> predList = {};
 	if (predList.empty())
@@ -172,7 +173,7 @@ HBlockVerbRelation CParser::STMT_verb_relation(HBlock a_verb, HTerm term)
 	return nullptr;
 }
  
-HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm>&  term) {
+HBlock NSParser::CParser::STMT_verb_Assertion_N(std::vector<HTerm>&  term) {
  
     {
 
@@ -237,7 +238,7 @@ HBlock CParser::STMT_verb_Assertion_N(std::vector<HTerm>&  term) {
 
 }
 
-HBlock CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
+HBlock NSParser::CParser::STMT_verb_Assertion(std::vector<HTerm>&  term) {
 
  
     {

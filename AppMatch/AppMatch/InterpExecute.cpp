@@ -351,7 +351,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 	{
 		HBlock ret = nullptr;
 
-		auto r = query(cIF->block_if, localsEntry, QueryStack());
+  		auto r = query(cIF->block_if, localsEntry, QueryStack());
 		if (r.result == QEquals)
 		{
 			return exec_eval(cIF->block_then, localsEntry);

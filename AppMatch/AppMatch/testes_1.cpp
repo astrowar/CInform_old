@@ -4,6 +4,8 @@
 
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSParser;
+
 
 
 //Basic Assertations

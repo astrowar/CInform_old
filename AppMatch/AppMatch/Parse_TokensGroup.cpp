@@ -269,20 +269,10 @@ std::list<HBlock> goupe_non_tokens(std::list<HBlock> lst)
 
 }
 
-std::list<HBlock> CParser::group_tokens(std::list<HBlock>  lst)
-{
-	//primeiro passo .. agrupa todos os stms que nao sao tokens
-	auto rlst = goupe_non_tokens(lst );
-	// Agrupa os tokens baseado em seus delimidadores 
-	std::vector<HBlock>  vec=std::vector<HBlock> (rlst.begin(), rlst.end());
-	rlst =  scan_token_any(vec.begin(), vec.end());
-
-
-	return rlst;
-}
+ 
 
 //vai percorrend os next ate achar alguem
-std::list<HGroupLines>::iterator  find_next_level( int ident ,std::list<HGroupLines>::iterator  gbegin, std::list<HGroupLines>::iterator  gend)
+std::list<NSParser::HGroupLines>::iterator  find_next_level( int ident ,std::list<NSParser::HGroupLines>::iterator  gbegin, std::list<NSParser::HGroupLines>::iterator  gend)
 {
 	for (auto it = gbegin; it != gend; ++it)
 	{
@@ -290,9 +280,9 @@ std::list<HGroupLines>::iterator  find_next_level( int ident ,std::list<HGroupLi
 	}
 	return gend;
 }
-HGroupLines make_hierarchical_tree_it(std::list<HGroupLines>::iterator  gbegin, std::list<HGroupLines>::iterator  gend )
+NSParser::HGroupLines make_hierarchical_tree_it(std::list<NSParser::HGroupLines>::iterator  gbegin, std::list<NSParser::HGroupLines>::iterator  gend )
 {
-	HGroupLines pivot = *gbegin;
+	NSParser::HGroupLines pivot = *gbegin;
 	pivot->next = nullptr;	
 	pivot->inner = nullptr;
 		
@@ -326,7 +316,7 @@ HGroupLines make_hierarchical_tree_it(std::list<HGroupLines>::iterator  gbegin, 
 	return pivot;
 	
 }
-std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer, ErrorInfo *err)
+std::list<NSParser::HGroupLines> make_hierarchical_tree(  std::list<NSParser::HGroupLines>  buffer, NSParser::ErrorInfo *err)
 {
 	 
 	  
@@ -358,7 +348,7 @@ std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer, 
 					err->setError("Identation Error at " + std::to_string(lineGroup->lines.front().linenumber));
 					logMessage("Identation Error at " + std::to_string( lineGroup->lines.front().linenumber ));
 					
-					return std::list<HGroupLines>();
+					return std::list<NSParser::HGroupLines>();
 				}
 				if (lv == identLevel)
 				{
@@ -382,7 +372,7 @@ std::list<HGroupLines> make_hierarchical_tree(  std::list<HGroupLines>  buffer, 
 	 
 }
 
-void logGroupLines( HGroupLines   pivot , string offset )
+void logGroupLines(NSParser::HGroupLines   pivot , string offset )
 {
 	printf("{\n");
 	while (pivot != nullptr)
@@ -404,7 +394,7 @@ void logGroupLines( HGroupLines   pivot , string offset )
 }
 
 
- HGroupLines  CParser::get_identation_groups(string filename,  std::vector<string> vlines, ErrorInfo *err)
+NSParser::HGroupLines  NSParser::CParser::get_identation_groups(string filename,  std::vector<string> vlines, ErrorInfo *err)
 {
 	std::list<HGroupLines> buffer;
 	

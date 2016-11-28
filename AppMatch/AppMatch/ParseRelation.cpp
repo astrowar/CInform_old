@@ -7,7 +7,7 @@ using namespace CBlocking;
 string  parser_OtherCalledAs(HTerm term)
 {
 	std::vector<HPred> predList; 
-	predList.push_back(mk_HPredLiteral("called"));
+	predList.push_back( mk_HPredLiteral("called"));
 	predList.push_back(mkHPredAny("var_named"));
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
@@ -17,7 +17,7 @@ string  parser_OtherCalledAs(HTerm term)
 	}
 	return "";
 }
-HBlockArgumentInput CParser::parser_KindCalled(HTerm term)
+HBlockArgumentInput NSParser::CParser::parser_KindCalled(HTerm term)
 {
 	
 	{
@@ -68,7 +68,7 @@ HBlockArgumentInput CParser::parser_KindCalled(HTerm term)
 	return nullptr;
 }
 
-HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
+HBlock NSParser::CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 {
 
 	// Simetricos em grupo

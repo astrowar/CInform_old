@@ -13,7 +13,7 @@
 
 using namespace CBlocking;
 
-HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
+HBlock NSParser::CParser::parserBoolean(std::vector<HTerm>& term) {
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("not"));
@@ -58,9 +58,7 @@ HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
 }
 
 
-
-
-ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
+NSParser::ParserResult NSParser::CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
     predList.push_back(mkHPredAny("Object"));
     predList.push_back(mk_HPredLiteral_OR("Verb", {"is", "are"}));
@@ -76,7 +74,7 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
     return std::move(ParserResult(res));
 }
 
-HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
+HBlockActionApply NSParser::CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
     {
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;
@@ -119,7 +117,7 @@ HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
 }
 
 
-//HBlock CParser::parseAssertion_DecideWhat(HTerm term) {
+//HBlock NSParser::CParser::parseAssertion_DecideWhat(HTerm term) {
 //    return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
 //}
 
