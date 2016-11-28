@@ -1,6 +1,8 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
 
 void testeParser_7a()//dynamic match
 {

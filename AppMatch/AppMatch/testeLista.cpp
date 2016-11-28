@@ -2,6 +2,9 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoum>(n); };
 
 void testeParser_listA()

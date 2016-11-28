@@ -23,10 +23,10 @@ using HVariableSlot = std::shared_ptr<CVariableSlot>;
 
 class CVariableSlotEnum : public CVariableSlot {
 public:
-    HBlockNoum value;
-    HBlockEnums valueDefinition;
+	CBlocking::HBlockNoum value;
+	CBlocking::HBlockEnums valueDefinition;
 
-    CVariableSlotEnum(HBlockEnums enums);
+    CVariableSlotEnum(CBlocking::HBlockEnums enums);
 	virtual VarSlotType  type() override  { return VarSlotType ::EnumSlot ; };
 };
 
@@ -35,23 +35,24 @@ using HVariableSlotEnum = std::shared_ptr<CVariableSlotEnum>;
 class CVariableSlotBool : public CVariableSlot {
 public:
     bool value;
-    HBlockNoum valueDefinition;
+	CBlocking::HBlockNoum valueDefinition;
 
-    CVariableSlotBool(HBlockNoum valueDef);
+    CVariableSlotBool(CBlocking::HBlockNoum valueDef);
 	virtual VarSlotType  type() override  { return VarSlotType ::BoolSlot ; };
 };
 
 using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
 
-class CVariableNamed :public CBlock {
+class CVariableNamed :public CBlocking::CBlock {
 public:
 	void dump(string ident) override;
 	virtual BlockType type() override { return BlockType::VariableNamed; }
-	HBlock value;
-    HBlockKind kind;
-    HBlockNoum name;
 
-    CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value);
+	CBlocking::HBlock value;
+	CBlocking::HBlockKind kind;
+	CBlocking::HBlockNoum name;
+
+    CVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
 };
 
 using HVariableNamed = std::shared_ptr<CVariableNamed>;

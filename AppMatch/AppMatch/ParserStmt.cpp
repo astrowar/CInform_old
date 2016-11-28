@@ -1,5 +1,5 @@
 #include "Parser.hpp"
- 
+using namespace CBlocking;
 
 
 HBlock CParser::parser_kind(HTerm term)

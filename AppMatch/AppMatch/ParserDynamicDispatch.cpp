@@ -1,6 +1,6 @@
 #include <vector>
 #include "Parser.hpp"
- 
+using namespace CBlocking;
 
 
 

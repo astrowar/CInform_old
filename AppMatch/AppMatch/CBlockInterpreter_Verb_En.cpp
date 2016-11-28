@@ -9,6 +9,9 @@
 #include "CBlockInterpreterRuntime.hpp"
 
 using namespace std; 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 //http://www.ef.com/english-resources/english-grammar/verbs/
 

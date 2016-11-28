@@ -8,6 +8,11 @@
 #include "CBlockInterpreterRuntime.hpp"
 #undef PROPAGATE_LETS
 
+
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
 HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
 {
 	HRunLocalScope localsNext = nullptr;
@@ -70,13 +75,13 @@ HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
 }
 
 
-HBlock CBlockInterpreter::getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct) {
+CBlocking::HBlock CBlockInterpreter::getDecidedWhether(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, CBlocking::HBlockToDecideWhether dct) {
 
 	return nullptr;
 
 }
 
-HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
+CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
 	
 	
 	HBlockMatch match =   (dct->queryToMatch);
@@ -121,7 +126,7 @@ HBlock CBlockInterpreter::getDecidedValueOf(HBlock c_block, HBlockToDecideWhat d
 }
 
 
-QueryResultContext CBlockInterpreter::getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
 {
 	//stack overflow 
 	if (stk.isQuery("decide", c_block, dct))

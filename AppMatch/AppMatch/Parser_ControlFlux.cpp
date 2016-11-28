@@ -4,7 +4,9 @@
 #include "Parser.hpp"
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
- 
+
+
+using namespace CBlocking;
 
 
 HBlock CParser::stmt_resultflag(std::vector<HTerm>&   term)
@@ -391,7 +393,7 @@ std::list<HBlockControlSelectItem> CParser::get_CBlockControlSelectItem(HBlockCo
 	std::list<HBlockControlSelectItem> ret;
 	for(auto e: cmdList->lista)
 	{
-		if (auto eitem = aHBlockControlSelectItem(e))
+		if (auto eitem = DynamicCasting::aHBlockControlSelectItem(e))
 		{			
 			ret.push_back(eitem);
 		}
@@ -559,7 +561,7 @@ std::list<HBlock >   CParser::post_process_tokens(std::list< HBlock  >  lst, Err
 	{		
 		is_first = (it == lst.begin());
 		{
-			if (HBlockControlToken tk = aHBlockControlToken(*it))
+			if (HBlockControlToken tk = DynamicCasting::aHBlockControlToken(*it))
 			{
 				// Entao o anterior deve ser um Comando que aceita tokens
 
@@ -572,13 +574,13 @@ std::list<HBlock >   CParser::post_process_tokens(std::list< HBlock  >  lst, Err
 						return std::list< HBlock  >();
 					}
 					auto iprev = std::prev(it);
-					if (HBlockControlIF controlIF = aHBlockControlIF(*iprev))
+					if (HBlockControlIF controlIF = DynamicCasting::aHBlockControlIF(*iprev))
 					{
 						controlIF->block_else = tk->contents;
 						it = lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}
-					else if (HBlockControlSelect controlSelect = aHBlockControlSelect(*iprev))
+					else if (HBlockControlSelect controlSelect = DynamicCasting::aHBlockControlSelect(*iprev))
 					{
 						controlSelect->block_else = tk->contents;
 						it = lst.erase(it);

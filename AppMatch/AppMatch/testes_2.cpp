@@ -2,6 +2,9 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 void testeParser_3() {
 	CParser parse(std::make_shared<CBlockInterpreter>());
 	{

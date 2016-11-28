@@ -1,5 +1,8 @@
 #include "CResultMatch.hpp"
 
+using namespace CBlocking;
+ 
+
 CResultMatch::CResultMatch(string s, HBlock b) : hasMatch(true)
 {
 	maptch[s] = b;

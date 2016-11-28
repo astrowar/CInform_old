@@ -4,10 +4,12 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 
 void testeRelation1() {
-
-    HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	Interpreter::HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
     CParser parse(interpreter);
 
     interpreter->execute_init(parse.Parser_Stmt("thing is a kind  ", ISLOG));

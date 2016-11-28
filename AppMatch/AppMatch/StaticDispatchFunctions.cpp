@@ -10,6 +10,8 @@
 #include "CBlockBoolean.hpp"
 #include "CblockAssertion.hpp"
 #include "CBlockInterpreterRuntime.hpp"
+using namespace CBlocking;
+
 
 staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(
         _argumentsMatch), action(_action) {

@@ -2,7 +2,7 @@
 #include  "QueryStack.hpp"
 
  
-
+using namespace CBlocking;
 
 
 void QueryStack::addQuery(HBlockVerb vb, HBlock b1, HBlock b2) {

@@ -8,6 +8,11 @@
 using namespace std;
 
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
 //Match engine
 
 CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk)

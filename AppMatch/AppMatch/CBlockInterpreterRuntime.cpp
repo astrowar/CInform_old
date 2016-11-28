@@ -1,6 +1,12 @@
 #include "CBlockInterpreterRuntime.hpp"
 
-QueryResultContext::QueryResultContext(QueryResul r) : result(r)
+
+using namespace CBlocking;
+using namespace Interpreter;
+ 
+
+
+ QueryResultContext::QueryResultContext(QueryResul r) : result(r)
 {
 }
 

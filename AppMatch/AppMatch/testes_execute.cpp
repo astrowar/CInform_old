@@ -1,6 +1,9 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 
 void testeExecute1() 
 {

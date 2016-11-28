@@ -11,7 +11,7 @@
 #include "CBlockBoolean.hpp"
 #include "CblockAssertion.hpp"
 
-
+using namespace CBlocking;
 
 HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
     {

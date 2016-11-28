@@ -3,7 +3,9 @@
 #include "CBlockDecideIf.hpp"
 #include "CblockAssertion.hpp"
 
-bool isSame(HBlock b1, HBlock b2)
+using namespace CBlocking;
+
+bool isSame(CBlocking::HBlock b1, CBlocking::HBlock b2)
 {
 	return b1->isSame(b1.get(), b2.get());
 }

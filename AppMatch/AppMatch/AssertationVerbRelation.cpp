@@ -7,11 +7,11 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
- 
-
+using namespace CBlocking; 
+using namespace Interpreter;
 
 //retorn  o primeiro termo
-HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_block, HBlock value,  HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry)
 {
 
 	for (auto &rr : relInstances)
@@ -57,7 +57,7 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_
 }
 
 //retorn  o segundo termo
-HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
 
 	for (auto &rr : relInstances)
@@ -103,9 +103,9 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_
 
 
 //retorn  o primeiro termo
-HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
-	std::list<HBlock> lst;
+	std::list<CBlocking::HBlock> lst;
 
 	for (auto &rr : relInstances)
 	{
@@ -145,9 +145,9 @@ HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c
 }
 
 //retorn  o segundo termo
-HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
-	std::list<HBlock> lst;
+	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
@@ -191,7 +191,7 @@ HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c
 
  
 
-HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry)
+CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry)
 {
 
 	auto rel_find = this->staticRelation.find(rLookup->relation);
@@ -216,7 +216,7 @@ HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunL
 }
 
 
-HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
+CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
 {
 	for (auto & rv : verbRelationAssoc)
 	{
@@ -271,7 +271,7 @@ HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope l
 
 
 
-bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry )
+bool CBlockInterpreter::exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value , HRunLocalScope localsEntry )
 {
     for (auto &rr : relInstances)
     {
@@ -309,7 +309,7 @@ bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBl
     }
     return false ;
 }
-bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry )
+bool CBlockInterpreter::setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry )
         {
 
                 for (auto & rv : verbRelationAssoc)
@@ -329,7 +329,7 @@ bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value,
                                 bool ex = exist_relation( relation_name, c_block, value , localsEntry );
                                 if (ex == false )
                                 {
-//bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+//bool set_relation(HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
 
                                     set_relation(rel, c_block, value, localsEntry );
                                 }
@@ -346,7 +346,7 @@ bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value,
             return false;
         }
 
-bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry)
+bool CBlockInterpreter::setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value,HRunLocalScope localsEntry)
 {
 
     bool q = setVerbRelation(vb, c_block, value, localsEntry);
@@ -380,7 +380,7 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLoca
 
 }
  
-QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 	QueryResul query_2 = QUndefined;
 	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
@@ -436,7 +436,7 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 	return QUndefined;
 }
 
-QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum property_noum, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
  
 
@@ -459,7 +459,7 @@ QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum propert
  return QUndefined;
 }
 
-QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 	// Percorre todos e retorna o valor
 	for (auto &rr : relInstances)
@@ -475,7 +475,7 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, HBl
 	return QUndefined;
 }
 
-QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk)
 {
 
 	if (stk.isQuery(vb, c_block, value)) return QUndefined;
@@ -532,7 +532,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block
 	//Custom Define
 	for(auto &v : decides_if)
 	{
-		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(v->queryToMatch))
+		if (HBlockMatchIsVerb qVerb = DynamicCasting::asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			 
 			if (vb == qVerb->verb)
@@ -561,9 +561,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block
 
 						rr_eval->dump("");
 						
-						if (HBlockToDecideOn dctval =   asHBlockToDecideOn( rr_eval ) )
+						if (HBlockToDecideOn dctval = DynamicCasting::asHBlockToDecideOn( rr_eval ) )
 						{
-							if (HBlockBooleanValue bbValue = asHBlockBooleanValue(dctval->decideBody))
+							if (HBlockBooleanValue bbValue = DynamicCasting::asHBlockBooleanValue(dctval->decideBody))
 							{
 								if  (true == bbValue->state) { return QEquals; }
 								if (false ==bbValue->state) { return QNotEquals; }
@@ -607,10 +607,10 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block
 
 	for(auto &dct : decides_what)
 	{
-		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(dct->queryToMatch)) {
+		if (HBlockMatchIsVerb qVerb = DynamicCasting::asHBlockMatchIsVerb(dct->queryToMatch)) {
 			//cout << vb << " =?= " << qVerb->verb << endl;
 			if (qVerb->verb == vb) {
-				HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
+				CBlocking::HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
 				if (wvalued != nullptr) {
 					auto wresult = query_is(c_block, wvalued, localsEntry, stk);
 					return wresult;
@@ -626,7 +626,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block
 	//Custom Define
 	for (auto &v : decides_noum1)
 	{
-		if (HBlockMatchIsVerb qVerb_N1 = asHBlockMatchIsVerb(v->queryToMatch))
+		if (HBlockMatchIsVerb qVerb_N1 = DynamicCasting::asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			
 			if (vb == qVerb_N1->verb)
@@ -664,9 +664,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, HBlock c_block
 
 
 
-bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock obj, HBlock value, HRunLocalScope localsEntry) {
-	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase,localsEntry);
+bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
+	if (HBlockNoum nbase = DynamicCasting::asHBlockNoum(obj)) {
+		CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
 			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry);
 		}		

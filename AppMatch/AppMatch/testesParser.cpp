@@ -4,6 +4,9 @@
 #include <cassert>
 #include "ParserPlural.hpp"
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 void testeParser_6()//kind of value
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();

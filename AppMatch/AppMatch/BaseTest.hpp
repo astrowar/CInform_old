@@ -10,7 +10,7 @@ std::vector<HTerm> decompose(string phase);;
 string decompose_bracket(string phase, string dlm);
 
 CList *mk_CList_Literal(std::vector<HTerm> strList);
-HBlockNoum noum(std::string n) ;
+CBlocking::HBlockNoum noum(std::string n) ;
 
 
 void testeParser_listA();

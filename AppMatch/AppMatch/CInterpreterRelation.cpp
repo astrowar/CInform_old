@@ -4,6 +4,10 @@
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
 bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 {
 	if (noum->named == "nothing") return true;

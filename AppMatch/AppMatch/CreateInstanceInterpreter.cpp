@@ -4,19 +4,12 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
-HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c )
-{
-    if (c != nullptr && c->type() == VarSlotType ::EnumSlot)
-        return std::static_pointer_cast<CVariableSlotEnum>(c);
-    return nullptr;
-}
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
-HVariableSlotBool asHVariableSlotBool(HVariableSlot c )
-{
-    if (c != nullptr && c->type() == VarSlotType ::BoolSlot)
-        return std::static_pointer_cast<CVariableSlotBool>(c);
-    return nullptr;
-}
+
+ 
 
  
 

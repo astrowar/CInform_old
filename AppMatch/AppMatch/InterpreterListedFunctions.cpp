@@ -7,6 +7,10 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
 QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack stk)
 {
 	

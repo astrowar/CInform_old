@@ -1,5 +1,5 @@
 #include "Parser.hpp"
- 
+using namespace CBlocking;
 
 
 HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {

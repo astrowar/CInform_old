@@ -2,6 +2,10 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+
+
 //Basic Assertations
 
 void testeParser_1() {

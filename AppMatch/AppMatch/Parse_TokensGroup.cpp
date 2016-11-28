@@ -2,6 +2,8 @@
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
 
+using namespace CBlocking;
+
 
 struct Token
 {
@@ -18,7 +20,7 @@ struct AnySequence
 
 bool isToken(Token tk1 , std::vector<HBlock>::iterator  b)
 {
-	if (HBlockControlToken token = aHBlockControlToken( *b ))
+	if (HBlockControlToken token = DynamicCasting::aHBlockControlToken( *b ))
 	{
 		if (token->token == tk1.named )
 		{
@@ -218,7 +220,7 @@ std::list<HBlock> scan_token_any(std::vector<HBlock>::iterator  vbegin , std::ve
 	auto pos = vbegin;
 	while( pos != vend)
 	{
-		if ( HBlockControlToken token = aHBlockControlToken( *pos )  )
+		if ( HBlockControlToken token = DynamicCasting::aHBlockControlToken( *pos )  )
 		{
 		  if (token->token == "if" )
 		  {

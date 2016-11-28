@@ -3,6 +3,8 @@
 #include "CDataMananger.hpp"
 #include <fstream>
 
+using namespace CBlocking;
+using namespace Interpreter;
 
 void testeSerialize1() {
 

@@ -12,7 +12,10 @@
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 
-CParser::CParser(HBlockInterpreter _interpreter) {
+using namespace CBlocking;
+
+
+CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
     
     {
         std::list<HPred> alist;
@@ -680,7 +683,7 @@ HBlockEnums CParser::parseAssertion_EnumTerms(HTerm enumList) {
 
     std::vector<HBlockNoum> nlist;
     std::for_each(elist->lista.begin(), elist->lista.end(),
-                  [&nlist](HBlock c) { nlist.push_back(asHBlockNoum(c)); });
+                  [&nlist](HBlock c) { nlist.push_back(DynamicCasting::asHBlockNoum(c)); });
     return std::make_shared<CBlockEnums>(nlist);
 
 }

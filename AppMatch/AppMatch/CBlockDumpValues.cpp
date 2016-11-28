@@ -23,8 +23,9 @@
 
 
 using namespace std;
+using namespace CBlocking;
 
-void CBlockInstance::dump(string ident)
+void  CBlockInstance::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 
 }
@@ -489,7 +490,7 @@ HVariableNamed CBlockAction::get_property(string pnamed)
 	return nullptr;
 }
 
-void CBlockAction::set_property(string pnamed, HBlock value)
+void CBlockAction::set_property(string pnamed, CBlocking::HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -620,7 +621,7 @@ void CVariableNamed::dump(string ident)
 		this->value->dump(ident + "       ");
 }
 
-string HtoString(HBlockList lst)
+string  CBlocking::HtoStringList(HBlockList lst)
 {
 
 	if (lst->lista.empty()) return "";
@@ -637,16 +638,16 @@ string HtoString(HBlockList lst)
 
 }
 
-string HtoString(HBlock value)
+string CBlocking::HtoString( HBlock value)
 {
-	if (HBlockNoum verbNoum = asHBlockNoum(value)) {
+	if (HBlockNoum verbNoum = DynamicCasting::asHBlockNoum(value)) {
 		return verbNoum->named;
 	}
-	else if (HBlockList verbNoumList = asHBlockList(value))
+	else if (HBlockList verbNoumList = DynamicCasting::asHBlockList(value))
 	{
-		return HtoString(verbNoumList);
+		return HtoStringList(verbNoumList);
 	}
-	else if (HBlockProperty pNoumList = asHBlockProperty(value))
+	else if (HBlockProperty pNoumList = DynamicCasting::asHBlockProperty(value))
 	{
 		return HtoString(pNoumList->prop) + " of " + HtoString(pNoumList->obj);
 	}

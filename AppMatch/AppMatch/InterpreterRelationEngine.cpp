@@ -12,6 +12,9 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 bool CBlockInterpreter::assert_newRelation(HBlockRelationBase rel) {
     // processa uma nova relacao
     string nrel = rel->named;

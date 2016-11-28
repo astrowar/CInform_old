@@ -5,77 +5,78 @@
 
 #include "BlockInterpreter.hpp"
 
-
-class CBlockBooleanValue
-	: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+namespace CBlocking
 {
-public:
-	CBlockBooleanValue(bool _state):state(_state) {}
+	class CBlockBooleanValue
+		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	{
+	public:
+		CBlockBooleanValue(bool _state) :state(_state) {}
 
-	bool state;
-	 
-
-	void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockBooleanValue; }
-};
-using HBlockBooleanValue = std::shared_ptr<CBlockBooleanValue>;
+		bool state;
 
 
-class CBlockBooleanAND
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockBooleanAND(HBlock input_a, HBlock input_b)
-            : input_A(input_a),
-              input_B(input_b) {
-    }
-
-    HBlock input_A;
-    HBlock input_B;
-
-    void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockBooleanAND; }
-};
-using HBlockBooleanAND = std::shared_ptr<CBlockBooleanAND>;
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockBooleanValue; }
+	};
+	using HBlockBooleanValue = std::shared_ptr<CBlockBooleanValue>;
 
 
+	class CBlockBooleanAND
+		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	{
+	public:
+		CBlockBooleanAND(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
+			: input_A(input_a),
+			input_B(input_b) {
+		}
 
+		CBlocking::HBlock input_A;
+		CBlocking::HBlock input_B;
 
-class CBlockBooleanOR
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockBooleanOR(HBlock input_a, HBlock input_b)
-            : input_A(input_a),
-              input_B(input_b) {
-    }
-
-    HBlock input_A;
-    HBlock input_B;
-
-    void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockBooleanOR; }
-};
-using HBlockBooleanOR = std::shared_ptr<CBlockBooleanOR>;
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockBooleanAND; }
+	};
+	using HBlockBooleanAND = std::shared_ptr<CBlockBooleanAND>;
 
 
 
 
-class CBlockBooleanNOT
-        : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
-{
-public:
-    CBlockBooleanNOT(HBlock input_a)
-            : input_A(input_a) {}
+	class CBlockBooleanOR
+		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	{
+	public:
+		CBlockBooleanOR(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
+			: input_A(input_a),
+			input_B(input_b) {
+		}
 
-    HBlock input_A;
+		CBlocking::HBlock input_A;
+		CBlocking::HBlock input_B;
 
-    void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockBooleanNOT; }
-};
-using HBlockBooleanNOT = std::shared_ptr<CBlockBooleanNOT>;
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockBooleanOR; }
+	};
+	using HBlockBooleanOR = std::shared_ptr<CBlockBooleanOR>;
 
 
+
+
+	class CBlockBooleanNOT
+		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	{
+	public:
+		CBlockBooleanNOT(CBlocking::HBlock input_a)
+			: input_A(input_a) {}
+
+		CBlocking::HBlock input_A;
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockBooleanNOT; }
+	};
+	using HBlockBooleanNOT = std::shared_ptr<CBlockBooleanNOT>;
+
+}
 
 
 

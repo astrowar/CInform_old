@@ -7,12 +7,12 @@ class CRunLocalScope
 {
 public: 
 
-	std::list< std::pair<string, HBlock> > locals;
+	std::list< std::pair<string, CBlocking::HBlock> > locals;
 	CRunLocalScope()
 	{
 		
 	}
-	CRunLocalScope( std::map<string,HBlock> varMap)
+	CRunLocalScope( std::map<string,CBlocking::HBlock> varMap)
 	{
 		for( auto &e: varMap)
 		{
@@ -20,7 +20,7 @@ public:
 		}
 	}
 
-	HBlock resolve(std::string noum)
+	CBlocking::HBlock resolve(std::string noum)
 	{
 		for(auto &e:locals )
 		{
@@ -45,8 +45,8 @@ class CExecutionBlock
 public:
 
 	HRunLocalScope locals;
-	HBlock block;
-	CExecutionBlock(HRunLocalScope _locals,  HBlock _block  ): locals(_locals),block(_block)
+	CBlocking::HBlock block;
+	CExecutionBlock(HRunLocalScope _locals,  CBlocking::HBlock _block  ): locals(_locals),block(_block)
 	{
 
 	}

@@ -1,5 +1,8 @@
 #include "BaseTest.hpp"
 
+using namespace CBlocking;
+using namespace Interpreter;
+
 void testeParser_actionA()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();

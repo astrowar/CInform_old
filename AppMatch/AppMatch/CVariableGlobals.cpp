@@ -4,6 +4,10 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
 
 bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 {

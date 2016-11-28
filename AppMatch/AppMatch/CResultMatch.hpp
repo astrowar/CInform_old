@@ -6,10 +6,10 @@
 class CResultMatch
 {
 public:
-	std::map<string, HBlock> maptch;
+	std::map<string, CBlocking::HBlock> maptch;
 	bool hasMatch;	
 	CResultMatch() : hasMatch(false) {};	
-	CResultMatch(string s, HBlock b);
+	CResultMatch(string s, CBlocking::HBlock b);
 	CResultMatch(bool r);
 	void append(CResultMatch r);
 };

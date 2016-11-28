@@ -11,6 +11,11 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
 std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry)
 {
    // matched objects is valid only for some things	

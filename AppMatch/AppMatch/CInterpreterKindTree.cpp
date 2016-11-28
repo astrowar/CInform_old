@@ -10,6 +10,12 @@
 
 using namespace std;
 
+
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
 bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
     if (a->named == "" || b->named == "") return false;
     if (a->named == b->named) return true;
@@ -86,7 +92,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
                         if (k->named == b->named) {
                             return true;
                         } else {
-                            HBlock bnext = resolve_string(k->named,localsEntry);
+                            CBlocking::HBlock bnext = resolve_string(k->named,localsEntry);
                             if (HBlockKind baseClasse = asHBlockKind(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
                                 if (bnn) {

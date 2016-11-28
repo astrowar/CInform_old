@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cstdio>
 #include <algorithm>
-
+ 
 
 int binary_search(char *list_of_words[],  int isize, char *target)
 {

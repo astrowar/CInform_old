@@ -6,7 +6,9 @@
 #include "CBlockInterpreterRuntime.hpp"
 
 using namespace std;
-
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 pair<HBlockKind, HBlockKind>
 CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
@@ -21,7 +23,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
         b = make_shared<CBlockKindThing>(called);  //Default
     } else {
         // o que eh a baseclass ???
-        HBlock r = resolve_string(baseClasseName,nullptr);
+        CBlocking::HBlock r = resolve_string(baseClasseName,nullptr);
 
         if (HBlockKindThing kt = asHBlockKindThing(r)) {
             b = make_shared<CBlockKindThing>(called);
@@ -39,7 +41,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 
 }
 
-bool CBlockInterpreter::assert_assertation(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+bool CBlockInterpreter::assert_assertation(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
 
  
@@ -57,12 +59,12 @@ bool CBlockInterpreter::assert_assertation(HBlock obj, HBlock value, HRunLocalSc
 
 	}
 
-bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
     execute_set(obj, value,localsEntry);
 
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
+        CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_Value(nobj, value,localsEntry);
          
@@ -72,7 +74,7 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
 
     if (HBlockInstance nInst = asHBlockInstance(obj)) {
         if (HBlockNoum nbase = asHBlockNoum(value)) {
-            HBlock nobj = resolve_noum(nbase,localsEntry);
+            CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
             if (nobj == nullptr) 
             {
                 nInst->set(nbase);
@@ -86,20 +88,20 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
 
 
     if (HBlockProperty prop_n = asHBlockProperty(obj)) {
-        HBlock propNamed = prop_n->prop;
-        HBlock destination = prop_n->obj;
+        CBlocking::HBlock propNamed = prop_n->prop;
+        CBlocking::HBlock destination = prop_n->obj;
         return assert_it_property(propNamed, destination, value,localsEntry);
     }
 
     if (HVariableNamed  var_n = asHVariableNamed(obj)) {
          
-        HBlock destination = var_n->value;
+        CBlocking::HBlock destination = var_n->value;
         if (value_can_be_assign_to(value , var_n->kind,localsEntry))
         {
             if (HBlockList   val_list = asHBlockList(value))
             {
                 //list is passed as copy
-                HBlockList lcopy = make_shared<CBlockList> (std::list<HBlock>());
+                HBlockList lcopy = make_shared<CBlockList> (std::list<CBlocking::HBlock>());
                 lcopy->lista = val_list->lista;
                 var_n->value = lcopy;
 
@@ -118,7 +120,7 @@ bool CBlockInterpreter::assert_it_Value(HBlock obj, HBlock value, HRunLocalScope
 }
 
 
-bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value) 
+bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBlock value) 
 {
 	if (HBlockKindAction   act = asHBlockKindAction(value))
 	{
@@ -142,7 +144,7 @@ bool CBlockInterpreter::assert_it_action(HBlock obj, HBlock value)
     return false;
 }
 
-bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value,HRunLocalScope localsEntry) {
     if (HBlockKindOfName k = asHBlockKindOfName(value)) {
         if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
@@ -208,7 +210,7 @@ bool CBlockInterpreter::assert_it_kind(HBlock obj, HBlock value,HRunLocalScope l
 
 
 
-bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBlock baseKind, HRunLocalScope localsEntry) {
 
     if (HBlockList nobjList = asHBlockList(obj))
     {
@@ -220,7 +222,7 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLoca
 
     if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
     {
-        HBlock bbase = resolve_noum(nbaseKind, localsEntry);
+        CBlocking::HBlock bbase = resolve_noum(nbaseKind, localsEntry);
         if (bbase != nullptr)
         {
             return assert_it_instance(obj, bbase, localsEntry);
@@ -264,14 +266,14 @@ bool CBlockInterpreter::assert_it_instance(HBlock obj, HBlock baseKind, HRunLoca
 
 
 
-bool CBlockInterpreter::assert_it_valuesDefinitions(HBlock c_block, HBlock value, HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     // Value Kind , is , list of Noums
 
     if (HBlockList vlist = asHBlockList(value)) // segundo argumento eh uma lista
         if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
         {
             // nn eh um value Kind ??
-            HBlock nobj = resolve_noum(nn,localsEntry);
+            CBlocking::HBlock nobj = resolve_noum(nn,localsEntry);
             if (HBlockKind nkind = asHBlockKind( nobj)) //mas na verdade o primeiro eh um kind ja definido
             {
                 for (auto &v : vlist->lista) {

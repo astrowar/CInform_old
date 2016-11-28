@@ -2,6 +2,7 @@
 
  
 #include "Parser.hpp"
+using namespace CBlocking;
 
 HBlock CParser::text_entry(std::vector<HTerm>&  term)
 {

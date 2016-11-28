@@ -3,7 +3,12 @@
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 
-HBlock  CBlockInterpreter::evaluate_relation_property(HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function< HBlock(HBlock, HRunLocalScope, QueryStack) > isSuitable)
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
+CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable)
 {
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
@@ -29,16 +34,16 @@ HBlock  CBlockInterpreter::evaluate_relation_property(HBlock c_block, HBlockNoum
 	return nullptr;
 }
 
-HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function< HBlock(HBlock, HRunLocalScope, QueryStack) > isSuitable)
+CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable)
 {
  
 	{
-		if (HBlockNoum property_noum = asHBlockNoum(cproperty->prop))
+		if (HBlockNoum property_noum = DynamicCasting::asHBlockNoum(cproperty->prop))
 		{
 			
-			if (HBlockNoum object_named = asHBlockNoum(cproperty->obj))
+			if (HBlockNoum object_named = DynamicCasting::asHBlockNoum(cproperty->obj))
 			{
-				HBlock object =  resolve_noum(object_named, localsEntry);
+				CBlocking::HBlock object =  resolve_noum(object_named, localsEntry);
 
 				if (object != nullptr)
 				{
@@ -66,7 +71,7 @@ HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cproperty, HR
 
 // std::function<void(const Foo&, int)> f_add_display = &Foo::print_add;
 //Funcao que calcula todos os values possiveis do primeiro termo e chama a funcao proxima
-HBlock  CBlockInterpreter::evaluate_values(HBlock c_block, HRunLocalScope localsEntry, QueryStack stk , std::function< HBlock(HBlock, HRunLocalScope , QueryStack) > isSuitable  )
+CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack stk , std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope , QueryStack) > isSuitable  )
 {
 	if (c_block == nullptr) return nullptr;
 	if (stk.isQuery("__evaluate", c_block, nullptr)) return nullptr;
@@ -76,7 +81,7 @@ HBlock  CBlockInterpreter::evaluate_values(HBlock c_block, HRunLocalScope locals
 
 	if (HBlockNoum nnoum = asHBlockNoum(c_block))
 	{
-		HBlock resolved = resolve_noum(nnoum, localsEntry);
+		CBlocking::HBlock resolved = resolve_noum(nnoum, localsEntry);
 		if (resolved)
 		{
 			auto r = isSuitable(resolved, localsEntry, stk );
@@ -144,9 +149,9 @@ HBlock  CBlockInterpreter::evaluate_values(HBlock c_block, HRunLocalScope locals
 
 }
 
-HBlock  CBlockInterpreter::evaluate_values(HBlock c_block )
+CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block )
 {
 
-	std::function< HBlock(HBlock, HRunLocalScope, QueryStack) > isSuitable = [](HBlock a , HRunLocalScope h, QueryStack stk ) {  return a ; };
+	std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable = [](CBlocking::HBlock a , HRunLocalScope h, QueryStack stk ) {  return a ; };
 	return evaluate_values(c_block, nullptr, QueryStack(), isSuitable);
 }

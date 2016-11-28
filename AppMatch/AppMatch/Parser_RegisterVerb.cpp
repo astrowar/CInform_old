@@ -5,7 +5,7 @@
 
 
 #include  "verb_en.hpp"
- 
+using namespace CBlocking;
 
 std::list<HBlockVerbConjugation> CParser::get_verb_conjugations(std::string verb) const
 {

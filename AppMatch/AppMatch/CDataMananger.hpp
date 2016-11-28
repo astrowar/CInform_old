@@ -16,8 +16,7 @@
 
 #include <memory>
 
-class CBlock;
-using HBlock = std::shared_ptr<CBlock>;
+ 
 
 
 

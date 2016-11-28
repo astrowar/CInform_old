@@ -3,7 +3,7 @@
  
 #include "CBlockRelation.hpp"
 #include "CBlockBoolean.hpp"
-
+using namespace CBlocking;
 
 HBlock CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 {

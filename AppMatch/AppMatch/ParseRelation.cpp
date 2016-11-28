@@ -2,6 +2,7 @@
  
  
 #include "CBlockRelation.hpp"
+using namespace CBlocking;
 
 string  parser_OtherCalledAs(HTerm term)
 {

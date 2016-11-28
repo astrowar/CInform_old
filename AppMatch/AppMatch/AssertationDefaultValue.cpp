@@ -2,8 +2,10 @@
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp" 
 using namespace std;
-
-
+using namespace CBlocking;
+ 
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 
 
@@ -44,11 +46,11 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 
 
 
-bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value,  HRunLocalScope localsEntry)
+bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlocking::HBlock value,  HRunLocalScope localsEntry)
 {
 	if (HBlockNoum prop_obj_noum = asHBlockNoum(prop->obj))
 	{
-		HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
+		CBlocking::HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
 		
 		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value,localsEntry);
 
@@ -80,11 +82,11 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 
 	return false;
 }
-bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
 	obj->dump(" ");
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
+        CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_defaultValue(nobj, value,localsEntry);
         }

@@ -9,7 +9,9 @@
 #include "CBlockNumber.hpp"
 using namespace std;
 
-
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 
 HBlockNoum  CBlockInterpreter::get_plural_of( string s )

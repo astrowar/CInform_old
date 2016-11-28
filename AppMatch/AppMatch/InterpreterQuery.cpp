@@ -12,6 +12,10 @@
 
 using namespace std;
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
 
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2);
 
