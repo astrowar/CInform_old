@@ -76,7 +76,7 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 	 
 
 
-	HBlock rblock_Lookup = (DynamicLookup_Seletor(lst));
+	HBlock rblock_Lookup = (ParseRelation::DynamicLookup_Seletor(p,lst));
 	if (rblock_Lookup != nullptr) return rblock_Lookup;
 
 

@@ -426,6 +426,31 @@ namespace NSParser
 		CBlocking::HBlockMatchActionCall  parser_actionMatch(CParser * p, HTerm & term);
 		CBlocking::HBlock  STMT_Action_Controls(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err);
 	}
+
+	namespace ParseRelation
+	{
+		CBlocking::HBlock    parser_SeletorVerb(CParser *p, HTerm   term, CBlocking::HBlockMatch muteVariable);
+		CBlocking::HBlock    STMT_relates_AssertionWhen(CParser *p, std::vector<HTerm>&  term);
+		CBlocking::HBlock    parser_SeletorRelation(CParser *p, HTerm   term, CBlocking::HBlockMatch muteVariable);
+		CBlocking::HBlock    parser_SeletorTerm(CParser *p, HTerm   term, CBlocking::HBlockMatch muteVariable);
+		CBlocking::HBlock    DynamicLookup_Seletor(CParser *p, std::vector<HTerm>& term);
+
+		CBlocking::HBlockArgumentInput  parser_KindCalled(CParser *p, HTerm term);
+		CBlocking::HBlock  STMT_relates_Assertion(CParser *p, std::vector<HTerm>&  term);
+	}
+
+	namespace ParseDecide
+	{
+		CBlocking::HBlockMatch  parser_What_Which_Assertion(CParser * p, HTerm term);
+		CBlocking::HBlockMatchIs  parser_What_Which_Verb_Assertion(CParser * p, HTerm term);
+		CBlocking::HBlockMatchIs  parser_Match_IF_Assertion(CParser * p, HTerm term);
+		CBlocking::HBlock  parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock parseAssertion_isDecide(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock parseAssertion_DecideOn(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock STMT_Definition_Assertion(CParser * p, std::vector<HTerm>&  term);
+
+	}
+
 };
 
 	std::vector<HTerm> decompose(string phase);

@@ -5,7 +5,74 @@
 #include "CBlockBoolean.hpp"
 using namespace CBlocking;
 
-HBlock NSParser::CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
+
+
+
+HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm term)
+{
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("various")); //Various never has name called
+		predList.push_back(mkHPredAny("kind"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			HBlockKind argumentKindItem = std::make_shared<CBlockKindValue>(kindStr);
+			HBlockKind argumentKind = std::make_shared<CBlockListOfKind>(argumentKindItem);
+			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
+			return argumentEntry;
+		}
+	}
+
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind"));
+		predList.push_back(mk_HPredLiteral("called"));
+		predList.push_back(mkHPredAny("var_named"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(kindStr);
+			string argumentName = (res.matchs["var_named"]->removeArticle()->repr());
+			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, argumentName);
+			return argumentEntry;
+		}
+	}
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			auto rp = kindStr;
+			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(rp);
+			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
+			return argumentEntry;
+		}
+	}
+	return nullptr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HBlock NSParser::ParseRelation::STMT_relates_AssertionWhen(CParser *p, std::vector<HTerm>&  term)
 {
 	//Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X.
 	{
@@ -25,10 +92,10 @@ HBlock NSParser::CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 		if (res.result == Equals)
 		{
 			string rname = res.matchs["relationName"]->removeArticle()->repr();
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p,res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p,res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
@@ -42,7 +109,7 @@ HBlock NSParser::CParser::STMT_relates_AssertionWhen(std::vector<HTerm>&  term)
 
 }
 
-HBlock   NSParser::CParser::parser_SeletorRelation( HTerm   term , HBlockMatch muteVariable  )
+HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   term , HBlockMatch muteVariable  )
 {
 
 	//relation 
@@ -65,7 +132,7 @@ HBlock   NSParser::CParser::parser_SeletorRelation( HTerm   term , HBlockMatch m
 			{
 
 				{
-					auto arg2 = ExpressionMatch::parser_MatchArgument(res.matchs["K2"]);
+					auto arg2 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K2"]);
 					if (arg2 != nullptr)
 					{
 						return  std::make_shared<CBlockRelationLookup>(rname, arg2, muteVariable, SecondNoum);
@@ -96,7 +163,7 @@ HBlock   NSParser::CParser::parser_SeletorRelation( HTerm   term , HBlockMatch m
 			{
 		 
 				{
-					auto arg2 = ExpressionMatch::parser_MatchArgument(res.matchs["K2"]);
+					auto arg2 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K2"]);
 					if (arg2 != nullptr)
 					{
 						return  std::make_shared<CBlockRelationLookup>(rname, muteVariable, arg2, FirstNoum);
@@ -112,7 +179,7 @@ HBlock   NSParser::CParser::parser_SeletorRelation( HTerm   term , HBlockMatch m
 
 }
 
-HBlock   NSParser::CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVariable)
+HBlock   NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, HBlockMatch muteVariable)
 {
 	
 	{
@@ -127,10 +194,10 @@ HBlock   NSParser::CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVar
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = parser_SeletorTerm(res.matchs["S1"],muteVariable);
+			auto arg1 = parser_SeletorTerm(p,res.matchs["S1"],muteVariable);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_SeletorTerm(res.matchs["Seletor"], muteVariable);
+				auto arg2 = parser_SeletorTerm(p,res.matchs["Seletor"], muteVariable);
 				if (arg2 != nullptr)
 				{
 
@@ -143,9 +210,9 @@ HBlock   NSParser::CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVar
 
 
 
-	auto rrel = parser_SeletorRelation(term, muteVariable);
+	auto rrel = parser_SeletorRelation(p,term, muteVariable);
 	if (rrel != nullptr) return rrel;
-	auto rverb = parser_SeletorVerb(term, muteVariable);
+	auto rverb = parser_SeletorVerb(p,term, muteVariable);
 	if (rverb != nullptr) return rverb;
 
 	return nullptr;
@@ -153,7 +220,7 @@ HBlock   NSParser::CParser::parser_SeletorTerm(HTerm   term, HBlockMatch muteVar
  
 
 
-HBlock   NSParser::CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
+HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<HTerm>& term)
 {
 	/*{
 		 static std::vector<HPred> predList = {};
@@ -230,10 +297,10 @@ HBlock   NSParser::CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = ExpressionMatch::parser_MatchArgument(res.matchs["K1"]);
+			auto arg1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto seletor = parser_SeletorTerm(res.matchs["Seletor"] , arg1);
+				auto seletor = parser_SeletorTerm(p,res.matchs["Seletor"] , arg1);
 				if (seletor != nullptr)
 				{
 					//CBlockListComputed( )
@@ -256,10 +323,10 @@ HBlock   NSParser::CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = ExpressionMatch::parser_MatchArgument(res.matchs["K1"]);
+			auto arg1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto seletor = parser_SeletorTerm(res.matchs["Seletor"],arg1);
+				auto seletor = parser_SeletorTerm(p,res.matchs["Seletor"],arg1);
 				if (seletor != nullptr)
 				{
 					
@@ -273,7 +340,7 @@ HBlock   NSParser::CParser::DynamicLookup_Seletor(std::vector<HTerm>& term)
 
 
  
-HBlock   NSParser::CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVariable)
+HBlock   NSParser::ParseRelation::parser_SeletorVerb(CParser *p, HTerm   term, HBlockMatch muteVariable)
 {
 
 	// TODO implementar os NOT 
@@ -282,14 +349,14 @@ HBlock   NSParser::CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVar
 		if (predList.empty())
 		{ 
 			predList.push_back(verb_IS());
-			predList.push_back(verbList);
+			predList.push_back(p->verbList);
 			predList.push_back(mkHPredAny("K2"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{		 
-			auto n2 = ExpressionMatch::parser_expression_match(res.matchs["K2"]);
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+			auto n2 = ExpressionMatch::parser_expression_match(p,res.matchs["K2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}
 	}
@@ -299,14 +366,14 @@ HBlock   NSParser::CParser::parser_SeletorVerb(HTerm   term, HBlockMatch muteVar
 		if (predList.empty())
 		{
 			//Sem o IS
-			predList.push_back(verbList);
+			predList.push_back(p->verbList);
 			predList.push_back(mkHPredAny("K2"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto n2 = ExpressionMatch::parser_expression_match(res.matchs["K2"]);
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+			auto n2 = ExpressionMatch::parser_expression_match(p,res.matchs["K2"]);
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}
 	} 
