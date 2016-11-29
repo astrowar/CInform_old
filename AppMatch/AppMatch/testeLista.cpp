@@ -86,7 +86,7 @@ items is  ( diary, book and box )
 
 )";
   
-	auto q_all_of = interpreter->exec_eval(parse.Parser_Expression(" all distance of items   ", true), nullptr );
+	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse," all distance of items   ", true), nullptr );
 	
 	q_all_of->dump("");
 

@@ -75,9 +75,9 @@ box contains a book
 
 
 	printf("=========================================\n");
-	auto stmt = parse.parser_text(ss1, ISLOG);
+	auto stmt = ParseText::parser_text(&parse,ss1, ISLOG);
 
-	interpreter->execute_init(stmt);
+	interpreter->execute_init(stmt); 
 
 
 	//auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));
@@ -98,30 +98,30 @@ box contains a book
 	assert(ret_cc.result == QEquals);
 
 
-	auto verb_cc = interpreter->exec_eval(parse.Parser_Expression("the verb provoke", ISLOG), nullptr);
+	auto verb_cc = interpreter->exec_eval(Expression::Parser_Expression(&parse,"the verb provoke", ISLOG), nullptr);
 	verb_cc->dump("");
 
-	auto verb_ccv = parse.Parser_Expression("adapt the verb provoke in past participle", ISLOG);
+	auto verb_ccv = Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG);
 	verb_ccv->dump("");
-	auto verb_to_adapt = interpreter->exec_eval(parse.Parser_Expression("adapt the verb provoke in past participle", ISLOG), nullptr);
+	auto verb_to_adapt = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG), nullptr);
 	verb_to_adapt->dump("");
 
-	auto verb_to_adapt_3 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb carry in present participle  ", ISLOG), nullptr);
+	auto verb_to_adapt_3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb carry in present participle  ", ISLOG), nullptr);
 	verb_to_adapt_3->dump("");
 
 
 
-	auto verb_to_adapt_4 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb contain in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain in past perfect  ", ISLOG), nullptr);
 	verb_to_adapt_4->dump("");
 
-	auto verb_to_adapt_5 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb will in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb will in past perfect  ", ISLOG), nullptr);
 	verb_to_adapt_5->dump("");
 
 
-	auto verb_to_adapt_6 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb contain  from the third person singular  ", ISLOG), nullptr);
+	auto verb_to_adapt_6 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain  from the third person singular  ", ISLOG), nullptr);
 	verb_to_adapt_6->dump("");
 
-	auto verb_to_adapt_7 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb be in past   from the second person plural  ", ISLOG), nullptr);
+	auto verb_to_adapt_7 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb be in past   from the second person plural  ", ISLOG), nullptr);
 	verb_to_adapt_7->dump("");
 	return;
 }

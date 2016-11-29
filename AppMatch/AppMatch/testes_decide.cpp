@@ -142,7 +142,7 @@ Zora speak Zubian
 
     
 
-      interpreter->execute_init(parse.parser_text ( slong, ISLOG));
+      interpreter->execute_init(ParseText::parser_text(&parse, slong, ISLOG));
       
       //auto q1 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is a  person  ", ISLOG));
      // assert(q1 == QEquals);
@@ -151,7 +151,7 @@ Zora speak Zubian
 	  QueryResultContext q3 =  interpreter->query(Statement::Parser_Stmt(&parse,"Zora speak English  ", ISLOG));
       assert(q3.result == QEquals);
 
-	  auto q4 = interpreter->execute_now(parse.parser_text("if   Zora speak English   : say  (text yes) ", ISLOG));
+	  auto q4 = interpreter->execute_now(ParseText::parser_text(&parse,"if   Zora speak English   : say  (text yes) ", ISLOG));
       assert(q4.hasExecuted );
 }
 
@@ -199,7 +199,7 @@ to decide  if ( person called P  ) is oposite of ( person called Q )  :
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
-	interpreter->execute_init(parse.parser_text(slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
 	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
 	//qr->dump("");

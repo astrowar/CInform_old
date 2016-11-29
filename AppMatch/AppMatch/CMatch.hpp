@@ -196,11 +196,14 @@ public:
     void insert(MatchResult &other);
 };
 
+
 MatchResult makeMatch(std::string named, HTerm value);
 
-MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
+MatchResult CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
+//MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
 
-MatchResult CMatch(HTerm term, std::vector<HPred> predicates);
+MatchResult CMatch(HTerm term, const std::vector<HPred>& predicates);
+ 
 
 std::string get_repr(MatchResult r);
 

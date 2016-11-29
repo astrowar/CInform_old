@@ -118,11 +118,11 @@ carry out eating ( thing called X  which is edible ) :
 )";
 	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
 	
-	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
-	auto e = interpreter->exec_eval(parse.Parser_Expression(" eating ", ISLOG), nullptr);
+	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
+	auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse," eating ", ISLOG), nullptr);
 	 
 	e->dump("");
-	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating orange ", ISLOG), nullptr);
@@ -166,9 +166,9 @@ carry out eating ( thing called X  which is edible ) :
 
 )";
 
-	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
  
-	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", ISLOG), nullptr);
@@ -213,9 +213,9 @@ asking someone for something is speech
 
 )";
 
-	interpreter->execute_init(parse.parser_text(s_eating, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
 
-	//interpreter->execute_now(parse.Parser_Expression("eat apple ", ISLOG), nullptr); 
+	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", ISLOG), nullptr);

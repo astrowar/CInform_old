@@ -87,31 +87,7 @@ HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  t
 	return nullptr;
 }
 
-//Parser o loop da primeira parte
-HBlock  NSParser::CParser::parser_loop_A( HTerm&  term)
-{
-	
-	//pode ser um kind, um kindo com verbo associado
-	auto nterms = expandTerm( term );
-	{
-		HBlockAssertion_is now_verb = parse_AssertionVerb(nterms);
-		if (now_verb != nullptr)
-		{
-			return  (now_verb);
-		}
-	} 
-
-	{
-		HBlockAssertion_is now_is = parse_AssertionDirectAssign(nterms);
-		if (now_is != nullptr)
-		{
-			return  (now_is);
-		}
-	}
-
-	return parse_noum(nterms);
-
-}
+ 
 
 //parse a segunda parte do iterator
 HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * p, HTerm&  term , NoumLocation nlocation  )
@@ -287,7 +263,7 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 }
 
-HBlock NSParser::CParser::sys_now_loop(std::vector<HTerm>&  term)
+HBlock NSParser::ParseAssertion::sys_now_loop(CParser * p, std::vector<HTerm>&  term)
 {
 	
 	// now every room is lighted
@@ -317,7 +293,7 @@ HBlock NSParser::CParser::sys_now_loop(std::vector<HTerm>&  term)
 		//parse_AssertionDirectAssign
 
 		{
-			HBlockAssertion_is now_verb = parse_Loop_AssertionVerb(res.matchs["Assertion"],FirstNoum);
+			HBlockAssertion_is now_verb = parse_Loop_AssertionVerb(p,res.matchs["Assertion"],FirstNoum);
 			if (now_verb != nullptr)
 			{
 			 
@@ -326,32 +302,16 @@ HBlock NSParser::CParser::sys_now_loop(std::vector<HTerm>&  term)
 		}
 
 
-		/*{
-			HBlockAssertion_is now_is = parse_Loop_AssertionDirectAssign(nterms);
-			if (now_is != nullptr)
-			{
-				return std::make_shared<CBlockNow >(now_is);
-			}
-		}*/
-
-
-		/*if (auto iterator = parser_loop_A(res.matchs["Seletor_A"]) )
-		{
-			if (auto body = parser_loop_B(res.matchs["Seletor_B"] , iterator ))
-			{
-				return std::make_shared<CBlockNow >(  body);
-
-			}
-		} */
+		 
 	}
 
 	return nullptr;
 }
 
-HBlock NSParser::CParser::sys_now_action(std::vector<HTerm>&  term) 
+HBlock NSParser::ParseAssertion::sys_now_action(CParser * p, std::vector<HTerm>&  term)
 {
 
-	if ( auto nloop = sys_now_loop(term ))
+	if ( auto nloop = sys_now_loop(p,term ))
 	{
 		return nloop;
 	}
@@ -381,7 +341,7 @@ HBlock NSParser::CParser::sys_now_action(std::vector<HTerm>&  term)
             //parse_AssertionDirectAssign
 
             {
-                HBlockAssertion_is now_verb = parse_AssertionVerb(nterms);
+                HBlockAssertion_is now_verb = parse_AssertionVerb(p,nterms);
                 if (now_verb != nullptr)
                 {
                     return std::make_shared<CBlockNow >(now_verb);
@@ -390,7 +350,7 @@ HBlock NSParser::CParser::sys_now_action(std::vector<HTerm>&  term)
 
 
             {
-                HBlockAssertion_is now_is = parse_AssertionDirectAssign(nterms);
+                HBlockAssertion_is now_is = parse_AssertionDirectAssign(p,nterms);
                 if (now_is != nullptr)
                 {
                     return std::make_shared<CBlockNow >(now_is);
@@ -404,13 +364,13 @@ HBlock NSParser::CParser::sys_now_action(std::vector<HTerm>&  term)
 
 
 //Processa os smtm que sao do sistema
-HBlock NSParser::CParser::STMT_system_Assertion(std::vector<HTerm>& term)
+HBlock NSParser::ParseAssertion::STMT_system_Assertion(CParser * p, std::vector<HTerm>& term)
 {
-	auto d_say = (sys_say_action(term));
+	auto d_say = (ParseAction::sys_say_action(p,term));
 	if (d_say != nullptr) return d_say;
 
 
-            auto d_now = (sys_now_action(term));
+            auto d_now = (sys_now_action(p,term));
             if (d_now != nullptr) return d_now;
 
     return nullptr;
@@ -922,60 +882,13 @@ std::vector<string>  split_new_lines(const string &str)   {
 	return  std::make_shared< CBlockComandList >(retBlocks);
 
 }
-std::list<HBlock> NSParser::CParser::parser_GroupLines(HGroupLines pivot, ErrorInfo *err)
-{
-
-	auto r = parser_stmt_inner(pivot, err);
-	if (r!=nullptr)
-	{
-		logError(err->msg);
-		return r->lista;
-	}
-
-	return std::list<HBlock>();
-
-
-	 
-/*
-	std::list<HBlock> retBlocks;
-	if (pivot == nullptr)
-	{
-		return retBlocks;
-	}
-
-	while (pivot != nullptr)
-	{
-		for (auto it = pivot->lines.begin(); it != pivot->lines.end(); ++it)
-		{
-			HBlock blk;
-			std::string rawLine = it->line;
-			auto inext = std::next(it);
-			HGroupLines _inner = nullptr;
-			if (inext == pivot->lines.end()) _inner = pivot->inner;
-			blk = parser_GroupLine(rawLine, _inner, err);
-			if (err->hasError)   return std::list<HBlock>();
-			if (blk == nullptr)
-			{
-				logError("Parser Error at " + std::to_string(pivot->lines.front().linenumber));
-				err->setError("Parser Error at " + std::to_string(pivot->lines.front().linenumber));
-				return std::list<HBlock>();
-			}
-			retBlocks.push_back(blk);
-
-		}
-		pivot = pivot->next;
-		if (pivot == nullptr) break;
-	}
-	return retBlocks;
-*/
-}
-
-HBlock NSParser::CParser::parser_text(string str , ErrorInfo *err)
+ 
+HBlock NSParser::ParseText::parser_text(CParser *p, string str , ErrorInfo *err)
 {
 	 
     // quebra o text  em linhas e processa as linhas separadamente
     auto vlist = split_new_lines(str);
-	HGroupLines pivot =  get_identation_groups("__FILE__",vlist,err);
+	HGroupLines pivot =  get_identation_groups(p,"__FILE__",vlist,err);
 	if (err->hasError)
 	{
 		return nullptr;
@@ -985,7 +898,7 @@ HBlock NSParser::CParser::parser_text(string str , ErrorInfo *err)
 		return nullptr;
 	}
 	 
-    auto blist  = parser_stmt_inner(pivot,err); 
+    auto blist  = Statement::parser_stmt_inner(p,pivot,err); 
 	if (err->hasError) return nullptr;
 	return  blist;
 
@@ -995,10 +908,10 @@ HBlock NSParser::CParser::parser_text(string str , ErrorInfo *err)
 
 
 //interprete varias linhas de texto
-HBlock NSParser::CParser::parser_text(string str, bool dump )
+HBlock NSParser::ParseText::parser_text(CParser *p, string str, bool dump )
 {
 	ErrorInfo err;
-    HBlock b =  parser_text(str,&err);
+    HBlock b =  parser_text(p,str,&err);
     if (b) {
         if (dump) {
             b->dump("");

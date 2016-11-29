@@ -4,7 +4,7 @@
 #include "Parser.hpp"
 using namespace CBlocking;
 
-HBlock NSParser::CParser::text_entry(std::vector<HTerm>&  term)
+HBlock NSParser::Statement::text_entry(CParser * p, std::vector<HTerm>&  term)
 {
 	{
 		 

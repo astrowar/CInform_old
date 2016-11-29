@@ -595,7 +595,7 @@ MatchResult CMatch_IL(HTerm term, std::vector<HPred> predicate) {
 MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPred *> predicates_ptr);
 void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func);
 
-MatchResult CMatch(std::vector<HTerm>&   lst, std::vector<HPred> predicates) {
+MatchResult CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) {
     size_t npred = predicates.size();
     int a = lst.size();
 
@@ -623,11 +623,11 @@ MatchResult CMatch(std::vector<HTerm>&   lst, std::vector<HPred> predicates) {
 
     //std::cout << get_repr(lst) << std::endl;
     //std::cout << get_repr(remove_boundaryListMark(lst)) << std::endl;
-
-    std::vector<CPred *> predicates_ptr;
-    for (auto it = predicates.begin(); it != predicates.end(); ++it) {
-        predicates_ptr.push_back(it->get());
-    }
+	
+	 
+    std::vector<CPred *> predicates_ptr(npred);
+	for (int k = 0; k < npred; ++k)predicates_ptr[k] = predicates[k].get();
+    //for (auto it = predicates.begin(); it != predicates.end(); ++it) {     predicates_ptr.push_back(it->get());  }
 
     MatchResult mmResultMatch;
     FuncCombinatoria f_disp = [&](MTermSetCombinatoria &x) {
@@ -648,7 +648,7 @@ MatchResult CMatch(std::vector<HTerm>&   lst, std::vector<HPred> predicates) {
     return mmResultMatch;
 }
 
-MatchResult CMatch(HTerm term, std::vector<HPred> predicates) {
+MatchResult CMatch(HTerm term, const  std::vector<HPred>& predicates) {
     if (predicates.size() == 1) {
         if (predicates.front()->match(term) == Equals) {
             return makeMatch(predicates.front()->named, term);

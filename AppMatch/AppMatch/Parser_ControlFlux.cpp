@@ -253,7 +253,7 @@ HBlock   NSParser::ControlFlux::parser_control_else(CParser *p, std::vector<HTer
 
 			
 
-			HBlock ABody = p->parser_stmt(res.matchs["body"], inner, err);
+			HBlock ABody = Statement::parser_stmt(p,res.matchs["body"], inner, err);
 			if (ABody == nullptr || inner != nullptr)
 			{
 				err->setError("error on Select Item ");

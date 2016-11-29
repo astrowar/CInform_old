@@ -394,7 +394,7 @@ void logGroupLines(NSParser::HGroupLines   pivot , string offset )
 }
 
 
-NSParser::HGroupLines  NSParser::CParser::get_identation_groups(string filename,  std::vector<string> vlines, ErrorInfo *err)
+NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, string filename,  std::vector<string> vlines, ErrorInfo *err)
 {
 	std::list<HGroupLines> buffer;
 	

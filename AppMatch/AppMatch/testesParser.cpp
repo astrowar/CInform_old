@@ -267,7 +267,7 @@ the verb ( points to )  implies a  dynamic relation
 now x points to b
   
 )";
-		parse.parser_text(ss1, true);
+		ParseText::parser_text(&parse,ss1, true);
 	}
  
 	{
@@ -282,7 +282,7 @@ else :
   a is z
 )";
 		CParser parse(std::make_shared<CBlockInterpreter>()); 
-		parse.parser_text(ss1, true);
+		ParseText::parser_text(&parse,ss1, true);
 	}
 
 	printf("========================================\n");
@@ -297,7 +297,7 @@ if x is 10:
        error is true 
 )";
 		CParser parse(std::make_shared<CBlockInterpreter>()); 
-		parse.parser_text(ss1, true);
+		ParseText::parser_text(&parse,ss1, true);
 	}
 
 	printf("========================================\n");
@@ -314,7 +314,7 @@ else:
      x is b
 )";
 		CParser parse(std::make_shared<CBlockInterpreter>()); 
-		parse.parser_text(ss1, true);
+		ParseText::parser_text(&parse,ss1, true);
 	}
 
 	printf("========================================\n");
@@ -322,7 +322,7 @@ else:
 		HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 		CParser parse(interpreter);
 		
-		parse.parser_text("the verb (points to)  implies a  dynamic relation", true);
+		ParseText::parser_text(&parse,"the verb (points to)  implies a  dynamic relation", true);
 		string ss1 =
 			R"(
 the verb (points to)  implies a  dynamic relation
@@ -343,12 +343,12 @@ else:
    say  ( text error )
 )";
 		 
-		auto stmt =  parse.parser_text(ss1, ISLOG);
+		auto stmt =  ParseText::parser_text(&parse,ss1, ISLOG);
 		interpreter->execute_init( stmt );
 		auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));		 
 		assert(ret_e.result == QEquals);
 
-		interpreter->execute_now(parse.parser_text(ss2, ISLOG));
+		interpreter->execute_now(ParseText::parser_text(&parse,ss2, ISLOG));
 
 		auto ret_e2 = interpreter->query(Statement::Parser_Stmt(&parse," x is a  ", ISLOG));
 		assert(ret_e.result == QEquals);
@@ -371,13 +371,13 @@ plural of caixa  is caixas
 plural of brother in law is brothers in law
   
 )";
-		auto pp =  parse.parser_text(ss1, true);
+		auto pp =  ParseText::parser_text(&parse,ss1, true);
 		interpreter->execute_init(pp);
 
-		auto rt = interpreter->exec_eval(parse.Parser_Expression(" plural of caixa ", ISLOG),nullptr);
+		auto rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of caixa ", ISLOG),nullptr);
 		rt->dump("");
 
-		rt = interpreter->exec_eval(parse.Parser_Expression(" plural of brother in law ", ISLOG), nullptr);
+		rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of brother in law ", ISLOG), nullptr);
 		rt->dump("");
 	}
 	logMessage("...");

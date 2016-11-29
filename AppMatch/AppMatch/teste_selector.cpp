@@ -26,7 +26,7 @@ box is in hall
 )";
 
 	
-	interpreter->execute_init(parse.parser_text(slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
 	auto sentence_0 = "the coil is stuck to box ";
 	auto sentence_1 = "the coil is stuck to a thing ";

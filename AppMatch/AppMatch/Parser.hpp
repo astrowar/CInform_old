@@ -186,140 +186,35 @@ namespace NSParser
 		
 	 
 
-		CBlocking::HBlockVerbRelation STMT_verb_relation(CBlocking::HBlock a_verb, HTerm term);
-
- 
-
-
-
-
+	 
 		int registerStaticDispatch(int entryId, CBlocking::HBlockMatchList  argumentMatch, CBlocking::HBlock body);
 		int registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlocking::HBlockMatch entryMatch);
 		int registerDynamicDispatch(std::vector<HPred> _matchPhase, CBlocking::HBlockMatch entry, CBlocking::HBlock ret);
-		ParserResult parser_AssertionKind(std::vector<HTerm>&  lst);
-		CBlocking::HBlockActionApply parse_AssertionAction_ApplyngTo(HTerm term);
- 
-
-
-
-
-
 	 
-	 
-	 
- 
 		CBlocking::HBlock Parser_Condition(string str, bool dump); // Apenas para testes
-
-		CBlocking::HBlock parser_stmt(string str, bool dump, ErrorInfo* err);
-
-		CBlocking::HBlock parser_GroupLine(std::string v, HGroupLines inner, ErrorInfo* err);
-		CBlocking::HBlockComandList parser_stmt_inner(HGroupLines inner, ErrorInfo* err);
-		std::list<CBlocking::HBlock >  post_process_tokens(std::list< CBlocking::HBlock > list, ErrorInfo* err);
-
-		std::list<CBlocking::HBlock> parser_GroupLines(HGroupLines pivot, ErrorInfo* err);
-
-		CBlocking::HBlock STMT_Definition_Assertion(std::vector<HTerm>&  term);
-		CBlocking::HBlockStaticDispatch  getStaticDispatchResolve(HTerm tem);
-		//CBlocking::HBlockMatch parser_MatchArgument(std::vector<HTerm>&  term);
-		CBlocking::HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm>& term);
  
-		CBlocking::HBlock parseAssertionFirstTerm_Compose(HTerm term);
-		CBlocking::HBlock parseAssertionFirstTerm(HTerm match);
-		CBlocking::HBlock parseAssertionEnumSecondTerm(HTerm term);
-		CBlocking::HBlock STMT_Decide_Assertion(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err);
-
-
+	 
+ 
+ 
+		//CBlocking::HBlockMatch parser_MatchArgument(std::vector<HTerm>&  term);
+		CBlocking::HBlockAssertion_isInstanceOf  parseAssertion_isInstanceOf(std::vector<HTerm>& term); 
+ 
 		//DispatchArguments  parser_buildMatchBlock_actionInput(HTerm term);
 		//DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<HTerm>&  term);
-		CBlocking::HBlock STMT_understand_generic_redirect(HTerm term, CBlocking::HBlock output_term);
-
-
-		CBlocking::HBlock STMT_understand_Action_Assertion_static(std::vector<HTerm>&  term);
-		CBlocking::HBlock parse_toDecide_Entry(std::vector<HTerm>&  term);
-		CBlocking::HBlock parse_toDecide_Ret(std::vector<HTerm>&  term);
-		CBlocking::HBlock parser_decides_Assertion(std::vector<HTerm>&  term);
-		std::list<CBlocking::HBlock> ToMatchList(std::vector<HPred> pvector, MatchResult result);
-		CBlocking::HBlock TryDispatch_action(std::vector<HTerm>& term);
-		CBlocking::HBlock STMT_understand_Assertion(std::vector<HTerm>&  term);
-		CBlocking::HBlock STMT_verb_Assertion_N(std::vector<HTerm>&  term);
-		CBlocking::HBlock STMT_verb_Assertion(std::vector<HTerm>&  lst);
-
-		CBlocking::HBlockEnums  parseAssertion_EnumTerms(HTerm  elist);
-
-
-		CBlocking::HBlockAssertion_is parse_AssertionVerb(std::vector<HTerm>&  term);
-		CBlocking::HBlockKindAction parse_AssertionAction_secondPart(HTerm term);
-		CBlocking::HBlock parse_AssertionAction(std::vector<HTerm> term);
-		CBlocking::HBlock parse_AssertionIsVariable(std::vector<HTerm>&  lst);
-		CBlocking::HBlockKindOfName parse_KindOf(HTerm term);
-		CBlocking::HBlock parse_AssertionIsKindOf(std::vector<HTerm>&  term);
-		CBlocking::HBlock parse_AssertionValuesOf(std::vector<HTerm>&  term);
-		CBlocking::HBlock parse_AssertionDefaultAssign(std::vector<HTerm>&  term);
-		CBlocking::HBlockAssertion_is   parse_AssertionDirectAssign(std::vector<HTerm>&  term);
-
-
-		CBlocking::HBlock   parser_VerbAssign(std::vector<HTerm>& term);
-
-
-
-		CBlocking::HBlock parse_removeArticle(std::vector<HTerm>& term);
-  
-		CBlocking::HBlock parse_noum(std::vector<HTerm>& term);
-		CBlocking::HBlock parser_Declaration_Assertion(std::vector<HTerm>&  lst);
-		CBlocking::HBlockProperty  parse_PropertyOf(std::vector<HTerm>& term);
-
-		CBlocking::HBlock STMT_canBe_Assertion(std::vector<HTerm>& lst);
-		CBlocking::HBlockInstanceVariable  CProperty_called(HTerm term);
-		CBlocking::HBlock STMT_hasAn_Assertion(std::vector<HTerm>& lst);
-		CBlocking::HBlock parser_stmt(HTerm term, HGroupLines inner, ErrorInfo* err);
-
-
-
-		CBlocking::HBlock parserBoolean(std::vector<HTerm>&  term);
-
-
+ 
+ 
  
 	 
-		CBlocking::HBlockSelector parser_List_selector(std::vector<HTerm>&  term);
-		CBlocking::HBlockSelector parser_List_selector(HTerm term);
  
-
-	 
-		CBlocking::HBlock text_entry(std::vector<HTerm>&  lst);
-
-
-
- 
-		 
-	 
- 
- 
-
-		CBlocking::HBlock STMT_system_Assertion(std::vector<HTerm>& term);
-
-		CBlocking::HBlock sys_say_action(std::vector<HTerm>&  term);
-		CBlocking::HBlock parser_loop_A(HTerm& term);
-		CBlocking::HBlockAssertion_is parse_Loop_AssertionVerb(HTerm& term, CBlocking::NoumLocation nlocation);
-		CBlocking::HBlockAssertion_is parse_Loop_AssertionVerb(HTerm& term);
-		CBlocking::HBlockAssertion_is parser_loop_B(HTerm& term, CBlocking::HBlock mutedVariable);
-
-		CBlocking::HBlock sys_now_loop(std::vector<HTerm>& term);
-		CBlocking::HBlock sys_now_action(std::vector<HTerm>&  term);
-
-		CBlocking::HBlock parser_text(string str, ErrorInfo* err);
-		CBlocking::HBlock parser_text(string str, bool dump); 
-		HGroupLines get_identation_groups(string filename, std::vector<string> vlines, ErrorInfo* err);
-
-
-		std::list<CBlocking::HBlockVerbConjugation> get_verb_conjugations(std::string verb) const;
-		CBlocking::HBlock STMT_register_verb(std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo* err);
-		string expression_adapt_viewPoint(HTerm& term);
-		string expression_adapt_tense(HTerm& term);
-		CBlocking::HBlock expression_adapt_verb_inner(HTerm& term);
-		CBlocking::HBlock expression_adapt_verb(std::vector<HTerm>& term);
 	 
 	};
-	 
+	namespace ParseText
+	{
+		NSParser::HGroupLines  get_identation_groups(CParser *p, string filename, std::vector<string> vlines, ErrorInfo *err);
+		CBlocking::HBlock  parser_text(CParser *p, string str, ErrorInfo *err);
+		CBlocking::HBlock parser_text(CParser *p, string str, bool dump);
+
+	}
 	namespace ControlFlux
 	{
 		CBlocking::HBlock STMT_control_flux(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo * err);
@@ -388,6 +283,15 @@ namespace NSParser
 		CBlocking::HBlock  Parser_Stmt(CParser * p, string str, bool dump);
 		CBlocking::HBlock   parser_GroupLine(CParser * p, std::string v, HGroupLines inner, ErrorInfo *err);
  
+
+		CBlocking::HBlock  text_entry(CParser * p, std::vector<HTerm>&  term);
+
+		namespace Verbal
+		{
+			CBlocking::HBlock  STMT_verb_Assertion(CParser * p, std::vector<HTerm>&  term);
+			CBlocking::HBlockVerbRelation STMT_verb_relation(CParser * p, CBlocking::HBlock a_verb, HTerm term);
+			CBlocking::HBlock   STMT_verb_Assertion_N(CParser * p, std::vector<HTerm>&  term);
+		}
 	}
 
 	namespace DynamicDispatch
@@ -473,8 +377,11 @@ namespace NSParser
 		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<HTerm>& term);
 		CBlocking::HBlockKindOfName  parse_KindOf(CParser * p, HTerm  term);
 		CBlocking::HBlock  parse_AssertionIsKindOf(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock   parser_VerbAssign(CParser * p, std::vector<HTerm>& term);
 
-
+		CBlocking::HBlock   STMT_system_Assertion(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlock  sys_now_action(CParser * p, std::vector<HTerm>&  term);
+		CBlocking::HBlock  sys_now_loop(CParser * p, std::vector<HTerm>&  term);
 	}
 
 	namespace ParseAssertionSecondary
@@ -495,6 +402,22 @@ namespace NSParser
 
 		CBlocking::HBlockList  parse_Strict_COMMA_AND(CParser * p, HTerm term);
 		CBlocking::HBlockList  parse_Strict_COMMA_OR(CParser * p, HTerm term);
+	}
+
+	namespace ParseSelector
+	{
+		CBlocking::HBlockSelector parser_List_selector(CParser * p, std::vector<HTerm>&  term);
+		CBlocking::HBlockSelector parser_List_selector(CParser * p, HTerm term);
+	}
+
+	namespace ParseGrammar
+	{
+		CBlocking::HBlock  STMT_register_verb(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err);
+		std::list<CBlocking::HBlockVerbConjugation> get_verb_conjugations(CParser * p, std::string verb);
+		string  expression_adapt_viewPoint(CParser * p, HTerm& term);
+		string  expression_adapt_tense(CParser * p, HTerm& term);
+		CBlocking::HBlock  expression_adapt_verb_inner(CParser * p, HTerm& term);
+		CBlocking::HBlock  expression_adapt_verb(CParser * p, std::vector<HTerm>& term);
 	}
 };
 

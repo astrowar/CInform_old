@@ -56,7 +56,7 @@ else:
 )";
 
 	printf("=========================================\n");
-	auto stmt = parse.parser_text(ss1, ISLOG);
+	auto stmt = ParseText::parser_text(&parse,ss1, ISLOG);
 
 	interpreter->execute_init(stmt);
 	
@@ -107,7 +107,7 @@ hall connect garden
 )";
 
 
-	auto stmt = parse.parser_text(ss1, ISLOG);
+	auto stmt = ParseText::parser_text(&parse,ss1, ISLOG);
 
 	interpreter->execute_init(stmt);
 
@@ -155,20 +155,20 @@ west is a direction
 )";
  
 
-	interpreter->execute_init(parse.parser_text(ss1, false));
+	interpreter->execute_init(ParseText::parser_text(&parse,ss1, false));
 
-	//auto ret_1 = interpreter->evaluate_values(parse.Parser_Expression("source of garden", false ));
+	//auto ret_1 = interpreter->evaluate_values(Expression::Parser_Expression(&parse,"source of garden", false ));
 	//printf("=============================\n");
 	//ret_1->dump(" ");
 
-//	auto ret_2 = interpreter->evaluate_values(parse.Parser_Expression("destination of exit", false));
+//	auto ret_2 = interpreter->evaluate_values(Expression::Parser_Expression(&parse,"destination of exit", false));
 	//printf("=============================\n");
 	//ret_2->dump(" ");
 
 	
 
 	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"to decide what ( room  ) is oposite of ( oposite of ( room called X ) ) :  X   ", ISLOG));
-	//auto ret_3 = interpreter->evaluate_values(parse.Parser_Expression("oposite of ( oposite of  garden) ", ISLOG));
+	//auto ret_3 = interpreter->evaluate_values(Expression::Parser_Expression(&parse,"oposite of ( oposite of  garden) ", ISLOG));
 	//printf("=============================\n");
 	//ret_3->dump(" ");
 
@@ -177,7 +177,7 @@ west is a direction
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"south is  opposte by  north", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse," west  is opposte by  east ", ISLOG));
 
-	//auto ret_4 = interpreter->evaluate_values(parse.Parser_Expression("oposite of north  ", ISLOG));
+	//auto ret_4 = interpreter->evaluate_values(Expression::Parser_Expression(&parse,"oposite of north  ", ISLOG));
 	//printf("=============================\n");
 	//ret_4->dump(" ");
 	auto ret_true_a = interpreter->query(Statement::Parser_Stmt(&parse,"north is  opposite  of south  ", ISLOG));
@@ -207,7 +207,7 @@ target is a object that varies
 target is box 
 )";
 
-	interpreter->execute_init(parse.parser_text(ss1, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG));
 
 	string ss2 =
 		R"(
@@ -219,7 +219,7 @@ else :
 
 	
 
-	auto target_q = interpreter->exec_eval(parse.parser_text(ss2, true), nullptr);
+	auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr);
 	target_q->dump("");
 	//assert(ret_true_a == QEquals);
 	return;
@@ -250,12 +250,12 @@ strength, courage, luck, scent, honor, spirit and freedom is talent
 luck is normal
 )";
 
-	interpreter->execute_init(parse.parser_text(ss1, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG));
 
 	if(true){
 		string ss2 = R"(now every object is huge)";
 		auto res_q = interpreter->query(Statement::Parser_Stmt(&parse,"box is small ", true));
-		auto target_q = interpreter->exec_eval(parse.parser_text(ss2, true), nullptr);
+		auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr);
 		//target_q->dump("");
 		//assert(ret_true_a == QEquals);
 		auto res_2 = interpreter->query(Statement::Parser_Stmt(&parse,"box is huge ", true));
@@ -267,7 +267,7 @@ luck is normal
 		auto res_3 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_3.result == QNotEquals);
 		//string ss3 = R"(now every talent is not normal )"; 
-		interpreter->exec_eval(parse.parser_text("now every talent is not  normal", true), nullptr);
+		interpreter->exec_eval(ParseText::parser_text(&parse,"now every talent is not  normal", true), nullptr);
 		 auto  res_4 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_4.result == QEquals);
 	}

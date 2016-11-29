@@ -7,7 +7,7 @@
 #include  "verb_en.hpp"
 using namespace CBlocking;
 
-std::list<HBlockVerbConjugation> NSParser::CParser::get_verb_conjugations(std::string verb) const
+std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations(CParser * p, std::string verb)  
 {
 	static const VERBTABLE verb_eng = verb_table(); 
 	int  n = verb_eng.numEntries;
@@ -34,7 +34,7 @@ std::list<HBlockVerbConjugation> NSParser::CParser::get_verb_conjugations(std::s
 }
 
 //register verb funciona como um load especifico de um conjunto de verbos
-HBlock NSParser::CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)
+HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)
 { 
 	{
 		static std::vector<HPred> predList = {};
@@ -50,7 +50,7 @@ HBlock NSParser::CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLin
 		{
 			{
 				auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
-				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(vrepr));
+				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(p, vrepr));
 				return vbase;
 			}
 		}
@@ -70,7 +70,7 @@ HBlock NSParser::CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLin
 		{			
 			{
 				auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
-				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(vrepr));
+				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(p,vrepr));
 				return vbase;
 			}
 		}
@@ -96,7 +96,7 @@ HBlock NSParser::CParser::STMT_register_verb(std::vector<HTerm>& term, HGroupLin
 
  
  
-string NSParser::CParser::expression_adapt_viewPoint(HTerm& term)
+string NSParser::ParseGrammar::expression_adapt_viewPoint(CParser * p, HTerm& term)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -109,7 +109,7 @@ string NSParser::CParser::expression_adapt_viewPoint(HTerm& term)
 		if (res.result == Equals)
 		{
 			auto t = res.matchs["remainder"];
-			return expression_adapt_viewPoint(t);
+			return expression_adapt_viewPoint(p,t);
 		}
 	}
 
@@ -152,7 +152,7 @@ string NSParser::CParser::expression_adapt_viewPoint(HTerm& term)
 	return "";
 }
 
-string NSParser::CParser::expression_adapt_tense(HTerm& term)
+string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 {
 	
 
@@ -167,7 +167,7 @@ string NSParser::CParser::expression_adapt_tense(HTerm& term)
 		if (res.result == Equals)
 		{
 			auto t = res.matchs["remainder"];
-			return expression_adapt_tense(t);
+			return expression_adapt_tense(p, t);
 		}
 	}
 
@@ -260,7 +260,9 @@ string NSParser::CParser::expression_adapt_tense(HTerm& term)
 	return CtoString(expandBract( term));
 
 }
-HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
+
+
+HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& term)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -280,8 +282,8 @@ HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
 				
 				//auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
-				auto vtense =  expression_adapt_tense(res.matchs["TenseForm"]);
-				auto vp = expression_adapt_viewPoint(res.matchs["ViewPoint"]);
+				auto vtense =  expression_adapt_tense(p, res.matchs["TenseForm"]);
+				auto vp = expression_adapt_viewPoint(p, res.matchs["ViewPoint"]);
 				if (vp == "") return nullptr;
 
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, vtense , vp);
@@ -307,7 +309,7 @@ HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
 
 				//auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
-				auto vtense = expression_adapt_tense(res.matchs["TenseForm"]);
+				auto vtense = expression_adapt_tense(p, res.matchs["TenseForm"]);
 				if (vtense == "") return nullptr;
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, vtense, "default");
 				return vbase;
@@ -330,7 +332,7 @@ HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
 			{
 				//auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
-				auto vp = expression_adapt_viewPoint(res.matchs["ViewPoint"]);
+				auto vp = expression_adapt_viewPoint(p, res.matchs["ViewPoint"]);
 				if (vp == "") return nullptr;
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VBP", vp);
 				return vbase;
@@ -363,7 +365,7 @@ HBlock NSParser::CParser::expression_adapt_verb_inner( HTerm& term)
 }
  
 
-HBlock NSParser::CParser::expression_adapt_verb(std::vector<HTerm>& term)
+HBlock NSParser::ParseGrammar::expression_adapt_verb(CParser * p, std::vector<HTerm>& term)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -376,7 +378,7 @@ HBlock NSParser::CParser::expression_adapt_verb(std::vector<HTerm>& term)
 		if (res.result == Equals)
 		{
 			 
-				return expression_adapt_verb_inner(res.matchs["remainder"]);				
+				return expression_adapt_verb_inner(p,res.matchs["remainder"]);				
 		 
 		}
 	}
@@ -392,7 +394,7 @@ HBlock NSParser::CParser::expression_adapt_verb(std::vector<HTerm>& term)
 		if (res.result == Equals)
 		{
 
-			return expression_adapt_verb_inner(res.matchs["remainder"]);
+			return expression_adapt_verb_inner(p,res.matchs["remainder"]);
 
 		}
 	}

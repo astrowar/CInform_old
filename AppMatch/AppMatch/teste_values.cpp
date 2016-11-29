@@ -30,9 +30,9 @@ apple is a thing
 )";
 	 
 
-	interpreter->execute_init(parse.parser_text(s_heat, ISLOG));
-	auto e = interpreter->exec_eval(parse.Parser_Expression("heat of ice cube ", ISLOG), nullptr);
-	auto ev = interpreter->exec_eval(parse.Parser_Expression("heat of apple  ", ISLOG), nullptr);
+	interpreter->execute_init(ParseText::parser_text(&parse,s_heat, ISLOG));
+	auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse,"heat of ice cube ", ISLOG), nullptr);
+	auto ev = interpreter->exec_eval(Expression::Parser_Expression(&parse,"heat of apple  ", ISLOG), nullptr);
 
 	assert(e != nullptr);
 	assert(ev != nullptr);
@@ -61,10 +61,10 @@ The battery has a number called charge
 )";
 
 
-	interpreter->execute_init(parse.parser_text(s_price, ISLOG));
-	auto ev = interpreter->exec_eval(parse.Parser_Expression("current size  ", ISLOG), nullptr);
-	auto ev2 = interpreter->exec_eval(parse.Parser_Expression("charge of battery  ", ISLOG), nullptr);
-	auto ev3 = interpreter->exec_eval(parse.Parser_Expression("list of thing   ", true), nullptr);
+	interpreter->execute_init(ParseText::parser_text(&parse,s_price, ISLOG));
+	auto ev = interpreter->exec_eval(Expression::Parser_Expression(&parse,"current size  ", ISLOG), nullptr);
+	auto ev2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"charge of battery  ", ISLOG), nullptr);
+	auto ev3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"list of thing   ", true), nullptr);
 
 	assert(ev != nullptr);
 	assert(ev2 != nullptr);

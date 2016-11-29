@@ -219,36 +219,36 @@ freedom is in hall
 scent is in hall
 )";
 
-	 interpreter->execute_init(parse.parser_text(ss1, ISLOG) );
+	 interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG) );
 	
 	 for (auto& rr : interpreter->getRelations()) rr->dump("");
 	 
-	 auto pBlock = parse.Parser_Expression("a room which hall relates to by Connection ", ISLOG);
-	// auto res_q1 = interpreter->query(parse.Parser_Expression("  hall connect garden  ", ISLOG));
-	// auto target_q = interpreter->exec_eval(parse.Parser_Expression("a room which hall  relates to by Connection ", ISLOG), nullptr);
+	 auto pBlock = Expression::Parser_Expression(&parse,"a room which hall relates to by Connection ", ISLOG);
+	// auto res_q1 = interpreter->query(Expression::Parser_Expression(&parse,"  hall connect garden  ", ISLOG));
+	// auto target_q = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which hall  relates to by Connection ", ISLOG), nullptr);
 	// target_q->dump("");
 
-	// auto target_q2 = interpreter->exec_eval(parse.Parser_Expression("a room which  relates to garden by Connection ", ISLOG), nullptr);
+	// auto target_q2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to garden by Connection ", ISLOG), nullptr);
 	// target_q2->dump("");
 
-	 auto target_q3 = interpreter->exec_eval(parse.Parser_Expression("a room which  relates to hall by Connection ", ISLOG), nullptr);
+	 auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to hall by Connection ", ISLOG), nullptr);
 	 target_q3->dump("");
 	 
 
-	 auto target_q4 = interpreter->exec_eval(parse.Parser_Expression("a room which courage relates to by Inner ", ISLOG), nullptr);
+	 auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which courage relates to by Inner ", ISLOG), nullptr);
 	 target_q4->dump("");
 
-	 auto target_q5 = interpreter->exec_eval(parse.Parser_Expression("a talent which relates to hall by Inner ", ISLOG), nullptr);
+	 auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a talent which relates to hall by Inner ", ISLOG), nullptr);
 	 target_q5->dump("");
 
 	 //things which are in the teapot
 	 //people who can see the mouse
 
-	 auto target_v1 = interpreter->exec_eval(parse.Parser_Expression("talent which are in hall", ISLOG), nullptr);
+	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"talent which are in hall", ISLOG), nullptr);
 	 target_v1->dump("");
 
 	 printf("----------------\n");
-	 auto target_v2 = interpreter->exec_eval(parse.Parser_Expression("room which connect hall", ISLOG), nullptr);
+	 auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"room which connect hall", ISLOG), nullptr);
 	 target_v2->dump("");
 
 
@@ -283,9 +283,9 @@ carry out getting an thing  :
    say (text taken ! )
 
 )";
-	interpreter->execute_init(parse.parser_text(ss1, true));
+	interpreter->execute_init(ParseText::parser_text(&parse,ss1, true));
 
-	//auto target_v2 = interpreter->exec_eval(parse.Parser_Expression("getting  requires  touchable noun", true), nullptr);
+	//auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"getting  requires  touchable noun", true), nullptr);
 	//target_v2->dump("");
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try getting orange ", ISLOG), nullptr);
