@@ -238,13 +238,13 @@ public:
 
 
 
-		HTerm executeAssertion_is(CBlocking::HBlockAssertion_is b);
+	   NSTerm::HTerm executeAssertion_is(CBlocking::HBlockAssertion_is b);
 
-		HTerm executeAssertion(CBlocking::HBlockAssertionBase b);
+	   NSTerm::HTerm executeAssertion(CBlocking::HBlockAssertionBase b);
 
-		HTerm execute(CBlocking::HBlock b);
+	   NSTerm::HTerm execute(CBlocking::HBlock b);
 
-		CBlocking::HBlock resolve(CTerm *b);
+		CBlocking::HBlock resolve(NSTerm::CTerm *b);
 
 		CBlocking::HBlock resolve_of(CBlocking::HBlock b, CBlocking::HBlock a);
 		CBlocking::HBlockKind resolve_system_kind(string n);

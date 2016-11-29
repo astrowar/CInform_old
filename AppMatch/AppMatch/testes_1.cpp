@@ -11,25 +11,7 @@ using namespace NSParser;
 //Basic Assertations
 
 void testeParser_1() {
-    string phase_1 = "(red  book)    is a kind of    thing  ";
-    phase_1 = "( book,  stone and  ( metal bird))  are  some things ";
-    phase_1 = decompose_bracket(phase_1, "(");
-    phase_1 = decompose_bracket(phase_1, ")");
-   logMessage( phase_1);
-
-    std::vector<HTerm> lst = decompose(phase_1);
-    CList *lst_ptr = mk_CList_Literal(lst);
-	logMessage(lst_ptr->repr() );
-    //MTermSetCombinatoriaList mlist = getCombinatorias(lst_ptr->asVector(), 3);
-
-    auto vecList = lst_ptr->asVector();
-    FuncCombinatoria f_disp = [](MTermSetCombinatoria &x) {
-		logMessage(get_repr(x) );
-        return false;
-    };
-    applyCombinatorias(vecList, 3, f_disp);
-
-	logMessage("..." );
+    
 }
 
 void testeParser_2() {

@@ -8,218 +8,217 @@
 #include "EqualsResult.hpp"
 #include <functional>
 
-using MTermSet = std::vector<HTerm>;
-using MTermSetCombinatoria = std::vector<MTermSet>;
-using MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
+namespace NSTerm
+{
+	 
 
-MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n);
+		using MTermSet = std::vector<HTerm>;
+		using MTermSetCombinatoria = std::vector<MTermSet>;
+		using MTermSetCombinatoriaList = std::vector<MTermSetCombinatoria>;
 
-using FuncCombinatoria = std::function<bool(MTermSetCombinatoria &)>; //true == (please, stop)
+		MTermSetCombinatoriaList getCombinatorias(std::vector<HTerm>& lst, size_t n);
 
-void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria &func);
+		using FuncCombinatoria = std::function<bool(MTermSetCombinatoria &)>; //true == (please, stop)
 
-std::string get_repr(MTermSetCombinatoriaList lst);
+		void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria &func);
 
-std::string get_repr(MTermSetCombinatoria lst);
+		std::string get_repr(MTermSetCombinatoriaList lst);
 
-//predicado do match
-//predicado pode ser: 
-//      um Atom que deve ser Equal
-//      um comparador que deve resultar em EqualsResul quando executado
-//      um Any que pode ser qualquer coisa
-class CPred : public CAtom {
-public:
-    std::string repr() override;
-	//virtual TermType type() override { return TermType::Pred; }
+		std::string get_repr(MTermSetCombinatoria lst);
 
-    std::string named;
+		//predicado do match
+		//predicado pode ser: 
+		//      um Atom que deve ser Equal
+		//      um comparador que deve resultar em EqualsResul quando executado
+		//      um Any que pode ser qualquer coisa
+		class CPred : public CAtom {
+		public:
+			std::string repr() override;
+			//virtual TermType type() override { return TermType::Pred; }
 
-    CPred(std::string _named) : named(_named) {
-    };
+			std::string named;
 
-    virtual EqualsResul match(MTermSet &h) = 0;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin , std::vector<HTerm>::iterator vend ) = 0;
+			CPred(std::string _named) : named(_named) {
+			};
 
-    virtual EqualsResul match(HTerm h) = 0;
+			virtual EqualsResul match(MTermSet &h) = 0;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) = 0;
 
-    virtual bool isSame(HTerm b) = 0;
+			virtual EqualsResul match(HTerm h) = 0;
 
-};
+			virtual bool isSame(HTerm b) = 0;
 
-using HPred = std::shared_ptr<CPred>;
+		};
 
-class CPredAtom : public CPred {
-public:
-    bool isSame(HTerm b) override;
+		using HPred = std::shared_ptr<CPred>;
 
-    HTerm h;
+		class CPredAtom : public CPred {
+		public:
+			bool isSame(HTerm b) override;
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredAtom; }
+			HTerm h;
 
-    CPredAtom(std::string _named, HTerm atom);
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredAtom; }
 
-    virtual EqualsResul match(MTermSet &_h) override;
+			CPredAtom(std::string _named, HTerm atom);
 
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(MTermSet &_h) override;
 
-    virtual EqualsResul match(HTerm h) override;
-};
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
 
-class CPredList : public CPred {
-public:
-    bool isSame(HTerm b) override;
+			virtual EqualsResul match(HTerm h) override;
+		};
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredList; }
+		class CPredList : public CPred {
+		public:
+			bool isSame(HTerm b) override;
 
-    std::vector<HPred> plist;
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredList; }
 
-    CPredList(std::string _named, std::initializer_list<HPred> plist);
+			std::vector<HPred> plist;
 
-    virtual EqualsResul match(MTermSet &_h) override;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-    virtual EqualsResul match(HTerm h) override;
-};
+			CPredList(std::string _named, std::initializer_list<HPred> plist);
 
-class CPredAny : public CPred {
-public:
-    bool isSame(HTerm b) override;
+			virtual EqualsResul match(MTermSet &_h) override;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(HTerm h) override;
+		};
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredAny; }
+		class CPredAny : public CPred {
+		public:
+			bool isSame(HTerm b) override;
 
-    CPredAny(std::string _named);;
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredAny; }
 
-    virtual EqualsResul match(MTermSet &_h) override;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-    virtual EqualsResul match(HTerm h) override;
-};
+			CPredAny(std::string _named);;
 
-class CPredWord : public CPred {
-public:
-    bool isSame(HTerm b) override;
+			virtual EqualsResul match(MTermSet &_h) override;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(HTerm h) override;
+		};
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredWord; }
+		class CPredWord : public CPred {
+		public:
+			bool isSame(HTerm b) override;
 
-    CPredWord(std::string _named);;
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredWord; }
 
-    virtual EqualsResul match(MTermSet &_h) override;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-    virtual EqualsResul match(HTerm h) override;
-};
+			CPredWord(std::string _named);;
 
-class CPredBoolean : public CPred {
-public:
-    CPredBoolean(const std::string &_named);
-};
+			virtual EqualsResul match(MTermSet &_h) override;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(HTerm h) override;
+		};
 
-class CPredBooleanAnd : public CPredBoolean {
-public:
-    bool isSame(HTerm b) override;
+		class CPredBoolean : public CPred {
+		public:
+			CPredBoolean(const std::string &_named);
+		};
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredBooleanAnd; }
+		class CPredBooleanAnd : public CPredBoolean {
+		public:
+			bool isSame(HTerm b) override;
 
-    virtual EqualsResul match(MTermSet &h) override;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-    virtual EqualsResul match(HTerm h) override;
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredBooleanAnd; }
 
-    CPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+			virtual EqualsResul match(MTermSet &h) override;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(HTerm h) override;
 
-public:
-    HPred b1, b2;
-};
+			CPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-class CPredBooleanOr : public CPredBoolean {
-public:
-    bool isSame(HTerm b) override;
+		public:
+			HPred b1, b2;
+		};
 
-    std::string repr() override;
-	virtual TermType type() override { return TermType::PredBooleanOr; }
+		class CPredBooleanOr : public CPredBoolean {
+		public:
+			bool isSame(HTerm b) override;
 
-    CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
-                   const HPred &c_pred3);
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredBooleanOr; }
 
-    CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
+			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
+				const HPred &c_pred3);
 
-    CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
 
-    CPredBooleanOr(const std::string &_named, std::list<HPred> plist);
+			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-    virtual EqualsResul match(MTermSet &h) override;
-	virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-    virtual EqualsResul match(HTerm h) override;
+			CPredBooleanOr(const std::string &_named, std::list<HPred> plist);
 
-public:
-    std::vector<HPred> blist;
-};
+			virtual EqualsResul match(MTermSet &h) override;
+			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualsResul match(HTerm h) override;
 
+		public:
+			std::vector<HPred> blist;
+		};
 
-bool isSamePred(std::vector<HPred> a, std::vector<HPred> b);
 
+		bool isSamePred(std::vector<HPred> a, std::vector<HPred> b); 
 
-//==========================================
+		//==========================================
 
-//make hPreds
-HPred mkHPredAtom(std::string _named, HTerm atom);
+		//make hPreds
+		HPred mkHPredAtom(std::string _named, HTerm atom);
 
-HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist);
+		HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist);
 
-HPred mkHPredAny(std::string _named);
+		HPred mkHPredAny(std::string _named);
 
-HPred mkHPredWord(std::string _named);
+		HPred mkHPredWord(std::string _named);
 
-HPred mkHPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred mkHPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
+		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
 
-HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
-                       const HPred &c_pred3);
+		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
+			const HPred &c_pred3);
 
-//==========================================
-class MatchResult {
-public:
-    MatchResult() : result(Undefined) {
-    }
+		CPredAtom* asPredAtom(CTerm* c);
+		CPredList* asPredList(CTerm* c);
+		CPredAny* asPredAny(CTerm* c);
+		CPredWord * asPredWord(CTerm* c);
+		HTerm convertToTerm(MTermSet &m);
 
-    std::map<std::string, HTerm> matchs;
-    EqualsResul result;
+		namespace NSMatch
+		{
+			//==========================================
+			class MatchResult {
+			public:
+				MatchResult() : result(Undefined) {
+				}
 
-    void setValue(std::string named, HTerm value);
+				std::map<std::string, HTerm> matchs;
+				EqualsResul result;
 
-    HTerm getValue(std::string named);
+				void setValue(std::string named, HTerm value);
 
-    void insert(MatchResult &other);
-};
+				HTerm getValue(std::string named);
 
+				void insert(MatchResult &other);
+			};
 
-MatchResult makeMatch(std::string named, HTerm value);
 
-MatchResult CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
-//MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
+			MatchResult makeMatch(std::string named, HTerm value);
+			MatchResult CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
+			//MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
+			MatchResult CMatch(HTerm term, const std::vector<HPred>& predicates);
+			std::string get_repr(MatchResult r);
 
-MatchResult CMatch(HTerm term, const std::vector<HPred>& predicates);
- 
 
-std::string get_repr(MatchResult r);
 
 
-
-
-CPredAtom* asPredAtom(CTerm* c);
-CPredList* asPredList(CTerm* c);
-CPredAny* asPredAny(CTerm* c);
-CPredWord * asPredWord(CTerm* c);
-
-
-HTerm convertToTerm(MTermSet &m);
-
-
-
+		}
+}
 
 #endif
 

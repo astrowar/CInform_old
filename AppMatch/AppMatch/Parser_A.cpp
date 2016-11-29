@@ -12,6 +12,9 @@
 #include "CblockAssertion.hpp"
 
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
 
 HBlock NSParser::Statement::parserBoolean(CParser * p, HTerm term) {

@@ -2,6 +2,9 @@
 
 #include "Parser.hpp"
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
  
 

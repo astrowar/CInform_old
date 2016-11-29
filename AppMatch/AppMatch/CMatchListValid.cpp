@@ -1,7 +1,10 @@
 
-#include "CMatch.hpp"
+#include "CMatchListValid.hpp"
 
-bool isListValid_bounds(MTermSet Comb) 
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+bool NSMatch::isListValid_bounds(MTermSet Comb)
 {
     if (Comb.size() > 1) {
         // if ((*it).front()->repr() == ")") return false;
@@ -20,7 +23,7 @@ bool isListValid_bounds(MTermSet Comb)
     return true;
 }
 
-bool isListValid_bounds_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) 
+bool NSMatch::isListValid_bounds_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend)
 {
 	auto isize = vend - vbegin;
 	if (isize > 1) {
@@ -44,7 +47,7 @@ bool isListValid_bounds_range(std::vector<HTerm>::iterator vbegin, std::vector<H
 
  
 
-bool isListValid_count(MTermSet Comb) 
+bool NSMatch::isListValid_count(MTermSet Comb)
 {
     //para cada termo de lista, verifica se eh um "(" no inicio e obrigatoriamente um ")" no fim
 
@@ -65,7 +68,7 @@ bool isListValid_count(MTermSet Comb)
 }
 
 
-bool isListValid_count_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) 
+bool NSMatch::isListValid_count_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend)
 {
 	//para cada termo de lista, verifica se eh um "(" no inicio e obrigatoriamente um ")" no fim
 
@@ -87,7 +90,7 @@ bool isListValid_count_range(std::vector<HTerm>::iterator vbegin, std::vector<HT
 	return true;
 }
 
-bool isListValid_bounds(MTermSetCombinatoria &listComb)
+bool NSMatch::isListValid_bounds(MTermSetCombinatoria &listComb)
 {
     //para cada termo de lista, verifica se eh um "(" no inicio e obrigatoriamente um ")" no fim
     for (auto it = listComb.begin(); it != listComb.end(); ++it) {
@@ -110,7 +113,7 @@ bool isListValid_bounds(MTermSetCombinatoria &listComb)
 }
  
 
-bool isListValid_count(MTermSetCombinatoria &listComb) 
+bool NSMatch::isListValid_count(MTermSetCombinatoria &listComb)
 {
     //para cada termo de lista, verifica se eh um "(" no inicio e obrigatoriamente um ")" no fim
     for (auto it = listComb.begin(); it != listComb.end(); ++it) {
@@ -129,20 +132,20 @@ bool isListValid_count(MTermSetCombinatoria &listComb)
     return true;
 }
 
-bool isListValid(MTermSetCombinatoria &listComb) 
+bool NSTerm::NSMatch::isListValid(MTermSetCombinatoria &listComb)
 {
 
     if (!isListValid_bounds(listComb)) return false;
     return isListValid_count(listComb);
 }
 
-bool isListValid(MTermSet &Comb) 
+bool NSMatch::isListValid(MTermSet &Comb)
 {
     if (!isListValid_bounds(Comb)) return false;
     return isListValid_count(Comb);
 }
 
-bool isListValid_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend )
+bool  NSMatch::isListValid_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend )
 {
 	if (!isListValid_bounds_range(vbegin,vend)) return false;
 	return isListValid_count_range(vbegin, vend);

@@ -492,7 +492,7 @@ namespace CBlocking
 	//===================================================================
 	class CBlockFilter : public CBlock   // filtra um valor para outro valor
 	{
-		virtual HTerm filter() = 0;
+		 
 	};
 
 
@@ -503,14 +503,14 @@ namespace CBlocking
 
 		HBlock input;
 
-		virtual bool filter(HTerm input);
+		 
 	};
 
 	class CBlockFilterList : public CBlockFilter {
 
 		HBlockList input;
 
-		virtual bool filter(HTerm input);
+		 
 	};
 
 
@@ -544,7 +544,7 @@ namespace CBlocking
 
 		HBlock input;
 
-		virtual HTerm transform() = 0;
+		 
 	};
 
 
@@ -560,7 +560,7 @@ namespace CBlocking
 		HBlock input_then;
 		HBlock input_else;
 
-		virtual HTerm eval() = 0;
+		 
 	};
 
 	class CBlockSame : public CBlock, CBlockBooleanResult  // um bloco do tipo if then else
@@ -584,7 +584,7 @@ namespace CBlocking
 		HBlock what;
 		HBlock prop;
 
-		virtual HTerm eval() = 0;
+		 
 	};
 
 	using HBlockProp = std::shared_ptr<CBlockProp>;

@@ -1,5 +1,8 @@
 #include "Parser.hpp"
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
 
 HBlock NSParser::Expression::parser_kind(CParser *p, HTerm term)

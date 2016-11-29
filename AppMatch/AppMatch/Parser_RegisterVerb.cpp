@@ -1,4 +1,7 @@
 #include "Parser.hpp"
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
  
 

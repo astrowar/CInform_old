@@ -3,6 +3,9 @@
  
 using namespace CBlocking;
 using namespace Interpreter;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
 HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_secondPart(CParser * p,  HTerm  term)
 {

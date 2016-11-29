@@ -4,6 +4,9 @@
 #include "CBlockRelation.hpp"
 #include "CBlockBoolean.hpp"
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 
 
 

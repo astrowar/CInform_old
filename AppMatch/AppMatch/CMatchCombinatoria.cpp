@@ -7,6 +7,9 @@
 #include <functional>
 #include "CMatchListValid.hpp"
 
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
 //Obtem uma lista de M termos e quebra ela em Combinacoes de Sets de tamanho N
 MTermSetCombinatoria cons(MTermSet &head, MTermSetCombinatoria &tail) {
     MTermSetCombinatoria accTerms;

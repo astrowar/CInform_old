@@ -13,7 +13,7 @@ namespace CBlocking
 		{
 		}
 
-		virtual HTerm eval() { return nullptr; }
+		 
 
 	};
 
@@ -120,7 +120,7 @@ namespace CBlocking
 
 		CBlocking::HBlock decideBody;
 
-		virtual HTerm eval() { return nullptr; }
+	 
 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockToDecideOn; }

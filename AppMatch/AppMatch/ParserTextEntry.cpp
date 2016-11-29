@@ -3,6 +3,11 @@
  
 #include "Parser.hpp"
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
+
 
 HBlock NSParser::Statement::text_entry(CParser * p, std::vector<HTerm>&  term)
 {

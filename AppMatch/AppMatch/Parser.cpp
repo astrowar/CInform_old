@@ -13,6 +13,12 @@
 #include "CBlockInterpreterRuntime.hpp"
 
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
 
 
 NSParser::CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
@@ -698,7 +704,7 @@ HBlock NSParser::Statement::Parser_Stmt(CParser * p, string str, bool dump )
 		return Statement::parser_stmt(p,str, dump, &err);
 }
 
-HTerm convertToTerm(MTermSet &m);
+ 
 
 
 HBlock NSParser::Expression::Parser_Expression(CParser * p, string str, bool dump)

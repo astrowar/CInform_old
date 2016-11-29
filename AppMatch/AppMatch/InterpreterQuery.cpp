@@ -784,10 +784,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q)
 }
 
 
- 
-
-
-HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
+NSTerm::HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 
     // is what ??
 
@@ -808,7 +805,7 @@ HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 }
 
 
-HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
+NSTerm::HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
 
     if (HBlockAssertion_isInstanceOf inst = asHBlockAssertion_isInstanceOf(b)) {
         instancias.push_back(inst->noum);
@@ -818,7 +815,7 @@ HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
     return nullptr;
 }
 
-HTerm CBlockInterpreter::execute(HBlock b) {
+NSTerm::HTerm CBlockInterpreter::execute(HBlock b) {
     assert(b != nullptr);
 
     if (asHBlockAssertion_is(b) != nullptr)

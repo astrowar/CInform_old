@@ -1,6 +1,9 @@
 #include "Parser.hpp"
 using namespace CBlocking;
- 
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
 
 
 HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std::vector<HTerm>&  term)

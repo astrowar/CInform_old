@@ -5,11 +5,11 @@
 #define ISLOG false
 
 
-std::vector<HTerm> decompose(string phase);;
+std::vector<NSTerm::HTerm> decompose(string phase);;
 
 string decompose_bracket(string phase, string dlm);
 
-CList *mk_CList_Literal(std::vector<HTerm> strList);
+NSTerm::CList *mk_CList_Literal(std::vector<NSTerm::HTerm> strList);
 CBlocking::HBlockNoum noum(std::string n) ;
 
 

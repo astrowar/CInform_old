@@ -3,6 +3,10 @@
  
 #include "CBlockRelation.hpp"
 using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
 
 string  parser_OtherCalledAs(HTerm term)
 {

@@ -139,9 +139,9 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 
 
 
-HBlock CBlockInterpreter::resolve(CTerm *b) {
-	return make_shared<CBlockNoum>(b->repr());
-}
+//HBlock CBlockInterpreter::resolve(NSTerm::CTerm *b) {
+//	return make_shared<CBlockNoum>(b->repr());
+//}
 
 HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 	//return new CBlockProperty( b , a);
