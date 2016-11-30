@@ -187,7 +187,7 @@ west is a direction
 	assert(ret_true_ba.result == QEquals);
  
 	 
- 
+	return;
 }
 
 
@@ -274,14 +274,58 @@ luck is normal
 
 	return;
 }
+
+
+
+
+void testeExecute7()
+{
+	// Teste do evaluate 
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	string ss1 =
+		R"(
+room is a kind 
+r1 is a room
+r2 is a room
+r3 is a room
+r4 is a room
+
+Connection relates ( a room called source ) to  ( a room called destination )
+the verb connect   implies a  Connection relation 
+r1 connect r2
+r2 connect r3
+r3 connect r4
+
+ 
+
+
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
+
+	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "a room which  relates to r2 by Connection ", ISLOG), nullptr);
+	target_q3->dump("");
+
+	if (true) 
+	{	
+		auto res_q = interpreter->query(Expression::Parser_Expression(&parse, "r4 is destination of r1 ", true));
+		assert(res_q.result == QEquals);
+	}
+
+	return;
+}
 void testeExecute_all()
 {
  
-	testeExecute5();
+	//testeExecute5();
 	 
 	   // testeExecute1();  precisa ser revisto o DEFINE
-	 testeExecute2();
-	testeExecute3();
-		 testeExecute4();
+	// testeExecute2();
+	// testeExecute3();
+	 //testeExecute4();
+
+	testeExecute7();
 		 
 }

@@ -179,7 +179,7 @@ void testeRelation4() {
 
 
 //Tem um padrao aqui 
-// A kind which ( Seletor ) 
+// A kind ] ( Seletor ) 
 // onde  Seletor pode ser a relation or a verb seletor
 // a room which ( relates to hall by Connection )
 // all kind which ( Seletor )
