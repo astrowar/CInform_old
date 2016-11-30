@@ -329,6 +329,7 @@ HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<
 			auto arg1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
+				 
 				auto seletor = parser_SeletorTerm(p,res.matchs["Seletor"],arg1);
 				if (seletor != nullptr)
 				{

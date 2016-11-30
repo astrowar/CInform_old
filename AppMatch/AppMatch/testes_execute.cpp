@@ -305,7 +305,7 @@ r3 connect r4
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 
-	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "a room which  relates to r2 by Connection ", ISLOG), nullptr);
+	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", true), nullptr);
 	target_q3->dump("");
 
 	if (true) 

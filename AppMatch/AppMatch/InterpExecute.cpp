@@ -500,7 +500,6 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 
 	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
 	{
-
 		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
 		{
 			return lookup_relation(nrlookup, localsEntry);

@@ -190,6 +190,7 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationName
 
 
  
+//Esta funcao pode retornar um elemento Ou uma lista .. depende do tipo de relacao
 
 CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry)
 {
@@ -216,6 +217,7 @@ CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLook
 }
 
 
+//Este sjuito sempre retorna uma lista ....
 CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
 {
 	for (auto & rv : verbRelationAssoc)
@@ -259,6 +261,8 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 				}
 
 			}
+
+			return nullptr; // retorna aqui quando existe uma relacao deste tipo
 		}
 	}
 	 
@@ -267,7 +271,68 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 }
 
 
+CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch valueToMatch, HRunLocalScope localsEntry)
+{
+	if (HBlockMatchNamed mNamed  = DynamicCasting::asHBlockMatchNamed( valueToMatch ))
+	{
+		return lookup_value_by_Selector(mNamed, localsEntry);
+	}
 
+	// busca dentro desses matchs alguem que é um kind de algum tipo
+
+	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(valueToMatch))
+	{
+		std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
+
+	}
+
+	if (HBlockMatchList mList = DynamicCasting::asHBlockMatchList(valueToMatch))
+	{
+		// Aqui temos um problema ... mList pode ser A,B,C ond e A  eh um modificador  e B C formam uma palavra valida
+
+
+	}
+
+
+	return nullptr;
+}
+
+CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
+{
+	HBlockMatch val1 = vLookup->value1;
+	auto val2 = vLookup->value2;
+	std::list<HBlock > wList;
+
+	// faz uma lista de todos os objetos do tipo vLookup value1 ... supondo ser um tipo
+	HBlockList  objList = lookup_value_by_Selector(val1,   localsEntry);
+	
+	if (objList == nullptr) return nullptr; //nada retorna nada
+
+	// para cada tipo ... testa a relacao verbal com o value2 ...
+
+	string verbString = vLookup->verb;
+	for (auto &o : objList->lista)
+	{
+
+		// se positivo inclua na lista
+		QueryResultContext rrcstm = get_system_verbs(verbString,o,val2 , localsEntry, QueryStack()); // "listed in" , "size of"
+		if (rrcstm.result != QUndefined)
+		{
+			wList.push_back(o);
+		}
+		else
+		{
+			QueryResultContext rr = query_user_verbs(verbString, o, val2, localsEntry, QueryStack());
+			if (rr.result != QUndefined)
+			{
+				wList.push_back(o);
+			}
+		}
+
+	} 
+
+	return std::make_shared<CBlockList>(wList);
+}
 
 
 

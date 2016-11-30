@@ -136,7 +136,8 @@ public:
 		CBlocking::HBlock lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry);
 		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
-
+		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry);
+		CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
 		bool exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool  setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);

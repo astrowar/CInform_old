@@ -610,8 +610,6 @@ QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocal
 	QueryResultContext rrcstm =  get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
     if (rrcstm.result != QUndefined) return rrcstm;
 
-
-
 	QueryResultContext rr =  query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2,localsEntry, stk);
     return rr; 
 }
