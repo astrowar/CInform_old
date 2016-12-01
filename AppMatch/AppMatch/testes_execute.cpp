@@ -310,6 +310,11 @@ r4 connect r3
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 
+
+	auto target_q6 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  relation called R ) which relates r1  ", true), nullptr);
+	target_q6->dump("");
+
+	return;
 	//auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", true), nullptr);
 	//target_q3->dump("");
 
@@ -323,6 +328,7 @@ r4 connect r3
 	auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are source of r3   ", true), nullptr);
 	target_q5->dump("");
 
+ 
 
 
 	if (true) 
@@ -336,12 +342,12 @@ r4 connect r3
 void testeExecute_all()
 {
  
-	//testeExecute5();
+	 testeExecute5();
 	 
 	   // testeExecute1();  precisa ser revisto o DEFINE
-	// testeExecute2();
-	// testeExecute3();
-	 //testeExecute4();
+	  testeExecute2();
+	  testeExecute3();
+	 testeExecute4();
 
 	testeExecute7();
 		 

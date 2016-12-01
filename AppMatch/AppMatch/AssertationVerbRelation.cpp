@@ -523,7 +523,7 @@ QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum propert
 		if (rr->relation->input_B->named == property_noum->named ) //Ok, this is 
 		{
 			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
-			if (query_inst.result != QUndefined) return query_inst;
+			if (query_inst.result == QEquals) return query_inst;
 		}
 
 		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
@@ -547,8 +547,7 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBl
 		if (rr->relation->named == rel->named)
 		{
 			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
-			if (query_inst.result != QUndefined) return query_inst;
-
+			if (query_inst.result == QEquals) return query_inst;
 		}
 			 
 	}
