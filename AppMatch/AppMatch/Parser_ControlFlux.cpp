@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 12/10/16.
 //
@@ -398,7 +401,7 @@ std::list<HBlockControlSelectItem> NSParser::ControlFlux::get_CBlockControlSelec
 	std::list<HBlockControlSelectItem> ret;
 	for(auto e: cmdList->lista)
 	{
-		if (auto eitem = DynamicCasting::aHBlockControlSelectItem(e))
+		if (auto eitem = DynamicCasting::asHBlockControlSelectItem(e))
 		{			
 			ret.push_back(eitem);
 		}
@@ -496,11 +499,7 @@ HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CPars
 			HBlock ASeletor = Expression::parser_expression(p,res.matchs["object"]);
 			
 			HBlockComandList ABody = Statement::parser_stmt_inner(p,inner, err);
-			if (ABody == nullptr)
-			{
-				err->setError("missing if block  ");
-				return nullptr;
-			}
+			 
 			if (ABody == nullptr)
 			{
 				err->setError("error on Select Item ");
@@ -566,7 +565,7 @@ std::list<HBlock >   NSParser::ControlFlux::post_process_tokens(CParser *p,  std
 	{		
 		is_first = (it == lst.begin());
 		{
-			if (HBlockControlToken tk = DynamicCasting::aHBlockControlToken(*it))
+			if (HBlockControlToken tk = DynamicCasting::asHBlockControlToken(*it))
 			{
 				// Entao o anterior deve ser um Comando que aceita tokens
 
@@ -578,16 +577,16 @@ std::list<HBlock >   NSParser::ControlFlux::post_process_tokens(CParser *p,  std
 						return std::list< HBlock  >();
 					}
 					auto iprev = std::prev(it);
-					if (HBlockControlIF controlIF = DynamicCasting::aHBlockControlIF(*iprev))
+					if (HBlockControlIF controlIF = DynamicCasting::asHBlockControlIF(*iprev))
 					{
 						controlIF->block_else = tk->contents;
-						it = lst.erase(it);
+						 lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}
-					else if (HBlockControlSelect controlSelect = DynamicCasting::aHBlockControlSelect(*iprev))
+					else if (HBlockControlSelect controlSelect = DynamicCasting::asHBlockControlSelect(*iprev))
 					{
 						controlSelect->block_else = tk->contents;
-						it = lst.erase(it);
+						 lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}
 					else

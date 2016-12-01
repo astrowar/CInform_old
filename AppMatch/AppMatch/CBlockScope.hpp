@@ -20,7 +20,7 @@ public:
 		}
 	}
 
-	CBlocking::HBlock resolve(std::string noum)
+	CBlocking::HBlock resolve(const std::string& noum)
 	{
 		for(auto &e:locals )
 		{

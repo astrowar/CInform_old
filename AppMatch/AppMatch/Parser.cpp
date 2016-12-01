@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "Parser.hpp"
 #include <list>
 
@@ -221,15 +224,15 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 			HBlock n1 = Expression::parser_expression(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-				if (n1 != nullptr)
-				{
+				 
+				 
 					HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
 					if (value != nullptr)
 					{
 						if (nlocation == FirstNoum) n1 = std::make_shared<CBlockEvery>(n1);
 						return std::make_shared<CBlockAssertion_isNotDirectAssign>(n1, value);
 					}
-				}
+				 
 			}
 		}
 	}
@@ -875,9 +878,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 			logError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
 			err->msg = err->msg + "at line " + std::to_string(inner->lines.front().linenumber);
 		
-	}
-	if (retBlocks.empty())
-	{
+	 
 		if (err->hasError)
 		{
 			logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));

@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "BlockInterpreter.hpp"
  
 #include "CblockAssertion.hpp"
@@ -10,11 +13,11 @@ using namespace CBlocking;
 
 void logError(std::string str)
 {
-	printf("%s\n", str.c_str());
+	printf("Error %s\n", str.c_str());
 }
 void logMessage(std::string str)
 {
-	printf("%s\n", str.c_str());
+	printf("Log %s\n", str.c_str());
 }
 
 

@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp" 
@@ -84,6 +86,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlock
 }
 bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
+	 
 	obj->dump(" ");
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
         CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
@@ -113,6 +116,7 @@ bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking:
 		}
 
 		auto kdef = make_shared<CBlockAssertion_isDefaultAssign>(kbase, value);
+		kdef == nullptr;
 		default_assignments.push_back(kdef);
 		add_defaultValueVariableToAllinstances(kdef);
 		return true;

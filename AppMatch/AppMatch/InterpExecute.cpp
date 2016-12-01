@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 
 //Executor de acoes 
 
@@ -249,19 +252,12 @@ HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock p
 		if (HBlockNoum property_noum = asHBlockNoum(propname))
 		{
 			HVariableNamed pvar = cinst->get_property(property_noum->named);
-			if (pvar != nullptr) {
-			 
-				 
+			if (pvar != nullptr) 
+			{ 
 				if (pvar->value != nullptr)
 				{
 					return pvar->value;
-				}
-				else
-				{
-				 
-				 
-					return pvar->value;
-				}
+				} 
 			}
 		}
 	}
@@ -455,7 +451,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 				if ( isSameString(propNoum->named, "plural"))
 				{
 					string c = BlockNoum(kprop->obj);
-					if (c != "")
+					if (!(c.empty()))
 					{
 						return  get_plural_of(c);
 					}					 
@@ -805,7 +801,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		}
 	}
 
-	if (HBlockControlIF  vControlIf =  aHBlockControlIF(p))
+	if (HBlockControlIF  vControlIf =  asHBlockControlIF(p))
 	{
 
 		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk);
@@ -829,7 +825,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		
 	}
 
-	if (HBlockControlSelect  vControlSelect = aHBlockControlSelect(p))
+	if (HBlockControlSelect  vControlSelect = asHBlockControlSelect(p))
 	{
 		for (auto item : vControlSelect->block_selectList)
 		{

@@ -1,4 +1,5 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
@@ -282,7 +283,7 @@ CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch va
 
 	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(valueToMatch))
 	{
-		std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
+	//	std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
 
 	}
 
@@ -516,7 +517,9 @@ QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum propert
 
 		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
 		{
-			QueryResultContext query_inst = query_relation_instance(rr, value, c_block,   localsEntry, stk);//reverse the property
+			CBlocking::HBlock arg1 = c_block;
+			CBlocking::HBlock arg2 = value;
+			QueryResultContext query_inst = query_relation_instance(rr, arg2, arg1,   localsEntry, stk);//reverse the property
 			if (query_inst.result != QUndefined) return query_inst;
 		}
 
@@ -571,7 +574,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					else if (rv.second->type() == BlockVerbReverseRelation)
 					{
 						// inverte a busca aqui
-						QueryResultContext rel_query = this->query_relation(rel, value , c_block,   localsEntry, stk);
+						CBlocking::HBlock arg1 = c_block;
+			            CBlocking::HBlock arg2 = value;
+						QueryResultContext rel_query = this->query_relation(rel, arg2 , arg1,   localsEntry, stk);
 						if (rel_query.result == QEquals) return  QEquals;
 						return QNotEquals;
 					}

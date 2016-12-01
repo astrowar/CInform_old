@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 
 #include "BlockInterpreter.hpp"
@@ -108,7 +110,7 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
             if (cinst->has_slot(value)) 
 			{
                
-                if (cinst->is_set(value)) {
+                if (cinst->is_set(value) == QEquals) {
                     return QueryResultContext(QEquals);
                 }
                 return QueryResultContext(QNotEquals);
@@ -488,9 +490,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
 
 
-
+    
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-		break;
+		 
         if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it)) {
 			auto qc = query_is_same(c_block, qdef->get_obj(), localsEntry, stk);
             if ( qc.result== QEquals) {

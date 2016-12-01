@@ -1,4 +1,5 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 
 #include "sharedCast.hpp"
@@ -353,11 +354,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 	}
 
-	//logError("Fail to " + named);
-	if (named == "D")
-	{
-		return nullptr;
-	}
+	 
 	return nullptr;
 
 

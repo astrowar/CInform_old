@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
 
@@ -238,8 +241,7 @@ namespace CBlocking
 				t == BlockType::BlockMatchNamed ||
 				t == BlockType::BlockMatchNoum ||
 				t == BlockType::BlockMatchWhich ||
-				t == BlockType::BlockMatchWhichNot ||
-				t == BlockType::BlockMatchNoum ||
+				t == BlockType::BlockMatchWhichNot ||			 
 				t == BlockType::BlockMatchProperty)
 				return std::static_pointer_cast<CBlockMatch>(c);
 			return nullptr;
@@ -485,8 +487,7 @@ namespace CBlocking
 			auto t = c->type();
 
 			if (t == BlockType::BlockSimetricRelation ||
-				t == BlockType::BlockASimetricRelation ||
-				t == BlockType::BlockSimetricRelation)
+				t == BlockType::BlockASimetricRelation  )
 				return std::static_pointer_cast<CBlockRelationBase>(c);
 			return nullptr;
 
@@ -592,21 +593,16 @@ namespace CBlocking
 			return nullptr;
 		}
 
-		HBlockControlToken aHBlockControlToken(CBlocking::HBlock c)
+		HBlockControlToken asHBlockControlToken(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockControlToken)
 				return std::static_pointer_cast<CBlockControlToken>(c);
 			return nullptr;
 		}
 
-		HBlockControlIF aHBlockControlIF(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockControlIF)
-				return std::static_pointer_cast<CBlockControlIF>(c);
-			return nullptr;
-		}
+	 
 
-		HBlockControlSelect aHBlockControlSelect(CBlocking::HBlock c)
+		HBlockControlSelect asHBlockControlSelect(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockControlSelect)
 				return std::static_pointer_cast<CBlockControlSelect>(c);
@@ -614,7 +610,7 @@ namespace CBlocking
 		}
 
 
-		HBlockControlSelectItem aHBlockControlSelectItem(CBlocking::HBlock c)
+		HBlockControlSelectItem asHBlockControlSelectItem(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockControlSelectItem)
 				return std::static_pointer_cast<CBlockControlSelectItem>(c);

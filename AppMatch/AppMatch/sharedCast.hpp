@@ -113,10 +113,10 @@ namespace CBlocking
 		HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c);
 		HVariableSlotBool asHVariableSlotBool(HVariableSlot c);
 
-		HBlockControlToken aHBlockControlToken(CBlocking::HBlock c);
-		HBlockControlIF aHBlockControlIF(CBlocking::HBlock c);
-		HBlockControlSelect aHBlockControlSelect(CBlocking::HBlock c);
-		HBlockControlSelectItem aHBlockControlSelectItem(CBlocking::HBlock c);
+		HBlockControlToken asHBlockControlToken(CBlocking::HBlock c);
+		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);
+		HBlockControlSelect asHBlockControlSelect(CBlocking::HBlock c);
+		HBlockControlSelectItem asHBlockControlSelectItem(CBlocking::HBlock c);
 		HBlockComandList asHBlockComandList(CBlocking::HBlock c);
 		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);
 		HBlockRelationLookup asHBlockRelationLookup(CBlocking::HBlock c);

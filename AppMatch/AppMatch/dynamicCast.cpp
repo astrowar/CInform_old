@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "dynamicCast.hpp"
 namespace CBlocking
 {
@@ -6,12 +9,7 @@ namespace CBlocking
 
 
 
-		CBlockEnums* asCBlockEnum(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockEnums)
-				return static_cast<CBlockEnums*>(c);
-			return nullptr;
-		}
+		 
 		CBlockKind* asCBlockKind(CBlock* c)
 		{
 			if (c->type() == BlockType::BlockKind)

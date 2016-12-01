@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "Parser.hpp"
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
@@ -20,7 +22,7 @@ struct AnySequence
 
 bool isToken(Token tk1 , std::vector<HBlock>::iterator  b)
 {
-	if (HBlockControlToken token = DynamicCasting::aHBlockControlToken( *b ))
+	if (HBlockControlToken token = DynamicCasting::asHBlockControlToken( *b ))
 	{
 		if (token->token == tk1.named )
 		{
@@ -220,7 +222,7 @@ std::list<HBlock> scan_token_any(std::vector<HBlock>::iterator  vbegin , std::ve
 	auto pos = vbegin;
 	while( pos != vend)
 	{
-		if ( HBlockControlToken token = DynamicCasting::aHBlockControlToken( *pos )  )
+		if ( HBlockControlToken token = DynamicCasting::asHBlockControlToken( *pos )  )
 		{
 		  if (token->token == "if" )
 		  {
@@ -305,10 +307,7 @@ NSParser::HGroupLines make_hierarchical_tree_it(std::list<NSParser::HGroupLines>
 					pivot = pivot->next;
 				}
 			}
-			else if ((*it)->identarion > pivot->identarion)
-			{
-				
-			}
+			 
 
 		}
 
