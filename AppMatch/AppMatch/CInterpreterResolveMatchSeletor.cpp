@@ -94,7 +94,16 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromKind(HBlockKind kind, HRunL
 		return ret;
 	}
 
-	 
+	if (kind->named == "relation")
+	{
+		for (auto &sRelation : this->staticRelation)
+		{
+			ret.push_back(sRelation.second);
+		}
+		return ret;
+	}
+
+
 	for (auto &nInst : instancias)
 	{
 		if (isSameString(nInst->baseKind->named, kind->named))

@@ -285,6 +285,7 @@ CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch va
 	// busca dentro desses matchs alguem que é um kind de algum tipo	 
 
 	HBlockMatch resolvedMatch = Resolve_Selector(valueToMatch, localsEntry); 
+	resolvedMatch->dump("");
 	std::list<HBlock> retList =  getInstancesFromSelector(resolvedMatch, localsEntry);
 	return  make_shared<CBlockList>(retList);
 

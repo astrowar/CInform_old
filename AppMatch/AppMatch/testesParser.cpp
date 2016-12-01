@@ -404,6 +404,7 @@ void testePlurals()
 int main() {
 
 	testeExecute_all();
+	return 0;
 	 
 	testePlurals();
  

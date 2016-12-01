@@ -342,12 +342,12 @@ r4 connect r3
 void testeExecute_all()
 {
  
-	 testeExecute5();
+	// testeExecute5();
 	 
 	   // testeExecute1();  precisa ser revisto o DEFINE
-	  testeExecute2();
-	  testeExecute3();
-	 testeExecute4();
+	//  testeExecute2();
+	//  testeExecute3();
+	// testeExecute4();
 
 	testeExecute7();
 		 

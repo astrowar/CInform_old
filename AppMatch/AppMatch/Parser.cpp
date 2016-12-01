@@ -38,6 +38,12 @@ NSParser::CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
         actionPredList->blist.push_back(mk_HPredLiteral("getting"));
     }
 
+	{
+		
+		verbList->blist.push_back(mk_HPredLiteral("relates"));
+	}
+
+
     {
         std::list<HPred> alist;
         //actionDinamicDispatch = std::make_shared<CPredBooleanOr>("actionList", alist);
