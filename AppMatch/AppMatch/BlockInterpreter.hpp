@@ -184,13 +184,13 @@ namespace CBlocking
 	using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
 
 
-	class CBlockKindAction : public CBlock  //Define uma tipo de acao   derivada
+	class CBlockKindAction : public CBlockKind  //Define uma tipo de acao derivada
 	{
 	public:
 		void dump(string ident) override;
-
+		virtual bool isValue() override { return true; }
 		virtual BlockType type() override { return BlockType::BlockKindAction; }
-		CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {}
+		CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : CBlockKind("action") ,baseClasseName(_baseActionName), applyTo(_applyTo) {}
 
 
 		string baseClasseName;

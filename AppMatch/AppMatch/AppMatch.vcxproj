@@ -212,6 +212,7 @@
     <ClCompile Include="CDataMananger.cpp" />
     <ClCompile Include="CInterpreterEvaluate.cpp" />
     <ClCompile Include="CInterpreterRelation.cpp" />
+    <ClCompile Include="CInterpreterResolveMatchSeletor.cpp" />
     <ClCompile Include="CMatchCombinatoria.cpp" />
     <ClCompile Include="CMatchListValid.cpp" />
     <ClCompile Include="CResultMatch.cpp" />

@@ -75,10 +75,12 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 			{
 				QueryResultContext qcc = query_is(rel->value2, n2, localsEntry, stk);
 				if (qcc.result == QueryResul::QEquals)
-				{
+				{					 
 					it = relInstances.erase(it);
 					if (it == relInstances.end()) break;
+					continue;
 				}
+
 				if (rel->relation->is_symetric())
 				{
 					auto qc2 = query_is(rel->value1, n2, localsEntry, stk);
@@ -86,6 +88,7 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 					{
 						it = relInstances.erase(it);
 						if (it == relInstances.end()) break;
+						continue;
 					}
 				}
 			}

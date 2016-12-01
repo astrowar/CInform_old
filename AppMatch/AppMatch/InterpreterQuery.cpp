@@ -126,9 +126,8 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
 
 
 QueryResultContext
-CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
-    
-	 
+CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) 
+{
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
@@ -152,7 +151,6 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 		if (HBlockInstance cinst = asHBlockInstance(propObj))
 		{
-
 			{
 				HVariableNamed pvar = cinst->get_property(property_noum->named);
 				if (pvar != nullptr)
@@ -174,10 +172,13 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 					if (rprop.result == QEquals) return QEquals;
 					return QNotEquals;
 				}
-				logError (" Dont have Property");
+				logMessage (cinst->named + " Dont have Property "+ property_noum->named);
 				{
 					QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk); 
-					if (result_prop.result != QUndefined) return result_prop;
+					if (result_prop.result != QUndefined)
+					{
+						return result_prop;
+					}
 					return QueryResultContext(QUndefined);
 				}
 
@@ -346,9 +347,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		 {
 			 return QEquals;			 
 		 }
-		 //printf("Match Fail \n");
-		 //c_block->dump("  ");
-		 //c_block1->dump("  ");
+	 
 
 		 return QUndefined;
 	}

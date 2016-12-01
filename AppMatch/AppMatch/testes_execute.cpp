@@ -287,17 +287,22 @@ void testeExecute7()
 	string ss1 =
 		R"(
 room is a kind 
+
+room can be normal or special
+
 r1 is a room
 r2 is a room
 r3 is a room
 r4 is a room
 
-Connection relates ( a room called source ) to  ( a room called destination )
+r3 is special
+
+Connection relates various ( a room called source ) to  ( a room called destination )
 the verb connect   implies a  Connection relation 
 r1 connect r2
 r2 connect r3
 r3 connect r4
-
+r4 connect r3
  
 
 
@@ -305,12 +310,24 @@ r3 connect r4
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 
-	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", true), nullptr);
-	target_q3->dump("");
+	//auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", true), nullptr);
+	//target_q3->dump("");
+
+	//auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are special   ", true), nullptr);
+	//target_q4->dump("");
+
+	auto res_qs = interpreter->query(Expression::Parser_Expression(&parse, "r2 is source of r3 ", true));
+	assert(res_qs.result == QEquals);
+
+
+	auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are source of r3   ", true), nullptr);
+	target_q5->dump("");
+
+
 
 	if (true) 
 	{	
-		auto res_q = interpreter->query(Expression::Parser_Expression(&parse, "r4 is destination of r1 ", true));
+		auto res_q = interpreter->query(Expression::Parser_Expression(&parse, "r4 is destination of r3 ", true));
 		assert(res_q.result == QEquals);
 	}
 

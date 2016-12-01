@@ -19,20 +19,20 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
-bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
-    if (a->named == "" || b->named == "") return false;
-    if (a->named == b->named) return true;
+bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
+    if (aDerivade->named == "" || Base->named == "") return false;
+    if (aDerivade->named == Base->named) return true;
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
             if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
 
-                if (nbase->named == a->named) {
+                if (nbase->named == aDerivade->named) {
                     if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
-                        if (k->baseClasse->named == b->named) {
+                        if (k->baseClasse->named == Base->named) {
                             return true;
                         } else {
-                            bool bnn = is_derivadeOf(k->baseClasse, b);
+                            bool bnn = is_derivadeOf(k->baseClasse, Base);
                             if (bnn) {
                                 return true;
                             }

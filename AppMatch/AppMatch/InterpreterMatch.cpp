@@ -323,7 +323,6 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		if (HBlockProperty    vProp = asHBlockProperty(value))
 		{
-
 			QueryResultContext rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
 			if (rProp.result == QEquals)
 			{
@@ -333,6 +332,20 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		}
 		else
 		{
+			// value pode ser o resultado da computacao da propriedade ....
+			HBlockList  objList = lookup_value_by_Selector(mProp->obj , localsEntry); // obtem todos os objetos que casam com a descricao
+			for(auto &o : objList->lista )
+			{
+				HBlockProperty propToProbe =  make_shared<CBlockProperty>(mProp->prop, o);
+
+		 
+				auto prop_value =  query_is_propertyOf_value(propToProbe, value, localsEntry, stk);
+				if (prop_value.result == QEquals)
+				{
+					return CResultMatch(true);
+				}
+			}
+			
 			return CResultMatch(false);
 		}
 	}

@@ -155,23 +155,26 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 		if (isSameString( n , "text")) {
 			return  std::make_shared<CBlockKindValue>("text");
 		}
-
 	}
-
 	{
-		if (n == "number") {
+		if (isSameString(n, "number")) {
 			return  std::make_shared<CBlockKindValue>("number");
 		}
 
-	}
-
-	 
-
+	} 
 	{
-		if (n == "action") {
-			return  std::make_shared<CBlockKindValue>("action");
+		if (isSameString(n, "action"))
+		{
+			return  std::make_shared<CBlockKindThing>("action");
 		}
 
+		if (isSameString(n, "relation"))
+		{
+			return  std::make_shared<CBlockKindThing>("relation");
+		}
+
+
+		
 	}
 	return nullptr;
 }
@@ -398,3 +401,25 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	return nullptr;
 }
 
+
+
+std::list<string>  CBlockInterpreter::getAllRegistedKinds()
+{
+	std::list<string> ret;
+
+	//add todos os tipos do sistema que geram INSTANCIAS
+	ret.push_back("kind");
+	ret.push_back("action");
+	ret.push_back("verb");
+	ret.push_back("relation");
+
+	for (auto &defs : assertions)
+	{
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+			ret.push_back(nn->named);
+		}
+	}
+
+
+	return ret;
+}

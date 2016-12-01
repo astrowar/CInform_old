@@ -111,7 +111,7 @@ public:
 		QueryResultContext query_is_instance_valueSet(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, QueryStack stk);
 		QueryResultContext query_is_propertyOf_value_imp(CBlocking::HBlock propname, CBlocking::HBlock propObj, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 
-		QueryResultContext query_is_propertyOf_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+		QueryResultContext query_is_propertyOf_value(CBlocking::HBlock c_property, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 		QueryResultContext query_is_Variable_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
 
 		QueryResultContext query_is(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
@@ -136,6 +136,7 @@ public:
 		CBlocking::HBlock lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry);
 		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
+		std::list<string> getAllRegistedKinds();
 		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry);
 		CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
 		bool exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
@@ -164,6 +165,10 @@ public:
 		bool unset_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
 		string adapt_verb_inner(string verb, string conjug, string person, HRunLocalScope localsEntry);
 		CBlocking::HBlockNoum adapt_verb(CBlocking::HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
+		string getStringPrexfedFromList(std::vector<string> noumFragmented, std::list<string> allStringNames);
+		std::list<CBlocking::HBlock> getInstancesFromKind(CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
+		std::list<CBlocking::HBlock> getInstancesFromSelector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+		CBlocking::HBlockMatch Resolve_Selector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
 	public:
 
 		std::list<CBlocking::HBlockRelationInstance > getRelations();

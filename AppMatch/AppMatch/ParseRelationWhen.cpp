@@ -384,6 +384,25 @@ HBlock   NSParser::ParseRelation::parser_SeletorVerb(CParser *p, HTerm   term, H
 			return std::make_shared<CBlockVerbLookup>(vrepr, muteVariable, n2, FirstNoum);
 		}
 	} 
+
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			//Apenas  o IS
+			predList.push_back(verb_IS());
+			predList.push_back(mkHPredAny("K2"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto n2 = ExpressionMatch::parser_expression_match(p, res.matchs["K2"]);			
+			return std::make_shared<CBlockVerbLookup>("is", muteVariable, n2, FirstNoum);
+		}
+	}
+
+
 	return nullptr;
 }
  

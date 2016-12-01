@@ -267,6 +267,8 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 		}
 	}
 	 
+	return lookup_verb_List(vLookup, localsEntry);
+
 	return nullptr;
 
 }
@@ -276,26 +278,17 @@ CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch va
 {
 	if (HBlockMatchNamed mNamed  = DynamicCasting::asHBlockMatchNamed( valueToMatch ))
 	{
-		return lookup_value_by_Selector(mNamed, localsEntry);
-	}
-
-	// busca dentro desses matchs alguem que é um kind de algum tipo
-
-	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(valueToMatch))
-	{
-	//	std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
-
-	}
-
-	if (HBlockMatchList mList = DynamicCasting::asHBlockMatchList(valueToMatch))
-	{
-		// Aqui temos um problema ... mList pode ser A,B,C ond e A  eh um modificador  e B C formam uma palavra valida
-
-
+		return lookup_value_by_Selector(mNamed->matchInner, localsEntry);
 	}
 
 
-	return nullptr;
+	// busca dentro desses matchs alguem que é um kind de algum tipo	 
+
+	HBlockMatch resolvedMatch = Resolve_Selector(valueToMatch, localsEntry); 
+	std::list<HBlock> retList =  getInstancesFromSelector(resolvedMatch, localsEntry);
+	return  make_shared<CBlockList>(retList);
+
+	
 }
 
 CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
@@ -303,6 +296,8 @@ CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLook
 	HBlockMatch val1 = vLookup->value1;
 	auto val2 = vLookup->value2;
 	std::list<HBlock > wList;
+
+	val2->dump("");
 
 	// faz uma lista de todos os objetos do tipo vLookup value1 ... supondo ser um tipo
 	HBlockList  objList = lookup_value_by_Selector(val1,   localsEntry);
@@ -312,25 +307,41 @@ CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLook
 	// para cada tipo ... testa a relacao verbal com o value2 ...
 
 	string verbString = vLookup->verb;
-	for (auto &o : objList->lista)
+	if ( isSameString(verbString,"is"))
 	{
+		for (auto &o : objList->lista)
+		{
 
-		// se positivo inclua na lista
-		QueryResultContext rrcstm = get_system_verbs(verbString,o,val2 , localsEntry, QueryStack()); // "listed in" , "size of"
-		if (rrcstm.result != QUndefined)
-		{
-			wList.push_back(o);
-		}
-		else
-		{
-			QueryResultContext rr = query_user_verbs(verbString, o, val2, localsEntry, QueryStack());
-			if (rr.result != QUndefined)
+			
+			QueryResultContext rr = query_is(  o, val2, localsEntry, QueryStack());
+			if (rr.result == QEquals)
 			{
 				wList.push_back(o);
 			}
 		}
+		return std::make_shared<CBlockList>(wList);
+	}
+	else
+	{
+		for (auto &o : objList->lista)
+		{
 
-	} 
+			// se positivo inclua na lista
+			QueryResultContext rrcstm = get_system_verbs(verbString, o, val2, localsEntry, QueryStack()); // "listed in" , "size of"
+			if (rrcstm.result == QEquals)
+			{
+				wList.push_back(o);
+			}
+			else
+			{
+				QueryResultContext rr = query_user_verbs(verbString, o, val2, localsEntry, QueryStack());
+				if (rr.result == QEquals)
+				{
+					wList.push_back(o);
+				}
+			}
+		}
+	}
 
 	return std::make_shared<CBlockList>(wList);
 }
@@ -519,8 +530,9 @@ QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum propert
 		{
 			CBlocking::HBlock arg1 = c_block;
 			CBlocking::HBlock arg2 = value;
+			 
 			QueryResultContext query_inst = query_relation_instance(rr, arg2, arg1,   localsEntry, stk);//reverse the property
-			if (query_inst.result != QUndefined) return query_inst;
+			if (query_inst.result == QEquals ) return query_inst;
 		}
 
 	}
