@@ -278,6 +278,7 @@ void testeParser_5g() {
 
 void testeParser_5_all()
 {
+ 
 	testeParser_5b();
 	testeParser_5c();
 	testeParser_5d();

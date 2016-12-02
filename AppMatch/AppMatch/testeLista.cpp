@@ -94,8 +94,56 @@ items is  ( diary, book and box )
 	return;
 }
 
+
+void testeParser_listC()
+{
+	
+
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse(interpreter);
+
+	string s_price = R"(
+
+object is a kind 
+distance is a kind of value 
+object has a distance
+
+book is a object 
+box is a object
+diary is a object
+
+
+far is a distance
+near is a distance 
+closest is a distance 
+
+distance of book  is far 
+distance of box  is far 
+distance of diary  is near 
+
+items is a list of object  that varies
+items is  ( diary, book and box )
+
+ 
+
+)";
+
+	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse, " all distance of items   ", true), nullptr);
+
+	q_all_of->dump("");
+
+	assert(q_all_of != nullptr);
+
+	return;
+
+
+
+}
+
 void testeParser_listAll(void )
 {
-	testeParser_listB();
+	//testeParser_listB();
+	testeParser_listC();
 
 }

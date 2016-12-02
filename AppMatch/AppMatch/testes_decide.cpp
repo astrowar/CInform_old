@@ -201,6 +201,13 @@ to decide  if ( person called P  ) is oposite of ( person called Q )  :
 	CParser parse(interpreter);
 	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
+
+	interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable  ", true), nullptr)->dump("");
+
+	auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is suitable ", true), nullptr);
+	qList->dump("");
+	return;
+
 	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
 	//qr->dump("");
 
@@ -216,8 +223,9 @@ to decide  if ( person called P  ) is oposite of ( person called Q )  :
 	QueryResultContext q6 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is oposite of Mary ", ISLOG));
 	assert(q6.result == QEquals);
 
+	 
 
-
+	assert(q6.result == QEquals);
 	return;
 
 }

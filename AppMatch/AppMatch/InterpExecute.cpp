@@ -504,6 +504,8 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry)
 		{
 			return lookup_verb(nvlookup, localsEntry);
 		}
+
+		 
 	}
 
 	if (HBlockNow  bNow = asHBlockNow(c_block))

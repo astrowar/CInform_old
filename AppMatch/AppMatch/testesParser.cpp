@@ -403,7 +403,7 @@ void testePlurals()
 
 int main() {
 
-	testeExecute_all();
+	testeParser_7e();
 	return 0;
 	 
 	testePlurals();

@@ -288,7 +288,10 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 
 QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
- 
+	printf("================   IS   ==================\n");
+	c_block->dump("");
+	c_block1->dump("");
+	printf("========================================\n");
 	 
 
 	if (c_block->isSame(c_block.get(), c_block1.get() ))
@@ -674,15 +677,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 {
  
 
-  /*  
-    for (auto dctIF : decides_if)
-    {
-        QueryResul dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
-        if (dctValueWrap_1 !=  QUndefined) 
-        {
-            return  dctValueWrap_1;
-        }
-    }*/
+  
 
 	 
 
