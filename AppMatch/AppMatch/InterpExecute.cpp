@@ -353,7 +353,8 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
   		auto r = query(cIF->block_if, localsEntry, stk);
 		if (r.result == QEquals)
 		{
-			return exec_eval(cIF->block_then, localsEntry, stk);
+			auto localsHeaderC = std::make_shared< CRunLocalScope >(r.matchedResult );
+			return exec_eval(cIF->block_then, localsHeaderC, stk);
 		}
 		else
 		{

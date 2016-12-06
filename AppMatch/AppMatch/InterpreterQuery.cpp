@@ -354,7 +354,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
 	}
 
-	printf("============================================\n");
+	printf("Locals =================================\n"); 
+	if (localsEntry != nullptr) localsEntry->dump("");
+	printf("-------------------------------------------\n");
 	c_block->dump("");
 	c_block1->dump("");
 	printf("............................................\n");
@@ -381,13 +383,12 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			if (result.hasMatch == true)
 			{
 				auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
+				
+				localsHeaderC->dump("");
+
 				HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
 				auto r =  getDecidedValue(dctIF->decideBody, localsNext, stk);
-
-
 				 
-
-
 				return r;
 			}
 		} 
@@ -403,10 +404,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		 auto r_mtch =  Match(matchBlock, c_block, localsEntry, stk);
 		 if (r_mtch.hasMatch)
 		 {
-			 return QEquals;			 
-		 }
-	 
-
+			 return  QueryResultContext(QEquals, r_mtch.maptch);			 
+		 } 
 		 return QUndefined;
 	}
 
@@ -783,15 +782,25 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 
 
 	//Booleans
+		 
+
 	if (HBlockBooleanAND q_bool_and = asHBlockBooleanAND(q))
 	{
 		QueryResultContext result_A = query(q_bool_and->input_A, localsEntry, stk);
 		if (result_A.result == QNotEquals) return  QNotEquals;
 		if (result_A.result == QUndefined) return  QNotEquals;
-		QueryResultContext result_B = query(q_bool_and->input_B, localsEntry, stk);
+
+		auto localsHeaderC = std::make_shared< CRunLocalScope >(result_A.matchedResult);		
+		HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
+
+		QueryResultContext result_B = query(q_bool_and->input_B, localsNext, stk);
 		if (result_B.result == QNotEquals) return  QNotEquals;
 		if (result_B.result == QUndefined) return  QNotEquals;
-		return QEquals;
+
+		auto localsHeaderD = std::make_shared< CRunLocalScope >(result_B.matchedResult);
+		localsNext = newScope(localsHeaderC, localsHeaderD);
+
+		return QueryResultContext(QEquals, localsHeaderD->locals);
 	}
 
 	if (HBlockBooleanOR q_bool_or = asHBlockBooleanOR(q))

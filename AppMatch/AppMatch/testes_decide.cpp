@@ -178,21 +178,12 @@ Bob speak Zubian
 Zora speak Perplexish
 Julian speak English
  
-
- 
-
-
 to decide  if ( person called P  ) is ( suitable  for  ( person called Q  ) ) :
-   if ( P speak  Zubian ) and ( Q speak Zubian ) :
-      decide on true   
-   if( P speak  Perplexish) and ( Q speak Perplexish ):
-      decide on true       
+   if ( P speak  ( language called LL ) ) :
+      if   Q speak LL   :
+         decide on true      
    decide on false
    
-
- 
-
-
 )";
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
@@ -200,7 +191,7 @@ to decide  if ( person called P  ) is ( suitable  for  ( person called Q  ) ) :
 	interpreter->execute_init(ParseText::parser_text(&parse,slong, true));
 
 
-	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is   suitable for Bob  ", true), nullptr, QueryStack())->dump("");
+	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable for Bob  ", true), nullptr, QueryStack())->dump("");
 	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Bob is suitable for Zora ", true), nullptr, QueryStack())->dump("");
 
 	//auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is suitable for Bob ", true), nullptr, QueryStack());
