@@ -374,10 +374,10 @@ plural of brother in law is brothers in law
 		auto pp =  ParseText::parser_text(&parse,ss1, true);
 		interpreter->execute_init(pp);
 
-		auto rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of caixa ", ISLOG),nullptr);
+		auto rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of caixa ", ISLOG),nullptr, QueryStack());
 		rt->dump("");
 
-		rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of brother in law ", ISLOG), nullptr);
+		rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of brother in law ", ISLOG), nullptr, QueryStack());
 		rt->dump("");
 	}
 	logMessage("...");

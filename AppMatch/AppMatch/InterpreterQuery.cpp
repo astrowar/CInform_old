@@ -288,10 +288,7 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 
 QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk) {
     
-	printf("================   IS   ==================\n");
-	c_block->dump("");
-	c_block1->dump("");
-	printf("========================================\n");
+ 
 	 
 
 	if (c_block->isSame(c_block.get(), c_block1.get() ))
@@ -313,6 +310,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
     stk.addQuery("is", c_block, c_block1);
 	
+
+
+ 
 
     //resolve It
 	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
@@ -336,12 +336,67 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
     }
 
 
-	if (HBlockInstance cinst1 = asHBlockInstance (c_block))
+	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
+	{
 		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
 		{
 			if (cinst1->named == cinst2->named) return QEquals;
 			return QNotEquals;
 		}
+
+		if (HBlockKindThing kThing = asHBlockKindThing(c_block1))
+		{
+			if (is_derivadeOf( cinst1, kThing, localsEntry)) return QEquals;
+		}
+		if (HBlockKindValue kVal = asHBlockKindValue(c_block1))
+		{
+			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
+		}
+	}
+
+	printf("============================================\n");
+	c_block->dump("");
+	c_block1->dump("");
+	printf("............................................\n");
+
+
+	{
+		if (HBlockAction act = asHBlockAction(c_block))
+			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
+			{
+				if (isSameString(kval->named, "action"))
+				{
+					return QEquals;
+				}
+			}
+	}
+
+
+
+	for (auto dctIF : decides_if)
+	{
+		if(HBlockMatchDirectIs  DctQueryDirectIS = asHBlockMatchDirectIs(dctIF->queryToMatch)  )
+		{
+			auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1,localsEntry,stk);
+			if (result.hasMatch == true)
+			{
+				auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
+				HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
+				auto r =  getDecidedValue(dctIF->decideBody, localsNext, stk);
+
+
+				 
+
+
+				return r;
+			}
+		} 
+		 
+	}
+
+
+
+
 
 	if (HBlockMatch matchBlock = asHBlockMatch  (c_block1))
 	{
@@ -485,9 +540,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				if (isSameString(kval->named ,  "action"))
 				{
 					return QEquals;
-				}
-				
-
+				} 
 			}
 	}
 
@@ -507,9 +560,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
         }
     }
 
-	logMessage("I cant query");
-	c_block->dump("");
-	c_block1->dump("");
+	//logMessage("I cant query");
+	//c_block->dump("");
+	//c_block1->dump("");
 
  
     return QueryResultContext(QUndefined);
@@ -599,7 +652,7 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
     }
 
 
-    logMessage("try verb|" + cs + "|");
+    //logMessage("try verb|" + cs + "|");
     if (cs =="listed in")
     {
         return queryVerb_ListedIn(n1, n2,localsEntry, stk);
@@ -676,10 +729,9 @@ QueryResultContext CBlockInterpreter::query_decides(HBlock q, HRunLocalScope loc
 QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack stk  )
 {
  
-
-  
-
-	 
+	printf("Query ..............................\n");
+	q->dump("");
+	printf( "..............................\n");
 
 
     if (HBlockIsNotVerb is_nverb = asHBlockIsNotVerb(q))
@@ -692,8 +744,9 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
     {
 		QueryResultContext retv = query_verb(is_verb, localsEntry , stk);
 	   if (retv.result != QUndefined) return retv;
-
     }
+
+
 		if (HBlockAssertion_isDirectAssign q_dir_assign = asHBlockAssertion_isDirectAssign(q))
 		{
 			auto vr1 = resolve_if_noum(q_dir_assign->get_obj() , localsEntry , std::list<std::string>() );
@@ -707,13 +760,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 			QueryResultContext ret =  query_is(vr1,vr2, localsEntry, stk);
 			if (ret.result != QUndefined) return ret;
 
-			 
-			
-			/*if (q_dir_assign->isSame(q_dir_assign->get_obj().get(), q_dir_assign->get_definition().get()))
-			{
-				return QEquals;
-			}
-			return query_is(q_dir_assign->get_obj(), q_dir_assign->get_definition(), localsEntry, stk);*/
+ 
 		}
     
 
@@ -746,6 +793,17 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		if (result_B.result == QUndefined) return  QNotEquals;
 		return QEquals;
 	}
+
+	if (HBlockBooleanOR q_bool_or = asHBlockBooleanOR(q))
+	{
+		QueryResultContext result_A = query(q_bool_or->input_A, localsEntry, stk);
+		if (result_A.result == QEquals) return  QEquals;		
+		QueryResultContext result_B = query(q_bool_or->input_B, localsEntry, stk);
+		if (result_B.result == QEquals) return  QEquals; 
+		return QUndefined;
+	}
+
+
 	if (HBlockBooleanNOT q_bool_not = asHBlockBooleanNOT (q))
 	{
 		QueryResultContext result_A = query(q_bool_not->input_A, localsEntry, stk);
@@ -754,14 +812,14 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		return result_A;
 	}
 
-	for (auto dctIF : decides_if)
+	/*for (auto dctIF : decides_if)
 	{
 		QueryResultContext dctValueWrap_1 = getDecidedIf(q, dctIF, localsEntry, stk);
 		if (dctValueWrap_1.result != QUndefined)
 		{
 			return  dctValueWrap_1;
 		}
-	}
+	}*/
 
 	if (HBlockComandList q_cmd = asHBlockComandList(q))
 	{

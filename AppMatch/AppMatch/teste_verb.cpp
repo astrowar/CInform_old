@@ -98,30 +98,30 @@ box contains a book
 	assert(ret_cc.result == QEquals);
 
 
-	auto verb_cc = interpreter->exec_eval(Expression::Parser_Expression(&parse,"the verb provoke", ISLOG), nullptr);
+	auto verb_cc = interpreter->exec_eval(Expression::Parser_Expression(&parse,"the verb provoke", ISLOG), nullptr, QueryStack());
 	verb_cc->dump("");
 
 	auto verb_ccv = Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG);
 	verb_ccv->dump("");
-	auto verb_to_adapt = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG), nullptr);
+	auto verb_to_adapt = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG), nullptr, QueryStack());
 	verb_to_adapt->dump("");
 
-	auto verb_to_adapt_3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb carry in present participle  ", ISLOG), nullptr);
+	auto verb_to_adapt_3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb carry in present participle  ", ISLOG), nullptr, QueryStack());
 	verb_to_adapt_3->dump("");
 
 
 
-	auto verb_to_adapt_4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain in past perfect  ", ISLOG), nullptr, QueryStack());
 	verb_to_adapt_4->dump("");
 
-	auto verb_to_adapt_5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb will in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb will in past perfect  ", ISLOG), nullptr, QueryStack());
 	verb_to_adapt_5->dump("");
 
 
-	auto verb_to_adapt_6 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain  from the third person singular  ", ISLOG), nullptr);
+	auto verb_to_adapt_6 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain  from the third person singular  ", ISLOG), nullptr, QueryStack());
 	verb_to_adapt_6->dump("");
 
-	auto verb_to_adapt_7 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb be in past   from the second person plural  ", ISLOG), nullptr);
+	auto verb_to_adapt_7 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb be in past   from the second person plural  ", ISLOG), nullptr, QueryStack());
 	verb_to_adapt_7->dump("");
 	return;
 }

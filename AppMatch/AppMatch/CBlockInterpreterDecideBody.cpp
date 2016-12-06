@@ -117,7 +117,7 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 			if (qresolved != nullptr)  return qresolved;
 		}
 
-		auto r = exec_eval(dct->decideBody, localsNext);
+		auto r = exec_eval(dct->decideBody, localsNext,stk);
 		if (HBlockToDecideOn adecided = asHBlockToDecideOn(r))
 		{
 			return adecided->decideBody;
@@ -127,6 +127,51 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 
 	return nullptr;
 }
+
+QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBody,   HRunLocalScope localsEntry, QueryStack stk)
+{
+
+	auto rdecided = exec_eval(decideBody, localsEntry,stk);
+	rdecided->dump("");
+	if (HBlockNoum ndecideRet = asHBlockNoum(rdecided))
+	{
+		if (ndecideRet->named == "true") return QueryResultContext(QEquals);
+		if (ndecideRet->named == "false") return QueryResultContext(QNotEquals);
+		if (ndecideRet->named == "nothing") return QueryResultContext(QUndefined);
+	}
+
+	if (rdecided == nullptr) return QueryResultContext(QUndefined); //decide on nothing
+	if (HBlockToDecideOn ndecide = asHBlockToDecideOn(rdecided))
+	{
+		//verifica se eh true ou false 
+		if (HBlockNoum ndecideValue = asHBlockNoum(ndecide->decideBody))
+		{
+			if (ndecideValue->named == "true") return QueryResultContext(QEquals);
+			if (ndecideValue->named == "false") return QueryResultContext(QNotEquals);
+			if (ndecideValue->named == "nothing") return QueryResultContext(QUndefined);
+		}
+		if (ndecide->decideBody == nullptr)
+		{
+			return QueryResultContext(QUndefined);
+		}
+
+		if (HBlockBooleanValue boolValuen = asHBlockBooleanValue(ndecide->decideBody))
+		{
+			if (boolValuen->state) return QueryResultContext(QEquals);
+			else  return QueryResultContext(QNotEquals);
+		}
+
+		logError("Error on decided return value ");
+		return QueryResultContext(QUndefined);
+	}
+
+	return QueryResultContext(QNotEquals); // deve decidir 
+
+}
+ 
+
+ 
+ 
 
 
 QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
@@ -138,18 +183,16 @@ QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HB
 	}
 	stk.addQuery("decide", c_block, dct);
 	
-	//if(localsEntry != nullptr) localsEntry->dump("   ");
-
-
+	//if(localsEntry != nullptr) localsEntry->dump("   "); 
 
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 
 		
-	printf("MATCH ? ===========================\n");
-	dct->queryToMatch->dump(" ");
-	printf(" ->  \n");
-	c_block->dump(" ");
-	printf(".....................................\n");
+	//printf("MATCH ? ===========================\n");
+	//dct->queryToMatch->dump(" ");
+	//printf(" ->  \n");
+	//c_block->dump(" ");
+	//printf(".....................................\n");
 	if (result.hasMatch)
 	{
 		auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
@@ -158,40 +201,7 @@ QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HB
 		//auto rr =  query(dct->decideBody, localsNext, stk);
 		//if (rr == QEquals) return QueryResultContext(QEquals);
  
-		auto rdecided  = exec_eval(dct->decideBody, localsNext );
-		if (HBlockNoum ndecideRet= asHBlockNoum(rdecided ))
-		{
-			if (ndecideRet->named == "true") return QueryResultContext(QEquals);
-			if (ndecideRet->named == "false") return QNotEquals;
-			if (ndecideRet->named == "nothing") return QueryResultContext(QUndefined);
-		}
-
-		if ( rdecided == nullptr) return QueryResultContext(QUndefined); //decide on nothing
-		if (HBlockToDecideOn ndecide = asHBlockToDecideOn(rdecided))
-		{
-			//verifica se eh true ou false 
-			if (HBlockNoum ndecideValue = asHBlockNoum(ndecide->decideBody))
-			{
-				if (ndecideValue->named == "true") return QueryResultContext(QEquals);
-				if (ndecideValue->named == "false") return QueryResultContext(QNotEquals);
-				if (ndecideValue->named == "nothing") return QueryResultContext(QUndefined);
-			}	
-			if (ndecide->decideBody == nullptr)
-			{
-				return QueryResultContext(QUndefined);
-			}
-
-			if (HBlockBooleanValue boolValuen   = asHBlockBooleanValue(ndecide->decideBody))
-			{
-				if (boolValuen->state) return QueryResultContext(QEquals);
-				else  return QueryResultContext(QNotEquals);
-			}
-
-			logError("Error on decided return value ");
-			return QueryResultContext(QUndefined);
-		}
-
-		return QueryResultContext(QNotEquals); // deve decidir 
+		return getDecidedValue(dct->decideBody, localsNext,stk);
 		 
 
 	}

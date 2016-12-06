@@ -119,7 +119,7 @@ carry out eating ( thing called X  which is edible ) :
 	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
 	
 	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
-	auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse," eating ", ISLOG), nullptr);
+	auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse," eating ", ISLOG), nullptr,QueryStack());
 	 
 	e->dump("");
 	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 

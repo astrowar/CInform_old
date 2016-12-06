@@ -462,14 +462,14 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 {
 	QueryResul query_2 = QUndefined;
 	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
-	if (QEquals == qc1.result )
+	if (QEquals == qc1.result)
 	{
 		QueryResultContext qc2 = query_is(rr->value2, value, localsEntry, stk);
 		if (QEquals == qc2.result)
 		{
 			return QEquals;
 		}
-		 
+
 		query_2 = QNotEquals;
 		if (rr->relation->is_various_noum2() == false)
 		{
@@ -482,7 +482,7 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 		if (QEquals == qc3.result)
 		{
 			QueryResultContext qc4 = query_is(c_block, rr->value1, localsEntry, stk);
-			if (QEquals == qc4.result )
+			if (QEquals == qc4.result)
 			{
 				return QEquals;
 			}
@@ -497,10 +497,10 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 	if (rr->relation->is_symetric()) // Trocado
 	{
 		QueryResultContext qcc1 = query_is(rr->value2, c_block, localsEntry, stk);
-		if (QEquals == qcc1.result )
+		if (QEquals == qcc1.result)
 		{
 			QueryResultContext qcc2 = query_is(value, rr->value1, localsEntry, stk);
-			if (QEquals == qcc2.result )
+			if (QEquals == qcc2.result)
 			{
 				return QEquals;
 			}
@@ -561,7 +561,21 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	if (stk.isQuery(vb, c_block, value)) return QUndefined;
 	stk.addQuery(vb, c_block, value);
 
+	for (auto dctIF : decides_if)
+	{
+		if (HBlockMatchIsVerb   DctVerb = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
+		{
+			if (isSameString(vb, DctVerb->verb))
+			{
+				
+				auto result = Match_DirectIs(DctVerb->obj, DctVerb->value, c_block, value, localsEntry, stk);
+				auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
+				HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
+				return getDecidedValue(dctIF->decideBody, localsNext,stk);
+			}
+		}
 
+	}
 
 
 	// Tem alguma relacao associada ??
@@ -614,6 +628,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	//Custom Define
 	for(auto &v : decides_if)
 	{
+		break;
 		if (HBlockMatchIsVerb qVerb = DynamicCasting::asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			 
@@ -637,7 +652,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 						HRunLocalScope localsNext_value = newScope(localsNext,  locals_value);
 
 					 
-						auto rr_eval = exec_eval(v->decideBody, localsNext_value);
+						auto rr_eval = exec_eval(v->decideBody, localsNext_value,stk);
 						//auto rr = query(v->decideBody, localsNext_value, stk);
 						//if (rr == QEquals) return QEquals;
 

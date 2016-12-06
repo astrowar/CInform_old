@@ -154,6 +154,7 @@ public:
 
 		CResultMatch MatchList(CBlocking::HBlockMatchList M, CBlocking::HBlockList value, HRunLocalScope localsEntry, QueryStack stk);
 		CResultMatch isEquivalenteMatch(CBlocking::HBlockMatch M, CBlocking::HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack stk);
+		CResultMatch Match_DirectIs(CBlocking::HBlockMatch mObject, CBlocking::HBlockMatch mValue, CBlocking::HBlock object, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 		CResultMatch Match(CBlocking::HBlockMatch M, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
 
 
@@ -222,6 +223,8 @@ public:
 		// bool MatchOld(CBlocking::HBlock c_block, CBlocking::HBlockMatch m);
 		CBlocking::HBlock getDecidedWhether(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, CBlocking::HBlockToDecideWhether dct);
 		CBlocking::HBlock getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack stk);
+		QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, HRunLocalScope localsEntry, QueryStack stk);		
+		QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
 		QueryResultContext getDecidedIf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
 
 
@@ -292,8 +295,8 @@ public:
 		CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
-
-		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
+		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack stk);
+		
 		CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);
 		HExecutionBlock create_dispach_env(CBlocking::HBlockList p, HRunLocalScope localsEntry);
 

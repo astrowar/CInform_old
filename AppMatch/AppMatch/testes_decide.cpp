@@ -161,52 +161,51 @@ void testeParser_7e()
 	string slong = R"(
 person is an kind
 woman is an kind of person
+man is an kind of person
 Zora is an woman
 Mary is an woman
+Bob is a  man
+Julian  is a man
 
 language is a kind of value
 language are English, Zubian and Perplexish 
-speaking relates ( a person ) to   various  (  language )
+speaking relates various ( a person ) to  ( a  language )
 the verb  speak  implies the speaking relation
 
 
 Mary speak Zubian
+Bob speak Zubian
+Zora speak Perplexish
+Julian speak English
+ 
 
-to decide  what ( person   ) is (the best person) :
-   if Zora speak Zubian :
-      decide on Zora
-   else:
-      decide on Mary   
+ 
 
-to decide  if ( person called P  ) is ( suitable ) :
-   if P speak Zubian :
-      decide on true
-   if P speak English :
-      decide on false
-   decide on nothing
 
-to decide  if ( person called P  ) is oposite of ( person called Q )  :
-   if P is Zora  :
-      if Q is Mary  :
-         decide on true 
-   if P is Mary  :
-      if Q is Zora  :
-         decide on true 
+to decide  if ( person called P  ) is ( suitable  for  ( person called Q  ) ) :
+   if ( P speak  Zubian ) and ( Q speak Zubian ) :
+      decide on true   
+   if( P speak  Perplexish) and ( Q speak Perplexish ):
+      decide on true       
    decide on false
+   
+
+ 
 
 
 )";
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
-	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,slong, true));
 
 
-	interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable  ", true), nullptr)->dump("");
+	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is   suitable for Bob  ", true), nullptr, QueryStack())->dump("");
+	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Bob is suitable for Zora ", true), nullptr, QueryStack())->dump("");
 
-	auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is suitable ", true), nullptr);
-	qList->dump("");
-	return;
+	//auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is suitable for Bob ", true), nullptr, QueryStack());
+	//qList->dump("");
+	//return;
 
 	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
 	//qr->dump("");
