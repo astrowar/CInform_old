@@ -51,6 +51,7 @@ CUnresolved::CUnresolved(string _contents) : contents(_contents)
 
 CBlockNoum::CBlockNoum(string _value) : named(_value) {
     
+	assert(_value != "not");
    // assert(named[0] != '[');
 	//assert(named[0] != '(');
 }

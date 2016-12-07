@@ -298,7 +298,7 @@ CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLook
 	auto val2 = vLookup->value2;
 	std::list<HBlock > wList;
 
-	val2->dump("");
+	 
 
 	// faz uma lista de todos os objetos do tipo vLookup value1 ... supondo ser um tipo
 	HBlockList  objList = lookup_value_by_Selector(val1,   localsEntry);
@@ -313,9 +313,7 @@ CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLook
 		for (auto &o : objList->lista)
 		{
 
-			printf("========= Query Selector IS ============\n");
-			o->dump("");
-			val2->dump("");
+	 
 			QueryResultContext rr = query_is(  o, val2, localsEntry, QueryStack());
 			if (rr.result == QEquals)
 			{

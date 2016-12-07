@@ -72,7 +72,12 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 		}
 	}
 	//std::cout << "Argument:  " <<  (term)->repr() << std::endl;
-	return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(CtoString(expandBract(term)->removeArticle())));
+	string sNoum =  CtoString(expandBract(term)->removeArticle());
+	if (sNoum == "not")
+	{
+		return nullptr;
+	}
+	return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(sNoum));
 	return nullptr;
 }
 
@@ -570,7 +575,15 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 		logMessage( term->repr() << std::endl;*/
 		return r;
 	}
-	auto nn =  std::make_shared<CBlockNoum>(CtoString(term));
+
+	string sNoum = CtoString(term);
+	if (sNoum == "not")
+	{
+		return nullptr;
+	}
+
+
+	auto nn =  std::make_shared<CBlockNoum>(sNoum);
 	return std::make_shared<CBlockMatchNoum>(nn);
 }
 

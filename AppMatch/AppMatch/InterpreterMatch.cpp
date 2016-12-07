@@ -163,7 +163,7 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 				localsNext = newScope(localsEntry, localsHeaderC); //cria um novo  contexto com os matchs atualizados para variaveis locais
 				 
 			}
-			localsNext->dump("");
+			 
 			return mAcc;
 
 
@@ -171,7 +171,12 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 		else
 		{
 			// uma lista contra uma nao lista ? o que pode ser
-			logError("Something unespected");			
+			logError("Something unespected");		
+
+			printf("==============================\n");
+			mlist->dump("");
+			M->dump("");
+
 			return CResultMatch(false);
 
 		}
@@ -205,8 +210,7 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 			mres.append(mres_k);		 
 
 			auto locals_value = std::make_shared< CRunLocalScope >(mres.maptch);
-			printf("Second Match result For IS \n");
-			locals_value->dump("");
+		 
 			return mres; 
 
 		}

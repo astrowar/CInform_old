@@ -521,13 +521,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			{
 				auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
 
-				printf("Match Result \n");
-				localsHeaderC->dump("");
+ 
 
 				HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
 
-				printf("=================================\n");
-				localsNext->dump("");
+		 
 
 				auto r = getDecidedValue(dctIF->decideBody, localsNext, stk);
 

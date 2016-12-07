@@ -179,7 +179,8 @@ Zora speak Perplexish
 Julian speak English
  
 to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) :
-   if ( P1 speak  (language called L ) ) and (  P2 speak L)  :       
+   if ( P1 speak  ( language called L ) ) and (  P2 speak L)   :      
+      if (P1 is not P2 ): 
          decide on true      
    decide on false
    
@@ -196,7 +197,7 @@ to decide  if ( person called P1  ) is  canonical :
 
 	//  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable for Bob  ", ISLOG), nullptr, QueryStack())->dump("");
 	//  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Bob is suitable for Zora ", ISLOG), nullptr, QueryStack())->dump("");
-	auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is  suitable for Julian  ", true), nullptr, QueryStack());
+	auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is  suitable for Bob  ", ISLOG), nullptr, QueryStack());
 
 	//auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is  canonical  ", true), nullptr, QueryStack());
 	qList->dump("");
