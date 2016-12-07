@@ -313,7 +313,9 @@ CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLook
 		for (auto &o : objList->lista)
 		{
 
-			
+			printf("========= Query Selector IS ============\n");
+			o->dump("");
+			val2->dump("");
 			QueryResultContext rr = query_is(  o, val2, localsEntry, QueryStack());
 			if (rr.result == QEquals)
 			{
@@ -467,7 +469,8 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 		QueryResultContext qc2 = query_is(rr->value2, value, localsEntry, stk);
 		if (QEquals == qc2.result)
 		{
-			return QEquals;
+ 
+			return qc2;
 		}
 
 		query_2 = QNotEquals;
@@ -484,7 +487,7 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 			QueryResultContext qc4 = query_is(c_block, rr->value1, localsEntry, stk);
 			if (QEquals == qc4.result)
 			{
-				return QEquals;
+				return qc4;
 			}
 			if (rr->relation->is_various_noum1() == false)
 			{
@@ -502,7 +505,7 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 			QueryResultContext qcc2 = query_is(value, rr->value1, localsEntry, stk);
 			if (QEquals == qcc2.result)
 			{
-				return QEquals;
+				return qcc2;
 			}
 			if (rr->relation->is_various_noum2() == false)
 			{
@@ -594,7 +597,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					if (rv.second->type() == BlockVerbDirectRelation)
 					{
 						QueryResultContext rel_query = this->query_relation(rel, c_block, value, localsEntry, stk);
-						if (rel_query.result == QEquals) return  QEquals;
+						if (rel_query.result == QEquals) return  rel_query;
 						return QNotEquals;
 					}
 					else if (rv.second->type() == BlockVerbReverseRelation)
@@ -603,7 +606,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 						CBlocking::HBlock arg1 = c_block;
 			            CBlocking::HBlock arg2 = value;
 						QueryResultContext rel_query = this->query_relation(rel, arg2 , arg1,   localsEntry, stk);
-						if (rel_query.result == QEquals) return  QEquals;
+						if (rel_query.result == QEquals) return  rel_query;
 						return QNotEquals;
 					}
 				}
@@ -653,8 +656,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 
 					 
 						auto rr_eval = exec_eval(v->decideBody, localsNext_value,stk);
-						//auto rr = query(v->decideBody, localsNext_value, stk);
-						//if (rr == QEquals) return QEquals;
+					 
 
 						rr_eval->dump("");
 						
@@ -752,7 +754,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 			QueryResultContext a2 = query_is(c_is->get_definition(), value,localsEntry,stk);
 			if (a2.result == QEquals)
 			{
-				return QEquals;
+				return a2;
 			}
 		}
 	}

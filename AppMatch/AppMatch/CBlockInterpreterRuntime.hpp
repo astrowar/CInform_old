@@ -46,6 +46,9 @@ public:
 	std::map<string, CBlocking::HBlock> matchedResult;
 	QueryResultContext(QueryResul r);
 	QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult);
+	QueryResultContext(QueryResul r, std::list< std::pair<string, CBlocking::HBlock> > _locals);
+
+	void dump();
 };
 
  

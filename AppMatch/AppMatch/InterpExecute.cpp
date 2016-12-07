@@ -325,7 +325,8 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	}
 
 
-	//if (localsEntry) localsEntry->dump("");
+	 
+
 	if (HBlockComandList nlist = asHBlockComandList(c_block))
 	{
 		HBlock ret_out = nullptr;
@@ -354,7 +355,8 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 		if (r.result == QEquals)
 		{
 			auto localsHeaderC = std::make_shared< CRunLocalScope >(r.matchedResult );
-			return exec_eval(cIF->block_then, localsHeaderC, stk);
+			HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC); 
+			return exec_eval(cIF->block_then, localsNext, stk);
 		}
 		else
 		{

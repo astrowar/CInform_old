@@ -18,3 +18,21 @@ QueryResultContext::QueryResultContext(QueryResul r, std::map<string, HBlock> _m
 	 
 	matchedResult = _matchedResult;
 }
+
+QueryResultContext::QueryResultContext(QueryResul r, std::list<std::pair<string, CBlocking::HBlock>> _locals) : result(r)
+{
+	for(auto q = _locals.rbegin() ; q!= _locals.rend();++q)
+	{
+		matchedResult[q->first] = q->second;
+	}
+}
+
+void Interpreter::QueryResultContext::dump()
+{
+	for (auto q = matchedResult.begin(); q != matchedResult.end(); ++q)
+	{
+		printf("--------------------------------\n");
+		logMessage(q->first);
+		(*q).second->dump("");		
+	}
+}

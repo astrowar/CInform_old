@@ -130,8 +130,12 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 
 QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBody,   HRunLocalScope localsEntry, QueryStack stk)
 {
+	printf("EXECUTIN \n");
+	localsEntry->dump("");
+	decideBody->dump("");
+	printf("\n\n");
 
-	auto rdecided = exec_eval(decideBody, localsEntry,stk);
+	auto rdecided = exec_eval( decideBody , localsEntry,stk);
 	rdecided->dump("");
 	if (HBlockNoum ndecideRet = asHBlockNoum(rdecided))
 	{

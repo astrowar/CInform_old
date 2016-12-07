@@ -34,7 +34,7 @@ QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, H
 		 for( auto &hb : val_list->lista )
 		 {
 			 QueryResultContext qcc = query_is(n1, hb, localsEntry, stk);
-			 if ( qcc.result == QEquals) return QEquals;
+			 if ( qcc.result == QEquals) return qcc;
 		 }
 		 return QNotEquals;
 	}

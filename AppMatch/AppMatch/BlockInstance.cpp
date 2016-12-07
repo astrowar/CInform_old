@@ -153,6 +153,23 @@ void CBlockInstance::set_property(string  pnamed, CBlocking::HBlock value)
 	return;
 }
 
+
+bool NNisSameString(string s1, string s2)
+{
+	if (s1 == s2) return true;
+	if ((s1.size() == s2.size()) && (tolower(s1[0]) == tolower(s2[0])))
+	{
+		int n = s1.size();
+		for (int j = 0; j< n; ++j)
+		{
+			if (tolower(s1[j]) != tolower(s2[j])) return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+
 QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
 	for (auto &va : this->anomimousSlots)
@@ -161,7 +178,7 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
-				if (venum->value->named == value->named) return QEquals;
+				if (NNisSameString( venum->value->named , value->named))  return QEquals;
 				return QNotEquals;
 			}
 		}

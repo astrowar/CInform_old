@@ -178,25 +178,29 @@ Bob speak Zubian
 Zora speak Perplexish
 Julian speak English
  
-to decide  if ( person called P  ) is ( suitable  for  ( person called Q  ) ) :
-   if ( P speak  ( language called LL ) ) :
-      if   Q speak LL   :
+to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) :
+   if ( P1 speak  (language called L ) ) and (  P2 speak L)  :       
          decide on true      
    decide on false
    
+to decide  if ( person called P1  ) is  canonical :
+    if  P1 speak Zubian   :      
+         decide on true      
+    decide on false
 )";
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse(interpreter);
-	interpreter->execute_init(ParseText::parser_text(&parse,slong, true));
+	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
 
-	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable for Bob  ", true), nullptr, QueryStack())->dump("");
-	  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Bob is suitable for Zora ", true), nullptr, QueryStack())->dump("");
+	//  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Mary is suitable for Bob  ", ISLOG), nullptr, QueryStack())->dump("");
+	//  interpreter->exec_eval(Expression::Parser_Expression(&parse, "  Bob is suitable for Zora ", ISLOG), nullptr, QueryStack())->dump("");
+	auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is  suitable for Julian  ", true), nullptr, QueryStack());
 
-	//auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is suitable for Bob ", true), nullptr, QueryStack());
-	//qList->dump("");
-	//return;
+	//auto qList = interpreter->exec_eval(Expression::Parser_Expression(&parse, " ( Person called P ) which  is  canonical  ", true), nullptr, QueryStack());
+	qList->dump("");
+	
 
 	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
 	//qr->dump("");
@@ -204,18 +208,17 @@ to decide  if ( person called P  ) is ( suitable  for  ( person called Q  ) ) :
 	//auto q3 = interpreter->query(Statement::Parser_Stmt(&parse,"best person is Mary  ", ISLOG));
 	//assert(q3 == QEquals);
 
-	QueryResultContext q4 = interpreter->query(Statement::Parser_Stmt(&parse," Mary is suitable ", ISLOG));
+	QueryResultContext q4 = interpreter->query(Statement::Parser_Stmt(&parse," Mary is suitable for Bob ", ISLOG));
 	assert(q4.result == QEquals);
 
-	QueryResultContext q5 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is suitable ", ISLOG));
+	QueryResultContext q5 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is suitable for Bob ", ISLOG));
 	assert(q5.result != QEquals);
 
 	QueryResultContext q6 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is oposite of Mary ", ISLOG));
-	assert(q6.result == QEquals);
+	assert(q6.result != QEquals);
 
 	 
-
-	assert(q6.result == QEquals);
+ 
 	return;
 
 }
