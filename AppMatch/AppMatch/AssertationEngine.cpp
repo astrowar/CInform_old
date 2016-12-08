@@ -61,7 +61,7 @@ bool CBlockInterpreter::queryIsVerbToRelation( HBlockMatch m)
 	return false;
 }
 
-void CBlockInterpreter::logMessage(std::string msg)
+void CBlockInterpreter::logMessage(const string & msg)
 {
 	printf("%s\n", msg.c_str());
 

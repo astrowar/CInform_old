@@ -306,7 +306,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
 
 	std::unique_ptr<QueryStack> stk_unique = nullptr;
-	QueryStack *stk = nullptr;
+	 
 	if (stk_in != nullptr)
 	{
 		if (stk_in->isQuery("is", c_block, c_block1))
@@ -320,7 +320,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		  stk_unique = make_unique<QueryStack>();
 		 
 	}
-	stk = stk_unique.get();
+	QueryStack *stk   = stk_unique.get();
 
 
 

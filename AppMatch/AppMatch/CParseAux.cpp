@@ -136,7 +136,7 @@ HPred mk_HPredLiteral_OR(string _named, std::initializer_list<string> alist) {
 
 CList *mk_CList_Literal(std::vector<HTerm> strList) {
     auto clist = new CList();
-    std::list<std::shared_ptr<CPred> > predlist;
+     
     for (auto it = strList.begin(); it != strList.end(); ++it) {
         clist->push_back(*it);
     }

@@ -12,7 +12,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 
 //retorn  o primeiro termo
-CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 
 	for (auto &rr : relInstances)
@@ -58,7 +58,7 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed
 }
 
 //retorn  o segundo termo
-CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 
 	for (auto &rr : relInstances)
@@ -104,7 +104,7 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed
 
 
 //retorn  o primeiro termo
-CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 	std::list<CBlocking::HBlock> lst;
 
@@ -146,7 +146,7 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationName
 }
 
 //retorn  o segundo termo
-CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)

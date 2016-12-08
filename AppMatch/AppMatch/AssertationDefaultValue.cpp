@@ -39,7 +39,7 @@ bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string p
 	return false;
 }
 
-bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propertyNamed )
+bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, const string & propertyNamed )
 {	
 	return kind_has_property_called_inner(kind, propertyNamed, list<string>());
 }

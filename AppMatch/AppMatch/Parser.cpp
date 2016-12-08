@@ -45,7 +45,7 @@ NSParser::CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
 
 
     {
-        std::list<HPred> alist;
+        //std::list<HPred> alist;
         //actionDinamicDispatch = std::make_shared<CPredBooleanOr>("actionList", alist);
         //actionDinamicDispatch->blist.push_back(mk_HPredLiteral("getting"));
     }

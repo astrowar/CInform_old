@@ -16,7 +16,7 @@ CResultMatch::CResultMatch(bool r) :hasMatch(r)
 
 }
 
-void CResultMatch::append(CResultMatch r)
+void CResultMatch::append(const CResultMatch & r)
 {
 	for(auto &kv: r.maptch)
 	{

@@ -1,12 +1,11 @@
-# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\Parser_Decide.cpp"
+# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 322 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\Parser_Decide.cpp" 2
-
-
+# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp" 2
+# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/BaseTest.hpp" 1
 
 # 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/Parser.hpp" 1
 
@@ -46988,13 +46987,13 @@ namespace CBlocking
  using HBlockActionApply = std::shared_ptr<CBlockActionApply>;
 
 
- class CBlockKindAction : public CBlock
+ class CBlockKindAction : public CBlockKind
  {
  public:
   void dump(string ident) override;
-
+  virtual bool isValue() override { return true; }
   virtual BlockType type() override { return BlockType::BlockKindAction; }
-  CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : baseClasseName(_baseActionName), applyTo(_applyTo) {}
+  CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : CBlockKind("action") ,baseClasseName(_baseActionName), applyTo(_applyTo) {}
 
 
   string baseClasseName;
@@ -58587,17 +58586,22 @@ namespace CBlocking
 
 
 
+class CRunLocalScope;
+using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
+
 
 class CRunLocalScope
 {
 public:
+ HRunLocalScope previous;
 
  std::list< std::pair<string, CBlocking::HBlock> > locals;
- CRunLocalScope()
+ CRunLocalScope(HRunLocalScope _previous ) : previous(_previous)
  {
 
  }
- CRunLocalScope( std::map<string,CBlocking::HBlock> varMap)
+
+ CRunLocalScope(HRunLocalScope _previous , std::map<string,CBlocking::HBlock> varMap ) : previous(_previous)
  {
   for( auto &e: varMap)
   {
@@ -58605,18 +58609,21 @@ public:
   }
  }
 
- CBlocking::HBlock resolve(std::string noum)
+ CBlocking::HBlock resolve(const std::string& noum)
  {
   for(auto &e:locals )
   {
    if (e.first == noum) return e.second;
   }
+  if (previous != nullptr) return previous->resolve(noum);
+
   return nullptr;
+
  }
  void dump(string ident);
 
 
- std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
+
 };
 
 
@@ -58639,7 +58646,7 @@ public:
 };
 
 
-HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
+
 using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
 # 15 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/CBlockInterpreterRuntime.hpp" 2
 
@@ -58666,6 +58673,7 @@ public:
 class QueryStack {
  std::list<QueryItem> items;
 public:
+
  void addQuery(CBlocking::HBlockVerb _verb, CBlocking::HBlock b1, CBlocking::HBlock b2);
  void addQuery(string vb, CBlocking::HBlock b1, CBlocking::HBlock b2);
  bool isQuery(CBlocking::HBlockVerb _verb, CBlocking::HBlock b1, CBlocking::HBlock b2);
@@ -58674,7 +58682,7 @@ public:
  void dump();
 };
 # 19 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/CBlockInterpreterRuntime.hpp" 2
-# 29 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/CBlockInterpreterRuntime.hpp"
+# 30 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/CBlockInterpreterRuntime.hpp"
 class CResultMatch;
 
 namespace Interpreter
@@ -58695,6 +58703,10 @@ public:
  std::map<string, CBlocking::HBlock> matchedResult;
  QueryResultContext(QueryResul r);
  QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult);
+
+ QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult_A, std::map<string, CBlocking::HBlock> _matchedResult_B);
+
+ void dump();
 };
 
 
@@ -58757,14 +58769,14 @@ public:
   int instancia_id;
 
 
-  QueryResultContext query_is_instance_valueSet(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, QueryStack stk);
-  QueryResultContext query_is_propertyOf_value_imp(CBlocking::HBlock propname, CBlocking::HBlock propObj, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext query_is_instance_valueSet(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, QueryStack *stk);
+  QueryResultContext query_is_propertyOf_value_imp(CBlocking::HBlock propname, CBlocking::HBlock propObj, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
-  QueryResultContext query_is_propertyOf_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_is_Variable_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext query_is_propertyOf_value(CBlocking::HBlock c_property, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_is_Variable_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
-  QueryResultContext query_is(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query(CBlocking::HBlockAssertion_is q, CBlocking::HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext query_is(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query(CBlocking::HBlockAssertion_is q, CBlocking::HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack *stk);
 
 
 
@@ -58778,41 +58790,50 @@ public:
   CBlocking::HBlockInstance new_Instance(string named, CBlocking::HBlockKind kind);
 
   void assign_variable_to_instance(CBlocking::HBlockAssertionBase kvar);
-  CBlocking::HBlockList lookup_relation_List(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_relation_X_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_relation_X_Y_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_relation_XS_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry);
-  CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
-  CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry);
-  CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry);
-  bool exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  bool setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  bool setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
-  QueryResultContext query_relation_instance(CBlocking::HBlockRelationInstance rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_relation(CBlocking::HBlockRelationBase rel, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_user_verbs(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+  CBlocking::HBlockList lookup_relation_List(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_relation_X_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_relation_X_Y_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_relation_XS_Y_1(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_relation_X_YS_2(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+  std::list<string> getAllRegistedKinds();
+  CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
+  CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+
+
+  bool exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  bool setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+
+  bool setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_relation_instance(CBlocking::HBlockRelationInstance rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_relation(CBlocking::HBlockRelationBase rel, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_user_verbs(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 
   bool assert_newVerb(CBlocking::HBlockVerbRelation value);
   bool insert_newEventHandle(CBlocking::HBlockEventHandle event_handle);
   bool assert_it_variableGlobal(CBlocking::HBlock obj, CBlocking::HBlock value);
 
-  CResultMatch MatchList(CBlocking::HBlockMatchList M, CBlocking::HBlockList value, HRunLocalScope localsEntry, QueryStack stk);
-  CResultMatch isEquivalenteMatch(CBlocking::HBlockMatch M, CBlocking::HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack stk);
-  CResultMatch Match(CBlocking::HBlockMatch M, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack stk);
+  CResultMatch MatchList(CBlocking::HBlockMatchList M, CBlocking::HBlockList value, HRunLocalScope localsEntry, QueryStack *stk);
+  CResultMatch isEquivalenteMatch(CBlocking::HBlockMatch M, CBlocking::HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk);
+  CResultMatch Match_DirectIs(CBlocking::HBlockMatch mObject, CBlocking::HBlockMatch mValue, CBlocking::HBlock object, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+  CResultMatch Match(CBlocking::HBlockMatch M, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 
-  QueryResultContext queryVerb_ListedIn(CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext queryVerb_ListedIn(CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 
   bool is_nothing(CBlocking::HBlockNoum noum);
-  bool set_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
-  bool set_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
-  bool unset_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
+  bool set_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+  bool set_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+  bool unset_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
   string adapt_verb_inner(string verb, string conjug, string person, HRunLocalScope localsEntry);
   CBlocking::HBlockNoum adapt_verb(CBlocking::HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
+  string getStringPrexfedFromList(std::vector<string> noumFragmented, std::list<string> allStringNames);
+  std::list<CBlocking::HBlock> getInstancesFromKind(CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
+  std::list<CBlocking::HBlock> getInstancesFromSelector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+  CBlocking::HBlockMatch Resolve_Selector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
  public:
 
   std::list<CBlocking::HBlockRelationInstance > getRelations();
@@ -58829,6 +58850,8 @@ public:
   bool assert_newUnderstand(CBlocking::HBlockUnderstandDynamic value);
 
   bool assert_newRelation(CBlocking::HBlockRelationBase rel);
+
+  bool assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
   bool assert_it_not_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
   void execute_init(CBlocking::HBlock p);
@@ -58865,22 +58888,25 @@ public:
   string BlockNoum(CBlocking::HBlock c_block);
 
   CBlocking::HBlock getDecidedWhether(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, CBlocking::HBlockToDecideWhether dct);
-  CBlocking::HBlock getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext getDecidedIf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk);
+  CBlocking::HBlock getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext getDecidedIf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
 
 
   QueryResultContext Selector_all(CBlocking::HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(CBlocking::HBlock)> selector);
   QueryResultContext Selector_any(CBlocking::HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(CBlocking::HBlock)> selector);
-  QueryResultContext get_system_verbs(string cs, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_verb(CBlocking::HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_not_verb(CBlocking::HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack stk);
-  QueryResultContext query_decides(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack stk);
-  bool assert_it_verbRelation(std::string verbNamed, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+  QueryResultContext get_system_verbs(string cs, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_verb(CBlocking::HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_not_verb(CBlocking::HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
+  QueryResultContext query_decides(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
+
+  bool assert_it_verbRelation(std::string verbNamed, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
   bool insert_newVerb(CBlocking::HBlockVerb verb_dec);
 
 
 
-  QueryResultContext query(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext query(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
   QueryResultContext query(CBlocking::HBlock vquery);
 
 
@@ -58920,50 +58946,52 @@ public:
 
   CBlocking::HBlock value_can_be_assign_to(CBlocking::HBlock value, CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
   bool set_plural_property(CBlocking::HBlock noum_singular, CBlocking::HBlock noum_plural, HRunLocalScope localsEntry);
-  bool assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+
   QueryResultContext query_is_List(CBlocking::CBlock *c_block, CBlocking::CBlock *c_block1);
 
 
 
   QueryResultContext query_is_extern(CBlocking::HBlock c_block, CBlocking::HBlock c_block1);
-  QueryResultContext query_is_same(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack stk);
+  QueryResultContext query_is_same(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
   std::list<CBlocking::HBlock> getMatchedObjects(CBlocking::HBlock seletor, HRunLocalScope localsEntry);
+  PhaseResult execute_verb_set(CBlocking::HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
 
-  PhaseResult execute_verb_set(CBlocking::HBlockIsVerb vverb, HRunLocalScope localsEntry);
-  PhaseResult execute_verb_unset(CBlocking::HBlockIsNotVerb vverb, HRunLocalScope localsEntry);
+
+
+  PhaseResult execute_verb_unset(CBlocking::HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
   PhaseResult execute_unset(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
   PhaseResult execute_set(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
   CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
   CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
   CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
+  CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
 
-  CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
   CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);
   HExecutionBlock create_dispach_env(CBlocking::HBlockList p, HRunLocalScope localsEntry);
 
 
 
   PhaseResult execute_now(CBlocking::HBlock c_block);
-  PhaseResult execute_phase_any(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
-  PhaseResult execute_phase_any(CBlocking::HBlockEventHandle evh, CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
-  PhaseResult execute_phase_check(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
-  PhaseResult execute_phase_before(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
-  PhaseResult execute_phase_carryOut(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+  PhaseResult execute_phase_any(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+  PhaseResult execute_phase_any(CBlocking::HBlockEventHandle evh, CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+  PhaseResult execute_phase_check(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+  PhaseResult execute_phase_before(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+  PhaseResult execute_phase_carryOut(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
   PhaseResult execute_system_action(CBlocking::HBlockActionCall v_call);
-  PhaseResult execute_user_action(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk);
+  PhaseResult execute_user_action(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 
 
   PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry);
-  PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry, QueryStack stk);
+  PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry, QueryStack *stk);
   bool queryIsVerbToRelation(CBlocking::HBlockMatch m);
 
 
 
   void logMessage(std::string msg);
 
-  CBlocking::HBlock evaluate_relation_property(CBlocking::HBlock c_block, CBlocking::HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack)> isSuitable);
-  CBlocking::HBlock evaluate_propertyValue(CBlocking::HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack)> isSuitable);
-  CBlocking::HBlock evaluate_values(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack)> isSuitable);
+  CBlocking::HBlock evaluate_relation_property(CBlocking::HBlock c_block, CBlocking::HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
+  CBlocking::HBlock evaluate_propertyValue(CBlocking::HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
+  CBlocking::HBlock evaluate_values(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
   CBlocking::HBlock evaluate_values(CBlocking::HBlock c_block);
 
   CBlocking::HBlockNoum get_plural_of(string s);
@@ -59394,364 +59422,304 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
  string CtoString(NSTerm::HTerm value);
  string CtoString(NSTerm::CList * lst);
  string CtoString(NSTerm::CTerm *value);
-# 4 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\Parser_Decide.cpp" 2
+# 2 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch/BaseTest.hpp" 2
+
+
+
+
+
+
+std::vector<NSTerm::HTerm> decompose(string phase);;
+
+string decompose_bracket(string phase, string dlm);
+
+NSTerm::CList *mk_CList_Literal(std::vector<NSTerm::HTerm> strList);
+CBlocking::HBlockNoum noum(std::string n) ;
+
+
+void testeParser_listA();
+void testeParser_listB();
+
+void testeParser_actionA();
+void testeParser_actionB();
+void testeParser_actionC();
+void testAction_all();
+
+void testeParser_1();
+void testeParser_2();
+void testeParser_2a();
+void testeParser_3();
+void testeParser_4();
+void testeParser_5();
+void testeParser_5b();
+void testeParser_5c();
+void testeParser_5d();
+void testeParser_5e();
+void testeParser_5f();
+void testeParser_5g();
+void testeParser_5_all();
+
+void testeParser_6();
+
+
+
+void testeParser_10();
+void testeParser_11();
+void testeParser_12();
+
+
+void testeParser_7a();
+void testeParser_7b();
+void testeParser_7c();
+void testeParser_7d();
+
+void testeParser_7e();
+void testeParser_7f();
+void testeParser_7g();
+
+void testeParser_21();
+
+void testeRelation1();
+void testeRelation2();
+void testeRelation3();
+void testeRelation4();
+void testeRelation5();
+void testeRelation6();
+void testeRelation7();
+void testeRelation_all();
+
+void testeExecute1();
+void testeExecute2();
+void testeExecute3();
+void testeExecute4();
+void testeExecute_all();
+
+void testeSerialize1();
+
+void testeSelector_all();
+
+void testeVerb_all();
+void testValues_all();
+void testeParser_listAll();
+# 1 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp" 2
+
 
 using namespace CBlocking;
-using namespace NSTerm;
-using namespace NSTerm::NSMatch;
+using namespace Interpreter;
+using namespace NSParser;
 
 
-
-HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
+void testeParser_actionA()
 {
- {
-  std::vector<HPred> predList;
-  predList.push_back(mk_What_Which());
-  predList.push_back(mkHPredAny("kindReturn"));
-  predList.push_back(verb_IS());
-  predList.push_back(mkHPredAny("RemainderQuery"));
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
 
-  MatchResult res = CMatch(term, predList);
-  if (res.result == Equals) {
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse," apple is a thing  ", false));
 
-   HBlockMatch c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
-   HBlockMatch AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"eat_this  is ( an action  applying to ( an thing ) )", false));
 
-   if (AdjetiveMatch != nullptr)
-   {
 
-    return AdjetiveMatch;
+ printf("===========================================================\n");
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : eat  ( a thing ) as eat_this ", false));
 
 
 
-    return nullptr;
-   }
-  }
- }
- return nullptr;
-}
-
-HBlockMatchIs NSParser::ParseDecide::parser_What_Which_Verb_Assertion(CParser * p, HTerm term)
-{
- {
-  std::vector<HPred> predList;
-  predList.push_back(mk_What_Which());
-  predList.push_back(mkHPredAny("kindReturn"));
-  predList.push_back(p->verbList);
-  predList.push_back(mkHPredAny("RemainderQuery"));
-
-  MatchResult res = CMatch(term, predList);
-  if (res.result == Equals) {
-
-   auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-
-
-   HBlockMatch c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
-   HBlockMatch AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
-
-   if (AdjetiveMatch != nullptr)
-   {
-
-
-    return std::make_shared<CBlockMatchIsVerb>(vrepr, c1, AdjetiveMatch);
 
 
 
-    return nullptr;
-   }
-  }
- }
- return nullptr;
+ printf("===========================================================\n");
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat apple   ", false));
+
+ return;
 }
 
 
-HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTerm term )
+void testeParser_actionB()
 {
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
+
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"box is a thing  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"puting  is ( an action  applying to ( an thing ) and ( an thing)  )", false));
 
 
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B ", false));
 
- {
-  std::vector<HPred> predList;
-  predList.push_back(mk_HPredLiteral("if"));
-  predList.push_back(mkHPredAny("AValue"));
-  predList.push_back(p->verbList);
-  predList.push_back(mkHPredAny("BValue"));
-
-  MatchResult res = CMatch(term, predList);
-  if (res.result == Equals)
-  {
-   auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-
-   HBlockMatch AValue = ExpressionMatch::parser_expression_match(p,res.matchs["AValue"]);
-   if (AValue == nullptr) return nullptr;
-
-   HBlockMatch BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
-   if (BValue == nullptr) return nullptr;
-
-   return std::make_shared<CBlockMatchIsVerb >(vrepr, AValue, BValue);
-  }
- }
-
- {
-  std::vector<HPred> predList;
-  predList.push_back(mk_HPredLiteral("if"));
-  predList.push_back(mkHPredAny("AValue"));
-  predList.push_back(verb_IS());
-  predList.push_back(mkHPredAny("BValue"));
-
-  MatchResult res = CMatch(term, predList);
-  if (res.result == Equals)
-  {
-   HBlockMatch AValue = ExpressionMatch::parser_expression_match(p,res.matchs["AValue"]);
-   if (AValue == nullptr) return nullptr;
-
-   HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
-   if (BValue == nullptr) return nullptr;
-
-   return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
-  }
- }
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("if"));
-        predList.push_back(mkHPredAny("AValue"));
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
-            if (AValue == nullptr) return nullptr;
-            auto r = res.matchs["AValue"].get();
-   logError(r->repr());
-
-
-   return nullptr;
-        }
-    }
-
-    return nullptr;
-
-}
-
-
-
-HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
-{
-
-
- if (inner == nullptr)
- {
-  {
-   static std::vector<HPred> predList = {};
-   if (predList.empty())
-   {
-    predList.push_back(mk_HPredLiteral("to"));
-    predList.push_back(mk_HPredLiteral("decide"));
-    predList.push_back(mkHPredAny("Match"));
-    predList.push_back(mk_HPredLiteral(":"));
-    predList.push_back(mkHPredAny("RemainBody"));
-   }
-   MatchResult res = CMatch(term, predList);
-   if (res.result == Equals) {
-    HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"] );
-    if (a_match)
-    {
-
-     HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
-     return std::make_shared<CBlockToDecideIf>(a_match, body);
-    }
-
-    HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
-    if (vb_match)
-    {
-
-     HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
-     return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
-    }
-
-
-    HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
-    if (w_match)
-    {
-
-     HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
-     return std::make_shared<CBlockToDecideWhat>(w_match, body);
-    }
+ interpreter->execute_now(Statement::Parser_Stmt(&parse," insert ( apple and box )  intro  box ", true));
 
 
 
 
-
-   }
-  }
- }
-
- if (inner != nullptr)
- {
-
-  {
-
-   static std::vector<HPred> predList = {};
-   if (predList.empty())
-   {
-    predList.push_back(mk_HPredLiteral("to"));
-    predList.push_back(mk_HPredLiteral("decide"));
-    predList.push_back(mkHPredAny("Match"));
-    predList.push_back(mk_HPredLiteral(":"));
-
-   }
-   MatchResult res = CMatch(term, predList);
-   if (res.result == Equals) {
-    HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"]);
-    if (a_match!=nullptr )
-    {
-     HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
-     return std::make_shared<CBlockToDecideIf>(a_match, body);
-    }
-
-    HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
-    if (vb_match != nullptr)
-    {
-
-     HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
-     return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
-    }
-
-
-    HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
-    if (w_match != nullptr)
-    {
-
-     HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
-     return std::make_shared<CBlockToDecideWhat>(w_match, body);
-    }
-
-
-   }
-  }
- }
-
-
-    return nullptr;
-}
-
-
-HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
-{
- return parseAssertion_isDecide_inLine(p, term, inner, err);
-}
-
-
-HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
-{
- if (inner == nullptr)
- {
-  {
-   static std::vector<HPred> predList = {};
-   if (predList.empty())
-   {
-    predList.push_back(mk_HPredLiteral("decide"));
-    predList.push_back(mk_HPredLiteral("on"));
-    predList.push_back(mkHPredAny("ExpressionBody"));
-   }
-   MatchResult res = CMatch(term, predList);
-   if (res.result == Equals)
-   {
-     logMessage((res.matchs["ExpressionBody"]->repr()));
-     HBlock body = Expression::parser_expression(p, res.matchs["ExpressionBody"]);
-     return std::make_shared<CBlockToDecideOn>( body);
-   }
-  }
- }
-
-  return nullptr;
-
-
-
-}
-
-HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector<HTerm>& term)
-{
-
-    {
-  static std::vector<HPred> predList = {};
-  if (predList.empty())
-  {
-   auto c1 = mkHPredList("def_A", { mk_HPredLiteral("definition"), mk_HPredLiteral(":") });
-   auto c2 = mk_HPredLiteral("definition:");
-   predList.push_back(mkHPredBooleanOr("kindpart", c1, c2));
-   predList.push_back(mkHPredAny("Match"));
-   predList.push_back(mk_HPredLiteral("if"));
-   predList.push_back(mkHPredAny("LogicalBody"));
-  }
-
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-
-   HBlockMatchIsVerb v_match = ExpressionMatch::parserMatchIsConditionVerb (p,res.matchs["Match"]);
-   if (v_match != nullptr)
-   {
-    HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
-    return std::make_shared<CBlockToDecideIf>(v_match, body);
-   }
-
-   HBlockMatchIs a_match = ExpressionMatch::parserMatchIsCondition(p,res.matchs["Match"]);
-   if (a_match != nullptr)
-   {
-    HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
-    return std::make_shared<CBlockToDecideIf>(a_match, body);
-   }
-   return nullptr;
-        }
-    }
-    return nullptr;
+ return;
 }
 
 
 
 
-
-
-HBlock NSParser::ParseDecide::parse_toDecide_Entry(CParser * p, std::vector<HTerm>& term)
+void testeParser_actionC()
 {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("to"));
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral(":"));
-        return nullptr;
-    }
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
+
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing has a text called description  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"description of apple is (text a red and round apple )  ", false));
+
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"say_text  is ( an action  applying to ( an text ) ) ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"say_text has a thing called speaker  ", false));
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : say  [ a text called X ]   as say_text  ", false));
+
+
+ interpreter->execute_init(Statement::Parser_Stmt(&parse,"speaker of  say_text is apple ", false));
+
+ interpreter->execute_now(Statement::Parser_Stmt(&parse," say  (text apple) ", false));
+
+
+
+ return;
 }
 
-HBlock NSParser::ParseDecide::parse_toDecide_Ret(CParser * p, std::vector<HTerm>& term) {
-    {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral("on"));
-        predList.push_back(mkHPredAny("Subst"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = Expression::parser_expression(p,res.matchs["Subst"]);
-            if (n1 == nullptr) return nullptr;
-            return std::make_shared<CBlockToDecideOn>(n1);
-        }
-    }
-    return nullptr;
-}
 
-HBlock NSParser::ParseDecide::parser_decides_Assertion(CParser * p, std::vector<HTerm>& term)
+
+
+void testeParser_actionD()
 {
 
-    HBlock verb_decideIn = parse_toDecide_Entry(p,term);
-    if (verb_decideIn != nullptr) {
-        return verb_decideIn;
-    }
 
-    HBlock verb_decideRet = parse_toDecide_Ret(p,term);
-    if (verb_decideRet != nullptr) {
-        return verb_decideRet;
-    }
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
 
-    return nullptr;
+ string s_eating = R"(
+thing is a kind
+thing can be edible
+ 
+person is a kind
+apple is a thing
+orange is a thing
+bob is a person
+
+apple is edible 
+orange is not edible
+
+eating is   an action applying to ( an  thing )  
+
+understand : eat  ( a thing ) as eating 
+
+before eating ( thing called X  which is not edible ) :
+  say  (text i cant eat  this !)
+  stop the action
+  
+ 
+  
+carry out eating ( thing called X  which is edible ) :
+  say  (text eaten !)
+
+)";
+# 121 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp"
+ interpreter->execute_init(ParseText::parser_text(&parse,s_eating, false));
+ auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse," eating ", false), nullptr,nullptr);
+
+ e->dump("");
 
 
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", false), nullptr);
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating orange ", false), nullptr);
+
+ return;
+}
+
+
+void testeParser_actionE()
+{
+
+
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
+
+ string s_eating = R"(
+thing is a kind
+thing can be edible
+ 
+person is a kind
+apple is a thing
+orange is a thing
+ 
+
+apple is edible 
+orange is not edible
+
+eating is   an action applying to ( an  thing )  
+
+understand : eat  ( a thing ) as eating 
+
+before eating ( thing called X   ) :  
+  if X is edible  :
+     say ( text  i will eat )
+     continue the action
+  say ( text  what ? )
+      
+  
+carry out eating ( thing called X  which is edible ) :
+  say  (text eaten !)
+
+)";
+# 169 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp"
+ interpreter->execute_init(ParseText::parser_text(&parse,s_eating, false));
+
+
+
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", false), nullptr);
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", false), nullptr);
+
+ return;
+}
+# 191 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp"
+void testeParser_actionF()
+{
+
+
+ HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+ CParser parse(interpreter);
+
+ string s_eating = R"(
+thing is a kind
+thing can be edible
+ 
+person is a kind
+apple is a thing
+orange is a thing
+
+speech is an kind of action  
+ 
+asking someone about something is speech
+telling someone about something is speech
+answering someone that something is speech
+asking someone for something is speech 
+
+
+)";
+# 216 "C:\\Users\\Eraldo.rangel\\Source\\Repos\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_action.cpp"
+ interpreter->execute_init(ParseText::parser_text(&parse,s_eating, false));
+
+
+
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", false), nullptr);
+ interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", false), nullptr);
+
+ return;
+}
+
+
+void testAction_all()
+{
+
+
+
+
+ testeParser_actionE();
 }

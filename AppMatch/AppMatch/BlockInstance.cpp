@@ -154,7 +154,7 @@ void CBlockInstance::set_property(string  pnamed, CBlocking::HBlock value)
 }
 
 
-bool NNisSameString(string s1, string s2)
+bool NNisSameString(const string &s1, const string &s2)
 {
 	if (s1 == s2) return true;
 	if ((s1.size() == s2.size()) && (tolower(s1[0]) == tolower(s2[0])))

@@ -49,7 +49,7 @@ bool NSMatch::isListValid_bounds_range(std::vector<HTerm>::iterator vbegin, std:
 
  
 
-bool NSMatch::isListValid_count(MTermSet Comb)
+bool NSMatch::isListValid_count(const MTermSet & Comb)
 {
     //para cada termo de lista, verifica se eh um "(" no inicio e obrigatoriamente um ")" no fim
 

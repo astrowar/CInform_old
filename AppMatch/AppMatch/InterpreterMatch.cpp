@@ -304,10 +304,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		CResultMatch mres = Match(mVNamed->matchInner , value, localsEntry,stk);
 		if (mres.hasMatch)
 		{
-			if (mVNamed->named =="P2")
-			{
-				return CResultMatch(mVNamed->named, value);
-			}
+			 
 			return CResultMatch(mVNamed->named, value);
 		}
 		return mres;
@@ -325,7 +322,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
 				if (is_article(cnoum->inner->named)) continue;
-				if (nnoum == "")
+				if (nnoum.empty())
 				    {
 						nnoum = cnoum->inner->named; }
 				else 

@@ -33,7 +33,7 @@ MTermSetCombinatoriaList getCombinatoriasUnitary(std::vector<HTerm> terms) {
 }
 
 //todos os termos formam um MTermSet que forma um MTermSetCombinatoria que forma um MTermSetCombinatoriaList 
-MTermSetCombinatoriaList getCombinatoriasGroup(std::vector<HTerm> terms) {
+MTermSetCombinatoriaList getCombinatoriasGroup(const std::vector<HTerm> & terms) {
     return MTermSetCombinatoriaList({MTermSetCombinatoria({terms})});
 }
 
@@ -134,7 +134,7 @@ bool applyCombinatoriasRec(MTermSetCombinatoria &partial_in, std::vector<HTerm>&
     MTermSetCombinatoria partial = partial_in;//copy
 
     //particiona de 1 a (n-1)
-    MTermSetCombinatoriaList accTerms;
+     
     for (size_t j = 1; j <= lsize - n + 1; ++j) {
         MTermSet head(terms.begin(), terms.begin() + j);
 
@@ -207,7 +207,7 @@ bool applyCombinatoriasRecSmart(MTermSetCombinatoria &partial_in, std::vector<HT
     MTermSetCombinatoria partial = partial_in;//copy
 
     //particiona de 1 a (n-1)
-    MTermSetCombinatoriaList accTerms;
+   
     for (size_t j = 1; j <= lsize - n + 1; ++j) {
         MTermSet head(terms.begin(), terms.begin() + j);
         if (preds[pos]->match(head) != NotEquals) {
@@ -249,7 +249,7 @@ bool applyCombinatoriasRecSmart_range(MTermSetCombinatoria &partial_in, std::vec
 	MTermSetCombinatoria partial = partial_in;//copy
 
 											  //particiona de 1 a (n-1)
-	MTermSetCombinatoriaList accTerms;
+ 
 	for (size_t j = 1; j <= lsize - n + 1; ++j) {
 		 
 		if (preds[pos]->match(terms_begin, terms_begin + j) != NotEquals) {

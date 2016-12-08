@@ -11,5 +11,5 @@ public:
 	CResultMatch() : hasMatch(false) {};	
 	CResultMatch(string s, CBlocking::HBlock b);
 	CResultMatch(bool r);
-	void append(CResultMatch r);
+	void append(const CResultMatch & r);
 };

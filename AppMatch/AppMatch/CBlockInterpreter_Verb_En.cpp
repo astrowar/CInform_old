@@ -22,7 +22,7 @@ using namespace CBlocking::DynamicCasting;
 
 //The present perfect of any verb is composed of two elements : the appropriate form of the auxiliary verb to have(present tense), plus the past participle of the main verb
 
-string CBlockInterpreter::adapt_verb_inner(string verb, string tense, string person, HRunLocalScope localsEntry)
+string CBlockInterpreter::adapt_verb_inner( const  string &  verb ,   string   tense, string person, HRunLocalScope localsEntry)
 {
 	auto vb_n = resolve_string_noum (  verb, localsEntry, std::list<std::string>());
 

@@ -52,7 +52,7 @@ std::vector<string> isHBlockMatchNoumList(const std::vector<HBlockMatch>  &mlist
 }
 
 
-string CBlockInterpreter::getStringPrexfedFromList(std::vector<string> noumFragmented , std::list<string> allStringNames )
+string CBlockInterpreter::getStringPrexfedFromList(const std::vector<string>& noumFragmented , std::list<string> allStringNames )
 {
 	size_t lst_size_t = noumFragmented.size();
 	for (auto &ss : allStringNames)
@@ -125,8 +125,7 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromKind(HBlockKind kind, HRunL
 std::list<HBlock> CBlockInterpreter::getInstancesFromSelector(HBlockMatch seletor, HRunLocalScope localsEntry)
 {
 	//Nunca chame Resolve_Selector daqui
-
-	std::list<HBlock> results;
+	 
 
 	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
 	{
