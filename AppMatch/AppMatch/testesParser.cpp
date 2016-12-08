@@ -371,13 +371,13 @@ plural of caixa  is caixas
 plural of brother in law is brothers in law
   
 )";
-		auto pp =  ParseText::parser_text(&parse,ss1, true);
+		auto pp =  ParseText::parser_text(&parse,ss1, ISLOG);
 		interpreter->execute_init(pp);
 
-		auto rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of caixa ", ISLOG),nullptr, QueryStack());
+		auto rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of caixa ", ISLOG),nullptr, nullptr);
 		rt->dump("");
 
-		rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of brother in law ", ISLOG), nullptr, QueryStack());
+		rt = interpreter->exec_eval(Expression::Parser_Expression(&parse," plural of brother in law ", ISLOG), nullptr, nullptr);
 		rt->dump("");
 	}
 	logMessage("...");
@@ -404,7 +404,7 @@ void testePlurals()
 int main() {
 
 	testeParser_7e();
-	return 0;
+ 
 	 
 	testePlurals();
  
@@ -422,7 +422,7 @@ int main() {
 	//testeVerb_all();
  
 
-   for (int k = 0; k < 100; ++k)
+   for (int k = 0; k < 1000; ++k)
 	{
 		testeExecute_all();	 
 		 testeParser_5_all();		 

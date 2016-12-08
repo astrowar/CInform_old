@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "CBlockInterpreterRuntime.hpp"
-
+#include "EqualsResult.hpp"
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -14,18 +14,24 @@ using namespace Interpreter;
 }
 
 QueryResultContext::QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult) : result(r)
-{
-	 
+{	 
 	matchedResult = _matchedResult;
 }
 
-QueryResultContext::QueryResultContext(QueryResul r, std::list<std::pair<string, CBlocking::HBlock>> _locals) : result(r)
+ 
+
+QueryResultContext::QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult_A, std::map<string, CBlocking::HBlock> _matchedResult_B) : result(r)
 {
-	for(auto q = _locals.rbegin() ; q!= _locals.rend();++q)
+	for (auto q = _matchedResult_A.rbegin(); q != _matchedResult_A.rend(); ++q)
+	{
+		matchedResult[q->first] = q->second;
+	}
+	for (auto q = _matchedResult_B.rbegin(); q != _matchedResult_B.rend(); ++q)
 	{
 		matchedResult[q->first] = q->second;
 	}
 }
+
 
 void Interpreter::QueryResultContext::dump()
 {

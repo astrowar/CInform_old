@@ -717,33 +717,35 @@ void CBlockSelector_Any::dump(string ident)
 
 void CRunLocalScope::dump(string ident)
 {
+	if (this->previous != nullptr) this->previous->dump("");
 	printf("%s %s\n",ident.c_str() , "Local Scope ");
 		for (auto &kv : locals)
 		{
 			printf("%s    %s\n",ident.c_str() ,  kv.first.c_str());
 				kv.second->dump(ident + "       ");
 		}
+
 }
 
-std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
-{
-	auto localsNext = std::make_shared< CRunLocalScope >();
-	for (auto &e : this->locals)
-	{
-		localsNext->locals.push_back(e);
-	}
-
-	for (auto &e : other->locals)
-	{
-		localsNext->locals.push_back(e);
-	}
-
-	return localsNext;
-}
+//std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
+//{
+//	auto localsNext = std::make_shared< CRunLocalScope >();
+//	for (auto &e : this->locals)
+//	{
+//		localsNext->locals.push_back(e);
+//	}
+//
+//	for (auto &e : other->locals)
+//	{
+//		localsNext->locals.push_back(e);
+//	}
+//
+//	return localsNext;
+//}
 
 HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn)
 {
-	HRunLocalScope ret = std::make_shared< CRunLocalScope > ();
+	HRunLocalScope ret = std::make_shared< CRunLocalScope > (nullptr);
 	for(auto it : _inn->locals )
 	{
 		ret->locals.push_back(it);

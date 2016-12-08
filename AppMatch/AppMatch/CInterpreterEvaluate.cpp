@@ -11,7 +11,7 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
-CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable)
+CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*) > isSuitable)
 {
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
@@ -37,7 +37,7 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlo
 	return nullptr;
 }
 
-CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable)
+CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack *stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*) > isSuitable)
 {
  
 	{
@@ -74,11 +74,24 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cp
 
 // std::function<void(const Foo&, int)> f_add_display = &Foo::print_add;
 //Funcao que calcula todos os values possiveis do primeiro termo e chama a funcao proxima
-CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack stk , std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope , QueryStack) > isSuitable  )
+CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk_in , std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope , QueryStack*) > isSuitable  )
 {
 	if (c_block == nullptr) return nullptr;
-	if (stk.isQuery("__evaluate", c_block, nullptr)) return nullptr;
-	stk.addQuery("__evaluate", c_block, nullptr);
+
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+
+	if (stk_in != nullptr)
+	{
+		if (stk_in->isQuery("__evaluate", c_block, nullptr)) return nullptr;
+		stk_unique = std::make_unique<QueryStack>(*stk_in);
+	}
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>( );
+	}
+	 
+	QueryStack *stk = stk_unique.get();
+	stk->addQuery("__evaluate", c_block, nullptr);
  
 	// vai chamando a funcao ate que retorne um valor nao NULL
 
@@ -108,7 +121,7 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block,
 	}
 
 	for (auto dct : decides_what) {
-		auto dctValueWrap = getDecidedValueOf(c_block, dct, localsEntry, stk);
+		auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, stk);
 		if (dctValueWrap != nullptr)
 		{
 			auto r = evaluate_values(dctValueWrap,  localsEntry, stk,isSuitable);
@@ -155,6 +168,9 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block,
 CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block )
 {
 
-	std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack) > isSuitable = [](CBlocking::HBlock a , HRunLocalScope h, QueryStack stk ) {  return a ; };
-	return evaluate_values(c_block, nullptr, QueryStack(), isSuitable);
+	std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*) > isSuitable = [](CBlocking::HBlock a , HRunLocalScope h, QueryStack *stk ) {  return a ; };
+	
+	 
+		
+		return evaluate_values(c_block, nullptr,  nullptr, isSuitable);
 }

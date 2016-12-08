@@ -231,24 +231,24 @@ scent is in hall
 	// auto target_q2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to garden by Connection ", ISLOG), nullptr);
 	// target_q2->dump("");
 
-	 auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to hall by Connection ", ISLOG), nullptr, QueryStack());
+	 auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to hall by Connection ", ISLOG), nullptr,nullptr);
 	 target_q3->dump("");
 	 
 
-	 auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which courage relates to by Inner ", ISLOG), nullptr, QueryStack());
+	 auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which courage relates to by Inner ", ISLOG), nullptr,nullptr);
 	 target_q4->dump("");
 
-	 auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a talent which relates to hall by Inner ", ISLOG), nullptr, QueryStack());
+	 auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a talent which relates to hall by Inner ", ISLOG), nullptr,nullptr);
 	 target_q5->dump("");
 
 	 //things which are in the teapot
 	 //people who can see the mouse
 
-	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"talent which are in hall", ISLOG), nullptr, QueryStack());
+	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"talent which are in hall", ISLOG), nullptr,nullptr);
 	 target_v1->dump("");
 
 	 printf("----------------\n");
-	 auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"room which connect hall", ISLOG), nullptr,QueryStack());
+	 auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"room which connect hall", ISLOG), nullptr,nullptr);
 	 target_v2->dump("");
 
 
@@ -283,7 +283,7 @@ carry out getting an thing  :
    say (text taken ! )
 
 )";
-	interpreter->execute_init(ParseText::parser_text(&parse,ss1, true));
+	interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG));
 
 	//auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"getting  requires  touchable noun", true), nullptr);
 	//target_v2->dump("");

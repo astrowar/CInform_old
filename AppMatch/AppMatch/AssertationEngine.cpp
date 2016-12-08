@@ -262,12 +262,12 @@ bool CBlockInterpreter::set_plural_property(CBlocking::HBlock  _singular, CBlock
 
 
 
-bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk) {
 	if (HBlockNoum nbase = asHBlockNoum(obj)) {
 		CBlocking::HBlock nobj = resolve_noum(nbase, localsEntry);
 		if (nobj != nullptr) 
 		{
-			return assert_it_property(propname, nobj, value, localsEntry);
+			return assert_it_property(propname, nobj, value, localsEntry,stk );
 		}
 		  
 	}
@@ -320,7 +320,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 	 
 
 		{
-			bool set_prop_rel = set_relation_property(property_noum, obj, value, localsEntry);
+			bool set_prop_rel = set_relation_property(property_noum, obj, value, localsEntry,stk );
 			if (set_prop_rel) return set_prop_rel;
 		}
 
@@ -397,11 +397,12 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 
 		CBlocking::HBlock obj = vRelation->get_obj();
 		CBlocking::HBlock value = vRelation->get_definition();
-		if (assert_it_verbRelation(vRelation->verb , obj, value,localsEntry)) return;
+ 
+
+		if (assert_it_verbRelation(vRelation->verb , obj, value,localsEntry, nullptr)) return;
 	}
 	else if (HBlockAssertion_isVariable  vGlobal  = asHBlockAssertion_isVariable(p)) {
-
-
+		 
 		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) {
 			return;
 		}

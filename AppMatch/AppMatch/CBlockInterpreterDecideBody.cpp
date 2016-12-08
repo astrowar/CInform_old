@@ -15,67 +15,67 @@
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
-HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
-{
-	HRunLocalScope localsNext = nullptr;
-
-	//printf("fuse contexts .....\n");
-	//if (oldEntry != nullptr) oldEntry->dump(" ");
-	//printf("with .....\n");
-	//if (headerEntry != nullptr) headerEntry->dump(" ");
-	//printf("end .....\n");
-	{
-		auto localsHeaderOut = std::make_shared< CRunLocalScope >();
-		for (auto e : headerEntry->locals)
-		{
-			if (oldEntry != nullptr)
-			{
-				auto resolved = oldEntry->resolve(e.first);
-				if (resolved != nullptr)
-				{
-					localsHeaderOut->locals.emplace_back(e.first, resolved);
-				}
-				else
-				{
-					localsHeaderOut->locals.emplace_back(e.first, e.second);
-				}
-			}
-			else
-			{
-				localsHeaderOut->locals.emplace_back(e.first, e.second);
-			}
-		}
-		if (oldEntry != nullptr) //tem no old ma nao no new
-		{
-			for (auto e : oldEntry->locals)
-			{
-				localsHeaderOut->locals.emplace_back(e.first, e.second);
-			}
-
-
-		}
-
-		return localsHeaderOut;
-	}
-
-#ifdef PROPAGATE_LETS
-	{
-		if (oldEntry != nullptr)
-		{
-			  localsNext = localsEntry->Union(oldEntry);
-		}
-		else
-		{
-			  localsNext = headerEntry;
-		}
-#else
-
-	  localsNext = headerEntry;
-#endif
-
-	return localsNext;
-}
+//
+//HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
+//{
+//	HRunLocalScope localsNext = nullptr;
+//
+//	//printf("fuse contexts .....\n");
+//	//if (oldEntry != nullptr) oldEntry->dump(" ");
+//	//printf("with .....\n");
+//	//if (headerEntry != nullptr) headerEntry->dump(" ");
+//	//printf("end .....\n");
+//	{
+//		auto localsHeaderOut = std::make_shared< CRunLocalScope >();
+//		for (auto e : headerEntry->locals)
+//		{
+//			if (oldEntry != nullptr)
+//			{
+//				auto resolved = oldEntry->resolve(e.first);
+//				if (resolved != nullptr)
+//				{
+//					localsHeaderOut->locals.emplace_back(e.first, resolved);
+//				}
+//				else
+//				{
+//					localsHeaderOut->locals.emplace_back(e.first, e.second);
+//				}
+//			}
+//			else
+//			{
+//				localsHeaderOut->locals.emplace_back(e.first, e.second);
+//			}
+//		}
+//		if (oldEntry != nullptr) //tem no old ma nao no new
+//		{
+//			for (auto e : oldEntry->locals)
+//			{
+//				localsHeaderOut->locals.emplace_back(e.first, e.second);
+//			}
+//
+//
+//		}
+//
+//		return localsHeaderOut;
+//	}
+//
+//#ifdef PROPAGATE_LETS
+//	{
+//		if (oldEntry != nullptr)
+//		{
+//			  localsNext = localsEntry->Union(oldEntry);
+//		}
+//		else
+//		{
+//			  localsNext = headerEntry;
+//		}
+//#else
+//
+//	  localsNext = headerEntry;
+//#endif
+//
+//	return localsNext;
+//}
 
 
 CBlocking::HBlock CBlockInterpreter::getDecidedWhether(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, CBlocking::HBlockToDecideWhether dct) {
@@ -84,17 +84,30 @@ CBlocking::HBlock CBlockInterpreter::getDecidedWhether(CBlocking::HBlock c_block
 
 }
 
-CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack stk) {
+CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct , HRunLocalScope localsEntry, QueryStack *stk_in) {
 	
 	
 	HBlockMatch match =   (dct->queryToMatch);
 
-	if (stk.isQuery("is", c_block, dct)) return nullptr;
-	stk.addQuery("is", c_block, dct);
-
-	if (stk.size() > 30 )
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+	if (stk_in != nullptr)
 	{
-		stk.dump();
+		if (stk_in->isQuery("is", c_block, dct)) return nullptr;
+		stk_unique = std::make_unique<QueryStack>(*stk_in);
+	}
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>();
+	}
+  
+	 
+	QueryStack *stk = stk_unique.get();
+	stk->addQuery("is", c_block, dct);
+
+
+	if (stk->size() > 30 )
+	{
+		stk->dump();
 		printf("huge");
 	}
 
@@ -104,10 +117,9 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 	if (result.hasMatch ) 
 	{
  
-		auto localsHeader = std::make_shared< CRunLocalScope >(result.maptch);
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, result.maptch);
 
-		HRunLocalScope localsNext = newScope( localsHeader , localsHeader );
-
+		 
 
 		//Execute body		 
 
@@ -128,12 +140,12 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 	return nullptr;
 }
 
-QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBody,   HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBody,   HRunLocalScope localsEntry, QueryStack *stk)
 {
  
 
 	auto rdecided = exec_eval( decideBody , localsEntry,stk);
-	rdecided->dump("");
+	 
 	if (HBlockNoum ndecideRet = asHBlockNoum(rdecided))
 	{
 		if (ndecideRet->named == "true") return QueryResultContext(QEquals);
@@ -175,15 +187,28 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
  
 
 
-QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-	//stack overflow 
-	if (stk.isQuery("decide", c_block, dct))
+ 
+	  
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+	if (stk_in != nullptr)
 	{
-		return QUndefined;
+		if (stk_in->isQuery("decide", c_block, dct))
+		{
+			return QUndefined;
+		}
+		stk_unique = std::make_unique<QueryStack>(*stk_in);
 	}
-	stk.addQuery("decide", c_block, dct);
-	
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>();
+	}
+
+
+	QueryStack *stk = stk_unique.get();
+	stk->addQuery("decide", c_block, dct);
+
 	//if(localsEntry != nullptr) localsEntry->dump("   "); 
 
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
@@ -196,8 +221,8 @@ QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HB
 	//printf(".....................................\n");
 	if (result.hasMatch)
 	{
-		auto localsHeaderC = std::make_shared< CRunLocalScope >(result.maptch);
-		HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC);
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);
+ 
 		 
 		//auto rr =  query(dct->decideBody, localsNext, stk);
 		//if (rr == QEquals) return QueryResultContext(QEquals);

@@ -219,7 +219,7 @@ else :
 
 	
 
-	auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr, QueryStack());
+	auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr,nullptr);
 	target_q->dump("");
 	//assert(ret_true_a == QEquals);
 	return;
@@ -255,7 +255,7 @@ luck is normal
 	if(true){
 		string ss2 = R"(now every object is huge)";
 		auto res_q = interpreter->query(Statement::Parser_Stmt(&parse,"box is small ", true));
-		auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr, QueryStack());
+		auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr,nullptr);
 		//target_q->dump("");
 		//assert(ret_true_a == QEquals);
 		auto res_2 = interpreter->query(Statement::Parser_Stmt(&parse,"box is huge ", true));
@@ -267,7 +267,7 @@ luck is normal
 		auto res_3 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_3.result == QNotEquals);
 		//string ss3 = R"(now every talent is not normal )"; 
-		interpreter->exec_eval(ParseText::parser_text(&parse,"now every talent is not  normal", true), nullptr, QueryStack());
+		interpreter->exec_eval(ParseText::parser_text(&parse,"now every talent is not  normal", true), nullptr,nullptr);
 		 auto  res_4 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_4.result == QEquals);
 	}
@@ -311,7 +311,7 @@ r4 connect r3
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 
 
-	auto target_q6 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  relation called R ) which relates r1  ", true), nullptr, QueryStack());
+	auto target_q6 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  relation called R ) which relates r1  ", true), nullptr,nullptr);
 	target_q6->dump("");
 
 	return;
@@ -325,7 +325,7 @@ r4 connect r3
 	assert(res_qs.result == QEquals);
 
 
-	auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are source of r3   ", true), nullptr, QueryStack());
+	auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are source of r3   ", true), nullptr,nullptr);
 	target_q5->dump("");
 
  

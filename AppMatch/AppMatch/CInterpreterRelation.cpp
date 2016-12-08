@@ -17,18 +17,18 @@ bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 	return false;
 }
 
-bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock n1, HBlock n2, HRunLocalScope localsEntry)
+bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	for(auto rr : this->staticRelation)
 	{
 	  if( rr.second->input_B->named == property_noum->named)
 	  {
-		  this->set_relation(rr.second, n1, n2, localsEntry);
+		  this->set_relation(rr.second, n1, n2, localsEntry,stk );
 		  return true;
 	  }
 	  else if (rr.second->input_A->named == property_noum->named)
 	  {
-		  this->set_relation(rr.second, n2, n1, localsEntry); //inverte o noums
+		  this->set_relation(rr.second, n2, n1, localsEntry, stk); //inverte o noums
 		  return true;
 	  }
 	}
@@ -36,9 +36,9 @@ bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock 
 	return false;
 }
 
-bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry)
+bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	QueryStack stk;
+ 
 
 	if (relation->is_various_noum2() == false )
 	{
@@ -120,9 +120,9 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 }
 
 
-bool CBlockInterpreter::unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry)
+bool CBlockInterpreter::unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	QueryStack stk;
+ 
 
 	 
 	 

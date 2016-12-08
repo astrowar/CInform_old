@@ -53,7 +53,7 @@ std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocal
 	return std::list<HBlock>();
 }
 
-PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry)
+PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 	// Eh uma relacao ??
@@ -73,13 +73,13 @@ PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalSco
 				if (rv.second->type() == BlockVerbDirectRelation)
 				{
 					HBlockRelationBase rel = rel_find->second;
-					this->set_relation(rel, vverb->n1, vverb->n2, localsEntry);
+					this->set_relation(rel, vverb->n1, vverb->n2, localsEntry,stk );
 					return true;
 				}
 				else if (rv.second->type() == BlockVerbReverseRelation)
 				{
 					HBlockRelationBase rel = rel_find->second;
-					this->set_relation(rel, vverb->n2, vverb->n1, localsEntry); // inverte a relacao
+					this->set_relation(rel, vverb->n2, vverb->n1, localsEntry,stk); // inverte a relacao
 					return true;
 				}
 			}
@@ -95,7 +95,7 @@ PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalSco
 }
 
 
-PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry)
+PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 	// Eh uma relacao ??
@@ -115,13 +115,13 @@ PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLoc
 				if (rv.second->type() == BlockVerbDirectRelation)
 				{
 					HBlockRelationBase rel = rel_find->second;
-					this->unset_relation(rel, vverb->n1, vverb->n2, localsEntry);
+					this->unset_relation(rel, vverb->n1, vverb->n2, localsEntry,stk);
 					return true;
 				}
 				else if (rv.second->type() == BlockVerbReverseRelation)
 				{
 					HBlockRelationBase rel = rel_find->second;
-					this->unset_relation(rel, vverb->n2, vverb->n1, localsEntry); // inverte a relacao
+					this->unset_relation(rel, vverb->n2, vverb->n1, localsEntry,stk); // inverte a relacao
 					return true;
 				}
 			}
@@ -206,7 +206,8 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
 		HBlock propNamed = prop_n->prop;
 		HBlock destination = prop_n->obj;
-		return assert_it_property(propNamed, destination, value, localsEntry);
+		 
+		return assert_it_property(propNamed, destination, value, localsEntry, nullptr);
 	}
 
 	/*if (HBlockProperty prop_n = asHBlockProperty(value)) {
@@ -288,7 +289,10 @@ HBlock CBlockInterpreter::exec_eval_property_value(HBlock c_block, HRunLocalScop
 HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalScope localsEntry, std::function< HBlock(HBlock) > is_accetable )
 {
 	// is_accetable recebe um block, terona true se pode parar de descer na arvore
-	QueryStack stk = QueryStack( );
+	
+	QueryStack *stk = nullptr;
+
+	
 
 	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 		if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it))
@@ -317,14 +321,13 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 }
 
 
-HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack stk )
+HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
+
 	if (c_block == nullptr)
 	{
 		return nullptr;
 	}
-
-
 	 
 
 	if (HBlockComandList nlist = asHBlockComandList(c_block))
@@ -350,12 +353,12 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	if (HBlockControlIF cIF = asHBlockControlIF(c_block))
 	{
 		HBlock ret = nullptr;
-
+ 
   		auto r = query(cIF->block_if, localsEntry, stk);
 		if (r.result == QEquals)
 		{
-			auto localsHeaderC = std::make_shared< CRunLocalScope >(r.matchedResult );
-			HRunLocalScope localsNext = newScope(localsEntry, localsHeaderC); 
+			auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , r.matchedResult );
+			 
 			return exec_eval(cIF->block_then, localsNext, stk);
 		}
 		else
@@ -493,7 +496,7 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	//resolve To decides
 	for (auto dct : decides_what)
 	{
-		auto dctValueWrap = getDecidedValueOf(c_block, dct, localsEntry,stk);
+		auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr,stk);
 		if (dctValueWrap != nullptr)
 		{
 			return dctValueWrap;
@@ -504,11 +507,11 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	{
 		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
 		{
-			return lookup_relation(nrlookup, localsEntry);
+			return lookup_relation(nrlookup, localsEntry,stk);
 		}
 		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(nrWhere->what))
 		{
-			return lookup_verb(nvlookup, localsEntry);
+			return lookup_verb(nvlookup, localsEntry,stk);
 		}
 
 		 
@@ -571,7 +574,7 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
 
 HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalScope localsEntry)
 {
-	QueryStack stk;
+	QueryStack *stk = nullptr;
 	for (auto &d : dynamic_understand)
 	{
 		auto result = (Match(d->input_n, p, localsEntry, stk));
@@ -587,12 +590,12 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 
 			 
 			 }
-			 HRunLocalScope localsNext = make_shared< CRunLocalScope >( );
+			 HRunLocalScope localsNext = make_shared< CRunLocalScope >(nullptr);
 
 			 HRunLocalScope locals_obj_1 = nullptr; //local que vem do argumento 1 
 			 HRunLocalScope locals_obj_2 = nullptr; //locals que vem do argumento 2
 
-
+			 
 			 // Argumentos batem com os matchs dos argumentos ??
 			 HBlock ref_Arg_1 = nullptr;
 			 HBlock ref_Arg_2 = nullptr;
@@ -622,13 +625,13 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				 {
 					 if (HBlockMatch  arg1_match_required =  *arg_header_first)
 					 {
-						 arg1_match_required->dump(" ");						  
+						 					  
 						 auto obj_resolved = exec_eval(result.maptch["noum1"], localsEntry, stk);
 						 auto result_arg1_requ = Match(arg1_match_required , obj_resolved, localsEntry, stk);						 
 						 if (result_arg1_requ.hasMatch)
 						 {
 							 ref_Arg_1 = obj_resolved;
-							 locals_obj_1 = std::make_shared< CRunLocalScope >(result_arg1_requ.maptch);
+							 locals_obj_1 = std::make_shared< CRunLocalScope >( nullptr, result_arg1_requ.maptch);
 							 locals_obj_1->locals.push_back(std::pair<string, HBlock>("noum1" , obj_resolved));
 						 }
 						 else
@@ -672,7 +675,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 							 if (result_arg2_requ.hasMatch)
 							 {
 								 ref_Arg_2 = obj_resolved;
-								 locals_obj_2 = std::make_shared< CRunLocalScope >(result_arg2_requ.maptch);
+								 locals_obj_2 = std::make_shared< CRunLocalScope >(nullptr, result_arg2_requ.maptch);
 								 locals_obj_2->locals.push_back(std::pair<string, HBlock>("noum2", obj_resolved));
 							 }
 							 else
@@ -693,10 +696,8 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 if (HBlockAction actionCall = asHBlockAction (output_block))
 			 {
 				
-				 auto locals_obj = std::make_shared< CRunLocalScope >(result.maptch);
-				 HRunLocalScope localsNextp = newScope(localsEntry, locals_obj);
-				 
-
+				 HRunLocalScope localsNextp = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);
+				  
 				return  make_shared< CExecutionBlock >(localsNextp, std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
 
@@ -711,7 +712,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 
 PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {
-	HRunLocalScope localsEntry = make_shared< CRunLocalScope >();
+	HRunLocalScope localsEntry = make_shared< CRunLocalScope >(nullptr);
 	auto b =   execute_now(p, localsEntry);
 	if (b.hasExecuted == false)
 	{
@@ -724,10 +725,10 @@ PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 
 PhaseResult CBlockInterpreter::execute_now(HBlock p, HRunLocalScope localsEntry) //executa STMT
 {
-	QueryStack stk;
+	QueryStack *stk = nullptr;
 	return execute_now(p, localsEntry, stk);
 }
-PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack stk ) //executa STMT
+PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack *stk ) //executa STMT
 {	 
 	if (HBlockComandList  vCommandList= asHBlockComandList(p))
 	{
@@ -757,13 +758,13 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	 
 	if (HBlockIsVerb vverb = asHBlockIsVerb (p)) {
  
-		auto rr = execute_verb_set(vverb, localsEntry);
+		auto rr = execute_verb_set(vverb, localsEntry,stk );
 		if (rr.hasExecuted)		return rr;
 	}
 
 	if (HBlockIsNotVerb vverb = asHBlockIsNotVerb(p)) {
 
-		auto r = (execute_verb_unset(vverb, localsEntry));
+		auto r = (execute_verb_unset(vverb, localsEntry,stk ));
 		if (r.hasExecuted)		return r;
 	}
 
@@ -814,7 +815,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk);
 
-		vControlIf->block_if->dump("");
+		 
 
 		if (qResult.result == QEquals)
 		{
@@ -824,7 +825,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		{
 			if (vControlIf->block_else != nullptr)
 			{
-				vControlIf->block_else->dump("");
+				 
 				auto r =  execute_now(vControlIf->block_else, localsEntry, stk);
 				return r;
 			}

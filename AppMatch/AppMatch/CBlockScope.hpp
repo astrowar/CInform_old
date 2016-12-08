@@ -2,17 +2,22 @@
  
 
 
+class CRunLocalScope;
+using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
+
 
 class CRunLocalScope	 
 {
 public: 
+	HRunLocalScope previous; // stack anterior se nao tiver nessa 
 
 	std::list< std::pair<string, CBlocking::HBlock> > locals;
-	CRunLocalScope()
+	CRunLocalScope(HRunLocalScope _previous ) : previous(_previous)
 	{
-		
+	
 	}
-	CRunLocalScope( std::map<string,CBlocking::HBlock> varMap)
+
+	CRunLocalScope(HRunLocalScope _previous , std::map<string,CBlocking::HBlock> varMap ) : previous(_previous)
 	{
 		for( auto &e: varMap)
 		{
@@ -24,14 +29,17 @@ public:
 	{
 		for(auto &e:locals )
 		{
-			if (e.first == noum) return e.second;
+			if  (e.first == noum) return e.second;
 		}
+		if (previous != nullptr) return previous->resolve(noum);
+
 		return nullptr;
+
 	}
 	void dump(string ident);
 
 
-	std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
+	//std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
 };
 
  
@@ -54,7 +62,7 @@ public:
 };
 
 
-HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
+//HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
 using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
 
 

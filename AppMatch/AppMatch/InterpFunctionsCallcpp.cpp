@@ -18,7 +18,7 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
-PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 
@@ -35,27 +35,26 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 		if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) return PhaseResult(false); ;
 
 		HRunLocalScope next_vars = nullptr;
+		HRunLocalScope next_vars_2 = nullptr;
 		if (evh->eventToObserve->argument1 != nullptr)
 		{
 			auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
 			if (r1.hasMatch == false) return PhaseResult(false); ;
-			next_vars = std::make_shared< CRunLocalScope >(r1.maptch);
-			HRunLocalScope tmp_vars = newScope(localsEntry, next_vars);
-			next_vars = tmp_vars;
+			next_vars = std::make_shared< CRunLocalScope >(localsEntry, r1.maptch); 
+			next_vars_2 = next_vars;
 		}
 
 
 		if (evh->eventToObserve->argument2 != nullptr)
 		{
 			auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
-			if (r2.hasMatch == false) return PhaseResult(false); ;
-			auto next_vars_2 = std::make_shared< CRunLocalScope >(r2.maptch);
-			HRunLocalScope tmp_vars = newScope(next_vars, next_vars_2);
-			next_vars = tmp_vars;
+			if (r2.hasMatch == false) return PhaseResult(false);
+			next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);			 
+			
 		}
 
 		//next vars contem as variaveis 
-		PhaseResult  rx = this->execute_now(evh->body, next_vars, stk);
+		PhaseResult  rx = this->execute_now(evh->body, next_vars_2, stk);
 
 		if (rx.hasExecuted)
 		{
@@ -67,7 +66,7 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 
 		 
  
-PhaseResult CBlockInterpreter::execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 	for (auto evh : event_handles)
@@ -93,7 +92,7 @@ PhaseResult CBlockInterpreter::execute_phase_check(HBlockActionCall v_call, HRun
 }
 
 
-PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	// busca por algum before que eh compativel com esta regra e aplica ela
 	for(auto evh : event_handles)
@@ -113,13 +112,14 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) continue;
 
 				HRunLocalScope next_vars = nullptr;
+				HRunLocalScope next_vars_2 = nullptr;
+				
 				if (evh->eventToObserve->argument1 != nullptr)
 				{
 					auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
 					if (r1.hasMatch == false) continue;
-					  next_vars = std::make_shared< CRunLocalScope >(r1.maptch);
-					  HRunLocalScope tmp_vars = newScope(localsEntry, next_vars);
-					  next_vars = tmp_vars;
+					  next_vars = std::make_shared< CRunLocalScope >(localsEntry, r1.maptch);
+					  next_vars_2 = next_vars;
 				}
 
 				
@@ -127,13 +127,12 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				{
 					auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
 					if (r2.hasMatch == false) continue;
-					auto next_vars_2 = std::make_shared< CRunLocalScope >(r2.maptch);
-					HRunLocalScope tmp_vars = newScope(next_vars, next_vars_2);
-					next_vars = tmp_vars; 
+					auto next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);
+				 
 				}
 
 				//next vars contem as variaveis 
-				PhaseResult  rx =  this->execute_now(evh->body, next_vars, stk);
+				PhaseResult  rx =  this->execute_now(evh->body, next_vars_2, stk);
 			  
 				if (rx.hasExecuted)
 				{					 
@@ -150,7 +149,7 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 
 
 
-PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	for (auto evh : event_handles)
 	{
@@ -200,7 +199,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 }
  
 
-PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack stk)
+PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	 
 	 

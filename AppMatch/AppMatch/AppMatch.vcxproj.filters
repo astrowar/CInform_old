@@ -366,5 +366,8 @@
     <ClCompile Include="ParserPlural_table.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="CInterpreterResolveMatchSeletor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

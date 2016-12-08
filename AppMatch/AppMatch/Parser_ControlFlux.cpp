@@ -218,9 +218,9 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
     {
         std::vector<HPred> predList;
 
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(mk_HPredLiteral("not"));
+        predList.push_back(mkHPredAny("AValue"));        
         predList.push_back(verb_IS());
+		predList.push_back(mk_HPredLiteral("not"));
         predList.push_back(mkHPredAny("BValue"));
 
         MatchResult res = CMatch(term, predList);

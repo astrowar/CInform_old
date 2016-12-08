@@ -17,7 +17,7 @@ using namespace CBlocking::DynamicCasting;
 
 //Match engine
 
-CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk)
+CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack *stk)
 {
 	if (M->matchList.size() != value->lista.size())
 	{
@@ -29,8 +29,8 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 	auto mit = M->matchList.begin();
 	auto vit = value->lista.begin();
 	 
-	auto localsHeaderCurrent = std::make_shared< CRunLocalScope >( );
-	HRunLocalScope localsEntryNext = newScope( localsEntry , localsHeaderCurrent );
+	auto localsEntryNext = std::make_shared< CRunLocalScope >(localsEntry);
+	 
 
 	CResultMatch rAccm = CResultMatch(true);
 	while (true)
@@ -38,8 +38,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 		if (mit == M->matchList.end()) break;
 
 		//cada item da lista, usa os matchs que ja estao resolvidos ate o momento
-		localsHeaderCurrent = std::make_shared< CRunLocalScope >(rAccm.maptch);
-		localsEntryNext = newScope(localsEntry, localsHeaderCurrent);
+		localsEntryNext = std::make_shared< CRunLocalScope >(localsEntryNext,  rAccm.maptch); 
 
 		CResultMatch r = Match(*mit, *vit, localsEntryNext, stk);
 		if (r.hasMatch == false)
@@ -124,7 +123,7 @@ std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
 }
 
 
-CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack stk)
+CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	
 	if (auto mnoum = asHBlockMatchNoum(mValue))
@@ -159,9 +158,8 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 				}
 
 				mAcc.append(rit ); // Adiciona os matchs nomeados ate o momento
-				auto localsHeaderC = std::make_shared< CRunLocalScope >(mAcc.maptch);
-				localsNext = newScope(localsEntry, localsHeaderC); //cria um novo  contexto com os matchs atualizados para variaveis locais
-				 
+				localsNext = std::make_shared< CRunLocalScope >(localsNext, mAcc.maptch);
+				  
 			}
 			 
 			return mAcc;
@@ -186,7 +184,7 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 }
 
 
-CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	 
 	auto vr1 = resolve_if_noum(object, localsEntry, std::list<std::string>());
@@ -198,8 +196,8 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 	CResultMatch mres = Match(mObject, vr1, localsEntry, stk);
 	if (mres.hasMatch)
 	{
-		auto locals_obj = std::make_shared< CRunLocalScope >(mres.maptch);
-		auto localsNext = newScope(localsEntry, locals_obj);
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, mres.maptch);
+	 
 
 		 
 		CResultMatch mres_k = Match(mValue, vr2, localsNext, stk);
@@ -209,7 +207,7 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 			//auto localsNext2 = newScope(localsNext, locals_value);
 			mres.append(mres_k);		 
 
-			auto locals_value = std::make_shared< CRunLocalScope >(mres.maptch);
+			auto locals_value = std::make_shared< CRunLocalScope >(localsNext , mres.maptch);
 		 
 			return mres; 
 
@@ -236,7 +234,7 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 
 
 
-CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
+CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
 {
 	if (auto vMatch = asHBlockMatch(value))
 	{
@@ -409,7 +407,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		else
 		{
 			// value pode ser o resultado da computacao da propriedade ....
-			HBlockList  objList = lookup_value_by_Selector(mProp->obj , localsEntry); // obtem todos os objetos que casam com a descricao
+			HBlockList  objList = lookup_value_by_Selector(mProp->obj , localsEntry,stk); // obtem todos os objetos que casam com a descricao
 			for(auto &o : objList->lista )
 			{
 				HBlockProperty propToProbe =  make_shared<CBlockProperty>(mProp->prop, o);
@@ -469,16 +467,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			CResultMatch mres = Match(mDirect->obj, vr1,localsEntry  , stk);
 			if (mres.hasMatch)
 			{
-				auto locals_obj = std::make_shared< CRunLocalScope >(mres.maptch);
-				auto localsNext = newScope(localsEntry, locals_obj);
+				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , mres.maptch);
+				 
 
 				CResultMatch mres_k = Match(mDirect->value, vr2 , localsEntry ,stk);
 				if (mres_k.hasMatch)
 				{
-
-					auto locals_value = std::make_shared< CRunLocalScope >(mres_k.maptch);
-					localsNext = newScope(localsNext, locals_value);
-
+					//auto locals_value = std::make_shared< CRunLocalScope >(localsNext , mres_k.maptch); 
 					mres.append(mres_k);
 					return mres;
 

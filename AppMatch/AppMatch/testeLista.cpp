@@ -86,7 +86,7 @@ items is  ( diary, book and box )
 
 )";
   
-	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse," all distance of items   ", true), nullptr, QueryStack());
+	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse," all distance of items   ", true), nullptr,nullptr);
 	
 	q_all_of->dump("");
 
@@ -129,7 +129,7 @@ items is  ( diary, book and box )
 
 )";
 
-	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse, " all distance of items   ", true), nullptr, QueryStack());
+	auto q_all_of = interpreter->exec_eval(Expression::Parser_Expression(&parse, " all distance of items   ", true), nullptr,nullptr);
 
 	q_all_of->dump("");
 

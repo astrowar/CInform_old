@@ -17,6 +17,7 @@ public:
 class QueryStack {
 	std::list<QueryItem> items;
 public:
+	
 	void addQuery(CBlocking::HBlockVerb _verb, CBlocking::HBlock b1, CBlocking::HBlock b2);
 	void addQuery(string vb, CBlocking::HBlock b1, CBlocking::HBlock b2);
 	bool isQuery(CBlocking::HBlockVerb _verb, CBlocking::HBlock b1, CBlocking::HBlock b2);

@@ -475,6 +475,7 @@ HBlockMatch   NSParser::ExpressionMatch::parse_AssertionDirectAssign_Match(CPars
 	{
 		// is a kind definition ??
 	 
+ 
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
 		{

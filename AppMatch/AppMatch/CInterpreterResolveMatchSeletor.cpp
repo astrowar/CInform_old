@@ -132,7 +132,7 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromSelector(HBlockMatch seleto
 	{
 		for (auto &nInst : instancias)
 		{
-			auto qret = query_is(nInst, mNoum->inner, localsEntry, QueryStack());
+			auto qret = query_is(nInst, mNoum->inner, localsEntry,nullptr);
 			if (qret.result == QEquals)
 			{
 				return{ nInst };
@@ -164,7 +164,9 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromSelector(HBlockMatch seleto
 				{
 					if (DynamicCasting::asHBlockMatchKind(m) == nullptr) //agora os que nao sao Kind
 					{
-						auto qret = query_is(mInst, m, localsEntry, QueryStack());
+						 
+
+						auto qret = query_is(mInst, m, localsEntry, nullptr);
 						if (qret.result != QEquals)
 						{
 							isValid = false;

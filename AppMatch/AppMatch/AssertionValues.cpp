@@ -91,7 +91,7 @@ bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock
     if (HBlockProperty prop_n = asHBlockProperty(obj)) {
         CBlocking::HBlock propNamed = prop_n->prop;
         CBlocking::HBlock destination = prop_n->obj;
-        return assert_it_property(propNamed, destination, value,localsEntry);
+        return assert_it_property(propNamed, destination, value,localsEntry,nullptr );
     }
 
     if (HVariableNamed  var_n = asHVariableNamed(obj)) {
