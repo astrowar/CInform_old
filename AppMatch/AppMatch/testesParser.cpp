@@ -403,15 +403,15 @@ void testePlurals()
 
 int main() {
 
-	testeParser_7e();
+	testeParser_7f();
  
 	 
-	testePlurals();
+
  
 	// testeParser_1();
 
 	//testValues_all();
-	//return 0;
+	return 0;
 	
 	testeRelation_all();
 	//testeParser_7e();

@@ -292,5 +292,5 @@ void testeParser_5_all()
 
 	testeParser_7d();
 	testeParser_7e();
-	//testeParser_7f();
+	testeParser_7f();
 }

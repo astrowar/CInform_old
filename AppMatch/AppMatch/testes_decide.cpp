@@ -223,3 +223,53 @@ to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) 
 }
 
  
+
+
+void testeParser_7f()
+{
+	string slong = R"(
+room is an kind
+
+hall is an room
+garden is an room
+cave is an room
+exit is a  room
+secret  is a room
+
+connecting relates various ( room ) to various ( room )
+the verb connect  implies the connecting relation
+
+
+hall connect garden
+garden connect cave
+hall connect secret
+secret connect exit
+ 
+to decide  if ( room  called R1  ) connect ( room called R2  )   :
+   if  R2 connect R1 :
+       decide on true
+   decide on false
+   
+ 
+)";
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	interpreter->execute_init(ParseText::parser_text(&parse, slong, ISLOG));
+ 
+
+ 
+
+	auto q3 = interpreter->query(Statement::Parser_Stmt(&parse," garden connect hall  ", ISLOG));
+	assert(q3.result == QEquals);
+
+	auto q4 = interpreter->query(Statement::Parser_Stmt(&parse, "exit connect secret  ", ISLOG));
+	assert(q4.result == QEquals);
+
+	auto q5 = interpreter->query(Statement::Parser_Stmt(&parse, "exit connect garden  ", ISLOG));
+	assert(q5.result != QEquals);
+	 
+
+	return;
+
+}

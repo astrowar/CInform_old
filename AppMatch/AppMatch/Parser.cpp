@@ -14,7 +14,7 @@
 #include "CBlockUndestand.hpp"
 #include "CBlockCommand.hpp"
 #include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+ 
 
 using namespace CBlocking;
 using namespace NSTerm;

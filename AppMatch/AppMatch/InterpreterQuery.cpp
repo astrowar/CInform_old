@@ -19,6 +19,12 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
+
+
+
+
+
+
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2);
 
 std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
@@ -132,58 +138,60 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
-
-		//eh plural de algo ?
-
-		if (isSameString(property_noum->named , "plural" ))
-		{			
-			string c = BlockNoum(propObj);			
-			if (c != "")
-			{
-				HBlockNoum plural_named = get_plural_of(c);
-				if (plural_named != nullptr)
-				{
-					return query_is(plural_named, c_block1, localsEntry, stk);
-				}
-			}
-			return QueryResultContext(QUndefined);
-		}
-
-
-		if (HBlockInstance cinst = asHBlockInstance(propObj))
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", property_noum, propObj, c_block1);
+		if (next_stack != nullptr)
 		{
+			//eh plural de algo ?
+			if (isSameString(property_noum->named, "plural"))
 			{
-				HVariableNamed pvar = cinst->get_property(property_noum->named);
-				if (pvar != nullptr)
+				string c = BlockNoum(propObj);
+				if (c != "")
 				{
-					// logMessage("property  is ");
-					//if (pvar->value != nullptr)
-					//{
-					//	pvar->value->dump("  ");
-					//}
-					//else
-					//{
-					//	logMessage("    EMPTY   ");
-
-					//}
-					//c_block1->dump("  ");
-
-
-					QueryResultContext rprop = query_is(pvar->value, c_block1, localsEntry, stk);
-					if (rprop.result == QEquals) return rprop;
-					return QNotEquals;
-				}
-				logMessage (cinst->named + " Dont have Property "+ property_noum->named);
-				{
-					QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, stk); 
-					if (result_prop.result != QUndefined)
+					HBlockNoum plural_named = get_plural_of(c);
+					if (plural_named != nullptr)
 					{
-						return result_prop;
+						return query_is(plural_named, c_block1, localsEntry, next_stack.get());
 					}
-					return QueryResultContext(QUndefined);
 				}
+				return QueryResultContext(QUndefined);
+			}
 
 
+			if (HBlockInstance cinst = asHBlockInstance(propObj))
+			{
+				{
+					HVariableNamed pvar = cinst->get_property(property_noum->named);
+					if (pvar != nullptr)
+					{
+						// logMessage("property  is ");
+						//if (pvar->value != nullptr)
+						//{
+						//	pvar->value->dump("  ");
+						//}
+						//else
+						//{
+						//	logMessage("    EMPTY   ");
+
+						//}
+						//c_block1->dump("  ");
+
+
+						QueryResultContext rprop = query_is(pvar->value, c_block1, localsEntry, next_stack.get());
+						if (rprop.result == QEquals) return rprop;
+						return QNotEquals;
+					}
+					logMessage(cinst->named + " Dont have Property " + property_noum->named);
+					{
+						QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, next_stack.get());
+						if (result_prop.result != QUndefined)
+						{
+							return result_prop;
+						}
+						return QueryResultContext(QUndefined);
+					}
+
+
+				}
 			}
 		}
 	}
@@ -201,48 +209,64 @@ QueryResultContext CBlockInterpreter::query_is_propertyOf_value(HBlock c_propert
 
 	if (HBlockNoum cnoum_1 = asHBlockNoum(c_block1))
 	{
-		auto resolved = resolve_noum(cnoum_1, localsEntry);
-		return query_is_propertyOf_value(c_property, resolved, localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", cnoum_1, c_property, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto resolved = resolve_noum(cnoum_1, localsEntry);
+			return query_is_propertyOf_value(c_property, resolved, localsEntry, next_stack.get());
+		}
 	}
 
 	if (HBlockNoum cnoum_2 = asHBlockNoum(c_property))
 	{
-		auto resolved = resolve_noum(cnoum_2, localsEntry);
-		return query_is_propertyOf_value(resolved, c_block1, localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", cnoum_2, c_property, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto resolved = resolve_noum(cnoum_2, localsEntry);
+			return query_is_propertyOf_value(resolved, c_block1, localsEntry, next_stack.get());
+		}
 	}
 
 
 	 
 	if (HBlockProperty cproperty = asHBlockProperty(c_property))
 	{
-		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", cproperty, c_property, c_block1);
+		if (next_stack != nullptr)
 		{
-			auto resolved = resolve_noum(cnn, localsEntry);
-			if (resolved != nullptr)
+			if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
 			{
-				return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, stk);
-			}
-			return QUndefined;
+				auto resolved = resolve_noum(cnn, localsEntry);
+				if (resolved != nullptr)
+				{
+					return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, next_stack.get());
+				}
+				return QUndefined;
 
+			}
+			// property of What ??
+			return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, localsEntry, next_stack.get());
 		}
-		// property of What ??
-		return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, localsEntry, stk);
 	}
 
 	if (HBlockProperty cproperty = asHBlockProperty(c_block1))
 	{
-		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", cproperty, c_property, c_block1);
+		if (next_stack != nullptr)
 		{
-			auto resolved = resolve_noum(cnn, localsEntry);
-			if (resolved != nullptr)
+			if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
 			{
-				return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_property, localsEntry, stk);
-			}
-			return QUndefined;
+				auto resolved = resolve_noum(cnn, localsEntry);
+				if (resolved != nullptr)
+				{
+					return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_property, localsEntry, next_stack.get());
+				}
+				return QUndefined;
 
+			}
+			// property of What ??
+			return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_property, localsEntry, next_stack.get());
 		}
-		// property of What ??
-		return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_property, localsEntry, stk);
 	}
 
 
@@ -256,29 +280,41 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 
     if (HBlockNoum cnn = asHBlockNoum(c_block ))
     {
-        auto var_1 = resolve_noum_as_variable(cnn);
-        if (var_1 !=nullptr)
-        {
-            return query_is_Variable_value(var_1, c_block1, localsEntry, stk);
-        }
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", cnn, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto var_1 = resolve_noum_as_variable(cnn);
+			if (var_1 != nullptr)
+			{
+				return query_is_Variable_value(var_1, c_block1, localsEntry, next_stack.get());
+			}
+		}
     }
 
     if (HVariableNamed nvar1 = asHVariableNamed(c_block))
     {
-        if (nvar1->value == nullptr) return QUndefined;
-        if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
-        {
-            if (nvar2->value == nullptr) return QUndefined;
-            if (nvar1 == nvar2) return QEquals; //same reference			 
-            return query_is(nvar1->value, nvar2->value, localsEntry,stk);
-        }
-        return query_is(nvar1->value, c_block1,localsEntry, stk);		
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", nvar1, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			if (nvar1->value == nullptr) return QUndefined;
+			if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
+			{
+				if (nvar2->value == nullptr) return QUndefined;
+				if (nvar1 == nvar2) return QEquals; //same reference			 
+				return query_is(nvar1->value, nvar2->value, localsEntry, next_stack.get());
+			}
+			return query_is(nvar1->value, c_block1, localsEntry, next_stack.get());
+		}
     }
 
     if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
     {
-        if (nvar2->value == nullptr) return QUndefined;		 
-        return query_is(c_block , nvar2->value,localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", nvar2, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			if (nvar2->value == nullptr) return QUndefined;
+			return query_is(c_block, nvar2->value, localsEntry, next_stack.get());
+		}
     }
 
     return QUndefined;
@@ -289,8 +325,7 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 
 QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in) {
 
-
-
+	 
 
 	if (c_block->isSame(c_block.get(), c_block1.get()))
 	{
@@ -320,10 +355,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		  stk_unique = make_unique<QueryStack>();
 		 
 	}
+
 	QueryStack *stk   = stk_unique.get();
-
-
-
 	stk->addQuery("is", c_block, c_block1);
 
 
@@ -400,54 +433,73 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
     {
         for (auto &item : orList->lista)
         {
-			QueryResultContext qcc = query_is(c_block, item, localsEntry, stk);
-            if (qcc.result == QEquals) return qcc;
+			std::unique_ptr<QueryStack>  next_stack =  generateNextStack(stk, "is", orList, c_block, item);
+			if (next_stack != nullptr)
+			{
+				QueryResultContext qcc = query_is(c_block, item, localsEntry, next_stack.get());
+				if (qcc.result == QEquals) return qcc;
+			}
         }
     }
 
     //Resolve List OR
     if (HBlockSelector_All  selector_all = asHBlockSelector_All(c_block))
     {
-        return Selector_all(selector_all->what, localsEntry, [&](HBlock e1)
-        {
-            return query_is( e1, c_block1,localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", selector_all, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			return Selector_all(selector_all->what, localsEntry, [&](HBlock e1)
+			{
+				return query_is(e1, c_block1, localsEntry, next_stack.get());
 
-        });
+			});
+		}
     }
 
     if (HBlockSelector_Any  selector_any = asHBlockSelector_Any(c_block))
     {
-        return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
-        {
-            return query_is(e1, c_block1, localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", selector_any, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
+			{
+				return query_is(e1, c_block1, localsEntry, next_stack.get());
 
-        });
+			});
+		}
     }
 
 
 
     
 
-    for (auto dct : decides_what) {
-        auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, stk);
-        if (dctValueWrap != nullptr) 
-        {
-         
-			QueryResultContext rw =  query_is(dctValueWrap, c_block1, localsEntry, stk); //is not opnional
-			if (rw.result != QUndefined) return rw;
-            //return rw;
-        }
-    }
+	for (auto dct : decides_what)
+	{
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
+			if (dctValueWrap != nullptr)
+			{
+
+				QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
+				if (rw.result != QUndefined) return rw;
+			}
+		}
+	}
 
     for (auto dct : decides_what) 
     {
-        
-        auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, stk);
-        if (dctValueWrap_1 != nullptr) {
-			QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry,stk);  //is not opnional
-			if (rw.result != QUndefined) return rw;
-			//return rw;
-        }
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
+			if (dctValueWrap_1 != nullptr) {
+				QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
+				if (rw.result != QUndefined) return rw;
+				//return rw;
+			}
+		}
     }
 
 
@@ -531,15 +583,18 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (HBlockMatchDirectIs  DctQueryDirectIS = asHBlockMatchDirectIs(dctIF->queryToMatch))
 		{
-			auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, stk);
-			if (result.hasMatch == true)
+			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", DctQueryDirectIS, c_block, c_block1);
+			if (next_stack != nullptr)
 			{
-				auto localsNext = std::make_shared< CRunLocalScope >(nullptr , result.maptch);
-				 
+				auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
+				if (result.hasMatch == true)
+				{
+					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
 
-				auto r = getDecidedValue(dctIF->decideBody, localsNext, stk);
+					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
 
-				return r;
+					return r;
+				}
 			}
 		}
 
@@ -547,27 +602,40 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	if (HBlockMatch matchBlock = asHBlockMatch(c_block1))
 	{
-		auto r_mtch = Match(matchBlock, c_block, localsEntry, stk);
-		if (r_mtch.hasMatch)
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", matchBlock, c_block, c_block1);
+		if (next_stack != nullptr)
 		{
-			return  QueryResultContext(QEquals, r_mtch.maptch);
+
+			auto r_mtch = Match(matchBlock, c_block, localsEntry, next_stack.get());
+			if (r_mtch.hasMatch)
+			{
+				return  QueryResultContext(QEquals, r_mtch.maptch);
+			}
+			return QUndefined;
 		}
-		return QUndefined;
 	}
 
     
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 		 
-        if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it)) {
-			auto qc = query_is_same(c_block, qdef->get_obj(), localsEntry, stk);
-            if ( qc.result== QEquals) {
-				QueryResultContext r = query_is(qdef->get_definition(), c_block1,localsEntry, stk);
-                if (r.result != QUndefined) {
-                    return r;
-                }
+		if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it))
+		{
+			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", qdef, c_block, c_block1);
+			if (next_stack != nullptr)
+			{
+				auto qc = query_is_same(c_block, qdef->get_obj(), localsEntry, next_stack.get());
+				if (qc.result == QEquals) 
+				{
+					{
+						QueryResultContext r = query_is(qdef->get_definition(), c_block1, localsEntry, next_stack.get());
+						if (r.result != QUndefined) {
+							return r;
+						}
+					}
 
-            }
-        }
+				}
+			}
+		}
     }
 
 	//logMessage("I cant query");
