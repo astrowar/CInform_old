@@ -9,7 +9,7 @@ using namespace NSParser;
 void testeParser_7a()//dynamic match
 {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
  
     {
         interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind ", ISLOG));
@@ -32,7 +32,7 @@ void testeParser_7a()//dynamic match
 void testeParser_7b()//dynamic match
 {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
      
     {
         interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind ", ISLOG));
@@ -74,7 +74,7 @@ void testeParser_7b()//dynamic match
 void testeParser_7c()//dynamic match
 {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
 
     {
         auto p = Statement::Parser_Stmt(&parse,"Fanciness relates  ( a thing called X) to (some money called Y)", ISLOG );
@@ -112,7 +112,7 @@ void testeParser_7c()//dynamic match
 void testeParser_7d()// relation When
 {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
 
     std::list< std::string >  slist({
     "Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X",
@@ -188,7 +188,7 @@ to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) 
 )";
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
 

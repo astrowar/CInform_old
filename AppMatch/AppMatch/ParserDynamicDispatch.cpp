@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Parser.hpp"
+#include "CBlockUndestand.hpp"
 using namespace CBlocking;
 
 using namespace NSTerm;

@@ -8,7 +8,7 @@ using namespace NSParser;
 
 
 void testeParser_3() {
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse;
 	{
 		string phase_1 = "eat  is (an action  applying to (an thing ) )";
 		auto res = Statement::Parser_Stmt(&parse,phase_1,ISLOG);
@@ -24,7 +24,7 @@ void testeParser_3() {
 }
 
 void testeParser_4() {
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse;
 	{
 		string phase_1 = "a thing can be discovered or secret";
 		auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
@@ -61,7 +61,7 @@ void testeParser_4() {
 
 
 void testeParser_5() {
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse;
 	{
 		string phase_1 = "to decide what (room) is (the safest location) : (decide on) ";
 		auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
@@ -102,7 +102,7 @@ void testeParser_5() {
 void testeParser_5b() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG)); 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"orange is a thing  ", ISLOG));
@@ -140,7 +140,7 @@ void testeParser_5b() {
 void testeParser_5c() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
 
@@ -155,7 +155,7 @@ void testeParser_5c() {
 void testeParser_5d() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"room is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
@@ -181,7 +181,7 @@ void testeParser_5d() {
 void testeParser_5e() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"direction is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"room is a kind  ", ISLOG));
@@ -203,7 +203,7 @@ void testeParser_5e() {
 void testeParser_5f() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"direction is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"room is a kind  ", ISLOG));
@@ -258,7 +258,7 @@ void testeParser_5f() {
 void testeParser_5g() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"colour is a kind of value  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"the colour are red, blue and green  ", ISLOG));

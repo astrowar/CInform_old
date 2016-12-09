@@ -12,7 +12,7 @@ void testeSerialize1() {
 
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 
 

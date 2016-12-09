@@ -12,8 +12,9 @@
 #include "CBlockCommand.hpp"
 #include <condition_variable>
 #include "CBlockControlFlux.hpp"
+#include "CblockAssertion.hpp"
 #include <condition_variable>
-#include "CBlockInterpreterRuntime.hpp"
+ 
 
 
 
@@ -163,7 +164,7 @@ namespace NSParser
 
 	public:
 		std::vector<CBlocking::NoumDefinition> nregisters;
-		Interpreter::HBlockInterpreter interpreter_inner;
+		// Interpreter::HBlockInterpreter interpreter_inner;
 		std::map<string, CBlocking::HBlock > verbToRelation;		 
 		std::shared_ptr<NSTerm::CPredBooleanOr>  actionPredList;
 		std::list< UnderstandAction > actionUndestands;
@@ -173,7 +174,7 @@ namespace NSParser
 
 
 
-		CParser(Interpreter::HBlockInterpreter  _interpreter);
+		CParser(  );
 		virtual ~CParser();
 
 

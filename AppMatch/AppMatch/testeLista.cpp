@@ -12,7 +12,7 @@ HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoum>(n); };
 void testeParser_listA()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
  
 	 interpreter->execute_init(Statement::Parser_Stmt(&parse,"object is a kind  ", ISLOG));
 	 interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a object  ", ISLOG));
@@ -58,7 +58,7 @@ void testeParser_listA()
 void testeParser_listB()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_price = R"(
 
@@ -101,7 +101,7 @@ void testeParser_listC()
 
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_price = R"(
 

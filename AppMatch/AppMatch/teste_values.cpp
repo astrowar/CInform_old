@@ -12,7 +12,7 @@ void testValues_1()
 	// Values Testes
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_heat = R"(
 thing is a kind
@@ -49,7 +49,7 @@ apple is a thing
 void testValues_2() //numeric values
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string s_price = R"(
 
 The current size is a number that varies

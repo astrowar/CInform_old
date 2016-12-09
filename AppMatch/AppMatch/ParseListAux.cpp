@@ -4,7 +4,7 @@
 #include "Parser.hpp"
 
 using namespace CBlocking;
-using namespace Interpreter;
+ 
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 

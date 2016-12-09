@@ -8,7 +8,7 @@ using namespace NSParser;
 void testeParser_actionA()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse," apple is a thing  ", ISLOG));
@@ -34,7 +34,7 @@ void testeParser_actionA()
 void testeParser_actionB()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
@@ -59,7 +59,7 @@ void testeParser_actionB()
 void testeParser_actionC()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing has a text called description  ", ISLOG));
@@ -88,7 +88,7 @@ void testeParser_actionD()
 	// Eating Rule transcipt
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_eating = R"(
 thing is a kind
@@ -136,7 +136,7 @@ void testeParser_actionE()
 	// Eating Rule transcipt
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_eating = R"(
 thing is a kind
@@ -193,7 +193,7 @@ void testeParser_actionF()
 	// Eating Rule transcipt
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string s_eating = R"(
 thing is a kind

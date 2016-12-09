@@ -1,3 +1,4 @@
+#include "PARSER.HPP"
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
@@ -24,7 +25,7 @@ using namespace NSTerm::NSMatch;
 
 
 
-NSParser::CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
+NSParser::CParser::CParser( ) {
     
     {
         std::list<HPred> alist;
@@ -50,6 +51,8 @@ NSParser::CParser::CParser(Interpreter::HBlockInterpreter _interpreter) {
         //actionDinamicDispatch->blist.push_back(mk_HPredLiteral("getting"));
     }
 }
+
+ 
 
 NSParser::CParser::~CParser() {
 }

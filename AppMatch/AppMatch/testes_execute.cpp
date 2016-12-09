@@ -11,7 +11,7 @@ void testeExecute1()
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"( 
 the verb (points to)  implies a  dynamic relation
@@ -93,7 +93,7 @@ void testeExecute2()
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 			R"(
 
@@ -126,7 +126,7 @@ void testeExecute3()
 {
 	// Teste do evaluate 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"(
 route is a kind 
@@ -195,7 +195,7 @@ void testeExecute4()
 {
 	// Teste do evaluate 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string ss1 =
 		R"(
@@ -231,7 +231,7 @@ void testeExecute5()
 {
 	// Teste do evaluate 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string ss1 =
 		R"(
@@ -282,7 +282,7 @@ void testeExecute7()
 {
 	// Teste do evaluate 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string ss1 =
 		R"(

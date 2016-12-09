@@ -1,6 +1,6 @@
 #pragma once
 #include "Parser.hpp"
- 
+#include "CBlockInterpreterRuntime.hpp"
 
 #define ISLOG false
 

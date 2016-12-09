@@ -11,7 +11,7 @@ using namespace NSParser;
 void testeParser_6()//kind of value
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	{
 		string phase_1 = "a limb is a kind of value";
@@ -69,7 +69,7 @@ void testeParser_6()//kind of value
 void testeParser_6a()//kind of value
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	{
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is a kind of value", ISLOG));
@@ -91,7 +91,7 @@ void testeParser_6a()//kind of value
 void testeParser_20() //custrom rlacions
 {
 
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse ;
 	/*{
 		std::string phase_1 = "Fanciness relates a ( thing called X ) to ( some money called Y ) when ( (the price of X) > (the price of Y ))";
 		auto res = Statement::Parser_Stmt(&parse,phase_1);
@@ -165,7 +165,7 @@ void testeParser_20() //custrom rlacions
 }
 
 void testeParser_21() {
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse ;
 	{
 		{
 			string phase_1 = "the verb ( stuck to ) implies a stuking relation ";
@@ -226,7 +226,7 @@ void testeParser_21() {
 
 
 void testeParser_22() {
-	CParser parse(std::make_shared<CBlockInterpreter>());
+	CParser parse ;
 	{
 		{
 			string phase_1 = " use_with is an action applying to (one thing) and (a thing)  ";
@@ -260,7 +260,7 @@ void testeParser_10() {
 
 	
 	{
-		CParser parse(std::make_shared<CBlockInterpreter>()); 
+		CParser parse;
 		string ss1 =
 			R"(
 the verb ( points to )  implies a  dynamic relation
@@ -281,7 +281,7 @@ if x is 10 :
 else :
   a is z
 )";
-		CParser parse(std::make_shared<CBlockInterpreter>()); 
+		CParser parse;
 		ParseText::parser_text(&parse,ss1, true);
 	}
 
@@ -296,7 +296,7 @@ if x is 10:
     if y is 10: 
        error is true 
 )";
-		CParser parse(std::make_shared<CBlockInterpreter>()); 
+		CParser parse; 
 		ParseText::parser_text(&parse,ss1, true);
 	}
 
@@ -313,14 +313,14 @@ if x is :
 else:  
      x is b
 )";
-		CParser parse(std::make_shared<CBlockInterpreter>()); 
+		CParser parse; 
 		ParseText::parser_text(&parse,ss1, true);
 	}
 
 	printf("========================================\n");
 	{
 		HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-		CParser parse(interpreter);
+		CParser parse;
 		
 		ParseText::parser_text(&parse,"the verb (points to)  implies a  dynamic relation", true);
 		string ss1 =
@@ -362,7 +362,7 @@ void testeParser_plural() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	{
-		CParser parse(interpreter);
+		CParser parse;
 
 		string ss1 =
 			R"(
@@ -452,7 +452,7 @@ extern "C"
 EMSCRIPTEN_KEEPALIVE
 void sayHi() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	{
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color is a kind of value", ISLOG));
@@ -461,7 +461,7 @@ void sayHi() {
 
 void sayStr(char* str) {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	{
 	std::string line (str);

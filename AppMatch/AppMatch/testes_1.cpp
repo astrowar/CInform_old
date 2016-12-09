@@ -20,7 +20,7 @@ void testeParser_2() {
    
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "thing is a kind ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
          
@@ -28,7 +28,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "book is a kind of thing ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
          
@@ -36,7 +36,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "magic object is a kind  ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
          
@@ -44,7 +44,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "special book is a kind of book ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
 
@@ -52,7 +52,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "special book is a kind of magic object ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
        
@@ -60,7 +60,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "diary is a special book ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
         
@@ -68,7 +68,7 @@ void testeParser_2() {
     }
 
     {
-        CParser parse(interpreter);
+        CParser parse;
         interpreter->execute_init(Statement::Parser_Stmt(&parse,"metal  is a kind ", ISLOG));
 
         string phase_1 = "(chopper, iron )  are kinds of metal  ";
@@ -77,14 +77,14 @@ void testeParser_2() {
         interpreter->execute_init(res);
     }
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "rare metal  is a kind  of metal ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
         
         interpreter->execute_init(res);
     }
     {
-        CParser parse(interpreter);
+        CParser parse;
         string phase_1 = "(gold, silver )  are kinds of rare metal  ";
         auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
         
@@ -105,7 +105,7 @@ void testeParser_2() {
 
 void testeParser_2a() {
     HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
 
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a kind of thing ", ISLOG));

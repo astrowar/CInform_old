@@ -12,7 +12,7 @@ using namespace NSParser;
 
 void testeRelation1() {
 	Interpreter::HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse(interpreter);
+    CParser parse;
 
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"direction is a kind  ", ISLOG));
@@ -69,7 +69,7 @@ void testeRelation1() {
 void testeRelation2() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"box is a thing  ", ISLOG));
@@ -96,7 +96,7 @@ void testeRelation2() {
 void testeRelation3() {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind  ", ISLOG));
@@ -134,7 +134,7 @@ void testeRelation4() {
 
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind  ", ISLOG));
@@ -189,7 +189,7 @@ void testeRelation5()  //relations lockup
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"(
 route is a kind 
@@ -260,7 +260,7 @@ void testeRelation6()  //relations  with actions
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"(
  

@@ -8,7 +8,7 @@ using namespace NSParser;
 void testeSelector_1()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string slong = R"(
 room is an kind

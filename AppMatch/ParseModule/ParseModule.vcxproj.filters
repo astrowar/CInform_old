@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Arquivos de Recurso">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source\Parser">
+      <UniqueIdentifier>{7a3f62f0-3b08-4913-87b9-1dd63cfe8845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Parser">
+      <UniqueIdentifier>{a0934d6f-083b-483d-9310-881e58035eb4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AppMatch\ParseAssertationSecondary.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CParseAux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParseListAux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParserDynamicDispatch.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParseRelation.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParseRelationWhen.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParserPlural_table.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParserSelectorFunctional.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParserStmt.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParserTextEntry.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_A.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_ActionControl.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_ControlFlux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_Decide.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_expression_match.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_Plurals_En.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_RegisterVerb.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parser_VerbTable_en.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\ParseVerbs.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\Parse_TokensGroup.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\StaticDispatchFunctions.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\AppMatch\CResultMatch.hpp">
+      <Filter>Header\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\Parser.hpp">
+      <Filter>Header\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\ParserPlural.hpp">
+      <Filter>Header\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\verb_en.hpp">
+      <Filter>Header\Parser</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -47,7 +47,7 @@ void testeVerb1()
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"( 
 register verb to have

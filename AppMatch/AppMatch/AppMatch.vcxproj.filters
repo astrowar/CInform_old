@@ -16,26 +16,8 @@
     <Filter Include="Source Files\Testes">
       <UniqueIdentifier>{111a67e1-8cb3-4f82-9bb7-9d22d8c211d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Interpreter">
-      <UniqueIdentifier>{22e2365c-355e-4442-9b0b-2982d1a89299}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Parser">
-      <UniqueIdentifier>{a99d6608-2d46-45d6-a0c1-dedafa97f75f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Block">
-      <UniqueIdentifier>{6e40376e-1fb6-47d5-9e69-5c9e90e9322c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\VM">
       <UniqueIdentifier>{1041810d-79cb-4a07-aa5d-c55346fd3f50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Match">
-      <UniqueIdentifier>{4ad0c212-c335-404d-ad85-5e7f137335c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Parser">
-      <UniqueIdentifier>{499bfbec-cd07-4c5a-9644-02e230561f6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Block">
-      <UniqueIdentifier>{205074d0-6033-41b2-ad0a-60c07d7cfd01}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\VM">
       <UniqueIdentifier>{f54e0ada-d03c-433a-a24d-7f827a25638e}</UniqueIdentifier>
@@ -52,160 +34,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GrammarParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CMatch.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockInstance.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockInterpreter.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBase.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockAction.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CblockAssertion.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockBoolean.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockCommand.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockDecideIf.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockDumpValues.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockInterpreterRuntime.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockMatch.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockNamedVariable.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockRelation.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockScope.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockUndestand.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CDataMananger.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="CInterpreterKindTree.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="dynamicCast.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="sharedCast.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.hpp">
-      <Filter>Header Files\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="EqualsResult.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseTest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueryStack.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="serialRegister.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CResultMatch.hpp">
-      <Filter>Header Files\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockControlFlux.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="verb_en.hpp">
-      <Filter>Header Files\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="CMatchListValid.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlockNumber.hpp">
-      <Filter>Header Files\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="ParserPlural.hpp">
-      <Filter>Header Files\Parser</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AssertationEngine.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockInterpreterDecideBody.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreterKindTree.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateInstanceInterpreter.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_A.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserStmt.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="CParseAux.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticDispatchFunctions.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="CBase.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockDumpValues.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="BlockInstance.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="BlockInterpreter.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CMatch.cpp">
-      <Filter>Source Files\Match</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreterResolve.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="QueryItem.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="AssertionValues.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="AssertationDefaultValue.cpp">
-      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
     <ClCompile Include="testesParser.cpp">
       <Filter>Source Files\Testes</Filter>
@@ -219,38 +51,8 @@
     <ClCompile Include="testes_decide.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
-    <ClCompile Include="ParseVerbs.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseListAux.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="AssertationVerbRelation.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseRelation.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseRelationWhen.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
     <ClCompile Include="testeLista.cpp">
       <Filter>Source Files\Testes</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseAssertationSecondary.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="CVariableGlobals.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="InterpreterQuery.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="InterpreterListedFunctions.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserSelectorFunctional.cpp">
-      <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="GrammarParser.cpp">
       <Filter>Source Files</Filter>
@@ -261,59 +63,11 @@
     <ClCompile Include="teste_action.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
-    <ClCompile Include="InterpExecute.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserDynamicDispatch.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="InterpreterMatch.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="CResultMatch.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserTextEntry.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="InterpFunctionsCallcpp.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_expression_match.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_Decide.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
     <ClCompile Include="testes_Relation.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
-    <ClCompile Include="InterpreterRelationEngine.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreterRelation.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="dynamicCast.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="sharedCast.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CDataMananger.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
     <ClCompile Include="testeSerialize.cpp">
       <Filter>Source Files\Testes</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockSerialize.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_ControlFlux.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Parse_TokensGroup.cpp">
-      <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="testes_execute.cpp">
       <Filter>Source Files\Testes</Filter>
@@ -321,53 +75,11 @@
     <ClCompile Include="teste_selector.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
-    <ClCompile Include="BlockisSame.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreterEvaluate.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
     <ClCompile Include="teste_verb.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
-    <ClCompile Include="Parser_RegisterVerb.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_VerbTable_en.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockCommand.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockInterpreter_Verb_En.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_ActionControl.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
     <ClCompile Include="teste_values.cpp">
       <Filter>Source Files\Testes</Filter>
-    </ClCompile>
-    <ClCompile Include="CMatchCombinatoria.cpp">
-      <Filter>Source Files\Match</Filter>
-    </ClCompile>
-    <ClCompile Include="CMatchListValid.cpp">
-      <Filter>Source Files\Match</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockNumber.cpp">
-      <Filter>Source Files\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlockInterpreterRuntime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser_Plurals_En.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserPlural_table.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="CInterpreterResolveMatchSeletor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
