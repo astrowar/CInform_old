@@ -248,7 +248,7 @@ secret connect exit
 to decide  if ( room  called R1  ) connect ( room called R2  )   :
    if  R2 connect R1 :
        decide on true
-   decide on false
+   decide on nothing
    
  
 )";
@@ -260,13 +260,13 @@ to decide  if ( room  called R1  ) connect ( room called R2  )   :
 
  
 
-	auto q3 = interpreter->query(Statement::Parser_Stmt(&parse," garden connect hall  ", ISLOG));
+	auto q3 = interpreter->query(Expression::Parser_Expression(&parse, " garden connect hall  ", ISLOG), nullptr, nullptr);
 	assert(q3.result == QEquals);
 
-	auto q4 = interpreter->query(Statement::Parser_Stmt(&parse, "exit connect secret  ", ISLOG));
+	auto q4 = interpreter->query(Expression::Parser_Expression(&parse, "exit connect secret  ", ISLOG), nullptr, nullptr);
 	assert(q4.result == QEquals);
 
-	auto q5 = interpreter->query(Statement::Parser_Stmt(&parse, "exit connect garden  ", ISLOG));
+	auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "exit connect garden  ", ISLOG), nullptr, nullptr);
 	assert(q5.result != QEquals);
 	 
 
