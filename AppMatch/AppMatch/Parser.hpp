@@ -224,6 +224,7 @@ namespace NSParser
 		CBlocking::HBlock parser_if_condition(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock   parser_control_else(CParser *p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock parser_control_end(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
+		CBlocking::HBlock parser_control_for_loop(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
 		CBlocking::HBlock parser_control_if(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
 		CBlocking::HBlock parser_control_unless(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
 		std::list<CBlocking::HBlockControlSelectItem> get_CBlockControlSelectItem(CParser * p, CBlocking::HBlockComandList cmdList, ErrorInfo * err);

@@ -54,7 +54,15 @@ public:
 };
 
  
-	 
+struct  NamedValue
+{
+	string named;
+	CBlocking::HBlock value;
+};
+ 
+
+using ListOfNamedValue = std::list<NamedValue>;
+
 
 	class CBlockInterpreter {
 
@@ -330,6 +338,8 @@ public:
 
 		//Executa este bloco !
 		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry);
+		ListOfNamedValue getValuesFromMatch(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
+ 
 		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry, QueryStack *stk);
 		bool queryIsVerbToRelation(CBlocking::HBlockMatch m);
 		void logMessage(const string& msg);

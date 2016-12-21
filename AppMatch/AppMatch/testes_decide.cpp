@@ -238,6 +238,8 @@ secret  is a room
 
 connecting relates various ( room ) to various ( room )
 the verb connect  implies the connecting relation
+the verb lead  implies the dynamic relation
+the verb edge to implies the dynamic relation
 
 
 hall connect garden
@@ -245,30 +247,103 @@ garden connect cave
 hall connect secret
 secret connect exit
  
-to decide  if ( room  called R1  ) connect ( room called R2  )   :
+to decide  if ( room  called R1  ) edge to  ( room called R2  )   :
    if  R2 connect R1 :
        decide on true
-   decide on nothing
+   if  R1 connect R2 :
+       decide on true
+   decide on false 
+
+to decide  if ( room  called R1  ) lead ( room called R2  )   :
+   if  R2 edge to  R1 :
+       decide on true      
+   decide on false
    
  
 )";
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
-	interpreter->execute_init(ParseText::parser_text(&parse, slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse, slong, true));
  
 
  
 
-	auto q3 = interpreter->query(Expression::Parser_Expression(&parse, " garden connect hall  ", ISLOG), nullptr, nullptr);
+	auto q3 = interpreter->query(Expression::Parser_Expression(&parse, " garden lead hall  ", ISLOG), nullptr, nullptr);
 	assert(q3.result == QEquals);
 
-	auto q4 = interpreter->query(Expression::Parser_Expression(&parse, "exit connect secret  ", ISLOG), nullptr, nullptr);
+	auto q4 = interpreter->query(Expression::Parser_Expression(&parse, "exit lead secret  ", ISLOG), nullptr, nullptr);
 	assert(q4.result == QEquals);
 
-	auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "exit connect garden  ", ISLOG), nullptr, nullptr);
+	auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "exit lead garden  ", ISLOG), nullptr, nullptr);
 	assert(q5.result != QEquals);
 	 
+
+	return;
+
+}
+
+
+
+
+void testeParser_7h() //loop testes
+{
+	string slong = R"(
+room is an kind
+
+hall is an room
+garden is an room
+cave is an room
+exit is a  room
+secret  is a room
+
+top is a room
+botton is a room
+left is a room
+
+
+connecting relates various ( room ) to various ( room )
+the verb connect  implies the connecting relation
+the verb lead  implies the dynamic relation
+the verb edge to implies the dynamic relation
+
+
+hall connect garden
+garden connect cave
+hall connect secret
+secret connect exit
+ 
+
+left connect botton
+top connect left
+ 
+to decide if (a room called R1) lead (a room called R2):
+   for each (room called Z ):
+       if R1 connect Z :
+          if Z connect R2 :
+             decide on true 
+   decide on false   
+
+liste is   an action applying to ( an  room )  
+carry out liste ( room called X   ) :
+  for each (room called Y ):
+      if X connect Y :
+         say  (text connect )
+   
+ 
+)";
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	interpreter->execute_init(ParseText::parser_text(&parse, slong, true));
+
+
+	auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "hall lead cave  ", ISLOG), nullptr, nullptr);
+	assert(q5.result == QEquals);
+
+	auto q3 = interpreter->execute_now(Statement::Parser_Stmt(&parse, "try liste hall ", ISLOG));
+	 
+	logMessage("end");
 
 	return;
 

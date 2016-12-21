@@ -119,6 +119,7 @@ namespace CBlocking
 		HBlockControlSelectItem asHBlockControlSelectItem(CBlocking::HBlock c);
 		HBlockComandList asHBlockComandList(CBlocking::HBlock c);
 		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);
+		HBlockControlForEach asHBlockControlForEach(CBlocking::HBlock c);
 		HBlockRelationLookup asHBlockRelationLookup(CBlocking::HBlock c);
 		HBlockVerbLookup asHBlockVerbLookup(CBlocking::HBlock c);
 		HBlockSelector_Where asHBlockSelector_Where(CBlocking::HBlock c);

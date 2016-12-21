@@ -590,14 +590,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				if (result.hasMatch == true)
 				{
 					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
-
 					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
-
 					return r;
 				}
 			}
 		}
-
 	}
 
 	if (HBlockMatch matchBlock = asHBlockMatch(c_block1))
@@ -704,32 +701,44 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
     //Resolve List OR
     if (HBlockList_OR  orList = asHBlockList_OR(n2))
     {
-        for (auto &item : orList->lista)
-        {
-			QueryResultContext qcc = get_system_verbs(cs, n1, item, localsEntry, stk);
-            if ( qcc.result == QEquals) return qcc;
-        }
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, cs, orList,  n1,  n2);
+		if (next_stack != nullptr)
+		{
+			for (auto &item : orList->lista)
+			{
+				QueryResultContext qcc = get_system_verbs(cs, n1, item, localsEntry, next_stack.get());
+				if (qcc.result == QEquals) return qcc;
+			}
+		}
     }
 
     //Resolve List ALL
     if (HBlockSelector_All  selector_all = asHBlockSelector_All(n1))
     {
-        return Selector_all( selector_all->what , localsEntry,[&](HBlock e1 )
-        {
-            return get_system_verbs(cs, e1, n2,localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, cs, selector_all, n1, n2);
+		if (next_stack != nullptr)
+		{
+			return Selector_all(selector_all->what, localsEntry, [&](HBlock e1)
+			{
+				return get_system_verbs(cs, e1, n2, localsEntry, next_stack.get());
 
-        });
+			});
+		}
     }
 
 
     //Resolve List ANY
     if (HBlockSelector_Any  selector_any = asHBlockSelector_Any(n1))
     {
-        return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
-        {
-            return get_system_verbs(cs, e1, n2,localsEntry, stk);
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, cs, selector_any, n1, n2);
+		if (next_stack != nullptr)
+		{
+			return Selector_any(selector_any->what, localsEntry, [&](HBlock e1)
+			{
+				return get_system_verbs(cs, e1, n2, localsEntry, next_stack.get());
 
-        });
+			});
+		}
     }
 
 
@@ -745,11 +754,29 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
 
 QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry ,QueryStack *stk)
 {
-	QueryResultContext rrcstm =  get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
-    if (rrcstm.result != QUndefined) return rrcstm;
+	 
 
-	QueryResultContext rr =  query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2,localsEntry, stk);
-    return rr; 
+	 
+
+
+	 
+	
+	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
+	if (rrcstm.result != QUndefined) return rrcstm;
+	 
+
+	QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
+
+	if (rr.result != QUndefined)
+	{
+		return rr;
+	}
+
+	 
+
+    return rr;
+
+   
 }
 
 QueryResultContext CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry , QueryStack *stk)
@@ -901,15 +928,9 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 	if (HBlockBooleanNOT q_bool_not = asHBlockBooleanNOT (q))
 	{
 
-		 
-
-
 		QueryResultContext result_A = query(q_bool_not->input_A, localsEntry, stk);
 
-	 
-
-		if (result_A.result == QEquals) return  QNotEquals;
-		 
+		if (result_A.result == QEquals) return  QNotEquals;		 
 		auto rNothing =  QueryResultContext(QEquals  );
 		rNothing.matchedResult = result_A.matchedResult;
 		return rNothing;

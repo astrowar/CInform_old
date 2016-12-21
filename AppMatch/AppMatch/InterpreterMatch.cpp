@@ -214,18 +214,18 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 		}
 		else
 		{
-		/*	printf("Fail ==========================================\n");
+		 printf("Fail ==========================================\n");
 			mValue->dump("");
 			vr2->dump("");
-			printf("............................................\n");*/
+			printf("............................................\n"); 
 		}
 	}
 	else
 	{
-		//printf("Fail ==========================================\n");
-		//mObject->dump("");
-		//vr1->dump(""); 
-		//printf("............................................\n"); 
+		printf("Fail ==========================================\n");
+		mObject->dump("");
+		vr1->dump(""); 
+		printf("............................................\n"); 
 	}
 
 	return CResultMatch(false); 

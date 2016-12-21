@@ -54,6 +54,7 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 		}
 
 		//next vars contem as variaveis 
+	 
 		PhaseResult  rx = this->execute_now(evh->body, next_vars_2, stk);
 
 		if (rx.hasExecuted)

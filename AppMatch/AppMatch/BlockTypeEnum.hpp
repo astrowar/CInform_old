@@ -98,6 +98,7 @@ enum BlockType {
 	BlockEventHandle, 
 	BlockIntegerNumber,
 	BlockFactionalNumber,
-	BlockExecutionResultFlag
+	BlockExecutionResultFlag,
+	BlockControlForEach
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

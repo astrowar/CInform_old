@@ -338,6 +338,37 @@ HBlock   NSParser::ControlFlux::parser_control_end(CParser *p, std::vector<HTerm
 }
 
 
+ 
+HBlock  NSParser::ControlFlux::parser_control_for_loop(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+{
+	if (inner != nullptr)
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+			predList.push_back(mk_HPredLiteral("for"));
+			predList.push_back(mk_HPredLiteral("each"));
+			predList.push_back(mkHPredAny("Condition"));
+			predList.push_back(mk_HPredLiteral(":"));			 
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch ill_variable = ExpressionMatch::parser_MatchArgument(p, res.matchs["Condition"]);
+			HBlock executeBlock = Statement::parser_stmt_inner(p, inner, err);
+			if (executeBlock == nullptr)
+			{
+				err->setError("missing Body loop block ");
+				return nullptr;
+			}
+			auto control_forLoop = std::make_shared<CBlockControlForEach >(ill_variable, executeBlock );
+			return control_forLoop;
+		}
+	
+	}
+
+	return nullptr;
+}
+
 HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	if(inner == nullptr)
@@ -565,8 +596,12 @@ HBlock  NSParser::ControlFlux::STMT_control_flux(CParser *p, std::vector<HTerm>&
 
 	 
 	 
-		HBlock rblock_else = (parser_control_else(p,term,  inner, err));
-		if (rblock_else != nullptr) return rblock_else;
+	HBlock rblock_else = (parser_control_else(p,term,  inner, err));
+	if (rblock_else != nullptr) return rblock_else;
+
+
+	HBlock rblock_for_loop = (parser_control_for_loop(p, term, inner, err));
+	if (rblock_for_loop != nullptr) return rblock_for_loop;
 	 
 
 	//HBlock rblock_end = (parser_control_end(term, inner, err));

@@ -371,6 +371,40 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 		}
 	}
 
+
+	if (HBlockControlForEach cForE = asHBlockControlForEach(c_block))
+	{
+		HBlock ret = nullptr;
+		ListOfNamedValue  loopListEnummerator = getValuesFromMatch(cForE->block_variable, localsEntry, stk);
+		{
+			for (auto hii : loopListEnummerator)
+			{
+
+				const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
+				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
+
+				auto rloop_result = exec_eval(cForE->block_body, localsNext, stk);
+
+				
+				ret = rloop_result ;
+				if (HBlockToDecideOn ndecide = asHBlockToDecideOn(ret))
+				{
+					return ret;
+				}
+			}
+			return ret ;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
 	{
 		if (HBlockAssertion_isDirectAssign nDirect = asHBlockAssertion_isDirectAssign(c_block))
 		{
@@ -728,11 +762,67 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p, HRunLocalScope localsEntry)
 	QueryStack *stk = nullptr;
 	return execute_now(p, localsEntry, stk);
 }
+ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (HBlockNoum nbase = asHBlockNoum(c_block))
+	{
+		HBlock nobj = resolve_noum(nbase, localsEntry );
+		if (nobj == nullptr) return ListOfNamedValue();
+		return getValuesFromMatch(nobj, localsEntry,stk);
+	}
+
+
+	if (HBlockMatchNoum nbase = asHBlockMatchNoum(c_block))
+	{
+		HBlock nobj = resolve_noum(nbase->inner, localsEntry);
+		if (nobj == nullptr) return ListOfNamedValue();
+		return getValuesFromMatch(nobj, localsEntry, stk);
+	}
+
+	if (HBlockMatchNamed  mnamed = asHBlockMatchNamed(c_block))
+	{
+		ListOfNamedValue mm = getValuesFromMatch(mnamed->matchInner, localsEntry, stk);
+		 
+		for (auto &v : mm)
+		{
+			v.named = mnamed->named;
+		}
+		return mm;
+	}
+
+	 
+
+	if (HBlockKind  nKind = asHBlockKind(c_block))
+	{
+		ListOfNamedValue ret = ListOfNamedValue();
+		for (auto &r : assertions)
+		{
+			if (HBlockAssertion_isInstanceOf inst2 = asHBlockAssertion_isInstanceOf(r))
+			{
+				if (is_derivadeOf(inst2->noum, nKind, localsEntry))
+				{
+					ret.push_back({ "", inst2->noum });
+				}
+			}
+		}
+		return ret;
+	} 
+
+	return ListOfNamedValue();
+}
+
+
+
+
+
+
 PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack *stk ) //executa STMT
 {	 
 	if (HBlockComandList  vCommandList= asHBlockComandList(p))
 	{
-		auto nextLocals = copy_CRunLocalScope(localsEntry);
+		 
+		HRunLocalScope nextLocals = std::make_shared< CRunLocalScope >(localsEntry   );
+		 
 		PhaseResult rs_result(false);
 		for(auto cmd : vCommandList->lista)
 		{
@@ -800,8 +890,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (HBlockActionCall  vCall = asHBlockActionCall (p))
 	{	 		 
-		{			 
-	 
+		{			  
 			auto r1 = execute_system_action(vCall); 
 			if (r1.hasExecuted ) return r1;
 			auto r2 = execute_user_action(vCall, localsEntry, stk);
@@ -812,10 +901,8 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (HBlockControlIF  vControlIf =  asHBlockControlIF(p))
 	{
-
-		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk);
-
 		 
+		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk); 
 
 		if (qResult.result == QEquals)
 		{
@@ -832,6 +919,28 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		}
 		return PhaseResult(true);
 		
+	}
+
+	if (HBlockControlForEach   vControlForEach = asHBlockControlForEach(p))
+	{
+
+		ListOfNamedValue  loopListEnummerator = getValuesFromMatch(vControlForEach->block_variable, localsEntry, stk);
+		{
+			for(auto hii : loopListEnummerator)
+			{
+			
+				const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
+				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
+
+				auto rloop_result = execute_now(vControlForEach->block_body , localsNext, stk);
+				if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(rloop_result.result))
+				{
+					return rloop_result;
+				}
+			}
+			return PhaseResult(true);
+		}
+
 	}
 
 	if (HBlockControlSelect  vControlSelect = asHBlockControlSelect(p))

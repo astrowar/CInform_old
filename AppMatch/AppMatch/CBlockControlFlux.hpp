@@ -100,6 +100,32 @@ namespace CBlocking
 
 
 
+	// For Loop 
+
+
+ 
+
+class CBlockControlForEach
+		: public CBlock
+	{
+	public:
+		CBlockControlForEach(CBlocking::HBlock _block_variable, CBlocking::HBlock _block_body )
+			: block_variable(_block_variable), block_body(_block_body)  {}
+
+		CBlocking::HBlock block_variable;
+		CBlocking::HBlock block_body;
+		 
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockControlForEach; }
+	};
+
+	using HBlockControlForEach = std::shared_ptr<CBlockControlForEach>;
+
+
+
+
+
 	//=================== Stop continue action
 
 	enum PhaseResultFlag {

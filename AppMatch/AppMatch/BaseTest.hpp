@@ -52,6 +52,7 @@ void testeParser_7d();
 void testeParser_7e();
 void testeParser_7f();
 void testeParser_7g();
+void testeParser_7h();
 
 void testeParser_21();
 

@@ -746,6 +746,8 @@ void CRunLocalScope::dump(string ident)
 HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn)
 {
 	HRunLocalScope ret = std::make_shared< CRunLocalScope > (nullptr);
+
+	ret->previous = _inn->previous;
 	for(auto it : _inn->locals )
 	{
 		ret->locals.push_back(it);
@@ -887,8 +889,14 @@ void CBlockControlSelect::dump(string ident)
 	}
 }
 
+void CBlockControlForEach::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "FOR EACH  ");
+	this->block_variable->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "LOOP  ");
+	this->block_body->dump(ident + "       ");
+}
 
- 
 
 void CBlockExecutionResultFlag::dump(string ident)
 {

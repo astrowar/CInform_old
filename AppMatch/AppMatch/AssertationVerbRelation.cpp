@@ -571,25 +571,13 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	stk->addQuery(vb, c_block, value);
 
 
-	for (auto dctIF : decides_if)
-	{
-		if (HBlockMatchIsVerb   DctVerb = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
-		{
-			if (isSameString(vb, DctVerb->verb))
-			{ 
-				auto result = Match_DirectIs(DctVerb->obj, DctVerb->value, c_block, value, nullptr, stk);
-				auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
-				return getDecidedValue(dctIF->decideBody, localsNext,stk);
-			}
-		}
-
-	}
+	 
 
 
 	// Tem alguma relacao associada ??
 	for (auto & rv : verbRelationAssoc)
 	{
-		if (rv.first == vb)
+		if (isSameString(rv.first , vb))
 		{
 			auto relation_name = rv.second->relationNoum->named;
 			if (relation_name != "dynamic")
@@ -632,77 +620,27 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 		return QueryResul::QUndefined;
 	} 
 
-
-	//Custom Define
-	for(auto &v : decides_if)
+	auto nn = decides_if.size();
+	for (auto dctIF : decides_if)
 	{
-		break;
-		if (HBlockMatchIsVerb qVerb = DynamicCasting::asHBlockMatchIsVerb(v->queryToMatch))
+		if (HBlockMatchIsVerb  DctQueryVerbIS = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
 		{
-			 
-			if (vb == qVerb->verb)
+			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, vb, DctQueryVerbIS, c_block, value);
+			if (next_stack != nullptr)
 			{
-
-				CResultMatch  result_obj = Match(qVerb->obj, c_block, nullptr, stk);
-				if (result_obj.hasMatch)
+				auto result = Match_DirectIs(DctQueryVerbIS->obj, DctQueryVerbIS->value, c_block, value, nullptr, next_stack.get());
+				if (result.hasMatch == true)
 				{
-					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_obj.maptch);
-					 
-				  
-					CResultMatch  result_value = Match(qVerb->value, value, localsNext, stk);
-					if (result_value.hasMatch)
-					{
-						 
-						HRunLocalScope localsNext_value = std::make_shared< CRunLocalScope >(localsNext , result_value.maptch);
-						 
-					 
-						auto rr_eval = exec_eval(v->decideBody, localsNext_value,stk);
-					 
-
-						 
-						
-						if (HBlockToDecideOn dctval = DynamicCasting::asHBlockToDecideOn( rr_eval ) )
-						{
-							if (HBlockBooleanValue bbValue = DynamicCasting::asHBlockBooleanValue(dctval->decideBody))
-							{
-								if  (true == bbValue->state) { return QEquals; }
-								if (false ==bbValue->state) { return QNotEquals; }
-							} 
-							else
-							{
-								logError("Decide Block must return Decide On True or Decide On False");
-							
-							}
-						}
-						else
-						{
-							logError("Decide Block must return Decide On  ");
-
-						}
-						 
-						return QNotEquals;
-
-						//return v->decideBody;
-						//return QueryResul::QEquals;
-					}
-					else
-					{
-						logMessage("not Equals");
-						qVerb->value->dump("");
-						value->dump("");
-					}
-
-				}
-				else
-				{
-					logMessage("not Equals");
-					qVerb->obj->dump("");
-					c_block->dump("");
+					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
+					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
+					return r;
 				}
 			}
 		}
 	}
 
+
+ 
 	// Match com o What
 
 	for(auto &dct : decides_what)

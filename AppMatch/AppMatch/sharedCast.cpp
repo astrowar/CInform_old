@@ -629,6 +629,15 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockControlIF>(c);
 			return nullptr;
 		}
+
+	 
+		HBlockControlForEach asHBlockControlForEach(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockControlForEach )
+				return std::static_pointer_cast<CBlockControlForEach>(c);
+			return nullptr;
+		}
+
 		HBlockRelationLookup asHBlockRelationLookup(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockRelationLookup)
