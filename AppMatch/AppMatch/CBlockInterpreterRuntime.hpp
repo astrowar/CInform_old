@@ -321,7 +321,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
 		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
-		
+		CBlocking::HBlock exec_eval_internal(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);
 		HExecutionBlock create_dispach_env(CBlocking::HBlockList p, HRunLocalScope localsEntry);
 

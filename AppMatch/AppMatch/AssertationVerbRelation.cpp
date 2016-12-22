@@ -625,15 +625,49 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	{
 		if (HBlockMatchIsVerb  DctQueryVerbIS = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
 		{
-			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, vb, DctQueryVerbIS, c_block, value);
-			if (next_stack != nullptr)
+
+			
+			if (isSameString(DctQueryVerbIS->verb, vb))
 			{
-				auto result = Match_DirectIs(DctQueryVerbIS->obj, DctQueryVerbIS->value, c_block, value, nullptr, next_stack.get());
-				if (result.hasMatch == true)
+
+				std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, vb, DctQueryVerbIS, c_block, value);
+				if (next_stack != nullptr)
 				{
-					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
-					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
-					return r;
+					auto value_1 = c_block;
+					if (HBlockNoum nnoum_1 = DynamicCasting::asHBlockNoum(value_1))
+					{
+						HBlock resolved = resolve_noum(nnoum_1, localsEntry);
+						if (resolved != nullptr)
+						{
+							value_1 = resolved;
+						}
+					}
+
+					auto value_2 = value;
+					if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
+					{
+						HBlock resolved = resolve_noum(nnoum_2, localsEntry);
+						if (resolved != nullptr)
+						{
+							value_2 = resolved;
+						}
+					}
+
+					printf("_______________________________\n");
+					value_1->dump("");
+					value_2->dump("");
+
+					auto result = Match_DirectIs(DctQueryVerbIS->obj, DctQueryVerbIS->value, value_1, value_2, nullptr, next_stack.get());
+					if (result.hasMatch == true)
+					{
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
+
+						printf("_______________________________\n");
+						localsNext->dump("");
+						dctIF->decideBody->dump("");
+						auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
+						return r;
+					}
 				}
 			}
 		}
