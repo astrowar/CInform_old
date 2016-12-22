@@ -762,10 +762,16 @@ QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocal
 	 
 	
 	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
-	if (rrcstm.result != QUndefined) return rrcstm;
-	 
-
+	if (rrcstm.result != QUndefined) return rrcstm; 
 	QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
+
+	printf("VERB   ===============================\n");
+	if (localsEntry!=nullptr)localsEntry->dump("+ ");
+	is_verb->dump("");
+	if (rr.result == QEquals) printf("EQUALS\n");
+	if (rr.result == QNotEquals) printf("NOT EQUALS\n");
+	if (rr.result == QUndefined) printf("Undefined\n");
+
 
 	if (rr.result != QUndefined)
 	{
@@ -849,7 +855,9 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 
     if (HBlockIsVerb is_verb = asHBlockIsVerb(q) )
     {
-		QueryResultContext retv = query_verb(is_verb, localsEntry , stk);
+	   QueryResultContext retv = query_verb(is_verb, localsEntry , stk);
+
+
 	   if (retv.result != QUndefined) return retv;
     }
 

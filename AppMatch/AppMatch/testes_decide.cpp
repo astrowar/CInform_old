@@ -317,18 +317,20 @@ secret connect exit
 left connect botton
 top connect left
  
-to decide if (room called R1) edge to (a room called R2) :
-   if R1 connect R2 :
+to decide if (room called Q1) edge to (a room called Q2) :
+   if Q1 connect Q2 :
           decide on true
-   if R2 connect R1 :
+   if Q2 connect Q1 :
           decide on true 
    decide on false
  
 
 to decide if (a room called R1) lead (a room called R2) :
+   if R1 edge to R2 :
+      decide on true
    for each ( a room called Z ) :
-      if R1 connect   Z :
-         if Z connect   R2 :
+      if R1 edge to   Z :
+         if Z edge to R2 :
             decide on true
    decide on false   
 
@@ -346,8 +348,8 @@ carry out liste ( room called X   ) :
 	interpreter->execute_init(ParseText::parser_text(&parse, slong, true));
 
 
-	//auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "hall edge to garden  ", ISLOG), nullptr, nullptr);
-	//assert(q5.result == QEquals);
+	 //auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "hall edge to garden  ", ISLOG), nullptr, nullptr);
+	// assert(q5.result == QEquals);
 
 	//auto q6 = interpreter->query(Expression::Parser_Expression(&parse, "garden edge to hall  ", ISLOG), nullptr, nullptr);
 	//assert(q6.result == QEquals);

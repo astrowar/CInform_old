@@ -341,7 +341,8 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	{
 		return nullptr;
 	}
-	 
+
+ 
 
 	if (HBlockComandList nlist = asHBlockComandList(c_block))
 	{
@@ -367,6 +368,11 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	{
 		HBlock ret = nullptr;
  
+		printf("_______________________________________\nEval\n");
+		localsEntry->dump("");
+		c_block->dump("");
+		printf("\n");
+
   		auto r = query(cIF->block_if, localsEntry, stk);
 		if (r.result == QEquals)
 		{
@@ -398,12 +404,24 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 				auto rloop_result = exec_eval(cForE->block_body, localsNext, stk);
 
-				
+				if (rloop_result == nullptr)
+				{
+					printf("_______________________________________\n");
+					localsNext->dump("");
+					cForE->block_body->dump("");
+					continue;
+				}
 				ret = rloop_result ;
 				if (HBlockToDecideOn ndecide = asHBlockToDecideOn(ret))
 				{
 					return ret;
 				}
+			}
+			if (ret == nullptr)
+			{
+				
+				cForE->block_variable->dump("");
+				logError("What ?");
 			}
 			return ret ;
 		}
@@ -781,7 +799,10 @@ ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::H
 	if (HBlockNoum nbase = asHBlockNoum(c_block))
 	{
 		HBlock nobj = resolve_noum(nbase, localsEntry );
-		if (nobj == nullptr) return ListOfNamedValue();
+		if (nobj == nullptr)
+		{
+			return ListOfNamedValue();
+		}
 		return getValuesFromMatch(nobj, localsEntry,stk);
 	}
 
@@ -789,7 +810,10 @@ ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::H
 	if (HBlockMatchNoum nbase = asHBlockMatchNoum(c_block))
 	{
 		HBlock nobj = resolve_noum(nbase->inner, localsEntry);
-		if (nobj == nullptr) return ListOfNamedValue();
+		if (nobj == nullptr)
+		{
+			return ListOfNamedValue();
+		}
 		return getValuesFromMatch(nobj, localsEntry, stk);
 	}
 

@@ -624,9 +624,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	for (auto dctIF : decides_if)
 	{
 		if (HBlockMatchIsVerb  DctQueryVerbIS = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
-		{
-
-			
+		{ 
 			if (isSameString(DctQueryVerbIS->verb, vb))
 			{
 
@@ -634,6 +632,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 				if (next_stack != nullptr)
 				{
 					auto value_1 = c_block;
+					if (HBlockMatchNoum mvalue_1 = DynamicCasting::asHBlockMatchNoum(value_1)) value_1 = mvalue_1->inner;
+
+
 					if (HBlockNoum nnoum_1 = DynamicCasting::asHBlockNoum(value_1))
 					{
 						HBlock resolved = resolve_noum(nnoum_1, localsEntry);
@@ -644,6 +645,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					}
 
 					auto value_2 = value;
+					if (HBlockMatchNoum mvalue_2 = DynamicCasting::asHBlockMatchNoum(value_2)) value_2 = mvalue_2->inner;
 					if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
 					{
 						HBlock resolved = resolve_noum(nnoum_2, localsEntry);
@@ -656,6 +658,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					printf("_______________________________\n");
 					value_1->dump("");
 					value_2->dump("");
+
+
+
 
 					auto result = Match_DirectIs(DctQueryVerbIS->obj, DctQueryVerbIS->value, value_1, value_2, nullptr, next_stack.get());
 					if (result.hasMatch == true)
