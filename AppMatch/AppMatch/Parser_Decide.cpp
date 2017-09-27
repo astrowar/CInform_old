@@ -1,8 +1,17 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
+#include <memory>
 #include "Parser.hpp"
- 
+#include "CBlockDecideIf.hpp"
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
 
-HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
+
+HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
+{
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mk_What_Which());
@@ -13,8 +22,8 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 
-			HBlockMatch  c1 = parser_MatchArgument(res.matchs["kindReturn"]);
-			HBlockMatch  AdjetiveMatch = parser_expression_match(res.matchs["RemainderQuery"]);
+			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
+			HBlockMatch  AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
 
 			if (AdjetiveMatch != nullptr)
 			{
@@ -30,22 +39,23 @@ HBlockMatch CParser::parser_What_Which_Assertion(HTerm term) {
 	return nullptr;
 }
 
-HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
+HBlockMatchIs NSParser::ParseDecide::parser_What_Which_Verb_Assertion(CParser * p, HTerm term)
+{
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mk_What_Which());
 		predList.push_back(mkHPredAny("kindReturn"));  // which (Person) is (the targert) -> Enforce (Return Value) as Person
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("RemainderQuery"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 
 
-			HBlockMatch  c1 = parser_MatchArgument(res.matchs["kindReturn"]);
-			HBlockMatch  AdjetiveMatch = parser_expression_match(res.matchs["RemainderQuery"]);
+			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
+			HBlockMatch  AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
 
 			if (AdjetiveMatch != nullptr)
 			{
@@ -63,7 +73,7 @@ HBlockMatchIs CParser::parser_What_Which_Verb_Assertion(HTerm term) {
 }
 
 
-HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
+HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTerm term )
 {
     
 
@@ -72,18 +82,18 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 		std::vector<HPred> predList;
 		predList.push_back(mk_HPredLiteral("if"));
 		predList.push_back(mkHPredAny("AValue"));
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("BValue"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 
-			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p,res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlockMatch BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockMatchIsVerb >(vrepr, AValue, BValue);
@@ -100,10 +110,10 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlockMatch AValue = parser_expression_match(res.matchs["AValue"]);
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p,res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlockMatch BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
@@ -116,7 +126,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = parser_expression_match(res.matchs["AValue"]);
+            HBlock AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
             auto r =  res.matchs["AValue"].get();
 			logError(r->repr());
@@ -132,7 +142,7 @@ HBlockMatchIs CParser::parser_Match_IF_Assertion(HTerm term )
 
 
 
-HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 
    
@@ -150,28 +160,28 @@ HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroup
 			}
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
-				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"] );
+				HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"] );
 				if (a_match)
 				{
 
-					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
-				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
+				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
 				if (vb_match)
 				{
 
-					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
 					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 				}
 
 
-				HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
+				HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match)
 				{
 
-					HBlock body = parser_expression(res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
 					return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
 
@@ -199,27 +209,27 @@ HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroup
 			}
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
-				HBlockMatchIs a_match = parser_Match_IF_Assertion(res.matchs["Match"]);
+				HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"]);
 				if (a_match!=nullptr )
 				{
-					HBlockComandList body = parser_stmt_inner(inner, err);
+					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
-				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(res.matchs["Match"]);
+				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
 				if (vb_match != nullptr)
 				{
 
-					HBlockComandList body = parser_stmt_inner(inner, err);
+					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 				}
 
 
-				HBlockMatch w_match = parser_What_Which_Assertion(res.matchs["Match"]);
+				HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match != nullptr)
 				{
 
-					HBlockComandList body = parser_stmt_inner(inner, err);
+					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 					return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
 
@@ -233,13 +243,13 @@ HBlock CParser::parseAssertion_isDecide_inLine(std::vector<HTerm>&  term, HGroup
 }
 
 
-HBlock CParser::parseAssertion_isDecide (std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
-	return parseAssertion_isDecide_inLine(term, inner, err);
+	return parseAssertion_isDecide_inLine(p, term, inner, err);
 }
 
 
-HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 	if (inner == nullptr)
 	{
@@ -255,7 +265,7 @@ HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines i
 			if (res.result == Equals) 
 			{
 					logMessage((res.matchs["ExpressionBody"]->repr()));
-					HBlock body = parser_expression(res.matchs["ExpressionBody"]);
+					HBlock body = Expression::parser_expression(p, res.matchs["ExpressionBody"]);
 					return std::make_shared<CBlockToDecideOn>( body);
 			}
 		}
@@ -267,7 +277,8 @@ HBlock CParser::parseAssertion_DecideOn(std::vector<HTerm>&  term, HGroupLines i
 
 }
 
-HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
+HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector<HTerm>&  term)
+{
 
     {
 		static std::vector<HPred> predList = {};
@@ -284,17 +295,17 @@ HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 
-			HBlockMatchIsVerb  v_match = parserMatchIsConditionVerb (res.matchs["Match"]);
+			HBlockMatchIsVerb  v_match = ExpressionMatch::parserMatchIsConditionVerb (p,res.matchs["Match"]);
 			if (v_match != nullptr)
 			{
-				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
+				HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(v_match, body);
 			}
 
-			HBlockMatchIs a_match = parserMatchIsCondition(res.matchs["Match"]);
+			HBlockMatchIs a_match = ExpressionMatch::parserMatchIsCondition(p,res.matchs["Match"]);
 			if (a_match != nullptr)
 			{
-				HBlock body = parserBoolean(res.matchs["LogicalBody"]);
+				HBlock body = Statement::parserBoolean(p, res.matchs["LogicalBody"]);
 				return std::make_shared<CBlockToDecideIf>(a_match, body);
 			}
 			return nullptr;
@@ -302,6 +313,58 @@ HBlock CParser::STMT_Definition_Assertion(std::vector<HTerm>&  term) {
     }
     return nullptr;
 }
+
+
+
+
+
+
+HBlock NSParser::ParseDecide::parse_toDecide_Entry(CParser * p, std::vector<HTerm>&  term) 
+{
+    {
+        std::vector<HPred> predList;
+        predList.push_back(mk_HPredLiteral("to"));
+        predList.push_back(mk_HPredLiteral("decide"));
+        predList.push_back(mk_HPredLiteral(":"));
+        return nullptr;
+    }
+}
+
+HBlock NSParser::ParseDecide::parse_toDecide_Ret(CParser * p, std::vector<HTerm>&  term) {
+    {
+        std::vector<HPred> predList;
+        predList.push_back(mk_HPredLiteral("decide"));
+        predList.push_back(mk_HPredLiteral("on"));
+        predList.push_back(mkHPredAny("Subst"));
+        MatchResult res = CMatch(term, predList);
+        if (res.result == Equals) {
+            HBlock n1 = Expression::parser_expression(p,res.matchs["Subst"]);
+            if (n1 == nullptr) return nullptr;
+            return std::make_shared<CBlockToDecideOn>(n1);
+        }
+    }
+    return nullptr;
+}
+
+HBlock NSParser::ParseDecide::parser_decides_Assertion(CParser * p, std::vector<HTerm>&  term) 
+{
+
+    HBlock verb_decideIn = parse_toDecide_Entry(p,term);
+    if (verb_decideIn != nullptr) {
+        return verb_decideIn;
+    }
+
+    HBlock verb_decideRet = parse_toDecide_Ret(p,term);
+    if (verb_decideRet != nullptr) {
+        return verb_decideRet;
+    }
+
+    return nullptr;
+
+
+}
+
+
 
 
 

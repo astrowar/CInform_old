@@ -1,16 +1,16 @@
 #pragma once
 #include "Parser.hpp"
- 
+#include "CBlockInterpreterRuntime.hpp"
 
 #define ISLOG false
 
 
-std::vector<HTerm> decompose(string phase);;
+std::vector<NSTerm::HTerm> decompose(string phase);;
 
 string decompose_bracket(string phase, string dlm);
 
-CList *mk_CList_Literal(std::vector<HTerm> strList);
-HBlockNoum noum(std::string n) ;
+NSTerm::CList *mk_CList_Literal(std::vector<NSTerm::HTerm> strList);
+CBlocking::HBlockNoum noum(std::string n) ;
 
 
 void testeParser_listA();
@@ -52,6 +52,7 @@ void testeParser_7d();
 void testeParser_7e();
 void testeParser_7f();
 void testeParser_7g();
+void testeParser_7h();
 
 void testeParser_21();
 
@@ -75,3 +76,5 @@ void testeSerialize1();
 void testeSelector_all();
 
 void testeVerb_all();
+void testValues_all();
+void testeParser_listAll();

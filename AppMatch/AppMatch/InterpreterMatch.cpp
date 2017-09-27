@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include <memory>
 #include "CResultMatch.hpp"
@@ -8,9 +10,14 @@
 using namespace std;
 
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
 //Match engine
 
-CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack stk)
+CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack *stk)
 {
 	if (M->matchList.size() != value->lista.size())
 	{
@@ -21,11 +28,19 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 	}
 	auto mit = M->matchList.begin();
 	auto vit = value->lista.begin();
+	 
+	auto localsEntryNext = std::make_shared< CRunLocalScope >(localsEntry);
+	 
+
 	CResultMatch rAccm = CResultMatch(true);
 	while (true)
 	{
 		if (mit == M->matchList.end()) break;
-		CResultMatch r = Match(*mit, *vit,localsEntry, stk);
+
+		//cada item da lista, usa os matchs que ja estao resolvidos ate o momento
+		localsEntryNext = std::make_shared< CRunLocalScope >(localsEntryNext,  rAccm.maptch); 
+
+		CResultMatch r = Match(*mit, *vit, localsEntryNext, stk);
 		if (r.hasMatch == false)
 		{ 	 
 			//(*vit)->dump("    ");
@@ -33,6 +48,9 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 			return   CResultMatch(false);
 		}
 		rAccm.append(r);
+		
+ 
+
 		++mit;
 		++vit;
 	}
@@ -79,8 +97,156 @@ bool is_article(std::string s)
 	if (s == "a" || s == "an" || s == "the" || s == "some") return true;
 	return false;
 }
-CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack stk)
+
+
+std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
 {
+	 
+	if (lst.empty()) return lst;
+	std::list<HBlockMatch>::iterator init_ptr = lst.begin();
+	while (init_ptr != lst.end())
+	{
+		if (auto mnoum = asHBlockMatchNoum(*init_ptr))
+		{
+			if (is_article(mnoum->inner->named))
+			{
+				++init_ptr;
+				if (init_ptr == lst.end()) break;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	return 	std::list<HBlockMatch>(init_ptr, lst.end());
+}
+
+
+CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	
+	if (auto mnoum = asHBlockMatchNoum(mValue))
+	{
+		return  Match(M, mnoum->inner, localsEntry, stk);
+	}
+
+	if (auto mlist = asHBlockMatchList(mValue))
+	{		
+		if (auto mbaseList = asHBlockMatchList(M))
+		{
+
+			auto it_list1 = remove_article(mlist->matchList);
+			auto it_list2 = remove_article(mbaseList->matchList);
+			// Confere cada item do match com os item do M
+			if (it_list1.size() != it_list2.size())
+			{				  
+				return CResultMatch(false); // tamanhos diferentes
+			}
+			auto it1 = it_list1.begin();
+			auto it2 = it_list2.begin();
+
+			CResultMatch mAcc = CResultMatch(true); // Matchs acumulados ate o momento
+			HRunLocalScope localsNext = localsEntry;
+
+			for(;it1 != it_list1.end();++it1,++it2)
+			{
+				CResultMatch rit = isEquivalenteMatch(*it2, *it1, localsNext, stk); 
+				if (rit.hasMatch == false)
+				{
+					return CResultMatch(false);
+				}
+
+				mAcc.append(rit ); // Adiciona os matchs nomeados ate o momento
+				localsNext = std::make_shared< CRunLocalScope >(localsNext, mAcc.maptch);
+				  
+			}
+			 
+			return mAcc;
+
+
+		}
+		else
+		{
+			// uma lista contra uma nao lista ? o que pode ser
+			logError("Something unespected");		
+
+			printf("==============================\n");
+			mlist->dump("");
+			M->dump("");
+
+			return CResultMatch(false);
+
+		}
+	}
+
+	return CResultMatch(false);
+}
+
+
+CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	 
+	auto vr1 = resolve_if_noum(object, localsEntry, std::list<std::string>());
+	if (vr1 == nullptr) vr1 = object;
+	auto vr2 = resolve_if_noum(value, localsEntry, std::list<std::string>());
+	if (vr2 == nullptr) vr2 = value;
+
+
+	CResultMatch mres = Match(mObject, vr1, localsEntry, stk);
+	if (mres.hasMatch)
+	{
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, mres.maptch);
+	 
+
+		 
+		CResultMatch mres_k = Match(mValue, vr2, localsNext, stk);
+		if (mres_k.hasMatch)
+		{ 
+			//auto locals_value = std::make_shared< CRunLocalScope >(mres_k.maptch);
+			//auto localsNext2 = newScope(localsNext, locals_value);
+			mres.append(mres_k);		 
+
+			auto locals_value = std::make_shared< CRunLocalScope >(localsNext , mres.maptch);
+		 
+			return mres; 
+
+		}
+		else
+		{
+		 printf("Fail ==========================================\n");
+			mValue->dump("");
+			vr2->dump("");
+			printf("............................................\n"); 
+		}
+	}
+	else
+	{
+		printf("Fail ==========================================\n");
+		mObject->dump("");
+		vr1->dump(""); 
+		printf("............................................\n"); 
+	}
+
+	return CResultMatch(false); 
+}
+ 
+
+
+
+CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
+{
+	if (auto vMatch = asHBlockMatch(value))
+	{
+		// Hummm ... um match contra outro match ...
+		CResultMatch mres = isEquivalenteMatch(M, vMatch, localsEntry, stk);
+		if (mres.hasMatch)		return 	mres;
+		return CResultMatch(false );
+		
+	}
+	 
+	// Pois pode ser que um deles seja uma lista de noum e o parser interpretou como um Match List
+
 	if (auto   mAtom = asHBlockMatchNoum(M))
 	{
 		if (auto inner =  asHBlockNoum(mAtom->inner))
@@ -88,13 +254,14 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
 				 
-				if (inner->named == cinner->named)
+				if (isSameString( inner->named , cinner->named))
 				{
 				  return 	CResultMatch(true );
 				}
 
-				auto rcc = query_is(cinner, inner, localsEntry, stk);
-				return CResultMatch(rcc == QEquals);
+				QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
+				 
+				return CResultMatch(rcc.result == QEquals);
 				 
 			}
  
@@ -113,8 +280,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
-				auto r = query_is(cInst, inner_2, localsEntry, stk);
-				return CResultMatch(r == QEquals);
+				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
+				return CResultMatch(r.result == QEquals);
 
 			}
 
@@ -122,12 +289,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			if (auto cAction = asHBlockAction (value))
 			{ 
 				if (cAction->named == inner_2->named) return CResultMatch( true );
-				auto r = query_is(cAction, inner_2, localsEntry, stk);
-				return CResultMatch(r == QEquals); 
+				QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
+				return CResultMatch(r.result == QEquals); 
 			}
 
-			auto rcc = query_is(value, inner_2, localsEntry, stk);
-			return CResultMatch(rcc == QEquals);
+			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
+			return CResultMatch(rcc.result == QEquals);
 		}
 
 	}
@@ -137,6 +304,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		CResultMatch mres = Match(mVNamed->matchInner , value, localsEntry,stk);
 		if (mres.hasMatch)
 		{
+			 
 			return CResultMatch(mVNamed->named, value);
 		}
 		return mres;
@@ -154,7 +322,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
 				if (is_article(cnoum->inner->named)) continue;
-				if (nnoum == "")
+				if (nnoum.empty())
 				    {
 						nnoum = cnoum->inner->named; }
 				else 
@@ -165,17 +333,20 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 			if (HBlockNoum   noumCompound = asHBlockNoum(value))
 			{
-				if (nnoum == noumCompound->named)
+				if ( isSameString(nnoum , noumCompound->named))
 				{
 					 return CResultMatch(true);
 				}
 			}
 
-			auto resolved =  resolve_noum(std::make_shared<CBlockNoum>( nnoum),localsEntry ,std::list<std::string>());
+			auto resolved = resolve_string_noum(   nnoum ,localsEntry ,std::list<std::string>());
 			if (resolved)
 			{
-				auto rr = query_is(value, resolved , localsEntry, stk);
-				if (rr == QEquals)   return CResultMatch(true);
+				QueryResultContext rr = query_is(value, resolved , localsEntry, stk);
+				if (rr.result == QEquals)
+				{
+					return CResultMatch(true);
+				}
 			}
 			 
 
@@ -191,7 +362,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		if (HBlockNoum   noumCompound = asHBlockNoum(value))
 		{
 			HBlockList   vNoumList = getCompoundNoumAsList(noumCompound);
-			return MatchList(mList, vNoumList, localsEntry, stk);
+			 
+			auto rList =  MatchList(mList, vNoumList, localsEntry, stk);
+			return rList;
 		}
 		return CResultMatch(false);
 	}
@@ -201,6 +374,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 	if (HBlockMatchAND   mAnnd = asHBlockMatchAND(M))
 	{
+		auto mAcc = CResultMatch(true);
 		for(auto& mItem : mAnnd->matchList)
 		{
 			auto rAnnd =  Match(mItem, value, localsEntry, stk);
@@ -208,8 +382,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				return CResultMatch(false);
 			}
+			mAcc.append(rAnnd);
 		}		
-		return CResultMatch(true);
+		return mAcc;
 		
 	}
 
@@ -219,9 +394,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		if (HBlockProperty    vProp = asHBlockProperty(value))
 		{
-
-			auto rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
-			if (rProp == QEquals)
+			QueryResultContext rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
+			if (rProp.result == QEquals)
 			{
 				CResultMatch mres =  Match(mProp->obj, vProp->obj, localsEntry, stk);
 				return mres;
@@ -229,6 +403,20 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		}
 		else
 		{
+			// value pode ser o resultado da computacao da propriedade ....
+			HBlockList  objList = lookup_value_by_Selector(mProp->obj , localsEntry,stk); // obtem todos os objetos que casam com a descricao
+			for(auto &o : objList->lista )
+			{
+				HBlockProperty propToProbe =  make_shared<CBlockProperty>(mProp->prop, o);
+
+		 
+				auto prop_value =  query_is_propertyOf_value(propToProbe, value, localsEntry, stk);
+				if (prop_value.result == QEquals)
+				{
+					return CResultMatch(true);
+				}
+			}
+			
 			return CResultMatch(false);
 		}
 	}
@@ -276,18 +464,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			CResultMatch mres = Match(mDirect->obj, vr1,localsEntry  , stk);
 			if (mres.hasMatch)
 			{
-
-				auto locals_obj = std::make_shared< CRunLocalScope >(mres.maptch);
-				auto localsNext = newScope(localsEntry, locals_obj);
-
+				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , mres.maptch);
+				 
 
 				CResultMatch mres_k = Match(mDirect->value, vr2 , localsEntry ,stk);
 				if (mres_k.hasMatch)
 				{
-
-					auto locals_value = std::make_shared< CRunLocalScope >(mres_k.maptch);
-					localsNext = newScope(localsNext, locals_value);
-
+					//auto locals_value = std::make_shared< CRunLocalScope >(localsNext , mres_k.maptch); 
 					mres.append(mres_k);
 					return mres;
 
@@ -329,8 +512,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				{
 					//auto vv = make_shared<CBlockAssertion_isDirectAssign>( value, mWhich->value);
 
-					auto qverb = query_is(value, mWhich->value, localsEntry, stk);
-					if (qverb == QEquals)
+					QueryResultContext qverb = query_is(value, mWhich->value, localsEntry, stk);
+					if (qverb.result == QEquals)
 					{
 						return mres;
 					}		
@@ -339,8 +522,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				else
 				{
 					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhich->verb, value, mWhich->value);
-					auto qverb = query_verb(vv, localsEntry, stk);
-					if (qverb == QEquals)
+					QueryResultContext qverb = query_verb(vv, localsEntry, stk);
+					if (qverb.result == QEquals)
 					{
 						return mres;
 					}
@@ -357,8 +540,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				if (mWhichNot->verb == "is")
 				{
-					auto qverb = query_is(value, mWhichNot->value, localsEntry, stk);
-					if (qverb != QEquals)
+					QueryResultContext qverb = query_is(value, mWhichNot->value, localsEntry, stk);
+					if (qverb.result != QEquals)
 					{
 						return mres;
 					}
@@ -367,8 +550,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				else
 				{
 					HBlockIsVerb vv = make_shared<CBlockIsVerb>(mWhichNot->verb, value, mWhichNot->value);
-					auto qverb = query_verb(vv, localsEntry, stk);
-					if (qverb != QEquals)
+					QueryResultContext qverb = query_verb(vv, localsEntry, stk);
+					if (qverb.result != QEquals)
 					{
 						return mres;
 					}

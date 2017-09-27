@@ -1,9 +1,16 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
  
 #include "Parser.hpp"
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
-HBlock CParser::text_entry(std::vector<HTerm>&  term)
+
+
+
+HBlock NSParser::Statement::text_entry(CParser * p, std::vector<HTerm>&  term)
 {
 	{
 		 

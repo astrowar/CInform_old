@@ -1,6 +1,9 @@
 #include "BaseTest.hpp"
 #include <cassert>
 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace NSParser;
 
 
 /*
@@ -44,7 +47,7 @@ void testeVerb1()
 {
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 	string ss1 =
 		R"( 
 register verb to have
@@ -72,53 +75,53 @@ box contains a book
 
 
 	printf("=========================================\n");
-	auto stmt = parse.parser_text(ss1, ISLOG);
+	auto stmt = ParseText::parser_text(&parse,ss1, ISLOG);
 
-	interpreter->execute_init(stmt);
+	interpreter->execute_init(stmt); 
 
 
-	//auto ret_e = interpreter->query(parse.Parser_Stmt(" x is c  ", ISLOG));
+	//auto ret_e = interpreter->query(Statement::Parser_Stmt(&parse," x is c  ", ISLOG));
 	//	assert(ret_e == QEquals);
 
-	//auto ret_dst = interpreter->query(parse.Parser_Stmt("destination of door is garden  ", ISLOG));
+	//auto ret_dst = interpreter->query(Statement::Parser_Stmt(&parse,"destination of door is garden  ", ISLOG));
 	//assert(ret_dst == QEquals);
 
 
 
 
-	auto query_block = parse.Parser_Stmt("box contains book  ", ISLOG);
+	auto query_block = Statement::Parser_Stmt(&parse,"box contains book  ", ISLOG);
 	auto ret_points = interpreter->query(query_block);
-	assert(ret_points == QEquals);
+	assert(ret_points.result == QEquals);
 
 
-	auto ret_cc = interpreter->query(parse.Parser_Stmt("book is  contained by box   ", ISLOG));
-	assert(ret_cc == QEquals);
+	auto ret_cc = interpreter->query(Statement::Parser_Stmt(&parse,"book is  contained by box   ", ISLOG));
+	assert(ret_cc.result == QEquals);
 
 
-	auto verb_cc = interpreter->exec_eval(parse.Parser_Expression("the verb provoke", ISLOG), nullptr);
+	auto verb_cc = interpreter->exec_eval(Expression::Parser_Expression(&parse,"the verb provoke", ISLOG), nullptr,nullptr);
 	verb_cc->dump("");
 
-	auto verb_ccv = parse.Parser_Expression("adapt the verb provoke in past participle", ISLOG);
+	auto verb_ccv = Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG);
 	verb_ccv->dump("");
-	auto verb_to_adapt = interpreter->exec_eval(parse.Parser_Expression("adapt the verb provoke in past participle", ISLOG), nullptr);
+	auto verb_to_adapt = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb provoke in past participle", ISLOG), nullptr,nullptr);
 	verb_to_adapt->dump("");
 
-	auto verb_to_adapt_3 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb carry in present participle  ", ISLOG), nullptr);
+	auto verb_to_adapt_3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb carry in present participle  ", ISLOG), nullptr,nullptr);
 	verb_to_adapt_3->dump("");
 
 
 
-	auto verb_to_adapt_4 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb contain in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain in past perfect  ", ISLOG), nullptr,nullptr);
 	verb_to_adapt_4->dump("");
 
-	auto verb_to_adapt_5 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb will in past perfect  ", ISLOG), nullptr);
+	auto verb_to_adapt_5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb will in past perfect  ", ISLOG), nullptr,nullptr);
 	verb_to_adapt_5->dump("");
 
 
-	auto verb_to_adapt_6 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb contain  from the third person singular  ", ISLOG), nullptr);
+	auto verb_to_adapt_6 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb contain  from the third person singular  ", ISLOG), nullptr,nullptr);
 	verb_to_adapt_6->dump("");
 
-	auto verb_to_adapt_7 = interpreter->exec_eval(parse.Parser_Expression("adapt the verb be in past   from the second person plural  ", ISLOG), nullptr);
+	auto verb_to_adapt_7 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"adapt the verb be in past   from the second person plural  ", ISLOG), nullptr,nullptr);
 	verb_to_adapt_7->dump("");
 	return;
 }

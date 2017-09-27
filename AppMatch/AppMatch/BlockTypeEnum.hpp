@@ -95,6 +95,10 @@ enum BlockType {
 	BlockVerbConjugation,
 	BlockVerbAdapt,
 	BlockMatchActionCall,
-	BlockEventHandle
+	BlockEventHandle, 
+	BlockIntegerNumber,
+	BlockFactionalNumber,
+	BlockExecutionResultFlag,
+	BlockControlForEach
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

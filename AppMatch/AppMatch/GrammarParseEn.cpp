@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "GrammarParser.h"
 
 void GrammarParserEn::LoadVerbs()
@@ -12,12 +15,7 @@ void GrammarParserEn::LoadVerbs()
 		{ "abandoning","abandon",VBG },
 		{ "abandons","abandon",VBZ } };
  
-	int N = sizeof(verbs) / sizeof(noumConj);
-	for (int i = 0; i< N; ++i)
-	{
-		verb_map[std::string(verbs[i].verb)] = verbs[i];
-	}
-		 
+	  
 }
 void GrammarParserEn::LoadNoums()
 {
@@ -36,11 +34,6 @@ void GrammarParserEn::LoadNoums()
  
 
 	 
-	 int N = sizeof(noms) / sizeof(noumConj);
-	 for( int i = 0; i< N ; ++i)
-	 {
-		 noum_map[ std::string(noms[i].noum)] = noms[i];
-	 }
-
+	 
 }
 

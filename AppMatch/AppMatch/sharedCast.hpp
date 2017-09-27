@@ -9,110 +9,125 @@
 #include "CBlockCommand.hpp"
 #include "CBlockBoolean.hpp"
 #include "CBlockControlFlux.hpp" 
+#include "CBlockNumber.hpp"
 
-HBlockEnums asHBlockEnums(HBlock c ); 
-HBlockKind asHBlockKind(HBlock c ); 
-HUnresolved asHUnresolved(HBlock c ); 
-HBlockKindOf asHBlockKindOf(HBlock c ); 
-HBlockKindAction asHBlockKindAction(HBlock c ); 
-HBlockKindValue asHBlockKindValue(HBlock c ); 
-HBlockListOfKind asHBlockListOfKind(HBlock c ); 
-HBlockNamedValue asHBlockNamedValue(HBlock c ); 
-HBlockVariable asHBlockVariable(HBlock c ); 
-HBlockInstanceVariable asHBlockInstanceVariable(HBlock c ); 
-HBlockList asHBlockList(HBlock c );
-HBlockList_OR asHBlockList_OR(HBlock c );
-HBlockEnums asHBlockEnums(HBlock c ); 
-HBlockProperty asHBlockProperty(HBlock c ); 
-HBlockAssertion_isDefaultAssign asHBlockAssertion_isDefaultAssign(HBlock c ); 
-HBlockNoum asHBlockNoum(HBlock c ); 
-HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(HBlock c ); 
-HBlockAssertion_isDirectAssign asHBlockAssertion_isDirectAssign(HBlock c ); 
-HBlockAssertion_canBe asHBlockAssertion_canBe(HBlock c ); 
-HBlockAssertion_is asHBlockAssertion_is(HBlock c ); 
-HBlockIsVerb asHBlockIsVerb(HBlock c ); 
-HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(HBlock c ); 
-HBlockIsNotVerb asHBlockIsNotVerb(HBlock c ); 
-HBlockMatchAny asHBlockMatchAny(HBlock c );
+namespace CBlocking
+{
+	namespace DynamicCasting
+	{
 
-HBlockMatchNoum asHBlockMatchNoum(HBlock c );
-HBlockMatchNamed asHBlockMatchNamed(HBlock c ); 
-HBlockMatchList asHBlockMatchList(HBlock c ); 
-HBlockMatchDirectIsNot asHBlockMatchDirectIsNot(HBlock c ); 
-HBlockMatchKind asHBlockMatchKind(HBlock c ); 
-HBlockMatchProperty asHBlockMatchProperty(HBlock c ); 
-HBlockMatchBlock asHBlockMatchBlock(HBlock c ); 
-HBlockMatchOR asHBlockMatchOR(HBlock c ); 
-HBlockMatchAND asHBlockMatchAND(HBlock c ); 
-HBlockMatchDirectIs asHBlockMatchDirectIs(HBlock c ); 
-HBlockMatchWhich asHBlockMatchWhich(HBlock c);
-HBlockMatchWhichNot asHBlockMatchWhichNot(HBlock c);
-HBlockMatchIsVerb asHBlockMatchIsVerb(HBlock c ); 
-HBlockMatchIsNotVerb asHBlockMatchIsNotVerb(HBlock c );
-HBlockMatchNoum asHBlockMatchNoum(HBlock c ); 
+		HBlockEnums asHBlockEnums(CBlocking::HBlock c);
+		HBlockKind asHBlockKind(CBlocking::HBlock c);
+		HUnresolved asHUnresolved(CBlocking::HBlock c);
+		HBlockKindOf asHBlockKindOf(CBlocking::HBlock c);
+		HBlockKindAction asHBlockKindAction(CBlocking::HBlock c);
+		HBlockKindValue asHBlockKindValue(CBlocking::HBlock c);
+		HBlockListOfKind asHBlockListOfKind(CBlocking::HBlock c);
+		HBlockNamedValue asHBlockNamedValue(CBlocking::HBlock c);
+		HBlockVariable asHBlockVariable(CBlocking::HBlock c);
+		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c);
+		HBlockList asHBlockList(CBlocking::HBlock c);
+		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c);
+		HBlockEnums asHBlockEnums(CBlocking::HBlock c);
+		HBlockProperty asHBlockProperty(CBlocking::HBlock c);
+		HBlockAssertion_isDefaultAssign asHBlockAssertion_isDefaultAssign(CBlocking::HBlock c);
+		HBlockNoum asHBlockNoum(CBlocking::HBlock c);
+		HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(CBlocking::HBlock c);
+		HBlockAssertion_isDirectAssign asHBlockAssertion_isDirectAssign(CBlocking::HBlock c);
+		HBlockAssertion_canBe asHBlockAssertion_canBe(CBlocking::HBlock c);
+		HBlockAssertion_is asHBlockAssertion_is(CBlocking::HBlock c);
+		HBlockIsVerb asHBlockIsVerb(CBlocking::HBlock c);
+		HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c);
+		HBlockIsNotVerb asHBlockIsNotVerb(CBlocking::HBlock c);
+		HBlockMatchAny asHBlockMatchAny(CBlocking::HBlock c);
 
-HBlockMatch asHBlockMatch(HBlock c);
+		HBlockMatchNoum asHBlockMatchNoum(CBlocking::HBlock c);
+		HBlockMatchNamed asHBlockMatchNamed(CBlocking::HBlock c);
+		HBlockMatchList asHBlockMatchList(CBlocking::HBlock c);
+		HBlockMatchDirectIsNot asHBlockMatchDirectIsNot(CBlocking::HBlock c);
+		HBlockMatchKind asHBlockMatchKind(CBlocking::HBlock c);
+		HBlockMatchProperty asHBlockMatchProperty(CBlocking::HBlock c);
+		HBlockMatchBlock asHBlockMatchBlock(CBlocking::HBlock c);
+		HBlockMatchOR asHBlockMatchOR(CBlocking::HBlock c);
+		HBlockMatchAND asHBlockMatchAND(CBlocking::HBlock c);
+		HBlockMatchDirectIs asHBlockMatchDirectIs(CBlocking::HBlock c);
+		HBlockMatchWhich asHBlockMatchWhich(CBlocking::HBlock c);
+		HBlockMatchWhichNot asHBlockMatchWhichNot(CBlocking::HBlock c);
+		HBlockMatchIsVerb asHBlockMatchIsVerb(CBlocking::HBlock c);
+		HBlockMatchIsNotVerb asHBlockMatchIsNotVerb(CBlocking::HBlock c);
+		HBlockMatchNoum asHBlockMatchNoum(CBlocking::HBlock c);
 
-
-HBlockAssertion_isNotDirectAssign asHBlockAssertion_isNotDirectAssign(HBlock c ); 
-
-HBlockBooleanAND asHBlockBooleanAND(HBlock c ); 
-HBlockVerb asHBlockVerb(HBlock c ); 
-HBlockVerbAdapt asHBlockVerbAdapt(HBlock c);
-HBlockEventHandle asHBlockEventHandle(HBlock c);
-HBlockBooleanOR asHBlockBooleanOR(HBlock c ); 
-HBlockBooleanNOT asHBlockBooleanNOT(HBlock c ); 
-HBlockSelector_All asHBlockSelector_All(HBlock c ); 
-HBlockSelector_Any asHBlockSelector_Any(HBlock c ); 
-HBlockStaticDispatch asHBlockStaticDispatch(HBlock c ); 
-HBlockAction asHBlockAction(HBlock c ); 
-HBlockActionCall asHBlockActionCall(HBlock c ); 
-HVariableNamed asHVariableNamed(HBlock c ); 
-HBlockUnderstandDynamic asHBlockUnderstandDynamic(HBlock c ); 
-HBlockUnderstandStatic asHBlockUnderstandStatic(HBlock c );
-
-HBlockToDecideWhether asHBlockToDecideWhether(HBlock c ); 
-HBlockToDecideIf asHBlockToDecideIf(HBlock c ); 
-HBlockToDecideWhat_FirstNoum asHBlockToDecideWhat_FirstNoum(HBlock c ); 
-HBlockToDecideWhat asHBlockToDecideWhat(HBlock c ); 
-HBlockToDecideOn asHBlockToDecideOn(HBlock c );
-HBlockBooleanValue asHBlockBooleanValue(HBlock c);
-HBlockToDecide asHBlockToDecide(HBlock c );
-
-HBlockActionApply asHBlockActionApply(HBlock c ); 
-HBlockKindOfName asHBlockKindOfName(HBlock c );
-HBlockKindThing asHBlockKindThing(HBlock c );
-
-HBlockArgumentInput asHBlockArgumentInput(HBlock c ); 
-HBlockText asHBlockText(HBlock c ); 
-HBlockInstance asHBlockInstance(HBlock c );
-
-HBlockRelationBase asHBlockRelationBase(HBlock c );
-HBlockSimetricRelation asHBlockSimetricRelation(HBlock c );
-HBlockASimetricRelation asHBlockASimetricRelation(HBlock c ); 
-HBlockRelationInstance asHBlockRelationInstance(HBlock c );
+		HBlockMatch asHBlockMatch(CBlocking::HBlock c);
 
 
-HBlockVerbRelation asHBlockVerbRelation(HBlock c ); 
-HBlockAssertion_isConstantAssign asHBlockAssertion_isConstantAssign(HBlock c ); 
-HBlockAssertion_isForbiddenAssign asHBlockAssertion_isForbiddenAssign(HBlock c ); 
-HBlockAssertion_isVariable asHBlockAssertion_isVariable(HBlock c ); 
-HBlockAssertion_isNamedValueOf asHBlockAssertion_isNamedValueOf(HBlock c ); 
-HBlockAssertion_InstanceVariable asHBlockAssertion_InstanceVariable(HBlock c ); 
-HBlockAssertion_isInstanceOf asHBlockAssertion_isInstanceOf(HBlock c ); 
-HBlockDinamicDispatch asHBlockDinamicDispatch(HBlock c ); 
-HBlockNow asHBlockNow(HBlock c );
-HBlockEvery asHBlockEvery(HBlock c);
+		HBlockAssertion_isNotDirectAssign asHBlockAssertion_isNotDirectAssign(CBlocking::HBlock c);
 
-HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c );
-HVariableSlotBool asHVariableSlotBool(HVariableSlot c );
+		HBlockBooleanAND asHBlockBooleanAND(CBlocking::HBlock c);
+		HBlockVerb asHBlockVerb(CBlocking::HBlock c);
+		HBlockVerbAdapt asHBlockVerbAdapt(CBlocking::HBlock c);
+		HBlockEventHandle asHBlockEventHandle(CBlocking::HBlock c);
+		HBlockBooleanOR asHBlockBooleanOR(CBlocking::HBlock c);
+		HBlockBooleanNOT asHBlockBooleanNOT(CBlocking::HBlock c);
+		HBlockSelector_All asHBlockSelector_All(CBlocking::HBlock c);
+		HBlockSelector_Any asHBlockSelector_Any(CBlocking::HBlock c);
+		HBlockStaticDispatch asHBlockStaticDispatch(CBlocking::HBlock c);
+		HBlockAction asHBlockAction(CBlocking::HBlock c);
+		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c);
+		HVariableNamed asHVariableNamed(CBlocking::HBlock c);
+		HBlockUnderstandDynamic asHBlockUnderstandDynamic(CBlocking::HBlock c);
+		HBlockUnderstandStatic asHBlockUnderstandStatic(CBlocking::HBlock c);
 
-HBlockControlToken aHBlockControlToken (HBlock c);
-HBlockControlIF aHBlockControlIF(HBlock c);
-HBlockControlSelect aHBlockControlSelect(HBlock c);
-HBlockControlSelectItem aHBlockControlSelectItem(HBlock c);
-HBlockComandList asHBlockComandList(HBlock c);
-HBlockControlIF asHBlockControlIF(HBlock c);
-HBlockRelationLookup asHBlockRelationLookup(HBlock c);
-HBlockVerbLookup asHBlockVerbLookup(HBlock c);
-HBlockSelector_Where asHBlockSelector_Where(HBlock c);
+		HBlockToDecideWhether asHBlockToDecideWhether(CBlocking::HBlock c);
+		HBlockToDecideIf asHBlockToDecideIf(CBlocking::HBlock c);
+		HBlockToDecideWhat_FirstNoum asHBlockToDecideWhat_FirstNoum(CBlocking::HBlock c);
+		HBlockToDecideWhat asHBlockToDecideWhat(CBlocking::HBlock c);
+		HBlockToDecideOn asHBlockToDecideOn(CBlocking::HBlock c);
+		HBlockBooleanValue asHBlockBooleanValue(CBlocking::HBlock c);
+		HBlockToDecide asHBlockToDecide(CBlocking::HBlock c);
+
+		HBlockActionApply asHBlockActionApply(CBlocking::HBlock c);
+		HBlockKindOfName asHBlockKindOfName(CBlocking::HBlock c);
+		HBlockKindThing asHBlockKindThing(CBlocking::HBlock c);
+
+		HBlockArgumentInput asHBlockArgumentInput(CBlocking::HBlock c);
+		HBlockText asHBlockText(CBlocking::HBlock c);
+		HBlockInstance asHBlockInstance(CBlocking::HBlock c);
+
+		HBlockRelationBase asHBlockRelationBase(CBlocking::HBlock c);
+		HBlockSimetricRelation asHBlockSimetricRelation(CBlocking::HBlock c);
+		HBlockASimetricRelation asHBlockASimetricRelation(CBlocking::HBlock c);
+		HBlockRelationInstance asHBlockRelationInstance(CBlocking::HBlock c);
+
+
+		HBlockVerbRelation asHBlockVerbRelation(CBlocking::HBlock c);
+		HBlockAssertion_isConstantAssign asHBlockAssertion_isConstantAssign(CBlocking::HBlock c);
+		HBlockAssertion_isForbiddenAssign asHBlockAssertion_isForbiddenAssign(CBlocking::HBlock c);
+		HBlockAssertion_isVariable asHBlockAssertion_isVariable(CBlocking::HBlock c);
+		HBlockAssertion_isNamedValueOf asHBlockAssertion_isNamedValueOf(CBlocking::HBlock c);
+		HBlockAssertion_InstanceVariable asHBlockAssertion_InstanceVariable(CBlocking::HBlock c);
+		HBlockAssertion_isInstanceOf asHBlockAssertion_isInstanceOf(CBlocking::HBlock c);
+		HBlockDinamicDispatch asHBlockDinamicDispatch(CBlocking::HBlock c);
+		HBlockNow asHBlockNow(CBlocking::HBlock c);
+		HBlockEvery asHBlockEvery(CBlocking::HBlock c);
+
+		HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c);
+		HVariableSlotBool asHVariableSlotBool(HVariableSlot c);
+
+		HBlockControlToken asHBlockControlToken(CBlocking::HBlock c);
+		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);
+		HBlockControlSelect asHBlockControlSelect(CBlocking::HBlock c);
+		HBlockControlSelectItem asHBlockControlSelectItem(CBlocking::HBlock c);
+		HBlockComandList asHBlockComandList(CBlocking::HBlock c);
+		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);
+		HBlockControlForEach asHBlockControlForEach(CBlocking::HBlock c);
+		HBlockRelationLookup asHBlockRelationLookup(CBlocking::HBlock c);
+		HBlockVerbLookup asHBlockVerbLookup(CBlocking::HBlock c);
+		HBlockSelector_Where asHBlockSelector_Where(CBlocking::HBlock c);
+
+
+		HBlockNumber asHBlockNumber(CBlocking::HBlock c);
+
+		HBlockExecutionResultFlag asHBlockExecutionResultFlag(CBlocking::HBlock c);
+
+	}
+}

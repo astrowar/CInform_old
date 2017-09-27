@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Arquivos de Recurso">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headers\Block">
+      <UniqueIdentifier>{8d6f4a8d-8b49-4581-a652-d76a6701110d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Block">
+      <UniqueIdentifier>{38444521-b686-46b9-a164-9a4baa66007b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Match">
+      <UniqueIdentifier>{d211289d-9864-4c4a-9951-d7d7d85d920a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\AppMatch\CBlockAction.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\BlockInstance.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\BlockInterpreter.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockCommand.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockControlFlux.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockDecideIf.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockNamedVariable.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockNumber.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockRelation.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBase.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CblockAssertion.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockBoolean.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockDumpValues.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockMatch.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockScope.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockUndestand.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CDataMananger.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CInterpreterKindTree.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\dynamicCast.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\sharedCast.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\BaseTest.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CMatch.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\CMatchListValid.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\EqualsResult.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\GrammarParser.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\QueryStack.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AppMatch\serialRegister.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\AppMatch\BlockisSame.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockCommand.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockNumber.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockSerialize.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CDataMananger.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\dynamicCast.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\BlockInstance.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\BlockInterpreter.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBase.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockDumpValues.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\sharedCast.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CMatchCombinatoria.cpp">
+      <Filter>Source\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CMatchListValid.cpp">
+      <Filter>Source\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CMatch.cpp">
+      <Filter>Source\Match</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

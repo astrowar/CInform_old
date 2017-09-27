@@ -1,4 +1,5 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "CResultMatch.hpp"
 #include <memory>
@@ -9,6 +10,9 @@
 #include "CBlockInterpreterRuntime.hpp"
 
 using namespace std; 
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 //http://www.ef.com/english-resources/english-grammar/verbs/
 
@@ -18,7 +22,7 @@ using namespace std;
 
 //The present perfect of any verb is composed of two elements : the appropriate form of the auxiliary verb to have(present tense), plus the past participle of the main verb
 
-string CBlockInterpreter::adapt_verb_inner(string verb, string tense, string person, HRunLocalScope localsEntry)
+string CBlockInterpreter::adapt_verb_inner( const  string &  verb ,   string   tense, string person, HRunLocalScope localsEntry)
 {
 	auto vb_n = resolve_string_noum (  verb, localsEntry, std::list<std::string>());
 

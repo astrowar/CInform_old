@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 23/08/16.
 //
@@ -11,9 +14,29 @@
 #include "CBlockBoolean.hpp"
 #include "CblockAssertion.hpp"
 
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
 
-HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
+
+HBlock NSParser::Statement::parserBoolean(CParser * p, HTerm term) {
+    if (CList *vlist = asCList(term.get())) {
+        auto v = vlist->asVector();
+        auto r = parserBoolean(p,v);
+        if (r != nullptr) {
+            return r;
+        } else {
+            //	std::cout << term->repr() << std::endl;
+        }
+
+    }
+    return Expression::parser_expression(p,term);
+}
+
+
+HBlock NSParser::Statement::parserBoolean(CParser * p, std::vector<HTerm>& term)
+{
     {
         std::vector<HPred> predList;
         predList.push_back(mk_HPredLiteral("not"));
@@ -21,7 +44,7 @@ HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n2 = parserBoolean(res.matchs["N2"]);
+            HBlock n2 = parserBoolean(p,res.matchs["N2"]);
             return std::make_shared<CBlockBooleanNOT>(n2);
         }
     }
@@ -34,8 +57,8 @@ HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parserBoolean(res.matchs["N1"]);
-            HBlock n2 = parserBoolean(res.matchs["N2"]);
+            HBlock n1 = parserBoolean(p,res.matchs["N1"]);
+            HBlock n2 = parserBoolean(p, res.matchs["N2"]);
             return std::make_shared<CBlockBooleanAND>(n1, n2);
         }
     }
@@ -48,8 +71,8 @@ HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parserBoolean(res.matchs["N1"]);
-            HBlock n2 = parserBoolean(res.matchs["N2"]);
+            HBlock n1 = parserBoolean(p, res.matchs["N1"]);
+            HBlock n2 = parserBoolean(p, res.matchs["N2"]);
             return std::make_shared<CBlockBooleanOR>(n1, n2);
         }
     }
@@ -58,9 +81,7 @@ HBlock CParser::parserBoolean(std::vector<HTerm>& term) {
 }
 
 
-
-
-ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
+NSParser::ParserResult NSParser::ParseAssertion::parser_AssertionKind(CParser * p, std::vector<HTerm>& lst) {
     std::vector<HPred> predList;
     predList.push_back(mkHPredAny("Object"));
     predList.push_back(mk_HPredLiteral_OR("Verb", {"is", "are"}));
@@ -76,7 +97,7 @@ ParserResult CParser::parser_AssertionKind(std::vector<HTerm>& lst) {
     return std::move(ParserResult(res));
 }
 
-HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
+HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CParser * p, HTerm term) {
     {
         // and action applying to [one visible thing and requiring light]
         std::vector<HPred> predList;
@@ -85,8 +106,8 @@ HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind2"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_kind(res.matchs["kind1"]);
-            HBlock n2 = parser_kind(res.matchs["kind2"]);
+            HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);
+            HBlock n2 = Expression::parser_kind(p,res.matchs["kind2"]);
             return std::make_shared<CBlockActionApply>(n1, n2);
         }
     }
@@ -98,7 +119,7 @@ HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind1"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_kind(res.matchs["kind1"]);
+            HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);
             return std::make_shared<CBlockActionApply>(n1, n1);
         }
     }
@@ -110,7 +131,7 @@ HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
         predList.push_back(mkHPredAny("kind1"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock n1 = parser_kind(res.matchs["kind1"]);
+            HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);
             return std::make_shared<CBlockActionApply>(n1, nullptr );
         }
     }
@@ -119,7 +140,7 @@ HBlockActionApply CParser::parse_AssertionAction_ApplyngTo(HTerm term) {
 }
 
 
-//HBlock CParser::parseAssertion_DecideWhat(HTerm term) {
+//HBlock NSParser::CParser::parseAssertion_DecideWhat(HTerm term) {
 //    return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
 //}
 

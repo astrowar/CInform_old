@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 18/08/16.
 //
@@ -10,20 +13,26 @@
 
 using namespace std;
 
-bool CBlockInterpreter::is_derivadeOf(HBlockKind a, HBlockKind b) {
-    if (a->named == "" || b->named == "") return false;
-    if (a->named == b->named) return true;
+
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
+bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
+    if (aDerivade->named == "" || Base->named == "") return false;
+    if (aDerivade->named == Base->named) return true;
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
             if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
 
-                if (nbase->named == a->named) {
+                if (nbase->named == aDerivade->named) {
                     if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
-                        if (k->baseClasse->named == b->named) {
+                        if (k->baseClasse->named == Base->named) {
                             return true;
                         } else {
-                            bool bnn = is_derivadeOf(k->baseClasse, b);
+                            bool bnn = is_derivadeOf(k->baseClasse, Base);
                             if (bnn) {
                                 return true;
                             }
@@ -43,7 +52,7 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
         if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
-            if (nbase->named == a->named)  //  A -> X
+            if ( nbase->named == a->named)  //  A -> X
             {
                 if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
 
@@ -86,7 +95,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
                         if (k->named == b->named) {
                             return true;
                         } else {
-                            HBlock bnext = resolve_string(k->named,localsEntry);
+                            CBlocking::HBlock bnext = resolve_string(k->named,localsEntry);
                             if (HBlockKind baseClasse = asHBlockKind(bnext)) {
                                 bool bnn = is_derivadeOf(baseClasse, b);
                                 if (bnn) {

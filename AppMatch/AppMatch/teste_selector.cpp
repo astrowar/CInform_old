@@ -1,10 +1,14 @@
 #include "BaseTest.hpp"
 #include <cassert>
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace NSParser;
+
 
 void testeSelector_1()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-	CParser parse(interpreter);
+	CParser parse;
 
 	string slong = R"(
 room is an kind
@@ -22,7 +26,7 @@ box is in hall
 )";
 
 	
-	interpreter->execute_init(parse.parser_text(slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse,slong, ISLOG));
 
 	auto sentence_0 = "the coil is stuck to box ";
 	auto sentence_1 = "the coil is stuck to a thing ";
@@ -32,20 +36,20 @@ box is in hall
 
 	printf("---------------------------------------------\n");
 	auto ret_true_a = interpreter->query(parse.Parser_Condition(sentence_0, ISLOG));
-	assert(ret_true_a == QEquals);
+	assert(ret_true_a.result == QEquals);
 	
 	auto ret_true_b = interpreter->query(parse.Parser_Condition(sentence_1, ISLOG));
-	assert(ret_true_b == QEquals);
+	assert(ret_true_b.result == QEquals);
 
 	
 	auto ret_true_c = interpreter->query(parse.Parser_Condition(sentence_2, ISLOG));
-	assert(ret_true_c == QEquals);
+	assert(ret_true_c.result == QEquals);
 
 	auto ret_true_d = interpreter->query(parse.Parser_Condition(sentence_3, ISLOG));
-	assert(ret_true_d == QEquals);
+	assert(ret_true_d.result == QEquals);
 
 	auto ret_true_e = interpreter->query(parse.Parser_Condition(sentence_4, ISLOG));
-	assert(ret_true_e == QEquals);
+	assert(ret_true_e.result == QEquals);
 
 
 

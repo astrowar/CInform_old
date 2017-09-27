@@ -1,22 +1,16 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
-HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c )
-{
-    if (c != nullptr && c->type() == VarSlotType ::EnumSlot)
-        return std::static_pointer_cast<CVariableSlotEnum>(c);
-    return nullptr;
-}
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
-HVariableSlotBool asHVariableSlotBool(HVariableSlot c )
-{
-    if (c != nullptr && c->type() == VarSlotType ::BoolSlot)
-        return std::static_pointer_cast<CVariableSlotBool>(c);
-    return nullptr;
-}
+
+ 
 
  
 
@@ -47,15 +41,64 @@ void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) 
     }
 }
 
+void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_isDefaultAssign kvar)
+{
+	
+	for (auto &c : instancias)
+	{
+		if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {
 
+			if(is_derivadeOf(c->baseKind , dkind ) )
+			{
+				if (HBlockNoum noumSet = asHBlockNoum(kvar->get_definition())) 
+				{					 
+					//c->set(noumSet);
+				}
+			}
+		}
+		if (HBlockProperty  dproperty = asHBlockProperty(kvar->get_obj())) {
 
+			if (HBlockKind  dp_kind = asHBlockKind(dproperty->obj))
+			{
+				 
+				if (is_derivadeOf(c->baseKind, dp_kind))
+				{
+					if (HBlockNoum   dp_propname = asHBlockNoum(dproperty->prop))
+					{
+						auto kproperty = c->get_property(dp_propname->named);
+						if (kproperty != nullptr) 
+							if (kproperty->value == nullptr)
+							{
 
+								c->set_property(dp_propname->named, kvar->get_definition());
+							}
+					}
+				}
+			}
+		}
+	}
+
+}
+
+void CBlockInterpreter::add_namedVariableToAllinstances(HBlockKind_InstanceVariable kvar)
+{
+	for (auto &c : instancias)
+	{
+		if (is_derivadeOf(c, kvar->kind, nullptr))
+		{
+			HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
+			HBlockKind nkindBase = resolve_kind(v->kind_name->named);
+			c->newNamedVariable(v->property_name, nkindBase);
+		}		 
+	}
+}
 
 
 HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // nova instance e inicializa os fields
 
-    HBlockInstance c = make_shared<CBlockInstance>(named, kind);
+    HBlockInstance c = make_shared<CBlockInstance>(named, instancia_id, kind);
+	instancia_id++;
 	 
     // inicia os fields CAN_BE
 
@@ -85,7 +128,8 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     }
 
 	//named variables
-	for (auto &k : kinds) {
+	for (auto &k : kinds) 
+	{
 		for (auto &kvar : kind_named_variables) {
 			if (kvar->kind->named == k->named)
 			{
@@ -93,13 +137,15 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 				HBlockKind nkindBase = resolve_kind(v->kind_name->named);
 				c->newNamedVariable(v->property_name, nkindBase);
 			}
+			 
 		}
 	}
 
 
     // assign the defaults of kinds
 
-	for (auto &k : kinds) {
+	for (auto &k : kinds) 
+	{
 		for (auto &kvar : default_assignments) {
 			if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {
 
@@ -109,14 +155,12 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 					}
 				}
 			}
-
 			if (HBlockProperty  dproperty = asHBlockProperty(kvar->get_obj())) {
 
 				if (HBlockKind  dp_kind = asHBlockKind(dproperty->obj))
 				{
 					if (dp_kind->named == k->named)
 					{
-
 						if (HBlockNoum   dp_propname = asHBlockNoum(dproperty->prop ))
 						{
 							c->set_property(dp_propname->named, kvar->get_definition());
@@ -124,7 +168,6 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 					}
 				}
 			}
-
 		}
 	}
 

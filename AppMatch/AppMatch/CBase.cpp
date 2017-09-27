@@ -1,33 +1,49 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "CBase.hpp"
 #include "EqualsResult.hpp"
+#include <algorithm>
 
-CString::CString(std::string _s) : s(_s) {
+using namespace NSTerm;
+
+ CString::CString(std::string _s) : s(_s) {
 }
 
-std::string CString::repr() {
+std::string  CString::repr() {
     return this->s;
 }
 
-EqualsResul equals(CString *c1, CString *c2) {
+EqualsResul  equals_cstring( CString *c1, CString *c2) {
     if (c1 == nullptr || c2 == nullptr) return Undefined;
     if (c1->s == c2->s) return Equals;
+	if ((c1->s.size() == c2->s.size()) && (tolower(c1->s[0]) == tolower(c2->s[0])))
+	{
+		int n = c1->s.size();
+		for (int j = 0; j< n; ++j)
+		{
+			if (tolower(c1->s[j]) != tolower(c2->s[j])) return NotEquals;
+		}
+		return Equals;
+	}
+
     return NotEquals;
 }
 
-EqualsResul equals(CNumber *c1, CNumber *c2) {
+EqualsResul  equals_cnumber(CNumber *c1, CNumber *c2) {
     if (c1 == nullptr || c2 == nullptr) return Undefined;
     if (c1->val == c2->val) return Equals;
     return NotEquals;
 }
 
-EqualsResul equals(CList *c1, CList *c2) {
+EqualsResul equals_clist(CList *c1, CList *c2) {
     if (c1 == nullptr || c2 == nullptr) return Undefined;
     if (c1->lst.size() != c2->lst.size()) return NotEquals;
     if (c1->lst.empty()) return Equals;
     auto it1 = c1->lst.begin();
     auto it2 = c2->lst.begin();
     while (it1 != c1->lst.end()) {
-        EqualsResul q = equals((*it1).get(), (*it2).get());
+        EqualsResul q = NSTerm::equals((*it1).get(), (*it2).get());
         if (q != Equals) return NotEquals;
         ++it1;
         ++it2;
@@ -90,7 +106,7 @@ CTerm *CList::removeArticle() {
     return this;
 }
 
-EqualsResul equals(CTerm *c1, CTerm *c2) {
+EqualsResul NSTerm::equals(CTerm *c1, CTerm *c2) {
     EqualsResul q ;
    /* q = equals(dynamic_cast<CString *>(c1), dynamic_cast<CString *>(c2));
     if (q != Undefined) return q;
@@ -99,47 +115,47 @@ EqualsResul equals(CTerm *c1, CTerm *c2) {
     q = equals(asCList(c1), asCList(c2));
     if (q != Undefined) return q;*/
 
-    q = equals(asCString(c1), asCString(c2));
+    q = equals_cstring(NSTerm::asCString(c1), NSTerm::asCString(c2));
     if (q != Undefined) return q;
-    q = equals(asCNumber(c1), asCNumber(c2));
+    q = equals_cnumber(NSTerm::asCNumber(c1), NSTerm::asCNumber(c2));
     if (q != Undefined) return q;
-    q = equals(asCList(c1), asCList(c2));
+    q = equals_clist(NSTerm::asCList(c1), NSTerm::asCList(c2));
     if (q != Undefined) return q;
 
     return Undefined;
 }
 
-EqualsResul equals(HTerm c1, HTerm c2) {
-    return equals(c1.get(), c2.get());
+EqualsResul NSTerm::equals(HTerm c1, HTerm c2) {
+    return NSTerm::equals(c1.get(), c2.get());
 }
 
-HTerm make_number(int x) {
+HTerm NSTerm::make_number(int x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CNumber>(x));
 }
 
-HTerm make_list(std::initializer_list<HTerm> x) {
+HTerm NSTerm::make_list(std::initializer_list<HTerm> x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CList>(x));
 }
 
-CList* asCList(CTerm* c)
+CList* NSTerm::asCList(CTerm* c)
 {
     if (c->type() == TermList) return static_cast<CList*>(c);
     return nullptr;
 }
 
-CNumber* asCNumber(CTerm* c)
+CNumber* NSTerm::asCNumber(CTerm* c)
 {
     if (c->type() == TermNumber) return static_cast<CNumber*>(c);
     return nullptr;
 }
 
-CString* asCString(CTerm* c)
+CString* NSTerm::asCString(CTerm* c)
 {
     if (c->type() == TermString) return static_cast<CString*>(c);
     return nullptr;
 }
 
-HTerm make_string(std::string x) {
+HTerm NSTerm::make_string(std::string x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CString>(x));
 }
 

@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 19/08/16.
 //
@@ -5,8 +8,11 @@
 #include "BlockInstance.hpp"
  
 #include "sharedCast.hpp"
+#include "BlockInterpreter.hpp"
 
 using  namespace  std   ;
+using namespace CBlocking;
+
 
 CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
 {
@@ -14,7 +20,7 @@ CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
 	this->value = enums->values.front();
 }
 
-CVariableSlotBool::CVariableSlotBool(HBlockNoum valueDef)
+CVariableSlotBool::CVariableSlotBool(CBlocking::HBlockNoum valueDef)
 {
 	this->valueDefinition = valueDef;
 	this->value = true;
@@ -22,15 +28,16 @@ CVariableSlotBool::CVariableSlotBool(HBlockNoum valueDef)
 
  
 
-CVariableNamed::CVariableNamed(HBlockNoum _name, HBlockKind _kind, HBlock _value): value(_value), kind(_kind), name(_name)
+CVariableNamed::CVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CBlocking::HBlock _value): value(_value), kind(_kind), name(_name)
 {
 }
 
  
 
-CBlockInstance::CBlockInstance( string _named, HBlockKind _baseKind) : named(_named), baseKind(_baseKind)
+ 
+
+CBlockInstance::CBlockInstance(string _named, int _id, HBlockKind _baseKind) : named(_named), id(_id), baseKind(_baseKind)
 {
-	 
 }
 
 void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )
@@ -39,13 +46,18 @@ void CBlockInstance::newEnumVariableSlot(HBlockEnums definition  )
 
 }
 
-void CBlockInstance::newBoolVariableSlot(HBlockNoum value)
+void CBlockInstance::newBoolVariableSlot(CBlocking::HBlockNoum value)
 {
 	this->anomimousSlots.push_back(make_shared< CVariableSlotBool> (value));
 }
 
 void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
+	//verifica se ja nao existe algo assim
+	for(auto s : this->namedSlots)
+	{
+		if (s->name->named == called->named) return; //ja tem um slot com esse nome 
+	}
 	this->namedSlots.push_back(make_shared< CVariableNamed>(called, kind, nullptr));
 }
 
@@ -55,7 +67,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 	//Anonymous SET
 	for(auto &va :	this->anomimousSlots)
 	{
-		if (HVariableSlotEnum   venum = asHVariableSlotEnum(va))
+		if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains( c_block->named ))
 			{
@@ -63,7 +75,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 				return;
 			}
 		}
-		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
+		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named )
 			{
@@ -80,7 +92,7 @@ void CBlockInstance::unset(HBlockNoum c_block)
 	for (auto &va : this->anomimousSlots)
 	{
 
-		if (HVariableSlotBool  vbool = asHVariableSlotBool(va))
+		if (HVariableSlotBool  vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == c_block->named)
 			{
@@ -96,14 +108,14 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 
 	for (auto &va : this->anomimousSlots)
 	{
-		if (HVariableSlotEnum   venum = asHVariableSlotEnum(va))
+		if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
 				return true ;
 			}
 		}
-		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
+		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{
@@ -118,7 +130,6 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
-
 		if (va->name->named == pnamed)
 		{
 			//logMessage(pnamed + " has? " + va->name->named);
@@ -128,7 +139,7 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 	return nullptr;
 }
 
-void CBlockInstance::set_property(string  pnamed, HBlock value)
+void CBlockInstance::set_property(string  pnamed, CBlocking::HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -142,19 +153,36 @@ void CBlockInstance::set_property(string  pnamed, HBlock value)
 	return;
 }
 
+
+bool NNisSameString(const string &s1, const string &s2)
+{
+	if (s1 == s2) return true;
+	if ((s1.size() == s2.size()) && (tolower(s1[0]) == tolower(s2[0])))
+	{
+		int n = s1.size();
+		for (int j = 0; j< n; ++j)
+		{
+			if (tolower(s1[j]) != tolower(s2[j])) return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+
 QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
 	for (auto &va : this->anomimousSlots)
 	{
-		if (HVariableSlotEnum  venum = asHVariableSlotEnum(va))
+		if (HVariableSlotEnum  venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
-				if (venum->value->named == value->named) return QEquals;
+				if (NNisSameString( venum->value->named , value->named))  return QEquals;
 				return QNotEquals;
 			}
 		}
-		if (HVariableSlotBool   vbool = asHVariableSlotBool(va))
+		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{

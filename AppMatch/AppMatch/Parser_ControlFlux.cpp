@@ -1,11 +1,80 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 12/10/16.
 //
 #include "Parser.hpp"
 #include "CBlockControlFlux.hpp"
 #include "sharedCast.hpp"
+
+
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
  
-HBlock   CParser::parser_if_condition(HTerm term  )
+
+HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   term)
+{
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+
+			predList.push_back(mk_HPredLiteral("stop"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+			predList.push_back(mk_HPredLiteral("with"));
+			predList.push_back(mkHPredAny("BValue"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock BValue = Expression::parser_expression(p,res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			return std::make_shared<CBlockExecutionResultFlag>( PhaseResultFlag::actionStop , BValue);
+		}
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) 
+		{
+			predList.push_back(mk_HPredLiteral("stop"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+		}
+	 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::actionStop, nullptr);
+		}
+	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("continue"));
+			predList.push_back(mk_HPredLiteral("the"));
+			predList.push_back(mk_HPredLiteral("action"));
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::actionContinue, nullptr);
+		}
+	}
+	return nullptr;
+
+}
+
+
+HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 {
     {
         std::vector<HPred> predList;
@@ -17,10 +86,10 @@ HBlock   CParser::parser_if_condition(HTerm term  )
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            HBlock AValue = parser_if_condition(res.matchs["AValue"]  );
+            HBlock AValue = parser_if_condition(p,res.matchs["AValue"]  );
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_if_condition(res.matchs["BValue"] );
+            HBlock BValue = parser_if_condition(p,res.matchs["BValue"] );
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockBooleanOR>(AValue, BValue);
@@ -32,20 +101,42 @@ HBlock   CParser::parser_if_condition(HTerm term  )
 		std::vector<HPred> predList;
 
 		predList.push_back(mkHPredAny("AValue"));
-		predList.push_back(verb_IS());
-		predList.push_back(mk_HPredLiteral("not"));
-		predList.push_back(verbList);
+		predList.push_back(mk_HPredLiteral("and"));
 		predList.push_back(mkHPredAny("BValue"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
-
-			HBlock AValue = parser_expression(res.matchs["AValue"]);
+			HBlock AValue = parser_if_condition(p, res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlock BValue = parser_if_condition(p, res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			return std::make_shared<CBlockBooleanAND>(AValue, BValue);
+		}
+	}
+
+
+
+	{
+		std::vector<HPred> predList;
+
+		predList.push_back(mkHPredAny("AValue"));
+		predList.push_back(verb_IS());
+		predList.push_back(mk_HPredLiteral("not"));
+		predList.push_back( p->verbList);
+		predList.push_back(mkHPredAny("BValue"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto vrepr = CtoString(expandBract(res.matchs[ p->verbList->named]));
+
+			HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
 			return std::make_shared<CBlockBooleanNOT>(vbool);
@@ -57,18 +148,18 @@ HBlock   CParser::parser_if_condition(HTerm term  )
 
 		predList.push_back(mkHPredAny("AValue"));
 		predList.push_back(verb_IS());
-		predList.push_back(verbList);
+		predList.push_back(p->verbList);
 		predList.push_back(mkHPredAny("BValue"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+			auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 
-			HBlock AValue = parser_expression(res.matchs["AValue"]);
+			HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+			HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
@@ -83,18 +174,18 @@ HBlock   CParser::parser_if_condition(HTerm term  )
 
         predList.push_back(mkHPredAny("AValue"));
         predList.push_back(mk_HPredLiteral("not"));
-        predList.push_back(verbList);
+        predList.push_back(p->verbList);
         predList.push_back(mkHPredAny("BValue"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+            HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
 			return std::make_shared<CBlockBooleanNOT>(vbool);
@@ -105,18 +196,18 @@ HBlock   CParser::parser_if_condition(HTerm term  )
         std::vector<HPred> predList;
 
         predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(verbList);
+        predList.push_back(p->verbList);
         predList.push_back(mkHPredAny("BValue"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            auto vrepr = CtoString(expandBract(res.matchs[verbList->named]));
+            auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
 
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock  BValue = parser_expression_match(res.matchs["BValue"]);
+            HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
@@ -127,18 +218,18 @@ HBlock   CParser::parser_if_condition(HTerm term  )
     {
         std::vector<HPred> predList;
 
-        predList.push_back(mkHPredAny("AValue"));
-        predList.push_back(mk_HPredLiteral("not"));
+        predList.push_back(mkHPredAny("AValue"));        
         predList.push_back(verb_IS());
+		predList.push_back(mk_HPredLiteral("not"));
         predList.push_back(mkHPredAny("BValue"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_expression_match(res.matchs["BValue"]);
+            HBlock BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             auto vbool =  std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
@@ -158,10 +249,10 @@ HBlock   CParser::parser_if_condition(HTerm term  )
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
-            HBlock AValue = parser_expression(res.matchs["AValue"]);
+            HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = parser_expression_match(res.matchs["BValue"]);
+            HBlock BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
@@ -169,16 +260,17 @@ HBlock   CParser::parser_if_condition(HTerm term  )
     }
 
 	 
-    return parser_expression ( term); //default ...
+    return Expression::parser_expression (p, term); //default ...
 
     return nullptr;
 
 }
 
-HBlock   CParser::parser_control_else(std::vector<HTerm>& term,   HGroupLines inner, ErrorInfo *err) {
+HBlock   NSParser::ControlFlux::parser_control_else(CParser *p, std::vector<HTerm>& term,   HGroupLines inner, ErrorInfo *err) {
 	{
 		static std::vector<HPred> predList = {};
-		if (predList.empty()) {
+		if (predList.empty()) 
+		{
 			predList.push_back(mk_HPredLiteral_OR("else", { "else" , "otherwise" }));
 			predList.push_back(mk_HPredLiteral(":"));
 			predList.push_back(mkHPredAny("body"));
@@ -189,7 +281,7 @@ HBlock   CParser::parser_control_else(std::vector<HTerm>& term,   HGroupLines in
 
 			
 
-			HBlock ABody = parser_stmt(res.matchs["body"], inner, err);
+			HBlock ABody = Statement::parser_stmt(p,res.matchs["body"], inner, err);
 			if (ABody == nullptr || inner != nullptr)
 			{
 				err->setError("error on Select Item ");
@@ -213,7 +305,7 @@ HBlock   CParser::parser_control_else(std::vector<HTerm>& term,   HGroupLines in
         if (res.result == Equals) {
            
 			 
-			HBlock executeBlock = parser_stmt_inner(inner, err);
+			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
 			if (executeBlock == nullptr)  return nullptr;
 			auto token_else = std::make_shared<CBlockControlToken >("else",executeBlock);
 			return token_else;
@@ -227,7 +319,7 @@ HBlock   CParser::parser_control_else(std::vector<HTerm>& term,   HGroupLines in
 }
 
 
-HBlock   CParser::parser_control_end(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+HBlock   NSParser::ControlFlux::parser_control_end(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	//{
 	//	static std::vector<HPred> predList = {};
@@ -246,7 +338,38 @@ HBlock   CParser::parser_control_end(std::vector<HTerm>& term, HGroupLines inner
 }
 
 
-HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err) 
+ 
+HBlock  NSParser::ControlFlux::parser_control_for_loop(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+{
+	if (inner != nullptr)
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty()) {
+			predList.push_back(mk_HPredLiteral("for"));
+			predList.push_back(mk_HPredLiteral("each"));
+			predList.push_back(mkHPredAny("Condition"));
+			predList.push_back(mk_HPredLiteral(":"));			 
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch ill_variable = ExpressionMatch::parser_MatchArgument(p, res.matchs["Condition"]);
+			HBlock executeBlock = Statement::parser_stmt_inner(p, inner, err);
+			if (executeBlock == nullptr)
+			{
+				err->setError("missing Body loop block ");
+				return nullptr;
+			}
+			auto control_forLoop = std::make_shared<CBlockControlForEach >(ill_variable, executeBlock );
+			return control_forLoop;
+		}
+	
+	}
+
+	return nullptr;
+}
+
+HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	if(inner == nullptr)
 	{
@@ -262,9 +385,9 @@ HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, 
 		{
 
 
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"] );
+			HBlock ACondition = parser_if_condition(p,res.matchs["Condition"] );
 
-			HBlock ABody = parser_stmt(res.matchs["body"], nullptr, err); // aqui tem erro
+			HBlock ABody = Statement::parser_stmt(p, res.matchs["body"], nullptr, err); // aqui tem erro
 			if (ABody == nullptr  )
 			{
 				logError(res.matchs["body"]->repr());
@@ -287,8 +410,8 @@ HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
         {
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"]);
-			HBlock executeBlock = parser_stmt_inner(inner, err);
+			HBlock ACondition = parser_if_condition(p,res.matchs["Condition"]);
+			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
 			if (executeBlock == nullptr)
 			{
 				err->setError("missing IF block ");
@@ -300,7 +423,7 @@ HBlock  CParser::parser_control_if(std::vector<HTerm>& term, HGroupLines inner, 
 	}
 	return nullptr;
 }
-HBlock  CParser::parser_control_unless(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+HBlock  NSParser::ControlFlux::parser_control_unless(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 
 	{
@@ -313,8 +436,8 @@ HBlock  CParser::parser_control_unless(std::vector<HTerm>& term, HGroupLines inn
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock ACondition = parser_if_condition(res.matchs["Condition"]);
-			HBlock executeBlock = parser_stmt_inner(inner, err);
+			HBlock ACondition = parser_if_condition(p,res.matchs["Condition"]);
+			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
 			if (executeBlock == nullptr)
 			{
 				err->setError("missing Unless block ");
@@ -326,12 +449,12 @@ HBlock  CParser::parser_control_unless(std::vector<HTerm>& term, HGroupLines inn
 	}
 	return nullptr;
 }
-std::list<HBlockControlSelectItem> CParser::get_CBlockControlSelectItem(HBlockComandList cmdList, ErrorInfo* err)
+std::list<HBlockControlSelectItem> NSParser::ControlFlux::get_CBlockControlSelectItem(CParser *p, HBlockComandList cmdList, ErrorInfo* err)
 {
 	std::list<HBlockControlSelectItem> ret;
 	for(auto e: cmdList->lista)
 	{
-		if (auto eitem = aHBlockControlSelectItem(e))
+		if (auto eitem = DynamicCasting::asHBlockControlSelectItem(e))
 		{			
 			ret.push_back(eitem);
 		}
@@ -344,7 +467,7 @@ std::list<HBlockControlSelectItem> CParser::get_CBlockControlSelectItem(HBlockCo
 	return ret;
 }
 
-HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+HBlockControlSelect  NSParser::ControlFlux::parser_control_select(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	 
 
@@ -360,9 +483,9 @@ HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm>& term, HG
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock ACondition = parser_expression(res.matchs["object"] );
+			HBlock ACondition = Expression::parser_expression(p,res.matchs["object"] );
 
-			HBlockComandList executeBlockRaw = parser_stmt_inner(inner, err);
+			HBlockComandList executeBlockRaw = Statement::parser_stmt_inner(p,inner, err);
 
 			if (executeBlockRaw == nullptr)
 			{
@@ -371,7 +494,7 @@ HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm>& term, HG
 			}
 			// Convert execute block to Select Item
 
-			auto  executeBlock = get_CBlockControlSelectItem(  executeBlockRaw, err);
+			auto  executeBlock = get_CBlockControlSelectItem(p,  executeBlockRaw, err);
 			if (err->hasError)
 			{
 				return nullptr;
@@ -389,7 +512,7 @@ HBlockControlSelect  CParser::parser_control_select(std::vector<HTerm>& term, HG
 
 
 
-HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	{
 		static std::vector<HPred> predList = {};
@@ -403,14 +526,14 @@ HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm>&
 		if (res.result == Equals)
 		{
 			
-			HBlock ABody = parser_stmt (  res.matchs["body"] , inner , err);
+			HBlock ABody = Statement::parser_stmt ( p,  res.matchs["body"] , inner , err);
 			if (ABody == nullptr || inner != nullptr)
 			{
 				logMessage( res.matchs["body"]->repr());				 
 				err->setError("error on Select Item ");
 				return nullptr;
 			}
-			HBlock ASeletor = parser_expression(res.matchs["object"]);
+			HBlock ASeletor = Expression::parser_expression(p,res.matchs["object"]);
 			return  std::make_shared<CBlockControlSelectItem  >(ASeletor, ABody );			
 		}
 	}
@@ -426,14 +549,10 @@ HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm>&
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			HBlock ASeletor = parser_expression(res.matchs["object"]);
+			HBlock ASeletor = Expression::parser_expression(p,res.matchs["object"]);
 			
-			HBlockComandList ABody = parser_stmt_inner(inner, err);
-			if (ABody == nullptr)
-			{
-				err->setError("missing if block  ");
-				return nullptr;
-			}
+			HBlockComandList ABody = Statement::parser_stmt_inner(p,inner, err);
+			 
 			if (ABody == nullptr)
 			{
 				err->setError("error on Select Item ");
@@ -450,33 +569,39 @@ HBlockControlSelectItem  CParser::parser_control_select_item(std::vector<HTerm>&
 
 
 
-HBlock  CParser::STMT_control_flux(std::vector<HTerm>& term ,   HGroupLines inner, ErrorInfo *err)
+HBlock  NSParser::ControlFlux::STMT_control_flux(CParser *p, std::vector<HTerm>& term ,   HGroupLines inner, ErrorInfo *err)
 {
 
 //identifica os IF, then ,else, while ,case , select da vida
 
-	 
+	HBlock rblock_flagreturn = (stmt_resultflag(p,term ));
+	if (err->hasError) return nullptr;
+	if (rblock_flagreturn != nullptr) return rblock_flagreturn;
 
 
-	HBlock rblock_select = (parser_control_select(term, inner, err));
+	HBlock rblock_select = (parser_control_select(p,term, inner, err));
 	if (err->hasError) return nullptr;
 	if (rblock_select != nullptr) return rblock_select;
 
 
-	HBlock rblock_select_item = (parser_control_select_item (term, inner, err));
+	HBlock rblock_select_item = (parser_control_select_item (p,term, inner, err));
 	if (err->hasError) return nullptr;
 	if (rblock_select_item != nullptr) return rblock_select_item;
 
 
-	HBlock rblock_if = (parser_control_if(term, inner, err));
+	HBlock rblock_if = (parser_control_if(p,term, inner, err));
 	if (err->hasError) return nullptr;
 	if (rblock_if != nullptr) return rblock_if;
 	
 
 	 
 	 
-		HBlock rblock_else = (parser_control_else(term,  inner, err));
-		if (rblock_else != nullptr) return rblock_else;
+	HBlock rblock_else = (parser_control_else(p,term,  inner, err));
+	if (rblock_else != nullptr) return rblock_else;
+
+
+	HBlock rblock_for_loop = (parser_control_for_loop(p, term, inner, err));
+	if (rblock_for_loop != nullptr) return rblock_for_loop;
 	 
 
 	//HBlock rblock_end = (parser_control_end(term, inner, err));
@@ -487,7 +612,7 @@ HBlock  CParser::STMT_control_flux(std::vector<HTerm>& term ,   HGroupLines inne
     return nullptr;
 }
 
-std::list<HBlock >   CParser::post_process_tokens(std::list< HBlock  >  lst, ErrorInfo* err)
+std::list<HBlock >   NSParser::ControlFlux::post_process_tokens(CParser *p,  std::list<HBlock>  lst, ErrorInfo* err)
 {
 	 
 	// junta comandos que vem de varias linhas em um unico
@@ -497,29 +622,28 @@ std::list<HBlock >   CParser::post_process_tokens(std::list< HBlock  >  lst, Err
 	{		
 		is_first = (it == lst.begin());
 		{
-			if (HBlockControlToken tk = aHBlockControlToken(*it))
+			if (HBlockControlToken tk = DynamicCasting::asHBlockControlToken(*it))
 			{
 				// Entao o anterior deve ser um Comando que aceita tokens
 
 				if (tk->token == "else")
-				{
-					 
+				{  
 					if (is_first )
 					{
 						err->setError("else without if  ");
 						return std::list< HBlock  >();
 					}
 					auto iprev = std::prev(it);
-					if (HBlockControlIF controlIF = aHBlockControlIF(*iprev))
+					if (HBlockControlIF controlIF = DynamicCasting::asHBlockControlIF(*iprev))
 					{
 						controlIF->block_else = tk->contents;
-						it = lst.erase(it);
+						 lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}
-					else if (HBlockControlSelect controlSelect = aHBlockControlSelect(*iprev))
+					else if (HBlockControlSelect controlSelect = DynamicCasting::asHBlockControlSelect(*iprev))
 					{
 						controlSelect->block_else = tk->contents;
-						it = lst.erase(it);
+						 lst.erase(it);
 						it = lst.begin(); // reinicia 
 					}
 					else

@@ -1,12 +1,20 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "Parser.hpp"
  
  
 #include "CBlockRelation.hpp"
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
+
+
 
 string  parser_OtherCalledAs(HTerm term)
 {
 	std::vector<HPred> predList; 
-	predList.push_back(mk_HPredLiteral("called"));
+	predList.push_back( mk_HPredLiteral("called"));
 	predList.push_back(mkHPredAny("var_named"));
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
@@ -16,58 +24,8 @@ string  parser_OtherCalledAs(HTerm term)
 	}
 	return "";
 }
-HBlockArgumentInput CParser::parser_KindCalled(HTerm term)
-{
-	
-	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("various")); //Various never has name called
-		predList.push_back(mkHPredAny("kind"));		
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
-		{			
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
-			HBlockKind argumentKindItem = std::make_shared<CBlockKindValue>(kindStr);
-			HBlockKind argumentKind = std::make_shared<CBlockListOfKind>(argumentKindItem);
-			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
-			return argumentEntry;
-		}
-	}
-
-
-	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("kind"));
-		predList.push_back(mk_HPredLiteral("called"));
-		predList.push_back(mkHPredAny("var_named"));
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) 
-		{
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(kindStr);
-			string argumentName = (res.matchs["var_named"]->removeArticle()->repr());
-			HBlockArgumentInput argumentEntry  = std::make_shared<CBlockArgumentInput>(argumentKind ,argumentName );			 
-			return argumentEntry;
-		}
-	}
-
-	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("kind")); 
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
-		{		 
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());		 
-			auto rp = kindStr;
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(rp);
-			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
-			return argumentEntry;
-		}
-	}
-	return nullptr;
-}
-
-HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
+ 
+HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<HTerm>&  term)
 {
 
 	// Simetricos em grupo
@@ -106,7 +64,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p,res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
 				auto arg2 = std::make_shared<CBlockArgumentInput>(arg1->kind, "");
@@ -133,7 +91,7 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
 				auto arg2 = std::make_shared<CBlockArgumentInput>(arg1->kind, "");
@@ -169,9 +127,9 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
@@ -199,9 +157,9 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
@@ -229,10 +187,10 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
@@ -263,15 +221,15 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
 
-					auto condition = parser_if_condition(res.matchs["Condition"]);
+					auto condition = ControlFlux::parser_if_condition(p, res.matchs["Condition"]);
 
 					auto relation =   std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
 
@@ -299,10 +257,10 @@ HBlock CParser::STMT_relates_Assertion(std::vector<HTerm>&  term)
 		{
 			//string rname = res.matchs["relationName"]->removeArticle()->repr();
 			string rname = CtoString(res.matchs["relationName"]->removeArticle());
-			auto arg1 = parser_KindCalled(res.matchs["K1"]);
+			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_KindCalled(res.matchs["K2"]);
+				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;

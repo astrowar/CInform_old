@@ -2,75 +2,80 @@
 // Created by Eraldo Rangel on 19/08/16.
 //
 
+ 
+
 #ifndef APPMATCH_BLOCKINSTANCE_H
 #define APPMATCH_BLOCKINSTANCE_H
 
 #include "BlockInterpreter.hpp"
 #include <string>
 #include "CBlockNamedVariable.hpp"
-
-class CBlockInstance : public CBlock //retorna um valor generico
+namespace CBlocking
 {
-public:
-    virtual void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockInstance; }
 
-    CBlockInstance(string _named, HBlockKind base);
+	class CBlockInstance : public CBlock //retorna um valor generico
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockInstance; }
 
-    void newEnumVariableSlot(HBlockEnums definition);
+		CBlockInstance(string _named, int id, HBlockKind base);
 
-    void newBoolVariableSlot(HBlockNoum value);
+		void newEnumVariableSlot(HBlockEnums definition);
 
-    void newNamedVariable(HBlockNoum called, HBlockKind kind);
+		void newBoolVariableSlot(HBlockNoum value);
 
-    void set(HBlockNoum c_block);
+		void newNamedVariable(HBlockNoum called, HBlockKind kind);
 
-    void unset(HBlockNoum c_block);
+		void set(HBlockNoum c_block);
 
-    bool has_slot(HBlockNoum value);
+		void unset(HBlockNoum c_block);
 
-    HVariableNamed get_property(string named);
+		bool has_slot(HBlockNoum value);
 
-    void set_property(string cs, HBlock value);
+		HVariableNamed get_property(string named);
 
-    QueryResul is_set(HBlockNoum value);
+		void set_property(string cs, CBlocking::HBlock value);
 
-    string named;
-    HBlockKind baseKind;
+		QueryResul is_set(HBlockNoum value);
 
-    virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
+		string named; // nome public
+		int id;  // id unico para cada instancia .. serve para saber se estamos a falar da mesma instancia
+		HBlockKind baseKind;
 
-    std::vector<HVariableSlot> anomimousSlots;
-    std::vector<HVariableNamed> namedSlots;
+		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 
-};
+		std::vector<HVariableSlot> anomimousSlots;
+		std::vector<HVariableNamed> namedSlots;
 
-using HBlockInstance = std::shared_ptr<CBlockInstance>;
+	};
 
-
-
-
-
-
-
-
-//Values Instances .. Text , Number , DateTime 
+	using HBlockInstance = std::shared_ptr<CBlockInstance>;
 
 
 
 
-class CBlockText : public CBlockInstance //retorna um valor generico
-{
-public:
-	virtual void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::BlockText; }
-	std::string contents;
-	CBlockText(std::string _contents) :CBlockInstance( "text", std::make_shared<CBlockKindValue>("text") ), contents(_contents) {}
-};
-using HBlockText = std::shared_ptr<CBlockText>;
 
 
 
 
+	//Values Instances .. Text , Number , DateTime 
+
+
+
+
+	class CBlockText : public CBlock //retorna um valor generico
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockText; }
+		std::string contents;
+		CBlockText(std::string _contents) : contents(_contents) {}
+	};
+	using HBlockText = std::shared_ptr<CBlockText>;
+
+
+
+}
 
 #endif //APPMATCH_BLOCKINSTANCE_H

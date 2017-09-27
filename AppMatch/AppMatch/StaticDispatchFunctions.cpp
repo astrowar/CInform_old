@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 23/08/16.
 //
@@ -9,20 +12,25 @@
 #include "CBlockMatch.hpp"
 #include "CBlockBoolean.hpp"
 #include "CblockAssertion.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+ 
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
-staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(
+
+
+NSParser::staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(
         _argumentsMatch), action(_action) {
 
 }
 
-staticDispatchEntry::staticDispatchEntry() : entryArguments(nullptr), action(nullptr) {
+NSParser::staticDispatchEntry::staticDispatchEntry() : entryArguments(nullptr), action(nullptr) {
 
 }
 
  
 
-SentenceDispatchPredicate::SentenceDispatchPredicate(std::vector<HPred> _matchPhase, HBlockMatch _matchPhaseDynamic,
+NSParser::SentenceDispatchPredicate::SentenceDispatchPredicate(std::vector<HPred> _matchPhase, HBlockMatch _matchPhaseDynamic,
 	HBlock _output, int _entryId) : matchPhase(_matchPhase),
 	_matchPhaseDynamic(_matchPhaseDynamic),
 	output(_output),
@@ -30,7 +38,7 @@ SentenceDispatchPredicate::SentenceDispatchPredicate(std::vector<HPred> _matchPh
 
 }
 
-int CParser::registerStaticDispatch(int entry, HBlockMatchList argumentMatch, HBlock body) {
+int NSParser::CParser::registerStaticDispatch(int entry, HBlockMatchList argumentMatch, HBlock body) {
     for (auto it = staticDispatch.begin(); it != staticDispatch.end(); ++it) {
         if (it->entryId == entry) {
             staticDispatchEntry sEntry(argumentMatch, body);
@@ -47,7 +55,7 @@ int CParser::registerStaticDispatch(int entry, HBlockMatchList argumentMatch, HB
 }
 
 
-int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry) {
+int NSParser::CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry) {
 
     //Verifica se ja tem a sentenceDispatch
     int maxID = 0;
@@ -72,7 +80,7 @@ int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch
     return maxID + 1;
 }
 
-int CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry , HBlock ret) {
+int NSParser::CParser::registerDynamicDispatch(std::vector<HPred> _matchPhase, HBlockMatch entry , HBlock ret) {
 
 	//Verifica se ja tem a sentenceDispatch
 	int maxID = 0;

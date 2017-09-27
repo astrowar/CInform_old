@@ -1,13 +1,17 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp" 
 using namespace std;
+using namespace CBlocking;
+ 
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 
 
-
-
-bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propertyNamed)
+bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string propertyNamed , list<string> kindsUsed)
 {
 	for (auto &kvar : kind_named_variables)
 	{
@@ -20,11 +24,13 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 
 		}
 	}
+	kindsUsed.push_back(kind->named );
 
 	list<HBlockKind> kinds = getUpperKinds(kind);
 	for(auto &k : kinds)
 	{
-		if (kind_has_property_called( k, propertyNamed))
+		if (std::find(kindsUsed.begin(), kindsUsed.end(), k->named) != kindsUsed.end()) continue;
+		if (kind_has_property_called_inner( k, propertyNamed , kindsUsed))
 		{
 			return true;
 		}
@@ -33,17 +39,20 @@ bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, string propert
 	return false;
 }
 
-	
+bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, const string & propertyNamed )
+{	
+	return kind_has_property_called_inner(kind, propertyNamed, list<string>());
+}
 
 
 
 
 
-bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock value,  HRunLocalScope localsEntry)
+bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlocking::HBlock value,  HRunLocalScope localsEntry)
 {
 	if (HBlockNoum prop_obj_noum = asHBlockNoum(prop->obj))
 	{
-		HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
+		CBlocking::HBlock nobj = resolve_noum(prop_obj_noum,localsEntry);
 		
 		return assert_property_defaultValue(  make_shared<CBlockProperty>(prop->prop, nobj  )   , value,localsEntry);
 
@@ -60,7 +69,9 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 		{		
 			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
 			{
-				default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(prop, value));
+				auto kdef = make_shared<CBlockAssertion_isDefaultAssign>(prop, value);
+				default_assignments.push_back(kdef);
+				add_defaultValueVariableToAllinstances(kdef);
 				return true;
 			}
 			else
@@ -73,31 +84,43 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, HBlock
 
 	return false;
 }
-bool CBlockInterpreter::assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry) {
+bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
+	 
+	obj->dump(" ");
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        HBlock nobj = resolve_noum(nbase,localsEntry);
+        CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_defaultValue(nobj, value,localsEntry);
         }
         return false;
-    } else if (HBlockInstance ibase = asHBlockInstance(obj)) {
+    } 
+	
+	if (HBlockInstance ibase = asHBlockInstance(obj)) {
         logError( "cant assign Ususally to Instances");
-    } else if (HBlockProperty pbase = asHBlockProperty(obj)) {
+		return false;
+    } 
+	if (HBlockProperty pbase = asHBlockProperty(obj)) 
+	{
 
 		return assert_property_defaultValue(pbase, value,localsEntry);
 
 
-    } else if (HBlockKind kbase = asHBlockKind(obj)) {
-        if (HBlockNoum nvalue = asHBlockNoum(value)) {
-             
-			 
-            //default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
-        }
+    } 
+	if (HBlockKind kbase = asHBlockKind(obj)) 
+	{
+		if (HBlockNoum nvalue = asHBlockNoum(value)) {
 
-        default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, value));
+
+			//default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
+		}
+
+		auto kdef = make_shared<CBlockAssertion_isDefaultAssign>(kbase, value);
+		kdef == nullptr;
+		default_assignments.push_back(kdef);
+		add_defaultValueVariableToAllinstances(kdef);
 		return true;
-    }
+	}
 
     return false;
 }

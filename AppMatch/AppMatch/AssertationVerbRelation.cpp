@@ -1,4 +1,5 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
@@ -7,11 +8,11 @@
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
 
- 
-
+using namespace CBlocking; 
+using namespace Interpreter;
 
 //retorn  o primeiro termo
-HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_block, HBlock value,  HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 
 	for (auto &rr : relInstances)
@@ -21,14 +22,14 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_
 	 
 
 			{
-				QueryStack stk;
-				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
-				if (r1 != QEquals) continue;
+				QueryStack *stk = nullptr;
+				QueryResultContext r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1.result != QEquals) continue;
 
  
 
-				auto r2 = query_is(rr->value2, value, localsEntry, stk);
-				if (r2 != QEquals) continue;
+				QueryResultContext r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2.result != QEquals) continue;
 				return rr->value1;
 			}
 
@@ -41,12 +42,12 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_
 			if (rr->relation->is_symetric()) 
 			{
 				{
-					QueryStack stk;
-					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
-					if (r1 != QEquals) continue;
+					QueryStack *stk = nullptr;
+					QueryResultContext r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1.result != QEquals) continue;
 
-					auto r2 = query_is(rr->value1, value, localsEntry, stk);
-					if (r2 != QEquals) continue;
+					QueryResultContext r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2.result != QEquals) continue;
 					return rr->value2;
 				}
 			}
@@ -57,7 +58,7 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_1(string relationNamed, HBlock c_
 }
 
 //retorn  o segundo termo
-HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 
 	for (auto &rr : relInstances)
@@ -65,15 +66,15 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_
 		if (rr->relation->named == relationNamed)
 		{
 			{
-				QueryStack stk;
+				QueryStack *stk = nullptr;
  
-				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
-				if (r1 != QEquals) continue;
+				QueryResultContext r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1.result != QEquals) continue;
 
  
 
-				auto r2 = query_is(rr->value2, value, localsEntry, stk);
-				if (r2 != QEquals) continue;
+				QueryResultContext r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2.result != QEquals) continue;
 				return rr->value2;
 			}
 		}
@@ -85,12 +86,12 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_
 			if (rr->relation->is_symetric())
 			{
 				{
-					QueryStack stk;
-					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
-					if (r1 != QEquals) continue;
+					QueryStack *stk = nullptr;
+					QueryResultContext r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1.result != QEquals) continue;
 
-					auto r2 = query_is(rr->value1, value, localsEntry, stk);
-					if (r2 != QEquals) continue;
+					QueryResultContext r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2.result != QEquals) continue;
 					return rr->value1;
 				}
 			}
@@ -103,21 +104,21 @@ HBlock  CBlockInterpreter::lookup_relation_X_Y_2(string relationNamed, HBlock c_
 
 
 //retorn  o primeiro termo
-HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-	std::list<HBlock> lst;
+	std::list<CBlocking::HBlock> lst;
 
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
 		{
 			{
-				QueryStack stk;
-				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
-				if (r1 != QEquals) continue;
+				QueryStack *stk = nullptr;
+				QueryResultContext r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1.result != QEquals) continue;
 
-				auto r2 = query_is(rr->value2, value, localsEntry, stk);
-				if (r2 != QEquals) continue;
+				QueryResultContext r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2.result != QEquals) continue;
 				lst.push_back(rr->value1);
 			}
 		}
@@ -129,12 +130,12 @@ HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c
 			if (rr->relation->is_symetric())
 			{
 				{
-					QueryStack stk;
-					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
-					if (r1 != QEquals) continue;
+					QueryStack *stk = nullptr;
+					QueryResultContext r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1.result != QEquals) continue;
 
-					auto r2 = query_is(rr->value1, value, localsEntry, stk);
-					if (r2 != QEquals) continue;
+					QueryResultContext r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2.result != QEquals) continue;
 					lst.push_back(rr->value2);
 				}
 			}
@@ -145,20 +146,20 @@ HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(string relationNamed, HBlock c
 }
 
 //retorn  o segundo termo
-HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry)
+CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-	std::list<HBlock> lst;
+	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
 		{
 			{
-				QueryStack stk;
-				auto r1 = query_is(rr->value1, c_block, localsEntry, stk);
-				if (r1 != QEquals) continue;
+				QueryStack *stk = nullptr;
+				QueryResultContext r1 = query_is(rr->value1, c_block, localsEntry, stk);
+				if (r1.result != QEquals) continue;
 
-				auto r2 = query_is(rr->value2, value, localsEntry, stk);
-				if (r2 != QEquals) continue;
+				QueryResultContext r2 = query_is(rr->value2, value, localsEntry, stk);
+				if (r2.result != QEquals) continue;
 				lst.push_back(rr->value2);
 			}
 
@@ -172,12 +173,12 @@ HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c
 			if (rr->relation->is_symetric())
 			{
 				{
-					QueryStack stk;
-					auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
-					if (r1 != QEquals) continue;
+					QueryStack *stk = nullptr;
+					QueryResultContext r1 = query_is(rr->value2, c_block, localsEntry, stk);
+					if (r1.result != QEquals) continue;
 
-					auto r2 = query_is(rr->value1, value, localsEntry, stk);
-					if (r2 != QEquals) continue;
+					QueryResultContext r2 = query_is(rr->value1, value, localsEntry, stk);
+					if (r2.result != QEquals) continue;
 					lst.push_back(rr->value1);
 				}
 			}
@@ -190,8 +191,9 @@ HBlock  CBlockInterpreter::lookup_relation_X_YS_2(string relationNamed, HBlock c
 
 
  
+//Esta funcao pode retornar um elemento Ou uma lista .. depende do tipo de relacao
 
-HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry)
+CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 	auto rel_find = this->staticRelation.find(rLookup->relation);
@@ -200,14 +202,14 @@ HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunL
 		auto rel = rel_find->second;
 		if (rLookup->term_to_query == FirstNoum)
 		{
-			if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
-			return lookup_relation_X_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+			if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
+			return lookup_relation_X_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
 
 		}
 		if (rLookup->term_to_query == SecondNoum)
 		{
-			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
-			return lookup_relation_X_Y_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry);
+			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
+			return lookup_relation_X_Y_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
 		}
 
 	}
@@ -216,7 +218,8 @@ HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunL
 }
 
 
-HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry)
+//Este sjuito sempre retorna uma lista ....
+CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry ,QueryStack *stk  )
 {
 	for (auto & rv : verbRelationAssoc)
 	{
@@ -246,44 +249,117 @@ HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope l
 
 					if (vLookup->term_to_query == FirstNoum)
 					{
-						if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(relation_name, val1,val2, localsEntry);
-						return lookup_relation_X_Y_1(relation_name, val1, val2, localsEntry);
+						if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(relation_name, val1,val2, localsEntry, stk);
+						return lookup_relation_X_Y_1(relation_name, val1, val2, localsEntry,stk);
 
 					}
 					if (vLookup->term_to_query == SecondNoum)
 					{
-						if (rel->is_various_noum2()) return lookup_relation_X_YS_2(relation_name, val1, val2, localsEntry);
-						return lookup_relation_X_Y_2(relation_name, val1, val2, localsEntry);
+						if (rel->is_various_noum2()) return lookup_relation_X_YS_2(relation_name, val1, val2, localsEntry, stk);
+						return lookup_relation_X_Y_2(relation_name, val1, val2, localsEntry, stk);
 					}
 
 				}
 
 			}
+
+			return nullptr; // retorna aqui quando existe uma relacao deste tipo
 		}
 	}
 	 
+	return lookup_verb_List(vLookup, localsEntry, stk );
+
 	return nullptr;
 
 }
 
 
+CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (HBlockMatchNamed mNamed  = DynamicCasting::asHBlockMatchNamed( valueToMatch ))
+	{
+		return lookup_value_by_Selector(mNamed->matchInner, localsEntry,stk);
+	}
+
+
+	// busca dentro desses matchs alguem que é um kind de algum tipo	 
+
+	HBlockMatch resolvedMatch = Resolve_Selector(valueToMatch, localsEntry); 
+	 
+	std::list<HBlock> retList =  getInstancesFromSelector(resolvedMatch, localsEntry);
+	return  make_shared<CBlockList>(retList);
+
+	
+}
+
+CBlocking::HBlockList CBlockInterpreter::lookup_verb_List(HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HBlockMatch val1 = vLookup->value1;
+	auto val2 = vLookup->value2;
+	std::list<HBlock > wList;
+
+	 
+
+	// faz uma lista de todos os objetos do tipo vLookup value1 ... supondo ser um tipo
+	HBlockList  objList = lookup_value_by_Selector(val1,   localsEntry, stk);
+	
+	if (objList == nullptr) return nullptr; //nada retorna nada
+
+	// para cada tipo ... testa a relacao verbal com o value2 ...
+
+	string verbString = vLookup->verb;
+	if ( isSameString(verbString,"is"))
+	{
+		for (auto &o : objList->lista)
+		{ 
+			QueryResultContext rr = query_is(  o, val2, localsEntry, stk);
+			if (rr.result == QEquals)
+			{
+				wList.push_back(o);
+			}
+		}
+		return std::make_shared<CBlockList>(wList);
+	}
+	else
+	{
+		for (auto &o : objList->lista)
+		{
+
+			// se positivo inclua na lista
+			QueryResultContext rrcstm = get_system_verbs(verbString, o, val2, localsEntry, stk); // "listed in" , "size of"
+			if (rrcstm.result == QEquals)
+			{
+				wList.push_back(o);
+			}
+			else
+			{
+				QueryResultContext rr = query_user_verbs(verbString, o, val2, localsEntry, stk);
+				if (rr.result == QEquals)
+				{
+					wList.push_back(o);
+				}
+			}
+		}
+	}
+
+	return std::make_shared<CBlockList>(wList);
+}
 
 
 
-
-bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBlock value , HRunLocalScope localsEntry )
+bool CBlockInterpreter::exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value , HRunLocalScope localsEntry, QueryStack *stk)
 {
     for (auto &rr : relInstances)
     {
         if (rr->relation->named == relationNamed)
         {
             {
-                QueryStack stk;
-                auto r1 = query_is(rr->value1, c_block, localsEntry, stk );
-                if (r1 != QEquals) continue;
+            
+				QueryResultContext r1 = query_is(rr->value1, c_block, localsEntry, stk );
+                if (r1.result != QEquals) continue;
 
-                auto r2 = query_is(rr->value2, value, localsEntry, stk);
-                if (r2 != QEquals) continue;
+				QueryResultContext r2 = query_is(rr->value2, value, localsEntry, stk);
+                if (r2.result != QEquals) continue;
 
                 return true;
             }
@@ -295,12 +371,12 @@ bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBl
         if(rr->relation->is_symetric()) {
             if (rr->relation->named == relationNamed) {
                 {
-                    QueryStack stk;
-                    auto r1 = query_is(rr->value2, c_block, localsEntry, stk);
-                    if (r1 != QEquals) continue;
+                   
+					QueryResultContext r1 = query_is(rr->value2, c_block, localsEntry, stk);
+                    if (r1.result != QEquals) continue;
 
-                    auto r2 = query_is(rr->value1, value, localsEntry, stk);
-                    if (r2 != QEquals) continue;
+					QueryResultContext r2 = query_is(rr->value1, value, localsEntry, stk);
+                    if (r2.result != QEquals) continue;
 
                     return true;
                 }
@@ -309,7 +385,7 @@ bool CBlockInterpreter::exist_relation(string relationNamed, HBlock c_block, HBl
     }
     return false ;
 }
-bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry )
+bool CBlockInterpreter::setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry , QueryStack *stk )
         {
 
                 for (auto & rv : verbRelationAssoc)
@@ -326,12 +402,12 @@ bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value,
                             {
                                 HBlockRelationBase rel = rel_find->second;
 
-                                bool ex = exist_relation( relation_name, c_block, value , localsEntry );
+                                bool ex = exist_relation( relation_name, c_block, value , localsEntry  ,stk );
                                 if (ex == false )
                                 {
-//bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry);
+//bool set_relation(HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry);
 
-                                    set_relation(rel, c_block, value, localsEntry );
+                                    set_relation(rel, c_block, value, localsEntry ,stk );
                                 }
                                 return true ;
                             }
@@ -346,10 +422,10 @@ bool CBlockInterpreter::setVerbRelation(string vb, HBlock c_block, HBlock value,
             return false;
         }
 
-bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLocalScope localsEntry)
+bool CBlockInterpreter::setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value,HRunLocalScope localsEntry,   QueryStack *stk)
 {
 
-    bool q = setVerbRelation(vb, c_block, value, localsEntry);
+    bool q = setVerbRelation(vb, c_block, value, localsEntry,stk);
     if (q) return true ;
 
 
@@ -380,16 +456,19 @@ bool CBlockInterpreter::setVerb(string vb, HBlock c_block, HBlock value,HRunLoca
 
 }
  
-QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	QueryResul query_2 = QUndefined;
-	if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
+	if (QEquals == qc1.result)
 	{
-		if (QEquals == query_is(rr->value2 , value,  localsEntry, stk))
+		QueryResultContext qc2 = query_is(rr->value2, value, localsEntry, stk);
+		if (QEquals == qc2.result)
 		{
-			return QEquals;
+ 
+			return qc2;
 		}
-		 
+
 		query_2 = QNotEquals;
 		if (rr->relation->is_various_noum2() == false)
 		{
@@ -398,11 +477,13 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 	}
 	else if (QUndefined == query_2)
 	{
-		if (QEquals == query_is(rr->value2 , value,  localsEntry, stk))
+		QueryResultContext qc3 = query_is(rr->value2, value, localsEntry, stk);
+		if (QEquals == qc3.result)
 		{
-			if (QEquals == query_is(c_block, rr->value1, localsEntry, stk))
+			QueryResultContext qc4 = query_is(c_block, rr->value1, localsEntry, stk);
+			if (QEquals == qc4.result)
 			{
-				return QEquals;
+				return qc4;
 			}
 			if (rr->relation->is_various_noum1() == false)
 			{
@@ -414,11 +495,13 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 
 	if (rr->relation->is_symetric()) // Trocado
 	{
-		if (QEquals == query_is(rr->value2 , c_block,  localsEntry, stk))
+		QueryResultContext qcc1 = query_is(rr->value2, c_block, localsEntry, stk);
+		if (QEquals == qcc1.result)
 		{
-			if (QEquals == query_is(value, rr->value1, localsEntry, stk))
+			QueryResultContext qcc2 = query_is(value, rr->value1, localsEntry, stk);
+			if (QEquals == qcc2.result)
 			{
-				return QEquals;
+				return qcc2;
 			}
 			if (rr->relation->is_various_noum2() == false)
 			{
@@ -430,7 +513,7 @@ QueryResul CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr
 	return QUndefined;
 }
 
-QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum property_noum, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
  
 
@@ -439,49 +522,62 @@ QueryResul CBlockInterpreter::query_relation_property(HBlockNoum property_noum, 
 	{
 		if (rr->relation->input_B->named == property_noum->named ) //Ok, this is 
 		{
-			QueryResul query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
-			if (query_inst != QUndefined) return query_inst;
+			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
+			if (query_inst.result == QEquals) return query_inst;
 		}
 
 		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
 		{
-			QueryResul query_inst = query_relation_instance(rr, value, c_block,   localsEntry, stk);//reverse the property
-			if (query_inst != QUndefined) return query_inst;
+			CBlocking::HBlock arg1 = c_block;
+			CBlocking::HBlock arg2 = value;
+			 
+			QueryResultContext query_inst = query_relation_instance(rr, arg2, arg1,   localsEntry, stk);//reverse the property
+			if (query_inst.result == QEquals ) return query_inst;
 		}
 
 	}
  return QUndefined;
 }
 
-QueryResul CBlockInterpreter::query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	// Percorre todos e retorna o valor
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == rel->named)
 		{
-			QueryResul query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
-			if (query_inst != QUndefined) return query_inst;
-
+			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
+			if (query_inst.result == QEquals) return query_inst;
 		}
 			 
 	}
 	return QUndefined;
 }
 
-QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack stk)
+QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
+	 
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+	if (stk_in != nullptr)
+	{
+		if (stk_in->isQuery(vb, c_block, value)) return QUndefined;
+		stk_unique = std::make_unique<QueryStack>(*stk_in); 		 
+	}
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>( );
+	}
+	QueryStack *stk   = stk_unique.get();
+	stk->addQuery(vb, c_block, value);
 
-	if (stk.isQuery(vb, c_block, value)) return QUndefined;
-	stk.addQuery(vb, c_block, value);
 
-
+	 
 
 
 	// Tem alguma relacao associada ??
 	for (auto & rv : verbRelationAssoc)
 	{
-		if (rv.first == vb)
+		if (isSameString(rv.first , vb))
 		{
 			auto relation_name = rv.second->relationNoum->named;
 			if (relation_name != "dynamic")
@@ -493,15 +589,17 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 
 					if (rv.second->type() == BlockVerbDirectRelation)
 					{
-						QueryResul rel_query = this->query_relation(rel, c_block, value, localsEntry, stk);
-						if (rel_query == QEquals) return  QEquals;
+						QueryResultContext rel_query = this->query_relation(rel, c_block, value, localsEntry, stk);
+						if (rel_query.result == QEquals) return  rel_query;
 						return QNotEquals;
 					}
 					else if (rv.second->type() == BlockVerbReverseRelation)
 					{
 						// inverte a busca aqui
-						QueryResul rel_query = this->query_relation(rel, value , c_block,   localsEntry, stk);
-						if (rel_query == QEquals) return  QEquals;
+						CBlocking::HBlock arg1 = c_block;
+			            CBlocking::HBlock arg2 = value;
+						QueryResultContext rel_query = this->query_relation(rel, arg2 , arg1,   localsEntry, stk);
+						if (rel_query.result == QEquals) return  rel_query;
 						return QNotEquals;
 					}
 				}
@@ -522,58 +620,77 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 		return QueryResul::QUndefined;
 	} 
 
-
-	//Custom Define
-	for(auto &v : decides_if)
+	auto nn = decides_if.size();
+	for (auto dctIF : decides_if)
 	{
-		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(v->queryToMatch))
-		{
-			 
-			if (vb == qVerb->verb)
+		if (HBlockMatchIsVerb  DctQueryVerbIS = DynamicCasting::asHBlockMatchIsVerb(dctIF->queryToMatch))
+		{ 
+			if (isSameString(DctQueryVerbIS->verb, vb))
 			{
 
-				CResultMatch  result_obj = Match(qVerb->obj, c_block, localsEntry, stk);
-				if (result_obj.hasMatch)
+				std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, vb, DctQueryVerbIS, c_block, value);
+				if (next_stack != nullptr)
 				{
-					auto locals_obj = std::make_shared< CRunLocalScope >(result_obj.maptch);
-					HRunLocalScope localsNext = newScope(localsEntry, locals_obj);
-				 
+					auto value_1 = c_block;
+					if (HBlockMatchNoum mvalue_1 = DynamicCasting::asHBlockMatchNoum(value_1)) value_1 = mvalue_1->inner;
 
-					CResultMatch  result_value = Match(qVerb->value, value, localsNext, stk);
-					if (result_value.hasMatch)
+
+					if (HBlockNoum nnoum_1 = DynamicCasting::asHBlockNoum(value_1))
 					{
-						 
-						auto locals_value = std::make_shared< CRunLocalScope >(result_value.maptch);
-
-						 
-						HRunLocalScope localsNext_value = newScope(localsNext,  locals_value);
-
-					 
-						auto rr = query(v->decideBody, localsNext_value, stk);
-						if (rr == QEquals) return QEquals;
-						
-						 
-						return QNotEquals;
-
-						//return v->decideBody;
-						//return QueryResul::QEquals;
+						HBlock resolved = resolve_noum(nnoum_1, localsEntry);
+						if (resolved != nullptr)
+						{
+							value_1 = resolved;
+						}
 					}
 
+					auto value_2 = value;
+					if (HBlockMatchNoum mvalue_2 = DynamicCasting::asHBlockMatchNoum(value_2)) value_2 = mvalue_2->inner;
+					if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
+					{
+						HBlock resolved = resolve_noum(nnoum_2, localsEntry);
+						if (resolved != nullptr)
+						{
+							value_2 = resolved;
+						}
+					}
+
+					printf("_______________________________\n");
+					value_1->dump("");
+					value_2->dump("");
+
+
+
+
+					auto result = Match_DirectIs(DctQueryVerbIS->obj, DctQueryVerbIS->value, value_1, value_2, nullptr, next_stack.get());
+					if (result.hasMatch == true)
+					{
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
+
+						printf("_______________________________\n");
+						localsNext->dump("");
+						dctIF->decideBody->dump("");
+						auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
+						return r;
+					}
 				}
 			}
 		}
 	}
 
+
+ 
 	// Match com o What
 
 	for(auto &dct : decides_what)
 	{
-		if (HBlockMatchIsVerb qVerb = asHBlockMatchIsVerb(dct->queryToMatch)) {
+		if (HBlockMatchIsVerb qVerb = DynamicCasting::asHBlockMatchIsVerb(dct->queryToMatch)) {
 			//cout << vb << " =?= " << qVerb->verb << endl;
 			if (qVerb->verb == vb) {
-				HBlock wvalued = getDecidedValueOf(value, dct, localsEntry, stk);
-				if (wvalued != nullptr) {
-					auto wresult = query_is(c_block, wvalued, localsEntry, stk);
+				CBlocking::HBlock wvalued = getDecidedValueOf(value, dct, nullptr, stk);
+				if (wvalued != nullptr) 
+				{
+					auto wresult = query_is(c_block, wvalued, nullptr, stk);
 					return wresult;
 				}
 			}
@@ -587,7 +704,7 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	//Custom Define
 	for (auto &v : decides_noum1)
 	{
-		if (HBlockMatchIsVerb qVerb_N1 = asHBlockMatchIsVerb(v->queryToMatch))
+		if (HBlockMatchIsVerb qVerb_N1 = DynamicCasting::asHBlockMatchIsVerb(v->queryToMatch))
 		{
 			
 			if (vb == qVerb_N1->verb)
@@ -610,13 +727,13 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 	std::list<HBlockAssertion_is> &decList = alist->second;
 	for (auto &c_is : decList)
 	{
-		QueryResul a1 = query_is(c_block , c_is->get_obj() , localsEntry,stk );
-		if (a1 == QEquals)
+		QueryResultContext a1 = query_is(c_block , c_is->get_obj() , localsEntry,stk );
+		if (a1.result == QEquals)
 		{
-			QueryResul a2 = query_is(c_is->get_definition(), value,localsEntry,stk);
-			if (a2 == QEquals)
+			QueryResultContext a2 = query_is(c_is->get_definition(), value,localsEntry,stk);
+			if (a2.result == QEquals)
 			{
-				return QEquals;
+				return a2;
 			}
 		}
 	}
@@ -625,14 +742,14 @@ QueryResul CBlockInterpreter::query_user_verbs(string vb, HBlock c_block, HBlock
 
 
 
-bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,HBlock obj, HBlock value, HRunLocalScope localsEntry) {
-	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase,localsEntry);
+bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk) {
+	if (HBlockNoum nbase = DynamicCasting::asHBlockNoum(obj)) {
+		CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
-			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry);
+			return assert_it_verbRelation(verbNamed , nobj, value, localsEntry,stk);
 		}		
 	}
-	return setVerb(verbNamed, obj, value,localsEntry);
+	return setVerb(verbNamed, obj, value,localsEntry,stk );
 
 	return false;
 }

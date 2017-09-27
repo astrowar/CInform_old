@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 //
 // Created by Eraldo Rangel on 23/08/16.
 //
@@ -7,8 +9,13 @@
 #include <sstream>
 #include <cassert>
 
+using namespace CBlocking;
+ 
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
-std::string decompose_bracket(std::string phase, std::string dlm) {
+
+std::string  decompose_bracket(std::string phase, std::string dlm) {
 
 	size_t b = phase.find(dlm);
 	if (b != std::string::npos) {
@@ -129,7 +136,7 @@ HPred mk_HPredLiteral_OR(string _named, std::initializer_list<string> alist) {
 
 CList *mk_CList_Literal(std::vector<HTerm> strList) {
     auto clist = new CList();
-    std::list<std::shared_ptr<CPred> > predlist;
+     
     for (auto it = strList.begin(); it != strList.end(); ++it) {
         clist->push_back(*it);
     }

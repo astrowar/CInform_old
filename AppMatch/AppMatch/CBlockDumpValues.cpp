@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 //
 // Created by Eraldo Rangel on 18/08/16.
 //
@@ -19,11 +22,13 @@
 #include "CBlockControlFlux.hpp"
 
 #include "sharedCast.hpp"
+#include "CBlockNumber.hpp"
 
 
 using namespace std;
+using namespace CBlocking;
 
-void CBlockInstance::dump(string ident)
+void  CBlockInstance::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 
 }
@@ -488,7 +493,7 @@ HVariableNamed CBlockAction::get_property(string pnamed)
 	return nullptr;
 }
 
-void CBlockAction::set_property(string pnamed, HBlock value)
+void CBlockAction::set_property(string pnamed, CBlocking::HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -619,7 +624,7 @@ void CVariableNamed::dump(string ident)
 		this->value->dump(ident + "       ");
 }
 
-string HtoString(HBlockList lst)
+string  CBlocking::HtoStringList(HBlockList lst)
 {
 
 	if (lst->lista.empty()) return "";
@@ -636,16 +641,16 @@ string HtoString(HBlockList lst)
 
 }
 
-string HtoString(HBlock value)
+string CBlocking::HtoString( HBlock value)
 {
-	if (HBlockNoum verbNoum = asHBlockNoum(value)) {
+	if (HBlockNoum verbNoum = DynamicCasting::asHBlockNoum(value)) {
 		return verbNoum->named;
 	}
-	else if (HBlockList verbNoumList = asHBlockList(value))
+	else if (HBlockList verbNoumList = DynamicCasting::asHBlockList(value))
 	{
-		return HtoString(verbNoumList);
+		return HtoStringList(verbNoumList);
 	}
-	else if (HBlockProperty pNoumList = asHBlockProperty(value))
+	else if (HBlockProperty pNoumList = DynamicCasting::asHBlockProperty(value))
 	{
 		return HtoString(pNoumList->prop) + " of " + HtoString(pNoumList->obj);
 	}
@@ -712,33 +717,37 @@ void CBlockSelector_Any::dump(string ident)
 
 void CRunLocalScope::dump(string ident)
 {
+	if (this->previous != nullptr) this->previous->dump("");
 	printf("%s %s\n",ident.c_str() , "Local Scope ");
 		for (auto &kv : locals)
 		{
 			printf("%s    %s\n",ident.c_str() ,  kv.first.c_str());
 				kv.second->dump(ident + "       ");
 		}
+
 }
 
-std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
-{
-	auto localsNext = std::make_shared< CRunLocalScope >();
-	for (auto &e : this->locals)
-	{
-		localsNext->locals.push_back(e);
-	}
-
-	for (auto &e : other->locals)
-	{
-		localsNext->locals.push_back(e);
-	}
-
-	return localsNext;
-}
+//std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
+//{
+//	auto localsNext = std::make_shared< CRunLocalScope >();
+//	for (auto &e : this->locals)
+//	{
+//		localsNext->locals.push_back(e);
+//	}
+//
+//	for (auto &e : other->locals)
+//	{
+//		localsNext->locals.push_back(e);
+//	}
+//
+//	return localsNext;
+//}
 
 HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn)
 {
-	HRunLocalScope ret = std::make_shared< CRunLocalScope > ();
+	HRunLocalScope ret = std::make_shared< CRunLocalScope > (nullptr);
+
+	ret->previous = _inn->previous;
 	for(auto it : _inn->locals )
 	{
 		ret->locals.push_back(it);
@@ -880,6 +889,29 @@ void CBlockControlSelect::dump(string ident)
 	}
 }
 
+void CBlockControlForEach::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "FOR EACH  ");
+	this->block_variable->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "LOOP  ");
+	this->block_body->dump(ident + "       ");
+}
+
+
+void CBlockExecutionResultFlag::dump(string ident)
+{
+
+	if (this->flag == actionContinue) printf("%s %s\n", ident.c_str(), "ResultFlag Action Continue");
+	if (this->flag == actionStop) printf("%s %s\n", ident.c_str(), "ResultFlag Action Stop");
+	if (this->flag == ruleSucess) printf("%s %s\n", ident.c_str(), "ResultFlag Rule Sucess");
+	if (this->flag == ruleFail) printf("%s %s\n", ident.c_str(), "ResultFlag Rule Fail");
+  
+	if (this->contents)
+	{
+		this->contents->dump(ident + "       ");
+	}
+}
+
  
 void CBlockControlSelectItem::dump(string ident)
 {
@@ -914,9 +946,13 @@ void CBlockComandList::dump(string ident)
  
 void CBlockEventHandle::dump(string ident)
 {
-	if (this->stage == StageBefore) printf("%s %s\n", ident.c_str(), "Event Before Handle ");
-	if (this->stage == StageAfter ) printf("%s %s\n", ident.c_str(), "Event After  Handle ");
+	if (this->stage == StageInstead) printf("%s %s\n", ident.c_str(), "Event Instead Handle ");
+	if (this->stage == StageCheck) printf("%s %s\n", ident.c_str(), "Event Check  Handle ");
+	if (this->stage == StageBefore) printf("%s %s\n", ident.c_str(), "Event Before Handle ");	
+	if (this->stage == StageCarryOut ) printf("%s %s\n", ident.c_str(), "Event Carry Out  Handle ");
+	if (this->stage == StageAfter) printf("%s %s\n", ident.c_str(), "Event After  Handle ");
 	if (this->stage == StageReport) printf("%s %s\n", ident.c_str(), "Event Report Handle ");
+
 
 	
 	this->eventToObserve->dump(ident + "       ");
@@ -929,4 +965,15 @@ void CBlockSelector_Where::dump(string ident)
 	{
 		this->what->dump(ident + "       ");		
 	}
+}
+
+
+void   CBlockIntegerNumber::dump(string ident)
+{
+	printf("%s %s %i\n", ident.c_str(), "Number " , value );
+}
+
+void   CBlockFactionalNumber::dump(string ident)
+{
+	printf("%s %s %8.3f\n", ident.c_str(), "Number ", value);
 }

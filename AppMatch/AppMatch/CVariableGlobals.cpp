@@ -1,8 +1,13 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
+
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
 
 
 bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
@@ -13,6 +18,12 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 		if (kindr != nullptr) 
 		{
 			return assert_it_variableGlobal(obj, kindr);
+		}
+		else
+		{
+			logMessage("Whats is ");
+			kindname->dump("      ");
+			return false;
 		}
 	}
 
@@ -59,6 +70,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind)
 			obj->dump("      ");
 		}
 	}
+
 
 	return false;
 }

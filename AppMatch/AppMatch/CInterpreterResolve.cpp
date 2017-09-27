@@ -1,11 +1,49 @@
-
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
  
 
 #include "sharedCast.hpp"
  #include "CBlockInterpreterRuntime.hpp"
 #include <algorithm>
 #include <cstring>
+#include <locale>
+#include "CBlockNumber.hpp"
 using namespace std;
+
+using namespace CBlocking;
+using namespace Interpreter;
+using namespace CBlocking::DynamicCasting;
+
+
+HBlockNoum  CBlockInterpreter::get_plural_of( string s )
+{
+	for(auto v : plural_assertations)
+	{
+		
+		if (isSameString(v.first->named, s))
+		{
+			return v.second ;
+		}
+	}
+	return nullptr;
+}
+
+
+
+bool CBlockInterpreter::isSameString(string s1 , string s2)
+{
+	if (s1 == s2) return true;
+	if (( s1.size() ==  s2.size()) && (tolower( s1[0]) == tolower(s2[0])))
+	{
+		int n = s1.size();
+		for(int j = 0 ; j< n ;++j )
+		{
+			if (tolower(s1[j]) != tolower(s2[j])) return false;
+		}
+		return true;
+	}
+	return false;
+}
 
 std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
@@ -73,7 +111,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 	}
 
 	if (HBlockAction   kaa = asHBlockAction (c_block)) {
-		return kaa->named;
+		return   kaa->named;
 	}
 
 	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
@@ -93,7 +131,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 	}
 
 	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
-		return k6->named ;
+		return   k6->named ;
 	}
 
 
@@ -102,9 +140,9 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 
 
 
-HBlock CBlockInterpreter::resolve(CTerm *b) {
-	return make_shared<CBlockNoum>(b->repr());
-}
+//HBlock CBlockInterpreter::resolve(NSTerm::CTerm *b) {
+//	return make_shared<CBlockNoum>(b->repr());
+//}
 
 HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 	//return new CBlockProperty( b , a);
@@ -114,18 +152,45 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
 {
 	{
-		if (n == "text") {
+		if (isSameString( n , "text")) {
 			return  std::make_shared<CBlockKindValue>("text");
 		}
-
 	}
-
 	{
-		if (n == "action") {
-			return  std::make_shared<CBlockKindValue>("action");
+		if (isSameString(n, "number")) {
+			return  std::make_shared<CBlockKindValue>("number");
 		}
 
+	} 
+	{
+		if (isSameString(n, "action"))
+		{
+			return  std::make_shared<CBlockKindThing>("action");
+		}
+
+		if (isSameString(n, "relation"))
+		{
+			return  std::make_shared<CBlockKindThing>("relation");
+		}
+
+
+		
 	}
+	return nullptr;
+}
+
+HBlockKind CBlockInterpreter::resolve_user_kind(string n)
+{
+	
+	for (auto &defs : assertions)
+	{ 
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+			if ( isSameString( nn->named , n)) {
+				return nn;
+			}
+		}
+	}
+
 	return nullptr;
 }
 
@@ -133,7 +198,7 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
 	for (auto &defs : assertions) {
 		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-			if (nn->named == n) {
+			if (isSameString(nn->named, n)) {
 				return nn;
 			}
 		}
@@ -152,10 +217,8 @@ HBlockKind CBlockInterpreter::resolve_kind(string n) {
 HBlock CBlockInterpreter::resolve_if_noum(HBlock  n, HRunLocalScope localsEntry,std::list<std::string>  noumsToResolve)
 {
 	if (auto anoum = asHBlockNoum(n))
-	{
-		 
-		 return resolve_noum(anoum, localsEntry, noumsToResolve );
-	 
+	{		 
+		 return resolve_noum(anoum, localsEntry, noumsToResolve );	 
 	}
 	return n;
 }
@@ -172,13 +235,26 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry,
 	return resolve_string_noum(n->named, localsEntry, noumsToResolve);
 }
 
+bool  is_number(const std::string  s)
+{
+	auto start = s.begin() + (s[0] == '-');
+	return
+		!s.empty() &&
+		s.end() == std::find_if(start, s.end(), [](char c) 
+	{
+		return (isdigit(c)==false ) && (c != '.');
+	}) && 
+		std::count(start, s.end(), '.') <= 1;
+
+}
+
 
 HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
-	if (named == "true") return std::make_shared<CBlockBooleanValue>(true);
-	if (named == "false") return std::make_shared<CBlockBooleanValue>(false);
-	if (named == "yes") return std::make_shared<CBlockBooleanValue>(true);
-	if (named == "no") return std::make_shared<CBlockBooleanValue>(false);
+	if (isSameString(named , "true")) return std::make_shared<CBlockBooleanValue>(true);
+	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
+	if (isSameString(named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
+	if (isSameString(named , "no")) return std::make_shared<CBlockBooleanValue>(false);
 
 	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), named) != noumsToResolve.end())
 	{
@@ -208,7 +284,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 	for (auto &a_action : actions_header)
 	{
-		if (a_action->named == named )
+		if (isSameString( a_action->named , named ))
 		{
 			return a_action;
 		}
@@ -218,7 +294,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//logMessage("assertation named : " + nnamed );
-			if (nn->named == named)
+			if (isSameString(nn->named ,named))
 			{
 				return resolve_if_noum(defs->get_definition(), localsEntry, noumsToResolve);
 			}
@@ -228,7 +304,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//logMessage( nnamed << std::endl;
-			if (nnvar->name->named == named) {
+			if (isSameString(nnvar->name->named , named)) {
 				return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
 			}
 		}
@@ -236,7 +312,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 	for (auto &adefs : actions_header) {
 
-		if (adefs->named == named) {
+		if (isSameString(adefs->named , named)) {
 			return resolve_if_noum(adefs, localsEntry, noumsToResolve);
 		}
 
@@ -250,6 +326,11 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		return resolve_if_noum(kcustom, localsEntry, noumsToResolve);
 	}
 
+	if (auto ukcustom = resolve_user_kind(named)) {
+		return resolve_if_noum(ukcustom, localsEntry, noumsToResolve);
+	}
+
+
 	if (strncmp(named.c_str(), "verb ", 5) == 0)
 	{
 		int np = named.size();
@@ -257,7 +338,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		logMessage(vremaind);
 		for (auto &v : verbs)
 		{
-			if (v->named == vremaind)
+			if (isSameString(v->named , vremaind))
 			{
 				logMessage(" verb " + vremaind);
 				return v;
@@ -268,11 +349,15 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	}
 
 
-	//logError("Fail to " + named);
-	if (named == "D")
+
+	if (is_number( named ) )
 	{
-		return nullptr;
+		int jValue = atoi(named.c_str());
+		return  make_shared<CBlockIntegerNumber>(jValue);
+
 	}
+
+	 
 	return nullptr;
 
 
@@ -285,7 +370,7 @@ HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n)
 	for (auto &defs : global_variables) {
 		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
-			if (nnvar->name->named == n->named)
+			if (isSameString(nnvar->name->named, n->named))
 			{
 				return nnvar;
 			}
@@ -316,3 +401,25 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	return nullptr;
 }
 
+
+
+std::list<string>  CBlockInterpreter::getAllRegistedKinds()
+{
+	std::list<string> ret;
+
+	//add todos os tipos do sistema que geram INSTANCIAS
+	ret.push_back("kind");
+	ret.push_back("action");
+	ret.push_back("verb");
+	ret.push_back("relation");
+
+	for (auto &defs : assertions)
+	{
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+			ret.push_back(nn->named);
+		}
+	}
+
+
+	return ret;
+}

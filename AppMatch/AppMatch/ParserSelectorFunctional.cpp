@@ -1,4 +1,10 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "Parser.hpp"
+using namespace CBlocking;
+using namespace NSTerm;
+using namespace NSTerm::NSMatch;
 
 
 
@@ -22,7 +28,7 @@
 //under half
 //a number alone, as in "three swans"
 
-HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
+HBlockSelector   NSParser::ParseSelector::parser_List_selector(CParser * p, std::vector<HTerm>&  term)
 {
 	{
 		// is a kind definition ??
@@ -36,7 +42,7 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 
 		if (res.result == Equals)
 		{
-			HBlock noum = parser_assertionTarger(res.matchs["List"]);
+			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["List"]);
 			if (noum == nullptr) return nullptr;
 			return std::make_shared<CBlockSelector_All>(noum);
 		}
@@ -54,7 +60,7 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 
 		if (res.result == Equals)
 		{
-			HBlock noum = parser_assertionTarger(res.matchs["List"]);
+			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["List"]);
 			if (noum == nullptr) return nullptr;
 			return std::make_shared<CBlockSelector_Any>(noum);
 		}
@@ -67,11 +73,11 @@ HBlockSelector   CParser::parser_List_selector(std::vector<HTerm>&  term)
 
  
 
-HBlockSelector CParser::parser_List_selector(HTerm  term)
+HBlockSelector NSParser::ParseSelector::parser_List_selector(CParser * p, HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
 		auto v =vlist->asVector();
-		auto r = parser_List_selector(v);
+		auto r = parser_List_selector(p,v);
 		return r;
 	}
 	return nullptr; // isso porque nao vale 1 unico termo como seletor

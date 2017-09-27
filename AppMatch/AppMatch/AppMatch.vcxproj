@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -72,6 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -80,6 +81,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -99,6 +102,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
+      <AdditionalDependencies>BlockModule.lib;ParseModule.lib;InterpreterModule.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,6 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>BlockModule.lib;ParseModule.lib;InterpreterModule.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,15 +129,18 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>false</ExceptionHandling>
       <OmitFramePointers>true</OmitFramePointers>
+      <EnablePREfast>false</EnablePREfast>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
       <Profile>true</Profile>
+      <AdditionalDependencies>BlockModule.lib;ParseModule.lib;InterpreterModule.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,17 +148,21 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_HAS_EXCEPTIONS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <ExceptionHandling>false</ExceptionHandling>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
       <Profile>true</Profile>
+      <AdditionalDependencies>BlockModule.lib;ParseModule.lib;InterpreterModule.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -158,92 +170,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseTest.hpp" />
-    <ClInclude Include="CBlockAction.hpp" />
-    <ClInclude Include="BlockInstance.hpp" />
-    <ClInclude Include="BlockInterpreter.hpp" />
-    <ClInclude Include="CBlockCommand.hpp" />
-    <ClInclude Include="CBlockControlFlux.hpp" />
-    <ClInclude Include="CBlockDecideIf.hpp" />
-    <ClInclude Include="CBlockNamedVariable.hpp" />
-    <ClInclude Include="CBlockRelation.hpp" />
-    <ClInclude Include="CBase.hpp" />
-    <ClInclude Include="CblockAssertion.hpp" />
-    <ClInclude Include="CBlockBoolean.hpp" />
-    <ClInclude Include="CBlockDumpValues.hpp" />
-    <ClInclude Include="CBlockInterpreterRuntime.hpp" />
-    <ClInclude Include="CBlockMatch.hpp" />
-    <ClInclude Include="CBlockScope.hpp" />
-    <ClInclude Include="CBlockUndestand.hpp" />
-    <ClInclude Include="CDataMananger.hpp" />
-    <ClInclude Include="CInterpreterKindTree.hpp" />
-    <ClInclude Include="CMatch.hpp" />
-    <ClInclude Include="CResultMatch.hpp" />
-    <ClInclude Include="dynamicCast.hpp" />
-    <ClInclude Include="EqualsResult.hpp" />
-    <ClInclude Include="GrammarParser.h" />
-    <ClInclude Include="Parser.hpp" />
-    <ClInclude Include="QueryStack.hpp" />
-    <ClInclude Include="serialRegister.hpp" />
-    <ClInclude Include="sharedCast.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="verb_en.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssertationDefaultValue.cpp" />
-    <ClCompile Include="AssertationEngine.cpp" />
-    <ClCompile Include="BlockisSame.cpp" />
-    <ClCompile Include="CBlockCommand.cpp" />
-    <ClCompile Include="CBlockInterpreter_Verb_En.cpp" />
-    <ClCompile Include="CBlockSerialize.cpp" />
-    <ClCompile Include="CDataMananger.cpp" />
-    <ClCompile Include="CInterpreterEvaluate.cpp" />
-    <ClCompile Include="CInterpreterRelation.cpp" />
-    <ClCompile Include="CResultMatch.cpp" />
-    <ClCompile Include="CVariableGlobals.cpp" />
-    <ClCompile Include="dynamicCast.cpp" />
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
-    <ClCompile Include="InterpExecute.cpp" />
-    <ClCompile Include="InterpFunctionsCallcpp.cpp" />
-    <ClCompile Include="InterpreterListedFunctions.cpp" />
-    <ClCompile Include="InterpreterMatch.cpp" />
-    <ClCompile Include="InterpreterRelationEngine.cpp" />
-    <ClCompile Include="ParseAssertationSecondary.cpp" />
-    <ClCompile Include="AssertationVerbRelation.cpp" />
-    <ClCompile Include="AssertionValues.cpp" />
-    <ClCompile Include="BlockInstance.cpp" />
-    <ClCompile Include="BlockInterpreter.cpp" />
-    <ClCompile Include="CBase.cpp" />
-    <ClCompile Include="CBlockDumpValues.cpp" />
-    <ClCompile Include="CBlockInterpreterDecideBody.cpp" />
-    <ClCompile Include="CInterpreterKindTree.cpp" />
-    <ClCompile Include="CInterpreterResolve.cpp" />
-    <ClCompile Include="CMatch.cpp" />
-    <ClCompile Include="CParseAux.cpp" />
-    <ClCompile Include="CreateInstanceInterpreter.cpp" />
-    <ClCompile Include="InterpreterQuery.cpp" />
-    <ClCompile Include="ParseListAux.cpp" />
-    <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="ParserDynamicDispatch.cpp" />
-    <ClCompile Include="ParseRelation.cpp" />
-    <ClCompile Include="ParseRelationWhen.cpp" />
-    <ClCompile Include="ParserSelectorFunctional.cpp" />
-    <ClCompile Include="ParserStmt.cpp" />
-    <ClCompile Include="ParserTextEntry.cpp" />
-    <ClCompile Include="Parser_A.cpp" />
-    <ClCompile Include="Parser_ActionControl.cpp" />
-    <ClCompile Include="Parser_ControlFlux.cpp" />
-    <ClCompile Include="Parser_Decide.cpp" />
-    <ClCompile Include="Parser_expression_match.cpp" />
-    <ClCompile Include="Parser_RegisterVerb.cpp" />
-    <ClCompile Include="Parser_VerbTable_en.cpp" />
-    <ClCompile Include="ParseVerbs.cpp" />
-    <ClCompile Include="Parse_TokensGroup.cpp" />
-    <ClCompile Include="QueryItem.cpp" />
-    <ClCompile Include="sharedCast.cpp" />
-    <ClCompile Include="StaticDispatchFunctions.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="testeLista.cpp" />
     <ClCompile Include="testeSerialize.cpp" />
@@ -255,6 +187,7 @@
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
     <ClCompile Include="teste_selector.cpp" />
+    <ClCompile Include="teste_values.cpp" />
     <ClCompile Include="teste_verb.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
