@@ -655,9 +655,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 						}
 					}
 
-					printf("_______________________________\n");
-					value_1->dump("");
-					value_2->dump("");
+					//printf("_______________________________\n");
+					//value_1->dump("");
+					//value_2->dump("");
 
 
 
@@ -667,9 +667,9 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					{
 						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
 
-						printf("_______________________________\n");
-						localsNext->dump("");
-						dctIF->decideBody->dump("");
+						//printf("_______________________________\n");
+						//localsNext->dump("");
+						//dctIF->decideBody->dump("");
 						auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
 						return r;
 					}

@@ -286,6 +286,10 @@ botton is a room
 left is a room
 
 
+ship is a room
+island is a room
+void is a room
+
 connecting relates various ( room ) to various ( room )
 the verb connect  implies the connecting relation
 the verb lead  implies the dynamic relation
@@ -296,7 +300,9 @@ hall connect garden
 garden connect cave
 hall connect secret
 secret connect exit
- 
+ship connect exit
+island connect ship
+void connect island
 
 left connect botton
 top connect left
@@ -310,26 +316,28 @@ to decide if (room called Q1) edge to (a room called Q2) :
  
 
 to decide if (a room called R1) lead (a room called R2) :
+   if R1 is R2 :      
+      decide on false   
    if R1 edge to R2 :
       decide on true
-   for each ( a room called Z ) :
-      if R1 edge to   Z :
+   for each ( a room called Z ) :      
+      if R1 edge to Z :
          if Z edge to R2 :
-            decide on true
+            decide on true             
    decide on false   
 
 liste is  an action applying to ( an  room )  
 carry out liste ( room called X   ) :
   for each (room called Y ):
       if X connect Y :
-         say  (text connect )
+          say  (text connect )
    
 
 listem is  an action applying to ( an  room )
-carry out liste ( room called X   ) :
-  for each (room called Y ):
+carry out listem ( room called X   ) :
+  for each (room called Y ):      
       if X lead Y :
-         say  (text connect )
+         say  Y
 
 )";
 
@@ -352,9 +360,9 @@ carry out liste ( room called X   ) :
 
 	//auto q8 = interpreter->execute_now(Statement::Parser_Stmt(&parse, "try liste hall ", ISLOG));
 
-     auto q8a = interpreter->query(Expression::Parser_Expression(&parse, "hall lead cave  ", ISLOG), nullptr, nullptr);
-    assert(q8a.result == QEquals);
-	 //auto q8b = interpreter->execute_now(Statement::Parser_Stmt(&parse, "try listem hall ", ISLOG));
+    // auto q8a = interpreter->query(Expression::Parser_Expression(&parse, "hall lead cave  ", ISLOG), nullptr, nullptr);
+    //assert(q8a.result == QEquals);
+	auto q8b = interpreter->execute_now(Statement::Parser_Stmt(&parse, "try listem hall ", ISLOG));
 
 	logMessage("end");
 

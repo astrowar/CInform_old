@@ -31,15 +31,18 @@ using namespace CBlocking;
 void  CBlockInstance::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 
+	CBlock::dump(ident);
 }
 
 
 void CUnresolved::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "UNRESOLVED: ", this->contents.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockNoum::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), this->named.c_str());
+	CBlock::dump(ident);
 }
 
 
@@ -49,15 +52,18 @@ void CBlockEnums::dump(string ident) {
 		for (auto e = values.begin(); e != values.end(); ++e) {
 			(*e)->dump(ident + "   ");
 		}
+		CBlock::dump(ident);
 }
 
 void CBlockKindOfName::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Named :  ", baseClasseName.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockKindOf::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Kind Of:  ");
 		baseClasse->dump(ident + "   ");
+		CBlock::dump(ident);
 }
 
 
@@ -66,6 +72,7 @@ void CBlockArgumentInput::dump(string ident)
 {
 	printf("%s  Argument Named : %s\n",ident.c_str() ,   named.c_str());
 		kind->dump(ident + "   ");
+		CBlock::dump(ident);
 }
 
 void CBlockSimetricRelation::dump(string ident)
@@ -74,6 +81,7 @@ void CBlockSimetricRelation::dump(string ident)
 		input_A->dump(ident + "   ");
 		printf("%s %s\n", ident.c_str() , "To    "  );
 	input_B->dump(ident + "   ");
+	CBlock::dump(ident);
 
 }
 
@@ -83,37 +91,44 @@ void CBlockASimetricRelation::dump(string ident)
 		input_A->dump(ident + "   ");
 		printf("%s %s\n", ident.c_str(), "To    ");
 		input_B->dump(ident + "   ");
+		CBlock::dump(ident);
 }
 
 void CBlockKindAction::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Action applying to:  ", baseClasseName.c_str());
 		this->applyTo->dump(ident + "   ");
+		CBlock::dump(ident);
 }
 
 
 
 void CBlockKindValue::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Value: ", named.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockKindThing::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Thing : ", named.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockListOfKind::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str() , "List Of:  ");
 		itemKind->dump(ident + "   ");
+		CBlock::dump(ident);
 }
 
 
 
 void CBlockNamedValue::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Named Value: ", named.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockVariable::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Variable: ", named.c_str());
+	CBlock::dump(ident);
 }
 
 void CBlockProperty::dump(string ident) {
@@ -121,6 +136,7 @@ void CBlockProperty::dump(string ident) {
 		prop->dump(ident + "          ");
 		printf("%s %s\n", ident.c_str(), "      of:");
 		obj->dump(ident + "          ");
+		CBlock::dump(ident);
 }
 
 void CBlockInstanceVariable::dump(string ident) {
@@ -129,6 +145,7 @@ void CBlockInstanceVariable::dump(string ident) {
 		kind_name->dump(ident + "          ");
 		printf("%s %s\n", ident.c_str(), "   called:");
 		property_name->dump(ident + "          ");
+		CBlock::dump(ident);
 }
 
 void CBlockKind_InstanceVariable::dump(string ident)
@@ -137,6 +154,7 @@ void CBlockKind_InstanceVariable::dump(string ident)
 		kind->dump(ident + "          ");
 		printf("%s %s\n",ident.c_str() , "   has  an:");
 		variableNamed->dump(ident + "          ");
+		CBlock::dump(ident);
 }
 
  
@@ -149,6 +167,7 @@ void CBlockList::dump(string ident) {
                 (*e)->dump(ident + "   ");
             }
 		}
+		CBlock::dump(ident);
 }
 
 void CBlockList_OR::dump(string ident) {
@@ -156,6 +175,7 @@ void CBlockList_OR::dump(string ident) {
 		for (auto e = lista.begin(); e != lista.end(); ++e) {
 			(*e)->dump(ident + "   ");
 		}
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_is::dump(string ident) {
@@ -164,13 +184,14 @@ void CBlockAssertion_is::dump(string ident) {
 		this->get_obj()->dump(ident + "     ");
 		printf("%s %s\n", ident.c_str(), "is_____ ");
 		this->get_definition()->dump(ident + "     ");
+		CBlock::dump(ident);
 }
 
 
 
 void CBlockMatchAny::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Match Any ");
-
+	CBlock::dump(ident);
 }
 
 void CBlockMatchNamed::dump(string ident) {
@@ -178,6 +199,7 @@ void CBlockMatchNamed::dump(string ident) {
 	{
 		this->matchInner->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchNoum::dump(string ident)
@@ -186,6 +208,7 @@ void CBlockMatchNoum::dump(string ident)
 	{
 		this->inner->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchKind::dump(string ident) {
@@ -193,6 +216,7 @@ void CBlockMatchKind::dump(string ident) {
 	{
 		this->kind->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchList::dump(string ident) {
@@ -203,6 +227,7 @@ void CBlockMatchList::dump(string ident) {
 		}
 	}
 	printf("%s %s\n", ident.c_str(), "          ]");
+	CBlock::dump(ident);
 }
 
 void CBlockMatchAND::dump(string ident)
@@ -214,12 +239,14 @@ void CBlockMatchAND::dump(string ident)
 		}
 	}
 	printf("%s %s\n",ident.c_str() , "          ]");
+	CBlock::dump(ident);
 }
 
 void CBlockMatchNOT::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "Match NOT [");
 	this->input->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 
 void CBlockMatchOR::dump(string ident)
@@ -231,6 +258,8 @@ void CBlockMatchOR::dump(string ident)
 		}
 	}
 	printf("%s %s\n",ident.c_str() , "          ]");
+	CBlock::dump(ident);
+
 }
 
 
@@ -244,13 +273,17 @@ void CBlockMatchActionCall::dump(string ident)
 		if(this->argument1!=nullptr) this->argument1->dump(ident + "       ");
 		if (this->argument2 != nullptr) this->argument2->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
+
+
 void CBlockMatchBlock::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str() , "Match Block: ");
 	{
 		this->inner->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 
@@ -261,6 +294,7 @@ void CBlockMatchDirectIs::dump(string ident)
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchDirectIsNot::dump(string ident)
@@ -270,6 +304,7 @@ void CBlockMatchDirectIsNot::dump(string ident)
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchIsVerb::dump(string ident)
@@ -279,6 +314,7 @@ void CBlockMatchIsVerb::dump(string ident)
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchIsNotVerb::dump(string ident)
@@ -288,6 +324,7 @@ void CBlockMatchIsNotVerb::dump(string ident)
 		this->obj->dump(ident + "       ");
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchProperty::dump(string ident)
@@ -300,6 +337,7 @@ void CBlockMatchProperty::dump(string ident)
 
 	}
 
+	CBlock::dump(ident);
 }
 
 void CBlockMatchWhich::dump(string ident)
@@ -309,6 +347,7 @@ void CBlockMatchWhich::dump(string ident)
 	{		
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockMatchWhichNot::dump(string ident)
@@ -318,6 +357,7 @@ void CBlockMatchWhichNot::dump(string ident)
 	{
 		this->value->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockActionApply::dump(string ident) {
@@ -334,18 +374,20 @@ void CBlockActionApply::dump(string ident) {
 		}
 
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockAction::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Action ", this->named.c_str());
 	for(auto nn: this->namedSlots) nn->dump(ident + "       ");
-
+	CBlock::dump(ident);
 
 }
 
 void CBlockAction::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
 	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
+ 
 }
 
 
@@ -357,6 +399,7 @@ void CBlockToDecideWhether::dump(string ident) {
 		printf("%s %s\n", ident.c_str(), "Decide for ");
 			this->decideBody->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockToDecideIf::dump(string ident) {
@@ -368,6 +411,7 @@ void CBlockToDecideIf::dump(string ident) {
 		printf("%s %s\n", ident.c_str(), "IF ");
 			this->decideBody->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockToDecideWhat::dump(string ident)
@@ -378,6 +422,7 @@ void CBlockToDecideWhat::dump(string ident)
 		printf("%s %s\n",ident.c_str() , "Decide for ");
 			this->decideBody->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockToDecideWhat_FirstNoum::dump(string ident)
@@ -388,6 +433,7 @@ void CBlockToDecideWhat_FirstNoum::dump(string ident)
 		printf("%s %s\n",ident.c_str() , "Decide for ");
 			this->decideBody->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockToDecideOn::dump(string ident) {
@@ -395,12 +441,14 @@ void CBlockToDecideOn::dump(string ident) {
 	{
 		this->decideBody->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockBooleanValue::dump(string ident)
 {
 	if (state) { printf("%s %s\n", ident.c_str(), "Boolean TRUE"); }
 	else { printf("%s %s\n", ident.c_str(), "Boolean FALSE"); }	
+	CBlock::dump(ident);
 }
 
 void CBlockBooleanAND::dump(string ident) {
@@ -411,6 +459,7 @@ void CBlockBooleanAND::dump(string ident) {
 			this->input_B->dump(ident + "       ");
 	}
 
+	CBlock::dump(ident);
 }
 
 void CBlockBooleanOR::dump(string ident) {
@@ -419,6 +468,7 @@ void CBlockBooleanOR::dump(string ident) {
 		this->input_A->dump(ident + "       ");
 		this->input_B->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockBooleanNOT::dump(string ident) 
@@ -427,6 +477,7 @@ void CBlockBooleanNOT::dump(string ident)
 	{
 		this->input_A->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockActionCall::dump(string ident) {
@@ -455,10 +506,12 @@ void CBlockActionCall::dump(string ident) {
 		}
 
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockAssertion_isActionOf::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Action ");
+	CBlock::dump(ident);
 }
 
 void CBlockDinamicDispatch::dump(string ident) {
@@ -466,6 +519,7 @@ void CBlockDinamicDispatch::dump(string ident) {
 	{
 		this->commandList->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockStaticDispatch::dump(string ident) {
@@ -477,6 +531,7 @@ void CBlockStaticDispatch::dump(string ident) {
 		this->noum2->dump(ident + "       ");
 
 	}
+	CBlock::dump(ident);
 }
 
 HVariableNamed CBlockAction::get_property(string pnamed)
@@ -491,6 +546,7 @@ HVariableNamed CBlockAction::get_property(string pnamed)
 		}
 	}
 	return nullptr;
+ 
 }
 
 void CBlockAction::set_property(string pnamed, CBlocking::HBlock value)
@@ -505,6 +561,7 @@ void CBlockAction::set_property(string pnamed, CBlocking::HBlock value)
 		}
 	}
 	return;
+	 
 }
 
 void CBlockAssertion_canBe::dump(string ident) {
@@ -515,6 +572,7 @@ void CBlockAssertion_canBe::dump(string ident) {
 			this->definition->dump(ident + "       ");
 
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockAssertion_isKindOf::dump(string ident) {
@@ -522,6 +580,7 @@ void CBlockAssertion_isKindOf::dump(string ident) {
 		this->noum->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Kind ");
 		this->baseKind->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isInstanceOf::dump(string ident) {
@@ -529,6 +588,7 @@ void CBlockAssertion_isInstanceOf::dump(string ident) {
 		this->noum->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Kind ");
 		this->baseKind->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isNamedValueOf::dump(string ident) {
@@ -536,6 +596,7 @@ void CBlockAssertion_isNamedValueOf::dump(string ident) {
 		this->noum->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Kind ");
 		this->baseKind->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isVariable::dump(string ident) {
@@ -543,6 +604,7 @@ void CBlockAssertion_isVariable::dump(string ident) {
 		this->variable->dump(ident + "       ");
 	printf("%s %s\n", ident.c_str(), "Kind ");
 		this->baseKind->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isDefaultAssign::dump(string ident) {
@@ -550,6 +612,7 @@ void CBlockAssertion_isDefaultAssign::dump(string ident) {
 		this->variable->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Is Usually ");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isConstantAssign::dump(string ident) {
@@ -557,6 +620,7 @@ void CBlockAssertion_isConstantAssign::dump(string ident) {
 		this->variable->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Is Always ");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isForbiddenAssign::dump(string ident) {
@@ -564,6 +628,7 @@ void CBlockAssertion_isForbiddenAssign::dump(string ident) {
 		this->variable->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Is Never ");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isDirectAssign::dump(string ident) {
@@ -571,6 +636,7 @@ void CBlockAssertion_isDirectAssign::dump(string ident) {
 		this->variable->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Is ");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_isNotDirectAssign::dump(string ident) {
@@ -578,6 +644,7 @@ void CBlockAssertion_isNotDirectAssign::dump(string ident) {
 		this->variable->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "Is NOT");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockAssertion_InstanceVariable::dump(string ident) {
@@ -586,6 +653,7 @@ void CBlockAssertion_InstanceVariable::dump(string ident) {
 		printf("%s %s\n", ident.c_str(), "Has ");
 		this->instance_variable->dump(ident + "       ");
 
+		CBlock::dump(ident);
 }
 
 void CBlockIsVerb::dump(string ident) {
@@ -593,6 +661,7 @@ void CBlockIsVerb::dump(string ident) {
 		this->n1->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "related ");
 		this->n2->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockIsNotVerb::dump(string ident) {
@@ -600,6 +669,7 @@ void CBlockIsNotVerb::dump(string ident) {
 		this->n1->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "related ");
 		this->n2->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockVerbDirectRelation::dump(string ident) {
@@ -607,6 +677,7 @@ void CBlockVerbDirectRelation::dump(string ident) {
 		this->verbNoum->dump(ident + "       ");
 	printf("%s %s\n",ident.c_str() , "Implies Direct");
 		this->relationNoum->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockVerbReverseRelation::dump(string ident) {
@@ -614,6 +685,7 @@ void CBlockVerbReverseRelation::dump(string ident) {
 	this->verbNoum->dump(ident + "       ");
 	printf("%s %s\n", ident.c_str(), "Implies Reverse");
 	this->relationNoum->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 
 void CVariableNamed::dump(string ident)
@@ -622,6 +694,7 @@ void CVariableNamed::dump(string ident)
 		this->kind->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "values ");
 		this->value->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 string  CBlocking::HtoStringList(HBlockList lst)
@@ -638,7 +711,7 @@ string  CBlocking::HtoStringList(HBlockList lst)
 		fronti = false;
 	}
 	return vstr;
-
+	 
 }
 
 string CBlocking::HtoString( HBlock value)
@@ -655,7 +728,7 @@ string CBlocking::HtoString( HBlock value)
 		return HtoString(pNoumList->prop) + " of " + HtoString(pNoumList->obj);
 	}
 	return "";
-
+	 
 }
 
 void CBlockUnderstand::dump(string ident) {
@@ -663,7 +736,7 @@ void CBlockUnderstand::dump(string ident) {
 		this->input_n->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "As ");
 		this->output_n->dump(ident + "       ");
-
+	CBlock::dump(ident);
 }
 
 void CBlockUnderstandStatic::dump(string ident) {
@@ -671,6 +744,7 @@ void CBlockUnderstandStatic::dump(string ident) {
 		this->argument_match->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "As ");
 		this->output_n->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockUnderstandDynamic::dump(string ident)
@@ -680,6 +754,7 @@ void CBlockUnderstandDynamic::dump(string ident)
 	this->argument_n->dump(ident + "       ");
 	printf("%s %s\n",ident.c_str() , "As ");
 		this->output_n->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
 void CBlockVerb::dump(string ident)
@@ -687,23 +762,26 @@ void CBlockVerb::dump(string ident)
 	printf("%s verb %s\n",ident.c_str() ,   named.c_str());
 	for (auto &c : conjugations)
 		c->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 void CBlockVerbAdapt::dump(string ident)
 {
 	printf("%s verb adapt for (%s)  in (%s) to (%s)\n", ident.c_str(), verb.c_str() , tense.c_str() , viewPoint.c_str());
-
+	CBlock::dump(ident);
 }
 
 
 void CBlockVerbConjugation::dump(string ident)
 {
 	printf("%s vb conjg ( %6s )  :  %s \n", ident.c_str(), tense.c_str(),    word.c_str()  );
+	CBlock::dump(ident);
 }
 
 void CBlockSelector_All::dump(string ident)
 {
 	printf("%s %s\n" , ident.c_str(), "Select All "   );
 	this->what->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 
 
@@ -711,6 +789,7 @@ void CBlockSelector_Any::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "Select Any ");
 		this->what->dump(ident + "       ");
+		CBlock::dump(ident);
 }
 
  
@@ -724,7 +803,7 @@ void CRunLocalScope::dump(string ident)
 			printf("%s    %s\n",ident.c_str() ,  kv.first.c_str());
 				kv.second->dump(ident + "       ");
 		}
-
+		 
 }
 
 //std::shared_ptr<CRunLocalScope> CRunLocalScope::Union(std::shared_ptr<CRunLocalScope> other)
@@ -765,12 +844,14 @@ void CExecutionBlock::dump(string ident) const
 		block->dump(ident + "       ");
 
 	}
+ 
 }
 
 
 void CBlockText::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Text:  ", contents.c_str());
+	CBlock::dump(ident);
 }
 
 
@@ -781,6 +862,7 @@ void CBlockRelationInstance::dump(string ident)
 		this->value1->dump(ident + "       ");
 		this->value2->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockConditionalRelation::dump(string ident)
@@ -790,6 +872,7 @@ void CBlockConditionalRelation::dump(string ident)
 	printf("%s When \n", ident.c_str());
 		this->coditional->dump(ident + "       ");
 	
+		CBlock::dump(ident);
 }
 
 void CBlockRelationLookup::dump(string ident)
@@ -800,6 +883,7 @@ void CBlockRelationLookup::dump(string ident)
 		this->value2->dump(ident + "       ");
 
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockVerbLookup::dump(string ident)
@@ -810,6 +894,7 @@ void CBlockVerbLookup::dump(string ident)
 		this->value2->dump(ident + "       ");
 
 	}
+	CBlock::dump(ident);
 }
 
  
@@ -819,6 +904,7 @@ void CBlockNow::dump(string ident) {
 	{
 		this->assertation->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
  
 void CBlockEvery::dump(string ident) {
@@ -826,6 +912,7 @@ void CBlockEvery::dump(string ident) {
 	{
 		this->assertation->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockControlToken::dump(string ident)
@@ -835,6 +922,7 @@ void CBlockControlToken::dump(string ident)
 		if (contents != nullptr)
 		   this->contents->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockControlIF::dump(string ident)
@@ -852,6 +940,7 @@ void CBlockControlIF::dump(string ident)
 		  }
 		
 	}
+	CBlock::dump(ident);
 }
 
 
@@ -870,7 +959,9 @@ void CBlockControlUnless::dump(string ident)
 		}
 
 	}
+	CBlock::dump(ident);
 }
+
 void CBlockControlSelect::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "SELECT  ");
@@ -887,6 +978,7 @@ void CBlockControlSelect::dump(string ident)
 			this->block_else->dump(ident + "       ");
 		}
 	}
+	CBlock::dump(ident);
 }
 
 void CBlockControlForEach::dump(string ident)
@@ -895,6 +987,7 @@ void CBlockControlForEach::dump(string ident)
 	this->block_variable->dump(ident + "       ");
 	printf("%s %s\n", ident.c_str(), "LOOP  ");
 	this->block_body->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 
 
@@ -910,6 +1003,7 @@ void CBlockExecutionResultFlag::dump(string ident)
 	{
 		this->contents->dump(ident + "       ");
 	}
+	CBlock::dump(ident);
 }
 
  
@@ -921,6 +1015,7 @@ void CBlockControlSelectItem::dump(string ident)
 		printf("%s %s\n", ident.c_str(), "BODY  ");
 		this->block_execute->dump(ident + "       "); 
 	}
+	CBlock::dump(ident);
 }
 
 
@@ -940,7 +1035,7 @@ void CBlockComandList::dump(string ident)
 			printf("\n");
 		}
 	}
-
+	CBlock::dump(ident);
 }
 
  
@@ -957,6 +1052,7 @@ void CBlockEventHandle::dump(string ident)
 	
 	this->eventToObserve->dump(ident + "       ");
 	this->body->dump(ident + "       ");
+	CBlock::dump(ident);
 }
 
 void CBlockSelector_Where::dump(string ident)
@@ -965,15 +1061,18 @@ void CBlockSelector_Where::dump(string ident)
 	{
 		this->what->dump(ident + "       ");		
 	}
+	CBlock::dump(ident);
 }
 
 
 void   CBlockIntegerNumber::dump(string ident)
 {
 	printf("%s %s %i\n", ident.c_str(), "Number " , value );
+	CBlock::dump(ident);
 }
 
 void   CBlockFactionalNumber::dump(string ident)
 {
 	printf("%s %s %8.3f\n", ident.c_str(), "Number ", value);
+	CBlock::dump(ident);
 }

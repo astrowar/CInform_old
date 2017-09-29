@@ -190,7 +190,8 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
  
-	  
+	   
+
 	std::unique_ptr<QueryStack> stk_unique = nullptr;
 	if (stk_in != nullptr)
 	{

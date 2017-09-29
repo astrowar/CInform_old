@@ -328,8 +328,8 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	//localsEntry->dump("");
 	//c_block->dump("");
 	//printf("_______________________________________\n==Result\n");
-	if (b != nullptr) { b->dump(""); }
-	else { printf("nullPTR"); }
+	//if (b != nullptr) { b->dump(""); }
+	//else { printf("nullPTR"); }
 	return b;
 
 }
@@ -368,10 +368,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	{
 		HBlock ret = nullptr;
  
-		printf("_______________________________________\nEval\n");
-		localsEntry->dump("");
-		c_block->dump("");
-		printf("\n");
+ 
 
   		auto r = query(cIF->block_if, localsEntry, stk);
 		if (r.result == QEquals)
@@ -406,9 +403,9 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 				if (rloop_result == nullptr)
 				{
-					printf("_______________________________________\n");
-					localsNext->dump("");
-					cForE->block_body->dump("");
+					//printf("_______________________________________\n");
+					//localsNext->dump("");
+					//cForE->block_body->dump("");
 					continue;
 				}
 				ret = rloop_result ;
@@ -419,9 +416,9 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			}
 			if (ret == nullptr)
 			{
-				
-				cForE->block_variable->dump("");
-				logError("What ?");
+				//c_block->dump("");
+				//cForE->block_variable->dump("");
+				//logError("What ?");
 			}
 			return ret ;
 		}
@@ -850,7 +847,31 @@ ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::H
 }
 
 
+HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (value == nullptr) return nullptr;
+	auto value_2 = value;
+	if (HBlockMatchNoum mvalue_2 = DynamicCasting::asHBlockMatchNoum(value_2)) value_2 = mvalue_2->inner;
+	if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
+	{
+		HBlock resolved = resolve_noum(nnoum_2, localsEntry);
+		if (resolved != nullptr) return resolved;
+	}
+	if (value_2 == nullptr) return  exec_eval_internal(value_2, localsEntry, stk); 
+}
 
+
+
+HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HBlockActionCall c = std::make_shared< CBlockActionCall >(vCall->action, nullptr,nullptr );
+	if (vCall->noum1 != nullptr)c->noum1 = resolve_argument(vCall->noum1, localsEntry, stk);
+	
+	if (vCall->noum2 != nullptr)c->noum2 = resolve_argument(vCall->noum2, localsEntry, stk);
+	
+	return c;
+
+}
 
 
 
@@ -928,10 +949,11 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (HBlockActionCall  vCall = asHBlockActionCall (p))
 	{	 		 
-		{			  
-			auto r1 = execute_system_action(vCall); 
+		{	
+			HBlockActionCall rCall = ActionResolveArguments(vCall, localsEntry, stk);
+			auto r1 = execute_system_action(rCall);
 			if (r1.hasExecuted ) return r1;
-			auto r2 = execute_user_action(vCall, localsEntry, stk);
+			auto r2 = execute_user_action(rCall, localsEntry, stk);
 			if (r2.hasExecuted ) return r2;
 			return PhaseResult(false);
 		}
@@ -939,8 +961,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (HBlockControlIF  vControlIf =  asHBlockControlIF(p))
 	{
-		 
-		 
+	 
 
 		QueryResultContext qResult =  query(vControlIf->block_if, localsEntry, stk); 
 
@@ -971,9 +992,10 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 			
 				const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
 				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
-				//printf("_____________________________________\n");
-				//localsEntry->dump("");
+				//printf("For Loop Begin__________________________________\n");
+				//localsNext->dump("");
 				//vControlForEach->block_body->dump("");
+				//printf("For Loop End __________________________________\n");
 
 				auto rloop_result = execute_now(vControlForEach->block_body , localsNext, stk);
 				if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(rloop_result.result))

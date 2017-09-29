@@ -52,7 +52,10 @@ namespace CBlocking
 	class CBlock {
 
 	public:
-		virtual void dump(string ident) = 0;
+		virtual void dump(string ident)
+		{
+			printf("");
+		};
 
 
 		virtual BlockType type() = 0;

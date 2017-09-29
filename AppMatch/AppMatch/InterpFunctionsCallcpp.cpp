@@ -11,6 +11,7 @@
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
+#include <iostream>
 using namespace std;
 
 using namespace CBlocking;
@@ -186,6 +187,10 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 			printf("root$ %s \n", ntext->contents.c_str());
 			return PhaseResult(true);;
 		}
+		printf("root$ something ??? \n");
+		v_call->noum1->dump("");
+		printf("...................\n");
+		return PhaseResult(true);;
 	}
 	if (v_call->action->named == "say")
 	{
@@ -194,6 +199,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 			printf("root$ %s \n", ntext->contents.c_str());
 			return PhaseResult(true);;
 		}
+		return PhaseResult(false);;
 	}
 
 	return PhaseResult(false);;
@@ -201,11 +207,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
  
 
 PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
-{
-	 
-	 
-	 
-
+{ 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
 	for (auto &ah : actions_header)
 	{
@@ -218,6 +220,7 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
 	HBlockKindAction kaction = nullptr;
 	for (auto &ap : actions_parameters)
 	{
+ 
 		if (ap.first == v_call->action->named)
 		{
 			if (v_call->noum1 == nullptr  && ap.second->applyTo->noum1 != nullptr) continue;

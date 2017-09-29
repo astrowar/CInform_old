@@ -339,7 +339,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		//Executa este bloco !
 		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry);
 		ListOfNamedValue getValuesFromMatch(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
- 
+		CBlocking::HBlock resolve_argument(CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
+		CBlocking::HBlockActionCall ActionResolveArguments(CBlocking::HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack* stk);
 		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry, QueryStack *stk);
 		bool queryIsVerbToRelation(CBlocking::HBlockMatch m);
 		void logMessage(const string& msg);

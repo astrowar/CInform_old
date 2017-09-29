@@ -755,16 +755,53 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
 QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry ,QueryStack *stk)
 {
 	  
-	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
-	if (rrcstm.result != QUndefined) return rrcstm; 
-	QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
+
+ 
+
+
+	HBlock val_1 = nullptr;
+	HBlock val_2 = nullptr;
+	if (is_verb->n1 != nullptr)  val_1 = resolve_argument(is_verb->n1, localsEntry, stk);
+	if (is_verb->n2 != nullptr)  val_2 = resolve_argument(is_verb->n2, localsEntry, stk);
+
+
+ 
+
+
+	if (is_verb->n1 != nullptr && val_1 ==nullptr )
+	{
+		printf("Noum 1 undefined\n");
+		is_verb->n1->dump("");
+		if (localsEntry != nullptr)localsEntry->dump("+ ");
+	}
+
+	if (is_verb->n2 != nullptr && val_2 == nullptr)
+	{
+		printf("Noum 2 undefined\n");
+		is_verb->n2->dump("");
+
+
+		if (localsEntry != nullptr)localsEntry->dump("+ ");
+	}
+
+
+	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, val_1, val_2, localsEntry, stk); // "listed in" , "size of"
+	if (rrcstm.result != QUndefined) return rrcstm;
+	QueryResultContext rr = query_user_verbs(is_verb->verb, val_1, val_2, localsEntry, stk);
+
+	//QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
+	//if (rrcstm.result != QUndefined) return rrcstm; 
+	//QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
+
+
 
 	//printf("VERB   ===============================\n");
 	//if (localsEntry!=nullptr)localsEntry->dump("+ ");
 	//is_verb->dump("");
-	if (rr.result == QEquals) printf("EQUALS\n");
-	if (rr.result == QNotEquals) printf("NOT EQUALS\n");
-	if (rr.result == QUndefined) printf("Undefined\n");
+
+	//if (rr.result == QEquals) printf("EQUALS\n");
+	//if (rr.result == QNotEquals) printf("NOT EQUALS\n");
+	//if (rr.result == QUndefined) printf("Undefined\n");
 
 
 	if (rr.result != QUndefined)
@@ -836,7 +873,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 {
  
 	 
-
+ 
 
     if (HBlockIsNotVerb is_nverb = asHBlockIsNotVerb(q))
     {
@@ -849,6 +886,8 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 
     if (HBlockIsVerb is_verb = asHBlockIsVerb(q) )
     {
+ 
+
 	   QueryResultContext retv = query_verb(is_verb, localsEntry , stk);
 
 
