@@ -324,10 +324,10 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 {
 	HBlock b =  exec_eval_internal(c_block, localsEntry, stk);
 
-	printf("_______________________________________\nEval\n");
-	localsEntry->dump("");
-	c_block->dump("");
-	printf("_______________________________________\n==Result\n");
+	//printf("_______________________________________\nEval\n");
+	//localsEntry->dump("");
+	//c_block->dump("");
+	//printf("_______________________________________\n==Result\n");
 	if (b != nullptr) { b->dump(""); }
 	else { printf("nullPTR"); }
 	return b;
@@ -942,7 +942,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		 
 		 
 
-		QueryResultContext qResult =  query (vControlIf->block_if, localsEntry, stk); 
+		QueryResultContext qResult =  query(vControlIf->block_if, localsEntry, stk); 
 
 		if (qResult.result == QEquals)
 		{
@@ -971,9 +971,9 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 			
 				const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
 				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
-				printf("_____________________________________\n");
-				localsEntry->dump("");
-				vControlForEach->block_body->dump("");
+				//printf("_____________________________________\n");
+				//localsEntry->dump("");
+				//vControlForEach->block_body->dump("");
 
 				auto rloop_result = execute_now(vControlForEach->block_body , localsNext, stk);
 				if (HBlockExecutionResultFlag  flag_ck = asHBlockExecutionResultFlag(rloop_result.result))

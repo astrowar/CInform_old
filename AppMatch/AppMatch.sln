@@ -11,10 +11,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppMatch", "AppMatch\AppMat
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParseModule", "ParseModule\ParseModule.vcxproj", "{BE3FB1D8-BBC7-4B61-A3D5-C4CFB1127E12}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3F397E8-75FB-4917-BFE8-9F3EB02267FE} = {E3F397E8-75FB-4917-BFE8-9F3EB02267FE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlockModule", "BlockModule\BlockModule.vcxproj", "{E3F397E8-75FB-4917-BFE8-9F3EB02267FE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InterpreterModule", "InterpreterModule\InterpreterModule.vcxproj", "{85D3D53B-24D4-40A9-9C66-4E669A1D6870}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3F397E8-75FB-4917-BFE8-9F3EB02267FE} = {E3F397E8-75FB-4917-BFE8-9F3EB02267FE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,10 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CBase.cpp
 
         AppMatch/AppMatch/CMatch.cpp
+        AppMatch/AppMatch/CMatchCombinatoria.cpp
+        AppMatch/AppMatch/CMatchListValid.cpp
         AppMatch/AppMatch/CreateInstanceInterpreter.cpp
+
         AppMatch/AppMatch/CInterpreterResolve.cpp
         AppMatch/AppMatch/AssertionValues.cpp
         AppMatch/AppMatch/Parser.cpp
@@ -69,18 +72,23 @@ set(SOURCE_FILES
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
         AppMatch/AppMatch/BlockisSame.cpp
         AppMatch/AppMatch/CInterpreterEvaluate.cpp
-        AppMatch/AppMatch/CBlockInterpreter_Verb_En.cpp
-        AppMatch/AppMatch/Parser_RegisterVerb.cpp
+
+
+        AppMatch/AppMatch/Parser_Plurals_En.cpp
         AppMatch/AppMatch/Parser_VerbTable_en.cpp
+        AppMatch/AppMatch/CBlockInterpreter_Verb_En.cpp
+
+
+        AppMatch/AppMatch/Parser_RegisterVerb.cpp
         AppMatch/AppMatch/teste_verb.cpp
-
-
         AppMatch/AppMatch/teste_selector.cpp
         AppMatch/AppMatch/CDataMananger.cpp
         AppMatch/AppMatch/Parse_TokensGroup.cpp
         AppMatch/AppMatch/Parser_ControlFlux.cpp
         AppMatch/AppMatch/Parser_ActionControl.cpp
-
+        AppMatch/AppMatch/CBlockInterpreterRuntime.cpp
+        AppMatch/AppMatch/CInterpreterResolveMatchSeletor.cpp
+        AppMatch/AppMatch/ParserPlural_table.cpp
         )
 
 add_executable(apx ${SOURCE_FILES}   )

@@ -7,7 +7,7 @@
 #include <algorithm>
  
 
-int binary_search(char *list_of_words[],  int isize, char *target)
+int binary_search(const char *list_of_words[],  int isize, const  char *target)
 {
 	int bottom = 0;
 	int mid;
@@ -61,20 +61,20 @@ int binary_search(char *list_of_words[],  int isize, char *target)
 }
 
 
-char* plural_of(char* singular_noum, PLURALTABLE *ptable)
+std::string plural_of(const std::string singular_noum, PLURALTABLE *ptable)
 {
-	int k = binary_search(ptable->base,   ptable->n, singular_noum);
+	int k = binary_search(ptable->base,   ptable->n, singular_noum.c_str());
 	if (k < 0) return nullptr;
 	k = ptable->base_idx[k];
-	return ptable->plurals[k];
+	return std::string(ptable->plurals[k]);
 
 
 }
 
-char* singular_of(char* plural_noum, PLURALTABLE *ptable)
+std::string singular_of(const std::string plural_noum, PLURALTABLE *ptable)
 {
-	int k = binary_search(ptable->plurals,  ptable->n, plural_noum);
+	int k = binary_search(ptable->plurals,  ptable->n, plural_noum.c_str());
 	if (k < 0) return nullptr;
 	k = ptable->plurals_idx[k];
-	return ptable->base[k];
+	return std::string(ptable->base[k]);
 }

@@ -388,11 +388,11 @@ void testePlurals()
 {
 
 	auto ptable = plura_table();
-	char* c_oxen = plural_of("ox", &ptable);
-	char* c_hooves = singular_of("hooves", &ptable);
+	auto c_oxen = plural_of("ox", &ptable);
+	auto c_hooves = singular_of("hooves", &ptable);
 
-	printf("ox -> %s \n", c_oxen);
-	printf("hooves <- %s \n", c_hooves);
+	printf("ox -> %s \n", c_oxen.c_str());
+	printf("hooves <- %s \n", c_hooves.c_str());
 	printf("done \n");
 
 

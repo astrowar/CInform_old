@@ -2,7 +2,9 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp" 
+#include "CBlockInterpreterRuntime.hpp"
+#include <algorithm>
+
 using namespace std;
 using namespace CBlocking;
  
