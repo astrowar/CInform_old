@@ -16,6 +16,7 @@ namespace CBlocking
 	class CBlockInstance : public CBlock //retorna um valor generico
 	{
 	public:
+		void dump_contents(string ident);
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockInstance; }
 

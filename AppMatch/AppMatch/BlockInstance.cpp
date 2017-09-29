@@ -97,6 +97,11 @@ void CBlockInstance::unset(HBlockNoum c_block)
 			if (vbool->valueDefinition->named == c_block->named)
 			{
 				vbool->value = false;
+
+				printf("unset !");
+				this->dump("");
+
+
 				return;
 			}
 		}
@@ -170,15 +175,20 @@ bool NNisSameString(const string &s1, const string &s2)
 }
 
 
+
 QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
+	this->dump_contents("");
 	for (auto &va : this->anomimousSlots)
 	{
 		if (HVariableSlotEnum  venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
 			if (venum->valueDefinition->contains(value->named))
 			{
-				if (NNisSameString( venum->value->named , value->named))  return QEquals;
+				if (NNisSameString(venum->value->named, value->named))
+				{
+					return QEquals;
+				}
 				return QNotEquals;
 			}
 		}
@@ -186,8 +196,10 @@ QueryResul CBlockInstance::is_set(HBlockNoum  value)
 		{
 			if (vbool->valueDefinition->named == value->named)
 			{
-
-				if (vbool->value) return QEquals;
+				if (vbool->value == true)
+				{
+					return QEquals;
+				}
 				return QNotEquals;
 			}
 		}

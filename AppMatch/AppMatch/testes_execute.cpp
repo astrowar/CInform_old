@@ -252,7 +252,8 @@ luck is normal
 
 	interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG));
 
-	if(true){
+	if(false)
+	{
 		string ss2 = R"(now every object is huge)";
 		auto res_q = interpreter->query(Statement::Parser_Stmt(&parse,"box is small ", true));
 		auto target_q = interpreter->exec_eval(ParseText::parser_text(&parse,ss2, true), nullptr,nullptr);
@@ -264,11 +265,13 @@ luck is normal
 
 	if (true)
 	{
-		auto res_3 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
-		assert(res_3.result == QNotEquals);
+		auto res_3a = interpreter->query(Statement::Parser_Stmt(&parse, "courage is normal ", true));
+		assert(res_3a.result == QEquals);
+		auto res_3b = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
+		assert(res_3b.result == QNotEquals);
 		//string ss3 = R"(now every talent is not normal )"; 
 		interpreter->exec_eval(ParseText::parser_text(&parse,"now every talent is not  normal", true), nullptr,nullptr);
-		 auto  res_4 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
+		auto  res_4 = interpreter->query(Statement::Parser_Stmt(&parse,"courage is not normal ", true));
 		assert(res_4.result == QEquals);
 	}
 
@@ -342,12 +345,12 @@ r4 connect r3
 void testeExecute_all()
 {
  
-	// testeExecute5();
+	 testeExecute5();
 	 
-	   // testeExecute1();  precisa ser revisto o DEFINE
-	//  testeExecute2();
-	//  testeExecute3();
-	// testeExecute4();
+	 testeExecute1();  //precisa ser revisto o DEFINE
+	  testeExecute2();
+	  testeExecute3();
+	 testeExecute4();
 
 	testeExecute7();
 		 

@@ -22,23 +22,23 @@ void CBlockInterpreter::dump_instance(string str )
 
 void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) {
     HBlock n = resolve_string(str,localsEntry);
-    if (HBlockInstance nn = asHBlockInstance(n)) {
-        for (auto &va : nn->anomimousSlots) {
-            
-            if (HVariableSlotEnum venum = asHVariableSlotEnum(va)) {
+	if (HBlockInstance nn = asHBlockInstance(n))
+	{
+		for (auto &va : nn->anomimousSlots) {
 
-                venum->valueDefinition->dump("    ");
-                venum->value->dump("    ");
+			if (HVariableSlotEnum venum = asHVariableSlotEnum(va)) {
 
-            }
-            if (HVariableSlotBool vbool = asHVariableSlotBool(va)) {
+				venum->valueDefinition->dump("    ");
+				venum->value->dump("    ");
 
-                vbool->valueDefinition->dump("    ");
-                printf("%i ", vbool->value );
-            }
-        }
+			}
+			if (HVariableSlotBool vbool = asHVariableSlotBool(va)) {
 
-    }
+				vbool->valueDefinition->dump("    ");
+				printf("%i ", vbool->value);
+			}
+		}
+	}
 }
 
 void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_isDefaultAssign kvar)

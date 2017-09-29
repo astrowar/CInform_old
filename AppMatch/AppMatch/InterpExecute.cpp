@@ -133,12 +133,14 @@ PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLoc
 
 PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
+
+	
 	if (HBlockEvery nevery = asHBlockEvery(obj))
 	{
 		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
+
 		for (auto r : matchedObjects)
 		{
-		 
 			execute_unset(r, value, localsEntry);
 		}
 		return true;

@@ -43,7 +43,7 @@ void testeParser_7b()//dynamic match
 		interpreter->execute_init(Statement::Parser_Stmt(&parse, "gold is a kind of atom ", ISLOG));
 	}
 
-	auto p = Statement::Parser_Stmt(&parse, "to decide what (thing) is (  best book) : diary ", ISLOG);
+	auto p = Statement::Parser_Stmt(&parse, "to decide what (thing) is (  best book ) : diary ", ISLOG);
 
 	interpreter->execute_init(p);
 

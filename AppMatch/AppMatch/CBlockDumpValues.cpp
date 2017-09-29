@@ -28,6 +28,33 @@
 using namespace std;
 using namespace CBlocking;
 
+
+void  CBlockInstance::dump_contents(string ident) 
+{
+	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str());
+	auto nn = this;
+	{
+		for (auto &va : nn->anomimousSlots) {
+
+			if (HVariableSlotEnum venum = DynamicCasting::asHVariableSlotEnum(va)) {
+
+				venum->valueDefinition->dump(ident + "    ");
+				venum->value->dump(ident + "    ");
+
+			}
+			if (HVariableSlotBool vbool = DynamicCasting::asHVariableSlotBool(va)) {
+
+				vbool->valueDefinition->dump(ident + "    ");				
+				printf("%s         bool: %i\n", ident.c_str(), vbool->value);
+				
+			}
+		}
+	}
+	CBlock::dump(ident);
+
+}
+
+
 void  CBlockInstance::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 

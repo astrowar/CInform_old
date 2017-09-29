@@ -926,7 +926,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 
 			QueryResultContext rr =  query_is(q_not_dir->get_obj(), q_not_dir->get_definition(), localsEntry, stk);
 			if (rr.result == QEquals) return QNotEquals;
-			if (rr.result == QNotEquals) return rr;
+			if (rr.result == QNotEquals) return QEquals;			
 		 
 		}
 
