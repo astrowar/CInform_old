@@ -483,7 +483,10 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			{
 
 				QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
-				if (rw.result != QUndefined) return rw;
+				if (rw.result != QUndefined)
+				{
+					return rw;
+				}
 			}
 		}
 	}
@@ -496,8 +499,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
 			if (dctValueWrap_1 != nullptr) {
 				QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
-				if (rw.result != QUndefined) return rw;
-				//return rw;
+				if (rw.result != QUndefined)
+				{
+					return rw;
+				}
+				
 			}
 		}
     }
@@ -625,7 +631,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				{
 					{
 						QueryResultContext r = query_is(qdef->get_definition(), c_block1, localsEntry, next_stack.get());
-						if (r.result != QUndefined) {
+						if (r.result != QUndefined) 
+						{
 							return r;
 						}
 					}

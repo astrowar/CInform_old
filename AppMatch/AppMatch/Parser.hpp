@@ -324,6 +324,7 @@ namespace NSParser
 	{
 		CBlocking::HBlock    parser_SeletorVerb(CParser *p, NSTerm::HTerm   term, CBlocking::HBlockMatch muteVariable);
 		CBlocking::HBlock    STMT_relates_AssertionWhen(CParser *p, std::vector<NSTerm::HTerm>&  term);
+		string parser_RelationNameID(NSParser::CParser * c_parser, NSTerm::HTerm term);
 		CBlocking::HBlock    parser_SeletorRelation(CParser *p, NSTerm::HTerm   term, CBlocking::HBlockMatch muteVariable);
 		CBlocking::HBlock    parser_SeletorTerm(CParser *p, NSTerm::HTerm   term, CBlocking::HBlockMatch muteVariable);
 		CBlocking::HBlock    DynamicLookup_Seletor(CParser *p, std::vector<NSTerm::HTerm>& term);
@@ -365,6 +366,8 @@ namespace NSParser
 		CBlocking::HBlockInstanceVariable  CProperty_called(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  STMT_hasAn_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst);
 		CBlocking::HBlockList   parseAssertionFirstTerm_COMMA_Supl(CParser * p, NSTerm::HTerm term, NSTerm::HPred sep, CBlocking::HBlockList cList);
+		CBlocking::HBlockList parseAssertionList_COMMA_neutral(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlockList parseAssertionFirstTerm_COMMA_neutral(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList cList);
 		CBlocking::HBlockAssertion_is  parse_AssertionVerb(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock parseAssertionFirstTerm(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parseAssertionFirstTerm_Compose(CParser *p, NSTerm::HTerm term);
@@ -399,6 +402,7 @@ namespace NSParser
 		CBlocking::HBlockList  parseAssertion_Strict_COMMA_Supl(CParser * p, NSTerm::HTerm term, NSTerm::HPred sep);
 		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_AND(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList CList);
 		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_OR(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList CList);
+		CBlocking::HBlock parse_List_Neutral(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_List_AND(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_List_OR(CParser * p, std::vector<NSTerm::HTerm>& term);
 

@@ -205,6 +205,15 @@ void CBlockList_OR::dump(string ident) {
 		CBlock::dump(ident);
 }
 
+void CBlockList_AND::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "List AND: ");
+	for (auto e = lista.begin(); e != lista.end(); ++e) {
+		(*e)->dump(ident + "   ");
+	}
+	CBlock::dump(ident);
+}
+
 void CBlockAssertion_is::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Assert: ");
 

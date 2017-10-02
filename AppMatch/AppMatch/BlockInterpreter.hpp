@@ -373,17 +373,29 @@ namespace CBlocking
 	using HBlockList = std::shared_ptr<CBlockList>;
 
 	class CBlockList_OR : public CBlockList //retorna um valor generico
-	{
-
-
+	{ 
 	public:
 		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockList_OR; }
 		CBlockList_OR(std::list<HBlock>  _lista)
 			: CBlockList(_lista)
 		{
 		}
 	};
 	using HBlockList_OR = std::shared_ptr<CBlockList_OR>;
+
+
+	class CBlockList_AND : public CBlockList //retorna um valor generico
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockList_AND ; }
+		CBlockList_AND(std::list<HBlock>  _lista)
+			: CBlockList(_lista)
+		{
+		}
+	};
+	using HBlockList_AND = std::shared_ptr<CBlockList_AND>;
 
 
 

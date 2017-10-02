@@ -75,7 +75,8 @@ HBlockSelector   NSParser::ParseSelector::parser_List_selector(CParser * p, std:
 
 HBlockSelector NSParser::ParseSelector::parser_List_selector(CParser * p, HTerm  term)
 {
-	if (CList *vlist = asCList(term.get())) {
+	if (CList *vlist = asCList(term.get())) 
+	{
 		auto v =vlist->asVector();
 		auto r = parser_List_selector(p,v);
 		return r;

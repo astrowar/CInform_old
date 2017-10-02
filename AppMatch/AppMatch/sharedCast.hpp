@@ -100,6 +100,7 @@ namespace CBlocking
 
 
 		HBlockVerbRelation asHBlockVerbRelation(CBlocking::HBlock c);
+		HBlockVerbReverseRelation asHBlockVerbReverseRelation(CBlocking::HBlock c);
 		HBlockAssertion_isConstantAssign asHBlockAssertion_isConstantAssign(CBlocking::HBlock c);
 		HBlockAssertion_isForbiddenAssign asHBlockAssertion_isForbiddenAssign(CBlocking::HBlock c);
 		HBlockAssertion_isVariable asHBlockAssertion_isVariable(CBlocking::HBlock c);

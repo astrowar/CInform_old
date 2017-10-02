@@ -404,12 +404,11 @@ void testeExecute5();
 int main() {
 
 
-	testeExecute5();
-	return 0;
+ 
 
 	testeExecute_all();
 
-	testeParser_7h();
+	//testeParser_7h();
  
 	 
 

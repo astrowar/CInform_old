@@ -263,7 +263,10 @@ namespace CBlocking
 		CBlocking::HBlock n1;
 		CBlocking::HBlock n2;
 
-		CBlockIsVerb(string _verb, CBlocking::HBlock _n1, CBlocking::HBlock _n2) : verb((_verb)), n1((_n1)), n2((_n2)) {};
+		CBlockIsVerb(string _verb, CBlocking::HBlock _n1, CBlocking::HBlock _n2) : verb((_verb)), n1((_n1)), n2((_n2))
+		{
+			
+		};
 	};
 	using HBlockIsVerb = std::shared_ptr<CBlockIsVerb>;
 

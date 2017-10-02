@@ -153,7 +153,10 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 		if (ndecideRet->named == "nothing") return QueryResultContext(QUndefined);
 	}
 
-	if (rdecided == nullptr) return QueryResultContext(QUndefined); //decide on nothing
+	if (rdecided == nullptr)
+	{
+		return QueryResultContext(QUndefined); //decide on nothing
+	}
 	if (HBlockToDecideOn ndecide = asHBlockToDecideOn(rdecided))
 	{
 		//verifica se eh true ou false 

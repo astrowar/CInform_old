@@ -59,7 +59,7 @@ void testeParser_7b()//dynamic match
 	interpreter->execute_init(Statement::Parser_Stmt(&parse, "coin is made of silver ", ISLOG));
 	QueryResultContext q_false = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of gold  ", ISLOG));
 	assert(q_false.result != QEquals);
-	QueryResultContext q_true = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of silver  ", ISLOG));
+    QueryResultContext q_true = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of silver  ", ISLOG));
 	assert(q_true.result == QEquals);
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse, "coin is made of gold ", ISLOG));
@@ -264,9 +264,6 @@ to decide  if ( room  called R1  ) lead ( room called R2  )   :
 
 	auto q5 = interpreter->query(Expression::Parser_Expression(&parse, "exit lead garden  ", ISLOG), nullptr, nullptr);
 	assert(q5.result != QEquals);
-
-
-	return;
 }
 
 
@@ -365,7 +362,5 @@ carry out listem ( room called X   ) :
 	auto q8b = interpreter->execute_now(Statement::Parser_Stmt(&parse, "try listem hall ", ISLOG));
 
 	logMessage("end");
-
-	return;
 }
 

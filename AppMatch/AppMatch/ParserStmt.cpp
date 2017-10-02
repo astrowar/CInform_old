@@ -51,12 +51,21 @@ HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 	if (CList *vlist = asCList(term.get())) {
 		auto rvector = vlist->asVector();
 		auto r = parser_expression_lst(p,rvector);
-		/*if (r == nullptr)
-		std::cout << term->repr() << std::endl;*/
+		if (r == nullptr)
+		{
+			//auto ss = term->repr();
+			//printf("@36  %s \n", ss.c_str());
+		}
+
 		return r;
 	}
 	//return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
 	//std::cout << term->repr() << std::endl; 
+	{
+		//auto ss = term->repr();
+		//printf("@35  %s \n", ss.c_str());
+	}
+
 	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
 }
 
@@ -101,6 +110,12 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 	if (noumListOR_Assign != nullptr) {
 		return noumListOR_Assign;
 	}
+
+	HBlock noumListNeutral_Assign = ParseList::parse_List_Neutral(p, lst);
+	if (noumListNeutral_Assign != nullptr) {
+		return noumListNeutral_Assign;
+	}
+
 
     HBlock detnoum_Assign = ParseAssertion::parse_removeArticle(p,lst);
     if (detnoum_Assign != nullptr) {

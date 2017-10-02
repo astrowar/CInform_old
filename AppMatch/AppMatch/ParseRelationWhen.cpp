@@ -115,6 +115,26 @@ HBlock NSParser::ParseRelation::STMT_relates_AssertionWhen(CParser *p, std::vect
 
 }
 
+
+string  NSParser::ParseRelation::parser_RelationNameID(NSParser::CParser* c_parser, HTerm term)
+{
+
+	static std::vector<HPred> predList = {};
+	if (predList.empty())
+	{
+		predList.push_back(mkHPredAny("RelationName"));
+		predList.push_back(mk_HPredLiteral("relation"));		
+	}
+
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		return res.matchs["RelationName"]->removeArticle()->repr();
+	}
+
+	return term->removeArticle()->repr();
+}
+
 HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   term , HBlockMatch muteVariable  )
 {
 
@@ -134,9 +154,10 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 		if (res.result == Equals)
 		{
 
-			string rname = res.matchs["RelationName"]->removeArticle()->repr();
-			{
+			string rname = parser_RelationNameID(p, res.matchs["RelationName"]);
 
+			//string rname = res.matchs["RelationName"]->removeArticle()->repr();
+			{
 				{
 					auto arg2 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K2"]);
 					if (arg2 != nullptr)
@@ -165,9 +186,9 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 		if (res.result == Equals)
 		{
 
-			string rname = res.matchs["RelationName"]->removeArticle()->repr();
-			{
-		 
+			//string rname = res.matchs["RelationName"]->removeArticle()->repr();
+			string rname = parser_RelationNameID(p, res.matchs["RelationName"]);
+			{		 
 				{
 					auto arg2 = ExpressionMatch::parser_MatchArgument(p,res.matchs["K2"]);
 					if (arg2 != nullptr)
@@ -194,8 +215,7 @@ HBlock   NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, H
 		{
 			predList.push_back(mkHPredAny("S1"));
 			predList.push_back(mk_HPredLiteral("and"));
-			predList.push_back(mkHPredAny("S2"));
-
+			predList.push_back(mkHPredAny("S2")); 
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

@@ -440,7 +440,22 @@ HBlock NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& ter
     if (res.result == Equals) 
 	{
         string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
+
+		 
+		if (nstr == "where")return nullptr;
+		if (nstr == "called")return nullptr;
+		if (nstr == "which")return nullptr;
+		if (nstr == "and")return nullptr;
+		if (nstr == "or")return nullptr;
+		if (nstr == ",")return nullptr; 
+		if (nstr == ".")return nullptr;
+
 		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+		{
+			return nullptr;
+		}
+
+		if ((nstr.find(",") != std::string::npos)  )
 		{
 			return nullptr;
 		}

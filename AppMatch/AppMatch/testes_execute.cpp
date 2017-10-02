@@ -78,9 +78,22 @@ else:
 	auto ret_points_init = interpreter->query(Statement::Parser_Stmt(&parse,"door is viable exit ", ISLOG));
 	assert(ret_points_init.result == QEquals);
 
+	
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"location is garden ", ISLOG));
-	auto ret_points_garden = interpreter->query(Statement::Parser_Stmt(&parse,"door is viable exit  ", ISLOG));
-	assert(ret_points_garden.result == QNotEquals);
+	{
+		auto ret_is_not_limbo = interpreter->query(Statement::Parser_Stmt(&parse, "destination of door is not limbo  ", ISLOG));
+		assert(ret_is_not_limbo.result == QEquals);
+
+		auto ret_is_not_location = interpreter->query(Statement::Parser_Stmt(&parse, "destination of door is not location  ", ISLOG));
+		assert(ret_is_not_location.result == QNotEquals);
+
+		auto ret_viable_exit = interpreter->query(Statement::Parser_Stmt(&parse, "door is viable exit  ", ISLOG));
+		assert(ret_viable_exit.result == QNotEquals);
+
+
+	}
+
+ 
 
 	auto ret_connect_init = interpreter->query(Statement::Parser_Stmt(&parse,"hall connect garden ", ISLOG));
 	assert(ret_connect_init.result == QEquals);
@@ -302,6 +315,7 @@ r3 is special
 
 Connection relates various ( a room called source ) to  ( a room called destination )
 the verb connect   implies a  Connection relation 
+the verb connected   implies a reverse Connection relation 
 r1 connect r2
 r2 connect r3
 r3 connect r4
@@ -311,16 +325,29 @@ r4 connect r3
 
 )";
 
+
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 
+	
+	//auto r_expression = Expression::Parser_Expression(&parse, "(a  relation called R ) which relates r1  ", false);
+	printf("___________________________________________\n");
+	//auto target_q6 = interpreter->exec_eval(r_expression, nullptr,nullptr);
+	//target_q6->dump("");
 
-	auto target_q6 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  relation called R ) which relates r1  ", true), nullptr,nullptr);
-	target_q6->dump("");
+	auto result = Expression::Parser_Expression(&parse, "  (r1 , r2  or r3)  and  ( r2  or r3)   ", true);
+	auto result_2 = Expression::Parser_Expression(&parse, "  (r1 ,r2 , r3)    ", true);
+	 
+ 	auto q_expression = Expression::Parser_Expression(&parse, "(the room ) which relates to r2 by the Connection relation ", true);
+	auto rel_q = interpreter->exec_eval(q_expression, nullptr, nullptr);
+	rel_q->dump("R ");
+	 
+	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", false), nullptr,nullptr);
+	target_q3->dump("A ");
+
+	auto target_q3_rev = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connected  r2   ", false), nullptr, nullptr);
+	target_q3_rev->dump("B ");
 
 	return;
-	//auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which  connect  r2   ", true), nullptr);
-	//target_q3->dump("");
-
 	//auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "(a  room called R ) which are special   ", true), nullptr);
 	//target_q4->dump("");
 
@@ -345,7 +372,9 @@ r4 connect r3
 void testeExecute_all()
 {
  
-	 testeExecute5();
+	testeExecute7();
+	return;
+	// testeExecute5();
 	 
 	 testeExecute1();  //precisa ser revisto o DEFINE
 	  testeExecute2();

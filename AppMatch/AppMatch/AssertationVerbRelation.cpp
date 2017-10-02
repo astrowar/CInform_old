@@ -213,6 +213,9 @@ CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLook
 		}
 
 	}
+
+	printf("%s \n", rLookup->relation.c_str());
+
 	return nullptr;
 
 }
@@ -223,6 +226,8 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 {
 	for (auto & rv : verbRelationAssoc)
 	{
+
+		//printf("%s  ==? %s \n", rv.first.c_str(), vLookup->verb.c_str());
 		if (rv.first == vLookup->verb )
 		{
 			//tem uma relacao com esse verbo
@@ -243,7 +248,8 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 					if (rv.second->type() == BlockVerbReverseRelation)
 					{
 						std::swap(val1, val2);
-
+						if (vLookup->term_to_query == FirstNoum) { vLookup->term_to_query = SecondNoum; }
+						else if (vLookup->term_to_query == SecondNoum) { vLookup->term_to_query = FirstNoum; }
 					}
 
 

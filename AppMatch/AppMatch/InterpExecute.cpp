@@ -336,6 +336,112 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 
 }
 
+
+HBlock eval_boolean_AND(HBlock c1, HBlock c2)
+{
+	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
+	{
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+	}
+
+	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
+	{
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+	}
+
+	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
+	{
+		if (ndecideValue->state ==false) return std::make_shared<CBlockNoum>("false");
+	}
+
+	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
+	{
+		if (ndecideValue->state == false) return std::make_shared<CBlockNoum>("false");
+	}
+
+	return std::make_shared<CBlockNoum>("true");
+}
+
+HBlock eval_boolean_OR(HBlock c1, HBlock c2)
+{
+	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
+	{
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("true"); 
+	}
+
+	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
+	{
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("true");		 
+	}
+
+	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
+	{
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("true");
+	}
+
+	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
+	{
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("true");
+	}
+
+	return std::make_shared<CBlockNoum>("false");
+}
+
+HBlock eval_boolean_NOT(HBlock c1)
+{
+	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
+	{
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("true");
+		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+	}
+
+ 
+
+	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
+	{
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->state == false) return std::make_shared<CBlockNoum>("true");
+	}
+
+	 
+
+	return  std::make_shared<CBlockNoum>("nothing");
+}
+
+
+HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (HBlockBooleanAND nbool_and = asHBlockBooleanAND(c_block))
+	{
+		auto b1 = exec_eval(nbool_and->input_A , localsEntry, stk);
+		auto b2 = exec_eval(nbool_and->input_B, localsEntry, stk);
+		 
+
+		b1->dump("");
+		b2->dump("");
+		return eval_boolean_AND(b1, b2);
+	}
+
+	if (HBlockBooleanOR nbool_or = asHBlockBooleanOR(c_block))
+	{
+		auto b1 = exec_eval(nbool_or->input_A, localsEntry, stk);
+		auto b2 = exec_eval(nbool_or->input_B, localsEntry, stk);
+		return eval_boolean_OR (b1, b2);
+	}
+
+	if (HBlockBooleanNOT nbool_not = asHBlockBooleanNOT(c_block))
+	{
+		auto b1 = exec_eval(nbool_not->input_A, localsEntry, stk);	 
+		return std::make_shared<CBlockNoum>("true");
+		return eval_boolean_NOT(b1);
+	}
+
+	return nullptr;
+}
+
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 
@@ -345,6 +451,11 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 
  
+	{
+		HBlock nbool = exec_eval_internal_boolean_relation(c_block, localsEntry, stk);
+		if (nbool  != nullptr) return nbool;
+	}
+
 
 	if (HBlockComandList nlist = asHBlockComandList(c_block))
 	{
@@ -859,7 +970,10 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 		HBlock resolved = resolve_noum(nnoum_2, localsEntry);
 		if (resolved != nullptr) return resolved;
 	}
-	if (value_2 == nullptr) return  exec_eval_internal(value_2, localsEntry, stk); 
+	
+	if (value_2 != nullptr) return  exec_eval_internal(value_2, localsEntry, stk); 
+
+	return value_2;
 }
 
 

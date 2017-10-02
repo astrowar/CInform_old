@@ -18,6 +18,7 @@ enum BlockType {
 	BlockInstanceVariable,
 	BlockList,
 	BlockList_OR,
+	BlockList_AND,
 	BlockEnums,
 	BlockProperty,
 	BlockAssertion_isDefaultAssign,
