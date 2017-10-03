@@ -186,6 +186,7 @@
     <ClCompile Include="testes_execute.cpp" />
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
+    <ClCompile Include="teste_logical.cpp" />
     <ClCompile Include="teste_selector.cpp" />
     <ClCompile Include="teste_values.cpp" />
     <ClCompile Include="teste_verb.cpp" />

@@ -29,10 +29,16 @@ public:
 	{
 		for(auto &e:locals )
 		{
-			if  (e.first == noum) return e.second;
+			 
+			if (e.first == noum)
+			{								 
+				return e.second;
+			}
 		}
-		if (previous != nullptr) return previous->resolve(noum);
-
+		if (previous != nullptr)
+		{
+			return previous->resolve(noum);
+		}
 		return nullptr;
 
 	}

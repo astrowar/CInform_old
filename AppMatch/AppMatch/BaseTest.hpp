@@ -78,3 +78,5 @@ void testeSelector_all();
 void testeVerb_all();
 void testValues_all();
 void testeParser_listAll();
+
+void testeLogical_All();

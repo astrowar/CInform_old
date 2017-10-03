@@ -643,6 +643,16 @@ void CBlockAssertion_isVariable::dump(string ident) {
 		CBlock::dump(ident);
 }
 
+void CBlocking::CBlockAssertion_isLocalVariable::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "let Variable   ");
+	this->variableName->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Be ");
+	this->valueExpression->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+
 void CBlockAssertion_isDefaultAssign::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Assign  ");
 		this->variable->dump(ident + "       ");
@@ -933,6 +943,18 @@ void CBlockVerbLookup::dump(string ident)
 	CBlock::dump(ident);
 }
 
+ 
+void CBlockRelationArguments::dump(string ident)
+{
+	printf("%s %s \n", ident.c_str(), "Relation Argument");
+	{
+		this->value1->dump(ident + "       ");
+	printf("%s To \n", ident.c_str());
+		this->value2->dump(ident + "       ");
+
+	}
+	CBlock::dump(ident);
+}
  
 
 void CBlockNow::dump(string ident) {

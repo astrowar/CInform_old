@@ -127,7 +127,10 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 		return noum_propOF;
 	}
 
-	 
+	HBlock relation_argument = ParseAssertion::parse_RelationArgument(p, lst);
+	if (relation_argument != nullptr) {
+		return relation_argument;
+	}
 	 
 
 

@@ -123,6 +123,36 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 }
 
 
+
+ 
+HBlock NSParser::ParseAssertion::parse_AssertionIsLocalValue(CParser * p, std::vector<HTerm>& term)
+{
+	// is a default ??
+	std::vector<HPred> predList;
+	predList.push_back(mk_HPredLiteral("let")); 
+	predList.push_back(mkHPredAny("VarName"));
+	predList.push_back(mk_HPredLiteral("be"));
+	predList.push_back(mkHPredAny("VarValue"));
+
+	MatchResult res = CMatch(term, predList);
+
+	if (res.result == Equals)
+	{ 
+		auto varName = Expression::parser_expression(p, res.matchs["VarName"]);
+		if (HBlockNoum varNameNoum = DynamicCasting::asHBlockNoum(varName))
+		{
+			//auto varName = std::make_shared<CBlockNoum>(res.matchs["VarName"]->removeArticle()->repr());
+			auto varValue = Expression::parser_expression(p, res.matchs["VarValue"]);
+			return std::make_shared<CBlockAssertion_isLocalVariable>(varNameNoum, varValue);
+		}
+	}
+
+
+return nullptr;
+
+}
+
+
 HBlock NSParser::ParseAssertion::parse_AssertionIsVariable(CParser * p, std::vector<HTerm>& term) {
 	 
 
@@ -397,6 +427,12 @@ HBlock NSParser::ParseAssertion::parser_Declaration_Assertion(CParser * p, std::
     if (assert_variable != nullptr) {
         return assert_variable;
     }
+
+	HBlock assert_local_value = parse_AssertionIsLocalValue(p, lst);
+	if (assert_local_value != nullptr) {
+		return assert_local_value;
+	}
+
 
     HBlock assert_kindof = parse_AssertionIsKindOf(p,lst);
     if (assert_kindof != nullptr) {

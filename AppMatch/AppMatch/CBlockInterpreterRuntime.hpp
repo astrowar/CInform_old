@@ -119,7 +119,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		//Event handles
 		std::vector<CBlocking::HBlockEventHandle> event_handles;
 		int instancia_id;
-
+		CBlocking::HBlock Nothing;
 
 		QueryResultContext query_is_instance_valueSet(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, QueryStack *stk);
 		QueryResultContext query_is_propertyOf_value_imp(CBlocking::HBlock propname, CBlocking::HBlock propObj, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
@@ -178,6 +178,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext queryVerb_ListedIn(CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 
 		bool is_nothing(CBlocking::HBlockNoum noum);
+		bool is_nothing(CBlocking::HBlock noum_);
 		bool set_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 		bool set_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 		bool unset_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
@@ -321,6 +322,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
 		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
+		CBlocking::HBlock eval_boolean_AND(CBlocking::HBlock c1, CBlocking::HBlock c2);
+		CBlocking::HBlock eval_boolean_OR(CBlocking::HBlock c1, CBlocking::HBlock c2);
+		CBlocking::HBlock eval_boolean_NOT(CBlocking::HBlock c1);
 		CBlocking::HBlock exec_eval_internal_boolean_relation(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		CBlocking::HBlock exec_eval_internal(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);

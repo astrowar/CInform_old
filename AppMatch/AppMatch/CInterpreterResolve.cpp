@@ -255,6 +255,7 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
 	if (isSameString(named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
 	if (isSameString(named , "no")) return std::make_shared<CBlockBooleanValue>(false);
+	if (isSameString(named, "nothing")) return Nothing;
 
 	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), named) != noumsToResolve.end())
 	{
@@ -317,6 +318,15 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		}
 
 	}
+
+	{
+		auto rel_find = this->staticRelation.find(named);
+		if (rel_find != this->staticRelation.end())
+		{
+			return rel_find->second;
+		}
+	}
+	
 
 
 

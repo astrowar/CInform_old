@@ -337,18 +337,18 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 }
 
 
-HBlock eval_boolean_AND(HBlock c1, HBlock c2)
+HBlock CBlockInterpreter :: eval_boolean_AND(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
 		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
-		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
 		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
-		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
@@ -364,7 +364,7 @@ HBlock eval_boolean_AND(HBlock c1, HBlock c2)
 	return std::make_shared<CBlockNoum>("true");
 }
 
-HBlock eval_boolean_OR(HBlock c1, HBlock c2)
+HBlock CBlockInterpreter :: eval_boolean_OR(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
@@ -389,13 +389,13 @@ HBlock eval_boolean_OR(HBlock c1, HBlock c2)
 	return std::make_shared<CBlockNoum>("false");
 }
 
-HBlock eval_boolean_NOT(HBlock c1)
+HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
 		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("false");
 		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("true");
-		if (ndecideValue->named == "nothing") return std::make_shared<CBlockNoum>("nothing");
+		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
  
@@ -408,7 +408,7 @@ HBlock eval_boolean_NOT(HBlock c1)
 
 	 
 
-	return  std::make_shared<CBlockNoum>("nothing");
+	return Nothing;
 }
 
 
@@ -450,6 +450,8 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return nullptr;
 	}
 
+	if (is_nothing(c_block)) return c_block;
+
  
 	{
 		HBlock nbool = exec_eval_internal_boolean_relation(c_block, localsEntry, stk);
@@ -459,10 +461,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockComandList nlist = asHBlockComandList(c_block))
 	{
+		const  std::map<string, CBlocking::HBlock> nextVarSet ;
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet); // cria uma nova stack para as variaveis locais
+		
+
 		HBlock ret_out = nullptr;
 		for (auto e : nlist->lista)
 		{
-			auto ret = exec_eval(e, localsEntry,stk);
+			auto ret = exec_eval(e, localsNext,stk);
 			if (ret != nullptr)
 			{
 				ret_out = ret;
@@ -589,7 +595,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockNoum nn = asHBlockNoum(c_block))
 	{
-		if (nn->named == "nothing") return nn;
+		 
 		auto  obj = resolve_noum(nn, localsEntry, std::list<std::string>());
 		if (obj != nullptr)
 		{
@@ -625,6 +631,13 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 
 
+	if (auto  krel_args = asHBlockRelationArguments(c_block))
+	{
+		auto vr1 = exec_eval_internal(krel_args->value1, localsEntry, stk);
+		auto vr2 = exec_eval_internal(krel_args->value2, localsEntry, stk);
+		return std::make_shared<CBlockRelationArguments>(vr1,vr2);
+	}
+
 
 	if (auto  kprop = asHBlockProperty(c_block))
 	{
@@ -644,13 +657,18 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 
 		auto instancia = exec_eval(kprop->obj, localsEntry, stk);
+		if (is_nothing(instancia)) return Nothing;
+
 		if (HBlockInstance objInst = asHBlockInstance(instancia))
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
-				return pvar->value;
+				if (pvar != nullptr)
+				{
+					return pvar->value;
+				}
 			}
-		return nullptr;
+		//return nullptr;
 	}
 
 	if (HBlockNamedValue nvalue = asHBlockNamedValue(c_block))
@@ -711,10 +729,58 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		
 	}
 
-	 
+	
+	if (HBlockText ntext = asHBlockText(c_block))
+	{
+		return ntext;
+	}
 
+	if (HBlockAssertion_isLocalVariable  local_var = asHBlockAssertion_isLocalVariable(c_block))
+	{		
+		CBlocking::HBlock actual_value = exec_eval_internal(local_var->valueExpression, localsEntry, stk);		
+		if (actual_value == nullptr)
+		{
+			actual_value = Nothing;
+		}
+		std::pair<string, CBlocking::HBlock> local_entry = { local_var->variableName->named , actual_value };
+		localsEntry->locals.push_back(local_entry);
+		return nullptr;
+	}
+
+
+
+
+	//case has fail
+	if (auto  kprop = asHBlockProperty(c_block))
+	{
+		if (is_nothing(kprop->obj)) return Nothing; //qualquer coisa de nothing eh nothing
+
+		 auto obj = exec_eval(kprop->obj, localsEntry, stk);  //evaluate o objeto que deseja pegar a propriedade
+		 if (obj == nullptr) return nullptr;
+		 if (is_nothing(obj)) return Nothing;
+
+		 if (obj->isSame(obj.get(), kprop->obj.get()) == false)  // se o objeto for o mesmo da entradas entao ele ja esta no estado mais fundamental
+		 {
+			 auto b = std::make_shared<CBlockProperty>(kprop->prop, obj);
+
+
+			 //printf("------------------------------\n");
+			 //b->dump("");
+			 //kprop->obj->dump("");
+			 return  exec_eval(b, localsEntry, stk);
+
+		 }
+	}
+	
+ 
+
+
+	if (localsEntry!=nullptr)localsEntry->dump("");
+	 
 	// Bla ! 
 	c_block->dump("");
+	//throw "Unhandle CBlock";
+
 	return nullptr;
 }
 

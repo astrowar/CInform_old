@@ -171,6 +171,18 @@ CBlocking::HBlock CBlockAssertion_isVariable::get_definition() {
     return baseKind;
 }
 
+CBlocking::HBlock CBlockAssertion_isLocalVariable::get_obj()
+{
+	return variableName;
+}
+
+CBlocking::HBlock CBlocking::CBlockAssertion_isLocalVariable::get_definition()
+{
+	return valueExpression;
+}
+
+
+
 CBlocking::HBlock CBlockAssertion_isDefaultAssign::get_obj() {
     return variable;
 }

@@ -17,6 +17,19 @@ bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 	return false;
 }
 
+bool CBlockInterpreter::is_nothing(HBlock  noum_)
+{
+	if (HBlockNoum noum = asHBlockNoum(noum_))
+	{
+		if (noum->named == "nothing") return true;
+		if (noum->named == "none") return true;
+		if (noum->named == "nil") return true;
+	}
+	return false;
+}
+
+
+
 bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	for(auto rr : this->staticRelation)

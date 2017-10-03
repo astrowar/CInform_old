@@ -100,6 +100,8 @@ enum BlockType {
 	BlockIntegerNumber,
 	BlockFactionalNumber,
 	BlockExecutionResultFlag,
-	BlockControlForEach
+	BlockControlForEach,
+	BlockAssertion_isLocalVariable,
+	BlockRelationArguments
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

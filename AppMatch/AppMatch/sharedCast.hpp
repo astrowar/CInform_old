@@ -25,6 +25,7 @@ namespace CBlocking
 		HBlockListOfKind asHBlockListOfKind(CBlocking::HBlock c);
 		HBlockNamedValue asHBlockNamedValue(CBlocking::HBlock c);
 		HBlockVariable asHBlockVariable(CBlocking::HBlock c);
+		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c);
 		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c);
 		HBlockList asHBlockList(CBlocking::HBlock c);
 		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c);
@@ -97,7 +98,7 @@ namespace CBlocking
 		HBlockSimetricRelation asHBlockSimetricRelation(CBlocking::HBlock c);
 		HBlockASimetricRelation asHBlockASimetricRelation(CBlocking::HBlock c);
 		HBlockRelationInstance asHBlockRelationInstance(CBlocking::HBlock c);
-
+		HBlockRelationArguments  asHBlockRelationArguments(CBlocking::HBlock c);
 
 		HBlockVerbRelation asHBlockVerbRelation(CBlocking::HBlock c);
 		HBlockVerbReverseRelation asHBlockVerbReverseRelation(CBlocking::HBlock c);

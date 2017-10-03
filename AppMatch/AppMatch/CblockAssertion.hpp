@@ -137,6 +137,30 @@ namespace CBlocking
 
 
 
+
+ 
+
+		class CBlockAssertion_isLocalVariable : public CBlockAssertion_is //retorna uma declaracao
+
+		{
+		public:
+			CBlocking::HBlock get_obj() override;
+
+			CBlocking::HBlock get_definition() override;
+
+			virtual void dump(string ident) override;
+			virtual BlockType type() override { return BlockType::BlockAssertion_isLocalVariable; }
+
+			CBlocking::HBlockNoum variableName;
+			CBlocking::HBlock valueExpression;
+
+			CBlockAssertion_isLocalVariable(CBlocking::HBlockNoum _variableName, CBlocking::HBlock _valueExpression) : variableName((_variableName)),
+				valueExpression((_valueExpression)) {};
+		};
+		using HBlockAssertion_isLocalVariable = std::shared_ptr<CBlockAssertion_isLocalVariable>;
+
+
+
 	class CBlockAssertion_isDefaultAssign : public CBlockAssertion_is //retorna uma declaracao
 	{
 	public:

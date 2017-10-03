@@ -63,6 +63,11 @@ void testeRelation1() {
 	assert(ret_false_c.result == QNotEquals);
 	assert(ret_true_d.result == QEquals);
 
+	printf("_______________________________________\n");
+	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, " unloking relates key to box   ", true), nullptr, nullptr);
+	target_q3->dump("A ");
+	 
+
     return;
 }
 
@@ -292,12 +297,51 @@ carry out getting an thing  :
 
 	return;
 }
+
+ 
+void testeRelation7()  //relations  with actions
+{
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	string ss1 =
+		R"(
+     thing is a kind 
+     apple is an thing 
+     orange is an thing
+     pear is an thing
+
+     getting  is   an action applying to ( an  thing ) 
+
+     carry out getting an thing  :
+       let the map  be a relation of thing
+       now map relates orange to apple       
+       say (text taken )
+      
+
+)";
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+
+	printf("init try ----------\n");
+	auto ex = Statement::Parser_Stmt(&parse, "try getting orange", true);
+	printf("end try parse--------------\n");
+	
+	auto target_v2 = interpreter->execute_now(ex);
+	 
+	printf("----------------\n");
+	//interpreter->execute_now(Statement::Parser_Stmt(&parse, "try getting orange ", ISLOG), nullptr);
+
+	return;
+}
+
+
 void testeRelation_all()
 {
-	//testeRelation1(); 
+	 testeRelation1(); 
 	//testeRelation2(); 
 	//testeRelation3(); 
 	//testeRelation4(); 
 	//testeRelation5();
-	testeRelation6();
+	//testeRelation6();
+	testeRelation7();
 }

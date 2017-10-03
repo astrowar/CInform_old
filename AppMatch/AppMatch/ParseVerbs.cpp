@@ -98,7 +98,10 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
 				if (n2 != nullptr)
 				{
 					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-					return std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+
+					auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+					 
+					return r;
 				}
 			}
 

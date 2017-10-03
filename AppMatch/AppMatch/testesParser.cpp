@@ -404,9 +404,10 @@ void testeExecute5();
 int main() {
 
 
- 
-
-	testeExecute_all();
+	testeRelation_all();
+	testeLogical_All();
+	//testeRelation_all();
+	//testeExecute_all();
 
 	//testeParser_7h();
  

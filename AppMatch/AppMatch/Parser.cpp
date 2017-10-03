@@ -550,6 +550,32 @@ HBlock NSParser::ParseAssertion::STMT_Decide_Assertion(CParser * p, std::vector<
 }
 
 
+ 
+HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector<HTerm>& term)
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("obj_s"));
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mkHPredAny("obj_d"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock a = Expression::parser_expression(p, res.matchs["obj_s"]);
+			if (a != nullptr) {
+				HBlock b = Expression::parser_expression(p, res.matchs["obj_d"]);
+				if (b != nullptr)
+				{
+					return std::make_shared<CBlockRelationArguments>(a, b);
+				}
+			}
+		}
+	}
+	return nullptr;
+
+
+}
+
+
 
 HBlockProperty NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
     {

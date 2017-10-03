@@ -182,14 +182,16 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 
 	if (v_call->action->named == "say_text")
 	{
+		v_call->dump("");
+
 		if (HBlockText  ntext = asHBlockText(v_call->noum1))
 		{
 			printf("root$ %s \n", ntext->contents.c_str());
 			return PhaseResult(true);;
 		}
-		printf("root$ something ??? \n");
-		v_call->noum1->dump("");
-		printf("...................\n");
+		//printf("root$ something ??? \n");
+		v_call->dump("");
+		//printf("...................\n");
 		return PhaseResult(true);;
 	}
 	if (v_call->action->named == "say")

@@ -167,5 +167,25 @@ namespace CBlocking
 	};
 	using HBlockVerbLookup = std::shared_ptr<CBlockVerbLookup>;
 
+
+
+
+	class CBlockRelationArguments : public CBlock
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockRelationArguments; }
+	 
+		HBlock  value1;
+		HBlock  value2;
+	 
+
+		CBlockRelationArguments(  HBlock  _value1, HBlock   _value2 ) :   value1(_value1), value2(_value2) 
+		{
+
+		}
+	};
+	using HBlockRelationArguments = std::shared_ptr<CBlockRelationArguments>;
+
 }
 

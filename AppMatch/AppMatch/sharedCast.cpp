@@ -72,6 +72,15 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockVariable>(c);
 			return nullptr;
 		}
+
+		
+		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockAssertion_isLocalVariable)
+				return std::static_pointer_cast<CBlockAssertion_isLocalVariable>(c);
+			return nullptr;
+		}
+
 		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockInstanceVariable)
@@ -510,6 +519,14 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockRelationInstance>(c);
 			return nullptr;
 		}
+
+		HBlockRelationArguments  asHBlockRelationArguments(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockRelationArguments )
+				return std::static_pointer_cast<CBlockRelationArguments>(c);
+			return nullptr;
+		}
+
 		HBlockVerbDirectRelation asHBlockVerbDirectRelation(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockVerbDirectRelation)

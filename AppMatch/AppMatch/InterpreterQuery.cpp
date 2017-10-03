@@ -34,6 +34,7 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 
 CBlockInterpreter::CBlockInterpreter() {
 	instancia_id = 0;
+	Nothing = make_shared<CBlockNoum>("nothing");
 }
 
 CBlockInterpreter::~CBlockInterpreter() {
@@ -180,7 +181,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 						if (rprop.result == QEquals) return rprop;
 						return QNotEquals;
 					}
-					logMessage(cinst->named + " Dont have Property " + property_noum->named);
+					//logMessage(cinst->named + " Dont have Property " + property_noum->named);
 					{
 						QueryResultContext  result_prop = query_relation_property(property_noum, propObj, c_block1, localsEntry, next_stack.get());
 						if (result_prop.result != QUndefined)
@@ -754,6 +755,32 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
     {
         return queryVerb_ListedIn(n1, n2,localsEntry, stk);
     }
+
+
+	if (cs == "relates")
+	{
+		printf("System relates verb \n");
+
+		if (HBlockRelationBase  r_rel = asHBlockRelationBase(n1))
+		{
+			if (HBlockRelationArguments  r_args = asHBlockRelationArguments(n2))
+			{
+				auto r_exist = query_relation(r_rel, r_args->value1, r_args->value2, localsEntry, stk);
+
+
+				n1->dump("");
+				n2->dump("");
+				return r_exist;
+
+			}
+		}
+		return QueryResultContext(QUndefined);
+	}
+
+
+
+
+
     return QueryResultContext( QUndefined);
 }
 
@@ -998,6 +1025,9 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		logError("cannot query a Command list ");
 		assert(false);
 	}
+
+ 
+
     return QUndefined;
 
 }
