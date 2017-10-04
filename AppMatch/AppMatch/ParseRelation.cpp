@@ -263,7 +263,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
-					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
+					if (arg2->kind->named == "other" || arg2->kind->named == "another")  arg2->kind = arg1->kind;
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}

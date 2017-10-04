@@ -19,6 +19,17 @@ bool isSame_BlockNoum( CBlockNoum* b1, CBlockNoum* b2)
 	return false;
 }
 
+
+bool isSame_BlockNothing(CBlockNothing* b1, CBlockNothing* b2)
+{
+	if (b1->named == b2->named) return true;
+	return false;
+}
+
+
+ 
+
+
 bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
 {
 	if (b1->named == b2->named) return true;
@@ -140,5 +151,9 @@ bool CBlock::isSame(CBlock* b1,CBlock* b2) const
 
 	if (b1->type() == BlockAssertion_isInstanceOf) return isSame_BlockAssertion_isInstanceOf(static_cast<CBlockAssertion_isInstanceOf*>(b1), static_cast<CBlockAssertion_isInstanceOf*>(b2));
 	 
+
+	if (b1->type() == BlockNothing)  return isSame_BlockNothing(static_cast<CBlockNothing*>(b1), static_cast<CBlockNothing*>(b2));
+
+	throw "unable to compare";
 	return false;
 }

@@ -269,7 +269,6 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 		{
 			return assert_it_property(propname, nobj, value, localsEntry,stk );
 		}
-		  
 	}
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
@@ -287,6 +286,13 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 			HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
+				if ( is_primitive_value(value, localsEntry, stk) ==false )
+				{
+					auto next_value = exec_eval(value, localsEntry, stk);
+					return assert_it_property(propname, obj,next_value, localsEntry, stk);
+				}
+					
+
 				CBlocking::HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
 				if (instanceValueRefered) {
 					cinst->set_property(property_noum->named, instanceValueRefered);
@@ -306,6 +312,12 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 			HVariableNamed vv = cAction->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
+				if (is_primitive_value(value, localsEntry, stk) == false)
+				{
+					auto next_value = exec_eval(value, localsEntry, stk);
+					return assert_it_property(propname, obj, next_value, localsEntry, stk);
+				}
+
 				CBlocking::HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
 				if (instanceValueRefered) {
 					cAction->set_property(property_noum->named, instanceValueRefered);
@@ -320,6 +332,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 	 
 
 		{
+
 			bool set_prop_rel = set_relation_property(property_noum, obj, value, localsEntry,stk );
 			if (set_prop_rel) return set_prop_rel;
 		}

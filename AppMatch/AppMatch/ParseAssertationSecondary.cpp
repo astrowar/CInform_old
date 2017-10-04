@@ -196,9 +196,10 @@ HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term
 
 		predList.push_back(mkHPredAny("kindBase"));
 		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-
-			return std::make_shared<CBlockKindOfName>(res.matchs["kindBase"]->removeArticle()->repr());
+		if (res.result == Equals) 
+		{	 
+			auto nn =   CtoString(res.matchs["kindBase"]->removeArticle());			 
+			return std::make_shared<CBlockKindOfName>(nn);
 		}
 	}
 

@@ -387,7 +387,7 @@ HBlock NSParser::DynamicDispatch::DynamicDispatch_action(CParser *p, std::vector
 				n2 = Expression::parser_expression(p, res_action.matchs["noum2"]);
 			}
 			else {
-				n2 = std::make_shared<CBlockNoum>("Nothing");
+				n2 = std::make_shared<CBlockNothing>("nothing");
 			}
 			n1->dump("   ");
 			n2->dump("   ");

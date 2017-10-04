@@ -84,5 +84,8 @@
     <ClCompile Include="teste_logical.cpp">
       <Filter>Source Files\Testes</Filter>
     </ClCompile>
+    <ClCompile Include="unit_testes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

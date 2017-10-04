@@ -141,6 +141,20 @@ namespace CBlocking
 
 
 
+	 
+
+	class CBlockNothing : public CBlock  //retorna um valor generico porem Abstrado
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockNothing; }
+		CBlockNothing(string _named) : named(_named) {};
+		const string named;
+	};
+
+	using HBlockNothing = std::shared_ptr<CBlockNothing>;
+
+
 	class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 	{
 	public:

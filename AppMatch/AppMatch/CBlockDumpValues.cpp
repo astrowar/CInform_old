@@ -82,6 +82,14 @@ void CBlockEnums::dump(string ident) {
 		CBlock::dump(ident);
 }
 
+
+ 
+void CBlockNothing::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Nothing"); 
+	CBlock::dump(ident);
+}
+
+
 void CBlockKindOfName::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Named :  ", baseClasseName.c_str());
 	CBlock::dump(ident);
@@ -717,6 +725,19 @@ void CBlockIsNotVerb::dump(string ident) {
 		this->n2->dump(ident + "       ");
 		CBlock::dump(ident);
 }
+
+
+
+ 
+void CBlockAssert::dump(string ident) {
+	printf("%s %s \n", ident.c_str(), "Assert ");
+	this->expression->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Equals ");
+	this->result->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+
 
 void CBlockVerbDirectRelation::dump(string ident) {
 	printf("%s %s\n",ident.c_str() , "Verb  ");

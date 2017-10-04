@@ -3,7 +3,7 @@
 
 
 class CRunLocalScope;
-using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
+using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
 
 class CRunLocalScope	 

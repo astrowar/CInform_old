@@ -13,7 +13,6 @@
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
 using namespace std;
-
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
@@ -53,7 +52,18 @@ std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocal
 	return std::list<HBlock>();
 }
 
-PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
+bool  CBlockInterpreter::is_valid_for_relation_kind(HBlock baseType, HBlock object, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	  
+	auto r = query_is(object, baseType, localsEntry, stk);
+	if (r.result == QueryResul::QEquals)
+	{
+		return true;
+	} 
+	return false; 
+}
+
+PhaseResult CBlockInterpreter::execute_verb_set_inn(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 	// Eh uma relacao ??
@@ -73,14 +83,26 @@ PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalSco
 				if (rv.second->type() == BlockVerbDirectRelation)
 				{
 					HBlockRelationBase rel = rel_find->second;
-					this->set_relation(rel, vverb->n1, vverb->n2, localsEntry,stk );
-					return true;
+					if (is_valid_for_relation_kind(rel->input_A->kind, vverb->n1, localsEntry, stk) && is_valid_for_relation_kind(rel->input_B->kind, vverb->n2, localsEntry, stk))
+					{
+						return this->set_relation(rel, vverb->n1, vverb->n2, localsEntry, stk);
+					} 
+					else
+					{
+						return 	raise_runtime_error("relation type is Wrong ");
+					}
 				}
 				else if (rv.second->type() == BlockVerbReverseRelation)
 				{
-					HBlockRelationBase rel = rel_find->second;
-					this->set_relation(rel, vverb->n2, vverb->n1, localsEntry,stk); // inverte a relacao
-					return true;
+					HBlockRelationBase rel = rel_find->second;					 
+					if (is_valid_for_relation_kind(rel->input_B->kind, vverb->n1, localsEntry, stk) && is_valid_for_relation_kind(rel->input_A->kind, vverb->n2, localsEntry, stk))
+					{
+						return this->set_relation(rel, vverb->n2, vverb->n1, localsEntry, stk); // inverte a relacao					
+					}
+					else
+					{
+						return raise_runtime_error("relation type is Wrong ");
+					}
 				}
 			}
 			else
@@ -91,7 +113,15 @@ PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalSco
 		}
 
 	}
-	return false;
+	return PhaseResult(false);
+}
+
+PhaseResult CBlockInterpreter::execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	auto n1 = exec_eval(vverb->n1, localsEntry, stk);
+	auto n2 = exec_eval(vverb->n2, localsEntry, stk);
+	HBlockIsVerb v_adv = std::make_shared<CBlockIsVerb>(vverb->verb , n1 , n2  );
+	return execute_verb_set_inn(v_adv, localsEntry, stk);
 }
 
 
@@ -333,6 +363,20 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 	//if (b != nullptr) { b->dump(""); }
 	//else { printf("nullPTR"); }
 	return b;
+
+}
+
+
+bool CBlockInterpreter::assert_equals(HBlock c_block , HBlock c_result)
+{
+	auto a = exec_eval(c_block,nullptr,nullptr);
+	auto b = exec_eval(c_result, nullptr, nullptr);
+
+	auto res = query_is(a, b, nullptr, nullptr);
+	if (res.result == QEquals) return true;
+
+	throw "Assertion error";
+	return false;
 
 }
 
@@ -665,6 +709,10 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
 				if (pvar != nullptr)
 				{
+					if (pvar->value ==nullptr)
+					{
+						return Nothing;
+					}
 					return pvar->value;
 				}
 			}
@@ -1069,10 +1117,8 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		{
 			auto pret = execute_now(cmd, nextLocals, stk);
 			if (pret.hasExecuted == false)
-			{
-				logError("fail to execute ");
-				p->dump("");
-				logError("");
+			{ 
+				p->dump(""); 
 				return false;
 			}
 			rs_result = pret;			
@@ -1143,8 +1189,6 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (HBlockControlIF  vControlIf =  asHBlockControlIF(p))
 	{
-	 
-
 		QueryResultContext qResult =  query(vControlIf->block_if, localsEntry, stk); 
 
 		if (qResult.result == QEquals)

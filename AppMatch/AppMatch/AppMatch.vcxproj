@@ -190,6 +190,7 @@
     <ClCompile Include="teste_selector.cpp" />
     <ClCompile Include="teste_values.cpp" />
     <ClCompile Include="teste_verb.cpp" />
+    <ClCompile Include="unit_testes.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

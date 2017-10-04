@@ -32,6 +32,7 @@ namespace CBlocking
 		HBlockEnums asHBlockEnums(CBlocking::HBlock c);
 		HBlockProperty asHBlockProperty(CBlocking::HBlock c);
 		HBlockAssertion_isDefaultAssign asHBlockAssertion_isDefaultAssign(CBlocking::HBlock c);
+		HBlockNothing asHBlockNothing(CBlocking::HBlock c);
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c);
 		HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(CBlocking::HBlock c);
 		HBlockAssertion_isDirectAssign asHBlockAssertion_isDirectAssign(CBlocking::HBlock c);

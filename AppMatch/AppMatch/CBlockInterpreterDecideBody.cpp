@@ -176,6 +176,11 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 			if (boolValuen->state) return QueryResultContext(QEquals);
 			else  return QueryResultContext(QNotEquals);
 		}
+		
+		if (HBlockNothing ndecideValue = asHBlockNothing(ndecide->decideBody))
+		{
+			return QueryResultContext(QUndefined);
+		}
 
 		logError("Error on decided return value ");
 		return QueryResultContext(QUndefined);

@@ -41,13 +41,14 @@ void testeRelation1() {
 
     
 
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"unloking relates (a thing ) to another", ISLOG));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"unloking relates (a thing ) to various thing", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb  unlock  implies a  unloking relation", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb ( unlocked by ) implies a reverse  unloking relation", ISLOG));
 
  
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"   box is unlocked by   key  ", ISLOG));
+	//interpreter->execute_now(Statement::Parser_Stmt(&parse, "  garden is unlocked by  key  ", ISLOG));
    // interpreter->execute_now (Statement::Parser_Stmt(&parse,"   key unlocked  by box  ", ISLOG)); 
      
     //interpreter->execute_init(Statement::Parser_Stmt(&parse,"to decide if ( thing called T ) unloked by ( thing called K ) :  K unlocks T   ", ISLOG));
@@ -64,7 +65,7 @@ void testeRelation1() {
 	assert(ret_true_d.result == QEquals);
 
 	printf("_______________________________________\n");
-	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, " unloking relates key to box   ", true), nullptr, nullptr);
+	auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse, " unloking relates a thing  to an thing   ", true), nullptr, nullptr);
 	target_q3->dump("A ");
 	 
 

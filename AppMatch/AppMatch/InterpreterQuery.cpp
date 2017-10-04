@@ -34,7 +34,7 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 
 CBlockInterpreter::CBlockInterpreter() {
 	instancia_id = 0;
-	Nothing = make_shared<CBlockNoum>("nothing");
+	Nothing = make_shared<CBlockNothing>("nothing");
 }
 
 CBlockInterpreter::~CBlockInterpreter() {
@@ -75,6 +75,20 @@ QueryResultContext CBlockInterpreter::query_is_extern(HBlock c_block, HBlock c_b
 {
 	
     return  query_is(c_block, c_block1,nullptr, nullptr);
+}
+
+
+
+bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (asHBlockNothing(c)) return true;
+	if (asHBlockBooleanValue(c)) return true;
+	if (asHBlockList(c)) return true;
+	if (asHBlockInstance(c)) return true;
+	if (asHBlockRelationBase(c)) return true;
+	if (asHBlockAction(c)) return true;
+	if (asHBlockNamedValue(c)) return true;
+	return false;
 }
 
 
@@ -164,20 +178,10 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 					HVariableNamed pvar = cinst->get_property(property_noum->named);
 					if (pvar != nullptr)
 					{
-						// logMessage("property  is ");
-						//if (pvar->value != nullptr)
-						//{
-						//	pvar->value->dump("  ");
-						//}
-						//else
-						//{
-						//	logMessage("    EMPTY   ");
+						auto next_var = pvar->value;
+						if (next_var == nullptr) next_var = Nothing;
 
-						//}
-						//c_block1->dump("  ");
-
-
-						QueryResultContext rprop = query_is(pvar->value, c_block1, localsEntry, next_stack.get());
+						QueryResultContext rprop = query_is(next_var, c_block1, localsEntry, next_stack.get());
 						if (rprop.result == QEquals) return rprop;
 						return QNotEquals;
 					}
@@ -327,6 +331,7 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in) {
 
 	 
+ 
 
 	if (c_block->isSame(c_block.get(), c_block1.get()))
 	{
@@ -368,8 +373,12 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		HBlock resolved = resolve_noum(nnoum, localsEntry);
 		if (resolved != nullptr)
-		{
+		{			
 			return query_is(c_block, resolved, localsEntry, stk);
+		}
+		if (nnoum->named == "kind")
+		{
+			if ( asHBlockKind(c_block) != nullptr) return QEquals;
 		}
 
 	}
@@ -381,7 +390,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		{
 			return query_is(resolved, c_block1, localsEntry, stk);
         }
- 
+		
+		if (nnoum2->named == "kind")
+		{
+			if (asHBlockKind(c_block1) != nullptr) return QEquals;
+		}
     }
 
 
@@ -766,10 +779,8 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
 			if (HBlockRelationArguments  r_args = asHBlockRelationArguments(n2))
 			{
 				auto r_exist = query_relation(r_rel, r_args->value1, r_args->value2, localsEntry, stk);
-
-
-				n1->dump("");
-				n2->dump("");
+				 
+				
 				return r_exist;
 
 			}
@@ -941,6 +952,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 			}
 
  
+
 			QueryResultContext ret =  query_is(vr1,vr2, localsEntry, stk);
 			if (ret.result != QUndefined)
 			{
@@ -1025,7 +1037,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		logError("cannot query a Command list ");
 		assert(false);
 	}
-
+	q->dump("");
  
 
     return QUndefined;

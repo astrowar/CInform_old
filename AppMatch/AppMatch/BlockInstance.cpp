@@ -138,6 +138,12 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 		if (va->name->named == pnamed)
 		{
 			//logMessage(pnamed + " has? " + va->name->named);
+			if (va->value == nullptr)
+			{
+				//retorna o valor como nothing ...
+				return std::make_shared< CVariableNamed>(va->name, va->kind, std::make_shared<CBlockNothing>("nothing"));
+				//return va;
+			}
 			return va;
 		}
 	}

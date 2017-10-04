@@ -311,5 +311,23 @@ namespace CBlocking
 	};
 	using HBlockIsNotVerb = std::shared_ptr<CBlockIsNotVerb>;
 
+
+	class CBlockAssert : CBlock    //retorna uma declaracao
+	{
+	public:
+ 
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockAssert; }
+		CBlocking::HBlock expression;
+		CBlocking::HBlock result;
+		CBlockAssert( CBlocking::HBlock _expression, CBlocking::HBlock _result) : expression(_expression),result(_result) {};
+
+	};
+
+
+	
+
+
+		using HBlockAssert = std::shared_ptr<CBlockAssert>;
 }
 #endif //CBLOCKMATCH_H

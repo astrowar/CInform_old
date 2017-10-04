@@ -45,6 +45,13 @@ bool CBlockInterpreter::isSameString(string s1 , string s2)
 	return false;
 }
 
+
+
+
+ 
+
+
+
 std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalScope localsEntry)
 {
 	return resolve_as_list(qlist, localsEntry, std::list<std::string>());

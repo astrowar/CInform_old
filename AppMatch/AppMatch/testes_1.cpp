@@ -14,158 +14,192 @@ void testeParser_1() {
     
 }
 
-void testeParser_2() {
-    HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+void testeParser_2_1() {
+
+
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;	
+	std::function<bool(std::string )> f_is = [&](std::string a ) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr,nullptr ).result == QEquals; };
+
+
+	string ss1 =
+		R"(
+
+ thing is an kind
+ book is a kind of thing
+ magic object is a kind 
+ special book is a kind of book 
+ special book is a kind of magic object
+ diary is a special book
+
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	assert(f_is("special book is a kind "));
+	assert(f_is("special book is book "));
+	assert(f_is("diary is thing"));
+	assert(f_is("diary is book"));
+
+
+
+}
 
    
 
-    {
-        CParser parse;
-        string phase_1 = "thing is a kind ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-         
-         interpreter->execute_init(res);
-    }
+ 
+ 
 
-    {
-        CParser parse;
-        string phase_1 = "book is a kind of thing ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-         
-        interpreter->execute_init(res);
-    }
+void testeParser_2_2() {
+    
 
-    {
-        CParser parse;
-        string phase_1 = "magic object is a kind  ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-         
-        interpreter->execute_init(res);
-    }
 
-    {
-        CParser parse;
-        string phase_1 = "special book is a kind of book ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
 
-        interpreter->execute_init(res);
-    }
+	string ss1 =
+		R"(
 
-    {
-        CParser parse;
-        string phase_1 = "special book is a kind of magic object ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-       
-        interpreter->execute_init(res);
-    }
+ thing is an kind
+ kelement is a kind
 
-    {
-        CParser parse;
-        string phase_1 = "diary is a special book ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-        
-        interpreter->execute_init(res);
-    }
+ fire is a kelement
+ air is a kelement
 
-    {
-        CParser parse;
-        interpreter->execute_init(Statement::Parser_Stmt(&parse,"metal  is a kind ", ISLOG));
+ thing has a kelement called element
+ 
+ arrow is a thing
+ paper is a thing
+ slime  is a thing
 
-        string phase_1 = "(chopper, iron )  are kinds of metal  ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-        
-        interpreter->execute_init(res);
-    }
-    {
-        CParser parse;
-        string phase_1 = "rare metal  is a kind  of metal ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-        
-        interpreter->execute_init(res);
-    }
-    {
-        CParser parse;
-        string phase_1 = "(gold, silver )  are kinds of rare metal  ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-        
-        interpreter->execute_init(res);
-    }
+)";
 
-	QueryResultContext q = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("thing"));
-    bool qclass_k = interpreter->is_derivadeOf(std::make_shared<CBlockKindThing>("silver"),
-                                               std::make_shared<CBlockKindThing>("metal"));
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("element of paper  ")->dump("E ");
+	assert(f_is("element of paper is nothing "));
+	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of paper is fire ", false));
+	assert(f_is("element of paper is fire "));
+	
+	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of paper is nothing ", false));
+	assert(f_is("element of paper is fire "));
 
-	assert(q.result == QEquals);
-	assert(qclass_k);
+	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of arrow is slime ", false));
+	assert(false == f_is("element of arrow is slime "));
 
-    //bool qclass_i = interpreter->is_derivadeOf(std::make_shared<CBlockInstance>("diary"), std::make_shared<CBlockKindThing>("thing"));
-    logMessage( "Done" );
-    return;
+
+
+ //   interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
+ //   interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a kind of thing ", ISLOG));
+
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"kelement is a kind  ", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"fire is a kelement ", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"air is a kelement ", ISLOG));
+
+ //   interpreter->execute_init(Statement::Parser_Stmt(&parse,"book  can be normal , huge or  small", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing has a thing called element", ISLOG));
+
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"fire is a kelement ", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"air is a kelement ", ISLOG));
+ //
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse," element of thing is usually fire ", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse," element of book is usually air ", ISLOG));
+
+ //   interpreter->execute_init(Statement::Parser_Stmt(&parse,"book can be read", ISLOG));
+
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"diary is a book", ISLOG));
+	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"rock is a thing", ISLOG));
+
+ // 
+	//QueryResultContext q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
+	//assert(q_true.result == QEquals);
+
+ //   {
+ //       string phase_1 = "diary is not read ";
+ //       auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
+ //       
+ //       interpreter->execute_init(res);
+ //   }
+
+ //   interpreter->dump_instance("diary" );
+
+	//QueryResultContext q_false_1 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
+	//QueryResultContext q_false_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));
+	//QueryResultContext q_false_2n = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("normal"));
+
+
+	//assert(q_false_1.result == QNotEquals);
+	//assert(q_false_2.result == QNotEquals);
+	//assert(q_false_2n.result == QEquals);
+
+ //   logMessage( "Done" );
+
+	////interpreter->execute_init(Statement::Parser_Stmt(&parse,"element of  diary is air "));
+
+	//auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
+	//QueryResultContext q_true_2 = interpreter->query_is_extern(propV,	std::make_shared<CBlockNoum>("air"));
+	//assert(q_true_2.result == QEquals);
+ //   
+	//auto propT = std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("rock"));
+	//QueryResultContext q_true_3 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("air"));
+	//QueryResultContext q_true_4 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("fire"));
+	//QueryResultContext q_true_5 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("water"));
+
+	//assert(q_true_3.result == QEquals);
+	//assert(q_true_4.result == QNotEquals);
+	//assert(q_true_5.result == QNotEquals);
+ //   logMessage( "Done" );
+ //   return;
 }
 
-void testeParser_2a() {
-    HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
-    CParser parse;
-
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a kind of thing ", ISLOG));
-
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"kelement is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"fire is a kelement ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"air is a kelement ", ISLOG));
-
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"book  can be normal , huge or  small", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing has a thing called element", ISLOG));
-
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"fire is a kelement ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"air is a kelement ", ISLOG));
- 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse," element of thing is usually fire ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse," element of book is usually air ", ISLOG));
-
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"book can be read", ISLOG));
-
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"diary is a book", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"rock is a thing", ISLOG));
-
-  
-	QueryResultContext q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), 		std::make_shared<CBlockNoum>("read"));
-	assert(q_true.result == QEquals);
-
-    {
-        string phase_1 = "diary is not read ";
-        auto res = Statement::Parser_Stmt(&parse,phase_1, ISLOG);
-        
-        interpreter->execute_init(res);
-    }
-
-    interpreter->dump_instance("diary" );
-
-	QueryResultContext q_false_1 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("read"));
-	QueryResultContext q_false_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"),  std::make_shared<CBlockNoum>("huge"));
-	QueryResultContext q_false_2n = interpreter->query_is_extern(std::make_shared<CBlockNoum>("diary"), std::make_shared<CBlockNoum>("normal"));
 
 
-	assert(q_false_1.result == QNotEquals);
-	assert(q_false_2.result == QNotEquals);
-	assert(q_false_2n.result == QEquals);
+void testeParser_2_3() {
 
-    logMessage( "Done" );
 
-	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"element of  diary is air "));
 
-	auto propV =std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("diary"));
-	QueryResultContext q_true_2 = interpreter->query_is_extern(propV,	std::make_shared<CBlockNoum>("air"));
-	assert(q_true_2.result == QEquals);
-    
-	auto propT = std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("element"), std::make_shared<CBlockNoum>("rock"));
-	QueryResultContext q_true_3 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("air"));
-	QueryResultContext q_true_4 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("fire"));
-	QueryResultContext q_true_5 = interpreter->query_is_extern(propV, std::make_shared<CBlockNoum>("water"));
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false) ); };
+	 
 
-	assert(q_true_3.result == QEquals);
-	assert(q_true_4.result == QNotEquals);
-	assert(q_true_5.result == QNotEquals);
-    logMessage( "Done" );
-    return;
+	string ss1 =
+		R"(
+
+ thing is an kind
+ kelement is a kind
+
+ fire is a kelement
+ air is a kelement
+ water is a kelement
+
+ thing has a kelement called element
+ element of thing is usually air 
+
+ arrow is a thing
+ paper is a thing
+ slime  is a thing
+
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("element of paper  ")->dump("E ");
+	assert(f_is("element of paper is air "));
+
+	f_now( " element of paper is fire " );
+	assert(f_is("element of paper is fire "));
+
+	f_now(" element of arrow is water" );
+	f_now(" element of paper is  element of arrow " );
+	assert(f_is("element of paper is water "));
+}
+
+
+void testeParser_2()
+{
+//	testeParser_2_1();
+	testeParser_2_3();
 }

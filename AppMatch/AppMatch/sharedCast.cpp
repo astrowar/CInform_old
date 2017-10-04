@@ -113,6 +113,15 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockAssertion_isDefaultAssign>(c);
 			return nullptr;
 		}
+
+		 
+		HBlockNothing asHBlockNothing(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockNothing)
+				return std::static_pointer_cast<CBlockNothing>(c);
+			return nullptr;
+		}
+
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockNoum)

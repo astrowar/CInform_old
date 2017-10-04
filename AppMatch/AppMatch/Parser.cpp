@@ -460,6 +460,11 @@ HBlock NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& ter
 			return nullptr;
 		}
 
+		if ((nstr.find("[") != std::string::npos))
+		{
+			return nullptr;
+		}
+
 		return std::make_shared<CBlockNoum>(nstr);
     }
     return nullptr;
