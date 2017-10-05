@@ -1,6 +1,7 @@
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
+#include <cassert>
 #include "BlockInterpreter.hpp"
 #include "CBlockMatch.hpp"
 #include "CBlockDecideIf.hpp"
@@ -8,22 +9,20 @@
 
 using namespace CBlocking;
 
-bool isSame(CBlocking::HBlock b1, CBlocking::HBlock b2)
+bool isSame(const CBlocking::HBlock &b1, const CBlocking::HBlock &b2)
 {
 	return b1->isSame(b1.get(), b2.get());
 }
 
 bool isSame_BlockNoum( CBlockNoum* b1, CBlockNoum* b2)
 {
-	if (b1->named == b2->named) return true;
-	return false;
+	return b1->named == b2->named;
 }
 
 
 bool isSame_BlockNothing(CBlockNothing* b1, CBlockNothing* b2)
 {
-	if (b1->named == b2->named) return true;
-	return false;
+	return b1->named == b2->named;
 }
 
 
@@ -32,8 +31,7 @@ bool isSame_BlockNothing(CBlockNothing* b1, CBlockNothing* b2)
 
 bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
 {
-	if (b1->named == b2->named) return true;
-	return false;
+	return b1->named == b2->named;
 }
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 {
@@ -44,8 +42,7 @@ bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 
 bool isSame_BlockAction(CBlockAction * b1, CBlockAction* b2)
 {
-	if (b1->named == b2->named) return true;
-	return false;
+	return b1->named == b2->named;
 }
 
 
@@ -53,43 +50,36 @@ bool isSame_BlockAction(CBlockAction * b1, CBlockAction* b2)
  
 bool isSame_BlockMatchNoum(CBlockMatchNoum* b1, CBlockMatchNoum* b2)
 {
-	if ( isSame(b1->inner , b2->inner)) return true;
-	return false;
+	return isSame(b1->inner , b2->inner);
 }
 
 bool isSame_BlockMatchNoum(CBlockKind* b1, CBlockKind* b2)
 {
-	if (b1->named == b2->named) return true;
-	return false;
+	return b1->named == b2->named;
 }
 
 bool isSame_BlockProperty(CBlockProperty* b1, CBlockProperty* b2)
 {
-	if ( isSame(b1->obj ,b2->obj ) && isSame(b1->prop ,b2->prop )) return true;
-	return false;
+	return isSame(b1->obj , b2->obj ) && isSame(b1->prop , b2->prop );
 }
 bool isSame_BlockInstanceVariable(CBlockInstanceVariable * b1, CBlockInstanceVariable* b2)
 {
-	if (isSame(b1->kind_name, b2->kind_name) && isSame(b1->property_name, b2->property_name)) return true;
-	return false;
+	return isSame(b1->kind_name, b2->kind_name) && isSame(b1->property_name, b2->property_name);
 }
 
 bool isSame_BlockToDecideWhat(CBlockToDecideWhat * b1, CBlockToDecideWhat* b2)
 {
-	if (isSame(b1->decideBody, b2->decideBody) && isSame(b1->queryToMatch, b2->queryToMatch)) return true;
-	return false;
+	return isSame(b1->decideBody, b2->decideBody) && isSame(b1->queryToMatch, b2->queryToMatch);
 }
 
 bool isSame_BlockAssertion_isDirectAssign(CBlockAssertion_isDirectAssign * b1, CBlockAssertion_isDirectAssign* b2)
 {
-	if (isSame(b1->value, b2->value) && isSame(b1->variable, b2->variable)) return true;
-	return false;
+	return isSame(b1->value, b2->value) && isSame(b1->variable, b2->variable);
 }
 
 bool isSame_BlockAssertion_isNotDirectAssign(CBlockAssertion_isNotDirectAssign  * b1, CBlockAssertion_isNotDirectAssign* b2)
 {
-	if (isSame(b1->value, b2->value) && isSame(b1->variable, b2->variable)) return true;
-	return false;
+	return isSame(b1->value, b2->value) && isSame(b1->variable, b2->variable);
 }
 
 bool isSame_BlockIsVerb(CBlockIsVerb  * b1, CBlockIsVerb* b2)
@@ -119,7 +109,7 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 		auto it2 = b2->matchList.begin();
 		while (it1 != b1->matchList.end())
 		{
-			if (isSame((*it1), (*it2)) == false) return false;
+			if (!isSame((*it1), (*it2))) return false;
 			++it1;
 			++it2;
 		}
@@ -154,6 +144,6 @@ bool CBlock::isSame(CBlock* b1,CBlock* b2) const
 
 	if (b1->type() == BlockNothing)  return isSame_BlockNothing(static_cast<CBlockNothing*>(b1), static_cast<CBlockNothing*>(b2));
 
-	throw "unable to compare";
+	assert(false);
 	return false;
 }

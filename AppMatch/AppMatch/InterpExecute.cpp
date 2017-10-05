@@ -55,12 +55,8 @@ std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocal
 bool  CBlockInterpreter::is_valid_for_relation_kind(HBlock baseType, HBlock object, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	  
-	auto r = query_is(object, baseType, localsEntry, stk);
-	if (r.result == QueryResul::QEquals)
-	{
-		return true;
-	} 
-	return false; 
+	auto r = query_is(std::move(object), baseType, localsEntry, stk);
+	return r.result == QueryResul::QEquals;
 }
 
 PhaseResult CBlockInterpreter::execute_verb_set_inn(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk)
@@ -169,7 +165,7 @@ PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocal
 	{
 		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
 
-		for (auto r : matchedObjects)
+		for (const auto &r : matchedObjects)
 		{
 			execute_unset(r, value, localsEntry);
 		}
@@ -213,7 +209,7 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 	if (HBlockEvery nevery = asHBlockEvery(obj))
 	{ 
 		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
-		for (auto r : matchedObjects)
+		for (const auto &r : matchedObjects)
 		{
 		 
 			execute_set(r, value, localsEntry);
@@ -280,9 +276,9 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 
 HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock propObj )
 {
-	if (HBlockInstance cinst = asHBlockInstance(propObj))
+	if (HBlockInstance cinst = asHBlockInstance( (propObj)))
 	{
-		if (HBlockNoum property_noum = asHBlockNoum(propname))
+		if (HBlockNoum property_noum = asHBlockNoum( (propname)))
 		{
 			HVariableNamed pvar = cinst->get_property(property_noum->named);
 			if (pvar != nullptr) 
@@ -326,8 +322,8 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 
 	
 
-	for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-		if (HBlockAssertion_is qdef = asHBlockAssertion_is(*it))
+	for (auto &assertion : assertions) {
+		if (HBlockAssertion_is qdef = asHBlockAssertion_is(assertion))
 		{
 			auto qcc = query_is_same(c_block, qdef->get_obj(), localsEntry, stk);
 			if (qcc.result == QEquals) 
@@ -369,13 +365,13 @@ HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, 
 
 bool CBlockInterpreter::assert_equals(HBlock c_block , HBlock c_result)
 {
-	auto a = exec_eval(c_block,nullptr,nullptr);
-	auto b = exec_eval(c_result, nullptr, nullptr);
+	auto a = exec_eval(std::move(c_block),nullptr,nullptr);
+	auto b = exec_eval(std::move(c_result), nullptr, nullptr);
 
 	auto res = query_is(a, b, nullptr, nullptr);
 	if (res.result == QEquals) return true;
 
-	throw "Assertion error";
+
 	return false;
 
 }
@@ -494,7 +490,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return nullptr;
 	}
 
-	if (is_nothing(c_block)) return c_block;
+	if (is_nothing(c_block)) return Nothing;
 
  
 	{
@@ -735,7 +731,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 
 	//resolve To decides
-	for (auto dct : decides_what)
+	for (const auto &dct : decides_what)
 	{
 		auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr,stk);
 		if (dctValueWrap != nullptr)
@@ -903,7 +899,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 					 auto result_arg1 = Match(arg1_named->matchInner, obj_resolved,  localsEntry,stk);
 					 if (result_arg1.hasMatch == true)
 					 {
-						 localsNext->locals.push_back(std::pair<string, HBlock>(arg1_named->named, obj_resolved));
+						 localsNext->locals.emplace_back(arg1_named->named, obj_resolved);
 						 ref_Arg_1 = obj_resolved;
 					 }
 					 else
@@ -922,7 +918,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 						 {
 							 ref_Arg_1 = obj_resolved;
 							 locals_obj_1 = std::make_shared< CRunLocalScope >( nullptr, result_arg1_requ.maptch);
-							 locals_obj_1->locals.push_back(std::pair<string, HBlock>("noum1" , obj_resolved));
+							 locals_obj_1->locals.emplace_back("noum1" , obj_resolved);
 						 }
 						 else
 						 {
@@ -945,7 +941,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 						 auto result_arg2 = Match(arg2_named->matchInner, obj_resolved, localsEntry , stk);
 						 if (result_arg2.hasMatch == true)
 						 {
-							 localsNext->locals.push_back(std::pair<string, HBlock>(arg2_named->named, obj_resolved));
+							 localsNext->locals.emplace_back(arg2_named->named, obj_resolved);
 							 ref_Arg_2 = obj_resolved;
 						 }
 						 else
@@ -966,7 +962,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 							 {
 								 ref_Arg_2 = obj_resolved;
 								 locals_obj_2 = std::make_shared< CRunLocalScope >(nullptr, result_arg2_requ.maptch);
-								 locals_obj_2->locals.push_back(std::pair<string, HBlock>("noum2", obj_resolved));
+								 locals_obj_2->locals.emplace_back("noum2", obj_resolved);
 							 }
 							 else
 							 {
@@ -1016,7 +1012,7 @@ PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 PhaseResult CBlockInterpreter::execute_now(HBlock p, HRunLocalScope localsEntry) //executa STMT
 {
 	QueryStack *stk = nullptr;
-	return execute_now(p, localsEntry, stk);
+	return execute_now(p, std::move(localsEntry), stk);
 }
 ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -1113,7 +1109,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		HRunLocalScope nextLocals = std::make_shared< CRunLocalScope >(localsEntry   );
 		 
 		PhaseResult rs_result(false);
-		for(auto cmd : vCommandList->lista)
+		for(const auto &cmd : vCommandList->lista)
 		{
 			auto pret = execute_now(cmd, nextLocals, stk);
 			if (pret.hasExecuted == false)

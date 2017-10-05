@@ -72,7 +72,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/InterpreterRelationEngine.cpp
         AppMatch/AppMatch/BlockisSame.cpp
         AppMatch/AppMatch/CInterpreterEvaluate.cpp
-
+        AppMatch/AppMatch/RuntimeErrors.cpp
 
         AppMatch/AppMatch/Parser_Plurals_En.cpp
         AppMatch/AppMatch/Parser_VerbTable_en.cpp
@@ -89,6 +89,8 @@ set(SOURCE_FILES
         AppMatch/AppMatch/CBlockInterpreterRuntime.cpp
         AppMatch/AppMatch/CInterpreterResolveMatchSeletor.cpp
         AppMatch/AppMatch/ParserPlural_table.cpp
+
+
         )
 
 add_executable(apx ${SOURCE_FILES}   )

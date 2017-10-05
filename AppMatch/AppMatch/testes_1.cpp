@@ -1,6 +1,8 @@
 
 #include "BaseTest.hpp"
 #include <cassert>
+#include <functional>
+
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -86,7 +88,7 @@ void testeParser_2_2() {
 	assert(f_is("element of paper is fire "));
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of arrow is slime ", false));
-	assert(false == f_is("element of arrow is slime "));
+	assert(!f_is("element of arrow is slime "));
 
 
 
@@ -197,9 +199,52 @@ void testeParser_2_3() {
 	assert(f_is("element of paper is water "));
 }
 
+void testeParser_2_4()
+{
+    HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+    CParser parse;
+    std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+    std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+    std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false) ); };
+
+    string ss1 =
+            R"(
+
+ thing is an kind
+
+ thing can be portable or fixed
+
+ arrow is a thing
+ paper is a thing
+ slime  is a thing
+
+ arrow is portable
+ slime is never portable
+
+)";
+
+    interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+    f_eval("arrow is portable  ")->dump("E ");
+    assert(f_is("arrow is portable "));
+
+
+    assert(f_is("paper is portable "));
+
+    f_now( " paper is fixed " );
+    assert(f_is("paper is fixed "));
+    f_now( " paper is not fixed " );
+    assert(f_is("paper is portable "));
+
+    //f_now( " slime is portable " );
+}
+
+
+
 
 void testeParser_2()
 {
-//	testeParser_2_1();
-	testeParser_2_3();
+//    testeParser_2_1();
+//    testeParser_2_2();
+//	testeParser_2_3();
+    testeParser_2_4(); // anonimous properties
 }
