@@ -656,9 +656,24 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
     }
 
-	//logMessage("I cant query");
-	//c_block->dump("");
-	//c_block1->dump("");
+
+	if (HVariableNamed var_n = asHVariableNamed(c_block1))
+	{
+		if (var_n->value == nullptr)	return query_is(c_block, Nothing, localsEntry,  stk);
+		return query_is(c_block, var_n->value, localsEntry, stk);
+	}
+
+	if (HVariableNamed var_n = asHVariableNamed(c_block))
+	{
+		if (var_n->value == nullptr)	return query_is( Nothing, c_block1, localsEntry, stk);
+		return query_is(var_n->value ,c_block1,   localsEntry, stk);
+	}
+
+
+
+	logMessage("I cant query");
+	c_block->dump("");
+	c_block1->dump("");
 
  
     return QueryResultContext(QUndefined);

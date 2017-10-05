@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\dev\repositorio\CMatchIteractiveFic\AppMatch\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

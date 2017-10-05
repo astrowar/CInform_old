@@ -160,7 +160,16 @@ PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLoc
 PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
 
-	
+	if (HBlockNoum nobj = asHBlockNoum(obj)) 
+	{
+		HBlock vobj = resolve_noum(nobj, localsEntry);
+		if (CBlock::isSame(vobj.get(), obj.get()))
+		{
+			return false;
+		}
+		return execute_unset(vobj, value, localsEntry);
+	}
+
 	if (HBlockEvery nevery = asHBlockEvery(obj))
 	{
 		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
@@ -195,23 +204,18 @@ PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocal
 }
 
 
-PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+
+
+PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
 
-
-	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase, localsEntry);
-		if (nobj != nullptr) {
-			return assert_it_Value(nobj, value, localsEntry);
-		}
-	}
+ 
 
 	if (HBlockEvery nevery = asHBlockEvery(obj))
 	{ 
 		std::list<HBlock> matchedObjects = getMatchedObjects(nevery->assertation, localsEntry);
 		for (const auto &r : matchedObjects)
 		{
-		 
 			execute_set(r, value, localsEntry);
 		}
 		return true;
@@ -222,15 +226,13 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 	// value tem que ser uma instancia, propriedade ou variavel
 
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
-		if (HBlockNoum nbase = asHBlockNoum(value)) {
-			HBlock nobj = resolve_noum(nbase, localsEntry);
-			if (nobj == nullptr)
-			{
-				nInst->set(nbase);
-				return true;
-			}
+		if (HBlockNoum nvalue = asHBlockNoum(value)) 
+		{
+		        nInst->set(nvalue);
+				return true; 
 		}
 	}
+
 	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
 		HBlock propNamed = prop_n->prop;
 		HBlock destination = prop_n->obj;
@@ -272,6 +274,29 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 
 
 	return false;
+}
+
+
+PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry)
+{
+
+	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+		HBlock nobj = resolve_noum(nbase, localsEntry);
+		if (nobj != nullptr && (CBlock::isSame(obj.get(),nobj.get())==false)) 
+		{
+			return execute_set(nobj, value, localsEntry);
+		}
+	}
+
+	if (HBlockNoum nvalue = asHBlockNoum(value)) {
+		HBlock vvalue = resolve_noum(nvalue, localsEntry);
+		if (vvalue != nullptr && (CBlock::isSame(value.get(), vvalue.get()) == false))
+		{
+			return execute_set(obj, vvalue, localsEntry);
+		}
+	}
+	return execute_set_inn(obj, value, localsEntry);
+
 }
 
 HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock propObj )
@@ -667,6 +692,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (auto  kvar = asHVariableNamed(c_block))
 	{
+		if (kvar->value == nullptr) return Nothing;
 		return kvar->value;
 	}
 
@@ -1004,7 +1030,7 @@ PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 	{
 		logError("fail to execute ");
 		p->dump("");
-		logError("");
+	 
 	}
 	return b;
 }

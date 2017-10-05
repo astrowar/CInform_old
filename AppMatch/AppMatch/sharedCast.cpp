@@ -93,8 +93,17 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockList>(c);
 			return nullptr;
 		}
-		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c)
 
+		
+
+		HBlockList_AND asHBlockList_AND(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockList_AND)
+				return std::static_pointer_cast<CBlockList_AND>(c);
+			return nullptr;
+		}
+
+		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockList_OR)
 				return std::static_pointer_cast<CBlockList_OR>(c);

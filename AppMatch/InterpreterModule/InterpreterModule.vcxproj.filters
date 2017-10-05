@@ -87,7 +87,7 @@
     <ClCompile Include="..\AppMatch\QueryItem.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
-    <ClCompile Include="RuntimeErrors.cpp">
+    <ClCompile Include="..\AppMatch\RuntimeErrors.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>

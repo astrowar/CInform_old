@@ -265,26 +265,40 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
     return false;
 }
 
+bool CBlockInterpreter::assert_it_valuesDefinitions_list(CBlocking::HBlock c_block, std::list< CBlocking::HBlock> values, HRunLocalScope localsEntry) 
+{
+	 
+		if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
+		{
+			// nn eh um value Kind ??
+			CBlocking::HBlock nobj = resolve_noum(nn, localsEntry);
+			if (HBlockKind nkind = asHBlockKind(nobj)) //mas na verdade o primeiro eh um kind ja definido
+			{
+				for (auto &v : values) 
+				{
+					assert_it_instance(v, nkind, localsEntry);
+				}
+				return true;
+			}
 
+		}
+	return false;
+
+}
 
 bool CBlockInterpreter::assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     // Value Kind , is , list of Noums
 
-    if (HBlockList vlist = asHBlockList(value)) // segundo argumento eh uma lista
-        if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
-        {
-            // nn eh um value Kind ??
-            CBlocking::HBlock nobj = resolve_noum(nn,localsEntry);
-            if (HBlockKind nkind = asHBlockKind( nobj)) //mas na verdade o primeiro eh um kind ja definido
-            {
-                for (auto &v : vlist->lista) {
-                    assert_it_instance(v, nkind,localsEntry);
-                }
-                return true;
-            }
-
-        }
-    return false;
+	if (HBlockList vlist = asHBlockList(value)) // segundo argumento eh uma lista
+	{
+		return assert_it_valuesDefinitions_list(c_block, vlist->lista, localsEntry);
+	}
+	if (HBlockList_AND vlist = asHBlockList_AND(value)) // segundo argumento eh uma lista
+	{
+		return assert_it_valuesDefinitions_list(c_block, vlist->lista, localsEntry);
+	}
+         
+	return false;
 }
 
 bool CBlockInterpreter::assert_newUnderstand(HBlockUnderstandDynamic value)

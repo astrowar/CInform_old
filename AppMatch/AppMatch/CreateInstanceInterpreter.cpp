@@ -41,6 +41,11 @@ void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) 
 	}
 }
 
+void CBlockInterpreter::add_forbidenValueVariableToAllinstances(HBlockAssertion_isForbiddenAssign kvar)
+{
+	// TODO
+}
+
 void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_isDefaultAssign kvar)
 {
 	
@@ -69,7 +74,6 @@ void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_i
 						if (kproperty != nullptr) 
 							if (kproperty->value == nullptr)
 							{
-
 								c->set_property(dp_propname->named, kvar->get_definition());
 							}
 					}
