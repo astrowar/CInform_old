@@ -30,6 +30,10 @@ CVariableSlotBool::CVariableSlotBool(CBlocking::HBlockNoum valueDef)
 
 CVariableNamed::CVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CBlocking::HBlock _value): value(_value), kind(_kind), name(_name)
 {
+	if (_kind == nullptr)
+	{
+		logError("variable named must have a type");
+	}
 }
 
  

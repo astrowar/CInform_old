@@ -31,6 +31,7 @@ class CResultMatch;
 
 namespace Interpreter
 {
+	void assert_batch_kinds(CBlocking::HBlockList &nList, CBlocking::HBlockKindOfName &k);
 class PhaseResult
 {
 public:
@@ -237,6 +238,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 		bool assert_it_action(CBlocking::HBlock obj, CBlocking::HBlock value);
+
+		void assert_batch_kinds(std::list<CBlocking::HBlock>& nList, CBlocking::HBlockKindOfName & k);
+		 
+		 
 		bool assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 

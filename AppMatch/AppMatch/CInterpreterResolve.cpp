@@ -203,13 +203,24 @@ HBlockKind CBlockInterpreter::resolve_user_kind(string n)
 
 
 HBlockKind CBlockInterpreter::resolve_kind(string n) {
-	for (auto &defs : assertions) {
-		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-			if (isSameString(nn->named, n)) {
+	for (auto &defs : assertions) 
+	{
+		if (HBlockKind nn = asHBlockKind(defs->get_definition())) 
+		{
+			if (isSameString(nn->named, n)) 
+			{
+				return nn;
+			}
+		}
+		if (HBlockKindValue nn = asHBlockKindValue(defs->get_definition()))
+		{
+			if (isSameString(nn->named, n))
+			{
 				return nn;
 			}
 		}
 	}
+
 	if (auto kcustom = resolve_system_kind(n))
 	{
 		return kcustom;

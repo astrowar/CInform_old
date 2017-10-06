@@ -805,6 +805,11 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return ntext;
 	}
 
+	if (asHBlockSimetricRelation(c_block) != nullptr) return c_block; //fundamental value
+	if (asHBlockASimetricRelation(c_block) != nullptr) return c_block; //fundamental value
+	
+
+
 	if (HBlockAssertion_isLocalVariable  local_var = asHBlockAssertion_isLocalVariable(c_block))
 	{		
 		CBlocking::HBlock actual_value = exec_eval_internal(local_var->valueExpression, localsEntry, stk);		
