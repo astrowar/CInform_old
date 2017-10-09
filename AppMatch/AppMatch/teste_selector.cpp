@@ -17,6 +17,8 @@ void testeSelector_1()
 	string slong = R"(
 room is an kind
 a room can be lit or dark
+a room can be warm or cold
+a room can be real placed or virtual generate
 thing is an kind
 stucking relates (a thing ) to another
 inner relates (a thing ) to (a room)
@@ -54,7 +56,7 @@ cauderon beta is a machine cauderon
 	auto p = Expression::Parser_Expression(&parse, "  ( a room called the next room ) which is not the garden   ", true);
  
 
-	f_eval("  ( (a thing called owner ) which is in lit machine cauderon  )   ")->dump("E ");
+	f_eval("  ( (a thing called owner ) which is in virtual generate lit  machine cauderon  )   ")->dump("E ");
 	//f_eval(" ( ( a room called the next room ) which is lit)  ")->dump("E ");
 	f_eval("  ( a room called the next room ) which is lit  and  is not  hall  ")->dump("E ");
 	f_eval(" box ")->dump("G ");

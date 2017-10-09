@@ -186,6 +186,7 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromSelector(HBlockMatch seleto
 
 CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector(HBlockMatch seletor, HRunLocalScope localsEntry)
 {
+	seletor->dump("");
 	//resolve seletor ... IE 
 	// List( Noum(black) , Noum(Thing) ) -> And(Attribute(black) ,  Kind(Thing)  )
 
@@ -195,26 +196,27 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector(HBlockMatch seletor, 
 
 	// List( Noum(closed) , Noum(magical) ,Noum(item) ) -> And(Attribute(closed) ,  Attribute(magical) ,Kind(item)  )
 
-	
+	// List( Noum(lit) , Noum(eletric) ,Noum(device) ) -> And(Attribute(lit) ,  Kind(eletric device)  )
 	 
 
 	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
 	{
 		std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
 		for (auto &ss : allKindsNames)
-		{
-			 
+		{			 
 			if (isSameString(ss, mNoum->inner->named))
 			{
 				return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(ss));
 			}
-		}
+		} 
 	}
 
 
 	if (HBlockMatchList mList = DynamicCasting::asHBlockMatchList(seletor))
 	{ 
-		  
+		  klçsujgklsdfjgklsjd
+		if (mList->matchList.size() == 1) return Resolve_Selector(mList->matchList.front(), localsEntry);
+
 		// Aqui temos um problema ... mList pode ser A,B,C ond e A  eh um modificador  e B C formam uma palavra valida
 		 
 		std::list<string> allKindsNames = this->getAllRegistedKinds();
@@ -234,7 +236,9 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector(HBlockMatch seletor, 
 			    //a ultima parte  eh o nome de um Kind valido !!
 				HBlockMatchList retList = make_shared<CBlockMatchList>(std::list<HBlockMatch>(mList->matchList.begin() , pivot) );
 				HBlockMatchKind matchKind = make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(kindFound));
-				auto retValue = make_shared<CBlockMatchAND >(std::list<HBlockMatch> ({ matchKind , retList }) );
+
+				auto retListResolved = Resolve_Selector(retList, localsEntry);
+				auto retValue = make_shared<CBlockMatchAND >(std::list<HBlockMatch> ({ retListResolved, matchKind  }) );
 				return retValue;
 			}
 

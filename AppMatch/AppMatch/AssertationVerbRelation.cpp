@@ -17,11 +17,16 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relat
 {
 	c_block->dump("");
 	value->dump("");
+	if (HBlockMatch mvalue = DynamicCasting::asHBlockMatch(value))
+	{
+		auto rst = Resolve_Selector(mvalue, localsEntry);
+		rst->dump("");
+	}
+	
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
-		{
-	 
+		{	 
 
 			{
 				QueryStack *stk = nullptr;

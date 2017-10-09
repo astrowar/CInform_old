@@ -618,6 +618,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	{
 		return nullptr;
 	}
+	if (sNoum == ",")
+	{
+		return nullptr;
+	}
 
 	auto nn =  std::make_shared<CBlockNoum>(sNoum);
 	return std::make_shared<CBlockMatchNoum>(nn);
@@ -664,10 +668,75 @@ HBlockMatch NSParser::ExpressionMatch::DynamicDispatch_action_match(CParser *p, 
 	return nullptr;
 }
 
+HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, HTerm  term)
+{
+	if (CList *vlist = asCList(term.get())) 
+	{
+		auto v = vlist->asVector();
+		auto r = parse_match_comma_list(p, v);
+		return r;
+	}
+	return nullptr;
+}
 
+HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, std::vector<HTerm>&  term)
+{
+	static std::vector<HPred> predList = {};
+	if (predList.empty())
+	{
+		predList.push_back(mkHPredAny("N1"));
+		predList.push_back(mk_HPredLiteral(","));
+		predList.push_back(mkHPredAny("N2"));		
+	}
+
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		HBlockMatchList n1s = parse_match_comma_list(p, res.matchs["N1"]);
+		if (n1s != nullptr)
+		{
+			HBlockMatchList n2s = parse_match_comma_list(p, res.matchs["N2"]);
+			if (n2s != nullptr)
+			{
+				for(auto nn : n2s->matchList) n1s->matchList.push_back(nn);
+				return n1s;
+			}
+
+
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				n1s->matchList.push_back(n2);
+				return n1s;
+			}
+		}
+
+
+
+		HBlockMatch  n1 = parser_expression_match(p, res.matchs["N1"]);
+		if (n1 != nullptr)
+		{
+			HBlockMatchList n2s = parse_match_comma_list(p, res.matchs["N2"]);
+			if (n2s != nullptr)
+			{
+				n2s->matchList.push_front(n1);
+				return n2s;
+			}
+
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 });
+			}
+		}
+	}
+	return nullptr;
+
+}
 
 HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<HTerm>&     term)
 {
+	 
 
 	{
 
@@ -759,7 +828,7 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 }
 
 
-
+ 
 HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::vector<HTerm>&    lst)
 {
 
@@ -782,6 +851,13 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 	HBlockMatch arg_Assign = parser_MatchArgument(p,lst);
 	if (arg_Assign != nullptr) {
 		return arg_Assign;
+	}
+
+	 
+
+	HBlockMatch list_c_Assign = parse_match_comma_list(p, lst);
+	if (list_c_Assign != nullptr) {
+		return list_c_Assign;
 	}
 
 	HBlockMatch list_Assign = parse_match_list(p,lst);

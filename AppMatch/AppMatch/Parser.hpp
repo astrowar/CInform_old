@@ -261,7 +261,11 @@ namespace NSParser
 		CBlocking::HBlockMatch   parse_AssertionDirectAssign_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   parser_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   DynamicDispatch_action_match(CParser *p, std::vector<NSTerm::HTerm>&  term);
-		CBlocking::HBlockMatch   parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
+		CBlocking::HBlockMatchList  parse_match_comma_list(CParser * p, NSTerm::HTerm term);
+
+		CBlocking::HBlockMatchList parse_match_comma_list(CParser * p, std::vector<NSTerm::HTerm>& term);
+		 
+		CBlocking::HBlockMatch    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
 
 
 
