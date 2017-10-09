@@ -284,6 +284,23 @@ bool CBlockInterpreter::assert_it_valuesDefinitions(CBlocking::HBlock c_block, C
             }
 
         }
+
+	if (HBlockList_AND vlist = asHBlockList_AND(value))
+	{
+		if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
+		{
+			// nn eh um value Kind ??
+			CBlocking::HBlock nobj = resolve_noum(nn, localsEntry);
+			if (HBlockKind nkind = asHBlockKind(nobj)) //mas na verdade o primeiro eh um kind ja definido
+			{
+				for (auto &v : vlist->lista) {
+					assert_it_instance(v, nkind, localsEntry);
+				}
+				return true;
+			}
+
+		}
+	}
     return false;
 }
 

@@ -152,7 +152,7 @@
     <ClCompile Include="..\AppMatch\InterpreterQuery.cpp" />
     <ClCompile Include="..\AppMatch\InterpreterRelationEngine.cpp" />
     <ClCompile Include="..\AppMatch\QueryItem.cpp" />
-    <ClCompile Include="RuntimeErrors.cpp" />
+    <ClCompile Include="..\AppMatch\RuntimeErrors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AppMatch\CBlockInterpreterRuntime.hpp" />

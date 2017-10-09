@@ -87,6 +87,15 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockInstanceVariable>(c);
 			return nullptr;
 		}
+
+
+		HBlockList_AND asHBlockList_AND(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockList_AND)
+				return std::static_pointer_cast<CBlockList_AND>(c);
+			return nullptr;
+		}
+
 		HBlockList asHBlockList(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockList)

@@ -348,6 +348,47 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 	return nullptr;
 }
 
+
+
+
+
+
+HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	c_value->dump("");
+	//c_obj->dump("");
+
+	c_obj->baseKind->dump("");
+
+	for (auto sii = default_assignments.rbegin(); sii!= default_assignments.rend();++sii)
+	{
+		HBlockAssertion_isDefaultAssign s = *sii;
+
+		
+
+		if (auto sp = asHBlockProperty(s->get_obj()))
+		{
+			if (CBlock::isSame(sp->prop.get(), c_value.get()))
+			{
+				if (query_is(c_obj, sp->obj, localsEntry,stk).result == QEquals)
+				{
+				 return  s->value;
+				}
+			}
+		}
+		s->dump("");
+
+	}
+
+	return nullptr;
+}
+
+
+
+
+
+
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	HBlock b =  exec_eval_internal(c_block, localsEntry, stk);
@@ -703,13 +744,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
+				HBlock ret_val = Nothing;
 				if (pvar != nullptr)
 				{
-					if (pvar->value ==nullptr)
-					{
-						return Nothing;
-					}
-					return pvar->value;
+					if (pvar->value != nullptr) ret_val = pvar->value;
+					HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
+					if (default_val != nullptr) ret_val = default_val;
+
+					return ret_val;
 				}
 			}
 		//return nullptr;

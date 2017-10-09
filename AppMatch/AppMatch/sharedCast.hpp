@@ -28,6 +28,7 @@ namespace CBlocking
 		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c);
 		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c);
 		HBlockList asHBlockList(CBlocking::HBlock c);
+		HBlockList_AND asHBlockList_AND(CBlocking::HBlock c);
 		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c);
 		HBlockEnums asHBlockEnums(CBlocking::HBlock c);
 		HBlockProperty asHBlockProperty(CBlocking::HBlock c);

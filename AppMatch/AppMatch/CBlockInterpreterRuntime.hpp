@@ -324,7 +324,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		PhaseResult execute_set(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
-		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
+		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);		
+		CBlocking::HBlock get_default_property_value(CBlocking::HBlockNoum c_value, CBlocking::HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack * stk);
+		 
 		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
 		bool assert_equals(CBlocking::HBlock c_block, CBlocking::HBlock c_result);
 		CBlocking::HBlock eval_boolean_AND(CBlocking::HBlock c1, CBlocking::HBlock c2);
