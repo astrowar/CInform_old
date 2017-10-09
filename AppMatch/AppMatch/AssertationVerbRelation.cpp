@@ -554,9 +554,13 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBl
 		{
 			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
 			if (query_inst.result == QEquals) return query_inst;
-		}
-			 
+		}  
 	}
+	// nao eh um teste de instancia ...
+	c_block->dump("");
+	value->dump("");
+
+
 	return QUndefined;
 }
 
