@@ -81,6 +81,12 @@ QueryResultContext CBlockInterpreter::query_is_extern(HBlock c_block, HBlock c_b
 
 bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry, QueryStack *stk)
 {
+	if (c == nullptr)
+	{
+		throw "Unable to do eval it";
+		 return true;
+	}
+
 	if (asHBlockNothing(c)) return true;
 	if (asHBlockBooleanValue(c)) return true;
 	if (asHBlockList(c)) return true;
@@ -181,6 +187,11 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 					{
 						auto next_var = pvar->value;
 						if (next_var == nullptr) next_var = Nothing;
+						if (CBlock::isSame(next_var.get(), Nothing.get()))
+						{
+							auto def_var = get_default_property_value(property_noum, cinst, localsEntry, stk);
+							if (def_var != nullptr) next_var = def_var;
+						}
 
 						QueryResultContext rprop = query_is(next_var, c_block1, localsEntry, next_stack.get());
 						if (rprop.result == QEquals) return rprop;
@@ -421,6 +432,16 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
 
 
+	// check constant values
+	for (auto cc : constant_assignments)
+	{
+		if (CBlock::isSame(  cc->get_obj().get(), c_block.get()) )
+			if (CBlock::isSame(cc->get_definition().get(), c_block1.get()))
+			{
+				return QEquals;
+			}
+	}
+
 
 	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
 	{
@@ -438,6 +459,12 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		{
 			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
 		}
+
+		if (HBlockNoum knn = asHBlockNoum(c_block1))
+		{
+			if (isSameString(knn->named, cinst1->named)) return QEquals;
+		}
+
 	}
 
  
@@ -452,19 +479,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 					return QEquals;
 				}
 			}
-	 
-
-
-
-	 
-
-
-
-
-
-	 
-
-
+	   
     
     //Resolve List OR
     if (HBlockList_OR  orList = asHBlockList_OR(c_block1))
@@ -640,6 +655,16 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			}
 		}
 	}
+
+
+	if (HBlockMatchNOT matchBlock_not = asHBlockMatchNOT(c_block1))
+	{
+		auto result = query_is(c_block, matchBlock_not->input, localsEntry, stk);
+		if (result.result == QEquals) return QNotEquals;
+		if (result.result == QNotEquals) return QEquals;
+		return QEquals;
+	}
+
 
 	if (HBlockMatch matchBlock = asHBlockMatch(c_block1))
 	{

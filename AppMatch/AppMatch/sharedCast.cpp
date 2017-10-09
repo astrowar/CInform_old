@@ -104,13 +104,7 @@ namespace CBlocking
 		}
 
 		
-
-		HBlockList_AND asHBlockList_AND(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockList_AND)
-				return std::static_pointer_cast<CBlockList_AND>(c);
-			return nullptr;
-		}
+ 
 
 		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c)
 		{
@@ -256,6 +250,13 @@ namespace CBlocking
 		{
 			if (c != nullptr && c->type() == BlockType::BlockMatchAND)
 				return std::static_pointer_cast<CBlockMatchAND>(c);
+			return nullptr;
+		}
+
+		HBlockMatchNOT asHBlockMatchNOT(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockMatchNOT)
+				return std::static_pointer_cast<CBlockMatchNOT>(c);
 			return nullptr;
 		}
 
@@ -695,7 +696,13 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockVerbLookup>(c);
 			return nullptr;
 		}
-
+		HBlockSelectorAND asHBlockSelectorAND(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockSelectorAND)
+				return std::static_pointer_cast<CBlockSelectorAND>(c);
+			return nullptr;
+		}
+		
 
 		HBlockSelector_Where asHBlockSelector_Where(CBlocking::HBlock c)
 		{

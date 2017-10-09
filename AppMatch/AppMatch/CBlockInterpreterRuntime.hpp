@@ -96,6 +96,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::vector<HVariableNamed> global_variables;
 
+		std::vector<CBlocking::HBlockAssertion_isConstantAssign>  constant_assignments;
 		std::vector<CBlocking::HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
 		std::vector<CBlocking::HBlockAssertion_isDefaultAssign> default_assignments;
 		std::vector<CBlocking::HBlockAssertionBase> instance_variables;
@@ -139,6 +140,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool is_derivadeOf(CBlocking::HBlockInstance a, CBlocking::HBlockKind b, HRunLocalScope localsEntry);
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
+		void add_constantValueVariableToAllinstances(CBlocking::HBlockAssertion_isConstantAssign kvar);
 		void add_defaultValueVariableToAllinstances(CBlocking::HBlockAssertion_isDefaultAssign hdefault);
 		void add_forbidenValueVariableToAllinstances(CBlocking::HBlockAssertion_isForbiddenAssign kvar);
 
@@ -153,6 +155,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock lookup_relation_XS_Y_1(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlock lookup_relation_X_YS_2(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		CBlocking::HBlock lookup_union(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
+		CBlocking::HBlock lookup_intersection(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
 		std::list<string> getAllRegistedKinds();
 		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
@@ -225,9 +229,12 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		bool assert_property_ForbiddenValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
+		bool assert_property_ConstantValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+
 		 
 	 
 		bool assert_property_defaultValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 

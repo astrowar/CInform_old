@@ -187,5 +187,27 @@ namespace CBlocking
 	};
 	using HBlockRelationArguments = std::shared_ptr<CBlockRelationArguments>;
 
+
+
+
+
+	class CBlockSelectorAND : public CBlock
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockSelectorAND; }
+
+		HBlock  value1;
+		HBlock  value2;
+
+		CBlockSelectorAND(HBlock  _value1, HBlock   _value2) : value1(_value1), value2(_value2)
+		{
+
+		}
+	};
+	using HBlockSelectorAND = std::shared_ptr<CBlockSelectorAND>;
+
+	
+
 }
 

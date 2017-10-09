@@ -53,6 +53,7 @@ namespace CBlocking
 		HBlockMatchBlock asHBlockMatchBlock(CBlocking::HBlock c);
 		HBlockMatchOR asHBlockMatchOR(CBlocking::HBlock c);
 		HBlockMatchAND asHBlockMatchAND(CBlocking::HBlock c);
+		HBlockMatchNOT asHBlockMatchNOT(CBlocking::HBlock c);
 		HBlockMatchDirectIs asHBlockMatchDirectIs(CBlocking::HBlock c);
 		HBlockMatchWhich asHBlockMatchWhich(CBlocking::HBlock c);
 		HBlockMatchWhichNot asHBlockMatchWhichNot(CBlocking::HBlock c);
@@ -127,6 +128,7 @@ namespace CBlocking
 		HBlockRelationLookup asHBlockRelationLookup(CBlocking::HBlock c);
 		HBlockVerbLookup asHBlockVerbLookup(CBlocking::HBlock c);
 		HBlockSelector_Where asHBlockSelector_Where(CBlocking::HBlock c);
+		HBlockSelectorAND asHBlockSelectorAND(CBlocking::HBlock c);
 
 
 		HBlockNumber asHBlockNumber(CBlocking::HBlock c);

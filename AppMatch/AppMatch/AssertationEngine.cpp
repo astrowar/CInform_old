@@ -286,7 +286,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 			HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
-				if ( is_primitive_value(value, localsEntry, stk) ==false )
+				if ( is_primitive_value(value, localsEntry, stk) == false )
 				{
 					auto next_value = exec_eval(value, localsEntry, stk);
 					return assert_it_property(propname, obj,next_value, localsEntry, stk);
@@ -402,6 +402,11 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 		if (assert_it_ForbiddenValue(obj, value, localsEntry)) return;
 	}
 
+	if (HBlockAssertion_isConstantAssign fb = asHBlockAssertion_isConstantAssign(p)) {
+		CBlocking::HBlock obj = fb->get_obj();
+		CBlocking::HBlock value = fb->get_definition();
+		if (assert_it_ConstantAssign(obj, value, localsEntry)) return;
+	}
 
 	if (HBlockAssertion_isDefaultAssign v = asHBlockAssertion_isDefaultAssign(p)) {
 		CBlocking::HBlock obj = v->get_obj();

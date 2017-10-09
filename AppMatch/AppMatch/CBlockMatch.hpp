@@ -48,8 +48,8 @@ namespace CBlocking
 
 		string named;
 		HBlockMatch matchInner;
-		CBlockMatchNamed(string _named, HBlockMatch _matchInner) : CBlockMatch(), named(_named),
-			matchInner(_matchInner) {};
+		CBlockMatchNamed(string _named, HBlockMatch _matchInner);
+
 	};
 	using HBlockMatchNamed = std::shared_ptr<CBlockMatchNamed>;
 

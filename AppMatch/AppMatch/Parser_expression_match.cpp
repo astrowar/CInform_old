@@ -33,7 +33,7 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 					mmlist->matchList.push_back(mi);
 				}
 				//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(res.matchs["ListKind"]->removeArticle()->repr()));
-				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), mmlist);
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->removeArticle()->repr(), mmlist);
 				return n1;
 			}
 		}
@@ -48,10 +48,17 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
-				std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
-			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
-			return n1;
+
+
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoum>(res.matchs["kind"]->removeArticle()->repr()));
+			
+
+			auto noum_var_named =  parse_match_SigleNoum(p, res.matchs["var_named"]);
+			if (noum_var_named != nullptr)
+			{
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(noum_var_named->inner->named , c1);
+				return n1;
+			}
 		}
 	}
 
@@ -175,6 +182,21 @@ HBlockMatchProperty  NSParser::ExpressionMatch::parse_PropertyOf_Match(CParser *
 	return nullptr;
 }
 
+HBlockMatchNoum NSParser::ExpressionMatch::parse_match_SigleNoum(CParser *p, HTerm  term) 
+{
+ 
+	 
+		string nstr =  CtoString(expandBract(term)->removeArticle()); 
+		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+		{
+			return nullptr;
+		}
+		return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(nstr));
+	 
+	 
+}
+
+
 HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<HTerm>&  term) {
 	std::vector<HPred> predList;
  
@@ -187,9 +209,7 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<
 		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
 		{
 			return nullptr;
-		}
-		
-
+		} 
 		return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(nstr));
 	}
 	return nullptr;
@@ -570,7 +590,7 @@ HBlockMatch   NSParser::ExpressionMatch::parser_Verb_Match(CParser *p, std::vect
 HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm  term)
 {
 	if (CList *vlist = asCList(term.get())) {
-		auto v = vlist->asVector();
+		auto v = vlist->asVector();		
 		auto r = parser_expression_match(p,v);
 		/*if (r == nullptr)
 		logMessage( term->repr() << std::endl;*/
@@ -582,7 +602,22 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	{
 		return nullptr;
 	}
-
+	if (sNoum == "the")
+	{
+		return nullptr;
+	}
+	if (sNoum == "a")
+	{
+		return nullptr;
+	}
+	if (sNoum == "an")
+	{
+		return nullptr;
+	}
+	if (sNoum == "of")
+	{
+		return nullptr;
+	}
 
 	auto nn =  std::make_shared<CBlockNoum>(sNoum);
 	return std::make_shared<CBlockMatchNoum>(nn);

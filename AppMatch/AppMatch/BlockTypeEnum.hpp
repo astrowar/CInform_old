@@ -103,6 +103,7 @@ enum BlockType {
 	BlockControlForEach,
 	BlockAssertion_isLocalVariable,
 	BlockRelationArguments,
+	BlockSelectorAND,
 	BlockAssert,
 	BlockNothing
 };

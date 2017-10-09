@@ -556,6 +556,8 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return nullptr;
 	}
 
+	
+
 	if (is_nothing(c_block)) return Nothing;
 
  
@@ -808,6 +810,15 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 	}
 
+	if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
+	{
+		return lookup_relation(nrlookup, localsEntry, stk);
+	}
+	if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
+	{
+		return lookup_verb(nvlookup, localsEntry, stk);
+	}
+
 	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
 	{
 		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
@@ -818,9 +829,15 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		{
 			return lookup_verb(nvlookup, localsEntry,stk);
 		}
-
-		 
+		if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
+		{
+			nvlookup_and->dump("");
+			auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
+			auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
+			return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
+		} 
 	}
+
 
 	if (HBlockNow  bNow = asHBlockNow(c_block))
 	{
@@ -890,7 +907,13 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 	
  
-
+	for (auto cc : constant_assignments)
+	{
+		if (CBlock::isSame(cc->get_obj().get(), c_block.get()))
+		{
+			return cc->get_definition();
+		}
+	}
 
 	if (localsEntry!=nullptr)localsEntry->dump("");
 	 
