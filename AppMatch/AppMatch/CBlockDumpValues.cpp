@@ -760,7 +760,8 @@ void CVariableNamed::dump(string ident)
 	printf("%s VAriable Named  %s\n",ident.c_str() ,   name->named.c_str());
 		this->kind->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "values ");
-		this->value->dump(ident + "       ");
+		if (this->value != nullptr) { this->value->dump(ident + "       "); }
+		else { printf("%s        nullptr\n", ident.c_str()); }
 		CBlock::dump(ident);
 }
 

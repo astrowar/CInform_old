@@ -145,67 +145,68 @@ bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBloc
     return false;
 }
 
-bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value,HRunLocalScope localsEntry) {
-    if (HBlockKindOfName k = asHBlockKindOfName(value)) {
-        if (HBlockNoum nbase = asHBlockNoum(obj)) {
+void CBlockInterpreter::assert_batch_kinds(std::list<CBlocking::HBlock> &nList, CBlocking::HBlockKindOfName &k)
+{
+	for (auto nObj : nList)
+	{
+		if (HBlockNoum nbasei = asHBlockNoum(nObj)) {
+			auto b_up = create_derivadeKind(nbasei->named, k->baseClasseName);
+			HBlockKind b = b_up.first;
+			if (b_up.second != nullptr)
+			{
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b, make_shared<CBlockKindOf>(b_up.second));                        kindDefinitions.push_back(newDefi);
+				assertions.push_back(newDefi);
+			}
+			{
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbasei, b);
+				kindDefinitions.push_back(newDefi);
+				assertions.push_back(newDefi);
+			}
+			logMessage("new Kind add");
+		}
+	}
+}
 
-            auto b_up = create_derivadeKind(nbase->named, k->baseClasseName);
-            HBlockKind b = b_up.first;
+bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
+	if (HBlockKindOfName k = asHBlockKindOfName(value)) {
+		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-            if (b_up.second != nullptr) {
+			auto b_up = create_derivadeKind(nbase->named, k->baseClasseName);
+			HBlockKind b = b_up.first;
 
-                HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b,
-                                                                                                     make_shared<CBlockKindOf>(
-                                                                                                             b_up.second));
-                kindDefinitions.push_back(newDefi);
-                assertions.push_back(newDefi);
-            }
+			if (b_up.second != nullptr) {
 
-            {
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b,
+					make_shared<CBlockKindOf>(
+						b_up.second));
+				kindDefinitions.push_back(newDefi);
+				assertions.push_back(newDefi);
+			}
 
-                HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbase, b);
-                kindDefinitions.push_back(newDefi);
-                assertions.push_back(newDefi);
-            }
+			{
 
-            logMessage("new Kind add " + nbase->named);
-            return true;
-        }
+				HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbase, b);
+				kindDefinitions.push_back(newDefi);
+				assertions.push_back(newDefi);
+			}
 
-            //Processa a lista
-        else if (HBlockList nList = asHBlockList(obj)) {
-            for (auto nObj : nList->lista) {
-                if (HBlockNoum nbasei = asHBlockNoum(nObj)) {
-                    auto b_up = create_derivadeKind(nbasei->named, k->baseClasseName);
-                    HBlockKind b = b_up.first;
-                    if (b_up.second != nullptr) {
+			logMessage("new Kind add " + nbase->named);
+			return true;
+		}
 
-                        HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(b,
-                                                                                                             make_shared<CBlockKindOf>(
-                                                                                                                     b_up.second));
-                        kindDefinitions.push_back(newDefi);
-                        assertions.push_back(newDefi);
-                    }
-
-                    {
-
-                        HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(nbasei, b);
-                        kindDefinitions.push_back(newDefi);
-                        assertions.push_back(newDefi);
-                    }
-                    logMessage("new Kind add");
-                }
-            }
-            return true;
-
-        }
-
-    }
-   
-    
-    
-    
-    return false;
+		//Processa a lista
+		else if (HBlockList nList = asHBlockList(obj))
+		{
+			assert_batch_kinds(nList->lista, k);
+			return true;
+		}
+		else if (HBlockList nList = asHBlockList(obj))
+		{
+			assert_batch_kinds(nList->lista, k);
+			return true;
+		}
+	}
+	return false;
 
 }
 
@@ -220,6 +221,14 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
         }
         return true;
     }
+
+	if (HBlockList_AND nobjList = asHBlockList_AND(obj))
+	{
+		for (auto &e : nobjList->lista) {
+			assert_it_instance(e, baseKind, localsEntry);
+		}
+		return true;
+	}
 
     if (HBlockNoum nbaseKind = asHBlockNoum(baseKind))
     {
@@ -265,43 +274,40 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
     return false;
 }
 
-
-
-bool CBlockInterpreter::assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry) {
-    // Value Kind , is , list of Noums
-
-    if (HBlockList vlist = asHBlockList(value)) // segundo argumento eh uma lista
-        if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
-        {
-            // nn eh um value Kind ??
-            CBlocking::HBlock nobj = resolve_noum(nn,localsEntry);
-            if (HBlockKind nkind = asHBlockKind( nobj)) //mas na verdade o primeiro eh um kind ja definido
-            {
-                for (auto &v : vlist->lista) {
-                    assert_it_instance(v, nkind,localsEntry);
-                }
-                return true;
-            }
-
-        }
-
-	if (HBlockList_AND vlist = asHBlockList_AND(value))
-	{
+bool CBlockInterpreter::assert_it_valuesDefinitions_list(CBlocking::HBlock c_block, std::list< CBlocking::HBlock> values, HRunLocalScope localsEntry) 
+{
+	 
 		if (HBlockNoum nn = asHBlockNoum(c_block)) //primeiro eh um noum
 		{
 			// nn eh um value Kind ??
 			CBlocking::HBlock nobj = resolve_noum(nn, localsEntry);
 			if (HBlockKind nkind = asHBlockKind(nobj)) //mas na verdade o primeiro eh um kind ja definido
 			{
-				for (auto &v : vlist->lista) {
+				for (auto &v : values) 
+				{
 					assert_it_instance(v, nkind, localsEntry);
 				}
 				return true;
 			}
 
 		}
+	return false;
+
+}
+
+bool CBlockInterpreter::assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry) {
+    // Value Kind , is , list of Noums
+
+	if (HBlockList vlist = asHBlockList(value)) // segundo argumento eh uma lista
+	{
+		return assert_it_valuesDefinitions_list(c_block, vlist->lista, localsEntry);
 	}
-    return false;
+	if (HBlockList_AND vlist = asHBlockList_AND(value)) // segundo argumento eh uma lista
+	{
+		return assert_it_valuesDefinitions_list(c_block, vlist->lista, localsEntry);
+	}
+         
+	return false;
 }
 
 bool CBlockInterpreter::assert_newUnderstand(HBlockUnderstandDynamic value)

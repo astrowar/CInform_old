@@ -119,7 +119,7 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 		if (nobj != nullptr) {
 			return assert_has_variable(nobj, value, localsEntry);
 		}
-		return false;
+	 
 	}
 
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
@@ -395,6 +395,13 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 		CBlocking::HBlock value = v->get_definition();
 		if (assert_it_not_Value(obj, value, localsEntry)) return;
 	}
+
+	if (HBlockAssertion_isForbiddenAssign fb = asHBlockAssertion_isForbiddenAssign(p)) {
+		CBlocking::HBlock obj = fb->get_obj();
+		CBlocking::HBlock value = fb->get_definition();
+		if (assert_it_ForbiddenValue(obj, value, localsEntry)) return;
+	}
+
 
 	if (HBlockAssertion_isDefaultAssign v = asHBlockAssertion_isDefaultAssign(p)) {
 		CBlocking::HBlock obj = v->get_obj();

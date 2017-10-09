@@ -13,7 +13,7 @@ using namespace CBlocking;
 
 void logError(std::string str)
 {
-	printf("Error %s\n", str.c_str());
+	printf("#Error %s\n", str.c_str());
 }
 void logMessage(std::string str)
 {
@@ -200,11 +200,11 @@ CBlocking::HBlock CBlockAssertion_isConstantAssign::get_definition() {
 }
 
 CBlocking::HBlock CBlockAssertion_isForbiddenAssign::get_obj() {
-    return value;
+    return variable;
 }
 
 CBlocking::HBlock CBlockAssertion_isForbiddenAssign::get_definition() {
-    return variable;
+    return value;
 }
 
 CBlocking::HBlock CBlockAssertion_isDirectAssign::get_obj() {

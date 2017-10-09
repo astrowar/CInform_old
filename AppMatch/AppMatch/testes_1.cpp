@@ -219,7 +219,7 @@ void testeParser_2_4()
  slime  is a thing
 
  arrow is portable
- slime is never portable
+ slime is never fixed
 
 )";
 
@@ -235,16 +235,105 @@ void testeParser_2_4()
     f_now( " paper is not fixed " );
     assert(f_is("paper is portable "));
 
-    //f_now( " slime is portable " );
+    f_now( " slime is fixed " );
+	// assert(f_is("slime is portable "));  Forbiden setting is not taken effect in executio engine
+
+
 }
 
+
+void testeParser_2_5()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"(
+thing is an kind
+the treasure  is a thing that varies
+arrow is a thing
+bow is a thing
+
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("treasure  ")->dump("E ");
+	assert(f_is("treasure is nothing "));
+	f_now(" treasure is arrow ");
+	assert(f_is("treasure is arrow "));
+	
+	// assert(f_is("slime is portable "));  Forbiden setting is not taken effect in executio engine
+
+
+}
+
+void testeParser_2_6()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"(
+heat is a kind of value
+ 
+The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
+thing is an kind
+thing has a heat
+The heat of a thing is usually room temperature
+the treasure  is a thing that varies
+coin is a thing
+ruby is a thing
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("treasure  ")->dump("E ");
+	assert(f_is("heat of ruby is  room temperature "));
+	f_now(" treasure is ruby ");
+	assert(f_is("heat of treasure is  room temperature "));  
+}
+ 
+void testeParser_2_7()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"(
+heat is a kind of value 
+colour is a kind of value
+red, green and blue are colour
+
+thing is an kind
+blood is a thing
+thing has a colour
+colour of blood is red
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("red  ")->dump("E ");	
+	assert(f_is("red is colour "));
+	assert(f_is("red is blue ") ==false );
+	assert(f_is("red is not blue "));
+}
 
 
 
 void testeParser_2()
 {
-//    testeParser_2_1();
-//    testeParser_2_2();
-//	testeParser_2_3();
-    testeParser_2_4(); // anonimous properties
+  // testeParser_2_1();
+  // testeParser_2_2();
+  // testeParser_2_3();
+  // testeParser_2_4(); // anonimous properties
+  // testeParser_2_5(); // variables
+  // testeParser_2_6(); //kind values
+	 testeParser_2_7(); //kind values 
 }

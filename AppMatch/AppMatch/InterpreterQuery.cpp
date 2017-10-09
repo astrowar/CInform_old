@@ -171,6 +171,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				return QueryResultContext(QUndefined);
 			}
 
+			propObj->dump("");
 
 			if (HBlockInstance cinst = asHBlockInstance(propObj))
 			{
@@ -197,6 +198,15 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 
 
 				}
+			}
+
+			// resolve object
+			auto obj_resolved = exec_eval(propObj, localsEntry, stk);
+			if (CBlock::isSame(obj_resolved.get(), propObj.get()) == false)
+			{
+				QueryResultContext  result_prop = query_is_propertyOf_value_imp(property_noum, obj_resolved, c_block1, localsEntry, next_stack.get());
+				if (result_prop.result != QUndefined) return result_prop;
+
 			}
 		}
 	}
@@ -379,8 +389,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		if (nnoum->named == "kind")
 		{
 			if ( asHBlockKind(c_block) != nullptr) return QEquals;
-		}
-
+		} 
 	}
 
     if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
@@ -396,6 +405,21 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			if (asHBlockKind(c_block1) != nullptr) return QEquals;
 		}
     }
+
+
+	if (auto vvar = asCVariableNamed(c_block1.get()))
+	{
+		auto r_var = vvar->value;
+		if (r_var == nullptr) r_var = Nothing;
+		return query_is(c_block, r_var, localsEntry, stk);
+	}
+	if (auto vvar = asCVariableNamed(c_block.get()))
+	{
+		auto r_var = vvar->value;
+		if (r_var == nullptr) r_var = Nothing;
+		return query_is( r_var, c_block1, localsEntry, stk);
+	}
+
 
 
 	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
@@ -419,7 +443,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
  
 
 
-	{
+	 
 		if (HBlockAction act = asHBlockAction(c_block))
 			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
 			{
@@ -428,7 +452,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 					return QEquals;
 				}
 			}
-	}
+	 
 
 
 
@@ -656,9 +680,36 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
     }
 
-	//logMessage("I cant query");
-	//c_block->dump("");
-	//c_block1->dump("");
+
+	if (HVariableNamed var_n = asHVariableNamed(c_block1))
+	{
+		if (var_n->value == nullptr)	return query_is(c_block, Nothing, localsEntry,  stk);
+		return query_is(c_block, var_n->value, localsEntry, stk);
+	}
+
+	if (HVariableNamed var_n = asHVariableNamed(c_block))
+	{
+		if (var_n->value == nullptr)	return query_is( Nothing, c_block1, localsEntry, stk);
+		return query_is(var_n->value ,c_block1,   localsEntry, stk);
+	}
+
+
+
+	logMessage("I cant query");
+	c_block->dump("");
+	c_block1->dump("");
+
+	//se tudo falhar , tente isso ....
+	auto resolved_b = exec_eval(c_block1, localsEntry, stk);
+	if (CBlock::isSame(resolved_b.get(), c_block1.get()) == false)
+	{
+		return query_is(c_block, resolved_b, localsEntry, stk);
+	}
+	auto resolved_a = exec_eval(c_block , localsEntry, stk);
+	if (CBlock::isSame(resolved_a.get(), c_block .get()) == false)
+	{
+		return query_is(  resolved_b, c_block1 , localsEntry, stk);
+	}
 
  
     return QueryResultContext(QUndefined);
@@ -865,12 +916,12 @@ QueryResultContext CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HR
 {
 	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
     if (rrcstm.result == QEquals) return QNotEquals;
-    if (rrcstm.result == QNotEquals) return rrcstm;
+    if (rrcstm.result == QNotEquals) return QEquals;
 
 
 	QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
     if (rr.result == QEquals) return QNotEquals;
-    if (rr.result == QNotEquals) return rr;
+    if (rr.result == QNotEquals) return QEquals;
     return rr;
 }
 

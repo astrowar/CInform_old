@@ -31,6 +31,7 @@ class CResultMatch;
 
 namespace Interpreter
 {
+	void assert_batch_kinds(CBlocking::HBlockList &nList, CBlocking::HBlockKindOfName &k);
 class PhaseResult
 {
 public:
@@ -95,6 +96,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::vector<HVariableNamed> global_variables;
 
+		std::vector<CBlocking::HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
 		std::vector<CBlocking::HBlockAssertion_isDefaultAssign> default_assignments;
 		std::vector<CBlocking::HBlockAssertionBase> instance_variables;
 		std::vector<CBlocking::HBlockAssertionBase> kind_variables;
@@ -138,6 +140,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
 		void add_defaultValueVariableToAllinstances(CBlocking::HBlockAssertion_isDefaultAssign hdefault);
+		void add_forbidenValueVariableToAllinstances(CBlocking::HBlockAssertion_isForbiddenAssign kvar);
+
 		void add_namedVariableToAllinstances(CBlocking::HBlockKind_InstanceVariable variable_);
 		CBlocking::HBlockInstance new_Instance(string named, CBlocking::HBlockKind kind);
 
@@ -218,8 +222,13 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool is_all_items_of_kind(CBlocking::HBlockList listvalues, CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
 		bool kind_has_property_called_inner(CBlocking::HBlockKind kind, string propertyNamed, std::list<std::basic_string<char>> kindsUsed);
 		bool kind_has_property_called(CBlocking::HBlockKind kind, const string& propertyNamed);
+
+		bool assert_property_ForbiddenValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+
+		 
 	 
 		bool assert_property_defaultValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 
@@ -229,6 +238,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 		bool assert_it_action(CBlocking::HBlock obj, CBlocking::HBlock value);
+
+		void assert_batch_kinds(std::list<CBlocking::HBlock>& nList, CBlocking::HBlockKindOfName & k);
+		 
+		 
 		bool assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 
@@ -237,6 +250,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 		bool assert_it_instance(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_valuesDefinitions_list(CBlocking::HBlock c_block, std::list<CBlocking::HBlock> values, HRunLocalScope localsEntry);
+		 
 		bool assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 
@@ -321,6 +336,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 	 
 		PhaseResult execute_verb_unset(CBlocking::HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
 		PhaseResult execute_unset(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		PhaseResult execute_set_inn(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		PhaseResult execute_set(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);

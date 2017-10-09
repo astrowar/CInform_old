@@ -43,10 +43,7 @@ void testeRelation1() {
 
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"unloking relates (a thing ) to various thing", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb  unlock  implies a  unloking relation", ISLOG));
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb ( unlocked by ) implies a reverse  unloking relation", ISLOG));
-
- 
-
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb ( unlocked by ) implies a reverse  unloking relation", ISLOG)); 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"   box is unlocked by   key  ", ISLOG));
 	//interpreter->execute_now(Statement::Parser_Stmt(&parse, "  garden is unlocked by  key  ", ISLOG));
    // interpreter->execute_now (Statement::Parser_Stmt(&parse,"   key unlocked  by box  ", ISLOG)); 
@@ -336,13 +333,48 @@ void testeRelation7()  //relations  with actions
 }
 
 
+void testeParser_7_1()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"( 
+thing is an kind
+unloking relates (a thing ) to various thing
+the verb  unlock  implies a  unloking relation
+the verb ( unlocked by ) implies a reverse  unloking relation 
+key is a thing
+box is a thing
+apple is a thing
+)";
+ 
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval(" unloking  ")->dump("R ");
+	f_now(" key unlock box ");
+
+	assert(f_is("key unlock box "));
+	assert(f_is("apple unlock box ") == false);
+	assert(f_is("box is unlocked by key "));
+	assert(f_is("apple not unlock box ") ); 
+}
+
+
+
 void testeRelation_all()
 {
-	 testeRelation1(); 
+	testeParser_7_1();  //comportamento fundamental
+
+
+	 //testeRelation1(); 
 	//testeRelation2(); 
 	//testeRelation3(); 
 	//testeRelation4(); 
 	//testeRelation5();
 	//testeRelation6();
-	testeRelation7();
+	//testeRelation7();
 }

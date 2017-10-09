@@ -30,6 +30,10 @@ CVariableSlotBool::CVariableSlotBool(CBlocking::HBlockNoum valueDef)
 
 CVariableNamed::CVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CBlocking::HBlock _value): value(_value), kind(_kind), name(_name)
 {
+	if (_kind == nullptr)
+	{
+		logError("variable named must have a type");
+	}
 }
 
  
@@ -96,13 +100,34 @@ void CBlockInstance::unset(HBlockNoum c_block)
 		{
 			if (vbool->valueDefinition->named == c_block->named)
 			{
-				vbool->value = false;
-
+				vbool->value = false; 
 				printf("unset !");
-				this->dump("");
-
-
+				this->dump(""); 
 				return;
+			}
+		}
+
+		if (HVariableSlotEnum  vEnn = DynamicCasting::asHVariableSlotEnum(va))
+		{
+			if (vEnn->valueDefinition->contains(c_block->named))
+			{
+				if (vEnn->valueDefinition->values.size() == 2)
+				{
+					if (vEnn->valueDefinition->values[0]->named == c_block->named)
+					{
+						vEnn->value = vEnn->valueDefinition->values[1];
+					}
+					else
+					{
+						vEnn->value = vEnn->valueDefinition->values[0];
+					}
+				}
+				else
+				{
+					logError("Value Slot is not a binary Set \n");
+					return;
+				}
+
 			}
 		}
 	}
