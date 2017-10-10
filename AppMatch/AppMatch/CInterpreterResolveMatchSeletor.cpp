@@ -184,9 +184,175 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromSelector(HBlockMatch seleto
 }
 
 
+CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_item(HBlockMatch seletor, std::list<string> &allKindsNames , std::list<string> &allEnumNames ,HRunLocalScope localsEntry)
+{
+	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
+	{
+		for (auto &ss : allKindsNames)
+		{
+			if (isSameString(ss, mNoum->inner->named))
+			{
+				return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(ss));
+			}
+		}
+	}
+
+	if (HBlockMatchList mList = DynamicCasting::asHBlockMatchList(seletor))
+	{
+		return Resolve_Selector_List(mList, allKindsNames, allEnumNames , localsEntry);
+	}
+
+	return seletor; // i dont know
+}
+
+CBlocking::HBlockMatch noum_joined(std::vector<string> strList_in)
+{
+	printf("Match unfound \n");
+	string sret = "";
+	bool fir = true;
+	for (auto s : strList_in)
+	{
+		printf("%s ", s.c_str());
+		if (fir == false) 
+		{
+			sret = sret + " " + s;
+		}
+		else 
+		{
+			sret = sret + s;
+		}
+		fir = false;
+	}
+	printf("\n");
+	return make_shared<CBlockMatchNoum>(make_shared<CBlockNoum>(sret));;
+}
+
+
+CBlocking::HBlockMatch  CBlockInterpreter::Resolve_Selector_Noum_fragment(std::vector<string> strList_in, std::list<string> &allKindsNames, std::list<string> &allEnumNames, HRunLocalScope localsEntry)
+{
+	if (allKindsNames.empty())
+	{
+		 allKindsNames = this->getAllRegistedKinds();
+		 allEnumNames = this->getAllRegistedEnums();
+	}
+
+	string kindFound = getStringPrexfedFromList(strList_in, allKindsNames);
+	if (!(kindFound.empty()))
+	{
+		return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(kindFound));
+	}
+
+	string ennFound = getStringPrexfedFromList(strList_in, allEnumNames);
+	if (!(ennFound.empty()))
+	{
+		return make_shared<CBlockMatchNoum>(make_shared<CBlockNoum>(ennFound));
+	}
+	return nullptr;
+}
+
+CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_NoumList(std::vector<string> strList_in, std::list<string> &allKindsNames, std::list<string> &allEnumNames, HRunLocalScope localsEntry)
+{
+
+	int pivot_a = 0;
+	
+
+	std::list<HBlockMatch> resolve_list;
+	while (pivot_a < strList_in.size())
+	{
+		if (HBlockMatch resolved = Resolve_Selector_Noum_fragment(std::vector<string>(strList_in.begin() + pivot_a, strList_in.end()), allKindsNames, allEnumNames, localsEntry))
+		{
+			resolve_list.push_front(resolved);
+			strList_in = std::vector<string>(strList_in.begin(), strList_in.begin() + pivot_a);
+			pivot_a = 0;
+			if (strList_in.size() == 0) break;
+			continue; //volta ao inicio sem incremento
+		}
+
+		pivot_a++;
+
+		if (pivot_a == strList_in.size())
+		{
+			if (strList_in.size() > 0)
+			{
+				resolve_list.push_front(noum_joined(strList_in));
+			}
+			break;
+		}
+	}
+	if (resolve_list.size() == 1) return resolve_list.front();
+	return make_shared<CBlockMatchAND>(resolve_list);
+
+	 
+}
+
+CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_List(HBlockMatchList mList, std::list<string> &allKindsNames  , std::list<string> &allEnumNames  , HRunLocalScope localsEntry)
+{
+
+	if (mList->matchList.size() == 1) return Resolve_Selector_item(mList->matchList.front(), allKindsNames , allEnumNames, localsEntry);
+
+
+	// Aqui temos um problema ... mList pode ser A,B,C ond e A  eh um modificador  e B C formam uma palavra valida
+
+	std::vector<string> strList;
+	std::list< HBlockMatch > resolveds;
+	// faz a selecao das partes que nao sao List
+	auto pivot = mList->matchList.begin(); 
+
+	while(pivot != mList->matchList.end())
+	{
+		if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(*pivot))
+		{
+			strList.push_back(mNoum->inner->named);
+		}
+		else		
+		{
+			// processa a lista acumulada ate o momento
+			if (strList.size() != 0)
+			{
+				HBlockMatch resolved = Resolve_Selector_NoumList(strList, allKindsNames, allEnumNames, localsEntry);	
+				if (HBlockMatchList resolvedmList = DynamicCasting::asHBlockMatchList(resolved))
+				{
+					for(auto r : resolvedmList->matchList) resolveds.push_back(r);
+				}
+				else
+				{
+					resolveds.push_back(resolved);
+				}
+				strList.clear();
+			}
+			{
+				HBlockMatch resolved = Resolve_Selector_item(*pivot, allKindsNames, allEnumNames, localsEntry);
+				resolveds.push_back(resolved);
+			}
+		}		
+
+
+		pivot++;
+		if (pivot == mList->matchList.end())
+		{
+			if (strList.size() != 0)
+			{
+				HBlockMatch resolved = Resolve_Selector_NoumList(strList, allKindsNames, allEnumNames, localsEntry);
+				resolveds.push_back(resolved);
+				strList.clear();
+			}
+			break;
+		}
+	}
+	
+	if (resolveds.size() == 1) return resolveds.front();
+
+	return  make_shared<CBlockMatchAND>(resolveds);
+
+	  
+
+}
+
+ 
+
 CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector(HBlockMatch seletor, HRunLocalScope localsEntry)
 {
-	seletor->dump("");
+	 
 	//resolve seletor ... IE 
 	// List( Noum(black) , Noum(Thing) ) -> And(Attribute(black) ,  Kind(Thing)  )
 
@@ -198,53 +364,16 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector(HBlockMatch seletor, 
 
 	// List( Noum(lit) , Noum(eletric) ,Noum(device) ) -> And(Attribute(lit) ,  Kind(eletric device)  )
 	 
-
-	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
-	{
-		std::list<string> allKindsNames = this->getAllRegistedKinds(); //incluindo os kinds do sistema, value Kinds e verbs
-		for (auto &ss : allKindsNames)
-		{			 
-			if (isSameString(ss, mNoum->inner->named))
-			{
-				return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(ss));
-			}
-		} 
-	}
-
+	std::list<string> allKindsNames = this->getAllRegistedKinds();
+	std::list<string> allEnumNames = this->getAllRegistedEnums();
+	 
 
 	if (HBlockMatchList mList = DynamicCasting::asHBlockMatchList(seletor))
-	{ 
-		  klçsujgklsdfjgklsjd
-		if (mList->matchList.size() == 1) return Resolve_Selector(mList->matchList.front(), localsEntry);
-
-		// Aqui temos um problema ... mList pode ser A,B,C ond e A  eh um modificador  e B C formam uma palavra valida
-		 
-		std::list<string> allKindsNames = this->getAllRegistedKinds();
-
-		for(auto pivot = mList->matchList.begin(); pivot != mList->matchList.end();++pivot)
-		{
-			// ultima parte 
-			std::vector<HBlockMatch> lastPart(pivot, mList->matchList.end());
-			if (lastPart.empty()) break; //ultimo item da lista 
-
-			std::vector<string> strList = isHBlockMatchNoumList(lastPart);
-			if (strList.empty()) break; // nao eh um grupo de Noums continuos
-
-			string kindFound =  getStringPrexfedFromList(strList, allKindsNames);
-			if (!(kindFound.empty() ))
-			{
-			    //a ultima parte  eh o nome de um Kind valido !!
-				HBlockMatchList retList = make_shared<CBlockMatchList>(std::list<HBlockMatch>(mList->matchList.begin() , pivot) );
-				HBlockMatchKind matchKind = make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(kindFound));
-
-				auto retListResolved = Resolve_Selector(retList, localsEntry);
-				auto retValue = make_shared<CBlockMatchAND >(std::list<HBlockMatch> ({ retListResolved, matchKind  }) );
-				return retValue;
-			}
-
-		}
-
+	{
+		return Resolve_Selector_List(mList, allKindsNames, allEnumNames, localsEntry);
 	}
+
+	return Resolve_Selector_item(seletor, allKindsNames, allEnumNames, localsEntry); 
 
 	return seletor; // seletor nao resolvido ....
 }

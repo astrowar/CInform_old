@@ -388,6 +388,8 @@ namespace NSParser
 		CBlocking::HBlock parse_AssertionIsLocalValue(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockKindOfName  parse_KindOf(CParser * p, NSTerm::HTerm  term);
+		CBlocking::HBlockKind  parse_CompositionOf(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlock parse_AssertionIsCompositionOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsKindOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock   parser_VerbAssign(CParser * p, std::vector<NSTerm::HTerm>& term);
 

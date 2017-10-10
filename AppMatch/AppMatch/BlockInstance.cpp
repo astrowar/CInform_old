@@ -209,7 +209,7 @@ bool NNisSameString(const string &s1, const string &s2)
 
 QueryResul CBlockInstance::is_set(HBlockNoum  value)
 {
-	this->dump_contents("");
+	 
 	for (auto &va : this->anomimousSlots)
 	{
 		if (HVariableSlotEnum  venum = DynamicCasting::asHVariableSlotEnum(va))

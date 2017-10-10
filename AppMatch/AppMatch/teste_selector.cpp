@@ -26,6 +26,7 @@ garden is a room
 hall is a room
 cave is a room
 machine cauderon is a kind of room
+machine cauderon is usually dark
 cave is dark
 hall is dark 
 garden is lit
@@ -39,6 +40,10 @@ coil is stuck to box
 box is in hall
 jar is in garden
 cauderon beta is a machine cauderon
+cauderon holografic is a machine cauderon
+cauderon holografic is virtual generate
+cauderon holografic is lit
+coil is in cauderon holografic
 )";
 
 	
@@ -53,11 +58,11 @@ cauderon beta is a machine cauderon
 
 	//f_eval(" a thing which is in  (a room called the next room ) ")->dump("E ");
 
-	auto p = Expression::Parser_Expression(&parse, "  ( a room called the next room ) which is not the garden   ", true);
+	auto p = Expression::Parser_Expression(&parse, "  ( a room called the next room ) which is not the garden   ", false);
  
 
-	f_eval("  ( (a thing called owner ) which is in virtual generate lit  machine cauderon  )   ")->dump("E ");
-	//f_eval(" ( ( a room called the next room ) which is lit)  ")->dump("E ");
+	f_eval("  ( (a thing called owner ) which is in  virtual generate  machine cauderon  )   ")->dump("E ");
+	f_eval(" ( ( a room called the next room ) which is lit)  ")->dump("E ");
 	f_eval("  ( a room called the next room ) which is lit  and  is not  hall  ")->dump("E ");
 	f_eval(" box ")->dump("G ");
  

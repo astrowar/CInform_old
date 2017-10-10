@@ -15,12 +15,11 @@ using namespace Interpreter;
 //retorn  o primeiro termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-	c_block->dump("");
-	value->dump("");
+ 
 	if (HBlockMatch mvalue = DynamicCasting::asHBlockMatch(value))
 	{
 		auto rst = Resolve_Selector(mvalue, localsEntry);
-		rst->dump("");
+		value = rst;
 	}
 	
 	for (auto &rr : relInstances)
@@ -68,6 +67,8 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relat
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 
+ 
+
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
@@ -114,6 +115,8 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  rela
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 	std::list<CBlocking::HBlock> lst;
+ 
+
 
 	for (auto &rr : relInstances)
 	{
@@ -155,6 +158,10 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  rel
 //retorn  o segundo termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
+
+ 
+
+
 	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)
 	{
@@ -287,8 +294,7 @@ CBlocking::HBlock CBlockInterpreter::lookup_intersection(HBlock v1, HBlock v2,  
 			add_if_unique(lista_ret->lista, p1[i1]);
 	}
 
-	v1->dump("");
-	v2->dump("");
+ 
 	return lista_ret;
 }
 

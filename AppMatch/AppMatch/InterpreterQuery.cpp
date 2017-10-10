@@ -671,8 +671,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", matchBlock, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
+			 
+			auto matchBlock_r = Resolve_Selector(matchBlock, localsEntry);
 
-			auto r_mtch = Match(matchBlock, c_block, localsEntry, next_stack.get());
+
+			auto r_mtch = Match(matchBlock_r, c_block, localsEntry, next_stack.get());
 			if (r_mtch.hasMatch)
 			{
 				return  QueryResultContext(QEquals, r_mtch.maptch);

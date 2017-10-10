@@ -212,12 +212,81 @@ HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term
 			return std::make_shared<CBlockKindOfName>(""); // no Base
 
 		}
+	} 
+	return nullptr; 
+}
+ 
+
+
+ 
+
+HBlockKind   NSParser::ParseAssertion::parse_CompositionOf(CParser * p, HTerm  term)
+{
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("list"));
+		predList.push_back(mk_HPredLiteral("of"));
+		predList.push_back(mkHPredAny("kindBase"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto nkind = parse_KindDefinition(p, res.matchs["kindBase"]);
+			if (nkind != nullptr)
+			{
+				return  std::make_shared<CBlockCompositionList>(p, nkind);
+			}
+
+		}
 	}
 
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("list"));
+		predList.push_back(mk_HPredLiteral("of"));
+		predList.push_back(mkHPredAny("kindBase"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto nkind = parse_KindDefinition(p, res.matchs["kindBase"]);
+			if (nkind != nullptr)
+			{
+				return  std::make_shared<CBlockCompositionList>(p, nkind);
+			}
+
+		}
+	}
+
+	 
 	return nullptr;
-
-
 }
+
+
+
+HBlock NSParser::ParseAssertion::parse_AssertionIsCompositionOf(CParser * p, std::vector<HTerm>& term) {
+	{
+		// is a default ??
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("Noum"));
+		predList.push_back(verb_IS());
+		predList.push_back(mkHPredAny("CompDef"));
+
+		MatchResult res = CMatch(term, predList);
+
+		if (res.result == Equals) {
+
+			HBlock value = parse_CompositionOf(p, res.matchs["CompDef"]);
+			if (value == nullptr) return nullptr;
+			HBlock noum = Expression::parser_assertionTarger(p, res.matchs["Noum"]);
+			if (noum == nullptr) return nullptr;
+			return std::make_shared<CBlockAssertion_isDirectAssign>(noum, value);
+		}
+	}
+	return nullptr;
+}
+
 
 HBlock NSParser::ParseAssertion::parse_AssertionIsKindOf(CParser * p, std::vector<HTerm>& term) {
 	{
@@ -238,9 +307,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsKindOf(CParser * p, std::vecto
 			return std::make_shared<CBlockAssertion_isDirectAssign>(noum, value);
 		}
 	}
-
     return nullptr;
-
 }
 
 HBlock NSParser::ParseAssertion::parse_AssertionValuesOf(CParser * p, std::vector<HTerm>& term) {
@@ -434,6 +501,10 @@ HBlock NSParser::ParseAssertion::parser_Declaration_Assertion(CParser * p, std::
 		return assert_local_value;
 	}
 
+	HBlock assert_compostionOf = parse_AssertionIsCompositionOf(p, lst);
+	if (assert_compostionOf != nullptr) {
+		return assert_compostionOf;
+	}
 
     HBlock assert_kindof = parse_AssertionIsKindOf(p,lst);
     if (assert_kindof != nullptr) {

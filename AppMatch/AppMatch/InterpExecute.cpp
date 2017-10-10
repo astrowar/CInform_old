@@ -831,7 +831,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 		if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
 		{
-			nvlookup_and->dump("");
+		 
 			auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
 			auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
 			return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);

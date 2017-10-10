@@ -90,7 +90,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 		std::vector<CBlocking::HBlockAssertionBase> dynamic_assertions;
-
+		std::vector<CBlocking::HBlockNoum> registred_adjetives;
 
 		std::vector<CBlocking::HBlockAssertion_is> kindDefinitions;
 
@@ -158,6 +158,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock lookup_union(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		CBlocking::HBlock lookup_intersection(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		std::list<string> getAllRegistedEnums();
 		std::list<string> getAllRegistedKinds();
 		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
@@ -197,6 +198,16 @@ using ListOfNamedValue = std::list<NamedValue>;
 		string getStringPrexfedFromList(const std::vector<string>& noumFragmented, std::list<string> allStringNames);
 		std::list<CBlocking::HBlock> getInstancesFromKind(CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
 		std::list<CBlocking::HBlock> getInstancesFromSelector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_item(CBlocking::HBlockMatch seletor, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_Noum_fragment(std::vector<string> strList_in, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_NoumList(std::vector<string> strList, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_List(CBlocking::HBlockMatchList mList, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+		 
+		 
 		CBlocking::HBlockMatch Resolve_Selector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
 		PhaseResult raise_runtime_error(std::string message);
 	public:
@@ -208,6 +219,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		~CBlockInterpreter();
 
 		void initialize();
+		void add_modifier_keyword(CBlocking::HBlockEnums _enums);
+		void add_modifier_keyword(CBlocking::HBlockNoum _nn);
 		bool assert_it_canBe(CBlocking::HBlock c_block, CBlocking::HBlockEnums value, HRunLocalScope localsEntry);
 
 

@@ -80,3 +80,5 @@ void testValues_all();
 void testeParser_listAll();
 
 void testeLogical_All();
+
+void testeComposition_all();

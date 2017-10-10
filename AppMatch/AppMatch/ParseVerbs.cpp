@@ -23,6 +23,7 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
 			predList.push_back(p->verbList);
 			predList.push_back(mkHPredAny("N2"));
 		}
+
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
