@@ -7,12 +7,35 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 
 
+HBlock NSParser::Expression::parser_kind_specification(CParser *p, HTerm term)
+{
+
+	HBlock p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
+	if (p_comp != nullptr) return p_comp;
+
+
+	if (CList *vlist = asCList(term.get())) 
+	{
+		auto rvector = vlist->asVector();	 
+		HBlock r  = ParseAssertion::parse_noum(p, rvector);
+		if (r != nullptr)
+		{
+			return r;
+		}
+	} 
+ 
+	return nullptr;
+}
+
+
 
 HBlock NSParser::Expression::parser_kind(CParser *p, HTerm term)
 {
-
+ 
 	return Expression::parser_expression(p,term);
 }
+
+
 HBlock NSParser::Expression::parser_kind_or_instance(CParser *p, HTerm term) { return Expression::parser_expression(p,term); }
 HBlock NSParser::Expression::parser_valueReference(CParser *p, HTerm term) { return Expression::parser_expression(p,term); }
 HBlock NSParser::Expression::parser_assertionTarger(CParser *p, HTerm term)

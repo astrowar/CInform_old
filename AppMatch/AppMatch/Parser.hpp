@@ -239,6 +239,10 @@ namespace NSParser
 		CBlocking::HBlock  parser_expression_lst(CParser *p, std::vector<NSTerm::HTerm>&   lst);
 
 		CBlocking::HBlock parser_kind(CParser *p, NSTerm::HTerm term);
+		CBlocking::HBlock parser_kind_specification(CParser *p, NSTerm::HTerm term);
+
+		CBlocking::HBlockKind  parse_CompositionOf(CParser * p, NSTerm::HTerm  term);
+
 		CBlocking::HBlock parser_kind_or_instance(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parser_valueReference(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parser_assertionTarger(CParser *p, NSTerm::HTerm term);

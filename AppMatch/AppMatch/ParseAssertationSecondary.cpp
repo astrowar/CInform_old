@@ -219,28 +219,62 @@ HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term
 
 
  
+ 
 
-HBlockKind   NSParser::ParseAssertion::parse_CompositionOf(CParser * p, HTerm  term)
+HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 {
+  
 	{
 		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("list"));
-		predList.push_back(mk_HPredLiteral("of"));
+		predList.push_back(mk_HPredLiteral("phrase"));		 
 		predList.push_back(mkHPredAny("kindBase"));
+		predList.push_back(mk_HPredLiteral("->"));
+		predList.push_back(mkHPredAny("kindDst"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind = parse_KindDefinition(p, res.matchs["kindBase"]);
+			auto nkind =  parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				return  std::make_shared<CBlockCompositionList>(p, nkind);
-			}
-
+				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
+				if (dkind != nullptr)
+				{
+					return  std::make_shared<CBlockCompositionPhrase>(p, nkind, dkind);
+				}
+			} 
 		}
 	}
 
 
+
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("relation"));
+		predList.push_back(mk_HPredLiteral("of"));
+		predList.push_back(mkHPredAny("kindBase"));
+		predList.push_back(mk_HPredLiteral("to"));
+		predList.push_back(mkHPredAny("kindDst"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto nkind = parser_kind_specification(p, res.matchs["kindBase"]);
+			if (nkind != nullptr)
+			{
+				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
+				if (dkind != nullptr)
+				{
+					return  std::make_shared<CBlockCompositionRelation>(p, nkind, dkind);
+				}
+			}
+		}
+	}
+
+	 
+
+
+
 	{
 		std::vector<HPred> predList;
 		predList.push_back(mk_HPredLiteral("list"));
@@ -250,12 +284,11 @@ HBlockKind   NSParser::ParseAssertion::parse_CompositionOf(CParser * p, HTerm  t
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind = parse_KindDefinition(p, res.matchs["kindBase"]);
+			auto nkind = parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
 				return  std::make_shared<CBlockCompositionList>(p, nkind);
 			}
-
 		}
 	}
 
