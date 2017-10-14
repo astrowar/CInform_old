@@ -347,6 +347,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock eval_boolean_OR(CBlocking::HBlock c1, CBlocking::HBlock c2);
 		CBlocking::HBlock eval_boolean_NOT(CBlocking::HBlock c1);
 		CBlocking::HBlock exec_eval_internal_boolean_relation(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
+		CBlocking::HBlock get_PropertyOfKind_DefaultValue(CBlocking::HBlockProperty kprop, CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack * stk);
 		CBlocking::HBlock exec_eval_internal(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);
 		HExecutionBlock create_dispach_env(CBlocking::HBlockList p, HRunLocalScope localsEntry);

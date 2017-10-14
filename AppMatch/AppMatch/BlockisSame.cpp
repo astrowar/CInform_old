@@ -26,7 +26,37 @@ bool isSame_BlockNothing(CBlockNothing* b1, CBlockNothing* b2)
 }
 
 
- 
+bool isSame_list(std::list<HBlock>&  b1, std::list<HBlock>& b2)
+{
+	if ( b1.size() != b2.size() ) return false;
+	for (auto i1 : b1)
+	{
+		bool has_inList = false;
+		for (auto i2 : b2)
+		{
+			if (CBlock::isSame(i1.get(), i2.get()))
+			{
+				has_inList = true; break;
+			}
+		}
+		if(has_inList == false) return false;
+	}
+	return true;
+}
+
+bool isSame_BlockList(CBlockList* b1, CBlockList* b2)
+{
+	return  isSame_list(b1->lista, b2->lista);
+}
+
+bool isSame_BlockList_AND(CBlockList* b1, CBlockList* b2)
+{
+	return  isSame_list(b1->lista, b2->lista);
+}
+bool isSame_BlockList_OR(CBlockList* b1, CBlockList* b2)
+{
+	return  isSame_list(b1->lista, b2->lista);
+}
 
 
 bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
@@ -124,7 +154,7 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	if (b1 == nullptr && b2 != nullptr) return false;
 	if (b2 == nullptr && b1 != nullptr) return false;
 	if (b1->type() != b2->type()) return false;
-
+	
 
 	if (b1->type() == BlockNoum)  return isSame_BlockNoum( static_cast<CBlockNoum*>(b1),  static_cast<CBlockNoum*>(b2));
 	if (b1->type() == BlockInstance)  return isSame_BlockInstance(static_cast<CBlockInstance*>(b1), static_cast<CBlockInstance*>(b2));
@@ -143,6 +173,8 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	 
 
 	if (b1->type() == BlockNothing)  return isSame_BlockNothing(static_cast<CBlockNothing*>(b1), static_cast<CBlockNothing*>(b2));
+	if (b1->type() == BlockList)  return isSame_BlockList(static_cast<CBlockList*>(b1), static_cast<CBlockList*>(b2));
+
 
 	assert(false);
 	return false;

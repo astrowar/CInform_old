@@ -329,11 +329,11 @@ colour of blood is red
 
 void testeParser_2()
 {
-  // testeParser_2_1();
-  // testeParser_2_2();
-  // testeParser_2_3();
-  // testeParser_2_4(); // anonimous properties
-  // testeParser_2_5(); // variables
-  // testeParser_2_6(); //kind values
+   testeParser_2_1();
+   testeParser_2_2();
+   testeParser_2_3();
+   testeParser_2_4(); // anonimous properties
+   testeParser_2_5(); // variables
+   testeParser_2_6(); //kind values
 	 testeParser_2_7(); //kind values 
 }

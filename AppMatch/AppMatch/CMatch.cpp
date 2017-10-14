@@ -454,10 +454,13 @@ using namespace  NSMatch;
 
 		}
 
-		HPred NSTerm::mkHPredAtom(std::string _named, HTerm atom) { return std::make_shared<CPredAtom>(_named, atom); };
+		HPred NSTerm::mkHPredAtom(std::string _named, HTerm atom) 
+		{
+			return std::make_shared<CPredAtom>(std::move(_named), std::move(atom));
+		};
 
 		HPred NSTerm::mkHPredList(std::string _named, std::initializer_list<HPred> plist) {
-			return std::make_shared<CPredList>(_named, plist);
+			return std::make_shared<CPredList>(std::move(_named), std::move((plist)));
 		};
 
 		HPred NSTerm::mkHPredAny(std::string _named) { return std::make_shared<CPredAny>(_named); };

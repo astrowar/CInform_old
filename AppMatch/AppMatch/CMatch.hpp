@@ -38,7 +38,8 @@ namespace NSTerm
 
 			std::string named;
 
-			CPred(std::string _named) : named(_named) {
+			CPred(std::string _named) : named(std::move(_named)) 
+			{
 			};
 
 			virtual EqualsResul match(MTermSet &h) = 0;

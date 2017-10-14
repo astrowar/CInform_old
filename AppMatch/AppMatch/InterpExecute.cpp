@@ -203,6 +203,7 @@ PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocal
 	return false;
 }
 
+ 
 
 
 
@@ -507,6 +508,35 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 	return nullptr;
 }
 
+
+HBlock  CBlockInterpreter::get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block_obj, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	// existe um assert para esta propriedade ?
+	for (HBlockAssertion_isDefaultAssign s : default_assignments)
+	{
+		if (HBlockProperty pbase = asHBlockProperty(s->get_obj()))
+		{
+			auto r = query_is(pbase->prop, kprop->prop, localsEntry, stk);
+			if (r.result == QEquals)
+			{
+				pbase->dump("");
+				if (HBlockKind prop_obj_kind = asHBlockKind(pbase->obj))
+				{
+					auto r2 = query_is(c_block_obj, prop_obj_kind, localsEntry, stk);
+					if (r2.result == QEquals)
+					{
+						return s->value;
+					}
+				}
+			}
+		}
+	}
+	return Nothing;
+
+}
+
+
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 
@@ -731,9 +761,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
 				if (pvar != nullptr)
 				{
-					if (pvar->value ==nullptr)
+					if (pvar->value == nullptr)
 					{
-						return Nothing;
+						return get_PropertyOfKind_DefaultValue(kprop, objInst,localsEntry, stk);
+						 
+					}
+					if (CBlock::isSame(pvar->value.get() , Nothing.get()))
+					{
+						return get_PropertyOfKind_DefaultValue(kprop, objInst,localsEntry, stk);
 					}
 					return pvar->value;
 				}
