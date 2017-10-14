@@ -41,6 +41,12 @@ void CBlockInterpreter::dump_instance(string str,   HRunLocalScope localsEntry) 
 	}
 }
 
+void CBlockInterpreter::add_constantValueVariableToAllinstances(HBlockAssertion_isConstantAssign kvar)
+{
+	// TODO
+
+}
+
 void CBlockInterpreter::add_forbidenValueVariableToAllinstances(HBlockAssertion_isForbiddenAssign kvar)
 {
 	// TODO

@@ -23,20 +23,37 @@ void CBlockInterpreter::initialize() {
 
 }
 
+void   CBlockInterpreter::add_modifier_keyword(HBlockEnums _enums)
+{
+	for (auto e : _enums->values)
+	{
+		registred_adjetives.push_back(e);
+	}
+}
+
+void   CBlockInterpreter::add_modifier_keyword(HBlockNoum _nn)
+{	
+		registred_adjetives.push_back(_nn);	
+}
+
+
 bool CBlockInterpreter::assert_it_canBe(CBlocking::HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry) {
 	if (HBlockNoum nbase = DynamicCasting::asHBlockNoum(c_block)) {
 		CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
+			
 			return assert_it_canBe(nobj, value,localsEntry);
+
 		}
 		return false;
 	} else if (HBlockKind nkind = DynamicCasting::asHBlockKind(c_block)) {
 		kind_variables.push_back(make_shared<CBlockAssertion_canBe>(nkind, value));
+		add_modifier_keyword(value);
 		return true;
 	} else if (HBlockInstance nInst = DynamicCasting::asHBlockInstance(c_block)) {
 		auto p = make_shared<CBlockAssertion_canBe>(nInst, value);
 		assign_variable_to_instance(make_shared<CBlockAssertion_canBe>(nInst, value));
-
+		add_modifier_keyword(value);
 		return true;
 	}
 
@@ -286,7 +303,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 			HVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
-				if ( is_primitive_value(value, localsEntry, stk) ==false )
+				if ( is_primitive_value(value, localsEntry, stk) == false )
 				{
 					auto next_value = exec_eval(value, localsEntry, stk);
 					return assert_it_property(propname, obj,next_value, localsEntry, stk);
@@ -402,6 +419,11 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 		if (assert_it_ForbiddenValue(obj, value, localsEntry)) return;
 	}
 
+	if (HBlockAssertion_isConstantAssign fb = asHBlockAssertion_isConstantAssign(p)) {
+		CBlocking::HBlock obj = fb->get_obj();
+		CBlocking::HBlock value = fb->get_definition();
+		if (assert_it_ConstantAssign(obj, value, localsEntry)) return;
+	}
 
 	if (HBlockAssertion_isDefaultAssign v = asHBlockAssertion_isDefaultAssign(p)) {
 		CBlocking::HBlock obj = v->get_obj();

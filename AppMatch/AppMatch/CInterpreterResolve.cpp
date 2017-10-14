@@ -430,7 +430,14 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 }
 
 
+std::list<string>  CBlockInterpreter::getAllRegistedEnums()
+{
+	std::list<string> ret;
 
+	for (auto n : registred_adjetives) ret.push_back(n->named);
+ 
+	return ret;
+}
 std::list<string>  CBlockInterpreter::getAllRegistedKinds()
 {
 	std::list<string> ret;
@@ -446,8 +453,6 @@ std::list<string>  CBlockInterpreter::getAllRegistedKinds()
 		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
 			ret.push_back(nn->named);
 		}
-	}
-
-
+	} 
 	return ret;
 }

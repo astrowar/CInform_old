@@ -208,26 +208,28 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 
 HBlock   NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, HBlockMatch muteVariable)
 {
-	
+
 	{
 		static std::vector<HPred> predList = {};
 		if (predList.empty())
 		{
 			predList.push_back(mkHPredAny("S1"));
 			predList.push_back(mk_HPredLiteral("and"));
-			predList.push_back(mkHPredAny("S2")); 
+			predList.push_back(mkHPredAny("S2"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto arg1 = parser_SeletorTerm(p,res.matchs["S1"],muteVariable);
+			auto arg1 = parser_SeletorTerm(p, res.matchs["S1"], muteVariable);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_SeletorTerm(p,res.matchs["Seletor"], muteVariable);
+				auto arg2 = parser_SeletorTerm(p, res.matchs["S2"], muteVariable);
 				if (arg2 != nullptr)
 				{
-
-					  return  std::make_shared<CBlockBooleanAND>(arg1, arg2);
+					//std::list<HBlockMatch> alist;
+					//alist.push_back(arg1);
+					//alist.push_back(arg2);
+					return  std::make_shared<CBlockSelectorAND>( arg1,arg2);
 				}
 			}
 		}
@@ -236,10 +238,16 @@ HBlock   NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, H
 
 
 
-	auto rrel = parser_SeletorRelation(p,term, muteVariable);
-	if (rrel != nullptr) return rrel;
+	auto rrel = parser_SeletorRelation(p, term, muteVariable);
+	if (rrel != nullptr)
+	{
+		return rrel;
+	}
 	auto rverb = parser_SeletorVerb(p,term, muteVariable);
-	if (rverb != nullptr) return rverb;
+	if (rverb != nullptr)
+	{
+		return rverb;
+	}
 
 	return nullptr;
 }
@@ -371,6 +379,28 @@ HBlock   NSParser::ParseRelation::parser_SeletorVerb(CParser *p, HTerm   term, H
 {
 
 	// TODO implementar os NOT 
+
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			//Apenas  o IS
+			predList.push_back(verb_IS());
+			predList.push_back(mk_HPredLiteral("not"));
+			predList.push_back(mkHPredAny("K2"));
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto n2 = ExpressionMatch::parser_expression_match(p, res.matchs["K2"]);
+			HBlockMatch n_not = std::make_shared<CBlockMatchNOT>(n2);
+			return std::make_shared<CBlockVerbLookup>("is", muteVariable, n_not , FirstNoum);
+			 
+		}
+	}
+
+
 	{
 		static std::vector<HPred> predList = {};
 		if (predList.empty())

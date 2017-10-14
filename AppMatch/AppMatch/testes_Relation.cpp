@@ -363,12 +363,46 @@ apple is a thing
 	assert(f_is("apple not unlock box ") ); 
 }
 
+void testeParser_7_2()
+{
+	//Relations as First class objects
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"( 
+thing is an kind
+unloking relates (a thing ) to various thing
+the verb  unlock  implies a  unloking relation
+the verb ( unlocked by ) implies a reverse  unloking relation 
+key is a thing
+box is a thing
+apple is a thing
+key unlock box 
+)";
+
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	//f_eval("  unloking relates a thing  to an thing   ")->dump("R ");
+	// f_now(" key unlock box ");
+	//assert(f_eval("unloking relates key  to  box  "));
+	// assert(f_is("unloking relates a thing  to an thing  ")); // undefined behavior
+	
+	auto p = Expression::Parser_Expression(&parse, "unloking relates(a thing called N)  to (an thing called M)", false);
+	p->dump("");
+	//assert(f_eval("unloking relates (a thing called N)  to (an thing called M)  ")); // undefined behavior
+ 
+}
 
 
 void testeRelation_all()
 {
-	testeParser_7_1();  //comportamento fundamental
-
+	//testeParser_7_1();  //comportamento fundamental
+	testeParser_7_2();
 
 	 //testeRelation1(); 
 	//testeRelation2(); 

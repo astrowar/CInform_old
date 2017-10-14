@@ -1,3 +1,5 @@
+#include "CBlockMatch.hpp"
+#include "CBlockMatch.hpp"
 // This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
@@ -24,6 +26,7 @@
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
 
+#include <cassert>
 
 using namespace std;
 using namespace CBlocking;
@@ -245,6 +248,20 @@ void CBlockMatchNamed::dump(string ident) {
 	}
 	CBlock::dump(ident);
 }
+ 
+
+CBlockMatchNamed::CBlockMatchNamed(string _named, HBlockMatch _matchInner) : CBlockMatch(), named(_named),
+matchInner(_matchInner)
+{
+	assert(_named != "not");
+	assert(_named != "the");
+	assert(strncmp(_named.c_str(), "the", 3) != 0);
+	assert(_named[0] != '[');
+	assert(_named[0] != '(');
+
+}
+
+
 
 void CBlockMatchNoum::dump(string ident)
 {
@@ -523,6 +540,20 @@ void CBlockBooleanNOT::dump(string ident)
 	}
 	CBlock::dump(ident);
 }
+
+
+ 
+void CBlockSelectorAND::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Selector  ");
+	{
+		this->value1->dump(ident + "       ");
+		printf("%s %s\n", ident.c_str(), "AND ");
+		this->value2->dump(ident + "       ");
+	}
+
+	CBlock::dump(ident);
+}
+
 
 void CBlockActionCall::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Call ");

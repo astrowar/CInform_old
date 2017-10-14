@@ -239,6 +239,10 @@ namespace NSParser
 		CBlocking::HBlock  parser_expression_lst(CParser *p, std::vector<NSTerm::HTerm>&   lst);
 
 		CBlocking::HBlock parser_kind(CParser *p, NSTerm::HTerm term);
+		CBlocking::HBlock parser_kind_specification(CParser *p, NSTerm::HTerm term);
+
+		CBlocking::HBlockKind  parse_CompositionOf(CParser * p, NSTerm::HTerm  term);
+
 		CBlocking::HBlock parser_kind_or_instance(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parser_valueReference(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parser_assertionTarger(CParser *p, NSTerm::HTerm term);
@@ -251,6 +255,7 @@ namespace NSParser
 		CBlocking::HBlockMatch parser_expression_match(CParser *p, std::vector<NSTerm::HTerm>& term);
 
 	    CBlocking::HBlockMatchProperty parse_PropertyOf_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlockMatchNoum parse_match_SigleNoum(CParser * p, NSTerm::HTerm term);
 	    CBlocking::HBlockMatch parse_match_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
 	 
 		CBlocking::HBlockMatch  parse_Which_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
@@ -260,7 +265,11 @@ namespace NSParser
 		CBlocking::HBlockMatch   parse_AssertionDirectAssign_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   parser_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   DynamicDispatch_action_match(CParser *p, std::vector<NSTerm::HTerm>&  term);
-		CBlocking::HBlockMatch   parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
+		CBlocking::HBlockMatchList  parse_match_comma_list(CParser * p, NSTerm::HTerm term);
+
+		CBlocking::HBlockMatchList parse_match_comma_list(CParser * p, std::vector<NSTerm::HTerm>& term);
+		 
+		CBlocking::HBlockMatch    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
 
 
 
@@ -383,6 +392,8 @@ namespace NSParser
 		CBlocking::HBlock parse_AssertionIsLocalValue(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockKindOfName  parse_KindOf(CParser * p, NSTerm::HTerm  term);
+		CBlocking::HBlockKind  parse_CompositionOf(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlock parse_AssertionIsCompositionOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsKindOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock   parser_VerbAssign(CParser * p, std::vector<NSTerm::HTerm>& term);
 

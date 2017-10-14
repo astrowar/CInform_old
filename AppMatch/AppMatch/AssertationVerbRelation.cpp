@@ -3,9 +3,10 @@
  
 #include "QueryStack.hpp"
 #include "CResultMatch.hpp"
-#include "sharedCast.hpp"
+
 #include <algorithm>
 #include "CBlockInterpreterRuntime.hpp"
+#include "sharedCast.hpp"
 using namespace std;
 
 using namespace CBlocking; 
@@ -14,12 +15,17 @@ using namespace Interpreter;
 //retorn  o primeiro termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-
+ 
+	if (HBlockMatch mvalue = DynamicCasting::asHBlockMatch(value))
+	{
+		auto rst = Resolve_Selector(mvalue, localsEntry);
+		value = rst;
+	}
+	
 	for (auto &rr : relInstances)
 	{
 		if (rr->relation->named == relationNamed)
-		{
-	 
+		{	 
 
 			{
 				QueryStack *stk = nullptr;
@@ -60,6 +66,8 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relat
 //retorn  o segundo termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
+
+ 
 
 	for (auto &rr : relInstances)
 	{
@@ -107,6 +115,8 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_2(const string &  rela
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
 	std::list<CBlocking::HBlock> lst;
+ 
+
 
 	for (auto &rr : relInstances)
 	{
@@ -148,6 +158,10 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  rel
 //retorn  o segundo termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
+
+ 
+
+
 	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)
 	{
@@ -221,6 +235,107 @@ CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLook
 }
 
 
+ 
+
+void add_if_unique(std::list<HBlock>& lst, HBlock x)
+{	
+	for (auto q : lst)
+	{
+		if (CBlock::isSame(q.get(), x.get()))
+		{
+			return;
+		}
+	}
+	lst.push_back(x);
+}
+
+
+ 
+CBlocking::HBlock CBlockInterpreter::lookup_intersection(HBlock v1, HBlock v2,  HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (v1 == nullptr || CBlock::isSame( v1.get(), Nothing.get())) return  Nothing;
+	if (v2 == nullptr || CBlock::isSame(v2.get(), Nothing.get())) return  Nothing;
+
+	std::vector<HBlock> p1;
+	std::vector<HBlock> p2;
+
+	
+	if (auto vs1 = DynamicCasting::asHBlockList(v1))	
+	{
+		p1 = std::vector<HBlock>(vs1->lista.begin(), vs1->lista.end());
+	}
+	else
+	{	
+		p1.push_back(v1);
+	}
+
+	if (auto vs2 = DynamicCasting::asHBlockList(v2))
+	{
+		p2 = std::vector<HBlock>(vs2->lista.begin(), vs2->lista.end());
+	}
+	else
+	{
+		p2.push_back(v2);
+	}
+
+	HBlockList lista_ret = std::make_shared<CBlockList>(std::list<HBlock>());
+	for (int i1 = 0; i1 < p1.size(); ++i1)
+	{
+		bool exist = false;
+		for (int i2 = 0; i2 < p2.size(); ++i2)
+		{
+			if (CBlock::isSame(p1[i1].get(), p2[i2].get()))
+			{
+				exist = true;
+				break;
+			}
+		}
+		if (exist)
+			add_if_unique(lista_ret->lista, p1[i1]);
+	}
+
+ 
+	return lista_ret;
+}
+
+
+CBlocking::HBlock CBlockInterpreter::lookup_union(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (v1 == nullptr || CBlock::isSame(v1.get(), Nothing.get())) return  v2;
+	if (v2 == nullptr || CBlock::isSame(v2.get(), Nothing.get())) return  v1;
+
+	HBlockList lista1 = std::make_shared<CBlockList>( std::list<HBlock>());
+	if (auto vs1 = DynamicCasting::asHBlockList(v1))
+	{
+		for (auto x : vs1->lista)
+		{
+			add_if_unique(lista1->lista, x);
+		}
+	}
+	else
+	{
+		add_if_unique(lista1->lista, v1);
+	}
+
+	 
+
+	if (auto vs1 = DynamicCasting::asHBlockList(v1))
+	{
+		for (auto x : vs1->lista)
+		{
+			add_if_unique(lista1->lista, x);
+		}
+	}
+	else
+	{
+		add_if_unique(lista1->lista, v1);
+	}
+	return lista1;
+
+}
+
+
+
 //Este sjuito sempre retorna uma lista ....
 CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry ,QueryStack *stk  )
 {
@@ -255,8 +370,14 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 
 					if (vLookup->term_to_query == FirstNoum)
 					{
-						if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(relation_name, val1,val2, localsEntry, stk);
-						return lookup_relation_X_Y_1(relation_name, val1, val2, localsEntry,stk);
+						if (rel->is_various_noum1())
+						{
+							return lookup_relation_XS_Y_1(relation_name, val1, val2, localsEntry, stk);
+						}
+						else
+						{
+							return lookup_relation_X_Y_1(relation_name, val1, val2, localsEntry, stk);
+						}
 
 					}
 					if (vLookup->term_to_query == SecondNoum)
@@ -554,9 +675,13 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBl
 		{
 			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
 			if (query_inst.result == QEquals) return query_inst;
-		}
-			 
+		}  
 	}
+	// nao eh um teste de instancia ...
+	c_block->dump("");
+	value->dump("");
+
+
 	return QUndefined;
 }
 

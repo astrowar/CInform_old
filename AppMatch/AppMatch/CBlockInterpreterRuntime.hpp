@@ -90,12 +90,13 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 		std::vector<CBlocking::HBlockAssertionBase> dynamic_assertions;
-
+		std::vector<CBlocking::HBlockNoum> registred_adjetives;
 
 		std::vector<CBlocking::HBlockAssertion_is> kindDefinitions;
 
 		std::vector<HVariableNamed> global_variables;
 
+		std::vector<CBlocking::HBlockAssertion_isConstantAssign>  constant_assignments;
 		std::vector<CBlocking::HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
 		std::vector<CBlocking::HBlockAssertion_isDefaultAssign> default_assignments;
 		std::vector<CBlocking::HBlockAssertionBase> instance_variables;
@@ -139,6 +140,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool is_derivadeOf(CBlocking::HBlockInstance a, CBlocking::HBlockKind b, HRunLocalScope localsEntry);
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
+		void add_constantValueVariableToAllinstances(CBlocking::HBlockAssertion_isConstantAssign kvar);
 		void add_defaultValueVariableToAllinstances(CBlocking::HBlockAssertion_isDefaultAssign hdefault);
 		void add_forbidenValueVariableToAllinstances(CBlocking::HBlockAssertion_isForbiddenAssign kvar);
 
@@ -153,7 +155,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock lookup_relation_XS_Y_1(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlock lookup_relation_X_YS_2(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		CBlocking::HBlock lookup_union(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
+		CBlocking::HBlock lookup_intersection(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		std::list<string> getAllRegistedEnums();
 		std::list<string> getAllRegistedKinds();
 		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
 		CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
@@ -193,6 +198,16 @@ using ListOfNamedValue = std::list<NamedValue>;
 		string getStringPrexfedFromList(const std::vector<string>& noumFragmented, std::list<string> allStringNames);
 		std::list<CBlocking::HBlock> getInstancesFromKind(CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
 		std::list<CBlocking::HBlock> getInstancesFromSelector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_item(CBlocking::HBlockMatch seletor, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_Noum_fragment(std::vector<string> strList_in, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_NoumList(std::vector<string> strList, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+
+		CBlocking::HBlockMatch Resolve_Selector_List(CBlocking::HBlockMatchList mList, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+		 
+		 
 		CBlocking::HBlockMatch Resolve_Selector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
 		PhaseResult raise_runtime_error(std::string message);
 	public:
@@ -204,6 +219,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		~CBlockInterpreter();
 
 		void initialize();
+		void add_modifier_keyword(CBlocking::HBlockEnums _enums);
+		void add_modifier_keyword(CBlocking::HBlockNoum _nn);
 		bool assert_it_canBe(CBlocking::HBlock c_block, CBlocking::HBlockEnums value, HRunLocalScope localsEntry);
 
 
@@ -225,9 +242,12 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		bool assert_property_ForbiddenValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
+		bool assert_property_ConstantValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+
 		 
 	 
 		bool assert_property_defaultValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		bool assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
@@ -340,7 +360,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		PhaseResult execute_set(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 		CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
 		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
-		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);
+		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);		
+		CBlocking::HBlock get_default_property_value(CBlocking::HBlockNoum c_value, CBlocking::HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack * stk);
+		 
 		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
 		bool assert_equals(CBlocking::HBlock c_block, CBlocking::HBlock c_result);
 		CBlocking::HBlock eval_boolean_AND(CBlocking::HBlock c1, CBlocking::HBlock c2);

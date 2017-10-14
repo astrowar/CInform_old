@@ -117,6 +117,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>BlockModule.lib;ParseModule.lib;InterpreterModule.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,6 +187,7 @@
     <ClCompile Include="testes_execute.cpp" />
     <ClCompile Include="testes_Relation.cpp" />
     <ClCompile Include="teste_action.cpp" />
+    <ClCompile Include="teste_composition.cpp" />
     <ClCompile Include="teste_logical.cpp" />
     <ClCompile Include="teste_selector.cpp" />
     <ClCompile Include="teste_values.cpp" />

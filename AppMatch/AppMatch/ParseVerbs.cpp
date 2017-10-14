@@ -23,6 +23,7 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
 			predList.push_back(p->verbList);
 			predList.push_back(mkHPredAny("N2"));
 		}
+
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
@@ -98,11 +99,18 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
 				if (n2 != nullptr)
 				{
 					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-
-					auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
-					 
+					auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);					 
 					return r;
 				}
+				//eh um match ?
+				HBlock m2 = Expression::parser_expression(p, res.matchs["N2"]);
+				if (m2 != nullptr)
+				{
+					auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
+					auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+					return r;
+				}
+
 			}
 
         }

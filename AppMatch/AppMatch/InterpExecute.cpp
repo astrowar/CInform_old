@@ -203,7 +203,6 @@ PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocal
 	return false;
 }
 
- 
 
 
 
@@ -374,6 +373,47 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 	return nullptr;
 }
 
+
+
+
+
+
+HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	c_value->dump("");
+	//c_obj->dump("");
+
+	c_obj->baseKind->dump("");
+
+	for (auto sii = default_assignments.rbegin(); sii!= default_assignments.rend();++sii)
+	{
+		HBlockAssertion_isDefaultAssign s = *sii;
+
+		
+
+		if (auto sp = asHBlockProperty(s->get_obj()))
+		{
+			if (CBlock::isSame(sp->prop.get(), c_value.get()))
+			{
+				if (query_is(c_obj, sp->obj, localsEntry,stk).result == QEquals)
+				{
+				 return  s->value;
+				}
+			}
+		}
+		s->dump("");
+
+	}
+
+	return nullptr;
+}
+
+
+
+
+
+
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	HBlock b =  exec_eval_internal(c_block, localsEntry, stk);
@@ -508,35 +548,6 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 	return nullptr;
 }
 
-
-HBlock  CBlockInterpreter::get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block_obj, HRunLocalScope localsEntry, QueryStack *stk)
-{
-
-	// existe um assert para esta propriedade ?
-	for (HBlockAssertion_isDefaultAssign s : default_assignments)
-	{
-		if (HBlockProperty pbase = asHBlockProperty(s->get_obj()))
-		{
-			auto r = query_is(pbase->prop, kprop->prop, localsEntry, stk);
-			if (r.result == QEquals)
-			{
-				pbase->dump("");
-				if (HBlockKind prop_obj_kind = asHBlockKind(pbase->obj))
-				{
-					auto r2 = query_is(c_block_obj, prop_obj_kind, localsEntry, stk);
-					if (r2.result == QEquals)
-					{
-						return s->value;
-					}
-				}
-			}
-		}
-	}
-	return Nothing;
-
-}
-
-
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 
@@ -544,6 +555,8 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	{
 		return nullptr;
 	}
+
+	
 
 	if (is_nothing(c_block)) return Nothing;
 
@@ -759,18 +772,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
+				HBlock ret_val = Nothing;
 				if (pvar != nullptr)
 				{
-					if (pvar->value == nullptr)
-					{
-						return get_PropertyOfKind_DefaultValue(kprop, objInst,localsEntry, stk);
-						 
-					}
-					if (CBlock::isSame(pvar->value.get() , Nothing.get()))
-					{
-						return get_PropertyOfKind_DefaultValue(kprop, objInst,localsEntry, stk);
-					}
-					return pvar->value;
+					if (pvar->value != nullptr) ret_val = pvar->value;
+					HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
+					if (default_val != nullptr) ret_val = default_val;
+
+					return ret_val;
 				}
 			}
 		//return nullptr;
@@ -801,6 +810,15 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 	}
 
+	if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
+	{
+		return lookup_relation(nrlookup, localsEntry, stk);
+	}
+	if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
+	{
+		return lookup_verb(nvlookup, localsEntry, stk);
+	}
+
 	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
 	{
 		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
@@ -811,9 +829,15 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		{
 			return lookup_verb(nvlookup, localsEntry,stk);
 		}
-
+		if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
+		{
 		 
+			auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
+			auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
+			return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
+		} 
 	}
+
 
 	if (HBlockNow  bNow = asHBlockNow(c_block))
 	{
@@ -883,7 +907,13 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 	
  
-
+	for (auto cc : constant_assignments)
+	{
+		if (CBlock::isSame(cc->get_obj().get(), c_block.get()))
+		{
+			return cc->get_definition();
+		}
+	}
 
 	if (localsEntry!=nullptr)localsEntry->dump("");
 	 

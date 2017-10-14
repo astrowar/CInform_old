@@ -236,6 +236,9 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch
 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
 {
+ 
+
+
 	if (auto vMatch = asHBlockMatch(value))
 	{
 		// Hummm ... um match contra outro match ...
@@ -296,7 +299,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
 			return CResultMatch(rcc.result == QEquals);
 		}
-
+		return CResultMatch(false);
 	}
 	 
 	if (auto   mVNamed = asHBlockMatchNamed(M))
@@ -347,10 +350,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				{
 					return CResultMatch(true);
 				}
-			}
-			 
-
+			} 
 		}
+		return CResultMatch(false);
 	}
 
 	if (HBlockMatchList   mList = asHBlockMatchList(M))
@@ -419,6 +421,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			
 			return CResultMatch(false);
 		}
+		return CResultMatch(false);
 	}
 	
 	// Customized verb
@@ -444,9 +447,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 			}
 		}
-		 
-		 
-		 
+		return CResultMatch(false);
 	}
 
 
@@ -492,6 +493,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				return CResultMatch(false);
 			}
 		}
+		return CResultMatch(false);
 	}
 
 
@@ -530,6 +532,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 			} 
 		} 
+		return CResultMatch(false);
 	}
 
 	if (HBlockMatchWhichNot   mWhichNot = asHBlockMatchWhichNot(M))
@@ -558,7 +561,16 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 			} 
 		} 
+		return CResultMatch(false);
 	}
-	
+
+	if (HBlockMatchKind  mKind = asHBlockMatchKind(M))
+	{
+		QueryResultContext qkind = query_is(value , mKind->kind, localsEntry, stk);
+		return CResultMatch(qkind.result == QEquals);  
+	}
+
+
+	logError("Match not handled ");
 	return CResultMatch(false);
 }

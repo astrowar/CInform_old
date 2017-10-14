@@ -52,7 +52,7 @@ bool CBlockInterpreter::assert_property_ForbiddenValue(HBlockProperty prop, CBlo
 	if (HBlockNoum prop_obj_noum = asHBlockNoum(prop->obj))
 	{
 		CBlocking::HBlock nobj = resolve_noum(prop_obj_noum, localsEntry);
-		return assert_property_defaultValue(make_shared<CBlockProperty>(prop->prop, nobj), value, localsEntry);
+		return assert_property_ForbiddenValue(make_shared<CBlockProperty>(prop->prop, nobj), value, localsEntry);
 	}
 	 
 
@@ -74,13 +74,45 @@ bool CBlockInterpreter::assert_property_ForbiddenValue(HBlockProperty prop, CBlo
 			else
 			{
 				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
-
 			}
 		}
 	}
 
 	return false;
 }
+
+
+bool CBlockInterpreter::assert_property_ConstantValue(HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry)
+{
+	if (HBlockNoum prop_obj_noum = asHBlockNoum(prop->obj))
+	{
+		CBlocking::HBlock nobj = resolve_noum(prop_obj_noum, localsEntry);
+		return assert_property_ConstantValue(make_shared<CBlockProperty>(prop->prop, nobj), value, localsEntry);
+	}
+
+
+	if (HBlockKind prop_obj_kind = asHBlockKind(prop->obj))
+	{
+		if (HBlockNoum prop_name_noum = asHBlockNoum(prop->prop))
+		{
+			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
+			{
+				auto kdef = make_shared<CBlockAssertion_isConstantAssign>(prop, value); 
+				constant_assignments.push_back(kdef);
+				add_constantValueVariableToAllinstances(kdef); 
+				return true;
+			}
+			else
+			{
+				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
+			}
+		}
+	}
+
+	return false;
+}
+
+
 
 
 bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlocking::HBlock value,  HRunLocalScope localsEntry)
@@ -118,10 +150,61 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlock
 	return false;
 }
 
+
+bool  CBlockInterpreter::assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
+{
+	obj->dump(" ");
+	 
+	if (HBlockNoum nbase = asHBlockNoum(obj))
+	{
+		CBlocking::HBlock nobj = resolve_noum(nbase, localsEntry);
+		if (nobj != nullptr) 
+		{
+			return assert_it_ConstantAssign(nobj, value, localsEntry);
+		}
+		//podemos definir esse noum como uma constante no codigo
+		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(nbase, value);
+		constant_assignments.push_back(kdef);
+		return true;
+	}
+
+	if (HBlockInstance ibase = asHBlockInstance(obj)) {
+		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(ibase, value);
+		 
+		constant_assignments.push_back(kdef);
+		add_constantValueVariableToAllinstances(kdef);
+		assert_assertation(ibase, value , localsEntry);
+
+		return true;
+	} 
+
+	if (HBlockProperty pbase = asHBlockProperty(obj))
+	{
+		return assert_property_ConstantValue(pbase, value, localsEntry);
+	}
+
+	if (HVariableNamed vbase = asHVariableNamed(obj))
+	{
+		
+		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(vbase, value);
+		constant_assignments.push_back(kdef); 
+		vbase->value = value;
+		return true;
+	}
+
+	if (HBlockKind kbase = asHBlockKind(obj))
+	{ 
+		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(kbase, value);
+		kdef == nullptr;
+		constant_assignments.push_back(kdef);
+		add_constantValueVariableToAllinstances(kdef);
+		return true;
+	}
+
+	return false;
+}
+
 //Forbiden value
-
- 
-
 bool CBlockInterpreter::assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
 	//default value so eh valudi para Kinds
 

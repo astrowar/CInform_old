@@ -9,20 +9,41 @@ void testeSelector_1()
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
 
 	string slong = R"(
 room is an kind
+a room can be lit or dark
+a room can be warm or cold
+a room can be real placed or virtual generate
 thing is an kind
 stucking relates (a thing ) to another
 inner relates (a thing ) to (a room)
 garden is a room 
 hall is a room
+cave is a room
+machine cauderon is a kind of room
+machine cauderon is usually dark
+cave is dark
+hall is dark 
+garden is lit
+
 the verb ( stuck to ) implies the stucking relation
 the verb ( in ) implies the inner relation
 coil is a thing
 box is a thing
+jar is a thing
 coil is stuck to box 
 box is in hall
+jar is in garden
+cauderon beta is a machine cauderon
+cauderon holografic is a machine cauderon
+cauderon holografic is virtual generate
+cauderon holografic is lit
+coil is in cauderon holografic
 )";
 
 	
@@ -34,22 +55,17 @@ box is in hall
 	auto sentence_3 = "the coil is stuck to ( (a thing called owner ) which is not in garden )";
 	auto sentence_4 = "the coil is stuck to (a thing which is in  ( ( a room called the next room ) which is not the garden ) )";
 
-	printf("---------------------------------------------\n");
-	auto ret_true_a = interpreter->query(parse.Parser_Condition(sentence_0, ISLOG));
-	assert(ret_true_a.result == QEquals);
-	
-	auto ret_true_b = interpreter->query(parse.Parser_Condition(sentence_1, ISLOG));
-	assert(ret_true_b.result == QEquals);
 
-	
-	auto ret_true_c = interpreter->query(parse.Parser_Condition(sentence_2, ISLOG));
-	assert(ret_true_c.result == QEquals);
+	//f_eval(" a thing which is in  (a room called the next room ) ")->dump("E ");
 
-	auto ret_true_d = interpreter->query(parse.Parser_Condition(sentence_3, ISLOG));
-	assert(ret_true_d.result == QEquals);
+	auto p = Expression::Parser_Expression(&parse, "  ( a room called the next room ) which is not the garden   ", false);
+ 
 
-	auto ret_true_e = interpreter->query(parse.Parser_Condition(sentence_4, ISLOG));
-	assert(ret_true_e.result == QEquals);
+	f_eval("  ( (a thing called owner ) which is in  virtual generate  machine cauderon  )   ")->dump("E ");
+	f_eval(" ( ( a room called the next room ) which is lit)  ")->dump("E ");
+	f_eval("  ( a room called the next room ) which is lit  and  is not  hall  ")->dump("E ");
+	f_eval(" box ")->dump("G ");
+ 
 
 
 
