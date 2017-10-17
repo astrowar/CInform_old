@@ -563,11 +563,11 @@ void CBlockSelectorAND::dump(string ident) {
 }
 
 
-void CBlockComposition::dump(string ident)
-{
-	printf("%s %s\n", ident.c_str(), "Compostion  ");
-	CBlock::dump(ident);
-}
+//void CBlockComposition::dump(string ident)
+//{
+//	printf("%s %s\n", ident.c_str(), "Compostion  ");
+//	CBlock::dump(ident);
+//}
 void CBlockCompositionList::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "Compostion  List ");
@@ -586,7 +586,7 @@ void CBlockCompositionRelation::dump(string ident)
 	CBlock::dump(ident);
 }
 
-void CBlockKindCompositionPhrase::dump(string ident)
+void CBlockCompositionPhrase::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "Compostion  Phrase ");
 	printf("%s %s\n", ident.c_str(), "From");

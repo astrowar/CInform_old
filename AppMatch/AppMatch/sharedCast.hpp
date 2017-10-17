@@ -10,6 +10,7 @@
 #include "CBlockBoolean.hpp"
 #include "CBlockControlFlux.hpp" 
 #include "CBlockNumber.hpp"
+#include "CBlockComposition.hpp"
 
 namespace CBlocking
 {
@@ -34,7 +35,13 @@ namespace CBlocking
 		HBlockProperty asHBlockProperty(CBlocking::HBlock c);
 		HBlockAssertion_isDefaultAssign asHBlockAssertion_isDefaultAssign(CBlocking::HBlock c);
 		HBlockNothing asHBlockNothing(CBlocking::HBlock c);
+		HBlockComposition asHBlockComposition(CBlocking::HBlock c);
+		HBlockCompositionList asHBlockCompositionList(CBlocking::HBlock c);
+		HBlockCompositionPhrase asHBlockCompositionPhrase(CBlocking::HBlock c);
+		HBlockCompositionRelation asHBlockCompositionRelation(CBlocking::HBlock c);
+
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c);
+		HBlockKindNamed  asHBlockKindNamed(CBlocking::HBlock c);
 		HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(CBlocking::HBlock c);
 		HBlockAssertion_isDirectAssign asHBlockAssertion_isDirectAssign(CBlocking::HBlock c);
 		HBlockAssertion_canBe asHBlockAssertion_canBe(CBlocking::HBlock c);

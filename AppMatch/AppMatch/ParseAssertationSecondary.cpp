@@ -241,7 +241,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 				HBlockKind dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockKindCompositionPhrase>(nkind, dkind);
+					return  std::make_shared<CBlockCompositionPhrase>(nkind, dkind);
 				}
 			} 
 		}

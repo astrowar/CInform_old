@@ -56,18 +56,18 @@ namespace CBlocking {
 
 
     // phrase K -> L
-    class CBlockKindCompositionPhrase : public CBlockComposition {
+    class CBlockCompositionPhrase : public CBlockComposition {
 
     public:
         HBlockKind fromKind;
         HBlockKind toKind;
-        CBlockKindCompositionPhrase( HBlockKind _fromKind , HBlockKind _toKind  ) : CBlockComposition("phrase "+_fromKind->named+" -> "+_toKind->named) ,toKind(_toKind) , fromKind(_fromKind)
+        CBlockCompositionPhrase( HBlockKind _fromKind , HBlockKind _toKind  ) : CBlockComposition("phrase "+_fromKind->named+" -> "+_toKind->named) ,toKind(_toKind) , fromKind(_fromKind)
         {
 
         }
        virtual void dump(string ident) override;
           BlockType type() override { return BlockType::BlockCompositionPhrase; }
     };
-    using HBlockKindCompositionPhrase = std::shared_ptr<CBlockKindCompositionPhrase>;
+    using HBlockCompositionPhrase = std::shared_ptr<CBlockCompositionPhrase>;
 }
 #endif //APPMATCH_CBLOCKKINDCOMPOSITION_H

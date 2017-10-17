@@ -16,15 +16,17 @@ void testeComposition_1()
 
 	string slong = R"(
 room is an kind
+route is an kind of room
 garden is a room
 hall is a room
-ceils is list of room
+ceils is list of route
+pathway is a kind of route
+target is a room that varies
+confuse is list of list  of list of room
 )";
 
 
-	interpreter->execute_init(ParseText::parser_text(&parse, slong, true));
-
- 
+	interpreter->execute_init(ParseText::parser_text(&parse, slong, true)); 
 
 
 	//f_eval(" a thing which is in  (a room called the next room ) ")->dump("E ");
@@ -34,7 +36,7 @@ ceils is list of room
 
 	f_eval(" ceils   ")->dump("E ");
 	f_eval(" ceils is a list of room  ")->dump("E ");
-	f_eval(" ceils is a list of K  ")->dump("E ");
+	//f_eval(" ceils is a list of (kind K)  ")->dump("E ");
 	
 
 

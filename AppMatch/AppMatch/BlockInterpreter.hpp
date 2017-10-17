@@ -183,11 +183,7 @@ namespace CBlocking
 		void dump(string ident) override;
 
 		virtual BlockType type() override { return BlockType::BlockKindOf; }
-		CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {}
-
-
-
-
+		CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {} 
 
 		HBlockKind baseClasse;
 	};
@@ -195,6 +191,7 @@ namespace CBlocking
 	using HBlockKindOf = std::shared_ptr<CBlockKindOf>;
 
 
+	 
 
 	class CBlockActionApply : public CBlock {
 	public:
@@ -358,9 +355,6 @@ namespace CBlocking
 	using HBlockInstanceVariable = std::shared_ptr<CBlockInstanceVariable>;
 
 
-
-
-
 	class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
 	{
 	public:
@@ -377,6 +371,9 @@ namespace CBlocking
 
 	};
 	using HBlockKind_InstanceVariable = std::shared_ptr<CBlockKind_InstanceVariable>;
+
+
+
 
 
 

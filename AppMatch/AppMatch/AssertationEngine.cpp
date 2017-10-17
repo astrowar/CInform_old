@@ -445,7 +445,7 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 	}
 	else if (HBlockAssertion_isVariable  vGlobal  = asHBlockAssertion_isVariable(p)) {
 		 
-		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind )) {
+		if (assert_it_variableGlobal(vGlobal->variable, vGlobal->baseKind, nullptr )) {
 			return;
 		}
 		else

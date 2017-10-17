@@ -176,7 +176,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		bool assert_newVerb(CBlocking::HBlockVerbRelation value);
 		bool insert_newEventHandle(CBlocking::HBlockEventHandle event_handle);
-		bool assert_it_variableGlobal(CBlocking::HBlock obj, CBlocking::HBlock value);
+		bool assert_it_variableGlobal(CBlocking::HBlock obj, CBlocking::HBlock baseKind, CBlocking::HBlock defaultValue);
 
 		CResultMatch MatchList(CBlocking::HBlockMatchList M, CBlocking::HBlockList value, HRunLocalScope localsEntry, QueryStack *stk);
 		CResultMatch isEquivalenteMatch(CBlocking::HBlockMatch M, CBlocking::HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk);
@@ -267,6 +267,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::pair<CBlocking::HBlockKind, CBlocking::HBlockKind> create_derivadeKind(string called, string baseName);
 		bool assert_assertation(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool  assert_it_composition(CBlocking::HBlock obj, CBlocking::HBlock  value, HRunLocalScope localsEntry);
 		bool assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
 		bool assert_it_instance(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
@@ -274,6 +275,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		 
 		bool assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
 
+		CBlocking::HBlockKind  resolve_comp_kind(CBlocking::HBlockKind obj, HRunLocalScope localsEntry);
 
 		std::list<CBlocking::HBlock> resolve_as_list(CBlocking::HBlock qlist, HRunLocalScope localsEntry);
 		std::list<CBlocking::HBlock> resolve_as_list(CBlocking::HBlock qlist, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
