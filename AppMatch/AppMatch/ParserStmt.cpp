@@ -21,9 +21,17 @@ HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm ter
 		if (r != nullptr)
 		{
 			return  std::make_shared<CBlockKindNamed>( r->named ) ;
-
 		}
-	} 
+        return nullptr;
+	}
+
+    std::vector<HTerm>  vterm = {term};
+    HBlockNoum rx  = ParseAssertion::parse_noum(p, vterm);
+    if (rx != nullptr)
+    {
+        return  std::make_shared<CBlockKindNamed>( rx->named ) ;
+
+    }
  
 	return nullptr;
 }

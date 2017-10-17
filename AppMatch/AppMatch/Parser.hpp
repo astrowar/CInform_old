@@ -365,10 +365,10 @@ namespace NSParser
 		CBlocking::HBlock parse_removeArticle(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockNoum  parse_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  STMT_Decide_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo *err);
-		CBlocking::HBlockProperty  parse_PropertyOf(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlock  parse_PropertyOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock   parse_RelationArgument(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  STMT_Decide_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo *err);
-		CBlocking::HBlockProperty  parse_PropertyOf(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlock   parse_PropertyOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockInstanceVariable  CProperty_called(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  STMT_hasAn_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst);
 		CBlocking::HBlockEnums  parseAssertion_EnumTerms(CParser * p, NSTerm::HTerm enumList);

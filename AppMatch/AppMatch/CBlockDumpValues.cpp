@@ -25,7 +25,7 @@
 
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
-#include "CBlockKindComposition.hpp"
+#include "CBlockComposition.hpp"
 
 #include <cassert>
 #include <cstring>
@@ -563,22 +563,22 @@ void CBlockSelectorAND::dump(string ident) {
 }
 
 
-void CBlockKindComposition::dump(string ident)
+void CBlockComposition::dump(string ident)
 {
-	printf("%s %s\n", ident.c_str(), "Kind Compostion  ");
+	printf("%s %s\n", ident.c_str(), "Compostion  ");
 	CBlock::dump(ident);
 }
-void CBlockKindCompositionList::dump(string ident)
+void CBlockCompositionList::dump(string ident)
 {
-	printf("%s %s\n", ident.c_str(), "Kind Compostion  List ");
+	printf("%s %s\n", ident.c_str(), "Compostion  List ");
 	this->itemKind->dump(ident + "       ");
 	CBlock::dump(ident);
 }
 
 
-void CBlockKindCompositionRelation::dump(string ident)
+void CBlockCompositionRelation::dump(string ident)
 {
-	printf("%s %s\n", ident.c_str(), "Kind Compostion  Relation ");
+	printf("%s %s\n", ident.c_str(), "Compostion  Relation ");
 	printf("%s %s\n", ident.c_str(), "From");
 	this->fromKind->dump(ident + "       ");
 	printf("%s %s\n", ident.c_str(), "To");
@@ -588,7 +588,7 @@ void CBlockKindCompositionRelation::dump(string ident)
 
 void CBlockKindCompositionPhrase::dump(string ident)
 {
-	printf("%s %s\n", ident.c_str(), "Kind Compostion  Phrase ");
+	printf("%s %s\n", ident.c_str(), "Compostion  Phrase ");
 	printf("%s %s\n", ident.c_str(), "From");
 	this->fromKind->dump(ident + "       ");
 	printf("%s %s\n", ident.c_str(), "To");

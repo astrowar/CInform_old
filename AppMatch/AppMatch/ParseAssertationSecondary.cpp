@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "Parser.hpp"
-#include "CBlockKindComposition.hpp"
+#include "CBlockComposition.hpp"
 #include "sharedCast.hpp"
  
 using namespace CBlocking;
@@ -266,7 +266,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockKindCompositionRelation>(  nkind, dkind);
+					return  std::make_shared<CBlockCompositionRelation>(  nkind, dkind);
 				}
 			}
 		}
@@ -288,7 +288,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 			HBlockKind nkind = parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				return  std::make_shared<CBlockKindCompositionList>(  nkind);
+				return  std::make_shared<CBlockCompositionList>(  nkind);
 			}
 		}
 	}
@@ -311,7 +311,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsCompositionOf(CParser * p, std
 
 		if (res.result == Equals) {
 
-			HBlock value = parse_CompositionOf(p, res.matchs["CompDef"]);
+			auto value = Expression::parse_CompositionOf(p, res.matchs["CompDef"]);
 			if (value == nullptr) return nullptr;
 			HBlock noum = Expression::parser_assertionTarger(p, res.matchs["Noum"]);
 			if (noum == nullptr) return nullptr;

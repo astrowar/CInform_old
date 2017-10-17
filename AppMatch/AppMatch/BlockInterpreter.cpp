@@ -84,8 +84,12 @@ CBlockVariable::CBlockVariable(string _named) : named(_named) {
 }
 
 
-CBlockProperty::CBlockProperty(CBlocking::HBlock _prop, CBlocking::HBlock _obj) : prop((_prop)), obj((_obj)) {
-
+CBlockProperty::CBlockProperty(CBlocking::HBlock _prop, CBlocking::HBlock _obj) : prop((_prop)), obj((_obj))
+{
+    if (_prop != nullptr)
+    {
+        prop = _prop;
+    }
 }
 
 CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _property_name) : property_name(_property_name),

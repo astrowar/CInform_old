@@ -106,10 +106,10 @@ enum BlockType {
 	BlockRelationArguments,
 	BlockSelectorAND,
 	BlockAssert,
-	BlockKindComposition,
-	BlockKindCompositionList,
-	BlockKindCompositionPhrase,
-	BlockKindCompositionRelation,
+	BlockComposition,
+	BlockCompositionList,
+	BlockCompositionPhrase,
+	BlockCompositionRelation,
 	BlockNothing
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

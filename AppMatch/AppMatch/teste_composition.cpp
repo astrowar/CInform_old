@@ -18,12 +18,11 @@ void testeComposition_1()
 room is an kind
 garden is a room
 hall is a room
-ceils list of room 
-add garden to ceils
+ceils is list of room
 )";
 
 
-	interpreter->execute_init(ParseText::parser_text(&parse, slong, ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse, slong, true));
 
  
 

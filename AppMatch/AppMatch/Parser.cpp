@@ -14,7 +14,8 @@
 #include "CBlockUndestand.hpp"
 #include "CBlockCommand.hpp"
 #include "sharedCast.hpp"
- 
+#include "CBlockComposition.hpp"
+
 
 using namespace CBlocking;
 using namespace NSTerm;
@@ -582,8 +583,29 @@ HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector
 
 
 
-HBlockProperty NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
-    {
+HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
+
+
+	{
+			std::vector<HPred> predList;
+			predList.push_back(mk_HPredLiteral("list"));
+			predList.push_back(mk_HPredLiteral("of"));
+			predList.push_back(mkHPredAny("kindBase"));
+
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlockKind nkind = Expression::parser_kind_specification(p, res.matchs["kindBase"]);
+				if (nkind != nullptr)
+				{
+					return  std::make_shared<CBlockCompositionList>(  nkind);
+				}
+			}
+
+	}
+
+
+	{
 
         std::vector<HPred> predList;
         predList.push_back(mkHPredAny("property"));
