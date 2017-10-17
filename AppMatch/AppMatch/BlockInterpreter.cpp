@@ -7,6 +7,7 @@
 #include "CBlockMatch.hpp"
 #include <cstdlib>
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 using namespace CBlocking;

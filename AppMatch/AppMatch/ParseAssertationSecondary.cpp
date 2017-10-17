@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "Parser.hpp"
+#include "CBlockKindComposition.hpp"
 #include "sharedCast.hpp"
  
 using namespace CBlocking;
@@ -234,13 +235,13 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind =  parser_kind_specification(p, res.matchs["kindBase"]);
+			HBlockKind nkind =  parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
+				HBlockKind dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockCompositionPhrase>(p, nkind, dkind);
+					return  std::make_shared<CBlockKindCompositionPhrase>(nkind, dkind);
 				}
 			} 
 		}
@@ -265,7 +266,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockCompositionRelation>(p, nkind, dkind);
+					return  std::make_shared<CBlockKindCompositionRelation>(  nkind, dkind);
 				}
 			}
 		}
@@ -284,10 +285,10 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind = parser_kind_specification(p, res.matchs["kindBase"]);
+			HBlockKind nkind = parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				return  std::make_shared<CBlockCompositionList>(p, nkind);
+				return  std::make_shared<CBlockKindCompositionList>(  nkind);
 			}
 		}
 	}

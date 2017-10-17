@@ -9,6 +9,7 @@ enum BlockType {
 	BlockKind,
 	Unresolved,
 	BlockKindOf,
+	BlockKindNamed,
 	BlockKindAction,
 	BlockKindThing,
 	BlockKindValue,
@@ -105,6 +106,10 @@ enum BlockType {
 	BlockRelationArguments,
 	BlockSelectorAND,
 	BlockAssert,
+	BlockKindComposition,
+	BlockKindCompositionList,
+	BlockKindCompositionPhrase,
+	BlockKindCompositionRelation,
 	BlockNothing
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

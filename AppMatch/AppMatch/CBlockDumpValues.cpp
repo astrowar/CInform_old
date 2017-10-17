@@ -25,8 +25,10 @@
 
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
+#include "CBlockKindComposition.hpp"
 
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 using namespace CBlocking;
@@ -93,8 +95,14 @@ void CBlockNothing::dump(string ident) {
 }
 
 
+void CBlockKindNamed::dump(string ident)
+{
+    printf("%s %s %s\n", ident.c_str(), "Kind unknoun Named :  ", named.c_str());
+    CBlock::dump(ident);
+}
+
 void CBlockKindOfName::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Kind Named :  ", baseClasseName.c_str());
+	printf("%s %s %s\n", ident.c_str(), "Kind of Named :  ", baseClasseName.c_str());
 	CBlock::dump(ident);
 }
 
@@ -554,6 +562,39 @@ void CBlockSelectorAND::dump(string ident) {
 	CBlock::dump(ident);
 }
 
+
+void CBlockKindComposition::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Kind Compostion  ");
+	CBlock::dump(ident);
+}
+void CBlockKindCompositionList::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Kind Compostion  List ");
+	this->itemKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+
+void CBlockKindCompositionRelation::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Kind Compostion  Relation ");
+	printf("%s %s\n", ident.c_str(), "From");
+	this->fromKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "To");
+	this->toKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+void CBlockKindCompositionPhrase::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Kind Compostion  Phrase ");
+	printf("%s %s\n", ident.c_str(), "From");
+	this->fromKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "To");
+	this->toKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
 
 void CBlockActionCall::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Call ");

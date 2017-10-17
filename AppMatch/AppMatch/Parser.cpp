@@ -424,7 +424,7 @@ HBlock NSParser::ParseAssertion::parse_removeArticle(CParser * p, std::vector<HT
 }
 
 
-HBlock NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& term)
+HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& term)
 {
 
 	// anula se tiver uma palavra chave reservada

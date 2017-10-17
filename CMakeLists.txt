@@ -91,6 +91,6 @@ set(SOURCE_FILES
         AppMatch/AppMatch/ParserPlural_table.cpp
 
 
-        )
+        AppMatch/AppMatch/CBlockKindComposition.hpp)
 
-add_executable(apx ${SOURCE_FILES}   )
+add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/CBlockKindComposition.hpp)

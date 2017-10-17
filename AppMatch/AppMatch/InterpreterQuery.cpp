@@ -83,7 +83,7 @@ bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry
 {
 	if (c == nullptr)
 	{
-		throw "Unable to do eval it";
+		 printf( "Unable to do eval it");
 		 return true;
 	}
 

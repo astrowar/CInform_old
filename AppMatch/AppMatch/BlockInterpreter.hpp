@@ -140,8 +140,18 @@ namespace CBlocking
 
 
 
+    class CBlockKindNamed : public CBlockKind  //retorna um tipo que deve ser resolvido em runtime
+    {
+    public:
+      virtual  void dump(string ident) override;
+      virtual bool isValue() override { return false; }
 
-	 
+        BlockType type() override { return BlockType::BlockKindNamed; }
+
+        explicit CBlockKindNamed(string _named) : CBlockKind(std::move(_named)) {};
+    };
+
+    using HBlockKindNamed = std::shared_ptr<CBlockKindNamed>;
 
 	class CBlockNothing : public CBlock  //retorna um valor generico porem Abstrado
 	{

@@ -7,20 +7,21 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 
 
-HBlock NSParser::Expression::parser_kind_specification(CParser *p, HTerm term)
+HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm term)
 {
 
-	HBlock p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
+	HBlockKind p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
 	if (p_comp != nullptr) return p_comp;
 
 
 	if (CList *vlist = asCList(term.get())) 
 	{
 		auto rvector = vlist->asVector();	 
-		HBlock r  = ParseAssertion::parse_noum(p, rvector);
+		HBlockNoum r  = ParseAssertion::parse_noum(p, rvector);
 		if (r != nullptr)
 		{
-			return r;
+			return  std::make_shared<CBlockKindNamed>( r->named ) ;
+
 		}
 	} 
  
