@@ -65,16 +65,11 @@ namespace CBlocking
 	{
 	public:
 		CBlocking::HBlock get_obj() override;
-
-		NoumDefinitions noumDefinitions() override;
-
+	 
 		void dump(string ident) override;
-
 		virtual CBlocking::HBlock get_definition() override;;
-
 		HBlockKind noum;
 		HBlockKind baseKind;
-
 		CBlockAssertion_isKindOf(HBlockKind _noum, HBlockKind _baseKind) : noum(_noum), baseKind(_baseKind) {};
 	};
 
@@ -84,7 +79,6 @@ namespace CBlocking
 	{
 	public:
 		CBlocking::HBlock get_obj() override;
-
 		CBlocking::HBlock get_definition() override;
 
 		virtual void dump(string ident) override;
@@ -97,6 +91,7 @@ namespace CBlocking
 	};
 
 	using HBlockAssertion_isInstanceOf = std::shared_ptr<CBlockAssertion_isInstanceOf>;
+
 
 	class CBlockAssertion_isNamedValueOf : public CBlockAssertion_is //retorna uma declaracao
 	{
@@ -242,15 +237,11 @@ namespace CBlocking
 	{
 	public:
 		CBlocking::HBlock get_obj() override;
-
 		CBlocking::HBlock get_definition() override;
-
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockAssertion_isNotDirectAssign; }
-
 		CBlocking::HBlock variable;
 		CBlocking::HBlock value;
-
 		CBlockAssertion_isNotDirectAssign(CBlocking::HBlock _variable, CBlocking::HBlock _value) : variable((_variable)),
 			value((_value)) {};
 	};
@@ -281,7 +272,6 @@ namespace CBlocking
 		CBlocking::HBlock get_definition() override;
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockIsVerb; }
-
 
 		string verb;
 		CBlocking::HBlock n1;
@@ -323,11 +313,40 @@ namespace CBlocking
 		CBlockAssert( CBlocking::HBlock _expression, CBlocking::HBlock _result) : expression(_expression),result(_result) {};
 
 	};
-
-
-	
-
-
+	 
 		using HBlockAssert = std::shared_ptr<CBlockAssert>;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao
+		{
+		public:
+			virtual void dump(string ident) override;
+			virtual BlockType type() override { return BlockType::BlockAssertion_InstanceVariable; }
+			HBlock noum;
+			HBlockInstanceVariable instance_variable;
+			CBlockAssertion_InstanceVariable(HBlock _noum, HBlockInstanceVariable _instance_variable) : noum((_noum)),
+				instance_variable(
+					_instance_variable) {};
+		};
+		using HBlockAssertion_InstanceVariable = std::shared_ptr<CBlockAssertion_InstanceVariable>;
+
+
+		class CBlockAssertionCond : public CBlock // assertion com condicao
+		{
+		public:
+			HBlockBooleanResult cond;
+		};
 }
 #endif //CBLOCKMATCH_H

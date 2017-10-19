@@ -35,6 +35,15 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 CBlockInterpreter::CBlockInterpreter() {
 	instancia_id = 0;
 	Nothing = make_shared<CBlockNothing>("nothing");
+
+	MetaKind = make_shared<CBlockKindNamed>("kind");
+	MetaKindRelation = make_shared<CBlockKindNamed>("relation");
+	MetaKindPhrase = make_shared<CBlockKindNamed>("phrase");
+
+	symbols.emplace_back("kind", MetaKind);
+	symbols.emplace_back( "relation", MetaKindRelation );
+	symbols.emplace_back( "phrase", MetaKindPhrase );
+
 }
 
 CBlockInterpreter::~CBlockInterpreter() {
@@ -481,7 +490,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
 		{
-			if (isSameString(cinst1->named , cinst2->named)) return QEquals;
+			//if (isSameString(cinst1  , cinst2 )) return QEquals;
+			if ((cinst1.get(), cinst2.get())) return QEquals;
 			return QNotEquals;
 		}
 
@@ -494,10 +504,10 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
 		}
 
-		if (HBlockNoum knn = asHBlockNoum(c_block1))
-		{
-			if (isSameString(knn->named, cinst1->named)) return QEquals;
-		}
+		//if (HBlockNoum knn = asHBlockNoum(c_block1))
+		//{
+		//	if (isSameString(knn->named, cinst1->named)) return QEquals;
+		//}
 
 	}
 

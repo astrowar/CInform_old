@@ -19,9 +19,9 @@ namespace CBlocking
 		CBlockKindOf* asCBlockKindOf(CBlock* c);
 		CBlockKindAction* asCBlockKindAction(CBlock* c);
 		CBlockKindValue* asCBlockKindValue(CBlock* c);
-		CBlockListOfKind* asCBlockListOfKind(CBlock* c);
+		 
 		CBlockNamedValue* asCBlockNamedValue(CBlock* c);
-		CBlockVariable* asCBlockVariable(CBlock* c);
+	 
 		CBlockInstanceVariable* asCBlockInstanceVariable(CBlock* c);
 		CBlockList* asCBlockList(CBlock* c);
 		CBlockEnums* asCBlockEnums(CBlock* c);

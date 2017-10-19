@@ -14,7 +14,7 @@ namespace CBlocking
 		HBlockKind kind;
 		string named;
 
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
+		 
 
 	};
 	using HBlockArgumentInput = std::shared_ptr<CBlockArgumentInput>;
@@ -43,10 +43,7 @@ namespace CBlocking
 	};
 	using HBlockRelationBase = std::shared_ptr<CBlockRelationBase>;
 
-
-
-
-
+	 
 
 
 	class CBlockSimetricRelation : public CBlockRelationBase

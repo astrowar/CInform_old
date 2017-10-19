@@ -68,12 +68,9 @@ namespace CBlocking
 	{
 	public:
 		CBlockControlSelectItem(CBlocking::HBlock _block_seletor, CBlocking::HBlock _block_execute)
-			: block_seletor(_block_seletor), block_execute(_block_execute) {}
-
+			: block_seletor(_block_seletor), block_execute(_block_execute) {} 
 		CBlocking::HBlock block_seletor;
-		CBlocking::HBlock block_execute;
-
-
+		CBlocking::HBlock block_execute; 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockControlSelectItem; }
 	};

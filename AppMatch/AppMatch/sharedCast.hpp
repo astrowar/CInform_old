@@ -23,9 +23,9 @@ namespace CBlocking
 		HBlockKindOf asHBlockKindOf(CBlocking::HBlock c);
 		HBlockKindAction asHBlockKindAction(CBlocking::HBlock c);
 		HBlockKindValue asHBlockKindValue(CBlocking::HBlock c);
-		HBlockListOfKind asHBlockListOfKind(CBlocking::HBlock c);
+	 
 		HBlockNamedValue asHBlockNamedValue(CBlocking::HBlock c);
-		HBlockVariable asHBlockVariable(CBlocking::HBlock c);
+ 
 		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c);
 		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c);
 		HBlockList asHBlockList(CBlocking::HBlock c);
@@ -82,7 +82,9 @@ namespace CBlocking
 		HBlockSelector_All asHBlockSelector_All(CBlocking::HBlock c);
 		HBlockSelector_Any asHBlockSelector_Any(CBlocking::HBlock c);
 		HBlockStaticDispatch asHBlockStaticDispatch(CBlocking::HBlock c);
+		HBlockActionInstance asHBlockActionInstance(CBlocking::HBlock c);
 		HBlockAction asHBlockAction(CBlocking::HBlock c);
+		HBlockActionNamed asHBlockActionNamed(CBlocking::HBlock c);
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c);
 		HVariableNamed asHVariableNamed(CBlocking::HBlock c);
 		HBlockUnderstandDynamic asHBlockUnderstandDynamic(CBlocking::HBlock c);

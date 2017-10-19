@@ -289,12 +289,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}
 
 
-			if (auto cAction = asHBlockAction (value))
-			{ 
-				if (cAction->named == inner_2->named) return CResultMatch( true );
-				QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
-				return CResultMatch(r.result == QEquals); 
-			}
+			//if (auto cAction = asHBlockAction (value))
+			//{ 
+			//	if (cAction->named == inner_2->named) return CResultMatch( true );				 
+			//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
+			//	return CResultMatch(r.result == QEquals); 
+			//}
 
 			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
 			return CResultMatch(rcc.result == QEquals);

@@ -939,8 +939,16 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
 		}
 	}
 
+	if (HBlockActionNamed actionCalln = asHBlockActionNamed(p))
+	{
+		return actionCalln;
+	}
+
 	if (HBlockAction actionCall = asHBlockAction(p))
 	{
+		logError("Something worng here ");
+		(p.get() + 1000)->dump(""); //causa um belo erro !
+
 		return actionCall;
 	}
 
@@ -1075,7 +1083,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 			 auto output_block =  resolve_as_callCommand(d->output_n, localsEntry); 
 
 
-			 if (HBlockAction actionCall = asHBlockAction (output_block))
+			 if (HBlockActionNamed actionCall = asHBlockActionNamed (output_block))
 			 {
 				
 				 HRunLocalScope localsNextp = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);

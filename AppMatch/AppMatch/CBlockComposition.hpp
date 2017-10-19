@@ -8,12 +8,15 @@
 #include "BlockInterpreter.hpp"
 
 namespace CBlocking {
+
+  // Especifica apenas um tipo de tipo .. nao um valor
+
     class CBlockComposition : public CBlockKind {
 
     public:
         //void dump(string ident) override;
         virtual bool isValue() override { return true; }
-        CBlockComposition(string named ) : CBlockKind(named) { }
+        CBlockComposition( )   { }
         virtual BlockType type() override { return BlockType::BlockComposition; }
     };
     using HBlockComposition = std::shared_ptr<CBlockComposition>;
@@ -24,7 +27,7 @@ namespace CBlocking {
 
     public:
         HBlockKind itemKind;
-        CBlockCompositionList( HBlockKind _itemKind ) : CBlockComposition("list of "+_itemKind->named), itemKind(_itemKind)
+        CBlockCompositionList( HBlockKind _itemKind ) :  itemKind(_itemKind)
         {
 
         }
@@ -41,8 +44,7 @@ namespace CBlocking {
     public:
         HBlockKind fromKind;
         HBlockKind toKind;
-        CBlockCompositionRelation( HBlockKind _fromKind , HBlockKind _toKind  ) :CBlockComposition("relation of "+_fromKind->named+" to "+_toKind->named),
-                toKind(_toKind) , fromKind(_fromKind)
+        CBlockCompositionRelation( HBlockKind _fromKind , HBlockKind _toKind  )  :            toKind(_toKind) , fromKind(_fromKind)
                 {
 
                 }
@@ -61,7 +63,7 @@ namespace CBlocking {
     public:
         HBlockKind fromKind;
         HBlockKind toKind;
-        CBlockCompositionPhrase( HBlockKind _fromKind , HBlockKind _toKind  ) : CBlockComposition("phrase "+_fromKind->named+" -> "+_toKind->named) ,toKind(_toKind) , fromKind(_fromKind)
+        CBlockCompositionPhrase( HBlockKind _fromKind , HBlockKind _toKind  ) :  toKind(_toKind) , fromKind(_fromKind)
         {
 
         }

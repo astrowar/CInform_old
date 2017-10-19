@@ -149,10 +149,11 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 
 	} 
 
-	if (HBlockAction nAction = asHBlockAction(obj))
+	if (HBlockActionInstance nAction = asHBlockActionInstance(obj))
 	{
 		//name da variavel
-		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) {
+		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) 
+		{
 			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
 			nAction->newNamedVariable(variable_->property_name, nkindBase);
 			return true;
@@ -243,7 +244,8 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 	if (HBlockList clist = asHBlockList(value))
 	{
 		//Kind precisa ser uma lista tambem
-		if (HBlockListOfKind klist = asHBlockListOfKind(kind)) {
+		if (HBlockCompositionList klist = asHBlockCompositionList(kind))
+		{
 			//tem algum tipo que nao corresponde ?
 			if (is_all_items_of_kind(clist, klist->itemKind,localsEntry) == false)
 			{
@@ -323,7 +325,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 
 		}
 
-		if (HBlockAction cAction = asHBlockAction(obj))
+		if (HBlockActionInstance cAction = asHBlockActionInstance(obj))
 		{
 
 			HVariableNamed vv = cAction->get_property(property_noum->named);

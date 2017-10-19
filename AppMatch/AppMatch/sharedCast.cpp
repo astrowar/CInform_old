@@ -58,24 +58,14 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockKindValue>(c);
 			return nullptr;
 		}
-		HBlockListOfKind asHBlockListOfKind(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockListOfKind)
-				return std::static_pointer_cast<CBlockListOfKind>(c);
-			return nullptr;
-		}
+	 
 		HBlockNamedValue asHBlockNamedValue(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockNamedValue)
 				return std::static_pointer_cast<CBlockNamedValue>(c);
 			return nullptr;
 		}
-		HBlockVariable asHBlockVariable(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockVariable)
-				return std::static_pointer_cast<CBlockVariable>(c);
-			return nullptr;
-		}
+	 
 
 		
 		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c)
@@ -432,10 +422,30 @@ namespace CBlocking
 		}
 		HBlockAction asHBlockAction(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockAction)
+			if (c == nullptr) return nullptr;
+			auto t = c->type();
+
+			if (t == BlockType::BlockAction || t == BlockType::BlockActionInstance || t == BlockType::BlockActionNamed)
+			{
 				return std::static_pointer_cast<CBlockAction>(c);
+			}
 			return nullptr;
 		}
+
+		HBlockActionInstance asHBlockActionInstance(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockActionInstance)
+				return std::static_pointer_cast<CBlockActionInstance>(c);
+			return nullptr;
+		}
+
+		HBlockActionNamed asHBlockActionNamed(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockActionNamed)
+				return std::static_pointer_cast<CBlockActionNamed>(c);
+			return nullptr;
+		}
+
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockActionCall)

@@ -83,7 +83,8 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromKind(HBlockKind kind, HRunL
 {
 	std::list<HBlock> ret;
 	//percorre todos os Kinds
-	if (kind->named =="kind")
+	
+	if (kind.get() == this->MetaKind.get() )
 	{
 		for (auto &defs : assertions)
 		{
@@ -94,19 +95,21 @@ std::list<HBlock> CBlockInterpreter::getInstancesFromKind(HBlockKind kind, HRunL
 		return ret;
 	}
 
-	if (kind->named == "relation")
+	
 	{
-		for (auto &sRelation : this->staticRelation)
+		if (kind.get() == this->MetaKindRelation.get())
 		{
-			ret.push_back(sRelation.second);
+			for (auto &sRelation : this->staticRelation)
+			{
+				ret.push_back(sRelation.second);
+			}
+			return ret;
 		}
-		return ret;
 	}
-
 
 	for (auto &nInst : instancias)
 	{
-		if (isSameString(nInst->baseKind->named, kind->named))
+		if (CBlock::isSame(nInst->baseKind.get() , kind.get() ))
 		{
 			ret.push_back(nInst);
 			continue;

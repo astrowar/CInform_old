@@ -13,11 +13,11 @@ using namespace CBlocking::DynamicCasting;
 
 
 
-bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string propertyNamed , list<string> kindsUsed)
+bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string propertyNamed , std::list<CBlockKind*> kindsUsed)
 {
 	for (auto &kvar : kind_named_variables)
 	{
-		if (kvar->kind->named == kind->named)
+		if (kvar->kind.get() == kind.get())
 		{
 			if (kvar->variableNamed->property_name->named == propertyNamed)
 			{
@@ -26,12 +26,12 @@ bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string p
 
 		}
 	}
-	kindsUsed.push_back(kind->named );
+	kindsUsed.push_back(kind.get()  );
 
 	list<HBlockKind> kinds = getUpperKinds(kind);
 	for(auto &k : kinds)
 	{
-		if (std::find(kindsUsed.begin(), kindsUsed.end(), k->named) != kindsUsed.end()) continue;
+		if (std::find(kindsUsed.begin(), kindsUsed.end(), k.get() ) != kindsUsed.end()) continue;
 		if (kind_has_property_called_inner( k, propertyNamed , kindsUsed))
 		{
 			return true;
@@ -43,7 +43,7 @@ bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string p
 
 bool CBlockInterpreter::kind_has_property_called(HBlockKind kind, const string & propertyNamed )
 {	
-	return kind_has_property_called_inner(kind, propertyNamed, list<string>());
+	return kind_has_property_called_inner(kind, propertyNamed, list<CBlockKind*>());
 }
 
 
@@ -73,7 +73,8 @@ bool CBlockInterpreter::assert_property_ForbiddenValue(HBlockProperty prop, CBlo
 			}
 			else
 			{
-				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
+				//logError("Kind " + std::itos( uintptr_t(prop_obj_kind.get())) + " Dont have a property called " + prop_name_noum->named);
+				logError("Kind  Dont have a property called " + prop_name_noum->named);
 			}
 		}
 	}
@@ -104,7 +105,7 @@ bool CBlockInterpreter::assert_property_ConstantValue(HBlockProperty prop, CBloc
 			}
 			else
 			{
-				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
+				logError("Kind   Dont have a property called " + prop_name_noum->named);
 			}
 		}
 	}
@@ -141,7 +142,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlock
 			}
 			else
 			{
-				logError("Kind " + prop_obj_kind->named + " Dont have a property called " + prop_name_noum->named);
+				logError("Kind   Dont have a property called " + prop_name_noum->named);
 			 
 			}
 		}

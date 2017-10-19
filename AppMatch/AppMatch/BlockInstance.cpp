@@ -40,7 +40,7 @@ CVariableNamed::CVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CB
 
  
 
-CBlockInstance::CBlockInstance(string _named, int _id, HBlockKind _baseKind) : named(_named), id(_id), baseKind(_baseKind)
+CBlockInstance::CBlockInstance(  int _id, HBlockKind _baseKind) :  id(_id), baseKind(_baseKind)
 {
 }
 

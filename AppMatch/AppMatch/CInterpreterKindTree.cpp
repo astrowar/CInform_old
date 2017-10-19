@@ -20,11 +20,11 @@ using namespace CBlocking::DynamicCasting;
 
 
 bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
-	if (aDerivade->named == "" || Base->named == "")
+	if (aDerivade.get() == nullptr || Base.get() == nullptr)
 	{
 		return false;
 	}
-    if (aDerivade->named == Base->named) return true;
+    if (aDerivade.get() == Base.get()) return true;
 
 	aDerivade->dump("");
 	Base->dump("");
@@ -43,10 +43,10 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
 
             if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
 
-                if (nbase->named == aDerivade->named) 
+                if (nbase.get() == aDerivade.get()) 
 				{
                     if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
-                        if (k->baseClasse->named == Base->named) 
+                        if (k->baseClasse.get() == Base.get()) 
 						{
                             return true;
                         } 
@@ -73,7 +73,7 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
 
         if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
-            if ( nbase->named == a->named)  //  A -> X
+            if ( nbase.get() == a.get())  //  A -> X
             {
                 if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
 
@@ -92,42 +92,41 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
 }
 
 bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLocalScope localsEntry) {
-    if (a->named == "" || b->named == "") {
+    if (a  == nullptr || b ==nullptr) {
         return false;
     }
-    if (a->named == b->named) {
-        return true;
-    }
+ 
 
-	// Custom derivades
-	if (HBlockText nInstanceText = asHBlockText(a ))
-	{
-		return  (b->named == "text"); //CBlock Text is instance of of Text
-			
-	}
+	//// Custom derivades
+	//if (HBlockText nInstanceText = asHBlockText(a ))
+	//{
+	//	return  (b->named == "text"); //CBlock Text is instance of of Text 
+	//}
+
+	return is_derivadeOf(a->baseKind, b );
 
 
-    for (auto it = assertions.begin(); it != assertions.end(); ++it) {
-        {
-            if (HBlockInstance nbase = asHBlockInstance((*it)->get_obj()))
+    //for (auto it = assertions.begin(); it != assertions.end(); ++it) {
+    //    {
+    //        if (HBlockInstance nbase = asHBlockInstance((*it)->get_obj()))
 
-                if (nbase->named == a->named) {
-                    if (HBlockKind k = asHBlockKind((*it)->get_definition())) {
-                        if (k->named == b->named) {
-                            return true;
-                        } else {
-                            CBlocking::HBlock bnext = resolve_string(k->named,localsEntry);
-                            if (HBlockKind baseClasse = asHBlockKind(bnext)) {
-                                bool bnn = is_derivadeOf(baseClasse, b);
-                                if (bnn) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-    }
+    //            if (nbase->named == a->named) {
+    //                if (HBlockKind k = asHBlockKind((*it)->get_definition())) {
+    //                    if (k->named == b->named) {
+    //                        return true;
+    //                    } else {
+    //                        CBlocking::HBlock bnext = resolve_string(k->named,localsEntry);
+    //                        if (HBlockKind baseClasse = asHBlockKind(bnext)) {
+    //                            bool bnn = is_derivadeOf(baseClasse, b);
+    //                            if (bnn) {
+    //                                return true;
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //    }
+    //}
     return false;
 }
 

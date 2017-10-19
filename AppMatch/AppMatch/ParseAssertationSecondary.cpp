@@ -102,7 +102,11 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 				
 				HBlockKindAction action = applyTO;
 				auto sActionName = CtoString(res.matchs["ActionName"]);
-				HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
+				//HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
+				//HBlock _naction = std::make_shared<CBlockAction>();
+				
+				HBlock _naction = std::make_shared<CBlockNoum>(sActionName);
+
 				HPred actionMatch = mk_HPredLiteral(sActionName);
 
 
@@ -487,8 +491,8 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
 
             if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) {
                 auto sterm = expandBract(res.matchs["Noum"]);
-                HBlock _naction = std::make_shared<CBlockAction>( (sterm->repr()));
-
+				//HBlock _naction = std::make_shared<CBlockActionNamed>( (sterm->repr()));
+				HBlock _naction = std::make_shared<CBlockNoum>((sterm->repr()));
 
                 HPred actionMatch = convert_to_predicate(sterm.get());
                 //	std::cout << "found " << actionMatch->repr()  << std::endl;

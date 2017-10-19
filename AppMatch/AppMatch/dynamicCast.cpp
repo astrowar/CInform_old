@@ -40,24 +40,14 @@ namespace CBlocking
 				return static_cast<CBlockKindValue*>(c);
 			return nullptr;
 		}
-		CBlockListOfKind* asCBlockListOfKind(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockListOfKind)
-				return static_cast<CBlockListOfKind*>(c);
-			return nullptr;
-		}
+	 
 		CBlockNamedValue* asCBlockNamedValue(CBlock* c)
 		{
 			if (c->type() == BlockType::BlockNamedValue)
 				return static_cast<CBlockNamedValue*>(c);
 			return nullptr;
 		}
-		CBlockVariable* asCBlockVariable(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockVariable)
-				return static_cast<CBlockVariable*>(c);
-			return nullptr;
-		}
+	 
 		CBlockInstanceVariable* asCBlockInstanceVariable(CBlock* c)
 		{
 			if (c->type() == BlockType::BlockInstanceVariable)

@@ -195,16 +195,22 @@ bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBloc
 	{
 		if (HBlockAction abase = asHBlockAction(obj))
 		{
-			actions_header.push_back(abase);
-			actions_parameters[abase->named] = act;
-			return true;
+			//actions_header.push_back(abase);
+			//actions_parameters.push_back(make_shared<CBlockActionNamed >( ) );  [abase->named] = act;
+			//return true;
 		}
 
-		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-			auto haction = make_shared<CBlockAction >(nbase->named);
-			//actions_header.push_back(haction);
-			return assert_it_action(haction, value);
+		if (HBlockNoum nbase = asHBlockNoum(obj))
+		{
+
+
+			 
+			this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, act));
+			return true;
+
+			//auto haction = make_shared<CBlockAction>(nbase->named);			
+			//return assert_it_action(haction, value);
 		}
 	}
 
@@ -328,7 +334,7 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
                 instancias.push_back(binstance);
-                logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
+                logMessage("new Instance add " + (nobj->named)    );
                 return true;
             }
            
