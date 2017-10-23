@@ -585,6 +585,11 @@ bool CBlockInterpreter::setVerb(string vb, CBlocking::HBlock c_block, CBlocking:
  
 QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
+
+	rr->dump("RI ");
+	c_block->dump("X1 ");
+	value->dump("X2 ");
+
 	QueryResul query_2 = QUndefined;
 	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
 	if (QEquals == qc1.result)

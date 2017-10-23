@@ -9,6 +9,7 @@ enum BlockType {
 	BlockKind,
 	Unresolved,
 	BlockKindOf,
+	BlockKindNamed,
 	BlockKindAction,
 	BlockKindThing,
 	BlockKindValue,
@@ -22,6 +23,7 @@ enum BlockType {
 	BlockEnums,
 	BlockProperty,
 	BlockAssertion_isDefaultAssign,
+	BlockKindReference,
 	BlockNoum,
 	BlockKind_InstanceVariable,
 	BlockAssertion_isDirectAssign,
@@ -52,6 +54,8 @@ enum BlockType {
 	BlockSelector_Any,
 	BlockStaticDispatch,
 	BlockAction,
+	BlockActionNamed,
+	BlockActionInstance,
 	BlockActionCall,
 	VariableNamed,
 	BlockUnderstandDynamic,
@@ -105,7 +109,10 @@ enum BlockType {
 	BlockRelationArguments,
 	BlockSelectorAND,
 	BlockAssert,
-	BlockNothing,
-	BlockCompostionPhrase
+	BlockComposition,
+	BlockCompositionList,
+	BlockCompositionPhrase,
+	BlockCompositionRelation,
+	BlockNothing
 };
 #endif //APPMATCH_BLOCKTYPEENUM_HPP

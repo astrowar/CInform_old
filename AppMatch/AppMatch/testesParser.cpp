@@ -403,16 +403,16 @@ void testePlurals()
 void testeExecute5();
 int main() {
 
-	testeComposition_all();
+	//testeComposition_all();
  
 	//testeParser_7h();
  
 	 
 
- 
-	// testeParser_1();
+	testeRelation_all();
+	//testeParser_2();
 
-	//testValues_all();
+ 
 	return 0;
 	
 	testeRelation_all();

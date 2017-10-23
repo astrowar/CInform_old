@@ -82,6 +82,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/Parser_RegisterVerb.cpp
         AppMatch/AppMatch/teste_verb.cpp
         AppMatch/AppMatch/teste_selector.cpp
+        AppMatch/AppMatch/teste_composition.cpp
         AppMatch/AppMatch/CDataMananger.cpp
         AppMatch/AppMatch/Parse_TokensGroup.cpp
         AppMatch/AppMatch/Parser_ControlFlux.cpp
@@ -91,6 +92,6 @@ set(SOURCE_FILES
         AppMatch/AppMatch/ParserPlural_table.cpp
 
 
-        )
+        AppMatch/AppMatch/CBlockComposition.hpp)
 
-add_executable(apx ${SOURCE_FILES}   )
+add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/CBlockComposition.hpp)

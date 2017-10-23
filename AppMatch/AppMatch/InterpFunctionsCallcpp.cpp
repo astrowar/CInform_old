@@ -176,78 +176,107 @@ PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, H
 
 
 
+
 PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 {
 	 
-
-	if (v_call->action->named == "say_text")
+	for (HBlockActionNamed a : system_actions)
 	{
-		v_call->dump("");
-
-		if (HBlockText  ntext = asHBlockText(v_call->noum1))
+		if (a.get() == v_call->action.get())
 		{
-			printf("root$ %s \n", ntext->contents.c_str());
-			return PhaseResult(true);;
-		}
-		//printf("root$ something ??? \n");
-		v_call->dump("");
-		//printf("...................\n");
-		return PhaseResult(true);;
-	}
-	if (v_call->action->named == "say")
-	{
-		if (HBlockText  ntext = asHBlockText(v_call->noum1))
-		{
-			printf("root$ %s \n", ntext->contents.c_str());
-			return PhaseResult(true);;
-		}
-		return PhaseResult(false);;
-	}
+			if (a->named == "say_text")
+			{
+				v_call->dump("");
 
-	return PhaseResult(false);;
+				if (HBlockText  ntext = asHBlockText(v_call->noum1))
+				{
+					printf("root$ %s \n", ntext->contents.c_str());
+					return PhaseResult(true);;
+				}
+				return PhaseResult(false);
+			} 
+
+			if (a->named == "say")
+			{
+				if (HBlockText  ntext = asHBlockText(v_call->noum1))
+				{
+					printf("root$ %s \n", ntext->contents.c_str());
+					return PhaseResult(true);;
+				}
+				return PhaseResult(false);;
+			}
+		}
+	}
+	return PhaseResult(false);
+
+
+
+	//if (v_call->action->named == "say_text")
+	//{
+	//	v_call->dump("");
+
+	//	if (HBlockText  ntext = asHBlockText(v_call->noum1))
+	//	{
+	//		printf("root$ %s \n", ntext->contents.c_str());
+	//		return PhaseResult(true);;
+	//	}
+	//	//printf("root$ something ??? \n");
+	//	v_call->dump("");
+	//	//printf("...................\n");
+	//	return PhaseResult(true);;
+	//}
+
+	//if (v_call->action->named == "say")
+	//{
+	//	if (HBlockText  ntext = asHBlockText(v_call->noum1))
+	//	{
+	//		printf("root$ %s \n", ntext->contents.c_str());
+	//		return PhaseResult(true);;
+	//	}
+	//	return PhaseResult(false);;
+	//}
+
+	//return PhaseResult(false);;
 }
  
 
 PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 { 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
-	for (auto &ah : actions_header)
-	{
-		if (ah->named == v_call->action->named)
-		{
-		//	ah->dump(" ");
-		}
-	}
+ 
 	 
 	HBlockKindAction kaction = nullptr;
-	for (auto &ap : actions_parameters)
+
+	//determina qual action corresponde a esse nome e esses parametros
+	for (auto &ap : actions_definitions)
 	{
  
-		if (ap.first == v_call->action->named)
+		if (ap->named == v_call->action->named)
 		{
-			if (v_call->noum1 == nullptr  && ap.second->applyTo->noum1 != nullptr) continue;
-			if (v_call->noum2 == nullptr  && ap.second->applyTo->noum2 != nullptr) continue;
-			if (v_call->noum1 != nullptr  && ap.second->applyTo->noum1 == nullptr) continue;
-			if (v_call->noum2 != nullptr  && ap.second->applyTo->noum2 == nullptr) continue;
+			auto action_kind = ap->get_base();
+			if (v_call->noum1 == nullptr  && action_kind->applyTo->noum1 != nullptr) continue;
+			if (v_call->noum2 == nullptr  && action_kind->applyTo->noum2 != nullptr) continue;
+			if (v_call->noum1 != nullptr  && action_kind->applyTo->noum1 == nullptr) continue;
+			if (v_call->noum2 != nullptr  && action_kind->applyTo->noum2 == nullptr) continue;
 
 
 			//verifica se os argumentos sao compativeis
 
 			if (v_call->noum1 != nullptr)
 			{
-				QueryResultContext qarg1 = query_is(v_call->noum1, ap.second->applyTo->noum1, localsEntry, stk);
+				QueryResultContext qarg1 = query_is(v_call->noum1, action_kind->applyTo->noum1, localsEntry, stk);
 				if (qarg1.result != QEquals) continue; 
 			}
 
 
 			if (v_call->noum2 != nullptr)
 			{
-				QueryResultContext qarg2 = query_is(v_call->noum2, ap.second->applyTo->noum2, localsEntry, stk);
+				QueryResultContext qarg2 = query_is(v_call->noum2, action_kind->applyTo->noum2, localsEntry, stk);
 				if (qarg2.result != QEquals) continue;
 			}
 
 
-			kaction = ap.second;
+			kaction = ap->action;
 			break;
 		}
 

@@ -8,14 +8,11 @@
 namespace CBlocking
 {
 	class CBlockBooleanValue
-		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+		: public CBlockValue  // um bloco que especifica um valor Booleano
 	{
 	public:
 		CBlockBooleanValue(bool _state) :state(_state) {}
-
 		bool state;
-
-
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockBooleanValue; }
 	};

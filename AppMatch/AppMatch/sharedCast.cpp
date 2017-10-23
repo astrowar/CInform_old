@@ -28,6 +28,10 @@ namespace CBlocking
 				t == BlockType::BlockKindThing ||
 				t == BlockType::BlockListOfKind)
 				return std::static_pointer_cast<CBlockKind>(c);
+			if (HBlockComposition comp = asHBlockComposition(c))
+			{
+				return comp;
+			}
 			return nullptr;
 		}
 		HUnresolved asHUnresolved(CBlocking::HBlock c)
@@ -54,24 +58,14 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockKindValue>(c);
 			return nullptr;
 		}
-		HBlockListOfKind asHBlockListOfKind(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockListOfKind)
-				return std::static_pointer_cast<CBlockListOfKind>(c);
-			return nullptr;
-		}
+	 
 		HBlockNamedValue asHBlockNamedValue(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockNamedValue)
 				return std::static_pointer_cast<CBlockNamedValue>(c);
 			return nullptr;
 		}
-		HBlockVariable asHBlockVariable(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockVariable)
-				return std::static_pointer_cast<CBlockVariable>(c);
-			return nullptr;
-		}
+	 
 
 		
 		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c)
@@ -131,6 +125,42 @@ namespace CBlocking
 		{
 			if (c != nullptr && c->type() == BlockType::BlockNothing)
 				return std::static_pointer_cast<CBlockNothing>(c);
+			return nullptr;
+		}
+
+ 
+		HBlockComposition asHBlockComposition(CBlocking::HBlock c)
+		{
+			if (c != nullptr && (c->type() == BlockType::BlockCompositionList || c->type() == BlockType::BlockCompositionPhrase || c->type() == BlockType::BlockCompositionRelation ) )
+				return std::static_pointer_cast<CBlockComposition>(c);
+			return nullptr;
+		}
+
+		HBlockCompositionList asHBlockCompositionList(CBlocking::HBlock c)
+		{
+			if (c != nullptr && (c->type() == BlockType::BlockCompositionList  ))
+				return std::static_pointer_cast<CBlockCompositionList>(c);
+			return nullptr;
+		}
+
+		HBlockCompositionPhrase asHBlockCompositionPhrase(CBlocking::HBlock c)
+		{
+			if (c != nullptr && (  c->type() == BlockType::BlockCompositionPhrase))
+				return std::static_pointer_cast<CBlockCompositionPhrase>(c);
+			return nullptr;
+		}
+
+		HBlockCompositionRelation asHBlockCompositionRelation(CBlocking::HBlock c)
+		{
+			if (c != nullptr && (  c->type() == BlockType::BlockCompositionRelation))
+				return std::static_pointer_cast<CBlockCompositionRelation>(c);
+			return nullptr;
+		}
+
+		HBlockKindNamed  asHBlockKindNamed(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockKindNamed)
+				return std::static_pointer_cast<CBlockKindNamed>(c);
 			return nullptr;
 		}
 
@@ -392,10 +422,30 @@ namespace CBlocking
 		}
 		HBlockAction asHBlockAction(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockAction)
+			if (c == nullptr) return nullptr;
+			auto t = c->type();
+
+			if (t == BlockType::BlockAction || t == BlockType::BlockActionInstance || t == BlockType::BlockActionNamed)
+			{
 				return std::static_pointer_cast<CBlockAction>(c);
+			}
 			return nullptr;
 		}
+
+		HBlockActionInstance asHBlockActionInstance(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockActionInstance)
+				return std::static_pointer_cast<CBlockActionInstance>(c);
+			return nullptr;
+		}
+
+		HBlockActionNamed asHBlockActionNamed(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockActionNamed)
+				return std::static_pointer_cast<CBlockActionNamed>(c);
+			return nullptr;
+		}
+
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockActionCall)

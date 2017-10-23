@@ -108,20 +108,24 @@ HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
 }
 
 
-string CBlockInterpreter::BlockNoum(HBlock c_block) {
-	if (HBlockKind k0 = asHBlockKind(c_block)) {
-		return k0->named;
-	}
+string CBlockInterpreter::BlockNoum(HBlock c_block) 
+{
 
-	if (HBlockInstance k1 = asHBlockInstance(c_block)) {
-		return k1->named;
-	}
+	//if (HBlockKind k0 = asHBlockKind(c_block)) 
+	//{
+	//	return k0->named;
+	//}
 
-	if (HBlockAction   kaa = asHBlockAction (c_block)) {
-		return   kaa->named;
-	}
+	//if (HBlockInstance k1 = asHBlockInstance(c_block)) {
+	//	return k1->named;
+	//}
 
-	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) {
+	//if (HBlockAction   kaa = asHBlockAction (c_block)) {
+	//	return   kaa->named;
+	//}
+
+	if (HBlockKindValue k2 = asHBlockKindValue(c_block)) 
+	{
 		return k2->named;
 	}
 
@@ -129,9 +133,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 		return k3->named;
 	}
 
-	if (HBlockVariable k4 = asHBlockVariable(c_block)) {
-		return k4->named;
-	}
+ 
 
 	if (HBlockNoum k5 = asHBlockNoum(c_block)) {
 		return k5->named;
@@ -141,6 +143,13 @@ string CBlockInterpreter::BlockNoum(HBlock c_block) {
 		return   k6->named ;
 	}
 
+	for (auto s : symbols)
+	{
+		if (s.second.get() == c_block.get())
+		{
+			return s.first;
+		}
+	}
 
 	return "";
 }
@@ -189,44 +198,64 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 HBlockKind CBlockInterpreter::resolve_user_kind(string n)
 {
 	
-	for (auto &defs : assertions)
-	{ 
-		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-			if ( isSameString( nn->named , n)) {
+	for (auto s : symbols)
+	{
+		if (s.first == n)
+		{
+			if (HBlockKind nn = asHBlockKind(s.second ))
+			{
 				return nn;
 			}
 		}
 	}
+
+	//for (auto &defs : assertions)
+	//{ 
+	//	if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
+	//		if ( isSameString( nn->named , n)) 
+	//		{
+	//			return nn;
+	//		}
+	//	}
+	//}
 
 	return nullptr;
 }
 
 
-HBlockKind CBlockInterpreter::resolve_kind(string n) {
-	for (auto &defs : assertions) 
-	{
-		if (HBlockKind nn = asHBlockKind(defs->get_definition())) 
-		{
-			if (isSameString(nn->named, n)) 
-			{
-				return nn;
-			}
-		}
-		if (HBlockKindValue nn = asHBlockKindValue(defs->get_definition()))
-		{
-			if (isSameString(nn->named, n))
-			{
-				return nn;
-			}
-		}
-	}
+HBlockKind CBlockInterpreter::resolve_kind(string n) 
+{
+
+
+	//for (auto &defs : assertions) 
+	//{
+	//	if (HBlockKind nn = asHBlockKind(defs->get_definition())) 
+	//	{
+	//		if (isSameString(nn->named, n)) 
+	//		{
+	//			return nn;
+	//		}
+	//	}
+	//	if (HBlockKindValue nn = asHBlockKindValue(defs->get_definition()))
+	//	{
+	//		if (isSameString(nn->named, n))
+	//		{
+	//			return nn;
+	//		}
+	//	}
+	//}
+
+
 
 	if (auto kcustom = resolve_system_kind(n))
 	{
 		return kcustom;
 	}
 	 
-
+	if (auto k = resolve_user_kind(n))
+	{
+		return k;
+	}
 
 	return nullptr;
 
@@ -292,101 +321,118 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		}
 	}
 
-	//eh uma instancia de alguem ??
-	for (auto &a_inst : instancias)
+
+	for (auto s : symbols)
 	{
-		if (a_inst->named == named)
+		if (s.first == named)
 		{
-			return a_inst;
+			return s.second;
 		}
-	}
-
-	for (auto &a_action : actions_header)
-	{
-		if (isSameString( a_action->named , named ))
-		{
-			return a_action;
-		}
-	}
-
-
-	for (auto &defs : assertions) {
-		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-			//logMessage("assertation named : " + nnamed );
-			if (isSameString(nn->named ,named))
-			{
-				return resolve_if_noum(defs->get_definition(), localsEntry, noumsToResolve);
-			}
-		}
-	}
-
-	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
-			//logMessage( nnamed << std::endl;
-			if (isSameString(nnvar->name->named , named)) {
-				return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
-			}
-		}
-	}
-
-	for (auto &adefs : actions_header) {
-
-		if (isSameString(adefs->named , named)) {
-			return resolve_if_noum(adefs, localsEntry, noumsToResolve);
-		}
-
-	}
-
-	{
-		auto rel_find = this->staticRelation.find(named);
-		if (rel_find != this->staticRelation.end())
-		{
-			return rel_find->second;
-		}
-	}
-	
-
-
-
-	//Custom Resolvers
-
-	if (auto kcustom = resolve_system_kind(named)) {
-		return resolve_if_noum(kcustom, localsEntry, noumsToResolve);
-	}
-
-	if (auto ukcustom = resolve_user_kind(named)) {
-		return resolve_if_noum(ukcustom, localsEntry, noumsToResolve);
-	}
-
-
-	if (strncmp(named.c_str(), "verb ", 5) == 0)
-	{
-		int np = named.size();
-		std::string vremaind = named.substr(5, np);
-		logMessage(vremaind);
-		for (auto &v : verbs)
-		{
-			if (isSameString(v->named , vremaind))
-			{
-				logMessage(" verb " + vremaind);
-				return v;
-			}
-		}
-		logError(" verb " + vremaind+" not registed");
-		return nullptr;
-	}
-
-
-
-	if (is_number( named ) )
-	{
-		int jValue = atoi(named.c_str());
-		return  make_shared<CBlockIntegerNumber>(jValue);
-
-	}
-
-	 
+	} 
 	return nullptr;
+
+
+
+
+
+
+
+
+	////eh uma instancia de alguem ??
+	//for (auto &a_inst : instancias)
+	//{
+	//	if (a_inst->named == named)
+	//	{
+	//		return a_inst;
+	//	}
+	//}
+
+	//for (auto &a_action : actions_header)
+	//{
+	//	if (isSameString( a_action->named , named ))
+	//	{
+	//		return a_action;
+	//	}
+	//}
+
+
+	//for (auto &defs : assertions) {
+	//	if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
+	//		//logMessage("assertation named : " + nnamed );
+	//		if (isSameString(nn->named ,named))
+	//		{
+	//			return resolve_if_noum(defs->get_definition(), localsEntry, noumsToResolve);
+	//		}
+	//	}
+	//}
+
+	//for (auto &defs : global_variables) {
+	//	if (HVariableNamed nnvar = asHVariableNamed(defs)) {
+	//		//logMessage( nnamed << std::endl;
+	//		if (isSameString(nnvar->name->named , named)) {
+	//			return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
+	//		}
+	//	}
+	//}
+
+	//for (auto &adefs : actions_header) {
+
+	//	if (isSameString(adefs->named , named)) {
+	//		return resolve_if_noum(adefs, localsEntry, noumsToResolve);
+	//	}
+
+	//}
+
+	//{
+	//	auto rel_find = this->staticRelation.find(named);
+	//	if (rel_find != this->staticRelation.end())
+	//	{
+	//		return rel_find->second;
+	//	}
+	//}
+	//
+
+
+
+	////Custom Resolvers
+
+	//if (auto kcustom = resolve_system_kind(named)) {
+	//	return resolve_if_noum(kcustom, localsEntry, noumsToResolve);
+	//}
+
+	//if (auto ukcustom = resolve_user_kind(named)) {
+	//	return resolve_if_noum(ukcustom, localsEntry, noumsToResolve);
+	//}
+
+
+	//if (strncmp(named.c_str(), "verb ", 5) == 0)
+	//{
+	//	int np = named.size();
+	//	std::string vremaind = named.substr(5, np);
+	//	logMessage(vremaind);
+	//	for (auto &v : verbs)
+	//	{
+	//		if (isSameString(v->named , vremaind))
+	//		{
+	//			logMessage(" verb " + vremaind);
+	//			return v;
+	//		}
+	//	}
+	//	logError(" verb " + vremaind+" not registed");
+	//	return nullptr;
+	//}
+
+
+
+	//if (is_number( named ) )
+	//{
+	//	int jValue = atoi(named.c_str());
+	//	return  make_shared<CBlockIntegerNumber>(jValue);
+
+	//}
+
+	// 
+	//return nullptr;
 
 
 }
@@ -448,10 +494,11 @@ std::list<string>  CBlockInterpreter::getAllRegistedKinds()
 	ret.push_back("verb");
 	ret.push_back("relation");
 
-	for (auto &defs : assertions)
+	for (auto &s : symbols)
 	{
-		if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-			ret.push_back(nn->named);
+		if (HBlockKind nn = asHBlockKind(s.second)) 
+		{
+			ret.push_back(s.first);
 		}
 	} 
 	return ret;

@@ -23,21 +23,23 @@
 
 //class CBlockAssertionBase;
 //class CBlockAssertion_is;
-//using CBlocking::HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;
-//using CBlocking::HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
+//using HBlockAssertionBase = std::shared_ptr<CBlockAssertionBase>;
+//using HBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
 
 class CResultMatch;
 
+using namespace  CBlocking;
+
 namespace Interpreter
 {
-	void assert_batch_kinds(CBlocking::HBlockList &nList, CBlocking::HBlockKindOfName &k);
+	void assert_batch_kinds(HBlockList &nList, HBlockKindOfName &k);
 class PhaseResult
 {
 public:
 	PhaseResult(bool _hasExecuted);
 	bool hasExecuted;
-	 CBlocking::HBlock result;
+	 HBlock result;
 };
 
 
@@ -45,11 +47,11 @@ class QueryResultContext // resultado da query incluindo variaveis do Match
 {
 public:
 	const QueryResul result;
-	std::map<string, CBlocking::HBlock> matchedResult;
+	std::map<string, HBlock> matchedResult;
 	QueryResultContext(QueryResul r);
-	QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult);
-	//QueryResultContext(QueryResul r, std::list< std::pair<string, CBlocking::HBlock> > _locals);
-	QueryResultContext(QueryResul r, std::map<string, CBlocking::HBlock> _matchedResult_A, std::map<string, CBlocking::HBlock> _matchedResult_B);
+	QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult);
+	//QueryResultContext(QueryResul r, std::list< std::pair<string, HBlock> > _locals);
+	QueryResultContext(QueryResul r, std::map<string, HBlock> _matchedResult_A, std::map<string, HBlock> _matchedResult_B);
 
 	void dump();
 };
@@ -58,7 +60,7 @@ public:
 struct  NamedValue
 {
 	string named;
-	CBlocking::HBlock value;
+	HBlock value;
 };
  
 
@@ -67,189 +69,203 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 	class CBlockInterpreter {
 
-		std::vector<CBlocking::HBlock> program; // main program .. to run IT
+		std::vector<HBlock> program; // main program .. to run IT
+
+		std::list< std::pair<string, HBlock> > symbols;
+
+		std::list<HBlockActionNamed>  system_actions;
 
 
-		std::vector<CBlocking::HBlockInstance> instancias;
-		std::vector<CBlocking::HBlockInstanceVariable> instancias_vars;
-		std::vector<CBlocking::HBlockAssertionBase> assertions_functional; //To define and others
+		std::vector<HBlockInstance> instancias;
+
+		std::vector<HBlockInstanceVariable> instancias_vars;
+		std::vector<HBlockAssertionBase> assertions_functional; //To define and others
 
 
-		std::vector<CBlocking::NoumDefinition> nregisters;
-		std::vector<CBlocking::HBlockAssertion_is> assertions;
+		std::vector<NoumDefinition> nregisters;
+		std::vector<HBlockAssertion_is> assertions;
 
 		//Relations
-		std::map<string, CBlocking::HBlockRelationBase > staticRelation;
-		std::list<CBlocking::HBlockRelationInstance > relInstances;
+		std::map<string, HBlockRelationBase > staticRelation;
+		std::list<HBlockRelationInstance > relInstances;
 
 
 		//Verb to relation
-		std::list<  CBlocking::HBlockVerb > verbs;
-		std::map<string, CBlocking::HBlockVerbRelation > verbRelationAssoc;
-		std::map<string, std::list<CBlocking::HBlockAssertion_is> > verbAssertation;
+		std::list<  HBlockVerb > verbs;
+		std::map<string, HBlockVerbRelation > verbRelationAssoc;
+		std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
 
 
-		std::vector<CBlocking::HBlockAssertionBase> dynamic_assertions;
-		std::vector<CBlocking::HBlockNoum> registred_adjetives;
-
-		std::vector<CBlocking::HBlockAssertion_is> kindDefinitions;
-
+		std::vector<HBlockAssertionBase> dynamic_assertions;
+		std::vector<HBlockNoum> registred_adjetives;
+		std::vector<HBlockAssertion_is> kindDefinitions;
 		std::vector<HVariableNamed> global_variables;
+		
+		std::vector<HBlockAssertion_isConstantAssign>  constant_assignments;
+		std::vector<HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
+		std::vector<HBlockAssertion_isDefaultAssign> default_assignments;
+		std::vector<HBlockAssertionBase> instance_variables;
+		std::vector<HBlockAssertionBase> kind_variables;
+		std::vector<HBlockKind_InstanceVariable> kind_named_variables;
 
-		std::vector<CBlocking::HBlockAssertion_isConstantAssign>  constant_assignments;
-		std::vector<CBlocking::HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
-		std::vector<CBlocking::HBlockAssertion_isDefaultAssign> default_assignments;
-		std::vector<CBlocking::HBlockAssertionBase> instance_variables;
-		std::vector<CBlocking::HBlockAssertionBase> kind_variables;
-		std::vector<CBlocking::HBlockKind_InstanceVariable> kind_named_variables;
+
+
+
+
+
 
 		//Decides
-		std::vector<CBlocking::HBlockToDecideWhat> decides_what;
-		std::vector<CBlocking::HBlockToDecideWhether> decides_whether;
-		std::vector<CBlocking::HBlockToDecideIf> decides_if;
-		std::vector<CBlocking::HBlockToDecideWhat_FirstNoum> decides_noum1;
+		std::vector<HBlockToDecideWhat> decides_what;
+		std::vector<HBlockToDecideWhether> decides_whether;
+		std::vector<HBlockToDecideIf> decides_if;
+		std::vector<HBlockToDecideWhat_FirstNoum> decides_noum1;
 
 
-		std::vector<CBlocking::HBlockAction> actions_header;
-		std::map<std::string, CBlocking::HBlockKindAction > actions_parameters;
-		std::vector<CBlocking::HBlockUnderstandDynamic> dynamic_understand;
+		//std::vector<HBlockAction> actions_header;
+		
+		std::list<HBlockActionNamed > actions_definitions; //cada acao com o mesmo nome pode ter varias instancias, OVERLOAD baby !
+
+		std::vector<HBlockUnderstandDynamic> dynamic_understand;
 
 		//Plural
-		std::list<  std::pair< CBlocking::HBlockNoum, CBlocking::HBlockNoum > > plural_assertations;
+		std::list<  std::pair< HBlockNoum, HBlockNoum > > plural_assertations;
 
 
 
 		//Event handles
-		std::vector<CBlocking::HBlockEventHandle> event_handles;
+		std::vector<HBlockEventHandle> event_handles;
 		int instancia_id;
-		CBlocking::HBlockNothing Nothing;
+		HBlockNothing Nothing;
+		HBlockKind MetaKind;
+		HBlockKind MetaKindRelation;
+		HBlockKind MetaKindPhrase;
 
-		QueryResultContext query_is_instance_valueSet(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, QueryStack *stk);
-		QueryResultContext query_is_propertyOf_value_imp(CBlocking::HBlock propname, CBlocking::HBlock propObj, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack *stk);
+		QueryResultContext query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
-		QueryResultContext query_is_propertyOf_value(CBlocking::HBlock c_property, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_is_Variable_value(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_is_propertyOf_value(HBlock c_property, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_is_Variable_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
-		//QueryResultContext query_is(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query(CBlocking::HBlockAssertion_is q, CBlocking::HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack *stk);
+		//QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query(HBlockAssertion_is q, HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStack *stk);
 
-		// QueryResul queryVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, QueryStack *stk);
+		// QueryResul queryVerb(string vb, HBlock c_block, HBlock value, QueryStack *stk);
 
 
-		std::list<CBlocking::HBlockKind> getUpperKinds(CBlocking::HBlockKind kind);
-		bool is_derivadeOf(CBlocking::HBlockInstance a, CBlocking::HBlockKind b, HRunLocalScope localsEntry);
+		std::list<HBlockKind> getUpperKinds(HBlockKind kind);
+		bool is_derivadeOf(HBlockInstance a, HBlockKind b, HRunLocalScope localsEntry);
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
-		void add_constantValueVariableToAllinstances(CBlocking::HBlockAssertion_isConstantAssign kvar);
-		void add_defaultValueVariableToAllinstances(CBlocking::HBlockAssertion_isDefaultAssign hdefault);
-		void add_forbidenValueVariableToAllinstances(CBlocking::HBlockAssertion_isForbiddenAssign kvar);
+		void add_constantValueVariableToAllinstances(HBlockAssertion_isConstantAssign kvar);
+		void add_defaultValueVariableToAllinstances(HBlockAssertion_isDefaultAssign hdefault);
+		void add_forbidenValueVariableToAllinstances(HBlockAssertion_isForbiddenAssign kvar);
 
-		void add_namedVariableToAllinstances(CBlocking::HBlockKind_InstanceVariable variable_);
-		CBlocking::HBlockInstance new_Instance(string named, CBlocking::HBlockKind kind);
+		void add_namedVariableToAllinstances(HBlockKind_InstanceVariable variable_);
+		HBlockInstance new_Instance(string named, HBlockKind kind);
 
-		void assign_variable_to_instance(CBlocking::HBlockAssertionBase kvar);
-		CBlocking::HBlockList lookup_relation_List(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		void assign_variable_to_instance(HBlockAssertionBase kvar);
+		HBlockList lookup_relation_List(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		
-		CBlocking::HBlock lookup_relation_X_Y_1(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
-		CBlocking::HBlock lookup_relation_X_Y_2(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlock lookup_relation_XS_Y_1(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlock lookup_relation_X_YS_2(const string& relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlock lookup_relation(CBlocking::HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlock lookup_union(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
-		CBlocking::HBlock lookup_intersection(CBlocking::HBlock v1, CBlocking::HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
-		CBlocking::HBlock lookup_verb(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock lookup_relation_X_Y_1(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlock lookup_relation_X_Y_2(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock lookup_relation_XS_Y_1(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock lookup_relation_X_YS_2(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock lookup_relation(HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock lookup_union(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
+		HBlock lookup_intersection(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
+		HBlock lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
 		std::list<string> getAllRegistedEnums();
 		std::list<string> getAllRegistedKinds();
-		CBlocking::HBlockList lookup_value_by_Selector(CBlocking::HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlockList lookup_verb_List(CBlocking::HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlockList lookup_value_by_Selector(HBlockMatch valueToMatch, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlockList lookup_verb_List(HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);
 	 
  
-		bool exist_relation(string relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		bool setVerbRelation(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool exist_relation(string relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool setVerbRelation(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
  
-		bool setVerb(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_relation_instance(CBlocking::HBlockRelationInstance rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_relation(CBlocking::HBlockRelationBase rel, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_user_verbs(string vb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool setVerb(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_relation_instance(HBlockRelationInstance rr, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_relation_property(HBlockNoum property_noum, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_relation(HBlockRelationBase rel, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 
-		bool assert_newVerb(CBlocking::HBlockVerbRelation value);
-		bool insert_newEventHandle(CBlocking::HBlockEventHandle event_handle);
-		bool assert_it_variableGlobal(CBlocking::HBlock obj, CBlocking::HBlock value);
+		bool assert_newVerb(HBlockVerbRelation value);
+		bool insert_newEventHandle(HBlockEventHandle event_handle);
+		bool assert_it_variableGlobal(HBlock obj, HBlock baseKind, HBlock defaultValue);
 
-		CResultMatch MatchList(CBlocking::HBlockMatchList M, CBlocking::HBlockList value, HRunLocalScope localsEntry, QueryStack *stk);
-		CResultMatch isEquivalenteMatch(CBlocking::HBlockMatch M, CBlocking::HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk);
-		CResultMatch Match_DirectIs(CBlocking::HBlockMatch mObject, CBlocking::HBlockMatch mValue, CBlocking::HBlock object, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		CResultMatch Match(CBlocking::HBlockMatch M, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		CResultMatch MatchList(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStack *stk);
+		CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk);
+		CResultMatch Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 
-		QueryResultContext queryVerb_ListedIn(CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 
-		bool is_nothing(CBlocking::HBlockNoum noum);
-		bool is_nothing(CBlocking::HBlock noum_);
-		bool set_relation_property(CBlocking::HBlockNoum property_noum, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
-		bool set_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
-		bool unset_relation(CBlocking::HBlockRelationBase relation, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		bool is_nothing(HBlockNoum noum);
+		bool is_nothing(HBlock noum_);
+		bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		bool unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 		
 		string adapt_verb_inner(const string& verb, string tense, string person, HRunLocalScope localsEntry);
-		CBlocking::HBlockNoum adapt_verb(CBlocking::HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
+		HBlockNoum adapt_verb(HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
 		
 		string getStringPrexfedFromList(const std::vector<string>& noumFragmented, std::list<string> allStringNames);
-		std::list<CBlocking::HBlock> getInstancesFromKind(CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
-		std::list<CBlocking::HBlock> getInstancesFromSelector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+		std::list<HBlock> getInstancesFromKind(HBlockKind kind, HRunLocalScope localsEntry);
+		std::list<HBlock> getInstancesFromSelector(HBlockMatch seletor, HRunLocalScope localsEntry);
 
-		CBlocking::HBlockMatch Resolve_Selector_item(CBlocking::HBlockMatch seletor, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+		HBlockMatch Resolve_Selector_item(HBlockMatch seletor, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
 
-		CBlocking::HBlockMatch Resolve_Selector_Noum_fragment(std::vector<string> strList_in, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+		HBlockMatch Resolve_Selector_Noum_fragment(std::vector<string> strList_in, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
 
-		CBlocking::HBlockMatch Resolve_Selector_NoumList(std::vector<string> strList, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
+		HBlockMatch Resolve_Selector_NoumList(std::vector<string> strList, std::list<string>& allKindsNames, std::list<string>& allEnumNames, HRunLocalScope localsEntry);
 
-		CBlocking::HBlockMatch Resolve_Selector_List(CBlocking::HBlockMatchList mList, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
+		HBlockMatch Resolve_Selector_List(HBlockMatchList mList, std::list<string>& allKindsNames, std::list<string> &allEnumNames , HRunLocalScope localsEntry);
 		 
 		 
-		CBlocking::HBlockMatch Resolve_Selector(CBlocking::HBlockMatch seletor, HRunLocalScope localsEntry);
+		HBlockMatch Resolve_Selector(HBlockMatch seletor, HRunLocalScope localsEntry);
 		PhaseResult raise_runtime_error(std::string message);
 	public:
 
-		std::list<CBlocking::HBlockRelationInstance > getRelations();
+		std::list<HBlockRelationInstance > getRelations();
 
 		CBlockInterpreter();
 
 		~CBlockInterpreter();
 
 		void initialize();
-		void add_modifier_keyword(CBlocking::HBlockEnums _enums);
-		void add_modifier_keyword(CBlocking::HBlockNoum _nn);
-		bool assert_it_canBe(CBlocking::HBlock c_block, CBlocking::HBlockEnums value, HRunLocalScope localsEntry);
+		void add_modifier_keyword(HBlockEnums _enums);
+		void add_modifier_keyword(HBlockNoum _nn);
+		bool assert_it_canBe(HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry);
 
 
 		void dump_instance(string str);
-		bool assert_newUnderstand(CBlocking::HBlockUnderstandDynamic value);
+		bool assert_newUnderstand(HBlockUnderstandDynamic value);
 
-		bool assert_newRelation(CBlocking::HBlockRelationBase rel);
+		bool assert_newRelation(HBlockRelationBase rel);
 
-		bool assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
-		bool assert_it_not_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		void execute_init(CBlocking::HBlock p);
+		bool assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		void execute_init(HBlock p);
 
-		bool assert_decideBlock(CBlocking::HBlockToDecide dct);
-		bool assert_has_variable(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool is_all_items_of_kind(CBlocking::HBlockList listvalues, CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
-		bool kind_has_property_called_inner(CBlocking::HBlockKind kind, string propertyNamed, std::list<std::basic_string<char>> kindsUsed);
-		bool kind_has_property_called(CBlocking::HBlockKind kind, const string& propertyNamed);
+		bool assert_decideBlock(HBlockToDecide dct);
+		bool assert_has_variable(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		bool is_all_items_of_kind(HBlockList listvalues, HBlockKind kind, HRunLocalScope localsEntry);
+		bool kind_has_property_called_inner(HBlockKind kind, string propertyNamed, std::list< CBlockKind* > kindsUsed);
+		bool kind_has_property_called(HBlockKind kind, const string& propertyNamed);
 
-		bool assert_property_ForbiddenValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_property_ForbiddenValue(HBlockProperty prop, HBlock value, HRunLocalScope localsEntry);
 
-		bool assert_property_ConstantValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_property_ConstantValue(HBlockProperty prop, HBlock value, HRunLocalScope localsEntry);
 
 		 
 	 
-		bool assert_property_defaultValue(CBlocking::HBlockProperty prop, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_property_defaultValue(HBlockProperty prop, HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_ConstantAssign(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_ForbiddenValue(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_defaultValue(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 
 
 
@@ -257,152 +273,154 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 
-		bool assert_it_action(CBlocking::HBlock obj, CBlocking::HBlock value);
+		bool assert_it_action(HBlock obj, HBlock value);
 
-		void assert_batch_kinds(std::list<CBlocking::HBlock>& nList, CBlocking::HBlockKindOfName & k);
+		void assert_batch_kinds(std::list<HBlock>& nList, HBlockKindOfName & k);
 		 
 		 
-		bool assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_kind(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 
 
-		std::pair<CBlocking::HBlockKind, CBlocking::HBlockKind> create_derivadeKind(string called, string baseName);
-		bool assert_assertation(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		std::pair<HBlockKind, HBlockKind> create_derivadeKind(string called, string baseName);
+		bool assert_assertation(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		bool  assert_it_composition(HBlock obj, HBlock  value, HRunLocalScope localsEntry);
+		bool assert_it_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 
-		bool assert_it_instance(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		bool assert_it_valuesDefinitions_list(CBlocking::HBlock c_block, std::list<CBlocking::HBlock> values, HRunLocalScope localsEntry);
+		bool assert_it_instance(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_valuesDefinitions_list(HBlock c_block, std::list<HBlock> values, HRunLocalScope localsEntry);
 		 
-		bool assert_it_valuesDefinitions(CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry);
+		bool assert_it_valuesDefinitions(HBlock c_block, HBlock value, HRunLocalScope localsEntry);
+
+		HBlockKind  resolve_comp_kind(HBlockKind obj, HRunLocalScope localsEntry);
+
+		std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry);
+		std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
+		HBlockKind getKindOf(HBlockInstance obj);
+		string BlockNoum(HBlock c_block);
+		// bool MatchOld(HBlock c_block, HBlockMatch m);
+		HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
+		HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext getDecidedValue(HBlock decideBody, HRunLocalScope localsEntry, QueryStack *stk);		
+		QueryResultContext getDecidedValue(HBlock decideBody, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
 
 
-		std::list<CBlocking::HBlock> resolve_as_list(CBlocking::HBlock qlist, HRunLocalScope localsEntry);
-		std::list<CBlocking::HBlock> resolve_as_list(CBlocking::HBlock qlist, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
-		CBlocking::HBlockKind getKindOf(CBlocking::HBlockInstance obj);
-		string BlockNoum(CBlocking::HBlock c_block);
-		// bool MatchOld(CBlocking::HBlock c_block, CBlocking::HBlockMatch m);
-		CBlocking::HBlock getDecidedWhether(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, CBlocking::HBlockToDecideWhether dct);
-		CBlocking::HBlock getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, HRunLocalScope localsEntry, QueryStack *stk);		
-		QueryResultContext getDecidedValue(CBlocking::HBlock decideBody, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext getDecidedIf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStack *stk);
-
-
-		QueryResultContext Selector_all(CBlocking::HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(CBlocking::HBlock)> selector);
-		QueryResultContext Selector_any(CBlocking::HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(CBlocking::HBlock)> selector);
-		QueryResultContext get_system_verbs(string cs, CBlocking::HBlock n1, CBlocking::HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_verb(CBlocking::HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_not_verb(CBlocking::HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query_decides(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext Selector_all(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(HBlock)> selector);
+		QueryResultContext Selector_any(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(HBlock)> selector);
+		QueryResultContext get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
 		
-		bool assert_it_verbRelation(std::string verbNamed, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
-		bool insert_newVerb(CBlocking::HBlockVerb verb_dec);
+		bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool insert_newVerb(HBlockVerb verb_dec);
 
 
 
-		QueryResultContext query(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
-		QueryResultContext query(CBlocking::HBlock  vquery);
-		QueryResultContext query_is(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
-
-
-
-
-
-	   NSTerm::HTerm executeAssertion_is(CBlocking::HBlockAssertion_is b);
-
-	   NSTerm::HTerm executeAssertion(CBlocking::HBlockAssertionBase b);
-
-	   NSTerm::HTerm execute(CBlocking::HBlock b);
-
-		CBlocking::HBlock resolve(NSTerm::CTerm *b);
-
-		CBlocking::HBlock resolve_of(CBlocking::HBlock b, CBlocking::HBlock a);
-		CBlocking::HBlockKind resolve_system_kind(string n);
-		CBlocking::HBlockKind resolve_user_kind(string n);
-
-
-		bool is_derivadeOf(CBlocking::HBlockKind a, CBlocking::HBlockKind b);
-
-
-
-		CBlocking::HBlockKind resolve_kind(string n);
-		CBlocking::HBlock resolve_if_noum(CBlocking::HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
-		CBlocking::HBlock resolve_noum(CBlocking::HBlockNoum n, HRunLocalScope localsEntry);
-		CBlocking::HBlock resolve_noum(CBlocking::HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
-		CBlocking::HBlock resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
-		CBlocking::HBlock resolve_noum_as_variable(CBlocking::HBlockNoum n);
-		CBlocking::HBlock resolve_string(string n, HRunLocalScope localsEntry);
-
-		//CBlocking::HBlock resolve_value(CBlocking::HBlock  c_block);
+		QueryResultContext query(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query(HBlock  vquery);
+		QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
 
 
 
-		CBlocking::HBlock value_can_be_assign_to(CBlocking::HBlock value, CBlocking::HBlockKind kind, HRunLocalScope localsEntry);
-		bool set_plural_property(CBlocking::HBlock noum_singular, CBlocking::HBlock noum_plural, HRunLocalScope localsEntry);
+
+	   NSTerm::HTerm executeAssertion_is(HBlockAssertion_is b);
+
+	   NSTerm::HTerm executeAssertion(HBlockAssertionBase b);
+
+	   NSTerm::HTerm execute(HBlock b);
+
+		HBlock resolve(NSTerm::CTerm *b);
+
+		HBlock resolve_of(HBlock b, HBlock a);
+		HBlockKind resolve_system_kind(string n);
+		HBlockKind resolve_user_kind(string n);
+
+
+		bool is_derivadeOf(HBlockKind a, HBlockKind b);
+
+
+
+		HBlockKind resolve_kind(string n);
+		HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
+		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
+		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
+		HBlock resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
+		HBlock resolve_noum_as_variable(HBlockNoum n);
+		HBlock resolve_string(string n, HRunLocalScope localsEntry);
+
+		//HBlock resolve_value(HBlock  c_block);
+
+
+
+
+		HBlock value_can_be_assign_to(HBlock value, HBlockKind kind, HRunLocalScope localsEntry);
+		bool set_plural_property(HBlock noum_singular, HBlock noum_plural, HRunLocalScope localsEntry);
 		
-		QueryResultContext query_is_List(CBlocking::CBlock *c_block, CBlocking::CBlock *c_block1);
+		QueryResultContext query_is_List(CBlock *c_block, CBlock *c_block1);
 
 
 
-		QueryResultContext query_is_extern(CBlocking::HBlock c_block, CBlocking::HBlock c_block1);
-		bool is_primitive_value(CBlocking::HBlock c, HRunLocalScope localsEntry, QueryStack* stk);
-		QueryResultContext query_is_same(CBlocking::HBlock c_block, CBlocking::HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
-		std::list<CBlocking::HBlock> getMatchedObjects(CBlocking::HBlock seletor, HRunLocalScope localsEntry);
-		bool is_valid_for_relation_kind(CBlocking::HBlock baseType, CBlocking::HBlock object, HRunLocalScope localsEntry, QueryStack* stk);
-		PhaseResult execute_verb_set_inn(CBlocking::HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack* stk);
-		PhaseResult execute_verb_set(CBlocking::HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
-		//bool set_relation(CBlocking::HBlockRelationBase relation , CBlocking::HBlock n1, CBlocking::HBlock n2);
+		QueryResultContext query_is_extern(HBlock c_block, HBlock c_block1);
+		bool is_primitive_value(HBlock c, HRunLocalScope localsEntry, QueryStack* stk);
+		QueryResultContext query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
+		std::list<HBlock> getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry);
+		bool is_valid_for_relation_kind(HBlock baseType, HBlock object, HRunLocalScope localsEntry, QueryStack* stk);
+		PhaseResult execute_verb_set_inn(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack* stk);
+		PhaseResult execute_verb_set(HBlockIsVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
+		//bool set_relation(HBlockRelationBase relation , HBlock n1, HBlock n2);
  
 	 
-		PhaseResult execute_verb_unset(CBlocking::HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_unset(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		PhaseResult execute_set_inn(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		PhaseResult execute_set(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry);
-		CBlocking::HBlock exec_eval_property_value_imp(CBlocking::HBlock prop, CBlocking::HBlock c_block);
-		CBlocking::HBlock exec_eval_property_value(CBlocking::HBlock c_block, HRunLocalScope localsEntry);
-		CBlocking::HBlock exec_eval_assertations(CBlocking::HBlock c_block, HRunLocalScope localsEntry, std::function<CBlocking::HBlock(CBlocking::HBlock)> is_accetable);		
-		CBlocking::HBlock get_default_property_value(CBlocking::HBlockNoum c_value, CBlocking::HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack * stk);
+		PhaseResult execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		PhaseResult execute_set_inn(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		PhaseResult execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);
+		HBlock exec_eval_property_value(HBlock c_block, HRunLocalScope localsEntry);
+		HBlock exec_eval_assertations(HBlock c_block, HRunLocalScope localsEntry, std::function<HBlock(HBlock)> is_accetable);		
+		HBlock get_default_property_value(HBlockNoum c_value, HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack * stk);
 		 
-		CBlocking::HBlock exec_eval(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
-		bool assert_equals(CBlocking::HBlock c_block, CBlocking::HBlock c_result);
-		CBlocking::HBlock eval_boolean_AND(CBlocking::HBlock c1, CBlocking::HBlock c2);
-		CBlocking::HBlock eval_boolean_OR(CBlocking::HBlock c1, CBlocking::HBlock c2);
-		CBlocking::HBlock eval_boolean_NOT(CBlocking::HBlock c1);
-		CBlocking::HBlock exec_eval_internal_boolean_relation(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
-		CBlocking::HBlock get_PropertyOfKind_DefaultValue(CBlocking::HBlockProperty kprop, CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack * stk);
-		CBlocking::HBlock exec_eval_internal(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
-		CBlocking::HBlock resolve_as_callCommand(CBlocking::HBlock c_block, HRunLocalScope shared_ptr);
-		HExecutionBlock create_dispach_env(CBlocking::HBlockList p, HRunLocalScope localsEntry);
+		HBlock exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
+		bool assert_equals(HBlock c_block, HBlock c_result);
+		HBlock eval_boolean_AND(HBlock c1, HBlock c2);
+		HBlock eval_boolean_OR(HBlock c1, HBlock c2);
+		HBlock eval_boolean_NOT(HBlock c1);
+		HBlock exec_eval_internal_boolean_relation(HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlock get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block, HRunLocalScope localsEntry, QueryStack * stk);
+		HBlock exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);
+		HExecutionBlock create_dispach_env(HBlockList p, HRunLocalScope localsEntry);
 
 
 
-		PhaseResult execute_now(CBlocking::HBlock c_block);
-		PhaseResult execute_phase_any(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_phase_any(CBlocking::HBlockEventHandle evh, CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_phase_check(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_phase_before(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_phase_carryOut(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_system_action(CBlocking::HBlockActionCall v_call);
-		PhaseResult  execute_user_action(CBlocking::HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_now(HBlock c_block);
+		PhaseResult execute_phase_any(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		PhaseResult execute_system_action(HBlockActionCall v_call);
+		PhaseResult  execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 
 		//Executa este bloco !
-		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry);
-		ListOfNamedValue getValuesFromMatch(CBlocking::HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
-		CBlocking::HBlock resolve_argument(CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
-		CBlocking::HBlockActionCall ActionResolveArguments(CBlocking::HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack* stk);
-		PhaseResult execute_now(CBlocking::HBlock p, HRunLocalScope localsEntry, QueryStack *stk);
-		bool queryIsVerbToRelation(CBlocking::HBlockMatch m);
+		PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry);
+		ListOfNamedValue getValuesFromMatch(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlock resolve_argument(HBlock value, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlockActionCall ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack* stk);
+		PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry, QueryStack *stk);
+		bool queryIsVerbToRelation(HBlockMatch m);
 		void logMessage(const string& msg);
 
 
 	 
 
-		CBlocking::HBlock evaluate_relation_property(CBlocking::HBlock c_block, CBlocking::HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
-		CBlocking::HBlock evaluate_propertyValue(CBlocking::HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
-		CBlocking::HBlock evaluate_values(CBlocking::HBlock q, HRunLocalScope localsEntry, QueryStack *stk, std::function<CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*)> isSuitable);
-		CBlocking::HBlock evaluate_values(CBlocking::HBlock c_block);
+		HBlock evaluate_relation_property(HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack*)> isSuitable);
+		HBlock evaluate_propertyValue(HBlockProperty cproperty, HRunLocalScope localsEntry, QueryStack *stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack*)> isSuitable);
+		HBlock evaluate_values(HBlock q, HRunLocalScope localsEntry, QueryStack *stk, std::function<HBlock(HBlock, HRunLocalScope, QueryStack*)> isSuitable);
+		HBlock evaluate_values(HBlock c_block);
 
-		CBlocking::HBlockNoum get_plural_of(string s);
+		HBlockNoum get_plural_of(string s);
 		bool isSameString(string s1, string s2);
 	};
 

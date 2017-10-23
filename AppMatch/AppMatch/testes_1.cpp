@@ -2,6 +2,8 @@
 #include "BaseTest.hpp"
 #include <cassert>
 #include <functional>
+#include <cassert>
+#include <cassert>
 
 
 using namespace CBlocking;
@@ -195,6 +197,7 @@ void testeParser_2_3() {
 	assert(f_is("element of paper is fire "));
 
 	f_now(" element of arrow is water" );
+	f_eval("element of arrow  ")->dump("W ");
 	f_now(" element of paper is  element of arrow " );
 	assert(f_is("element of paper is water "));
 }
@@ -329,6 +332,9 @@ colour of blood is red
 
 void testeParser_2()
 {
+	
+
+
    testeParser_2_1();
    testeParser_2_2();
    testeParser_2_3();

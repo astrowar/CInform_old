@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "Parser.hpp"
+#include "CBlockComposition.hpp"
 #include "sharedCast.hpp"
  
 using namespace CBlocking;
@@ -101,7 +102,11 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 				
 				HBlockKindAction action = applyTO;
 				auto sActionName = CtoString(res.matchs["ActionName"]);
-				HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
+				//HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
+				//HBlock _naction = std::make_shared<CBlockAction>();
+				
+				HBlock _naction = std::make_shared<CBlockNoum>(sActionName);
+
 				HPred actionMatch = mk_HPredLiteral(sActionName);
 
 
@@ -234,13 +239,13 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind =  parser_kind_specification(p, res.matchs["kindBase"]);
+			HBlockKind nkind =  parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
+				HBlockKind dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockCompositionPhrase>(p, nkind, dkind);
+					return  std::make_shared<CBlockCompositionPhrase>(nkind, dkind);
 				}
 			} 
 		}
@@ -265,7 +270,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 				auto dkind = Expression::parser_kind_specification(p, res.matchs["kindDst"]);
 				if (dkind != nullptr)
 				{
-					return  std::make_shared<CBlockCompositionRelation>(p, nkind, dkind);
+					return  std::make_shared<CBlockCompositionRelation>(  nkind, dkind);
 				}
 			}
 		}
@@ -284,10 +289,10 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto nkind = parser_kind_specification(p, res.matchs["kindBase"]);
+			HBlockKind nkind = parser_kind_specification(p, res.matchs["kindBase"]);
 			if (nkind != nullptr)
 			{
-				return  std::make_shared<CBlockCompositionList>(p, nkind);
+				return  std::make_shared<CBlockCompositionList>(  nkind);
 			}
 		}
 	}
@@ -310,7 +315,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsCompositionOf(CParser * p, std
 
 		if (res.result == Equals) {
 
-			HBlock value = parse_CompositionOf(p, res.matchs["CompDef"]);
+			auto value = Expression::parse_CompositionOf(p, res.matchs["CompDef"]);
 			if (value == nullptr) return nullptr;
 			HBlock noum = Expression::parser_assertionTarger(p, res.matchs["Noum"]);
 			if (noum == nullptr) return nullptr;
@@ -486,8 +491,8 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
 
             if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) {
                 auto sterm = expandBract(res.matchs["Noum"]);
-                HBlock _naction = std::make_shared<CBlockAction>( (sterm->repr()));
-
+				//HBlock _naction = std::make_shared<CBlockActionNamed>( (sterm->repr()));
+				HBlock _naction = std::make_shared<CBlockNoum>((sterm->repr()));
 
                 HPred actionMatch = convert_to_predicate(sterm.get());
                 //	std::cout << "found " << actionMatch->repr()  << std::endl;

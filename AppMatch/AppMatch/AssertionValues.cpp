@@ -48,6 +48,7 @@ bool CBlockInterpreter::assert_assertation(CBlocking::HBlock obj, CBlocking::HBl
  
  
 		//Static Definition de uma instancia derivado
+	    if (assert_it_composition(obj, value, localsEntry)) return true;
 		if (assert_it_Value(obj, value, localsEntry)) return true ;
 		if (assert_it_kind(obj, value, localsEntry)) return true;
 		if (assert_it_instance(obj, value, localsEntry)) return true;
@@ -60,9 +61,76 @@ bool CBlockInterpreter::assert_assertation(CBlocking::HBlock obj, CBlocking::HBl
 
 	}
 
+
+HBlockKind CBlockInterpreter::resolve_comp_kind(CBlocking::HBlockKind obj, HRunLocalScope localsEntry)
+{
+	if (HBlockCompositionList clist = asHBlockCompositionList(obj))
+	{
+		auto p = resolve_comp_kind(clist->itemKind, localsEntry);
+		return std::make_shared<CBlockCompositionList>(p);
+	}
+
+	if (HBlockCompositionPhrase c = asHBlockCompositionPhrase(obj))
+	{
+		auto p1 = resolve_comp_kind(c->fromKind, localsEntry);
+		auto p2 = resolve_comp_kind(c->toKind, localsEntry);
+		return std::make_shared<CBlockCompositionPhrase>(p1,p2);
+	}
+
+	if (HBlockCompositionRelation c = asHBlockCompositionRelation(obj))
+	{
+		auto p1 = resolve_comp_kind(c->fromKind, localsEntry);
+		auto p2 = resolve_comp_kind(c->toKind, localsEntry);
+		return std::make_shared<CBlockCompositionRelation>(p1, p2);
+	}
+
+	if (HBlockKindNamed c = asHBlockKindNamed(obj))
+	{
+		return resolve_kind(c->named);
+	}
+
+	return obj;
+}
+
+bool CBlockInterpreter::assert_it_composition(CBlocking::HBlock obj, CBlocking::HBlock  value_comp, HRunLocalScope localsEntry)
+{
+	if (HBlockComposition c = asHBlockCompositionList(value_comp))
+	{
+		HBlockKind kc = resolve_comp_kind(c, localsEntry); 
+		kc->dump("");
+		
+		if (HBlockComposition value = asHBlockCompositionList(kc))
+		{
+
+			if (HBlockCompositionList clist = asHBlockCompositionList(value))
+			{
+				if (HBlockNoum nobj = asHBlockNoum(obj))
+				{
+					HBlockList lcopy = make_shared<CBlockList>(std::list<CBlocking::HBlock>());
+					return  assert_it_variableGlobal(nobj, clist, lcopy);
+				}
+			}
+
+			if (HBlockCompositionPhrase cphrase = asHBlockCompositionPhrase(value))
+			{
+
+			}
+
+			if (HBlockCompositionRelation crel = asHBlockCompositionRelation(value))
+			{
+
+			}
+		}
+	}
+	return false;
+}
+
 bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
     execute_set(obj, value,localsEntry);
+
+
+ 
 
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
         CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
@@ -127,16 +195,22 @@ bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBloc
 	{
 		if (HBlockAction abase = asHBlockAction(obj))
 		{
-			actions_header.push_back(abase);
-			actions_parameters[abase->named] = act;
-			return true;
+			//actions_header.push_back(abase);
+			//actions_parameters.push_back(make_shared<CBlockActionNamed >( ) );  [abase->named] = act;
+			//return true;
 		}
 
-		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-			auto haction = make_shared<CBlockAction >(nbase->named);
-			//actions_header.push_back(haction);
-			return assert_it_action(haction, value);
+		if (HBlockNoum nbase = asHBlockNoum(obj))
+		{
+
+
+			 
+			this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, act));
+			return true;
+
+			//auto haction = make_shared<CBlockAction>(nbase->named);			
+			//return assert_it_action(haction, value);
 		}
 	}
 
@@ -260,7 +334,7 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
                 instancias.push_back(binstance);
-                logMessage("new Instance add " + (nobj->named)  +" as "+  k->named );
+                logMessage("new Instance add " + (nobj->named)    );
                 return true;
             }
            

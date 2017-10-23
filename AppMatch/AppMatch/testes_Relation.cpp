@@ -392,9 +392,14 @@ key unlock box
 	//assert(f_eval("unloking relates key  to  box  "));
 	// assert(f_is("unloking relates a thing  to an thing  ")); // undefined behavior
 	
-	auto p = Expression::Parser_Expression(&parse, "unloking relates(a thing called N)  to (an thing called M)", false);
-	p->dump("");
-	//assert(f_eval("unloking relates (a thing called N)  to (an thing called M)  ")); // undefined behavior
+	auto pn1 = Expression::Parser_Expression(&parse, "a thing called N", true);
+	pn1->dump("A ");
+	//auto p = Expression::Parser_Expression(&parse, "unloking relates (a thing called N) to (an thing called M)", true);
+	//p->dump("B ");
+	//p->dump("");
+	auto p = f_eval("unloking relates (a thing called N) to (an thing called M)");
+	p->dump("B ");
+	assert(f_is("unloking relates (a thing called N) to (an thing called M)") ); // undefined behavior
  
 }
 

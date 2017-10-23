@@ -107,7 +107,8 @@ void CBlockInterpreter::add_namedVariableToAllinstances(HBlockKind_InstanceVaria
 HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     // nova instance e inicializa os fields
 
-    HBlockInstance c = make_shared<CBlockInstance>(named, instancia_id, kind);
+    HBlockInstance c = make_shared<CBlockInstance>( instancia_id, kind);
+
 	instancia_id++;
 	 
     // inicia os fields CAN_BE
@@ -120,11 +121,17 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
     }
     cout << endl;
     cout << " ----------------------------- " << endl;*/
-    for (auto &k : kinds) {
-        for (auto &kvar : kind_variables) {
-            if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {
-                if (dkind->named == k->named) {
-                    if (HBlockAssertion_canBe kvar_enum = asHBlockAssertion_canBe(kvar)) {
+
+    for (auto &k : kinds) 
+	{
+        for (auto &kvar : kind_variables ) 
+		{
+            if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) 
+			{
+                if (dkind.get() == k.get()) 
+				{
+                    if (HBlockAssertion_canBe kvar_enum = asHBlockAssertion_canBe(kvar)) 
+					{
                         if (kvar_enum->definition->values.size() > 1) {
                             c->newEnumVariableSlot(kvar_enum->definition);
                         }
@@ -141,7 +148,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 	for (auto &k : kinds) 
 	{
 		for (auto &kvar : kind_named_variables) {
-			if (kvar->kind->named == k->named)
+			if (kvar->kind.get() == k.get())
 			{
 				HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
 				HBlockKind nkindBase = resolve_kind(v->kind_name->named);
@@ -159,7 +166,8 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 		for (auto &kvar : default_assignments) {
 			if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {
 
-				if (dkind->named == k->named) {
+				if (dkind.get() == k.get()) 
+				{
 					if (HBlockNoum noumSet = asHBlockNoum(kvar->get_definition())) {
 						c->set(noumSet);
 					}
@@ -169,7 +177,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 
 				if (HBlockKind  dp_kind = asHBlockKind(dproperty->obj))
 				{
-					if (dp_kind->named == k->named)
+					if (dp_kind.get() == k.get())
 					{
 						if (HBlockNoum   dp_propname = asHBlockNoum(dproperty->prop ))
 						{

@@ -25,9 +25,11 @@
 
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
-#include "CBlockCompostion.hpp"
+#include "CBlockComposition.hpp"
 
 #include <cassert>
+#include <cstring>
+#include <cstdio>
 
 using namespace std;
 using namespace CBlocking;
@@ -35,7 +37,7 @@ using namespace CBlocking;
 
 void  CBlockInstance::dump_contents(string ident) 
 {
-	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str());
+	printf("%s %s %x\n", ident.c_str(), "Instance: ",  uintptr_t(this) );
 	auto nn = this;
 	{
 		for (auto &va : nn->anomimousSlots) {
@@ -61,13 +63,19 @@ void  CBlockInstance::dump_contents(string ident)
 
 void  CBlockInstance::dump(string ident)
 {
-	printf("%s %s %s\n", ident.c_str(), "Instance: ", named.c_str()); 
+	printf("%s %s %x\n", ident.c_str(), "Instance: ", uintptr_t(this));
 	CBlock::dump(ident);
 }
 
 
 void CUnresolved::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "UNRESOLVED: ", this->contents.c_str());
+	CBlock::dump(ident);
+}
+
+ 
+void CBlockKindReference::dump(string ident) {
+	printf("%s %s %x\n", ident.c_str(), "Kind Reference", uintptr_t( kind.get()));
 	CBlock::dump(ident);
 }
 
@@ -94,8 +102,14 @@ void CBlockNothing::dump(string ident) {
 }
 
 
+void CBlockKindNamed::dump(string ident)
+{
+    printf("%s %s %s\n", ident.c_str(), "Kind unknoun Named :  ", named.c_str());
+    CBlock::dump(ident);
+}
+
 void CBlockKindOfName::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Kind Named :  ", baseClasseName.c_str());
+	printf("%s %s %s\n", ident.c_str(), "Kind of Named :  ", baseClasseName.c_str());
 	CBlock::dump(ident);
 }
 
@@ -147,16 +161,11 @@ void CBlockKindValue::dump(string ident) {
 }
 
 void CBlockKindThing::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Kind Thing : ", named.c_str());
+	printf("%s %s %x \n", ident.c_str(), "Kind Thing : ",uintptr_t( this));
 	CBlock::dump(ident);
 }
 
-void CBlockListOfKind::dump(string ident)
-{
-	printf("%s %s\n",ident.c_str() , "List Of:  ");
-		itemKind->dump(ident + "   ");
-		CBlock::dump(ident);
-}
+ 
 
 
 
@@ -165,10 +174,7 @@ void CBlockNamedValue::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockVariable::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Variable: ", named.c_str());
-	CBlock::dump(ident);
-}
+ 
 
 void CBlockProperty::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Property:");
@@ -439,19 +445,28 @@ void CBlockActionApply::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockAction::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Action ", this->named.c_str());
+void CBlockActionInstance::dump(string ident) {
+	printf("%s %s %x\n", ident.c_str(), "Action Instance", uintptr_t(this));
 	for(auto nn: this->namedSlots) nn->dump(ident + "       ");
 	CBlock::dump(ident);
 
 }
 
-void CBlockAction::newNamedVariable(HBlockNoum called, HBlockKind kind)
+void CBlockActionInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
 	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
  
 }
 
+ 
+
+void CBlockActionNamed::dump(string ident) {
+	printf("%s %s  %s\n", ident.c_str(), "CBlockActionNamed", this->named.c_str());
+	{
+
+	}
+	CBlock::dump(ident);
+}
 
 
 void CBlockToDecideWhether::dump(string ident) {
@@ -556,6 +571,39 @@ void CBlockSelectorAND::dump(string ident) {
 }
 
 
+//void CBlockComposition::dump(string ident)
+//{
+//	printf("%s %s\n", ident.c_str(), "Compostion  ");
+//	CBlock::dump(ident);
+//}
+void CBlockCompositionList::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Compostion  List ");
+	this->itemKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+
+void CBlockCompositionRelation::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Compostion  Relation ");
+	printf("%s %s\n", ident.c_str(), "From");
+	this->fromKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "To");
+	this->toKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+void CBlockCompositionPhrase::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Compostion  Phrase ");
+	printf("%s %s\n", ident.c_str(), "From");
+	this->fromKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "To");
+	this->toKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
 void CBlockActionCall::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Call ");
 	{
@@ -610,7 +658,7 @@ void CBlockStaticDispatch::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-HVariableNamed CBlockAction::get_property(string pnamed)
+HVariableNamed CBlockActionInstance::get_property(string pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -625,7 +673,7 @@ HVariableNamed CBlockAction::get_property(string pnamed)
  
 }
 
-void CBlockAction::set_property(string pnamed, CBlocking::HBlock value)
+void CBlockActionInstance::set_property(string pnamed, CBlocking::HBlock value)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -1036,16 +1084,6 @@ void CBlockControlToken::dump(string ident)
 	}
 	CBlock::dump(ident);
 }
-
-
-
-void CBlockCompostionPhrase::dump(string ident)
-{
-	printf("%s %s\n", ident.c_str(), "Phrase Kind  ");
-	
-	CBlock::dump(ident);
-}
-
 
 void CBlockControlIF::dump(string ident)
 {

@@ -7,22 +7,31 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 
 
-HBlock NSParser::Expression::parser_kind_specification(CParser *p, HTerm term)
+HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm term)
 {
 
-	HBlock p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
+	HBlockKind p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
 	if (p_comp != nullptr) return p_comp;
 
 
 	if (CList *vlist = asCList(term.get())) 
 	{
 		auto rvector = vlist->asVector();	 
-		HBlock r  = ParseAssertion::parse_noum(p, rvector);
+		HBlockNoum r  = ParseAssertion::parse_noum(p, rvector);
 		if (r != nullptr)
 		{
-			return r;
+			return  std::make_shared<CBlockKindNamed>( r->named ) ;
 		}
-	} 
+        return nullptr;
+	}
+
+    std::vector<HTerm>  vterm = {term};
+    HBlockNoum rx  = ParseAssertion::parse_noum(p, vterm);
+    if (rx != nullptr)
+    {
+        return  std::make_shared<CBlockKindNamed>( rx->named ) ;
+
+    }
  
 	return nullptr;
 }
@@ -156,12 +165,18 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 	}
 	 
 
-
+ 
 
     HBlock noum_Assign = ParseAssertion::parse_noum(p,lst);
     if (noum_Assign != nullptr) {
         return noum_Assign;
     }
+
+	// fail back !
+	HBlock match_Assign = ExpressionMatch::parser_expression_match(p, lst);
+	if (match_Assign != nullptr) {
+		return match_Assign;
+	}
 
 	return nullptr;
 }

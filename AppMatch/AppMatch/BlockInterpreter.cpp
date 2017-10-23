@@ -7,6 +7,7 @@
 #include "CBlockMatch.hpp"
 #include <cstdlib>
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 using namespace CBlocking;
@@ -78,13 +79,15 @@ CBlockNamedValue::CBlockNamedValue(string _named) : named(_named) {
     assert(_named[0] != '[');
 }
 
-CBlockVariable::CBlockVariable(string _named) : named(_named) {
-    assert(_named[0] != '[');
-}
+ 
 
 
-CBlockProperty::CBlockProperty(CBlocking::HBlock _prop, CBlocking::HBlock _obj) : prop((_prop)), obj((_obj)) {
-
+CBlockProperty::CBlockProperty(CBlocking::HBlock _prop, CBlocking::HBlock _obj) : prop((_prop)), obj((_obj))
+{
+    if (_prop != nullptr)
+    {
+        prop = _prop;
+    }
 }
 
 CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _property_name) : property_name(_property_name),
@@ -97,13 +100,7 @@ void CBlockList::push_back(CBlocking::HBlock c_block_value) {
     lista.push_back((c_block_value));
 }
 
-NoumDefinitions CBlockList::noumDefinitions() {
-    NoumDefinitions nd = noum_nothing();
-    for (auto &i : lista) {
-        nd = join_definitions(nd, i->noumDefinitions());
-    }
-    return nd;
-}
+ 
 
 
  
@@ -146,9 +143,7 @@ CBlocking::HBlock CBlockAssertion_isKindOf::get_obj() {
     return noum;
 }
 
-NoumDefinitions CBlockAssertion_isKindOf::noumDefinitions() {
-    return single_definitions(this->noum->named, this->get_definition().get());
-}
+ 
 
 CBlocking::HBlock CBlockAssertion_isKindOf::get_definition() { return baseKind; }
 
