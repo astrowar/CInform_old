@@ -99,8 +99,8 @@ HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  t
 	if (res.result == Equals)
 	{
 		auto nterms = expandTerm(res.matchs["Body"]);
-		HBlock value = Expression::parser_expression_lst(p,nterms);
-		HBlockAction say_Action = std::make_shared<CBlockAction>("say_text");
+		HBlock value = Expression::parser_expression_lst(p,nterms);		
+		HBlockActionNamed say_Action = std::make_shared<CBlockActionNamed>("say_text");
 		return std::make_shared<CBlockActionCall>(say_Action, value, nullptr);
 	}
 	return nullptr;
@@ -585,13 +585,28 @@ HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector
 
 HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
 
+	{
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral_OR("article", { "a", "an" }));
+		predList.push_back(mk_HPredLiteral("list"));
+		predList.push_back(mk_HPredLiteral("of"));
+		predList.push_back(mkHPredAny("kindBase"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockKind nkind = Expression::parser_kind_specification(p, res.matchs["kindBase"]);
+			if (nkind != nullptr)
+			{
+				return  std::make_shared<CBlockCompositionList>(nkind);
+			}
+		}
+	}
 
 	{
-			std::vector<HPred> predList;
+			std::vector<HPred> predList;				
 			predList.push_back(mk_HPredLiteral("list"));
 			predList.push_back(mk_HPredLiteral("of"));
 			predList.push_back(mkHPredAny("kindBase"));
-
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -601,7 +616,6 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
 					return  std::make_shared<CBlockCompositionList>(  nkind);
 				}
 			}
-
 	}
 
 
@@ -612,7 +626,8 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
         predList.push_back(mk_HPredLiteral("of"));
         predList.push_back(mkHPredAny("obj"));
         MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
+        if (res.result == Equals) 
+		{
             HBlock a = Expression::parser_expression(p,res.matchs["property"]);
             if (a != nullptr) {
                 HBlock b = Expression::parser_expression(p,res.matchs["obj"]);

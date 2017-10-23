@@ -250,7 +250,7 @@ HBlock NSParser::DynamicDispatch::STMT_understand_Action_Assertion_static(CParse
 				MatchResult res_action = CMatch(sTerm, actionList);
 				if (res_action.result == Equals) {
 
-					output_noum = std::make_shared<CBlockAction>( ((sTerm)->repr())); //An Action !!!
+					output_noum = std::make_shared<CBlockActionNamed>( ((sTerm)->repr())); //An Action !!!
 				}
 				else
 				{

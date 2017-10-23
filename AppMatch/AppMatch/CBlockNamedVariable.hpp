@@ -50,8 +50,7 @@ public:
 
 	CBlocking::HBlock value;
 	CBlocking::HBlockKind kind;
-	CBlocking::HBlockNoum name;
-
+	CBlocking::HBlockNoum name; 
     CVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
 };
 

@@ -62,7 +62,7 @@ namespace CBlocking
 		virtual ~CBlock() {
 		}
 
-		virtual NoumDefinitions noumDefinitions() { return noum_nothing(); };
+		 
 
 		void *operator new(size_t size);
 
@@ -73,22 +73,18 @@ namespace CBlocking
 
 	using  HBlock = std::shared_ptr<CBlock>;
 
+
+
 	class CUnresolved : public CBlock {
 		void dump(string ident) override;
 
 		CUnresolved(string _contents);
 
-
-
-
-
 		virtual BlockType type() override { return BlockType::Unresolved; }
 
 		string contents;
 
-		virtual NoumDefinitions noumDefinitions() override {
-			return noum_nothing();  // define nada
-		};
+		 
 	};
 	using HUnresolved = std::shared_ptr<CUnresolved>;
 
@@ -97,7 +93,47 @@ namespace CBlocking
 	NoumDefinitions single_definitions(string noun, CBlock *block);
 
 
-	class CBlockBooleanResult   // um tipo de bloco que retorna true ou false
+
+	class CBlockKind : public CBlock  //retorna um valor generico porem Abstrado
+	{
+	public:
+		virtual bool isValue() = 0;
+		//virtual BlockType type() override { return BlockType::BlockKind; }
+		//CBlockKind( )  { }; // tipos agora nao tem nome de forma intrinsica
+		//const string named; 
+	};
+
+	using HBlockKind = std::shared_ptr<CBlockKind>;
+
+
+
+	// Representa toda as subclasses que sao valores
+	class CBlockValue : public CBlock  //retorna um valor generico porem Abstrado
+	{
+	public:
+		virtual bool isValue() { return true; }
+		//virtual BlockType type() override { return BlockType::BlockKind; }
+		CBlockValue( )   {};
+		 
+	};
+	using HBlockValue = std::shared_ptr<CBlockValue>;
+
+
+
+	class CBlockKindReference : public CBlockValue //retorna um valor generico uso apenas no interpreter
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockKindReference; }
+		CBlockKindReference( HBlockKind k) :kind(k) {};
+		const HBlockKind kind;
+	};
+	using HBlockKindReference = std::shared_ptr<CBlockKindReference>;
+
+
+
+
+	class CBlockBooleanResult  : public CBlockValue  // um tipo de bloco que retorna true ou false
 	{
 	public:
 		virtual ~CBlockBooleanResult() {
@@ -119,24 +155,12 @@ namespace CBlocking
 
 		const string named;
 
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
+		 
 	};
 
 	using HBlockNoum = std::shared_ptr<CBlockNoum>;
 
-	class CBlockKind : public CBlock  //retorna um valor generico porem Abstrado
-	{
-	public:
-		virtual bool isValue() = 0;
-		//virtual BlockType type() override { return BlockType::BlockKind; }
-
-		CBlockKind(string _named) : named(_named) {};
-		const string named;
-
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-	};
-
-	using HBlockKind = std::shared_ptr<CBlockKind>;
+	 
 
 
 
@@ -147,8 +171,8 @@ namespace CBlocking
       virtual bool isValue() override { return false; }
 
         BlockType type() override { return BlockType::BlockKindNamed; }
-
-        explicit CBlockKindNamed(string _named) : CBlockKind(std::move(_named)) {};
+		string named;
+        explicit CBlockKindNamed(string _named) : named(std::move(_named)) {};
     };
 
     using HBlockKindNamed = std::shared_ptr<CBlockKindNamed>;
@@ -183,11 +207,7 @@ namespace CBlocking
 		void dump(string ident) override;
 
 		virtual BlockType type() override { return BlockType::BlockKindOf; }
-		CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {}
-
-
-
-
+		CBlockKindOf(HBlockKind _baseClasse) : baseClasse(_baseClasse) {} 
 
 		HBlockKind baseClasse;
 	};
@@ -195,12 +215,11 @@ namespace CBlocking
 	using HBlockKindOf = std::shared_ptr<CBlockKindOf>;
 
 
+	 
 
 	class CBlockActionApply : public CBlock {
 	public:
-		virtual void dump(string ident) override;
-
-
+		virtual void dump(string ident) override; 
 		virtual BlockType type() override { return BlockType::BlockActionApply; }
 		 HBlock noum1;
 		 HBlock noum2;
@@ -217,183 +236,128 @@ namespace CBlocking
 		void dump(string ident) override;
 		virtual bool isValue() override { return true; }
 		virtual BlockType type() override { return BlockType::BlockKindAction; }
-		CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) : CBlockKind("action") ,baseClasseName(_baseActionName), applyTo(_applyTo) {}
-
-
+		CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) :  baseClasseName(_baseActionName), applyTo(_applyTo) {} 
 		string baseClasseName;
 		HBlockActionApply applyTo;
 	};
 
 	using HBlockKindAction = std::shared_ptr<CBlockKindAction>;
 
-
-	 
-	class CBlockKindValue : public CBlockKind //Kind of value representa "color is a kind of value" , "red, blue are colors"
+	class CBlockKindValue : public CBlockKind // retorna um valor generico que pertence a uma classe de valor
 	{
 	public:
-		virtual bool isValue() override { return true; }
-		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockKindValue; }
-		CBlockKindValue(string _named) : CBlockKind(_named) {} 
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-
+		virtual bool isValue() override { return true; } 
+		void dump(string ident) override; 
+		virtual BlockType type() override { return BlockType::BlockKindValue; } 
+		string named;
+		CBlockKindValue(string _named) : named(_named) {}
+		 
 	};
+
 	using HBlockKindValue = std::shared_ptr<CBlockKindValue>;
-
-
-
 
 	class CBlockKindThing : public CBlockKind //retorna um valor generico
 	{
 	public:
 		virtual bool isValue() override { return true; }
-
 		void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockKindThing; }
-
-		CBlockKindThing(string _named) : CBlockKind(_named) {}
-
-
-
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-
+		CBlockKindThing(string _named)   {} 
+	 
 	};
-
 	using HBlockKindThing = std::shared_ptr<CBlockKindThing>;
 
 
+	// Obsoleto , Use Composite
+	//class CBlockListOfKind : public CBlockKind // algo como List<Kind> 
+	//{
+	//public:
+	//	virtual bool isValue() override { return true; }
+	//	void dump(string ident) override;
+	//	virtual BlockType type() override { return BlockType::BlockListOfKind; }
+	//	CBlockListOfKind(HBlockKind _itemKind) : CBlockKind("list@" + _itemKind->named), itemKind(_itemKind) {}
+	//	HBlockKind itemKind;
+	//	virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
+	//};
+	//using HBlockListOfKind = std::shared_ptr<CBlockListOfKind>;
 
-	class CBlockListOfKind : public CBlockKind // algo como List<Kind> 
+
+
+
+	class CBlockNamedValue : public CBlockValue //named value eh um noum que eh representa seu proprio valor ... red, blue, opaque ...
 	{
 	public:
-		virtual bool isValue() override { return true; }
-
-		void dump(string ident) override;
-
-		virtual BlockType type() override { return BlockType::BlockListOfKind; }
-
-		CBlockListOfKind(HBlockKind _itemKind) : CBlockKind("list@" + _itemKind->named), itemKind(_itemKind) {}
-
-
-		HBlockKind itemKind;
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
-
-	};
-	using HBlockListOfKind = std::shared_ptr<CBlockListOfKind>;
-
-
-
-
-	class CBlockNamedValue : public CBlock //retorna um valor generico
-	{
-	public:
-		virtual void dump(string ident) override;
-
-
-		virtual BlockType type() override { return BlockType::BlockNamedValue; }
-
-		CBlockNamedValue(string _named);
-
-		string named;
-
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-	};
-
+		virtual void dump(string ident) override; 
+		virtual BlockType type() override { return BlockType::BlockNamedValue; } 
+		CBlockNamedValue(string _named); 
+		string named; 
+	}; 
 	using HBlockNamedValue = std::shared_ptr<CBlockNamedValue>;
 
-	class CBlockVariable : public CBlock //retorna um valor generico
-	{
-	public:
-		virtual void dump(string ident) override;
 
 
-		virtual BlockType type() override { return BlockType::BlockVariable; }
+ 
 
-		CBlockVariable(string _named);
 
-		string named;
 
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
-
-	};
-
-	using HBlockVariable = std::shared_ptr<CBlockVariable>;
-
-	class  CBlockProperty : public CBlock //retorna um valor generico
+	class  CBlockProperty : public CBlock //referencia de uma propriedade de algum objeto
 	{
 	public:
 		void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockProperty; }
 		CBlockProperty(HBlock _prop, HBlock _obj);
-
 		HBlock prop;
 		HBlock obj;
-
 	};
-
 	using HBlockProperty = std::shared_ptr<CBlockProperty>;
 
+
+	//?????
 	class CBlockInstanceVariable : public CBlock //retorna um valor generico
 	{
 	public:
 		void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockInstanceVariable; }
-
 		CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum _property_name);
-
 		HBlockNoum property_name;
 		HBlockNoum kind_name;
-
 	};
-
 	using HBlockInstanceVariable = std::shared_ptr<CBlockInstanceVariable>;
 
 
 
 
-
-	class CBlockKind_InstanceVariable : public CBlock //retorna um valor generico
+	class CBlockKind_InstanceVariable : public CBlock 
 	{
 	public:
 		void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockKind_InstanceVariable; }
 		CBlockKind_InstanceVariable(HBlockKind  _kind, HBlockInstanceVariable _variableNamed) :kind(_kind), variableNamed(_variableNamed) {}
-
-
 		HBlockKind kind;
 		HBlockInstanceVariable variableNamed;
-
-
 	};
 	using HBlockKind_InstanceVariable = std::shared_ptr<CBlockKind_InstanceVariable>;
 
 
 
-	class CBlockList : public CBlock //retorna um valor generico
+
+
+
+	class CBlockList : public CBlock //Lista generica, sem tipo associado
 	{
 	public:
 		virtual void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockList; }
 		std::list<HBlock> lista;
-
 		CBlockList(std::list<HBlock>  _lista) :lista(_lista) {}
-
 		void push_back(HBlock c_block_value);
-		virtual NoumDefinitions noumDefinitions() override;
+		 
 	};
 	using HBlockList = std::shared_ptr<CBlockList>;
 
-	class CBlockList_OR : public CBlockList //retorna um valor generico
+
+
+	class CBlockList_OR : public CBlockList // lista de termos OU
 	{ 
 	public:
 		virtual void dump(string ident) override;
@@ -406,7 +370,7 @@ namespace CBlocking
 	using HBlockList_OR = std::shared_ptr<CBlockList_OR>;
 
 
-	class CBlockList_AND : public CBlockList //retorna um valor generico
+	class CBlockList_AND : public CBlockList //Lista de termos AND
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -421,82 +385,48 @@ namespace CBlocking
 
 
 
-	class CBlockEnums : public CBlock //retorna um valor generico
+	class CBlockEnums : public CBlock // definicao de valores enumerados
 	{
 	public:
 		std::vector<HBlockNoum> values;
-
 		virtual void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockEnums; }
-
 		CBlockEnums(std::vector<HBlockNoum> _values);
-
 		bool contains(string cs);
-
 		string value_x;
 	};
-
 	using HBlockEnums = std::shared_ptr<CBlockEnums>;
 
-	class CBlockAssertion_InstanceVariable : public CBlock    //retorna uma declaracao
+
+
+
+ 
+
+
+
+
+
+
+	class CBlockVerbRelation : public CBlock    // Abstract , define uma relacao
 	{
 	public:
-		virtual void dump(string ident) override;
-
-
-		virtual BlockType type() override { return BlockType::BlockAssertion_InstanceVariable; }
-
-		HBlock noum;
-		HBlockInstanceVariable instance_variable;
-
-
-
-		CBlockAssertion_InstanceVariable(HBlock _noum, HBlockInstanceVariable _instance_variable) : noum((_noum)),
-			instance_variable(
-				_instance_variable) {};
-	};
-
-	using HBlockAssertion_InstanceVariable = std::shared_ptr<CBlockAssertion_InstanceVariable>;
-
-	class CBlockAssertionCond : public CBlock // assertion com condicao
-	{
-	public:
-		HBlockBooleanResult cond;
-	};
-
-
-
-
-
-
-	class CBlockVerbRelation : public CBlock    //retorna uma declaracao
-	{
-	public:
-
-
 		HBlock  verbNoum; // Pode ser simples ou com a preposicao
 		HBlockNoum relationNoum;
-
-
 		CBlockVerbRelation(HBlock  _noum, HBlockNoum _relationNoum) : verbNoum((_noum)), relationNoum((_relationNoum)) {};
 	};
 	using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
+
 
 
 	class CBlockVerbDirectRelation : public CBlockVerbRelation    //retorna uma declaracao
 	{
 	public:
 		virtual void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockVerbDirectRelation; }
-
-
 		CBlockVerbDirectRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
 	};
 	using HBlockVerbDirectRelation = std::shared_ptr<CBlockVerbDirectRelation>;
+
 
 
 
@@ -504,11 +434,7 @@ namespace CBlocking
 	{
 	public:
 		virtual void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockVerbReverseRelation; }
-
-
 		CBlockVerbReverseRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
 	};
 	using HBlockVerbReverseRelation = std::shared_ptr<CBlockVerbReverseRelation>;
@@ -536,17 +462,12 @@ namespace CBlocking
 		explicit CBlockFilterAtom(HBlock input)
 			: input(input) {
 		}
-
-		HBlock input;
-
-		 
+		HBlock input;	 
 	};
 
-	class CBlockFilterList : public CBlockFilter {
-
-		HBlockList input;
-
-		 
+	class CBlockFilterList : public CBlockFilter 
+	{
+		HBlockList input;	 
 	};
 
 
@@ -577,10 +498,7 @@ namespace CBlocking
 		explicit CBlockTransform(HBlock input)
 			: input(input) {
 		}
-
 		HBlock input;
-
-		 
 	};
 
 
@@ -595,35 +513,29 @@ namespace CBlocking
 		HBlockBooleanResult input_if; // o if tem que set True ou False
 		HBlock input_then;
 		HBlock input_else;
-
-		 
 	};
 
-	class CBlockSame : public CBlock, CBlockBooleanResult  // um bloco do tipo if then else
+	class CBlockSame : public   CBlockBooleanResult  // um bloco do tipo if then else
 	{
 		CBlockSame(HBlock input_a, HBlock input_b)
 			: input_A(input_a),
 			input_B(input_b) {
 		}
-
 		HBlock input_A;
 		HBlock input_B;
 	};
 
-	class CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
-	{
-		CBlockProp(HBlock what, HBlock prop)
-			: what(what),
-			prop(prop) {
-		}
 
-		HBlock what;
-		HBlock prop;
-
-		 
-	};
-
-	using HBlockProp = std::shared_ptr<CBlockProp>;
+	//class CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
+	//{
+	//	CBlockProp(HBlock what, HBlock prop)
+	//		: what(what),
+	//		prop(prop) {
+	//	}
+	//	HBlock what;
+	//	HBlock prop;
+	//};
+	//using HBlockProp = std::shared_ptr<CBlockProp>;
 
 
 
@@ -673,13 +585,12 @@ namespace CBlocking
 	//===========================================
 
 
-	class CBlockSelector : public CBlock //retorna uma declaracao
+	class CBlockSelector : public CBlock // Grmatical 
 	{
 	public:
 		HBlock what;
 		CBlockSelector(HBlock _what) :what(_what) {};
 	};
-
 	using HBlockSelector = std::shared_ptr<CBlockSelector>;
 
 
@@ -687,9 +598,7 @@ namespace CBlocking
 	class CBlockSelector_All : public CBlockSelector //retorna uma declaracao
 	{
 	public:
-		void dump(string ident) override;
-
-
+		void dump(string ident) override; 
 		virtual BlockType type() override { return BlockType::BlockSelector_All; }
 		CBlockSelector_All(HBlock _what) :CBlockSelector(_what) {}
 	};
@@ -701,9 +610,7 @@ namespace CBlocking
 	class CBlockSelector_Any : public CBlockSelector //retorna uma declaracao
 	{
 	public:
-		void dump(string ident) override;
-
-
+		void dump(string ident) override; 
 		virtual BlockType type() override { return BlockType::BlockSelector_Any; }
 		CBlockSelector_Any(HBlock _what) :CBlockSelector(_what) {}
 	};
@@ -717,9 +624,7 @@ namespace CBlocking
 	class CBlockSelector_Where : public CBlockSelector //retorna uma declaracao
 	{
 	public:
-		void dump(string ident) override;
-
-
+		void dump(string ident) override; 
 		virtual BlockType type() override { return BlockType::BlockSelector_Where; }
 		CBlockSelector_Where(HBlock _what) :CBlockSelector(_what) {}
 	};

@@ -20,7 +20,7 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockInstance; }
 
-		CBlockInstance(string _named, int id, HBlockKind base);
+		CBlockInstance(  int id, HBlockKind base);
 
 		void newEnumVariableSlot(HBlockEnums definition);
 
@@ -40,11 +40,11 @@ namespace CBlocking
 
 		QueryResul is_set(HBlockNoum value);
 
-		string named; // nome public
+		 
 		int id;  // id unico para cada instancia .. serve para saber se estamos a falar da mesma instancia
 		HBlockKind baseKind;
 
-		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
+		 
 
 		std::vector<HVariableSlot> anomimousSlots;
 		std::vector<HVariableNamed> namedSlots;

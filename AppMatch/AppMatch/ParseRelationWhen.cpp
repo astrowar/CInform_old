@@ -6,6 +6,9 @@
  
 #include "CBlockRelation.hpp"
 #include "CBlockBoolean.hpp"
+#include "CBlockComposition.hpp"
+#include "sharedCast.hpp"
+
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
@@ -25,8 +28,8 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		if (res.result == Equals)
 		{
 			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
-			HBlockKind argumentKindItem = std::make_shared<CBlockKindValue>(kindStr);
-			HBlockKind argumentKind = std::make_shared<CBlockListOfKind>(argumentKindItem);
+			HBlockKindNamed argumentKindItem = std::make_shared<CBlockKindNamed >(kindStr);
+			HBlockKind argumentKind = std::make_shared<CBlockCompositionList>(argumentKindItem);
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
 			return argumentEntry;
 		}
@@ -104,7 +107,10 @@ HBlock NSParser::ParseRelation::STMT_relates_AssertionWhen(CParser *p, std::vect
 				auto arg2 = parser_KindCalled(p,res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
-					if (arg2->kind->named == "other")  arg2->kind = arg1->kind;
+					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
+					{
+						if (kind_n->named == "other")  arg2->kind = arg1->kind;
+					}
 					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}

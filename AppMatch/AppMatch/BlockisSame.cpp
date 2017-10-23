@@ -6,6 +6,7 @@
 #include "CBlockMatch.hpp"
 #include "CBlockDecideIf.hpp"
 #include "CblockAssertion.hpp"
+#include "CBlockComposition.hpp"
 
 using namespace CBlocking;
 
@@ -49,6 +50,18 @@ bool isSame_BlockList(CBlockList* b1, CBlockList* b2)
 	return  isSame_list(b1->lista, b2->lista);
 }
 
+bool isSame_BlockCompositionList(CBlockCompositionList* b1, CBlockCompositionList* b2)
+{
+	return  isSame(b1->itemKind , b2->itemKind);
+}
+
+bool isSame_BlockKindNamed(CBlockKindNamed* b1, CBlockKindNamed* b2)
+{
+	return b1->named == b2->named;
+}
+
+ 
+
 bool isSame_BlockList_AND(CBlockList* b1, CBlockList* b2)
 {
 	return  isSame_list(b1->lista, b2->lista);
@@ -61,18 +74,20 @@ bool isSame_BlockList_OR(CBlockList* b1, CBlockList* b2)
 
 bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
 {
-	return b1->named == b2->named;
+	return b1 == b2;
 }
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 {
-	if (b1->named != b2->named) return false;
+	//if (b1->named != b2->named) return false;
+
 	if (b1->id != b2->id) return false;
 	return false;
 }
 
 bool isSame_BlockAction(CBlockAction * b1, CBlockAction* b2)
 {
-	return b1->named == b2->named;
+	
+	return b1 == b2;
 }
 
 
@@ -85,7 +100,7 @@ bool isSame_BlockMatchNoum(CBlockMatchNoum* b1, CBlockMatchNoum* b2)
 
 bool isSame_BlockMatchNoum(CBlockKind* b1, CBlockKind* b2)
 {
-	return b1->named == b2->named;
+	return b1  == b2 ;
 }
 
 bool isSame_BlockProperty(CBlockProperty* b1, CBlockProperty* b2)
@@ -175,6 +190,8 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	if (b1->type() == BlockNothing)  return isSame_BlockNothing(static_cast<CBlockNothing*>(b1), static_cast<CBlockNothing*>(b2));
 	if (b1->type() == BlockList)  return isSame_BlockList(static_cast<CBlockList*>(b1), static_cast<CBlockList*>(b2));
 
+	if (b1->type() == BlockCompositionList)  return isSame_BlockCompositionList(static_cast<CBlockCompositionList*>(b1), static_cast<CBlockCompositionList*>(b2));
+	if (b1->type() == BlockKindNamed)  return isSame_BlockKindNamed(static_cast<CBlockKindNamed*>(b1), static_cast<CBlockKindNamed*>(b2));
 
 	assert(false);
 	return false;
