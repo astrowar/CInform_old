@@ -25,6 +25,7 @@
 
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
+#include "CBlockCompostion.hpp"
 
 #include <cassert>
 
@@ -1035,6 +1036,16 @@ void CBlockControlToken::dump(string ident)
 	}
 	CBlock::dump(ident);
 }
+
+
+
+void CBlockCompostionPhrase::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Phrase Kind  ");
+	
+	CBlock::dump(ident);
+}
+
 
 void CBlockControlIF::dump(string ident)
 {

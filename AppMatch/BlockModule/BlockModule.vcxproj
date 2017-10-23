@@ -138,6 +138,7 @@
     <ClInclude Include="..\AppMatch\CblockAssertion.hpp" />
     <ClInclude Include="..\AppMatch\CBlockBoolean.hpp" />
     <ClInclude Include="..\AppMatch\CBlockCommand.hpp" />
+    <ClInclude Include="..\AppMatch\CBlockCompostion.hpp" />
     <ClInclude Include="..\AppMatch\CBlockControlFlux.hpp" />
     <ClInclude Include="..\AppMatch\CBlockDecideIf.hpp" />
     <ClInclude Include="..\AppMatch\CBlockDumpValues.hpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="..\AppMatch\BlockisSame.cpp" />
     <ClCompile Include="..\AppMatch\CBase.cpp" />
     <ClCompile Include="..\AppMatch\CBlockCommand.cpp" />
+    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp" />
     <ClCompile Include="..\AppMatch\CBlockDumpValues.cpp" />
     <ClCompile Include="..\AppMatch\CBlockNumber.cpp" />
     <ClCompile Include="..\AppMatch\CBlockSerialize.cpp" />

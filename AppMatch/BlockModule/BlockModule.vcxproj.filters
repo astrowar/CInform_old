@@ -108,6 +108,9 @@
     <ClInclude Include="..\AppMatch\serialRegister.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\AppMatch\CBlockCompostion.hpp">
+      <Filter>Headers\Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AppMatch\BlockisSame.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="..\AppMatch\CMatch.cpp">
       <Filter>Source\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
