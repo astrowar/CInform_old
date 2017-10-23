@@ -247,6 +247,7 @@ namespace NSParser
 		CBlocking::HBlock parser_valueReference(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parser_assertionTarger(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock  Parser_Expression(CParser * p, string str, bool dump);
+	 
 	}
 
 	namespace ExpressionMatch

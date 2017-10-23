@@ -226,25 +226,22 @@ namespace CBlocking
 
 	using HBlockKindAction = std::shared_ptr<CBlockKindAction>;
 
-	class CBlockKindValue : public CBlockKind //retorna um valor generico
+
+	 
+	class CBlockKindValue : public CBlockKind //Kind of value representa "color is a kind of value" , "red, blue are colors"
 	{
 	public:
 		virtual bool isValue() override { return true; }
-
 		void dump(string ident) override;
-
-
 		virtual BlockType type() override { return BlockType::BlockKindValue; }
-
-		CBlockKindValue(string _named) : CBlockKind(_named) {}
-
-
-
+		CBlockKindValue(string _named) : CBlockKind(_named) {} 
 		virtual NoumDefinitions noumDefinitions() override { return single_definitions(named, this); };
 
 	};
-
 	using HBlockKindValue = std::shared_ptr<CBlockKindValue>;
+
+
+
 
 	class CBlockKindThing : public CBlockKind //retorna um valor generico
 	{

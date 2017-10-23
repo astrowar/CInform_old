@@ -29,6 +29,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <cstdio>
 
 using namespace std;
 using namespace CBlocking;
@@ -563,11 +564,11 @@ void CBlockSelectorAND::dump(string ident) {
 }
 
 
-void CBlockComposition::dump(string ident)
-{
-	printf("%s %s\n", ident.c_str(), "Compostion  ");
-	CBlock::dump(ident);
-}
+//void CBlockComposition::dump(string ident)
+//{
+//	printf("%s %s\n", ident.c_str(), "Compostion  ");
+//	CBlock::dump(ident);
+//}
 void CBlockCompositionList::dump(string ident)
 {
 	printf("%s %s\n", ident.c_str(), "Compostion  List ");

@@ -771,13 +771,30 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		if (HBlockInstance objInst = asHBlockInstance(instancia))
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
+
+				objInst->dump("P  ");
+				 
 				HVariableNamed pvar = objInst->get_property(propNoum->named);
+
+				pvar->dump("P  ");
+
 				HBlock ret_val = Nothing;
 				if (pvar != nullptr)
 				{
-					if (pvar->value != nullptr) ret_val = pvar->value;
-					HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
-					if (default_val != nullptr) ret_val = default_val;
+					if (pvar->value != nullptr)
+					{
+						ret_val = pvar->value;						
+					}
+					 
+
+					if (is_nothing(ret_val) )
+					{
+						HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
+						if (default_val != nullptr)
+						{
+							ret_val = default_val;
+						}
+					}
 
 					return ret_val;
 				}
@@ -1165,19 +1182,69 @@ ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::H
 	return ListOfNamedValue();
 }
 
+HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (HBlockMatchNamed rel_mn = DynamicCasting::asHBlockMatchNamed(value))
+	{
+		auto v1 = resolve_argument_match(rel_mn->matchInner, localsEntry, stk);		 
+		return std::make_shared<CBlockMatchNamed>(rel_mn->named, v1);
+	}
+
+	if (HBlockMatchNoum nnoum  = DynamicCasting::asHBlockMatchNoum(value))
+	{
+		auto r = resolve_noum(nnoum->inner , localsEntry );
+		if (HBlockKind k = asHBlockKind( r) )
+		{
+			return std::make_shared<CBlockMatchKind>(k);
+		}
+
+		logError("What ?");
+		
+	}
+
+	return nullptr;
+}
 
 HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	if (value == nullptr) return nullptr;
+	if (value == nullptr)
+	{
+		return nullptr;
+	}
 	auto value_2 = value;
-	if (HBlockMatchNoum mvalue_2 = DynamicCasting::asHBlockMatchNoum(value_2)) value_2 = mvalue_2->inner;
+	
+	if (HBlockMatchNoum mvalue_2 = DynamicCasting::asHBlockMatchNoum(value_2)) 
+	{
+		return resolve_argument_match(value_2, localsEntry, stk);
+	}
+	
+
 	if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
 	{
 		HBlock resolved = resolve_noum(nnoum_2, localsEntry);
 		if (resolved != nullptr) return resolved;
+		return nullptr;
 	}
 	
-	if (value_2 != nullptr) return  exec_eval_internal(value_2, localsEntry, stk); 
+	if (HBlockRelationArguments rel_args = DynamicCasting::asHBlockRelationArguments (value_2))
+	{
+		auto v1 = resolve_argument(rel_args->value1, localsEntry, stk);
+		auto v2 = resolve_argument(rel_args->value2, localsEntry, stk);
+		return std::make_shared<CBlockRelationArguments>(v1, v2);
+	}
+
+	if (HBlockMatchNamed rel_mn = DynamicCasting::asHBlockMatchNamed(value_2))
+	{
+		auto v1 = resolve_argument_match(rel_mn->matchInner , localsEntry, stk);
+		{
+			return std::make_shared<CBlockMatchNamed>(rel_mn->named, v1);
+		}
+	}
+
+	if (value_2 != nullptr)
+	{
+		return  exec_eval_internal(value_2, localsEntry, stk);
+	}
 
 	return value_2;
 }

@@ -1,5 +1,6 @@
 #include "BaseTest.hpp"
 #include <cassert>
+#include <cassert>
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -129,17 +130,17 @@ the destination is always north
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
 	f_eval("prevailing wind ")->dump("E ");
 	f_eval("destination ")->dump("E ");
-	//assert(f_is("heat of ice cube is room temperature "));
+	assert(f_is("prevailing wind is west"));
 	f_now("prevailing wind is beta ");
-	//assert(f_is("heat of ice cube is frosty "));
+	assert(f_is("prevailing wind  is west "));
 
 }
 
 
 void testValues_all()
 {
-	//testValues_1();
-	//testValues_2();
+	testValues_1a();
+	testValues_2();
 	testValues_3();
 	//testValues_1();
 	//testValues_2();
