@@ -1,0 +1,112 @@
+ Undo Rule e Undo RuleSet 
+  Um problema ... eh preciso armazenar e salvar todas as mudancas durante uma regra
+  e restaurar se houver um undo ... 
+  Para tal sera nescessario um mecanismo de save recursivo das estruturas mutaveis
+  uma forma de implementar isso é fazer uma copia de TODO o interpreter .. inviavel
+  
+  Custom Kinds of Variables
+  The jug of milk is a thing. 
+  The jug has a number called the liquid level.
+  
+Kinds of Value
+  A liquid level is a kind of value. 
+  The liquid levels are completely full, mostly full,half full, mostly empty, and completely empty.
+  The jug of milk has a liquid level.
+  
+  
+The Values Before and After
+  let amount be the liquid level of jug of milk;
+  now amount is the liquid level after amount;
+  after full ->  mostly full
+  before mostly empty -> half full
+  
+Phrases
+  Named Phrases
+  
+  To begin the match:
+     stmt 1
+	 stmt 2
+	 stmt 3
+  
+  begin the match; -> aciona a sequencia de comandos
+  
+Phrases to Decide
+  To decide {what/which} number is the best number: decide {on} 7.
+  To decide {if/whether or not} x is the best number: {decide {on}} yes.
+  To decide if court is standard: ...
+  
+Phrases with Variable Inputs  
+  To decide whether a court (court length - a number) by (court width - a number) is standard: ...
+  To decide which liquid level is the fullness of (item - an object) after (X - a number) swallows: ...
+  
+  
+ Creating List Variables
+ 
+   #lista vazias
+   let friends be a list of people;
+   let forgotten items be a list of things;
+   
+   #listas cheias
+   let forgotten items be the list of handled unheld things;
+   let territory be the list of visited rooms;
+   
+   #add to 
+   add Ortho to friends;
+   add Ortho to friends, if absent;
+   add the list of visible people to friends, if absent;
+   
+   remove Albert from friends
+   remove Albert from friends, if present
+   remove entry 1 from friends
+   remove entries 1 to 3 from friends
+   remove the list of unpleasant people from friends, if present;
+   
+   
+   if Albert is listed in friends   
+   if Albert is not listed in friends
+   the number of entries in friends
+   let best friend be entry 1 of friends;
+   
+   now entry 1 of friends is Michael;
+   
+   #SORT
+   sort friends;
+   sort friends in random order;
+   reverse friends;
+   truncate friends to the first 8 entries;
+   truncate friends to the last 8 entries;
+   
+   repeat with current window running through the list of open windows: ...
+   repeat with character running through friends: ...
+   
+   
+Numbers
+  let age be 23;
+  Every train has a number called the serial number.
+  The degrees Fahrenheit is a number variable.
+   
+  # 16 years is not equal to 16 feet, and it doesn’t make much sense to let both sorts of values be stored in the same kind of variable.   
+  
+  # The specifies assertion sentence tells Inform the form we want the new kind of number to appear in,
+  An age is a kind of value. 16 years old specifies an age.
+  A dollar amount is a kind of value. $15.99 specifies a dollar amount.
+  A distance in light-years is a kind of value. 16ly specifies a distance in light-years.
+  
+  
+Relations
+  Suggestion relates various things to one memory.
+  The verb to suggest implies the suggestion relation.
+  The last day of high school is a memory. It is suggested by the tumbleweed.
+  The tumbleweed suggests a memory called the last day of high school.
+  
+  Requirement relates one plan to various things.
+  The verb to require implies the requirement relation.
+  Staying the night is a plan.
+  Staying the night requires the emergency blanket and the canned oranges.
+  
+  
+  
+  
+ 
+  
+  
