@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InterpreterModule", "Interp
 		{E3F397E8-75FB-4917-BFE8-9F3EB02267FE} = {E3F397E8-75FB-4917-BFE8-9F3EB02267FE}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoreData", "StoreData\StoreData.vcxproj", "{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -62,6 +64,14 @@ Global
 		{85D3D53B-24D4-40A9-9C66-4E669A1D6870}.Release|x64.Build.0 = Release|x64
 		{85D3D53B-24D4-40A9-9C66-4E669A1D6870}.Release|x86.ActiveCfg = Release|Win32
 		{85D3D53B-24D4-40A9-9C66-4E669A1D6870}.Release|x86.Build.0 = Release|Win32
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Debug|x64.ActiveCfg = Debug|x64
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Debug|x64.Build.0 = Debug|x64
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Debug|x86.ActiveCfg = Debug|Win32
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Debug|x86.Build.0 = Debug|Win32
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Release|x64.ActiveCfg = Release|x64
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Release|x64.Build.0 = Release|x64
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Release|x86.ActiveCfg = Release|Win32
+		{FCF2BDFC-AEE6-4758-80A5-251A3ADAF096}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -68,6 +68,7 @@ namespace CBlocking
 
 		static bool isSame(CBlock* b1, CBlock* b2)  ;
 
+
 		//template <class HArchive> static void load_and_construct(HArchive& ar, cereal::construct<CBlock>& construct);
 	};
 
