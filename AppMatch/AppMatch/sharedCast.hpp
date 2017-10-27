@@ -86,6 +86,8 @@ namespace CBlocking
 		HBlockAction asHBlockAction(CBlocking::HBlock c);
 		HBlockActionNamed asHBlockActionNamed(CBlocking::HBlock c);
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c);
+
+		HBlockActionCallNamed asHBlockActionCallNamed(CBlocking::HBlock c);
 		HVariableNamed asHVariableNamed(CBlocking::HBlock c);
 		HBlockUnderstandDynamic asHBlockUnderstandDynamic(CBlocking::HBlock c);
 		HBlockUnderstandStatic asHBlockUnderstandStatic(CBlocking::HBlock c);

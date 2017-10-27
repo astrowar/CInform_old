@@ -19,12 +19,12 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
-PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCallN v_call, HRunLocalScope localsEntry, QueryStack *stk)
+PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 
 
-	QueryResultContext qAction = query_is(v_call->action, evh->eventToObserve->action, localsEntry, stk);
+	QueryResultContext qAction = query_is(v_call, evh->eventToObserve->action, localsEntry, stk);
 	if (qAction.result == QEquals)
 	{
 		QueryResul qarg1 = QEquals;
@@ -102,7 +102,7 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 		if (evh->stage == StageBefore)
 		{
 			
-			QueryResultContext qAction = query_is(v_call->action , evh->eventToObserve->action , localsEntry, stk);
+			QueryResultContext qAction = query_is(v_call , evh->eventToObserve->action , localsEntry, stk);
 			if (qAction.result == QEquals)
 			{
 				QueryResul qarg1 = QEquals;
@@ -179,10 +179,14 @@ PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, H
 
 PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 {
-	 
+
+
+	if (HBlockActionCallNamed  v_calln = asHBlockActionCallNamed(v_call))
 	for (HBlockActionNamed a : system_actions)
 	{
-		if (a.get() == v_call->action.get())
+
+		{
+		  if (a.get() == v_calln.get())
 		{
 			if (a->named == "say_text")
 			{
@@ -206,6 +210,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 				return PhaseResult(false);;
 			}
 		}
+	}
 	}
 	return PhaseResult(false);
 
@@ -240,7 +245,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 }
  
 
-PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk)
 { 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
  
@@ -276,7 +281,7 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
 			}
 
 
-			kaction = ap->action;
+			kaction = ap->actionKind;
 			break;
 		}
 

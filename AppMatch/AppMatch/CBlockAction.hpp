@@ -40,11 +40,11 @@ namespace CBlocking
 	{
 	public:
 		std::string named;
-		HBlockAction action;
-		CBlockActionNamed(std::string _named) : named(_named) { action = nullptr; }
-		CBlockActionNamed(std::string _named, HBlockAction _act) :action(_act), named(_named)  {}
+		HBlockKindAction actionKind;
+		CBlockActionNamed(std::string _named) : named(_named) { actionKind = nullptr; }
+		CBlockActionNamed(std::string _named, HBlockKindAction _act) :actionKind(_act), named(_named)  {}
 
-		virtual HBlockKindAction get_base() { return action->get_base(); }
+		virtual HBlockKindAction get_base() { return actionKind ; }
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockActionNamed; }
 	};

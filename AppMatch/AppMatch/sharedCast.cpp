@@ -452,6 +452,15 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockActionCall>(c);
 			return nullptr;
 		}
+
+		HBlockActionCallNamed asHBlockActionCallNamed(CBlocking::HBlock c)
+		{
+					if (c != nullptr && c->type() == BlockType::BlockActionCallNamed )
+						return std::static_pointer_cast<CBlockActionCallNamed>(c);
+					return nullptr;
+				}
+
+
 		HVariableNamed asHVariableNamed(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::VariableNamed)

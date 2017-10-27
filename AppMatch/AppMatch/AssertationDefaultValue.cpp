@@ -273,7 +273,7 @@ bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking:
 			//default_assignments.push_back(make_shared<CBlockAssertion_isDefaultAssign>(kbase, nvalue));
 		}
 		auto kdef = make_shared<CBlockAssertion_isDefaultAssign>(kbase, value);
-		kdef == nullptr;
+		//kdef == nullptr;
 		default_assignments.push_back(kdef);
 		add_defaultValueVariableToAllinstances(kdef);
 		return true;
