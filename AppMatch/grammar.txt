@@ -2,9 +2,11 @@
   Um problema ... eh preciso armazenar e salvar todas as mudancas durante uma regra
   e restaurar se houver um undo ... 
   Para tal sera nescessario um mecanismo de save recursivo das estruturas mutaveis
-  uma forma de implementar isso � fazer uma copia de TODO o interpreter .. inviavel
+  uma forma de implementar isso � fazer uma copia de TODO o interpreter .. inviavel
+  O proprio inteprter considera que dois cblocks alocados em lugares diferentes podem ser iguais... vide isSame
   
-  Custom Kinds of Variables
+  
+Custom Kinds of Variables
   The jug of milk is a thing. 
   The jug has a number called the liquid level.
   
@@ -12,14 +14,37 @@ Kinds of Value
   A liquid level is a kind of value. 
   The liquid levels are completely full, mostly full,half full, mostly empty, and completely empty.
   The jug of milk has a liquid level.
-  
+
   
 The Values Before and After
   let amount be the liquid level of jug of milk;
   now amount is the liquid level after amount;
   after full ->  mostly full
   before mostly empty -> half full
-  
+
+Kinds of Kinds
+  Um tipo eh sempre derivado do MetaKind
+  Tipos de dados basicos sao: Instancias(Thing), Numeros, Relacoes, Acoes, Phases, Text, List
+  Ha dois tipos de heranca, heranca a nivel de c++ e a nivel de inform
+  o MetaKind eh o mais fundamental do inform
+   
+Heranca de tipos
+ um Kind pode ser uma classe derivada de outro.
+ object is a kind of thing // aqui se gera um kindInstance ... que eh o default
+ Book is a kind of object  
+ recipe is a kind of list of objects // cria algo como um typedef
+ cake recipe is a recipe  // cake recipe eh uma lista de objetos
+
+ 
+
+
+Generate Intances
+  instancias sao objetos que sao identificados pelo nome e sao objetos de um tipo KindInstance
+  instancias tem adjetivos e propriedades
+  A talent is a kind of thing. 
+  strength, courage, luck, scent, honor, spirit and freedom are talents
+
+
 Phrases
   Named Phrases
   
@@ -81,16 +106,16 @@ Phrases with Variable Inputs
    
    
 Numbers
-  let age be 23;
-  Every train has a number called the serial number.
-  The degrees Fahrenheit is a number variable.
-   
-  # 16 years is not equal to 16 feet, and it doesn�t make much sense to let both sorts of values be stored in the same kind of variable.   
-  
-  # The specifies assertion sentence tells Inform the form we want the new kind of number to appear in,
-  An age is a kind of value. 16 years old specifies an age.
-  A dollar amount is a kind of value. $15.99 specifies a dollar amount.
-  A distance in light-years is a kind of value. 16ly specifies a distance in light-years.
+    let age be 23;
+    Every train has a number called the serial number.
+    The degrees Fahrenheit is a number variable.
+    
+    # 16 years is not equal to 16 feet, and it doesn�t make much sense to let both sorts of values be stored in the same kind of variable.   
+    
+    # The specifies assertion sentence tells Inform the form we want the new kind of number to appear in,
+    An age is a kind of value. 16 years old specifies an age.
+    A dollar amount is a kind of value. $15.99 specifies a dollar amount.
+    A distance in light-years is a kind of value. 16ly specifies a distance in light-years.
   
   
 Relations
@@ -106,7 +131,88 @@ Relations
   
   
   
+Descicoes condicionais
+    every window is closed
+    any window is visible
+    any thing is fixed in place
   
+  
+Definicao de adjetiv
+    Definition: a thing is important if it is not a backdrop.  
+    Definition: a thing is important if it is not a backdrop and it is not scenery and it is visible.
+    Definition: a thing is important if it is not a backdrop.
+    Definition: a thing is important: if it is not a backdrop, [decide] yes.
+    Definition: a thing is important: if it is not a backdrop, [decide] yes; otherwise, [decide] no.
+    Definition: a thing is important: if it is not a backdrop, yes; if it is held by the player, yes; otherwise, no.
+    Definition: a thing is important rather than irrelevant if ...
+    Definition: a thing is not important if ...
+    
+    Definition: a room is within range of headlights if ...
+    Definition: a room is lit brightly if ...
+   
+   
+Conditional Text Substitutions  
+    "Sturdy and heavy[if flashlight is switched on], currently turned on[end if]." 
+  
+Actions
+    An action's check rulebook decides whether that action is possible in the present circumstances.
+    If the action is possible, its carry out rulebook enacts the changes in the story world that result from it.
+    Then, the action's report rulebook tells the player the results of the successful action.
+    
+    As definicoes de regra de acao sao as seguintes:
+    Check wearing: ...
+    Check wearing when {a condition}: ...
+    Check wearing {a thing}:…
+    Check wearing something {a property or adjective}:…
+    Check wearing {a description}:…
+    A check wearing rule: ...
+    A check wearing rule when {a condition}: ...
+    A check wearing rule (this is the can’t wear what’s not clothing rule): ...  
+    A rule in the before rulebook makes an adjustment to the story world before an action is attempted.
+    A rule in the instead rulebook overrides the normal behavior of an action and does something different.
+    A rule in the after rulebook changes how the result of a specific successful action is described to the player.
+    Instead of ( taking  (something enclosed by the hole) ) when ( player does not hold courage ): say ...
+    Definition: (a thing called A) is enclosed by (a thing called B) if B contains A.
+    Instead of inserting anything into the hole: ...
+    After opening ( drawer in dim Staging Area) : say ...
+    After ( ( opening drawer ) in dim Staging Area ) : say ...
+    
+    Definition: ( action called A ) is in (room called R ) if ( actor of A ) is in R
+      Aqui devo fazer um atendo... no inform Action eh um actionCall ( actionName , noum1, noum2, actor ) , 
+      que se entao eh feito uma busca na tabela para se determinar qual entry ele executa 
+      um ou mais verbos podem invocar a mesma actionName , put X in Y, insert X in Y, place X in Y ... todas chamam putting Action
+
+    Instead of (going to Open Desert) when ( ( flashlight is not held ) or ( flashlight is not switched on ) ): say ...
  
-  
-  
+    Check taking a hot thing: instead say "It's way too hot to pick up."
+    Report taking a hot thing: say "Ouch! [The noun] burns your fingers."
+
+Create Actions  
+    Smoking is an action applying to one thing
+    Smoking is an action applying to one visible thing
+    Smoking is an action applying to one carried thing
+    Connecting is an action applying to one carried thing and one thing.
+    Connecting requires light
+
+    Actions possuem advetivos e podem estar em relacoes
+      Requirement relates one Actions to various requiment.
+      light, tool and battery are requiment
+
+    Fixing is an action to one thing
+    Fixing requires light
+    Fixing requires tool
+    Check apply ( action called A ) to ( thing X ) when ( ( A reqires tool ) and ( tools is not held by (actor of A) )) : instead say  ...
+
+    The word silently added to a try phrase means the report rules for that action will be
+    skipped, which is useful for actions which probably seem automatic and not noteworthy
+    to the player character.
+
+
+Blocking rules
+   Ha uma forma de bloquear regras existentes no inform :
+   (The sophisticated block smelling rule) is listed instead of (the block smelling rule) in the ( check smelling rules ). 
+
+List Query
+    list query eh uma forma de obter uma lista de itens que satifaz uma query
+    list of ( windows in office interior )
+        faz um for em cada obj de kind Window e testa ( obj in office interior )

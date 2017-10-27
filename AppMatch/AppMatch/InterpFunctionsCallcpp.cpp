@@ -19,7 +19,7 @@ using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 
 
-PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCallN v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 

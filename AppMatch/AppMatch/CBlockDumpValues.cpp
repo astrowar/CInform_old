@@ -604,7 +604,7 @@ void CBlockCompositionPhrase::dump(string ident)
 	CBlock::dump(ident);
 }
 
-void CBlockActionCall::dump(string ident) {
+void CBlockActionCallNamed::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Call ");
 	{
 		this->action->dump(ident + "       ");

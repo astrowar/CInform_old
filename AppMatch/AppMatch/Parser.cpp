@@ -101,7 +101,7 @@ HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  t
 		auto nterms = expandTerm(res.matchs["Body"]);
 		HBlock value = Expression::parser_expression_lst(p,nterms);		
 		HBlockActionNamed say_Action = std::make_shared<CBlockActionNamed>("say_text");
-		return std::make_shared<CBlockActionCall>(say_Action, value, nullptr);
+		return std::make_shared<CBlockActionCallNamed>(say_Action, value, nullptr);
 	}
 	return nullptr;
 }

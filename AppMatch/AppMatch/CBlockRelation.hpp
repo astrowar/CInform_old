@@ -1,6 +1,9 @@
 #pragma once
-#include "BlockInterpreter.hpp"
+#ifndef CBLOCKS_RELDECL_H
+#define CBLOCKS_RELDECL_H
 
+#include "BlockInterpreter.hpp"
+#include "CBlockMatch.hpp"
 
 namespace CBlocking
 {
@@ -127,14 +130,15 @@ namespace CBlocking
 	class CBlockRelationLookup : public CBlock
 	{
 	public:
-		virtual void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockRelationLookup; }
-		string relation;
 		HBlockMatch value1;
 		HBlockMatch value2;
+		virtual void dump(string ident)  ;
+		virtual BlockType type()   { return BlockType::BlockRelationLookup; }
+		string relation;
+
 		NoumLocation term_to_query;
 
-		CBlockRelationLookup(string _relation, HBlockMatch _value1, HBlockMatch  _value2, NoumLocation _term_to_query) : relation(_relation), value1(_value1), value2(_value2), term_to_query(_term_to_query)
+		CBlockRelationLookup(string _relation, HBlockMatch _value1, HBlockMatch  _value2, NoumLocation _term_to_query) : value1(_value1), value2(_value2), relation(_relation), term_to_query(_term_to_query)
 		{
 
 		}
@@ -208,3 +212,6 @@ namespace CBlocking
 
 }
 
+
+
+#endif

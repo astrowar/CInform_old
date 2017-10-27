@@ -13,7 +13,7 @@ namespace CBlocking
 	{
 	public:		 
 		CBlockAction( )  {		} 
-		virtual HBlockKindAction get_base() =0;
+		virtual HBlockKindAction get_base() = 0;
 	};
 	using HBlockAction = std::shared_ptr<CBlockAction>;
 
@@ -56,14 +56,14 @@ namespace CBlocking
 
 	class CBlockActionCall : public CBlock {
 	public:
-		HBlockActionNamed action;  //named , porque ha mais de uma forma de executar uma acao, com argumentos diferentes
+ 
 		CBlocking::HBlock noum1;
 		CBlocking::HBlock noum2;
 
-		CBlockActionCall(HBlockActionNamed _action, CBlocking::HBlock _noum1, CBlocking::HBlock _noum2) : action(_action), noum1(_noum1),
+		CBlockActionCall(  CBlocking::HBlock _noum1, CBlocking::HBlock _noum2) :  noum1(_noum1),
 			noum2(_noum2) {}
 
-		void dump(string ident) override;
+	 
 		virtual BlockType type() override { return BlockType::BlockActionCall; }
 	};
 
@@ -71,17 +71,28 @@ namespace CBlocking
 
 
 
-
-
-
-	class CBlockStaticDispatch : public CBlockAction {
+	class CBlockActionCallNamed : public CBlockActionCall {
 	public:
-		int staticEntryTable;
-		CBlocking::HBlock noum1;
-		CBlocking::HBlock noum2;
+		HBlockActionNamed action;  //named , porque ha mais de uma forma de executar uma acao, com argumentos diferentes
+ 
 
-		CBlockStaticDispatch(int _staticEntryTable, CBlocking::HBlock _noum1, CBlocking::HBlock _noum2) :CBlockAction(),
-			staticEntryTable(_staticEntryTable), noum1(_noum1), noum2(_noum2) {}
+		CBlockActionCallNamed(HBlockActionNamed _action, CBlocking::HBlock _noum1, CBlocking::HBlock _noum2) : CBlockActionCall(_noum1,_noum2), action(_action) {}
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockActionCallNamed; }
+	};
+
+	using HBlockActionCallNamed = std::shared_ptr<CBlockActionCallNamed>;
+
+
+	 
+
+
+	class CBlockStaticDispatch : public CBlockActionCall {
+	public:
+		int staticEntryTable; 
+		CBlockStaticDispatch(int _staticEntryTable, CBlocking::HBlock _noum1, CBlocking::HBlock _noum2) :CBlockActionCall(_noum1, _noum2),
+			staticEntryTable(_staticEntryTable)    {}
 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockStaticDispatch; }

@@ -328,11 +328,11 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{
-			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!			
+			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!			
 			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr());
 			auto nn2 = std::make_shared<CBlockNoum>(res.matchs["noum2"]->repr());
 
-			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc , nn1, nn2  ); //An Action !!!
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc , nn1, nn2  ); //An Action !!!
 			return actionCall;
 		}
 	}
@@ -348,9 +348,9 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!			
+			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!			
 			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr()); 
-			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc, nn1, nullptr); //An Action !!!
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nullptr); //An Action !!!
 			return actionCall;
 		}
 	}
@@ -365,8 +365,8 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto actionDesc = std::make_shared<CBlockAction>((res.matchs["Action"]->repr())); //An Action !!!		 
-			auto actionCall = std::make_shared<CBlockActionCall>(actionDesc, nullptr, nullptr); //An Action !!!
+			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!		 
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nullptr, nullptr); //An Action !!!
 			return actionCall;
 		}
 	}
