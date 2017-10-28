@@ -196,7 +196,7 @@ bool  CBlockInterpreter::assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocki
 	if (HBlockKind kbase = asHBlockKind(obj))
 	{ 
 		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(kbase, value);
-		kdef == nullptr;
+		//kdef == nullptr;
 		constant_assignments.push_back(kdef);
 		add_constantValueVariableToAllinstances(kdef);
 		return true;
@@ -221,7 +221,7 @@ bool CBlockInterpreter::assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlockin
 
 	if (HBlockInstance ibase = asHBlockInstance(obj)) {
 		auto kdef = make_shared<CBlockAssertion_isForbiddenAssign>(ibase, value);
-		kdef == nullptr;
+		//kdef == nullptr;
 		forbiden_assignments.push_back(kdef);
 		add_forbidenValueVariableToAllinstances(kdef);
 		return true;
@@ -236,7 +236,7 @@ bool CBlockInterpreter::assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlockin
 	{
 		 
 		auto kdef = make_shared<CBlockAssertion_isForbiddenAssign>(kbase, value);
-		kdef == nullptr;
+		//kdef == nullptr;
 		forbiden_assignments.push_back(kdef);
 		add_forbidenValueVariableToAllinstances(kdef);
 		return true;

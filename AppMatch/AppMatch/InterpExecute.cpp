@@ -1105,7 +1105,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				
 				 HRunLocalScope localsNextp = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);
 				  
-				return  make_shared< CExecutionBlock >(localsNextp, std::make_shared<CBlockActionCall>(actionCall, ref_Arg_1 , ref_Arg_2));
+				return  make_shared< CExecutionBlock >(localsNextp, std::make_shared<CBlockActionCallNamed>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
 
 			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, output_block);
@@ -1261,13 +1261,16 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 
 HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	HBlockActionCall c = std::make_shared< CBlockActionCall >(vCall->action, nullptr,nullptr );
+	if (HBlockActionCallNamed  vCalln = asHBlockActionCallNamed(vCall))
+	{
+	HBlockActionCallNamed c = std::make_shared< CBlockActionCallNamed >(vCalln->action, nullptr,nullptr );
 	if (vCall->noum1 != nullptr)c->noum1 = resolve_argument(vCall->noum1, localsEntry, stk);
 	
 	if (vCall->noum2 != nullptr)c->noum2 = resolve_argument(vCall->noum2, localsEntry, stk);
 	
 	return c;
-
+	}
+	return nullptr;
 }
 
 

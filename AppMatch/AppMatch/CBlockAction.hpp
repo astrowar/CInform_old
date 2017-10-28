@@ -30,7 +30,7 @@ namespace CBlocking
 		void set_property(string pnamed, CBlocking::HBlock value);
 		std::vector<HVariableNamed> namedSlots;
 		HBlockKindAction base_kind;
-		virtual HBlockKindAction get_base() { return base_kind; }
+		virtual HBlockKindAction get_base() override  { return base_kind; }
 	};
 	using HBlockActionInstance = std::shared_ptr<CBlockActionInstance>;
 
@@ -44,7 +44,7 @@ namespace CBlocking
 		CBlockActionNamed(std::string _named) : named(_named) { actionKind = nullptr; }
 		CBlockActionNamed(std::string _named, HBlockKindAction _act) :actionKind(_act), named(_named)  {}
 
-		virtual HBlockKindAction get_base() { return actionKind ; }
+		virtual HBlockKindAction get_base() override  { return actionKind ; }
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockActionNamed; }
 	};

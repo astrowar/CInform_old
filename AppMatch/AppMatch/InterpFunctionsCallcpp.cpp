@@ -186,7 +186,7 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 	{
 
 		{
-		  if (a.get() == v_calln.get())
+		  if (CBlock::isSame(a.get() , v_calln->action.get()))
 		{
 			if (a->named == "say_text")
 			{
@@ -244,7 +244,15 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 	//return PhaseResult(false);;
 }
  
+PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if ( HBlockActionCallNamed c = asHBlockActionCallNamed(v_call))
+	{
+		return execute_user_action(c,   localsEntry,   stk);
+	}
+	return PhaseResult(false);;
 
+}
 PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk)
 { 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
