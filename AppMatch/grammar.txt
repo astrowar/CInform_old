@@ -216,3 +216,14 @@ List Query
     list query eh uma forma de obter uma lista de itens que satifaz uma query
     list of ( windows in office interior )
         faz um for em cada obj de kind Window e testa ( obj in office interior )
+
+
+Action Kinds
+ Acoes podem ser callsificadas por tipo
+  	Attacking is aggressive behaviour.
+	Examining is inquisitive behaviour.
+	[1] Before aggressive behaviour: ...
+	[2] Before doing something other than aggressive behaviour: ...
+	[3] Before aggressive behaviour or inquisitive behaviour: ...
+	[4] Before aggressive behaviour or jumping: ...
+	
