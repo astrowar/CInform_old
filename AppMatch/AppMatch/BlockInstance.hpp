@@ -55,8 +55,16 @@ namespace CBlocking
 
 
 
+	class CBlockInstanceNamed : public CBlockInstance
+	{
+		public:
+			virtual void dump(string ident) override;
+			virtual BlockType type() override { return BlockType::BlockInstanceNamed; }
 
-
+		string named;
+		CBlockInstanceNamed(string _named, int _id, HBlockKind _base) : CBlockInstance(_id,_base), named(_named){}
+	};
+	using HBlockInstanceNamed = std::shared_ptr<CBlockInstanceNamed>;
 
 
 

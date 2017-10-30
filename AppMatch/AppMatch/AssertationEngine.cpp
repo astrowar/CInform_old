@@ -194,6 +194,13 @@ bool CBlockInterpreter::is_all_items_of_kind(HBlockList listvalues, HBlockKind k
 CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock value, HBlockKind kind, HRunLocalScope localsEntry) {
 	if (value == nullptr) return nullptr;
 
+	if (value ==Nothing )
+	{		
+		if (asHBlockKindEntity(kind) != nullptr) return value;		 
+	}
+
+
+
 	if (HBlockEnums enumarate = asHBlockEnums(kind)) {
 		// Acha todas as instancias
 		if (HBlockNoum cnn = asHBlockNoum(value))
@@ -207,7 +214,8 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 	}
 
 	
-	if (HBlockInstance cinst = asHBlockInstance(value)) {
+	if (HBlockInstance cinst = asHBlockInstance(value)) 
+	{
 		if (is_derivadeOf(cinst, kind ,localsEntry )) {
 			return cinst;
 		}
@@ -236,7 +244,7 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 
 
 	if (HBlockNoum cnn = asHBlockNoum(value)) {
-		CBlocking::HBlock resolved = resolve_noum(cnn,localsEntry);
+		CBlocking::HBlock resolved = has_resolve_noum(cnn,localsEntry);
 		if (resolved != nullptr)
 		{
 			return value_can_be_assign_to(resolved, kind,localsEntry);
@@ -258,7 +266,7 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 		}
 	}
 
-	logError("Unable to set ");
+	logWarring("Unable to set ");
 	//value->dump("    ");	
 	//kind->dump("    ");
 	return nullptr;
@@ -284,13 +292,15 @@ bool CBlockInterpreter::set_plural_property(CBlocking::HBlock  _singular, CBlock
 
 
 bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk) {
-	if (HBlockNoum nbase = asHBlockNoum(obj)) {
+	if (HBlockNoum nbase = asHBlockNoum(obj)) 
+	{
 		CBlocking::HBlock nobj = resolve_noum(nbase, localsEntry);
 		if (nobj != nullptr) 
 		{
 			return assert_it_property(propname, nobj, value, localsEntry,stk );
 		}
 	}
+ 
 
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{

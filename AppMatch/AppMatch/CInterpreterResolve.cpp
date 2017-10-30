@@ -181,12 +181,12 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 	{
 		if (isSameString(n, "action"))
 		{
-			return  std::make_shared<CBlockKindThing>("action");
+			return  std::make_shared<CBlockKindEntity>("action");
 		}
 
 		if (isSameString(n, "relation"))
 		{
-			return  std::make_shared<CBlockKindThing>("relation");
+			return  std::make_shared<CBlockKindEntity>("relation");
 		}
 
 
@@ -270,16 +270,26 @@ HBlock CBlockInterpreter::resolve_if_noum(HBlock  n, HRunLocalScope localsEntry,
 	return n;
 }
 
+ 
+
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
 {
 	return resolve_noum(n, localsEntry, std::list<std::string>());
 }
-
+HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
+{
+	return has_resolve_noum(n, localsEntry, std::list<std::string>());
+}
  
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
 	return resolve_string_noum(n->named, localsEntry, noumsToResolve);
+}
+
+HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
+{
+	return has_resolve_string_noum(n->named, localsEntry, noumsToResolve);
 }
 
 bool  is_number(const std::string  s)
@@ -295,8 +305,17 @@ bool  is_number(const std::string  s)
 
 }
 
-
 HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
+{
+	auto h = has_resolve_string_noum(named, localsEntry, noumsToResolve);
+	if (h==nullptr)
+	{
+		//printf("* Unable to resolve %s \n", named.c_str());
+	}
+	return h;
+}
+
+HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
 	if (isSameString(named , "true")) return std::make_shared<CBlockBooleanValue>(true);
 	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
@@ -328,7 +347,8 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 		{
 			return s.second;
 		}
-	} 
+	}  
+	 
 	return nullptr;
 
 

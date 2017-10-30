@@ -22,14 +22,17 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
     if (baseClasseName == "value") {
         b = make_shared<CBlockKindValue>(called);
 
-    } else if (baseClasseName == "") {
-        b = make_shared<CBlockKindThing>(called);  //Default
-    } else {
+    } 	
+	else if (baseClasseName == "entity") 
+	{
+        b = make_shared<CBlockKindEntity>(called);  
+    } 
+	else {
         // o que eh a baseclass ???
         CBlocking::HBlock r = resolve_string(baseClasseName,nullptr);
 
-        if (HBlockKindThing kt = asHBlockKindThing(r)) {
-            b = make_shared<CBlockKindThing>(called);
+        if (HBlockKindEntity kt = asHBlockKindEntity(r)) {
+            b = make_shared<CBlockKindEntity>(called);
             bup = kt;
         } else if (HBlockKindValue ktv = asHBlockKindValue(r)) {
             b = make_shared<CBlockKindValue>(called);
@@ -40,6 +43,7 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
         }
 
     }
+	addSymbol(called, b);
     return pair<HBlockKind, HBlockKind>(b, bup);
 
 }
@@ -56,6 +60,10 @@ bool CBlockInterpreter::assert_assertation(CBlocking::HBlock obj, CBlocking::HBl
 		if (assert_it_instance(obj, value, localsEntry)) return true;
 		if (assert_it_valuesDefinitions(obj, value, localsEntry)) return true;
 		if (assert_it_action(obj, value)) return true;
+
+		printf("\n");
+		obj->dump("");
+		value->dump("");
 
 		logError("Undefined error");
 		 
@@ -135,7 +143,7 @@ bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock
  
 
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
-        CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
+        CBlocking::HBlock nobj = has_resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {
             return assert_it_Value(nobj, value,localsEntry);
          
@@ -145,7 +153,7 @@ bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock
 
     if (HBlockInstance nInst = asHBlockInstance(obj)) {
         if (HBlockNoum nbase = asHBlockNoum(value)) {
-            CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
+            CBlocking::HBlock nobj = has_resolve_noum(nbase,localsEntry);
             if (nobj == nullptr) 
             {
                 nInst->set(nbase);
@@ -242,7 +250,8 @@ void CBlockInterpreter::assert_batch_kinds(std::list<CBlocking::HBlock> &nList, 
 }
 
 bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
-	if (HBlockKindOfName k = asHBlockKindOfName(value)) {
+	if (HBlockKindOfName k = asHBlockKindOfName(value)) 
+	{
 		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
 			auto b_up = create_derivadeKind(nbase->named, k->baseClasseName);
@@ -264,6 +273,7 @@ bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock 
 				assertions.push_back(newDefi);
 			}
 
+			symbols.emplace_back(nbase->named, b);
 			logMessage("new Kind add " + nbase->named);
 			return true;
 		}
@@ -335,6 +345,9 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
                 assertions.push_back(newInst);
                 instancias.push_back(binstance);
                 logMessage("new Instance add " + (nobj->named)    );
+
+				addSymbol(nobj->named, binstance);
+
                 return true;
             }
            

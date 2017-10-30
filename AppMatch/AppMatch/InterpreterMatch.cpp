@@ -184,13 +184,29 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 }
 
 
-CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMatch mValue_in, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	 
 	auto vr1 = resolve_if_noum(object, localsEntry, std::list<std::string>());
 	if (vr1 == nullptr) vr1 = object;
 	auto vr2 = resolve_if_noum(value, localsEntry, std::list<std::string>());
 	if (vr2 == nullptr) vr2 = value;
+
+
+	auto mObject = resolve_argument_match(mObject_in, localsEntry, stk);
+	auto mValue = resolve_argument_match(mValue_in, localsEntry, stk);
+
+	printf("==============================================\nMatched ? \n");
+	
+	vr1->dump("");
+	mObject->dump("");
+
+	printf("\n");
+	vr2->dump("");
+	mValue->dump("");
+	printf("\n");
+
+
 
 
 	CResultMatch mres = Match(mObject, vr1, localsEntry, stk);
@@ -284,10 +300,9 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//return CResultMatch(inner->named == cinner->named);
 
 				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
-				return CResultMatch(r.result == QEquals);
-
+				return CResultMatch(r.result == QEquals); 
 			}
-
+			 
 
 			//if (auto cAction = asHBlockAction (value))
 			//{ 
@@ -304,10 +319,20 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	 
 	if (auto   mVNamed = asHBlockMatchNamed(M))
 	{
-		CResultMatch mres = Match(mVNamed->matchInner , value, localsEntry,stk);
+		auto m_inner = resolve_argument_match(mVNamed->matchInner, localsEntry, stk);
+
+		
+		//if (HBlockMatchKind   mkind = asHBlockMatchKind (m_inner))
+		//{
+		//	if (asHBlockKind(value) !=nullptr)
+		//	{
+		//		return CResultMatch(false);
+		//	} 
+		//}
+
+		CResultMatch mres = Match(m_inner, value, localsEntry,stk);
 		if (mres.hasMatch)
-		{
-			 
+		{			 
 			return CResultMatch(mVNamed->named, value);
 		}
 		return mres;
@@ -568,6 +593,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		QueryResultContext qkind = query_is(value , mKind->kind, localsEntry, stk);
 		return CResultMatch(qkind.result == QEquals);  
+	}
+
+	if (HBlockMatchValue  mVal = asHBlockMatchValue(M))
+	{
+		QueryResultContext qkind = query_is(value, mVal->inner, localsEntry, stk);
+		return CResultMatch(qkind.result == QEquals);
 	}
 
 

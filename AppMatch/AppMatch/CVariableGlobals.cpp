@@ -73,6 +73,8 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 			logMessage("Add VAR " + newVar->name->named);
 		 
 			global_variables.push_back(newVar);
+			addSymbol(newVar->name->named, newVar);
+
 			return true;
 		}
 		else if (HBlockProperty nameProperty = asHBlockProperty(obj))

@@ -7,68 +7,92 @@ using namespace Interpreter;
 using namespace NSParser;
 
 
-void testeParser_7a()//dynamic match
+void testedecide_1()//dynamic match
 {
+
+
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
-	{
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "thing is a kind ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "book is a thing ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "diary is a thing ", ISLOG));
-	}
 
-	auto p = Statement::Parser_Stmt(&parse, "to decide what (thing) is (the best book) : diary ", ISLOG);
 
-	interpreter->execute_init(p);
+	 
+	string ss1 =
+		R"(
+ 
+thing is a kind of entity
+book is a thing
+diary is a thing 
+to decide what (thing) is (the best book) : diary 
+ 
 
-	QueryResultContext q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("[ best book ]"),
-	                                                       std::make_shared<CBlockNoum>("diary"));
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("best book ")->dump("E ");
+	//f_eval("destination ")->dump("E ");
+	assert(f_is("best book is diary"));
+	//f_now("prevailing wind is beta ");
+	//assert(f_is("prevailing wind  is west "));
+
+	return;
 }
 
 
-void testeParser_7b()//dynamic match
+
+
+
+ 
+
+
+void testedecide_2()//dynamic match
 {
+	 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); }; 
+	string ss1 =
+		R"(
+ 
+thing is a kind of entity
+book is a thing
+diary is a thing 
+coin is a thing 
 
-	{
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "thing is a kind ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "book is a thing ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "diary is a thing ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "coin is a thing ", ISLOG));
+atom is a kind of value
+silver is an  atom 
+gold is an atom 
 
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "atom is a kind  ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "silver is a kind of atom ", ISLOG));
-		interpreter->execute_init(Statement::Parser_Stmt(&parse, "gold is a kind of atom ", ISLOG));
-	}
+to decide what (thing) is (the best book) : diary 
+ 
+materiality relates (a thing ) to (an atom )
+the verb made of implies the materiality relation
 
-	auto p = Statement::Parser_Stmt(&parse, "to decide what (thing) is (  best book ) : diary ", ISLOG);
+coin is made of silver
+ 
 
-	interpreter->execute_init(p);
+)";
 
-	QueryResultContext q_fa = interpreter->query(Statement::Parser_Stmt(&parse, "best book is diary   ", ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("best book ")->dump("E ");
+	//f_eval("destination ")->dump("E ");
+	assert(f_is("coin is made of gold") ==false);
+	assert(f_is("coin is made of silver")  );
+	f_now("coin is made of gold ");
+	assert(f_is("coin is made of gold"));
 
-
-	assert(q_fa.result == QEquals);
-
-	interpreter->execute_init(Statement::Parser_Stmt(&parse, "materiality relates (a thing ) to (an atom )", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse, "the verb made of implies the materiality relation", ISLOG));
-
-
-	interpreter->execute_init(Statement::Parser_Stmt(&parse, "coin is made of silver ", ISLOG));
-	QueryResultContext q_false = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of gold  ", ISLOG));
-	assert(q_false.result != QEquals);
-    QueryResultContext q_true = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of silver  ", ISLOG));
-	assert(q_true.result == QEquals);
-
-	interpreter->execute_now(Statement::Parser_Stmt(&parse, "coin is made of gold ", ISLOG));
-	QueryResultContext q_false_2 = interpreter->query(Statement::Parser_Stmt(&parse, "coin is made of silver  ", ISLOG));
-	assert(q_false_2.result != QEquals);
+	 
+	return;
+	 
 }
 
 
-void testeParser_7c()//dynamic match
+void testedecide_3()//dynamic match
 {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
@@ -104,52 +128,61 @@ void testeParser_7c()//dynamic match
 	}
 }
 
-void testeParser_7d()// relation When
+void testedecide_4()// relation When
 {
+
+
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+	string ss1 =
+		R"(
+ 
+thing is a kind of entity
+book is a thing
+diary is a thing 
+coin is a thing 
 
-	std::list<std::string> slist({
-		"Contact relates (a thing called X) to (a thing called Y) when X is part of Y or Y is part of X",
-		"Nearness relates (a room called A) to (a room called B) when the number of moves from B to A is less than 3",
-		"Materiality relates (a thing called X) to (a material called Y) when Y is the material of X",
-		"Divisibility relates (a number called N) to (a number called M) when remainder after dividing M by N is 0"
-	});
-	for (auto s : slist)
-	{
-		logMessage(s);
-		auto p = Statement::Parser_Stmt(&parse, s, ISLOG);
-	}
+atom is a kind of value
+silver is an  atom 
+gold is an atom 
 
 
-	string slong = R"(
-person is an kind
-woman is a kind of person
-Zora is an woman
-language is a kind of value
-language are English, Zubian and Perplexish 
-speaking relates ( a person ) to   various  (  language )
-the verb  speak  implies the speaking relation
-Zora speak English
-Zora speak Zubian
+materiality relates (a thing ) to (an atom )
+the verb made of implies the materiality relation
+coin is made of silver
+
+to decide if (thing called T ) is   grand prize:
+   decide on yes
+
+to decide which thing is the grand prized:
+   if coin is made of gold:
+      decide on coin 
+   decide on book
 )";
 
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	//f_eval(" grand prize ")->dump("E ");
+	assert(f_is("diary is grand prize") );
 
-	interpreter->execute_init(ParseText::parser_text(&parse, slong, ISLOG));
+	//f_eval("destination ")->dump("E ");
+	assert(f_is("coin is made of gold") == false);
+	assert(f_is("coin is made of silver"));
+	f_now("coin is made of gold ");
+	assert(f_is("coin is made of gold"));
+	assert(f_is("grand prize  is coin"));
+	f_eval(" grand prize ")->dump("E ");
 
-	//auto q1 = interpreter->query(Statement::Parser_Stmt(&parse," Zora is a  person  ", ISLOG));
-	// assert(q1 == QEquals);
-	//auto q2 = interpreter->query(Statement::Parser_Stmt(&parse," English is a  language  ", ISLOG)); 
-	//assert(q2 == QEquals);
-	QueryResultContext q3 = interpreter->query(Statement::Parser_Stmt(&parse, "Zora speak English  ", ISLOG));
-	assert(q3.result == QEquals);
+	return;
 
-	auto q4 = interpreter->execute_now(ParseText::parser_text(&parse, "if   Zora speak English   : say  (text yes) ", ISLOG));
-	assert(q4.hasExecuted );
+
+	 
 }
 
 
-void testeParser_7e()
+void testedecide_5()
 {
 	string slong = R"(
 person is an kind
@@ -214,7 +247,7 @@ to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) 
 }
 
 
-void testeParser_7f()
+void testedecide_6()
 {
 	string slong = R"(
 room is an kind
@@ -267,7 +300,7 @@ to decide  if ( room  called R1  ) lead ( room called R2  )   :
 }
 
 
-void testeParser_7h() //loop testes
+void testedecide_7() //loop testes
 {
 	string slong = R"(
 room is an kind
@@ -364,3 +397,17 @@ carry out listem ( room called X   ) :
 	logMessage("end");
 }
 
+void testedecide_all()
+{
+	testedecide_4();
+	return;
+	testedecide_1();
+	testedecide_2();
+	testedecide_3();
+	testedecide_4();
+	testedecide_5();
+	testedecide_6();
+	testedecide_7();
+	
+
+}

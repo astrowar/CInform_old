@@ -281,7 +281,7 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 {
 
 	if (HBlockNoum nbase = asHBlockNoum(obj)) {
-		HBlock nobj = resolve_noum(nbase, localsEntry);
+		HBlock nobj = has_resolve_noum(nbase, localsEntry);
 		if (nobj != nullptr && (CBlock::isSame(obj.get(),nobj.get())==false)) 
 		{
 			return execute_set(nobj, value, localsEntry);
@@ -289,7 +289,7 @@ PhaseResult CBlockInterpreter::execute_set(HBlock obj, HBlock value, HRunLocalSc
 	}
 
 	if (HBlockNoum nvalue = asHBlockNoum(value)) {
-		HBlock vvalue = resolve_noum(nvalue, localsEntry);
+		HBlock vvalue = has_resolve_noum(nvalue, localsEntry);
 		if (vvalue != nullptr && (CBlock::isSame(value.get(), vvalue.get()) == false))
 		{
 			return execute_set(obj, vvalue, localsEntry);
@@ -323,7 +323,7 @@ HBlock CBlockInterpreter::exec_eval_property_value(HBlock c_block, HRunLocalScop
 	{
 		if (HBlockNoum cnn = asHBlockNoum(cproperty->obj))
 		{
-			auto resolved = resolve_noum(cnn,localsEntry);
+			auto resolved = has_resolve_noum(cnn,localsEntry);
 			if (resolved != nullptr) {
 				return exec_eval_property_value_imp(cproperty->prop, resolved );
 			}			 
@@ -704,7 +704,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	if (HBlockNoum nn = asHBlockNoum(c_block))
 	{
 		 
-		auto  obj = resolve_noum(nn, localsEntry, std::list<std::string>());
+		auto  obj = has_resolve_noum(nn, localsEntry, std::list<std::string>());
 		if (obj != nullptr)
 		{
 			return  exec_eval(obj, localsEntry, stk);
@@ -935,7 +935,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	if (localsEntry!=nullptr)localsEntry->dump("");
 	 
 	// Bla ! 
-	c_block->dump("");
+	//c_block->dump("");
 	//throw "Unhandle CBlock";
 
 	return nullptr;
@@ -1123,7 +1123,7 @@ PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 	auto b =   execute_now(p, localsEntry);
 	if (b.hasExecuted == false)
 	{
-		logError("fail to execute ");
+		logWarring("fail to execute ");
 		p->dump("");
 	 
 	}
@@ -1192,6 +1192,7 @@ ListOfNamedValue Interpreter::CBlockInterpreter::getValuesFromMatch(CBlocking::H
 
 HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalScope localsEntry, QueryStack *stk)
 {
+	
 	if (HBlockMatchNamed rel_mn = DynamicCasting::asHBlockMatchNamed(value))
 	{
 		auto v1 = resolve_argument_match(rel_mn->matchInner, localsEntry, stk);		 
@@ -1201,14 +1202,50 @@ HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalSc
 	if (HBlockMatchNoum nnoum  = DynamicCasting::asHBlockMatchNoum(value))
 	{
 		auto r = resolve_noum(nnoum->inner , localsEntry );
+		if (r == nullptr) return nnoum;
+
 		if (HBlockKind k = asHBlockKind( r) )
 		{
 			return std::make_shared<CBlockMatchKind>(k);
 		}
+		if (HBlockInstance rv = asHBlockInstance (r))
+		{
+			return std::make_shared<CBlockMatchValue>(rv);
+		}
 
+		r->dump("R");
+		nnoum->inner->dump("inner  ");
 		logError("What ?");
 		
 	}
+
+	if (HBlockMatchList mlist = DynamicCasting::asHBlockMatchList(value))
+	{
+		std::list<HBlockMatch> mlist_next;
+		for(auto m: mlist->matchList)
+		{
+			mlist_next.push_back(resolve_argument_match(m, localsEntry, stk));
+		}
+		return std::make_shared<CBlockMatchList>(mlist_next);
+
+	}
+
+	if (HBlockMatchKind k = DynamicCasting::asHBlockMatchKind(value))
+	{
+		auto inner = k->kind;
+		auto kind_res = resolve_argument(k->kind, localsEntry, stk);
+
+		if (HBlockKind kinn = asHBlockKind(kind_res))
+		{
+			return std::make_shared<CBlockMatchKind>(kinn);
+		}
+		 
+		 
+	}
+
+	value->dump("uR");
+	 
+ 
 
 	return nullptr;
 }
@@ -1231,6 +1268,7 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 	{
 		HBlock resolved = resolve_noum(nnoum_2, localsEntry);
 		if (resolved != nullptr) return resolved;
+		value_2->dump("");
 		return nullptr;
 	}
 	

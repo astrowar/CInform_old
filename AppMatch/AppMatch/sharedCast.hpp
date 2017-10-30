@@ -56,6 +56,7 @@ namespace CBlocking
 		HBlockMatchList asHBlockMatchList(CBlocking::HBlock c);
 		HBlockMatchDirectIsNot asHBlockMatchDirectIsNot(CBlocking::HBlock c);
 		HBlockMatchKind asHBlockMatchKind(CBlocking::HBlock c);
+		HBlockMatchValue asHBlockMatchValue(CBlocking::HBlock c);
 		HBlockMatchProperty asHBlockMatchProperty(CBlocking::HBlock c);
 		HBlockMatchBlock asHBlockMatchBlock(CBlocking::HBlock c);
 		HBlockMatchOR asHBlockMatchOR(CBlocking::HBlock c);
@@ -102,7 +103,7 @@ namespace CBlocking
 
 		HBlockActionApply asHBlockActionApply(CBlocking::HBlock c);
 		HBlockKindOfName asHBlockKindOfName(CBlocking::HBlock c);
-		HBlockKindThing asHBlockKindThing(CBlocking::HBlock c);
+		HBlockKindEntity asHBlockKindEntity(CBlocking::HBlock c);
 
 		HBlockArgumentInput asHBlockArgumentInput(CBlocking::HBlock c);
 		HBlockText asHBlockText(CBlocking::HBlock c);

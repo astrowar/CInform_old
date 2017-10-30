@@ -16,7 +16,7 @@ void testValues_1()
 	CParser parse;
 
 	string s_heat = R"(
-thing is a kind
+thing is a kind of entity
  
 ice cube is a thing
 
@@ -62,9 +62,9 @@ void testValues_1a()
 	string ss1 =
 		R"(
 
-thing is a kind 
+thing is a kind of entity
 ice cube is a thing
-Heat is a kind of value
+heat is a kind of value
 The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
 thing has a heat 
 The heat of a thing is usually room temperature
@@ -92,7 +92,7 @@ void testValues_2()
 	string ss1 =
 		R"(
 
-device is a kind
+device is a kind of entity
 battery is a device
 The battery has a number called charge
 )";

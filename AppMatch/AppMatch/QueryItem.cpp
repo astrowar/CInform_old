@@ -29,7 +29,8 @@ bool QueryStack::isQuery(string _verb, HBlock b1, HBlock b2)
 
 bool QueryStack::isQuery(string _verb, CBlocking::HBlock route_object_ptr, CBlocking::HBlock b1, CBlocking::HBlock b2)
 {
-	for (auto &q : itemsRoute) {
+	for (auto &q : itemsRoute) 
+	{
 		if ((q.verb == _verb) && (q.routeObject->isSame(route_object_ptr.get(), q.routeObject.get())) && (q.b1->isSame(b1.get(), q.b1.get())) && q.b2->isSame(q.b2.get(), b2.get())) return true;
 	}
 	return false;

@@ -3,6 +3,7 @@
 //
 #include "BaseTest.hpp"
 #include <cassert>
+ 
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -14,9 +15,9 @@ void testeRelation1() {
 	Interpreter::HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
     CParser parse;
 
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind of entity ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"direction is a kind  ", ISLOG));
-    interpreter->execute_init(Statement::Parser_Stmt(&parse,"room is a kind  ", ISLOG));
+    interpreter->execute_init(Statement::Parser_Stmt(&parse,"room is a kind of entity ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"garden is a room  ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"hall is a room  ", ISLOG));
     interpreter->execute_init(Statement::Parser_Stmt(&parse,"key is a thing  ", ISLOG));
@@ -195,9 +196,9 @@ void testeRelation5()  //relations lockup
 	CParser parse;
 	string ss1 =
 		R"(
-route is a kind 
-room is a kind 
-thing is a kind 
+route is a kind of entity
+room is a kind of entity
+thing is a kind of entity
 route has a room called destination
 garden is a room
 hall is a room 
@@ -343,7 +344,7 @@ void testeParser_7_1()
 
 	string ss1 =
 		R"( 
-thing is an kind
+thing is an kind of entity
 unloking relates (a thing ) to various thing
 the verb  unlock  implies a  unloking relation
 the verb ( unlocked by ) implies a reverse  unloking relation 
@@ -375,7 +376,7 @@ void testeParser_7_2()
 
 	string ss1 =
 		R"( 
-thing is an kind
+thing is an kind of entity
 unloking relates (a thing ) to various thing
 the verb  unlock  implies a  unloking relation
 the verb ( unlocked by ) implies a reverse  unloking relation 
@@ -407,13 +408,13 @@ key unlock box
 void testeRelation_all()
 {
 	//testeParser_7_1();  //comportamento fundamental
-	testeParser_7_2();
+	//testeParser_7_2();
 
 	 //testeRelation1(); 
 	//testeRelation2(); 
 	//testeRelation3(); 
 	//testeRelation4(); 
-	//testeRelation5();
+	testeRelation5();
 	//testeRelation6();
 	//testeRelation7();
 }

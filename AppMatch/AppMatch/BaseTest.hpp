@@ -40,19 +40,7 @@ void testeParser_6();
 
 //Blocks
 void testeParser_10();
-void testeParser_11();
-void testeParser_12();
-
-
-void testeParser_7a();
-void testeParser_7b();
-void testeParser_7c();
-void testeParser_7d();
-
-void testeParser_7e();
-void testeParser_7f();
-void testeParser_7g();
-void testeParser_7h();
+ 
 
 void testeParser_21();
 
@@ -78,7 +66,7 @@ void testeSelector_all();
 void testeVerb_all();
 void testValues_all();
 void testeParser_listAll();
-
+void testedecide_all();
 void testeLogical_All();
 
 void testeComposition_all();

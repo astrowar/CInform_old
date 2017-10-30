@@ -11,6 +11,7 @@
 
 void logMessage(std::string str);
 void logError(std::string str);
+void logWarring(std::string str);
 using std::string;
 
 
@@ -66,6 +67,7 @@ namespace CBlocking
 
 		void *operator new(size_t size);
 
+		 
 		static bool isSame(CBlock* b1, CBlock* b2)  ;
 
 
@@ -257,16 +259,17 @@ namespace CBlocking
 
 	using HBlockKindValue = std::shared_ptr<CBlockKindValue>;
 
-	class CBlockKindThing : public CBlockKind //retorna um valor generico
+	class CBlockKindEntity : public CBlockKind //retorna um valor generico
 	{
 	public:
 		virtual bool isValue() override { return true; }
 		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockKindThing; }
-		CBlockKindThing(string _named)   {} 
+		virtual BlockType type() override { return BlockType::BlockKindEntity; }
+		string named;
+		CBlockKindEntity(string _named) : named(_named) {}
 	 
 	};
-	using HBlockKindThing = std::shared_ptr<CBlockKindThing>;
+	using HBlockKindEntity = std::shared_ptr<CBlockKindEntity>;
 
 
 	// Obsoleto , Use Composite

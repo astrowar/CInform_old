@@ -286,11 +286,5 @@ void testeParser_5_all()
 	//testeParser_5f(); TODO FIX THIS TESTE
 	testeParser_5g();
 
-	testeParser_7a();
-	testeParser_7b();
-	testeParser_7c();
-
-	testeParser_7d();
-	testeParser_7e();
-	testeParser_7f();
+ 
 }

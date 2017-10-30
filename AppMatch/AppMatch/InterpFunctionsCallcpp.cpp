@@ -121,7 +121,7 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 					auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
 					if (r1.hasMatch == false) continue;
 					  next_vars = std::make_shared< CRunLocalScope >(localsEntry, r1.maptch);
-					  next_vars_2 = next_vars;
+					  next_vars_2 = nullptr;
 				}
 
 				
@@ -129,7 +129,7 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 				{
 					auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
 					if (r2.hasMatch == false) continue;
-					auto next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);
+					next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);
 				 
 				}
 

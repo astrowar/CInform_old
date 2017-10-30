@@ -25,26 +25,32 @@ void testeParser_2_1() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;	
 	std::function<bool(std::string )> f_is = [&](std::string a ) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr,nullptr ).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
 
 
 	string ss1 =
 		R"(
 
- thing is an kind
+ thing is an kind of entity
  book is a kind of thing
- magic object is a kind 
+ magic object is a kind of entity
  special book is a kind of book 
  special book is a kind of magic object
  diary is a special book
 
 )";
+	
+		interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
 
-	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+		printf("====================\n\n");
+
+	 f_eval("special book ")->dump("E ");
+
 	assert(f_is("special book is a kind "));
 	assert(f_is("special book is book "));
 	assert(f_is("diary is thing"));
 	assert(f_is("diary is book"));
-
+	assert(f_is("thing is kind"));
 
 
 }
@@ -66,8 +72,8 @@ void testeParser_2_2() {
 	string ss1 =
 		R"(
 
- thing is an kind
- kelement is a kind
+ thing is an kind of entity
+ kelement is a kind of entity
 
  fire is a kelement
  air is a kelement
@@ -81,13 +87,14 @@ void testeParser_2_2() {
 )";
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	printf("==============================\n\n");
 	f_eval("element of paper  ")->dump("E ");
 	assert(f_is("element of paper is nothing "));
 	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of paper is fire ", false));
 	assert(f_is("element of paper is fire "));
 	
-	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of paper is nothing ", false));
-	assert(f_is("element of paper is fire "));
+	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of paper is nothing ", false)); //Entity can be nothing
+	assert(f_is("element of paper is nothing "));
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse, " element of arrow is slime ", false));
 	assert(!f_is("element of arrow is slime "));
@@ -173,8 +180,8 @@ void testeParser_2_3() {
 	string ss1 =
 		R"(
 
- thing is an kind
- kelement is a kind
+ thing is an kind of entity
+ kelement is a kind of entity
 
  fire is a kelement
  air is a kelement
@@ -213,7 +220,7 @@ void testeParser_2_4()
     string ss1 =
             R"(
 
- thing is an kind
+ thing is an kind of entity
 
  thing can be portable or fixed
 
@@ -255,7 +262,7 @@ void testeParser_2_5()
 
 	string ss1 =
 		R"(
-thing is an kind
+thing is an kind of entity
 the treasure  is a thing that varies
 arrow is a thing
 bow is a thing
@@ -286,7 +293,7 @@ void testeParser_2_6()
 heat is a kind of value
  
 The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
-thing is an kind
+thing is an kind of entity
 thing has a heat
 The heat of a thing is usually room temperature
 the treasure  is a thing that varies
@@ -315,31 +322,32 @@ heat is a kind of value
 colour is a kind of value
 red, green and blue are colour
 
-thing is an kind
-blood is a thing
+thing is an kind of entity
+blood is a thing  
 thing has a colour
 colour of blood is red
 )";
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
-	f_eval("red  ")->dump("E ");	
-	assert(f_is("red is colour "));
+	f_eval("red  ")->dump("R ");	
+	f_eval("blue  ")->dump("B ");
+	assert(f_is("red is colour "));	 
 	assert(f_is("red is blue ") ==false );
 	assert(f_is("red is not blue "));
+	assert(f_is("colour of blood is red "));
 }
 
 
 
 void testeParser_2()
 {
-	
+ 
 
-
-   testeParser_2_1();
+   testeParser_2_1();  
    testeParser_2_2();
    testeParser_2_3();
    testeParser_2_4(); // anonimous properties
    testeParser_2_5(); // variables
    testeParser_2_6(); //kind values
-	 testeParser_2_7(); //kind values 
+   testeParser_2_7(); //kind values 
 }

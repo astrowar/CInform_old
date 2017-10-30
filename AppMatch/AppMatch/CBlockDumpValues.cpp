@@ -37,7 +37,7 @@ using namespace CBlocking;
 
 void  CBlockInstance::dump_contents(string ident) 
 {
-	printf("%s %s %x\n", ident.c_str(), "Instance: ",  uintptr_t(this) );
+	printf("%s %s %i\n", ident.c_str(), "Instance: ", (this->id) );
 	auto nn = this;
 	{
 		for (auto &va : nn->anomimousSlots) {
@@ -63,10 +63,15 @@ void  CBlockInstance::dump_contents(string ident)
 
 void  CBlockInstance::dump(string ident)
 {
-	printf("%s %s %x\n", ident.c_str(), "Instance: ", uintptr_t(this));
+	printf("%s %s %i\n", ident.c_str(), "Instance: ",  this->id);
 	CBlock::dump(ident);
 }
+void  CBlockInstanceNamed::dump(string ident)
+{
+	printf("%s %s %s\n", ident.c_str(), "Instance: ", this->named.c_str() );
 
+	CBlock::dump(ident);
+}
 
 void CUnresolved::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "UNRESOLVED: ", this->contents.c_str());
@@ -160,8 +165,8 @@ void CBlockKindValue::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockKindThing::dump(string ident) {
-	printf("%s %s %x \n", ident.c_str(), "Kind Thing : ",uintptr_t( this));
+void CBlockKindEntity::dump(string ident) {
+	printf("%s %s %s \n", ident.c_str(), "Kind Entity : ",this->named.c_str() );
 	CBlock::dump(ident);
 }
 
@@ -273,6 +278,15 @@ matchInner(_matchInner)
 void CBlockMatchNoum::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str() , "Match Noum ");
+	{
+		this->inner->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+
+void CBlockMatchValue::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Match Value ");
 	{
 		this->inner->dump(ident + "       ");
 	}
@@ -1007,8 +1021,8 @@ void CBlockRelationInstance::dump(string ident)
 {
 	printf("%s %s %s\n", ident.c_str(), "Relation Instance of ", this->relation->named.c_str());
 	{
-		this->value1->dump(ident + "       ");
-		this->value2->dump(ident + "       ");
+	if(this->value1 !=nullptr)	this->value1->dump(ident + "       ");
+	if (this->value2 != nullptr)	this->value2->dump(ident + "       ");
 	}
 	CBlock::dump(ident);
 }

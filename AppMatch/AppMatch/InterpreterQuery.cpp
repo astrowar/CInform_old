@@ -39,10 +39,14 @@ CBlockInterpreter::CBlockInterpreter() {
 	MetaKind = make_shared<CBlockKindNamed>("kind");
 	MetaKindRelation = make_shared<CBlockKindNamed>("relation");
 	MetaKindPhrase = make_shared<CBlockKindNamed>("phrase");
+	MetaKindEntity = make_shared<CBlockKindNamed>("entity");
+	 
+
 
 	symbols.emplace_back("kind", MetaKind);
-	symbols.emplace_back( "relation", MetaKindRelation );
-	symbols.emplace_back( "phrase", MetaKindPhrase );
+	symbols.emplace_back("relation", MetaKindRelation );
+	symbols.emplace_back("phrase", MetaKindPhrase );
+	symbols.emplace_back("entity", MetaKindEntity);
 
 }
 
@@ -398,6 +402,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
  
 
+
+
     //resolve It
 
 	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
@@ -447,6 +453,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
     }
 
+	printf("Query :\n");
+	c_block->dump("");
+	c_block1->dump("");
+	printf("\n");
+
 
 	if (HBlockKind bkind = asHBlockKind(c_block1))
 	{
@@ -459,6 +470,26 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}		
 	}
 
+
+	//Metakinds
+	if (HBlockKind bkind = asHBlockKind(c_block))
+	{
+		if (c_block1 == MetaKind )   return QEquals;
+	}
+	if (HBlockKindEntity bkind = asHBlockKindEntity(c_block))
+	{		
+		if (c_block1 == MetaKindEntity)   return QEquals;
+	}
+	if (HBlockCompositionPhrase bkind = asHBlockCompositionPhrase(c_block))
+	{
+		if (c_block1 == MetaKindPhrase)   return QEquals;
+	}
+	if (HBlockCompositionRelation bkind = asHBlockCompositionRelation(c_block))
+	{
+		if (c_block1 == MetaKindRelation)   return QEquals;
+	}
+
+ 
 
 
 	if (auto vvar = asCVariableNamed(c_block1.get()))
@@ -491,11 +522,11 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
 		{
 			//if (isSameString(cinst1  , cinst2 )) return QEquals;
-			if ((cinst1.get(), cinst2.get())) return QEquals;
+			if ( CBlock::isSame(cinst1.get(), cinst2.get())) return QEquals;
 			return QNotEquals;
 		}
 
-		if (HBlockKindThing kThing = asHBlockKindThing(c_block1))
+		if (HBlockKindEntity kThing = asHBlockKindEntity(c_block1))
 		{
 			if (is_derivadeOf( cinst1, kThing, localsEntry)) return QEquals;
 		}
@@ -691,9 +722,21 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", DctQueryDirectIS, c_block, c_block1);
 			if (next_stack != nullptr)
 			{
+			 
+
 				auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
 				if (result.hasMatch == true)
 				{
+					printf("Matched\n");
+					c_block->dump("");
+					DctQueryDirectIS->obj->dump("");
+
+					printf("\n");
+					c_block1->dump("");
+					DctQueryDirectIS->value->dump("");
+
+
+
 					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
 					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
 					return r;
@@ -769,9 +812,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
 
-	logMessage("I cant query");
-	c_block->dump("");
-	c_block1->dump("");
+	//logMessage("I cant query");
+	//c_block->dump("");
+	//c_block1->dump("");
 
 	//se tudo falhar , tente isso ....
 	auto resolved_b = exec_eval(c_block1, localsEntry, stk);
@@ -1162,7 +1205,7 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		logError("cannot query a Command list ");
 		assert(false);
 	}
-	q->dump("");
+	//q->dump("");
  
 
     return QUndefined;

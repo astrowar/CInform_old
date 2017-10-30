@@ -26,6 +26,7 @@ bool CBlockInterpreter::assert_newRelation(HBlockRelationBase rel) {
     }
     staticRelation[nrel] = rel;
 
+	addSymbol(nrel, rel);
     return true;
 }
 

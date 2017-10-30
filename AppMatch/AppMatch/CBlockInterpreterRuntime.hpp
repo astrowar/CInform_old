@@ -137,6 +137,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		int instancia_id;
 		HBlockNothing Nothing;
 		HBlockKind MetaKind;
+		HBlockKind MetaKindEntity;
 		HBlockKind MetaKindRelation;
 		HBlockKind MetaKindPhrase;
 
@@ -190,6 +191,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext query_user_verbs(string vb, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 
+		bool isReservedWord(string cs);
+		void addSymbol(string cs, HBlock  value);
 		bool assert_newVerb(HBlockVerbRelation value);
 		bool insert_newEventHandle(HBlockEventHandle event_handle);
 		bool assert_it_variableGlobal(HBlock obj, HBlock baseKind, HBlock defaultValue);
@@ -345,8 +348,11 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockKind resolve_kind(string n);
 		HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
+		HBlock has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
 		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
+		HBlock has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
 		HBlock resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
+		HBlock has_resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string> noumsToResolve);
 		HBlock resolve_noum_as_variable(HBlockNoum n);
 		HBlock resolve_string(string n, HRunLocalScope localsEntry);
 

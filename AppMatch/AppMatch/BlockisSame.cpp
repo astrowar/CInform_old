@@ -71,18 +71,30 @@ bool isSame_BlockList_OR(CBlockList* b1, CBlockList* b2)
 	return  isSame_list(b1->lista, b2->lista);
 }
 
-
-bool isSame_BlockKindThing(CBlockKindThing* b1, CBlockKindThing* b2)
+bool isSame_BlockKindValue( CBlockKindValue* b1,  CBlockKindValue* b2)
 {
-	return b1 == b2;
+	return (b1->named == b2->named);
+}
+
+bool isSame_BlockKindEntity(CBlockKindEntity* b1, CBlockKindEntity* b2)
+{
+	return b1->named == b2->named;
 }
 bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2)
 {
 	//if (b1->named != b2->named) return false;
 
-	if (b1->id != b2->id) return false;
+	if (b1->id == b2->id) return true;
 	return false;
 }
+
+bool isSame_BlockInstanceNamed(CBlockInstanceNamed* b1, CBlockInstanceNamed* b2)
+{
+	
+	if (b1->id == b2->id) return true;
+	return false;
+}
+
 
 bool isSame_BlockAction(CBlockAction * b1, CBlockAction* b2)
 {
@@ -145,7 +157,10 @@ bool isSame_BlockAssertion_isInstanceOf(CBlockAssertion_isInstanceOf  * b1, CBlo
 	return false;
 }
 
-
+bool isSame_BlockMatchValue(CBlockMatchValue  * b1, CBlockMatchValue* b2)
+{
+	return CBlock::isSame(b1->inner.get(), b2->inner.get());
+}
 bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 {
 	if (b1->matchList.size()  == b2->matchList.size())
@@ -173,8 +188,10 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 
 	if (b1->type() == BlockNoum)  return isSame_BlockNoum( static_cast<CBlockNoum*>(b1),  static_cast<CBlockNoum*>(b2));
 	if (b1->type() == BlockInstance)  return isSame_BlockInstance(static_cast<CBlockInstance*>(b1), static_cast<CBlockInstance*>(b2));
+	if (b1->type() == BlockInstanceNamed)  return isSame_BlockInstanceNamed(static_cast<CBlockInstanceNamed*>(b1), static_cast<CBlockInstanceNamed*>(b2));
 	if (b1->type() == BlockAction)  return isSame_BlockAction(static_cast<CBlockAction*>(b1), static_cast<CBlockAction*>(b2));
-	if (b1->type() == BlockKindThing)  return isSame_BlockKindThing(static_cast<CBlockKindThing*>(b1), static_cast<CBlockKindThing*>(b2));
+	if (b1->type() == BlockKindEntity)  return isSame_BlockKindEntity(static_cast<CBlockKindEntity*>(b1), static_cast<CBlockKindEntity*>(b2));
+	if (b1->type() == BlockKindValue)  return isSame_BlockKindValue(static_cast<CBlockKindValue*>(b1), static_cast<CBlockKindValue*>(b2));
 	if (b1->type() == BlockMatchNoum)  return isSame_BlockMatchNoum(static_cast<CBlockMatchNoum*>(b1), static_cast<CBlockMatchNoum*>(b2));
 	if (b1->type() == BlockInstanceVariable)  return isSame_BlockInstanceVariable(static_cast<CBlockInstanceVariable*>(b1), static_cast<CBlockInstanceVariable*>(b2));
 	if (b1->type() == BlockToDecideWhat ) return isSame_BlockToDecideWhat(static_cast<CBlockToDecideWhat*>(b1), static_cast<CBlockToDecideWhat*>(b2));
@@ -183,15 +200,19 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	if (b1->type() == BlockIsVerb) return isSame_BlockIsVerb(static_cast<CBlockIsVerb*>(b1), static_cast<CBlockIsVerb*>(b2));
 	if (b1->type() == BlockProperty) return isSame_BlockProperty(static_cast<CBlockProperty*>(b1), static_cast<CBlockProperty*>(b2));
 	if (b1->type() == BlockMatchList) return isSame_BlockMatchList(static_cast<CBlockMatchList*>(b1), static_cast<CBlockMatchList*>(b2));
+	if (b1->type() == BlockMatchValue) return isSame_BlockMatchValue(static_cast<CBlockMatchValue*>(b1), static_cast<CBlockMatchValue*>(b2));
 
-	if (b1->type() == BlockAssertion_isInstanceOf) return isSame_BlockAssertion_isInstanceOf(static_cast<CBlockAssertion_isInstanceOf*>(b1), static_cast<CBlockAssertion_isInstanceOf*>(b2));
-	 
+	if (b1->type() == BlockAssertion_isInstanceOf) return isSame_BlockAssertion_isInstanceOf(static_cast<CBlockAssertion_isInstanceOf*>(b1), static_cast<CBlockAssertion_isInstanceOf*>(b2)); 
 
 	if (b1->type() == BlockNothing)  return isSame_BlockNothing(static_cast<CBlockNothing*>(b1), static_cast<CBlockNothing*>(b2));
 	if (b1->type() == BlockList)  return isSame_BlockList(static_cast<CBlockList*>(b1), static_cast<CBlockList*>(b2));
 
 	if (b1->type() == BlockCompositionList)  return isSame_BlockCompositionList(static_cast<CBlockCompositionList*>(b1), static_cast<CBlockCompositionList*>(b2));
 	if (b1->type() == BlockKindNamed)  return isSame_BlockKindNamed(static_cast<CBlockKindNamed*>(b1), static_cast<CBlockKindNamed*>(b2));
+	if (b1->type() == BlockKindOf)   return false;
+
+	b1->dump("");
+	b2->dump("");
 
 	assert(false);
 	return false;

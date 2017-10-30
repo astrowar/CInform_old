@@ -26,8 +26,7 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
 	}
     if (aDerivade.get() == Base.get()) return true;
 
-	aDerivade->dump("");
-	Base->dump("");
+ 
 
 	if (HBlockCompositionList nderiv = asHBlockCompositionList(aDerivade))
 		if (HBlockCompositionList nbase = asHBlockCompositionList(Base))

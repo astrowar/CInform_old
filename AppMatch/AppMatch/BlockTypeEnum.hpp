@@ -11,7 +11,7 @@ enum BlockType {
 	BlockKindOf,
 	BlockKindNamed,
 	BlockKindAction,
-	BlockKindThing,
+	BlockKindEntity,
 	BlockKindValue,
 	BlockListOfKind,
 	BlockNamedValue,
@@ -115,6 +115,8 @@ enum BlockType {
 	BlockCompositionRelation,
 	BlockNothing,
 	BlockCompostionPhrase,
-	BlockActionCallNamed
+	BlockActionCallNamed,
+	BlockInstanceNamed,
+	BlockMatchValue
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

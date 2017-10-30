@@ -158,7 +158,7 @@ bool  CBlockInterpreter::assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocki
 	 
 	if (HBlockNoum nbase = asHBlockNoum(obj))
 	{
-		CBlocking::HBlock nobj = resolve_noum(nbase, localsEntry);
+		CBlocking::HBlock nobj = has_resolve_noum(nbase, localsEntry);
 		if (nobj != nullptr) 
 		{
 			return assert_it_ConstantAssign(nobj, value, localsEntry);

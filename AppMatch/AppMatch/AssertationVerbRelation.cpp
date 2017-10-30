@@ -586,9 +586,9 @@ bool CBlockInterpreter::setVerb(string vb, CBlocking::HBlock c_block, CBlocking:
 QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
-	rr->dump("RI ");
-	c_block->dump("X1 ");
-	value->dump("X2 ");
+	//rr->dump("RI ");
+	//c_block->dump("X1 ");
+	//value->dump("X2 ");
 
 	QueryResul query_2 = QUndefined;
 	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
@@ -683,8 +683,8 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBl
 		}  
 	}
 	// nao eh um teste de instancia ...
-	c_block->dump("");
-	value->dump("");
+	//c_block->dump("");
+	//value->dump("");
 
 
 	return QUndefined;
@@ -876,6 +876,30 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	return QueryResul::QUndefined;
 }
 
+static char* reserved_words[] = {
+	"nothing",
+	"value",
+	"true",
+	"false",
+	"entity",
+	"kind",
+	"relation",
+	"list",
+	"phase",	
+	0
+};
+ 
+
+bool CBlockInterpreter::isReservedWord(string cs)
+{
+	char** w = reserved_words;
+	while (*w)
+	{
+		if (strcmp(*w, cs.c_str()) == 0) return true;
+		*w++;
+	}
+	return false;
+}
 
 
 bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk) {
@@ -909,7 +933,22 @@ bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
  
 	verbs.push_back(verb_dec);
 
+	symbols.emplace_back(verb_dec->named, verb_dec);
+
 	return true;
+}
+
+void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
+{
+	if (isReservedWord(cs))
+	{
+		printf("invalid Word %s \n", cs.c_str());
+		logError("Invalid Word\n");
+		return;
+	}
+	printf("new Symbol %s\n", cs.c_str());
+	value->dump("");
+	symbols.emplace_back(cs, value);
 }
 
 bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
@@ -932,6 +971,7 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
     // Existe essa relacao ??
 	verbRelationAssoc[ vstr ] = value ;
  
+	addSymbol(vstr, value);
 
 	return true;
 }

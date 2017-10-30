@@ -25,7 +25,7 @@ namespace CBlocking
 
 			auto t = c->type();
 			if (t == BlockType::BlockKindValue ||
-				t == BlockType::BlockKindThing ||
+				t == BlockType::BlockKindEntity ||
 				t == BlockType::BlockListOfKind)
 				return std::static_pointer_cast<CBlockKind>(c);
 			if (HBlockComposition comp = asHBlockComposition(c))
@@ -258,6 +258,14 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockMatchKind>(c);
 			return nullptr;
 		}
+		HBlockMatchValue asHBlockMatchValue(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockMatchValue)
+				return std::static_pointer_cast<CBlockMatchValue>(c);
+			return nullptr;
+		}
+		
+
 		HBlockMatchProperty asHBlockMatchProperty(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockMatchProperty)
@@ -296,6 +304,7 @@ namespace CBlocking
 			auto t = c->type();
 
 			if (t == BlockType::BlockMatchAny ||
+				t == BlockType::BlockMatchValue||				 
 				t == BlockType::BlockMatchAND ||
 				t == BlockType::BlockMatchOR ||
 				t == BlockType::BlockMatchBlock ||
@@ -551,10 +560,10 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockKindOfName>(c);
 			return nullptr;
 		}
-		HBlockKindThing asHBlockKindThing(CBlocking::HBlock c)
+		HBlockKindEntity asHBlockKindEntity(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockKindThing)
-				return std::static_pointer_cast<CBlockKindThing>(c);
+			if (c != nullptr && c->type() == BlockType::BlockKindEntity)
+				return std::static_pointer_cast<CBlockKindEntity>(c);
 			return nullptr;
 		}
 
@@ -572,9 +581,16 @@ namespace CBlocking
 		}
 		HBlockInstance asHBlockInstance(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockInstance)
+	  
+			if (c == nullptr) return nullptr;
+			auto t = c->type();
+
+			if (t == BlockType::BlockInstance ||
+				t == BlockType::BlockInstanceNamed)
 				return std::static_pointer_cast<CBlockInstance>(c);
 			return nullptr;
+
+
 		}
 
 		HBlockRelationBase asHBlockRelationBase(CBlocking::HBlock c)

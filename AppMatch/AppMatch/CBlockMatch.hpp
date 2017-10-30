@@ -67,6 +67,20 @@ namespace CBlocking
 
 
 
+	class CBlockMatchValue : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockMatchValue; }
+		HBlock   inner;
+		CBlockMatchValue(HBlock  _inner) : CBlockMatch(), inner(_inner) {};
+	};
+	using HBlockMatchValue = std::shared_ptr<CBlockMatchValue>;
+
+
+
+
+
 	class CBlockMatchKind
 		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
@@ -102,14 +116,11 @@ namespace CBlocking
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchList; }
-
 		// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
-
 		std::list<HBlockMatch> matchList;
 
 		CBlockMatchList(std::list<HBlockMatch> _matchList) : CBlockMatch(), matchList(_matchList) {};
 	};
-
 	using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
 
 

@@ -12,9 +12,16 @@
 using namespace std;
 using namespace CBlocking;
 
+void logWarring(std::string str)
+{
+	printf("#Warring %s\n", str.c_str());
+	printf("\n");
+}
+
 void logError(std::string str)
 {
 	printf("#Error %s\n", str.c_str());
+	printf("\n" );
 }
 void logMessage(std::string str)
 {

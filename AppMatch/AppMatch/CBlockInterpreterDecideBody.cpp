@@ -182,6 +182,9 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 			return QueryResultContext(QUndefined);
 		}
 
+		 
+
+		ndecide->dump("");
 		logError("Error on decided return value ");
 		return QueryResultContext(QUndefined);
 	}

@@ -195,7 +195,7 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_item(HBlockMatch sele
 		{
 			if (isSameString(ss, mNoum->inner->named))
 			{
-				return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(ss));
+				return make_shared<CBlockMatchKind>(make_shared<CBlockKindEntity>(ss));
 			}
 		}
 	}
@@ -242,7 +242,7 @@ CBlocking::HBlockMatch  CBlockInterpreter::Resolve_Selector_Noum_fragment(std::v
 	string kindFound = getStringPrexfedFromList(strList_in, allKindsNames);
 	if (!(kindFound.empty()))
 	{
-		return make_shared<CBlockMatchKind>(make_shared<CBlockKindThing>(kindFound));
+		return make_shared<CBlockMatchKind>(make_shared<CBlockKindEntity>(kindFound));
 	}
 
 	string ennFound = getStringPrexfedFromList(strList_in, allEnumNames);
