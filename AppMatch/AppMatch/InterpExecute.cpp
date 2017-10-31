@@ -817,34 +817,40 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 	}
 
-	if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
-	{
-		return lookup_relation(nrlookup, localsEntry, stk);
-	}
-	if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
-	{
-		return lookup_verb(nvlookup, localsEntry, stk);
-	}
 
-	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
-	{
-		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
-		{
-			return lookup_relation(nrlookup, localsEntry,stk);
-		}
-		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(nrWhere->what))
-		{
-			return lookup_verb(nvlookup, localsEntry,stk);
-		}
-		if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
-		{
-		 
-			auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
-			auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
-			return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
-		} 
-	}
 
+	bool useSelection = false;
+	
+	if (useSelection)
+	{
+		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
+		{
+			return lookup_relation(nrlookup, localsEntry, stk);
+		}
+		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(c_block))
+		{
+			return lookup_verb(nvlookup, localsEntry, stk);
+		}
+
+
+		if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(c_block))
+		{
+			if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
+			{
+				return lookup_relation(nrlookup, localsEntry, stk);
+			}
+			if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(nrWhere->what))
+			{
+				return lookup_verb(nvlookup, localsEntry, stk);
+			}
+			if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
+			{
+				auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
+				auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
+				return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
+			}
+		}
+	}
 
 	if (HBlockNow  bNow = asHBlockNow(c_block))
 	{
@@ -1231,6 +1237,12 @@ HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalSc
 		 
 	}
 
+	if (HBlockMatchValue mVal = DynamicCasting::asHBlockMatchValue(value))
+	{
+		auto inner = resolve_argument(mVal->inner, localsEntry, stk);
+		return std::make_shared<CBlockMatchValue>(inner); 
+	}
+
 	value->dump("uR");
 	 
  
@@ -1274,6 +1286,33 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 			return std::make_shared<CBlockMatchNamed>(rel_mn->named, v1);
 		}
 	}
+
+	if (HBlockSelector_Where nrWhere = asHBlockSelector_Where(value))
+	{
+		
+		if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(nrWhere->what))
+		{			
+		//	return lookup_relation(nrlookup, localsEntry, stk);
+			//string _relation, HBlockMatch _value1, HBlockMatch  _value2, NoumLocation _term_to_query
+			auto aval1 = resolve_argument_match(nrlookup->value1, localsEntry, stk);
+			auto aval2 = resolve_argument_match(nrlookup->value2, localsEntry, stk);
+			return std::make_shared<CBlockRelationLookup>(nrlookup->relation, aval1, aval2, nrlookup->term_to_query);
+		}
+
+		if (HBlockVerbLookup nvlookup = asHBlockVerbLookup(nrWhere->what))
+		{
+			//return lookup_verb(nvlookup, localsEntry, stk);
+		}
+		if (HBlockSelectorAND nvlookup_and = asHBlockSelectorAND(nrWhere->what))
+		{
+		//	auto auto_value1 = exec_eval(nvlookup_and->value1, localsEntry, stk);
+		//	auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
+		//	return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
+		}
+	}
+
+
+
 
 	if (value_2 != nullptr)
 	{

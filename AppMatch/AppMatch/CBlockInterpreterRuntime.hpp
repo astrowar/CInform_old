@@ -175,6 +175,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CBlocking::HBlock get_property_by_relation(HBlockNoum propNamed, HBlock obj, HRunLocalScope localsEntry, QueryStack * stk);
 		bool set_property_by_relation(HBlockNoum propNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_relation(HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_lookup_relation(HBlock value, HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_union(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_intersection(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry, QueryStack *stk);

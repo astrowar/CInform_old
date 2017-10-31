@@ -158,10 +158,7 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_XS_Y_1(const string &  rel
 //retorn  o segundo termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
-
- 
-
-
+	 
 	std::list<CBlocking::HBlock> lst;
 	for (auto &rr : relInstances)
 	{
@@ -254,17 +251,48 @@ CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLook
 		{
 			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, arg1, arg2, localsEntry,stk);
 			return lookup_relation_X_Y_2(rLookup->relation, arg1, arg2, localsEntry,stk);
-		}
-
-	}
-
-	printf("%s \n", rLookup->relation.c_str());
-
+		} 
+	} 
+	printf("%s \n", rLookup->relation.c_str()); 
 	return nullptr;
 
 }
 
 
+QueryResultContext CBlockInterpreter::query_lookup_relation(HBlock value, HBlockRelationLookup  rLookup, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	auto arg1 = resolve_argument_match(rLookup->value1, localsEntry, stk);
+	auto arg2 = resolve_argument_match(rLookup->value2, localsEntry, stk);
+
+	auto rel_find = this->staticRelation.find(rLookup->relation);
+	if (rel_find != this->staticRelation.end())
+	{
+		auto rel = rel_find->second;
+		if (rLookup->term_to_query == FirstNoum)
+		{
+			auto r1 = query_relation(rel, value, arg2 , localsEntry,stk);
+			if (r1.result == QEquals)
+			{
+				return r1;
+			}
+			//if (rel->is_various_noum1()) return query_lookup_relation_XS_Y_1(value , rLookup->relation, arg1, arg2, localsEntry, stk);
+			//return query_lookup_relation_X_Y_1(value, rLookup->relation, arg1, arg2, localsEntry, stk);
+
+		}
+		if (rLookup->term_to_query == SecondNoum)
+		{
+			auto r2 = query_relation(rel, arg1, value, localsEntry, stk);
+			if (r2.result == QEquals)
+			{
+				return r2;
+			}
+		}
+	}
+	printf("%s \n", rLookup->relation.c_str());
+	return QNotEquals ;
+
+
+}
  
 
 void add_if_unique(std::list<HBlock>& lst, HBlock x)

@@ -235,11 +235,13 @@ scent is in hall
 	// auto target_q2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to garden by Connection ", ISLOG), nullptr);
 	// target_q2->dump("");
 	 printf("\n");
-	 auto  pwn = Expression::Parser_Expression(&parse, " lab is (a room  which relates to hall by Connection)    ", true);
-	 auto target_v2 = interpreter->exec_eval(pwn, nullptr, nullptr);
-	 target_v2->dump("D");
+	 auto  pwn = Expression::Parser_Expression(&parse, " courage is in ( room  which relates to hall by Connection  )   ", true);
+	 //auto target_v2 = interpreter->exec_eval(pwn, nullptr, nullptr);
+	 //target_v2->dump("D");
 
-	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "talent which are in hall", ISLOG), nullptr, nullptr);
+
+	 auto pq = Expression::Parser_Expression(&parse, "scent is (talent which are in hall)", true);
+	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "scent is (talent which are in hall)", ISLOG), nullptr, nullptr);
 	 target_v1->dump("C");
 
 	 auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to hall by Connection ", ISLOG), nullptr,nullptr);

@@ -637,6 +637,14 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
         }
     }
 
+
+	if (HBlockRelationLookup  lockup_term = asHBlockRelationLookup(c_block1))
+	{
+		return query_lookup_relation(c_block, lockup_term, localsEntry, stk);
+	}
+
+
+
     //Resolve List OR
     if (HBlockSelector_All  selector_all = asHBlockSelector_All(c_block))
     {
