@@ -161,7 +161,23 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
 
 }
 
+HBlock CBlockInterpreter::resolve_by_evaluation(HBlock c_block,   HRunLocalScope localsEntry, QueryStack *stk_in)
+{
 
+	if (asHBlockInstance(c_block) != nullptr) return c_block;
+	if (asHBlockKind(c_block) != nullptr) return c_block;
+	if (asHBlockComposition(c_block) != nullptr) return c_block;
+	if (asHBlockAction(c_block) != nullptr) return c_block;
+	if (asHBlockNamedValue(c_block) != nullptr) return c_block;
+	if (asHBlockVerb(c_block) != nullptr) return c_block;
+ 
+
+
+	auto h = exec_eval(c_block, localsEntry, stk_in);
+ 
+	return h;
+
+}
 
 
 
@@ -190,7 +206,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				return QueryResultContext(QUndefined);
 			}
 
-			propObj->dump("");
+	 
 
 			if (HBlockInstance cinst = asHBlockInstance(propObj))
 			{
@@ -281,7 +297,6 @@ QueryResultContext CBlockInterpreter::query_is_propertyOf_value(HBlock c_propert
 					return query_is_propertyOf_value_imp(cproperty->prop, resolved, c_block1, localsEntry, next_stack.get());
 				}
 				return QUndefined;
-
 			}
 			// property of What ??
 			return query_is_propertyOf_value_imp(cproperty->prop, cproperty->obj, c_block1, localsEntry, next_stack.get());
@@ -360,9 +375,138 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 }
 
  
+QueryResultContext CBlockInterpreter::query_direct_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk )
+{
+	// relacoes diretas apenas
+	if (c_block->isSame(c_block.get(), c_block1.get()))
+	{
+		return QEquals;
+	}
+	if (c_block == nullptr)
+	{
+		return QUndefined;
+	}
+	if (c_block1 == nullptr)
+	{
+		return QUndefined;
+	}
 
 
-QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in) {
+ 
+
+
+	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
+	{
+		HBlock resolved = resolve_string(nkind->named, localsEntry);
+		if (resolved != nullptr)
+		{
+			return query_is(c_block, resolved, localsEntry, stk);
+		}
+	}
+
+	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block))
+	{
+		HBlock resolved = resolve_string(nkind->named, localsEntry);
+		if (resolved != nullptr)
+		{
+			return query_is(resolved, c_block1, localsEntry, stk);
+		}
+	}
+
+
+
+	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
+	{
+		HBlock resolved = resolve_noum(nnoum, localsEntry);
+		if (resolved != nullptr)
+		{
+			return query_is(c_block, resolved, localsEntry, stk);
+		}
+		if (nnoum->named == "kind")
+		{
+			if (asHBlockKind(c_block) != nullptr) return QEquals;
+		}
+	}
+
+	if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
+	{
+		HBlock resolved = resolve_noum(nnoum2, localsEntry);
+		if (resolved)
+		{
+			return query_is(resolved, c_block1, localsEntry, stk);
+		}
+
+		if (nnoum2->named == "kind")
+		{
+			if (asHBlockKind(c_block1) != nullptr) return QEquals;
+		}
+	}
+
+	//Metakinds
+	if (HBlockKind bkind = asHBlockKind(c_block))
+	{
+		if (c_block1 == MetaKind)   return QEquals;
+	}
+	if (HBlockKindEntity bkind = asHBlockKindEntity(c_block))
+	{
+		if (c_block1 == MetaKindEntity)   return QEquals;
+	}
+	if (HBlockCompositionPhrase bkind = asHBlockCompositionPhrase(c_block))
+	{
+		if (c_block1 == MetaKindPhrase)   return QEquals;
+	}
+	if (HBlockCompositionRelation bkind = asHBlockCompositionRelation(c_block))
+	{
+		if (c_block1 == MetaKindRelation)   return QEquals;
+	}
+
+ 
+
+	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
+	{
+		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
+		{
+			//if (isSameString(cinst1  , cinst2 )) return QEquals;
+			if (CBlock::isSame(cinst1.get(), cinst2.get())) return QEquals;
+			return QNotEquals;
+		}
+
+		if (HBlockKindEntity kThing = asHBlockKindEntity(c_block1))
+		{
+			if (is_derivadeOf(cinst1, kThing, localsEntry)) return QEquals;
+		}
+		if (HBlockKindValue kVal = asHBlockKindValue(c_block1))
+		{
+			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
+		}
+
+		//if (HBlockNoum knn = asHBlockNoum(c_block1))
+		//{
+		//	if (isSameString(knn->named, cinst1->named)) return QEquals;
+		//}
+
+	}
+
+	//is scond a kind of anything ??
+	if (HBlockKind bkind = asHBlockKind(c_block1))
+	{
+		if (HBlockKind akind = asHBlockKind(c_block))
+		{
+			bool b = is_derivadeOf(akind, bkind);
+			if (b) return QEquals;
+		}
+		else if (HBlockInstance aInstance = asHBlockInstance(c_block)) {
+			bool b = is_derivadeOf(aInstance, bkind, localsEntry);
+			if (b) return QEquals;
+		}
+	} 
+
+	return QUndefined;
+
+}
+
+QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in) 
+{
 
 	 
  
@@ -399,96 +543,48 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	QueryStack *stk   = stk_unique.get();
 	stk->addQuery("is", c_block, c_block1);
 
+	 
+	auto r_direct = query_direct_is(c_block, c_block1, localsEntry, stk);
+	if (r_direct.result != QUndefined) return r_direct;
+
+ 
+	// can resolve via eval ???
+	{
+		auto valued = resolve_by_evaluation(c_block1, localsEntry, stk);
+		if (valued != nullptr)
+			if (CBlock::isSame(valued.get(), c_block1.get()) == false)
+			{
+				return query_is(c_block, valued, localsEntry, stk);
+			}
+	}
+	{
+		auto valued = resolve_by_evaluation(c_block, localsEntry, stk);
+		if (valued != nullptr)
+			if (CBlock::isSame(valued.get(), c_block.get()) == false)
+			{
+				return query_is(valued, c_block1, localsEntry, stk);
+			}
+	}
+
+ 
 
  
 
 
-
-    //resolve It
-
-	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
-	{
-		HBlock resolved = resolve_string(nkind->named, localsEntry);
-		if (resolved != nullptr)
-		{
-			return query_is(c_block, resolved, localsEntry, stk);
-		}
-	}
-
-	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block))
-	{
-		HBlock resolved = resolve_string(nkind->named, localsEntry);
-		if (resolved != nullptr)
-		{
-			return query_is(resolved, c_block1, localsEntry, stk);
-		}
-	}
-
-
-
-	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
-	{
-		HBlock resolved = resolve_noum(nnoum, localsEntry);
-		if (resolved != nullptr)
-		{			
-			return query_is(c_block, resolved, localsEntry, stk);
-		}
-		if (nnoum->named == "kind")
-		{
-			if ( asHBlockKind(c_block) != nullptr) return QEquals;
-		} 
-	}
-
-    if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
-    {
-        HBlock resolved = resolve_noum(nnoum2, localsEntry);
-        if (resolved) 
-		{
-			return query_is(resolved, c_block1, localsEntry, stk);
-        }
-		
-		if (nnoum2->named == "kind")
-		{
-			if (asHBlockKind(c_block1) != nullptr) return QEquals;
-		}
-    }
-
-	printf("Query :\n");
-	c_block->dump("");
-	c_block1->dump("");
-	printf("\n");
 
 
 	if (HBlockKind bkind = asHBlockKind(c_block1))
 	{
 		if (auto avar = asHVariableNamed(c_block))
 		{
-			c_block->dump("");
-			c_block1->dump("");
+ 
 			auto qr =  query_is(avar->kind, bkind, localsEntry, stk);
 			return qr;
 		}		
 	}
 
 
-	//Metakinds
-	if (HBlockKind bkind = asHBlockKind(c_block))
-	{
-		if (c_block1 == MetaKind )   return QEquals;
-	}
-	if (HBlockKindEntity bkind = asHBlockKindEntity(c_block))
-	{		
-		if (c_block1 == MetaKindEntity)   return QEquals;
-	}
-	if (HBlockCompositionPhrase bkind = asHBlockCompositionPhrase(c_block))
-	{
-		if (c_block1 == MetaKindPhrase)   return QEquals;
-	}
-	if (HBlockCompositionRelation bkind = asHBlockCompositionRelation(c_block))
-	{
-		if (c_block1 == MetaKindRelation)   return QEquals;
-	}
-
+ 
  
 
 
@@ -515,36 +611,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				return QEquals;
 			}
 	}
-
-
-	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
-	{
-		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
-		{
-			//if (isSameString(cinst1  , cinst2 )) return QEquals;
-			if ( CBlock::isSame(cinst1.get(), cinst2.get())) return QEquals;
-			return QNotEquals;
-		}
-
-		if (HBlockKindEntity kThing = asHBlockKindEntity(c_block1))
-		{
-			if (is_derivadeOf( cinst1, kThing, localsEntry)) return QEquals;
-		}
-		if (HBlockKindValue kVal = asHBlockKindValue(c_block1))
-		{
-			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
-		}
-
-		//if (HBlockNoum knn = asHBlockNoum(c_block1))
-		//{
-		//	if (isSameString(knn->named, cinst1->named)) return QEquals;
-		//}
-
-	}
-
- 
-
-
+	 
 	 
 		if (HBlockAction act = asHBlockAction(c_block))
 			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
@@ -598,64 +665,49 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
     }
 
 
-
-    
-
-	for (auto dct : decides_what)
+	bool useDecide = false;
+	if (useDecide)
 	{
-		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
-		if (next_stack != nullptr)
-		{
-			auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
-			if (dctValueWrap != nullptr)
-			{
 
-				QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
-				if (rw.result != QUndefined)
+		for (auto dct : decides_what)
+		{
+			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
+			if (next_stack != nullptr)
+			{
+				auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
+				if (dctValueWrap != nullptr)
 				{
-					return rw;
+					QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
+					if (rw.result != QUndefined)
+					{
+						return rw;
+					}
+				}
+			}
+		}
+
+		for (auto dct : decides_what)
+		{
+			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
+			if (next_stack != nullptr)
+			{
+				auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
+				if (dctValueWrap_1 != nullptr) {
+					QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
+					if (rw.result != QUndefined)
+					{
+						return rw;
+					}
 				}
 			}
 		}
 	}
 
-    for (auto dct : decides_what) 
-    {
-		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
-		if (next_stack != nullptr)
-		{
-			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
-			if (dctValueWrap_1 != nullptr) {
-				QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
-				if (rw.result != QUndefined)
-				{
-					return rw;
-				}
-				
-			}
-		}
-    }
 
 
-
-    //is scond a kind of anything ??
-    if (HBlockKind bkind = asHBlockKind(c_block1)) 
-	{
-        if (HBlockKind akind = asHBlockKind(c_block)) 
-		{
-            bool b = is_derivadeOf(akind, bkind);
-            if (b) return QEquals;
-        } else if (HBlockInstance aInstance = asHBlockInstance(c_block)) {
-            bool b = is_derivadeOf(aInstance, bkind,localsEntry);
-            if (b) return QEquals;
-        } 
-    }
+ 
     
-
-
-
-
-
+	 
 
     for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it) {
         if (HBlockToDecide tdef = asHBlockToDecide(*it)) {
@@ -723,17 +775,13 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			if (next_stack != nullptr)
 			{
 			 
+			 
+
 
 				auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
 				if (result.hasMatch == true)
 				{
-					printf("Matched\n");
-					c_block->dump("");
-					DctQueryDirectIS->obj->dump("");
-
-					printf("\n");
-					c_block1->dump("");
-					DctQueryDirectIS->value->dump("");
+	 
 
 
 
@@ -813,19 +861,24 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
 	//logMessage("I cant query");
-	//c_block->dump("");
-	//c_block1->dump("");
+ 
 
 	//se tudo falhar , tente isso ....
 	auto resolved_b = exec_eval(c_block1, localsEntry, stk);
-	if (CBlock::isSame(resolved_b.get(), c_block1.get()) == false)
+	if (resolved_b != nullptr)
 	{
-		return query_is(c_block, resolved_b, localsEntry, stk);
+		if (CBlock::isSame(resolved_b.get(), c_block1.get()) == false)
+		{
+			return query_is(c_block, resolved_b, localsEntry, stk);
+		}
 	}
 	auto resolved_a = exec_eval(c_block , localsEntry, stk);
-	if (CBlock::isSame(resolved_a.get(), c_block .get()) == false)
+	if (resolved_a != nullptr)
 	{
-		return query_is(  resolved_b, c_block1 , localsEntry, stk);
+		if (CBlock::isSame(resolved_a.get(), c_block.get()) == false)
+		{
+			return query_is(resolved_b, c_block1, localsEntry, stk);
+		}
 	}
 
  
@@ -1009,8 +1062,7 @@ QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocal
 
 
 	//printf("VERB   ===============================\n");
-	//if (localsEntry!=nullptr)localsEntry->dump("+ ");
-	//is_verb->dump("");
+ 
 
 	//if (rr.result == QEquals) printf("EQUALS\n");
 	//if (rr.result == QNotEquals) printf("NOT EQUALS\n");

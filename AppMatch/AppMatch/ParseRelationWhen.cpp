@@ -45,7 +45,7 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		if (res.result == Equals)
 		{
 			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(kindStr);
+			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(kindStr);
 			string argumentName = (res.matchs["var_named"]->removeArticle()->repr());
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, argumentName);
 			return argumentEntry;
@@ -60,7 +60,7 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		{
 			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
 			auto rp = kindStr;
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(rp);
+			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(rp);
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
 			return argumentEntry;
 		}
@@ -212,7 +212,7 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 
 }
 
-HBlock   NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, HBlockMatch muteVariable)
+HBlock    NSParser::ParseRelation::parser_SeletorTerm(CParser *p, HTerm   term, HBlockMatch muteVariable)
 {
 
 	{
@@ -350,6 +350,37 @@ HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<
 			}
 		}
 	}
+
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mkHPredAny("K1"));
+			predList.push_back(mk_What_Which());
+			predList.push_back(mk_HPredLiteral("not"));
+			predList.push_back(mkHPredAny("Seletor"));
+
+		}
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto arg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["K1"]);
+			if (arg1 != nullptr)
+			{
+
+				auto seletor = parser_SeletorTerm(p, res.matchs["Seletor"], arg1);
+				if (seletor != nullptr)
+				{
+
+					return std::make_shared<CBlockSelector_Where>(seletor);
+				}
+			}
+		}
+	}
+
+
+
+
 
 	{
 		static std::vector<HPred> predList = {};

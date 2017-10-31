@@ -22,8 +22,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 	if (M->matchList.size() != value->lista.size())
 	{
 		 
-		//(M)->dump("    ");
-		//(value)->dump("    ");
+	 
 		return   CResultMatch(false); //sizes must be equals
 	}
 	auto mit = M->matchList.begin();
@@ -43,8 +42,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 		CResultMatch r = Match(*mit, *vit, localsEntryNext, stk);
 		if (r.hasMatch == false)
 		{ 	 
-			//(*vit)->dump("    ");
-			//(*mit)->dump("    ");
+ 
 			return   CResultMatch(false);
 		}
 		rAccm.append(r);
@@ -196,15 +194,9 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 	auto mObject = resolve_argument_match(mObject_in, localsEntry, stk);
 	auto mValue = resolve_argument_match(mValue_in, localsEntry, stk);
 
-	printf("==============================================\nMatched ? \n");
-	
-	vr1->dump("");
-	mObject->dump("");
 
-	printf("\n");
-	vr2->dump("");
-	mValue->dump("");
-	printf("\n");
+
+ 
 
 
 
@@ -230,18 +222,12 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 		}
 		else
 		{
-		 printf("Fail ==========================================\n");
-			mValue->dump("");
-			vr2->dump("");
-			printf("............................................\n"); 
+ 
 		}
 	}
 	else
 	{
-		printf("Fail ==========================================\n");
-		mObject->dump("");
-		vr1->dump(""); 
-		printf("............................................\n"); 
+ 
 	}
 
 	return CResultMatch(false); 
@@ -251,9 +237,7 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 
 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
-{
- 
-
+{ 
 
 	if (auto vMatch = asHBlockMatch(value))
 	{
@@ -278,7 +262,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				  return 	CResultMatch(true );
 				}
 
-				QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
+				QueryResultContext rcc = query_direct_is(cinner, inner, localsEntry, stk);
 				 
 				return CResultMatch(rcc.result == QEquals);
 				 
@@ -299,7 +283,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
-				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
+				QueryResultContext r = query_direct_is(cInst, inner_2, localsEntry, stk);
 				return CResultMatch(r.result == QEquals); 
 			}
 			 
@@ -311,7 +295,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			//	return CResultMatch(r.result == QEquals); 
 			//}
 
-			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
+			QueryResultContext rcc = query_direct_is(value, inner_2, localsEntry, stk);
 			return CResultMatch(rcc.result == QEquals);
 		}
 		return CResultMatch(false);
@@ -370,7 +354,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			auto resolved = resolve_string_noum(   nnoum ,localsEntry ,std::list<std::string>());
 			if (resolved)
 			{
-				QueryResultContext rr = query_is(value, resolved , localsEntry, stk);
+				QueryResultContext rr = query_direct_is(value, resolved , localsEntry, stk);
 				if (rr.result == QEquals)
 				{
 					return CResultMatch(true);
@@ -421,7 +405,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		if (HBlockProperty    vProp = asHBlockProperty(value))
 		{
-			QueryResultContext rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
+			QueryResultContext rProp = query_direct_is( mProp->prop , vProp->prop, nullptr, stk);
 			if (rProp.result == QEquals)
 			{
 				CResultMatch mres =  Match(mProp->obj, vProp->obj, localsEntry, stk);
@@ -504,16 +488,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}	
 			else
 			{
-				//printf("Match Fail =============================\n");
-
-				//mDirect->obj->dump("  ");
-				//vDirect->get_obj()->dump("  ");
-				//if (localsEntry != nullptr)
-				//{
-				//	printf("LETs   \n");
-				//	localsEntry->dump("");
-				//}
-				//printf(".........................................\n");
+ 
 
 				return CResultMatch(false);
 			}
@@ -539,7 +514,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				{
 					//auto vv = make_shared<CBlockAssertion_isDirectAssign>( value, mWhich->value);
 
-					QueryResultContext qverb = query_is(value, mWhich->value, localsEntry, stk);
+					QueryResultContext qverb = query_direct_is(value, mWhich->value, localsEntry, stk);
 					if (qverb.result == QEquals)
 					{
 						return mres;
@@ -568,7 +543,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				if (mWhichNot->verb == "is")
 				{
-					QueryResultContext qverb = query_is(value, mWhichNot->value, localsEntry, stk);
+					QueryResultContext qverb = query_direct_is(value, mWhichNot->value, localsEntry, stk);
 					if (qverb.result != QEquals)
 					{
 						return mres;
@@ -591,13 +566,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 	if (HBlockMatchKind  mKind = asHBlockMatchKind(M))
 	{
-		QueryResultContext qkind = query_is(value , mKind->kind, localsEntry, stk);
+		QueryResultContext qkind = query_direct_is(value , mKind->kind, localsEntry, stk);
 		return CResultMatch(qkind.result == QEquals);  
 	}
 
 	if (HBlockMatchValue  mVal = asHBlockMatchValue(M))
 	{
-		QueryResultContext qkind = query_is(value, mVal->inner, localsEntry, stk);
+		QueryResultContext qkind = query_direct_is(value, mVal->inner, localsEntry, stk);
 		return CResultMatch(qkind.result == QEquals);
 	}
 

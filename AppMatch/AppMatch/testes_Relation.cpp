@@ -75,7 +75,7 @@ void testeRelation2() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind of entity  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"box is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"key is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"book   is a thing  ", ISLOG));
@@ -84,7 +84,7 @@ void testeRelation2() {
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb  contains  implies a  containner relation", ISLOG));
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse,"  box contains key  ", ISLOG));
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"  box contains book  ", ISLOG)); //remove a relacao anterior
+	auto r = interpreter->execute_now(Statement::Parser_Stmt(&parse,"  box contains book  ", ISLOG)); //remove a relacao anterior
 
 
 
@@ -102,8 +102,8 @@ void testeRelation3() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind  ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind of entity ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind of entity ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"cake is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"soupe is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe1 is a recipe  ", ISLOG)); 
@@ -140,32 +140,32 @@ void testeRelation4() {
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind  ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind of entity ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe is a kind  of entity ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"cake is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"soupe is a thing  ", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"(cake recipe) is a recipe  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipe2 is a recipe  ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"(soupe recipe) is a recipe  ", ISLOG));
 
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipment relates ( recipe called recipe ) to ( thing called the product )  ", ISLOG));
+	interpreter->execute_init(Statement::Parser_Stmt(&parse,"recipment relates ( recipe called recipe ) to ( thing called the product )  ", true));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb produce  implies a  recipment relation", ISLOG));
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb produced by implies a  reverse recipment relation", ISLOG));
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse," recipe of cake is  (cake recipe) ", ISLOG));
-	interpreter->execute_now(Statement::Parser_Stmt(&parse," product of recipe2 is soupe ", ISLOG));
+	interpreter->execute_now(Statement::Parser_Stmt(&parse," product of (soupe recipe) is soupe ", ISLOG));
 	
 	 
 
 	auto ret_true_a = interpreter->query(Statement::Parser_Stmt(&parse," (cake recipe) produce cake  ", ISLOG));
 	assert(ret_true_a.result == QEquals);
 
-	auto ret_true_b = interpreter->query(Statement::Parser_Stmt(&parse," soupe is produced by recipe2 ", ISLOG));
+	auto ret_true_b = interpreter->query(Statement::Parser_Stmt(&parse," soupe is produced by (soupe recipe) ", ISLOG));
 	assert(ret_true_b.result == QEquals);
 
 
-	auto ret_false_c = interpreter->query(Statement::Parser_Stmt(&parse," recipe  of cake  is  recipe2  ", ISLOG));
-	assert(ret_false_c.result == QNotEquals);
+	auto ret_false_c = interpreter->query(Statement::Parser_Stmt(&parse," recipe  of cake  is  (soupe recipe)  ", true));
+	assert(ret_false_c.result != QEquals);
 
 	interpreter->execute_now(Statement::Parser_Stmt(&parse," product of recipe2 is nothing ", ISLOG)); //exclui uma relacao
 	auto ret_false_d = interpreter->query(Statement::Parser_Stmt(&parse," soupe is produced by recipe2 ", ISLOG));
@@ -225,35 +225,39 @@ scent is in hall
 
 	 interpreter->execute_init(ParseText::parser_text(&parse,ss1, ISLOG) );
 	
-	 for (auto& rr : interpreter->getRelations()) rr->dump("");
+	// for (auto& rr : interpreter->getRelations()) rr->dump("");
 	 
-	 auto pBlock = Expression::Parser_Expression(&parse,"a room which hall relates to by Connection ", ISLOG);
+	 auto pBlock = Expression::Parser_Expression(&parse,"a courage is in    ", ISLOG);
 	// auto res_q1 = interpreter->query(Expression::Parser_Expression(&parse,"  hall connect garden  ", ISLOG));
 	// auto target_q = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which hall  relates to by Connection ", ISLOG), nullptr);
 	// target_q->dump("");
 
 	// auto target_q2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to garden by Connection ", ISLOG), nullptr);
 	// target_q2->dump("");
+	 printf("\n");
+	 auto  pwn = Expression::Parser_Expression(&parse, " lab is (a room  which relates to hall by Connection)    ", true);
+	 auto target_v2 = interpreter->exec_eval(pwn, nullptr, nullptr);
+	 target_v2->dump("D");
+
+	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse, "talent which are in hall", ISLOG), nullptr, nullptr);
+	 target_v1->dump("C");
 
 	 auto target_q3 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which  relates to hall by Connection ", ISLOG), nullptr,nullptr);
-	 target_q3->dump("");
-	 
+	 target_q3->dump("Lab  "); 
 
 	 auto target_q4 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a room which courage relates to by Inner ", ISLOG), nullptr,nullptr);
-	 target_q4->dump("");
+	 target_q4->dump("Lab");
 
 	 auto target_q5 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"a talent which relates to hall by Inner ", ISLOG), nullptr,nullptr);
-	 target_q5->dump("");
+	 target_q5->dump("freedom/scent ");
 
 	 //things which are in the teapot
 	 //people who can see the mouse
 
-	 auto target_v1 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"talent which are in hall", ISLOG), nullptr,nullptr);
-	 target_v1->dump("");
+ 
 
 	 printf("----------------\n");
-	 auto target_v2 = interpreter->exec_eval(Expression::Parser_Expression(&parse,"room which connect hall", ISLOG), nullptr,nullptr);
-	 target_v2->dump("");
+ 
 
 
 	 return;
@@ -407,13 +411,13 @@ key unlock box
 
 void testeRelation_all()
 {
-	//testeParser_7_1();  //comportamento fundamental
-	//testeParser_7_2();
+	testeRelation5();
+	return;
 
-	 //testeRelation1(); 
-	//testeRelation2(); 
-	//testeRelation3(); 
-	//testeRelation4(); 
+	testeRelation1(); 
+	testeRelation2(); 
+	testeRelation3(); 
+	testeRelation4(); 
 	testeRelation5();
 	//testeRelation6();
 	//testeRelation7();

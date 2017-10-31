@@ -381,10 +381,8 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
-	c_value->dump("");
-	//c_obj->dump("");
-
-	c_obj->baseKind->dump("");
+ 
+ 
 
 	for (auto sii = default_assignments.rbegin(); sii!= default_assignments.rend();++sii)
 	{
@@ -402,7 +400,7 @@ HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockI
 				}
 			}
 		}
-		s->dump("");
+ 
 
 	}
 
@@ -525,9 +523,7 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 		auto b1 = exec_eval(nbool_and->input_A , localsEntry, stk);
 		auto b2 = exec_eval(nbool_and->input_B, localsEntry, stk);
 		 
-
-		b1->dump("");
-		b2->dump("");
+ 
 		return eval_boolean_AND(b1, b2);
 	}
 
@@ -630,9 +626,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 				if (rloop_result == nullptr)
 				{
-					//printf("_______________________________________\n");
-					//localsNext->dump("");
-					//cForE->block_body->dump("");
+	 
 					continue;
 				}
 				ret = rloop_result ;
@@ -643,9 +637,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			}
 			if (ret == nullptr)
 			{
-				//c_block->dump("");
-				//cForE->block_variable->dump("");
-				//logError("What ?");
+ 
 			}
 			return ret ;
 		}
@@ -771,22 +763,15 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		if (HBlockInstance objInst = asHBlockInstance(instancia))
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
-
-				objInst->dump("P  ");
 				 
-				HVariableNamed pvar = objInst->get_property(propNoum->named);
-
-				pvar->dump("P  ");
-
+				HVariableNamed pvar = objInst->get_property(propNoum->named); 
 				HBlock ret_val = Nothing;
 				if (pvar != nullptr)
 				{
 					if (pvar->value != nullptr)
 					{
 						ret_val = pvar->value;						
-					}
-					 
-
+					} 
 					if (is_nothing(ret_val) )
 					{
 						HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
@@ -794,9 +779,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 						{
 							ret_val = default_val;
 						}
-					}
-
+					} 
 					return ret_val;
+				}
+				else
+				{
+					auto ret_rval = get_property_by_relation(propNoum, objInst, localsEntry, stk);
+					if (ret_rval != nullptr) return ret_rval;
+
 				}
 			}
 		//return nullptr;
@@ -915,9 +905,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			 auto b = std::make_shared<CBlockProperty>(kprop->prop, obj);
 
 
-			 //printf("------------------------------\n");
-			 //b->dump("");
-			 //kprop->obj->dump("");
+	 
 			 return  exec_eval(b, localsEntry, stk);
 
 		 }
@@ -1076,7 +1064,7 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 					 {
 						 if (HBlockMatch  arg2_match_required = *arg_header_second)
 						 {
-							 arg2_match_required->dump(" ");
+							 
 							 auto obj_resolved = exec_eval(result.maptch["noum2"], localsEntry, stk);
 							 auto result_arg2_requ = Match(arg2_match_required, obj_resolved, localsEntry, stk);
 							 if (result_arg2_requ.hasMatch)
@@ -1268,7 +1256,7 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 	{
 		HBlock resolved = resolve_noum(nnoum_2, localsEntry);
 		if (resolved != nullptr) return resolved;
-		value_2->dump("");
+ 
 		return nullptr;
 	}
 	
@@ -1326,7 +1314,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 			auto pret = execute_now(cmd, nextLocals, stk);
 			if (pret.hasExecuted == false)
 			{ 
-				p->dump(""); 
+			 
 				return false;
 			}
 			rs_result = pret;			

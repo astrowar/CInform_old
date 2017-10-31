@@ -598,6 +598,15 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	}
 
 	string sNoum = CtoString(term);
+	if (sNoum == "where")
+	{
+		return nullptr;
+	}
+	if (sNoum == "which")
+	{
+		return nullptr;
+	}
+
 	if (sNoum == "not")
 	{
 		return nullptr;
@@ -615,6 +624,14 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 		return nullptr;
 	}
 	if (sNoum == "of")
+	{
+		return nullptr;
+	}
+	if (sNoum == "if")
+	{
+		return nullptr;
+	}
+	if (sNoum == "is")
 	{
 		return nullptr;
 	}

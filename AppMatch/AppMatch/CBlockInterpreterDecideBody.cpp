@@ -225,12 +225,7 @@ QueryResultContext CBlockInterpreter::getDecidedIf(CBlocking::HBlock c_block, HB
 
 	CResultMatch result = this->Match(dct->queryToMatch, c_block, localsEntry,stk);
 
-		
-	//printf("MATCH ? ===========================\n");
-	//dct->queryToMatch->dump(" ");
-	//printf(" ->  \n");
-	//c_block->dump(" ");
-	//printf(".....................................\n");
+ 
 	if (result.hasMatch)
 	{
 		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);

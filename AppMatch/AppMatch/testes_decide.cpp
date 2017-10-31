@@ -154,7 +154,7 @@ materiality relates (a thing ) to (an atom )
 the verb made of implies the materiality relation
 coin is made of silver
 
-to decide if (thing called T ) is   grand prize:
+to decide if ( thing called T ) is   grand prize :
    decide on yes
 
 to decide which thing is the grand prized:
@@ -164,16 +164,19 @@ to decide which thing is the grand prized:
 )";
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
-	//f_eval(" grand prize ")->dump("E ");
-	assert(f_is("diary is grand prize") );
-
-	//f_eval("destination ")->dump("E ");
+	//f_eval(" grand prized ")->dump("E ");
+	assert(f_is("diary is grand prize") );	
+	
 	assert(f_is("coin is made of gold") == false);
+	f_eval(" grand prized ")->dump("G ");
+
+	assert(f_is("grand prized  is book"));
+
 	assert(f_is("coin is made of silver"));
 	f_now("coin is made of gold ");
 	assert(f_is("coin is made of gold"));
-	assert(f_is("grand prize  is coin"));
-	f_eval(" grand prize ")->dump("E ");
+	assert(f_is("grand prized  is coin"));
+	f_eval(" grand prized ")->dump("E ");
 
 	return;
 

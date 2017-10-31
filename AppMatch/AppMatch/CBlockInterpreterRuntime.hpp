@@ -142,6 +142,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockKind MetaKindPhrase;
 
 		QueryResultContext query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack *stk);
+		HBlock resolve_by_evaluation(HBlock c_block,   HRunLocalScope localsEntry, QueryStack * stk_in);
 		QueryResultContext query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
 		QueryResultContext query_is_propertyOf_value(HBlock c_property, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
@@ -171,6 +172,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock lookup_relation_X_Y_2(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlock lookup_relation_XS_Y_1(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlock lookup_relation_X_YS_2(const string& relationNamed, HBlock c_block, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		CBlocking::HBlock get_property_by_relation(HBlockNoum propNamed, HBlock obj, HRunLocalScope localsEntry, QueryStack * stk);
+		bool set_property_by_relation(HBlockNoum propNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_relation(HBlockRelationLookup rLookup, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlock lookup_union(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock lookup_intersection(HBlock v1, HBlock v2, HRunLocalScope localsEntry, QueryStack * stk);
@@ -322,6 +325,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		QueryResultContext query(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
 		QueryResultContext query(HBlock  vquery);
+		QueryResultContext query_direct_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack * stk_in);
 		QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
 

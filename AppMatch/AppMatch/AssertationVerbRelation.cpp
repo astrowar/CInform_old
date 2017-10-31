@@ -203,6 +203,33 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  rel
 	return std::make_shared<CBlockList>(lst);
 }
 
+//retorna uma propriedade por relacao
+
+CBlocking::HBlock CBlockInterpreter::get_property_by_relation(HBlockNoum  propNamed, HBlock obj, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	for (auto &rr : relInstances)
+	{		
+		if (rr->relation->input_A->named == propNamed->named)
+		{
+			if (query_is(obj, rr->value2, localsEntry, stk).result == QEquals)
+			{
+				return rr->value1;
+			}
+		}
+		else if (rr->relation->input_B->named == propNamed->named)
+		{
+			if (query_is(obj, rr->value1, localsEntry, stk).result == QEquals)
+			{
+				return rr->value2;
+			}
+		}
+	} 
+	return nullptr; 
+}
+
+ 
+
 
  
 //Esta funcao pode retornar um elemento Ou uma lista .. depende do tipo de relacao
@@ -210,20 +237,23 @@ CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_YS_2(const string &  rel
 CBlocking::HBlock CBlockInterpreter::lookup_relation(HBlockRelationLookup  rLookup,   HRunLocalScope localsEntry, QueryStack *stk)
 {
 
+	auto arg1 = resolve_argument_match(rLookup->value1,localsEntry,stk);
+	auto arg2 = resolve_argument_match(rLookup->value2, localsEntry, stk);
+
 	auto rel_find = this->staticRelation.find(rLookup->relation);
 	if (rel_find != this->staticRelation.end())
 	{
 		auto rel = rel_find->second;
 		if (rLookup->term_to_query == FirstNoum)
 		{
-			if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
-			return lookup_relation_X_Y_1(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
+			if (rel->is_various_noum1()) return lookup_relation_XS_Y_1(rLookup->relation, arg1, arg2, localsEntry,stk);
+			return lookup_relation_X_Y_1(rLookup->relation, arg1, arg2, localsEntry,stk);
 
 		}
 		if (rLookup->term_to_query == SecondNoum)
 		{
-			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
-			return lookup_relation_X_Y_2(rLookup->relation, rLookup->value1, rLookup->value2, localsEntry,stk);
+			if (rel->is_various_noum2()) return lookup_relation_X_YS_2(rLookup->relation, arg1, arg2, localsEntry,stk);
+			return lookup_relation_X_Y_2(rLookup->relation, arg1, arg2, localsEntry,stk);
 		}
 
 	}
@@ -339,6 +369,10 @@ CBlocking::HBlock CBlockInterpreter::lookup_union(HBlock v1, HBlock v2, HRunLoca
 //Este sjuito sempre retorna uma lista ....
 CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunLocalScope localsEntry ,QueryStack *stk  )
 {
+
+	auto val1 = resolve_argument_match( vLookup->value1 , localsEntry , stk);
+	auto val2 = resolve_argument_match(vLookup->value2, localsEntry, stk);
+
 	for (auto & rv : verbRelationAssoc)
 	{
 
@@ -356,8 +390,7 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 				{
 					HBlockRelationBase rel = rel_find->second;
 
-					auto val1 = vLookup->value1;
-					auto val2 = vLookup->value2;
+			 
 
 
 					if (rv.second->type() == BlockVerbReverseRelation)
@@ -586,9 +619,7 @@ bool CBlockInterpreter::setVerb(string vb, CBlocking::HBlock c_block, CBlocking:
 QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInstance  rr, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
-	//rr->dump("RI ");
-	//c_block->dump("X1 ");
-	//value->dump("X2 ");
+ 
 
 	QueryResul query_2 = QUndefined;
 	QueryResultContext qc1 = query_is(c_block, rr->value1, localsEntry, stk);
@@ -683,8 +714,7 @@ QueryResultContext CBlockInterpreter::query_relation(HBlockRelationBase rel, CBl
 		}  
 	}
 	// nao eh um teste de instancia ...
-	//c_block->dump("");
-	//value->dump("");
+ 
 
 
 	return QUndefined;
@@ -791,9 +821,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 						}
 					}
 
-					//printf("_______________________________\n");
-					//value_1->dump("");
-					//value_2->dump("");
+	 
 
 
 
@@ -803,9 +831,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 					{
 						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
 
-						//printf("_______________________________\n");
-						//localsNext->dump("");
-						//dctIF->decideBody->dump("");
+			 
 						auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
 						return r;
 					}
@@ -947,7 +973,7 @@ void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
 		return;
 	}
 	printf("new Symbol %s\n", cs.c_str());
-	value->dump("");
+	//value->dump("");
 	symbols.emplace_back(cs, value);
 }
 
