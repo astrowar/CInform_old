@@ -5,49 +5,57 @@ using namespace Interpreter;
 using namespace NSParser;
 
 
-void testeParser_actionA()
+void testeParser_action1()
 {
+
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse," apple is a thing  ", ISLOG));
+	string ss1 =
+		R"( 
+thing is an kind of entity
+apple is a thing 
+eat_this  is ( an action  applying to ( an thing ) )
+understand : eat  ( a thing ) as eat_this
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"eat_this  is ( an action  applying to ( an thing ) )", ISLOG));
-	 
-	// interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : next to   [ thing  ] as X ", ISLOG));
-	printf("===========================================================\n"); 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : eat  ( a thing ) as eat_this ", ISLOG));
-	// interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : bite all [  thing called X ] as  eat  X  ", ISLOG));
+)";
 
-	//interpreter->execute_init(Statement::Parser_Stmt(&parse," apple is a thing  ", ISLOG));
-	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"  bite all apple ", ISLOG));
 
-	//interpreter->execute_init(Statement::Parser_Stmt(&parse,"book is a object  ", ISLOG));
-	printf("===========================================================\n");
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat apple   ", ISLOG));
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true)); 
+	f_now("try eat apple  "); 
 
 	return;
 }
 
 
-void testeParser_actionB()
+void testeParser_action2()
 {
+
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"box is a thing  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"puting  is ( an action  applying to ( an thing ) and ( an thing)  )", ISLOG));
-	
-	
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : put  [ a thing called X ] intro [ box  called IB ]  as puting ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B ", ISLOG));
+	string ss1 =
+		R"( 
+thing is an kind of entity
+apple is a thing 
+box is a thing 
+puting  is ( an action  applying to ( an thing ) and ( an thing)  )
 
-	interpreter->execute_now(Statement::Parser_Stmt(&parse," insert ( apple and box )  intro  box ", true));
+understand : put  [ a thing called X ] intro [ box  called IB ]  as puting
+understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B 
+
+)";
 
 
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_now("insert ( apple and box )  intro  box  ");
+	f_now("try insert  apple and box  intro  box  ");
 	 
 
 	return;
@@ -56,42 +64,57 @@ void testeParser_actionB()
 
 
 
-void testeParser_actionC()
+void testeParser_action3()
 {
+
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing is a kind  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"thing has a text called description  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"apple is a thing  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"description of apple is (text a red and round apple )  ", ISLOG));
+	string ss1 =
+		R"( 
+thing is an kind of entity
+apple is a thing 
+thing has a text called description
+description of apple is (text a red and round apple ) 
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"say_text  is ( an action  applying to ( an text ) ) ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"say_text has a thing called speaker  ", ISLOG));
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"understand : say  [ a text called X ]   as say_text  ", ISLOG)); 
+say_an_text  is ( an action  applying to ( an text ) )
+say_an_text has a thing called speaker 
+understand : say  [ a text called X ]   as say_an_text 
+speaker of  say_text is apple
+
+box is a thing 
+puting  is ( an action  applying to ( an thing ) and ( an thing)  )
+
+understand : put  [ a thing called X ] intro [ box  called IB ]  as puting
+understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B 
+
+)";
 
 
-	interpreter->execute_init(Statement::Parser_Stmt(&parse,"speaker of  say_text is apple ", ISLOG));
-
-	interpreter->execute_now(Statement::Parser_Stmt(&parse," say  (text apple) ", ISLOG));
- 
-
-
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_now("say  (text apple)   ");
 	return;
 }
 
 
 //TODO add  usually is not X  
 //TODO add  rarrally  is X  
-void testeParser_actionD()
+void testeParser_action4()
 {
-	// Eating Rule transcipt
+	// Eating Rule transcript
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
 
 	string s_eating = R"(
-thing is a kind
+thing is a kind of entity
 thing can be edible
  
 person is a kind
@@ -116,27 +139,27 @@ carry out eating ( thing called X  which is edible ) :
   say  (text eaten !)
 
 )";
-	//interpreter->execute_init(parse.Parser_Stmt ("eating is   an action applying to(an  thing)", ISLOG));
-	
-	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
-	auto e = interpreter->exec_eval(Expression::Parser_Expression(&parse," eating ", ISLOG), nullptr,nullptr);
-	 
-	e->dump("");
-	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
-	// Try eh um STMT
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating orange ", ISLOG), nullptr);
 
-	return;
+	interpreter->execute_init(ParseText::parser_text(&parse, s_eating, true));
+
+	f_eval(" eating   ")->dump("E ");
+
+	f_now("try eating apple   ");
+	f_now("try eating orange   ");
+	return; 
 }
 
 
-void testeParser_actionE()
+void testeParser_action5()
 {
 	// Eating Rule transcipt
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
 
 	string s_eating = R"(
 thing is a kind
@@ -167,11 +190,12 @@ carry out eating ( thing called X  which is edible ) :
 )";
 
 	interpreter->execute_init(ParseText::parser_text(&parse,s_eating, ISLOG));
+
  
 	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", ISLOG), nullptr);
+	f_now("try eating apple " );
+	f_now("eat    orange " );
 
 	return;
 }
@@ -188,18 +212,21 @@ carry out eating ( thing called X  which is edible ) :
 //      se o player atirar em alguem, processa os handle de shot e depois os de hurt, intercalados
 //      ie  check shot, check hurt, before shot, before hurt,  carry on shot, carry on hurt ....
 
-void testeParser_actionF()
+void testeParser_action6()
 {
 	// Eating Rule transcipt
 
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
 	string s_eating = R"(
-thing is a kind
+thing is a kind of entity
 thing can be edible
  
-person is a kind
+person is a kind of entity
 apple is a thing
 orange is a thing
 
@@ -217,18 +244,28 @@ asking someone for something is speech
 
 	//interpreter->execute_now(Expression::Parser_Expression(&parse,"eat apple ", ISLOG), nullptr); 
 	// Try eh um STMT
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"try eating apple ", ISLOG), nullptr);
-	interpreter->execute_now(Statement::Parser_Stmt(&parse,"eat    orange ", ISLOG), nullptr);
+ 
+
+	f_now("try eating apple ");
+	f_now("eat    orange ");
+
 
 	return;
 }
 
 
+//analysing something is an activity
+//the analysing activity has a text called first impression
+
+
+
+
 void testAction_all()
 {
-	//testeParser_actionA(); 
-	//testeParser_actionB(); 
-	//testeParser_actionC();
-	//testeParser_actionD();
-	testeParser_actionE();
+	testeParser_action1(); 
+	testeParser_action2(); 
+	testeParser_action3();
+	testeParser_action4();
+	testeParser_action5();
+	testeParser_action6();
 }
