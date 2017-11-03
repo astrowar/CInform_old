@@ -136,7 +136,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other")  arg2->kind = arg1->kind;
+						if (kind_n->named == "other" || kind_n->named == "another" )  arg2->kind = arg1->kind;
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2, true,true);
 				}
@@ -169,7 +169,8 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other")  arg2->kind = arg1->kind;
+						if (kind_n->named == "other" || kind_n->named == "another" )  arg2->kind = arg1->kind;
+					 
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,true,false);
 				}
@@ -203,7 +204,8 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other")  arg2->kind = arg1->kind;
+						if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
+					 
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,true);
 				}
@@ -240,7 +242,8 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-					if (kind_n->named == "other")  arg2->kind = arg1->kind;
+					if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
+					 
 					}
 
 					auto condition = ControlFlux::parser_if_condition(p, res.matchs["Condition"]);
@@ -274,13 +277,15 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 			auto arg1 = parser_KindCalled(p, res.matchs["K1"]);
 			if (arg1 != nullptr)
 			{
-				auto arg2 = parser_KindCalled(p, res.matchs["K2"]);
+				HBlockArgumentInput arg2 = parser_KindCalled(p, res.matchs["K2"]);
 				if (arg2 != nullptr)
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
 						if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
 					}
+
+				 
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,false);
 				}
 			}

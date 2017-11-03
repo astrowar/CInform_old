@@ -579,6 +579,9 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockText>(c);
 			return nullptr;
 		}
+
+	 
+
 		HBlockInstance asHBlockInstance(CBlocking::HBlock c)
 		{
 	  

@@ -40,7 +40,7 @@ void testeParser_2_1() {
 
 )";
 	
-		interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+		interpreter->execute_init(ParseText::parser_text(&parse, ss1, false));
 
 		printf("====================\n\n");
 
@@ -86,7 +86,7 @@ void testeParser_2_2() {
 
 )";
 
-	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 	printf("==============================\n\n");
 	f_eval("element of paper  ")->dump("E ");
 	assert(f_is("element of paper is nothing "));
@@ -196,7 +196,7 @@ void testeParser_2_3() {
 
 )";
 
-	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, ISLOG));
 	f_eval("element of paper  ")->dump("E ");
 	assert(f_is("element of paper is air "));
 

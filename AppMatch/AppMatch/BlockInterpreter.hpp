@@ -414,15 +414,7 @@ namespace CBlocking
 	};
 	using HBlockEnums = std::shared_ptr<CBlockEnums>;
 
-
-
-
- 
-
-
-
-
-
+	 
 
 	class CBlockVerbRelation : public CBlock    // Abstract , define uma relacao
 	{

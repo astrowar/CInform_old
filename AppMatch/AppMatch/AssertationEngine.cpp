@@ -267,8 +267,7 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 	}
 
 	logWarring("Unable to set ");
-	//value->dump("    ");	
-	//kind->dump("    ");
+ 
 	return nullptr;
 
 }
@@ -332,7 +331,8 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 			}
 			else
 			{
-				logMessage("Obje dont have " + property_noum->named + "property ");
+				 
+				logMessage("Obje dont have " + property_noum->named + " property ");
 			}
 
 		}
