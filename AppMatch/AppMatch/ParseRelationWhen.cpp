@@ -45,7 +45,7 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		if (res.result == Equals)
 		{
 			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(kindStr);
+			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(kindStr);
 			string argumentName = (res.matchs["var_named"]->removeArticle()->repr());
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, argumentName);
 			return argumentEntry;
@@ -60,7 +60,7 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		{
 			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
 			auto rp = kindStr;
-			HBlockKind argumentKind = std::make_shared<CBlockKindValue>(rp);
+			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(rp);
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
 			return argumentEntry;
 		}

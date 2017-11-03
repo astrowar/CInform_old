@@ -548,6 +548,144 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 	return nullptr;
 }
 
+
+bool CBlockInterpreter::existe_relation_property(HBlockNoum property_noum, HBlock  obj )
+{
+	for (auto r : staticRelation)
+	{
+		auto rbase = r.second;
+		if (rbase->input_A->named == property_noum->named)
+		{
+			if (is_InstanceOf(obj, rbase->input_B->kind ) )
+			{
+				return true;
+			}
+		}
+		if (rbase->input_B->named == property_noum->named)
+		{
+			if (is_InstanceOf(obj, rbase->input_A->kind ))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+
+}
+
+HBlock CBlockInterpreter::eval_relation_property(HBlockNoum property_noum, HBlock  obj  ,  HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	bool existe_relation_prop = false;
+	// procupara pela relacao que tem um called que eh compativel com o property_noum
+	for (auto &rr : relInstances)
+	{
+		if (rr->relation->input_B->named == property_noum->named) //Ok, this is 
+		{
+			auto res = query_is(obj, rr->value1, localsEntry, stk);
+			if (res.result == QEquals)
+			{
+			
+				return rr->value2;
+			}
+		}
+
+		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
+		{
+			auto res = query_is(obj, rr->value2, localsEntry, stk);
+			
+			if (res.result == QEquals)
+			{
+				return rr->value1;
+			}
+		}
+	}
+
+	return nullptr;
+}
+ 
+HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope localsEntry, QueryStack *stk)
+{
+ 
+ 
+		{
+			//check for plural
+			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
+			{
+				if (isSameString(propNoum->named, "plural"))
+				{
+					string c = BlockNoum(kprop->obj);
+					if (!(c.empty()))
+					{
+						return  get_plural_of(c);
+					}
+				}
+			}
+		}
+
+		auto instancia = exec_eval(kprop->obj, localsEntry, stk);
+		if (is_nothing(instancia)) return Nothing;
+
+		if (HBlockInstance objInst = asHBlockInstance(instancia))
+			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
+			{
+
+				//objInst->dump("P  ");
+
+				HVariableNamed pvar = objInst->get_property(propNoum->named);
+
+				//pvar->dump("P  ");
+
+				HBlock ret_val = Nothing;
+				if (pvar != nullptr)
+				{
+					if (pvar->value != nullptr)
+					{
+						ret_val = pvar->value;
+					}
+
+
+					if (is_nothing(ret_val))
+					{
+						HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
+						if (default_val != nullptr)
+						{
+							ret_val = default_val;
+						}
+					}
+
+					return ret_val;
+				}
+			}
+	 
+ 
+		
+
+		if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
+		{
+			if (existe_relation_property(propNoum, instancia))
+			{
+
+				HBlock  result_prop = eval_relation_property(propNoum, instancia, localsEntry, stk);
+				if (result_prop != nullptr)
+				{
+					return result_prop;
+				}
+				return Nothing;
+			}
+			
+		}
+
+
+
+	return nullptr;
+
+}
+
+
+
+
+
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 
@@ -747,59 +885,10 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return std::make_shared<CBlockRelationArguments>(vr1,vr2);
 	}
 
-
 	if (auto  kprop = asHBlockProperty(c_block))
 	{
-		{
-			//check for plural
-			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
-			{
-				if ( isSameString(propNoum->named, "plural"))
-				{
-					string c = BlockNoum(kprop->obj);
-					if (!(c.empty()))
-					{
-						return  get_plural_of(c);
-					}					 
-				}
-			}
-		}
-
-		auto instancia = exec_eval(kprop->obj, localsEntry, stk);
-		if (is_nothing(instancia)) return Nothing;
-
-		if (HBlockInstance objInst = asHBlockInstance(instancia))
-			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
-			{
-
-				objInst->dump("P  ");
-				 
-				HVariableNamed pvar = objInst->get_property(propNoum->named);
-
-				pvar->dump("P  ");
-
-				HBlock ret_val = Nothing;
-				if (pvar != nullptr)
-				{
-					if (pvar->value != nullptr)
-					{
-						ret_val = pvar->value;						
-					}
-					 
-
-					if (is_nothing(ret_val) )
-					{
-						HBlock default_val = get_default_property_value(propNoum, objInst, localsEntry, stk);
-						if (default_val != nullptr)
-						{
-							ret_val = default_val;
-						}
-					}
-
-					return ret_val;
-				}
-			}
-		//return nullptr;
+		HBlock res = eval_property(kprop, localsEntry, stk);
+		if (res != nullptr) return res;
 	}
 
 	if (HBlockNamedValue nvalue = asHBlockNamedValue(c_block))

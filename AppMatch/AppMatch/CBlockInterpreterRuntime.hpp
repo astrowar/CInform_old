@@ -136,10 +136,32 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::vector<HBlockEventHandle> event_handles;
 		int instancia_id;
 		HBlockNothing Nothing;
+		HBlockAnything Anything;
+
 		HBlockKind MetaKind;
 		HBlockKind MetaKindEntity;
 		HBlockKind MetaKindRelation;
 		HBlockKind MetaKindPhrase;
+		HBlockKind MetaKindBoolean;
+		HBlockKind MetaKindAction;
+		HBlockKind MetaKindList;
+		HBlockKind MetaKindText;
+
+		HBlockKind MetaKindAny;
+		
+		
+		 
+
+		//if (asHBlockText(c)) return true;
+		//if (asHBlockNothing(c)) return true;
+		//if (asHBlockBooleanValue(c)) return true;
+		//if (asHBlockList(c)) return true;
+		//if (asHBlockInstance(c)) return true;
+		//if (asHBlockRelationBase(c)) return true;
+		//if (asHBlockAction(c)) return true;
+		//if (asHBlockNamedValue(c)) return true;
+
+
 
 		QueryResultContext query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStack *stk);
 		QueryResultContext query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
@@ -155,6 +177,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::list<HBlockKind> getUpperKinds(HBlockKind kind);
 		bool is_derivadeOf(HBlockInstance a, HBlockKind b, HRunLocalScope localsEntry);
+
+		bool is_InstanceOf(HBlock a, HBlockKind b);
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
 		void add_constantValueVariableToAllinstances(HBlockAssertion_isConstantAssign kvar);
@@ -311,6 +335,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext Selector_all(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(HBlock)> selector);
 		QueryResultContext Selector_any(HBlock aList, HRunLocalScope localsEntry, std::function<QueryResultContext(HBlock)> selector);
 		QueryResultContext get_system_verbs(string cs, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
+		QueryResultContext query_verb_innn(string verb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack* stk_in);
 		QueryResultContext query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
 		QueryResultContext query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry, QueryStack *stk);
 		QueryResultContext query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
@@ -393,6 +418,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock eval_boolean_OR(HBlock c1, HBlock c2);
 		HBlock eval_boolean_NOT(HBlock c1);
 		HBlock exec_eval_internal_boolean_relation(HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
+		bool existe_relation_property(HBlockNoum property_noum, HBlock obj);
+		HBlock eval_relation_property(HBlockNoum propNoum, HBlock obj, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlock eval_property(HBlockProperty pblock, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlock get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block, HRunLocalScope localsEntry, QueryStack * stk);
 		HBlock exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);

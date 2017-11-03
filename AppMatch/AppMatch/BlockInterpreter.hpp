@@ -192,6 +192,20 @@ namespace CBlocking
 	using HBlockNothing = std::shared_ptr<CBlockNothing>;
 
 
+	class CBlockAnything : public CBlock  //retorna um valor generico porem Abstrado
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockAnything; }
+		CBlockAnything(string _named) : named(_named) {};
+		const string named;
+	};
+
+	using HBlockAnything = std::shared_ptr<CBlockAnything>;
+	
+
+
+
 	class CBlockKindOfName : public CBlock  //Define uma classe derivada de outra
 	{
 	public:
@@ -253,8 +267,7 @@ namespace CBlocking
 		void dump(string ident) override; 
 		virtual BlockType type() override { return BlockType::BlockKindValue; } 
 		string named;
-		CBlockKindValue(string _named) : named(_named) {}
-		 
+		CBlockKindValue(string _named);
 	};
 
 	using HBlockKindValue = std::shared_ptr<CBlockKindValue>;

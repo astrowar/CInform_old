@@ -107,6 +107,13 @@ void CBlockNothing::dump(string ident) {
 }
 
 
+void CBlockAnything::dump(string ident) {
+	printf("%s %s\n", ident.c_str(), "Anything");
+	CBlock::dump(ident);
+}
+
+
+
 void CBlockKindNamed::dump(string ident)
 {
     printf("%s %s %s\n", ident.c_str(), "Kind unknoun Named :  ", named.c_str());
@@ -164,6 +171,8 @@ void CBlockKindValue::dump(string ident) {
 	printf("%s %s %s\n", ident.c_str(), "Kind Value: ", named.c_str());
 	CBlock::dump(ident);
 }
+
+ 
 
 void CBlockKindEntity::dump(string ident) {
 	printf("%s %s %s \n", ident.c_str(), "Kind Entity : ",this->named.c_str() );
@@ -1249,4 +1258,15 @@ void   CBlockFactionalNumber::dump(string ident)
 {
 	printf("%s %s %8.3f\n", ident.c_str(), "Number ", value);
 	CBlock::dump(ident);
+}
+
+
+
+CBlockKindValue::CBlockKindValue(string _named) : named(_named)
+{
+	if (named == "entity" || named == "thing")
+	{
+		printf("Error ?\n");
+	}
+
 }

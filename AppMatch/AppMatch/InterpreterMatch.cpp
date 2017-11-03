@@ -253,7 +253,11 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
 {
  
-
+	printf("Is Match ?\n");
+	value->dump("   ");
+	M->dump("   ");
+	
+	printf("\n\n");
 
 	if (auto vMatch = asHBlockMatch(value))
 	{
@@ -278,10 +282,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				  return 	CResultMatch(true );
 				}
 
-				QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
+				//Elimino esta linha pois aqui nada deve entrar sem estar resolvido
+
+
+				//QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
 				 
-				return CResultMatch(rcc.result == QEquals);
-				 
+				//return CResultMatch(rcc.result == QEquals);
+				return 	CResultMatch(false);
 			}
  
 	 
@@ -299,6 +306,10 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				//Substitua essa igualdade Statica por uma Dynamica
 				//return CResultMatch(inner->named == cinner->named);
 
+
+				// Never Recall Query again over a Noum
+				return 	CResultMatch(false);
+
 				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
 				return CResultMatch(r.result == QEquals); 
 			}
@@ -311,6 +322,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			//	return CResultMatch(r.result == QEquals); 
 			//}
 
+			return CResultMatch(false);
+			//Never call query again over a Noum
 			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
 			return CResultMatch(rcc.result == QEquals);
 		}
@@ -591,14 +604,20 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 	if (HBlockMatchKind  mKind = asHBlockMatchKind(M))
 	{
-		QueryResultContext qkind = query_is(value , mKind->kind, localsEntry, stk);
-		return CResultMatch(qkind.result == QEquals);  
+		if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
+		
+			QueryResultContext qkind = query_is(value, mKind->kind, localsEntry, stk);
+			return CResultMatch(qkind.result == QEquals);
+		
 	}
 
 	if (HBlockMatchValue  mVal = asHBlockMatchValue(M))
 	{
-		QueryResultContext qkind = query_is(value, mVal->inner, localsEntry, stk);
-		return CResultMatch(qkind.result == QEquals);
+		if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
+		
+			QueryResultContext qkind = query_is(value, mVal->inner, localsEntry, stk);
+			return CResultMatch(qkind.result == QEquals);
+		
 	}
 
 

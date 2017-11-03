@@ -117,6 +117,7 @@ enum BlockType {
 	BlockCompostionPhrase,
 	BlockActionCallNamed,
 	BlockInstanceNamed,
-	BlockMatchValue
+	BlockMatchValue,
+	BlockAnything
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

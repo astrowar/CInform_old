@@ -886,6 +886,15 @@ static char* reserved_words[] = {
 	"relation",
 	"list",
 	"phase",	
+	"yes",
+	"no",
+	"which",
+	"what",
+	"where",
+	"verb",
+	"the",
+	"a",
+	"an",
 	0
 };
  

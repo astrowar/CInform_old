@@ -35,18 +35,32 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 CBlockInterpreter::CBlockInterpreter() {
 	instancia_id = 0;
 	Nothing = make_shared<CBlockNothing>("nothing");
+	Anything = make_shared<CBlockAnything>("anything");
 
 	MetaKind = make_shared<CBlockKindNamed>("kind");
 	MetaKindRelation = make_shared<CBlockKindNamed>("relation");
 	MetaKindPhrase = make_shared<CBlockKindNamed>("phrase");
 	MetaKindEntity = make_shared<CBlockKindNamed>("entity");
 	 
+	  MetaKindBoolean = make_shared<CBlockKindNamed>("boolean");
+	  MetaKindAction = make_shared<CBlockKindNamed>("action");
+	  MetaKindList = make_shared<CBlockKindNamed>("list");
+	  MetaKindText = make_shared<CBlockKindNamed>("text");
+
+	  MetaKindAny = make_shared<CBlockKindNamed>("any");
+
 
 
 	symbols.emplace_back("kind", MetaKind);
 	symbols.emplace_back("relation", MetaKindRelation );
 	symbols.emplace_back("phrase", MetaKindPhrase );
 	symbols.emplace_back("entity", MetaKindEntity);
+	symbols.emplace_back("text", MetaKindText);
+ 
+
+	symbols.emplace_back("anything", Anything);
+	symbols.emplace_back("nothing", Nothing);
+ 
 
 }
 
@@ -76,8 +90,7 @@ QueryResultContext CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_b
     if (CBlockList *lst1 = asCBlockList(c_block)) {
         if (CBlockList *lst2 = asCBlockList(c_block1))
         {
-            if (lst1->lista.size() != lst2->lista.size()) return QNotEquals;
-
+            if (lst1->lista.size() != lst2->lista.size()) return QNotEquals;			
         }
 
     }
@@ -107,6 +120,8 @@ bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry
 	if (asHBlockRelationBase(c)) return true;
 	if (asHBlockAction(c)) return true;
 	if (asHBlockNamedValue(c)) return true;
+	if (asHBlockText(c)) return true;
+	 
 	return false;
 }
 
@@ -424,6 +439,13 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
 	}
 
+	if (CBlock::isSame(c_block1.get(), Anything.get()))
+	{
+		if (is_primitive_value(c_block,localsEntry,stk))
+		{
+			return QEquals;
+		}
+	}
 
 
 	if (HBlockNoum nnoum = asHBlockNoum(c_block1))
@@ -606,16 +628,16 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
-			auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
-			if (dctValueWrap != nullptr)
-			{
-
-				QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
-				if (rw.result != QUndefined)
-				{
-					return rw;
-				}
-			}
+			//nao entendi o porque disso aqui ....
+			//auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
+			//if (dctValueWrap != nullptr)
+			//{
+			//	QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
+			//	if (rw.result != QUndefined)
+			//	{
+			//		return rw;
+			//	}
+			//}
 		}
 	}
 
@@ -624,6 +646,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
+			dct->queryToMatch->dump("D ");
+
 			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
 			if (dctValueWrap_1 != nullptr) {
 				QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
@@ -739,6 +763,10 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
 					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
+					if (r.result ==QEquals)
+					{
+						return r;
+					}
 					return r;
 				}
 			}
@@ -818,14 +846,20 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	//se tudo falhar , tente isso ....
 	auto resolved_b = exec_eval(c_block1, localsEntry, stk);
-	if (CBlock::isSame(resolved_b.get(), c_block1.get()) == false)
+	if (resolved_b != nullptr)
 	{
-		return query_is(c_block, resolved_b, localsEntry, stk);
+		if (CBlock::isSame(resolved_b.get(), c_block1.get()) == false)
+		{
+			return query_is(c_block, resolved_b, localsEntry, stk);
+		}
 	}
 	auto resolved_a = exec_eval(c_block , localsEntry, stk);
-	if (CBlock::isSame(resolved_a.get(), c_block .get()) == false)
+	if (resolved_a != nullptr)
 	{
-		return query_is(  resolved_b, c_block1 , localsEntry, stk);
+		if (CBlock::isSame(resolved_a.get(), c_block.get()) == false)
+		{
+			return query_is(resolved_b, c_block1, localsEntry, stk);
+		}
 	}
 
  
@@ -963,23 +997,25 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
     return QueryResultContext( QUndefined);
 }
 
- 
+QueryResultContext CBlockInterpreter::query_verb_innn(string verb, CBlocking::HBlock c_block, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk_in)
+{
+	QueryResultContext rrcstm = get_system_verbs(verb, c_block, value, localsEntry, stk_in); // "listed in" , "size of"
+	if (rrcstm.result != QUndefined) return rrcstm;
+	QueryResultContext rr = query_user_verbs(verb, c_block, value, localsEntry, stk_in);
+	if (rr.result != QUndefined)
+	{
+		return rr;
+	}
+	return rr;
+}
 
 QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocalScope localsEntry ,QueryStack *stk)
-{
-	  
-
- 
-
+{ 
 
 	HBlock val_1 = nullptr;
 	HBlock val_2 = nullptr;
 	if (is_verb->n1 != nullptr)  val_1 = resolve_argument(is_verb->n1, localsEntry, stk);
-	if (is_verb->n2 != nullptr)  val_2 = resolve_argument(is_verb->n2, localsEntry, stk);
-
-
- 
-
+	if (is_verb->n2 != nullptr)  val_2 = resolve_argument(is_verb->n2, localsEntry, stk); 
 
 	if (is_verb->n1 != nullptr && val_1 ==nullptr )
 	{
@@ -998,48 +1034,68 @@ QueryResultContext CBlockInterpreter::query_verb(HBlockIsVerb is_verb, HRunLocal
 	}
 
 
-	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, val_1, val_2, localsEntry, stk); // "listed in" , "size of"
-	if (rrcstm.result != QUndefined) return rrcstm;
-	QueryResultContext rr = query_user_verbs(is_verb->verb, val_1, val_2, localsEntry, stk);
-
-	//QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
-	//if (rrcstm.result != QUndefined) return rrcstm; 
-	//QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
-
-
-
-	//printf("VERB   ===============================\n");
-	//if (localsEntry!=nullptr)localsEntry->dump("+ ");
-	//is_verb->dump("");
-
-	//if (rr.result == QEquals) printf("EQUALS\n");
-	//if (rr.result == QNotEquals) printf("NOT EQUALS\n");
-	//if (rr.result == QUndefined) printf("Undefined\n");
-
-
-	if (rr.result != QUndefined)
+	if (CBlock::isSame(val_2.get(), Nothing.get()))
 	{
-		return rr;
+		auto vr = query_verb_innn(is_verb->verb, val_1, Anything, localsEntry, stk);
+		if (vr.result != QEquals)
+		{
+			return QueryResultContext(QEquals, vr.matchedResult);
+		}
+		else
+		{
+			return  QNotEquals;
+		}		
 	}
 
+	return query_verb_innn(is_verb->verb, val_1, val_2, localsEntry, stk);
 	 
-
-    return rr;
 
    
 }
 
 QueryResultContext CBlockInterpreter::query_not_verb(HBlockIsNotVerb is_verb, HRunLocalScope localsEntry , QueryStack *stk)
 {
-	QueryResultContext rrcstm = get_system_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk); // "listed in" , "size of"
-    if (rrcstm.result == QEquals) return QNotEquals;
-    if (rrcstm.result == QNotEquals) return QEquals;
+
+	HBlock val_1 = nullptr;
+	HBlock val_2 = nullptr;
+	if (is_verb->n1 != nullptr)  val_1 = resolve_argument(is_verb->n1, localsEntry, stk);
+	if (is_verb->n2 != nullptr)  val_2 = resolve_argument(is_verb->n2, localsEntry, stk);
 
 
-	QueryResultContext rr = query_user_verbs(is_verb->verb, is_verb->n1, is_verb->n2, localsEntry, stk);
-    if (rr.result == QEquals) return QNotEquals;
-    if (rr.result == QNotEquals) return QEquals;
-    return rr;
+	if (CBlock::isSame(val_2.get(), Nothing.get()))
+	{
+		auto vr = query_verb_innn(is_verb->verb, val_1, Anything, localsEntry, stk);
+		if (vr.result == QEquals)
+		{
+			return QEquals;
+		}
+		else
+		{
+			return QNotEquals;
+		}
+		 
+	}
+
+
+	QueryResultContext rr = query_verb_innn(is_verb->verb, val_1, val_2, localsEntry, stk);
+	if (rr.result == QEquals)
+	{
+		return QNotEquals;
+	}
+	else
+	{
+		return QEquals;
+	}
+
+	//QueryResultContext rrcstm = get_system_verbs(is_verb->verb, val_1, val_2, localsEntry, stk); // "listed in" , "size of"
+ //   if (rrcstm.result == QEquals) return QNotEquals;
+ //   if (rrcstm.result == QNotEquals) return QEquals;
+
+
+	//QueryResultContext rr = query_user_verbs(is_verb->verb, val_1, val_2, localsEntry, stk);
+ //   if (rr.result == QEquals) return QNotEquals;
+ //   if (rr.result == QNotEquals) return QEquals;
+ //   return rr;
 }
 
 

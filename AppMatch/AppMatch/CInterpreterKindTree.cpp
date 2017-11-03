@@ -24,9 +24,24 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
 	{
 		return false;
 	}
-    if (aDerivade.get() == Base.get()) return true;
+	if (CBlock::isSame(aDerivade.get(), Base.get()))
+	{
+		return true;
+	}
 
  
+	if (CBlock::isSame(MetaKindAny.get(), Base.get()))
+	{
+		//Todos sao instancias de ANY
+		return true;
+	}
+
+	if (CBlock::isSame(MetaKindAny.get(), aDerivade.get()))
+	{
+		//  ANY eh derivado de todo mundo
+		return true;
+	}
+
 
 	if (HBlockCompositionList nderiv = asHBlockCompositionList(aDerivade))
 		if (HBlockCompositionList nbase = asHBlockCompositionList(Base))
@@ -37,15 +52,12 @@ bool CBlockInterpreter::is_derivadeOf(HBlockKind aDerivade, HBlockKind Base) {
 
     for (auto it = assertions.begin(); it != assertions.end(); ++it) {
         {
- 
-
-
             if (HBlockKind nbase = asHBlockKind((*it)->get_obj()))
 
-                if (nbase.get() == aDerivade.get()) 
+                if (CBlock::isSame(nbase.get() , aDerivade.get())) 
 				{
                     if (HBlockKindOf k = asHBlockKindOf((*it)->get_definition())) {
-                        if (k->baseClasse.get() == Base.get()) 
+                        if (CBlock::isSame(k->baseClasse.get() , Base.get()))
 						{
                             return true;
                         } 
@@ -90,7 +102,8 @@ list<HBlockKind> CBlockInterpreter::getUpperKinds(HBlockKind a) {
     return upperList;
 }
 
-bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLocalScope localsEntry) {
+bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLocalScope localsEntry) 
+{
     if (a  == nullptr || b ==nullptr) {
         return false;
     }
@@ -127,5 +140,98 @@ bool CBlockInterpreter::is_derivadeOf(HBlockInstance a, HBlockKind b,   HRunLoca
     //    }
     //}
     return false;
+}
+
+
+bool CBlockInterpreter::is_InstanceOf(HBlock  a, HBlockKind b )
+{
+
+
+	//if (asHBlockNothing(c)) return true;
+	//if (asHBlockBooleanValue(c)) return true;
+	//if (asHBlockList(c)) return true;
+	//if (asHBlockInstance(c)) return true;
+	//if (asHBlockRelationBase(c)) return true;
+	//if (asHBlockAction(c)) return true;
+	//if (asHBlockNamedValue(c)) return true;
+
+
+	if (HBlockKindNamed kNamed = asHBlockKindNamed(b))
+	{
+		auto bnext = resolve_kind(kNamed->named);
+		if (CBlock::isSame(bnext.get(),b.get()) ==false )
+		{
+			return is_InstanceOf(a, bnext);
+		}
+	}
+
+	if (CBlock::isSame(a.get(), Nothing.get() ))
+	{
+		if (CBlock::isSame(b.get(), MetaKindEntity.get())) //nothing is a thing !
+		{
+			return true;
+		}
+	}
+
+
+	if (CBlock::isSame(MetaKindAny.get(), b.get()))
+	{
+		//Todos sao instancias de ANY
+		return true;
+	}
+	if (CBlock::isSame(a.get(), Anything.get())) //anything is istance of all !
+	{
+		return true;
+	}
+	 
+
+	
+	if (HBlockText nInstanceText = asHBlockText(a))
+	{
+		if (CBlock::isSame(b.get(), MetaKindText.get()))
+		{
+			return true;
+		}
+	}
+
+	if (HBlockInstance nInstance = asHBlockInstance(a))
+	{
+ 
+		return is_derivadeOf(nInstance, b, nullptr);
+	}
+
+
+	if (HBlockList iList = asHBlockList(a))
+	{
+		if (HBlockCompositionList kList = asHBlockCompositionList(b))
+		{
+			return true;
+		}
+
+	}
+ 
+	if (HBlockCompositionPhrase kPhase = asHBlockCompositionPhrase(b))		
+	{
+	
+		
+	}
+	if (HBlockActionInstance nAction = asHBlockActionInstance(a))
+	{
+		return is_derivadeOf(nAction->base_kind, b);		
+	}
+
+	if (HBlockNamedValue nValue = asHBlockNamedValue(a))
+		if (HBlockEnums kEnums = asHBlockEnums(b))
+		{
+		 
+		}
+	 
+	if (HBlockBooleanValue nBool = asHBlockBooleanValue(a))
+	{
+		return  (b == MetaKindBoolean);
+	}
+
+	
+	return false;
 }
 

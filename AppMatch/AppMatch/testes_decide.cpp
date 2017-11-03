@@ -1,6 +1,7 @@
 #include "BaseTest.hpp"
 #include <cassert>
 #include <iostream>
+#include <cassert>
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -140,21 +141,23 @@ void testedecide_4()// relation When
 	string ss1 =
 		R"(
  
-thing is a kind of entity
+concret thing is a kind of entity
+thing is a kind of concret thing
 book is a thing
 diary is a thing 
 coin is a thing 
+dagger is a thing 
 
 atom is a kind of value
 silver is an  atom 
 gold is an atom 
 
 
-materiality relates (a thing ) to (an atom )
-the verb made of implies the materiality relation
+materiality relates ( a concret thing ) to (an atom called material)
+the verb ( made of ) implies the materiality relation
 coin is made of silver
-
-to decide if (thing called T ) is   grand prize:
+dagger is made of silver 
+to decide if (thing called T ) is grand prize:
    decide on yes
 
 to decide which thing is the grand prized:
@@ -164,16 +167,20 @@ to decide which thing is the grand prized:
 )";
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
-	//f_eval(" grand prize ")->dump("E ");
-	assert(f_is("diary is grand prize") );
+	f_eval(" material of coin ")->dump("Silver? ");
+	assert(f_is("coin is made of nothing"));
+	assert(f_is("coin is made of silver") ==false );
+	assert(f_is("coin is not made of silver")  );
 
-	//f_eval("destination ")->dump("E ");
+	assert(f_is("diary is grand prize") );	 
+ 
 	assert(f_is("coin is made of gold") == false);
-	assert(f_is("coin is made of silver"));
+	
+	assert(f_is("material of coin is silver"));
 	f_now("coin is made of gold ");
 	assert(f_is("coin is made of gold"));
-	assert(f_is("grand prize  is coin"));
-	f_eval(" grand prize ")->dump("E ");
+	assert(f_is("grand prize  is coin") ==false );
+	//f_eval(" grand prize ")->dump("E ");
 
 	return;
 
@@ -399,8 +406,7 @@ carry out listem ( room called X   ) :
 
 void testedecide_all()
 {
-	testedecide_4();
-	return;
+ 
 	testedecide_1();
 	testedecide_2();
 	testedecide_3();
