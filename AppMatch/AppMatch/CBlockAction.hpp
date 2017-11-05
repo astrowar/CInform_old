@@ -52,6 +52,20 @@ namespace CBlocking
 
 
 
+ 
+	class CBlockTryCall : public CBlock 
+	{
+		public:
+			CBlocking::HBlock sentence;		 
+			CBlockTryCall(CBlocking::HBlock _sentence) : sentence(_sentence){}
+			virtual void dump(string ident) override;
+			virtual BlockType type() override { return BlockType::BlockTryCall; }
+	};
+
+	using HBlockTryCall = std::shared_ptr<CBlockTryCall>;
+
+
+
 
 
 	class CBlockActionCall : public CBlock {

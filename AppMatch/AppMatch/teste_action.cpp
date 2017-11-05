@@ -15,9 +15,10 @@ void testeParser_action1()
 	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
 	string ss1 =
-		R"( 
+R"( 
 thing is an kind of entity
 apple is a thing 
+orange is a thing
 eat_this  is ( an action  applying to ( an thing ) )
 understand : eat  ( a thing ) as eat_this
 
@@ -25,7 +26,7 @@ understand : eat  ( a thing ) as eat_this
 
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true)); 
-	f_now("try eat apple  "); 
+	f_now("try eat ( bad apple ) and orange "); 
 
 	return;
 }
@@ -262,6 +263,8 @@ asking someone for something is speech
 
 void testAction_all()
 {
+	testeParser_action1();
+	return;
 	testeParser_action1(); 
 	testeParser_action2(); 
 	testeParser_action3();

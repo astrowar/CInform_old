@@ -457,10 +457,13 @@ namespace CBlocking
 
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockActionCall)
+			if (c == nullptr) return nullptr;
+			if (( c->type() == BlockType::BlockActionCall)|| (c->type() == BlockType::BlockActionCallNamed))
 				return std::static_pointer_cast<CBlockActionCall>(c);
 			return nullptr;
 		}
+
+
 
 		HBlockActionCallNamed asHBlockActionCallNamed(CBlocking::HBlock c)
 		{

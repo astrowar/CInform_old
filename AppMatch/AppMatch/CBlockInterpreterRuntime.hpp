@@ -441,6 +441,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		PhaseResult execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 		PhaseResult execute_system_action(HBlockActionCall v_call);
 		PhaseResult execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
+		HBlockActionCallNamed replaceByUndestandAction(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack * stk);
 		PhaseResult execute_user_action(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk);
 
 		//Executa este bloco !

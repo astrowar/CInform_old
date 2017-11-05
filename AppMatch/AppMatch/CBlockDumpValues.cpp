@@ -626,7 +626,12 @@ void CBlockCompositionPhrase::dump(string ident)
 	this->toKind->dump(ident + "       ");
 	CBlock::dump(ident);
 }
-
+void CBlockTryCall::dump(string ident) 
+{
+	printf("%s %s\n", ident.c_str(), "Try Call ");
+	this->sentence->dump(ident + "       ");
+	CBlock::dump(ident);
+}
 void CBlockActionCallNamed::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Call ");
 	{

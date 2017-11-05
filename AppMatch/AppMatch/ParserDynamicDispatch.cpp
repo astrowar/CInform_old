@@ -200,6 +200,9 @@ HBlock NSParser::DynamicDispatch::STMT_understand_generic_redirect(CParser *p, H
 
 	DispatchArguments match_predicate = parser_buildMatchBlock_actionInput(p, term);
 	if (match_predicate.sentenceMatch == nullptr) return nullptr;
+
+
+
 	HBlockUnderstandDynamic  retBlock = std::make_shared<CBlockUnderstandDynamic >(  match_predicate.sentenceMatch, match_predicate.staticArgumentMatch, output_term);
 	int entryID = p->registerDynamicDispatch(match_predicate.staticPredicade,	match_predicate.sentenceMatch, output_term);
 
@@ -312,8 +315,94 @@ std::list<HBlock> NSParser::DynamicDispatch::ToMatchList(CParser *p, std::vector
 	return vlist;
 }
 
+
+std::pair<HBlockList, std::list<HTerm> >  pack_terms(std::list<HTerm> terms )
+{		
+	std::list<HBlock> t0 ;
+	//vai adicionando ate achar o end list
+	
+	std::list<HTerm> remainder = terms;
+	while ( remainder.size() > 0 )
+	{
+		auto item = remainder.front();
+		remainder.pop_front();
+		if (item->is_openBracket())
+		{
+		 
+			auto i_remainder = pack_terms(remainder);
+			auto h_item = i_remainder.first;
+			remainder = i_remainder.second;
+			t0.push_back(h_item);
+			continue;
+		}
+		else if (item->is_closeBracket() )
+		{		
+		 		 
+			auto head = std::make_shared<CBlockList>(t0);
+			return make_pair(head, remainder);
+		}
+		else
+		{
+			if (CString *cs = asCString(item.get()))
+			{ 
+				t0.push_back(std::make_shared<CBlockNoum>(item->repr()) );
+			}
+		}
+	}
+	auto head = std::make_shared<CBlockList>(t0);
+	return make_pair(head, remainder);
+}
+
+HBlockList getNoumListing(std::vector<HTerm>  term);
+HBlock  getNoumListing(HTerm   term)
+{
+	if (CList *clist = asCList(term.get()))
+	{
+		return getNoumListing(clist->asVector());
+	}
+	if (CString *cs = asCString(term.get()))
+	{ 
+		return std::make_shared<CBlockNoum>(term->repr());
+	}
+	return nullptr;
+}
+HBlockList getNoumListing(std::vector<HTerm>  term)
+{
+	auto clist = std::make_shared<CBlockList>(std::list<HBlock>());
+	for (auto k : term)
+	{		 
+		clist->push_back(getNoumListing(k));
+	}
+	return clist;
+}
+
 HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTerm>&  term)
 {
+	{
+		static std::vector<HPred> predList = {};
+		if (predList.empty())
+		{
+			predList.push_back(mk_HPredLiteral("try"));
+			predList.push_back(mkHPredAny("sentence"));
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			std::pair<HBlockList, std::list<HTerm> >    clist_ia = pack_terms(std::list<HTerm>(term.begin(), term.end()));
+			HBlockList clist = clist_ia.first;
+			if (!clist_ia.second.empty())
+			{
+				return nullptr;
+			}
+			clist->lista.pop_front();
+			clist->dump("");
+			auto tryCall = std::make_shared<CBlockTryCall>(clist); //An Action !!!
+			return tryCall;
+		}
+	}
+	return nullptr;
+
 
 	{
 		static std::vector<HPred> predList = {};

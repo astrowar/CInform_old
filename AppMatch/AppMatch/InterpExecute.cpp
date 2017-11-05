@@ -673,11 +673,7 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 				}
 				return Nothing;
 			}
-			
 		}
-
-
-
 	return nullptr;
 
 }
@@ -1391,9 +1387,15 @@ HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCal
 	if (HBlockActionCallNamed  vCalln = asHBlockActionCallNamed(vCall))
 	{
 	HBlockActionCallNamed c = std::make_shared< CBlockActionCallNamed >(vCalln->action, nullptr,nullptr );
-	if (vCall->noum1 != nullptr)c->noum1 = resolve_argument(vCall->noum1, localsEntry, stk);
+	if (vCall->noum1 != nullptr)
+	{
+		c->noum1 = resolve_argument(vCall->noum1, localsEntry, stk);
+	}
 	
-	if (vCall->noum2 != nullptr)c->noum2 = resolve_argument(vCall->noum2, localsEntry, stk);
+	if (vCall->noum2 != nullptr)
+	{
+		c->noum2 = resolve_argument(vCall->noum2, localsEntry, stk);
+	}
 	
 	return c;
 	}

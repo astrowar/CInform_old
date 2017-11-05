@@ -56,6 +56,7 @@ enum BlockType {
 	BlockAction,
 	BlockActionNamed,
 	BlockActionInstance,
+	BlockTryCall,
 	BlockActionCall,
 	VariableNamed,
 	BlockUnderstandDynamic,

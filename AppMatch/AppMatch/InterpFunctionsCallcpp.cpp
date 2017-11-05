@@ -253,11 +253,24 @@ PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCall v_call, HRun
 	return PhaseResult(false);;
 
 }
-PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk)
+
+HBlockActionCallNamed CBlockInterpreter::replaceByUndestandAction(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	for (auto d : dynamic_understand)
+	{
+		d->dump(">");
+		v_call->dump("");
+	}
+
+	return v_call;
+}
+
+
+PhaseResult CBlockInterpreter::execute_user_action(HBlockActionCallNamed v_call_in, HRunLocalScope localsEntry, QueryStack *stk)
 { 
 	//verifica se os objetos da acao estao condicentes com os requeimentos
  
-	 
+	auto v_call = replaceByUndestandAction(v_call_in, localsEntry, stk);
 	HBlockKindAction kaction = nullptr;
 
 	//determina qual action corresponde a esse nome e esses parametros

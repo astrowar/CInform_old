@@ -417,6 +417,7 @@ namespace NSParser
 		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_AND(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList CList);
 		CBlocking::HBlockList  parseAssertionFirstTerm_COMMA_OR(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList CList);
 		CBlocking::HBlock parse_List_Neutral(CParser * p, std::vector<NSTerm::HTerm>& term);
+
 		CBlocking::HBlock  parse_List_AND(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_List_OR(CParser * p, std::vector<NSTerm::HTerm>& term);
 
