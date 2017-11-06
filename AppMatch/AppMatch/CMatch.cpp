@@ -6,6 +6,7 @@
  
 #include <memory>
 #include <functional>
+#include <iostream>
 
 #undef CMLOG 
 
@@ -17,6 +18,10 @@
 using namespace NSTerm;
 
 using namespace  NSMatch;
+
+
+ 
+
 	
 		std::string get_repr(MTermSet lst) {
 			std::string q;
@@ -319,18 +324,23 @@ using namespace  NSMatch;
 		CPredWord::CPredWord(std::string _named) : CPred(_named) {
 		}
 
-		EqualsResul CPredWord::match(MTermSet &_h) {
+		EqualsResul CPredWord::match(MTermSet &_h) 
+		{
+			if (_h.size() == 1) return this->match(_h[0]);
 			return NotEquals;
 
 		}
 
 		EqualsResul CPredWord::match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend)
 		{
+			auto nn = std::next(vbegin);
+			if (nn == vend) return this->match(*vbegin);
 			return NotEquals;
 		}
 
 		EqualsResul CPredWord::match(HTerm h) {
-			if (CString *v = asCString(h.get())) {
+			if (CString *v = asCString(h.get())) 
+			{
 				return Equals;
 			}
 			return NotEquals;
@@ -418,23 +428,29 @@ using namespace  NSMatch;
 			blist(plist.begin(), plist.end()) {
 		}
 
-		EqualsResul CPredBooleanOr::match(MTermSet &h) {
-			for (auto it = blist.begin(); it != blist.end(); ++it) {
+		EqualsResul CPredBooleanOr::match(MTermSet &h) 
+		{
+			
+			for (auto it = blist.begin(); it != blist.end(); ++it) 
+			{ 
 				if ((*it)->match(h) == Equals) return Equals;
 			}
+			if (h.size() == 1) return this->match(h[0]);
 			return NotEquals;
 		}
 
 		EqualsResul CPredBooleanOr::match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend)
 		{
-			for (auto it = blist.begin(); it != blist.end(); ++it) {
+			for (auto it = blist.begin(); it != blist.end(); ++it) 
+			{ 
 				if ((*it)->match(vbegin, vend) == Equals) return Equals;
 			}
 			return NotEquals;
 		}
 
 		EqualsResul CPredBooleanOr::match(HTerm h) {
-			for (auto it = blist.begin(); it != blist.end(); ++it) {
+			for (auto it = blist.begin(); it != blist.end(); ++it) 
+			{ 
 				if ((*it)->match(h) == Equals) return Equals;
 			}
 			return NotEquals;
@@ -486,6 +502,21 @@ using namespace  NSMatch;
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3);
 		};
 
+		HPred mk_HPredLiteral(std::string str);
+		HPred NSTerm::mkHPredPreposition(const std::string &_named ) 
+		{
+			std::list<std::string> vlist = std::list<std::string>({ "above", "across", "after", "against", "along", "among", "around","at", "before", "behind", "below", "beneath", "beside", "between", "things", "by", "down", "for", "from", "originates", "in", "inside", "into", "near", "off", "on", "onto", "opposite", "out", "outside", "over", "past", "round", "through", "throughout", "to", "towards", "under", "underneath", "up" ,"until" });
+			std::list<HPred> plist;
+			for (auto r : vlist)
+			{   
+			
+				plist.push_back(mk_HPredLiteral(r));
+			}
+			auto r = std::make_shared<CPredBooleanOr>(_named,  plist);		 
+			return r;
+		};
+
+		 
 
 		//======================================
 
@@ -604,6 +635,8 @@ using namespace  NSMatch;
 			return MatchResult();
 		}
 
+
+ 
 
 
 		MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPred *> predicates_ptr);

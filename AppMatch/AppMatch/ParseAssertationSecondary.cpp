@@ -14,8 +14,12 @@ using namespace NSTerm::NSMatch;
 HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_secondPart(CParser * p,  HTerm  term)
 {
 	
+ 
+
 	{
-		// and action applying to [one visible thing and requiring light]
+		// action applying to [two things]
+		// action applying to one visible thing
+		// Advancing is an action applying to nothing
 
 		//std::cout << term->repr() << std::endl;
 		std::vector<HPred> predList; 
@@ -34,7 +38,7 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		}
 	}
 
-
+ 
 	{
 		// and action applying to [one visible thing and requiring light]
 
@@ -42,34 +46,9 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		std::vector<HPred> predList;
 		predList.push_back(undefinedArticle());
 		predList.push_back(mk_HPredLiteral("action"));
-		predList.push_back(mk_HPredLiteral("applying"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mk_HPredLiteral("nothing"));
-		
-
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			//HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
-			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
-			
-			HBlockActionApply applyTO =  std::make_shared<CBlockActionApply>( nullptr , nullptr );
-			return std::make_shared<CBlockKindAction>("", applyTO);
-
-		}
-	}
-	{
-		// and action applying to [one visible thing and requiring light]
-
-		//std::cout << term->repr() << std::endl;
-		std::vector<HPred> predList;
-		predList.push_back(undefinedArticle());
-		predList.push_back(mk_HPredLiteral("action"));
-
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-			//HBlockActionApply applyTO = parse_AssertionAction_ApplyngTo(res.matchs["ApplyRemainder"]);
-			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
-
+ 
 			HBlockActionApply applyTO = std::make_shared<CBlockActionApply>(nullptr, nullptr);
 			return std::make_shared<CBlockKindAction>("", applyTO);
 
@@ -78,8 +57,77 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 
 	return nullptr;
 }
-HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<HTerm> term) {
 
+ 
+
+
+HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, HTerm term)
+{
+	{
+		  std::vector<HPred> predList_a = {};
+		if (predList_a.empty())
+		{
+			predList_a.push_back(mkHPredWord("ActionName"));
+			predList_a.push_back(mkHPredPreposition("pred"));
+			predList_a.push_back(mkHPredBooleanOr("pred_aux", mk_HPredLiteral("to"), mk_HPredLiteral("of")));
+
+			MatchResult res = CMatch(term, predList_a);
+			if (res.result == Equals)
+			{
+				auto sActionName = CtoString(res.matchs["ActionName"]);
+				auto sPred = CtoString(res.matchs["pred"]);
+				auto sPredAux = CtoString(res.matchs["pred_aux"]);
+				HBlock _naction = std::make_shared<CBlockNoum>(sActionName + " " + sPred + " " + sPredAux);
+				return _naction;
+			}
+		}
+	}
+
+	{
+		 std::vector<HPred> predList_b = {};
+		if (predList_b.empty())
+		{
+			predList_b.push_back(mkHPredWord("ActionName"));
+			predList_b.push_back(mkHPredPreposition("pred"));
+
+			MatchResult res = CMatch(term, predList_b);
+			if (res.result == Equals)
+			{
+				auto sActionName = CtoString(res.matchs["ActionName"]);
+				auto sPred = CtoString(res.matchs["pred"]);
+				 
+				HBlock _naction = std::make_shared<CBlockNoum>(sActionName + " " + sPred  );
+				return _naction;
+			}
+		}
+	}
+
+
+	{
+		  std::vector<HPred> predList_c = {};
+		if (predList_c.empty())
+		{
+			predList_c.push_back(mkHPredWord("ActionName"));
+		 
+
+			MatchResult res = CMatch(term, predList_c);
+			if (res.result == Equals)
+			{
+				auto sActionName = CtoString(res.matchs["ActionName"]); 
+				HBlock _naction = std::make_shared<CBlockNoum>(sActionName );
+				return _naction;
+			}
+		}
+	}
+
+	auto s = term->repr();
+	printf("%s \n", s.c_str());
+	return nullptr;
+}
+
+HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<HTerm> term) 
+{
+	 
     {
         // and action applying to [one visible thing and requiring light]
 
@@ -88,38 +136,44 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 
 		predList.push_back(mkHPredAny("ActionName"));
 		predList.push_back(verb_IS()); 
+
+		predList.push_back(undefinedArticle());
+
+		predList.push_back(mk_HPredLiteral("action"));
+		predList.push_back(mk_HPredLiteral("applying"));
+		predList.push_back(mk_HPredLiteral("to"));
+
         predList.push_back(mkHPredAny("ApplyRemainder"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 	 
-			HBlockKindAction applyTO = ParseAssertionSecondary::parse_AssertionAction_secondPart(p,res.matchs["ApplyRemainder"]);
-			if (applyTO == nullptr) return nullptr;
-			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["ActionName"]);
-			if (noum == nullptr) return nullptr;
+			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p, res.matchs["ApplyRemainder"]);
 
+			//HBlockKindAction applyTO = ParseAssertionSecondary::parse_AssertionAction_secondPart(p,res.matchs["ApplyRemainder"]);
+			if (applyTO != nullptr)
 			{
-				
-				HBlockKindAction action = applyTO;
-				auto sActionName = CtoString(res.matchs["ActionName"]);
-				//HBlock _naction = std::make_shared<CBlockAction>( (sActionName));
-				//HBlock _naction = std::make_shared<CBlockAction>();
-				
-				HBlock _naction = std::make_shared<CBlockNoum>(sActionName);
 
-				HPred actionMatch = mk_HPredLiteral(sActionName);
-
-
-				//	std::cout << "found " << actionMatch->repr()  << std::endl;
-
-				p->actionPredList->blist.push_back( actionMatch);
-				return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
-
+				auto _naction = parse_ActionCompositionName(p, res.matchs["ActionName"]);
+				if (_naction != nullptr)
+				{
+					return std::make_shared<CBlockAssertion_isDirectAssign>(_naction,  std::make_shared<CBlockKindAction>("", applyTO));
+				}
 			}
 
-            //return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
-			//return std::make_shared<CBlockAssertion_isDirectAssign>(noum, applyTO);
+			//HBlock noum = Expression::parser_assertionTarger(p,res.matchs["ActionName"]);
+			//if (noum != nullptr) 
+			//{
+			//	
+			//	HBlockKindAction action = applyTO;
+			//	auto sActionName = CtoString(res.matchs["ActionName"]); 
+			//	HBlock _naction = std::make_shared<CBlockNoum>(sActionName);
+			//	HPred actionMatch = mk_HPredLiteral(sActionName); 
+			//	p->actionPredList->blist.push_back( actionMatch);
+			//	return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
 
+			//}
+			//return nullptr;
         }
     }
 

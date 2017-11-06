@@ -317,6 +317,7 @@ namespace NSParser
 		CBlocking::HBlock  STMT_understand_generic_redirect(CParser *p, NSTerm::HTerm  term, CBlocking::HBlock  output_term);
 		CBlocking::HBlock  STMT_understand_Action_Assertion_static(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		std::list<CBlocking::HBlock>  ToMatchList(CParser *p, std::vector<NSTerm::HPred> pvector, NSTerm::NSMatch::MatchResult result);
+		CBlocking::HBlock Dispatch_action_call(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  TryDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock  DynamicDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
 
@@ -383,12 +384,14 @@ namespace NSParser
 		CBlocking::HBlock parseAssertionFirstTerm(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parseAssertionFirstTerm_Compose(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parseAssertionEnumSecondTerm(CParser *p, NSTerm::HTerm term);
-		CBlocking::HBlockActionApply  parse_AssertionAction_ApplyngTo(CParser * p, NSTerm::HTerm term);
+		//CBlocking::HBlockActionApply  parse_AssertionAction_ApplyngTo(CParser * p, NSTerm::HTerm term);
 		ParserResult  parser_AssertionKind(CParser * p, std::vector<NSTerm::HTerm>& lst);
+		CBlocking::HBlockActionApply parse_AssertionAction_ApplyngTo(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  parser_Declaration_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst);
 		CBlocking::HBlockAssertion_is  parse_AssertionDirectAssign(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionDefaultAssign(CParser *p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionValuesOf(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlock parse_ActionCompositionName(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  parse_AssertionAction(CParser * p, std::vector<NSTerm::HTerm> term);
 		CBlocking::HBlock parse_AssertionIsLocalValue(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<NSTerm::HTerm>& term);

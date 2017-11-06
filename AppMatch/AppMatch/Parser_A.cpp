@@ -97,32 +97,48 @@ NSParser::ParserResult NSParser::ParseAssertion::parser_AssertionKind(CParser * 
     return std::move(ParserResult(res));
 }
 
-HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CParser * p, HTerm term) {
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("kind1"));
-        predList.push_back(mk_HPredLiteral("and"));
-        predList.push_back(mkHPredAny("kind2"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);
-            HBlock n2 = Expression::parser_kind(p,res.matchs["kind2"]);
-            return std::make_shared<CBlockActionApply>(n1, n2);
-        }
-    }
+ 
 
-    {
-        // and action applying to [one visible thing and requiring light]
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("two"));
-        predList.push_back(mkHPredAny("kind1"));
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);
-            return std::make_shared<CBlockActionApply>(n1, n1);
-        }
-    }
+
+HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CParser * p, HTerm term) 
+{
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;		
+		predList.push_back(mk_HPredLiteral("nothing"));		
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			//HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
+			//HBlock n2 = Expression::parser_kind(p, res.matchs["kind2"]);
+			return std::make_shared<CBlockActionApply>(nullptr,nullptr);
+		}
+	}
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mkHPredAny("kind1"));
+		predList.push_back(mk_HPredLiteral("and"));
+		predList.push_back(mkHPredAny("kind2"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
+			HBlock n2 = Expression::parser_kind(p, res.matchs["kind2"]);
+			return std::make_shared<CBlockActionApply>(n1, n2);
+		}
+	}
+
+	{
+		// and action applying to [one visible thing and requiring light]
+		std::vector<HPred> predList;
+		predList.push_back(mk_HPredLiteral("two"));
+		predList.push_back(mkHPredAny("kind1"));
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
+			return std::make_shared<CBlockActionApply>(n1, n1);
+		}
+	}
+
 
     {
         // and action applying to [one visible thing and requiring light]

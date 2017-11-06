@@ -376,82 +376,166 @@ HBlockList getNoumListing(std::vector<HTerm>  term)
 	return clist;
 }
 
-HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTerm>&  term)
+HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 {
 	{
-		static std::vector<HPred> predList = {};
-		if (predList.empty())
+		static std::vector<HPred> predList_a = {};
+		if (predList_a.empty())
 		{
-			predList.push_back(mk_HPredLiteral("try"));
-			predList.push_back(mkHPredAny("sentence"));
+			 
+			predList_a.push_back(mkHPredWord("Action"));
+			predList_a.push_back(mkHPredAny("noum1"));
+			predList_a.push_back(mkHPredPreposition("pred"));
+			predList_a.push_back(mkHPredBooleanOr("pred_aux", mk_HPredLiteral("to"), mk_HPredLiteral("of")));
+			predList_a.push_back(mkHPredAny("noum2"));
 		}
 
-		MatchResult res = CMatch(term, predList);
+		MatchResult res = CMatch(term, predList_a);
 		if (res.result == Equals)
 		{
-			std::pair<HBlockList, std::list<HTerm> >    clist_ia = pack_terms(std::list<HTerm>(term.begin(), term.end()));
-			HBlockList clist = clist_ia.first;
-			if (!clist_ia.second.empty())
-			{
-				return nullptr;
-			}
-			clist->lista.pop_front();
-			clist->dump("");
-			auto tryCall = std::make_shared<CBlockTryCall>(clist); //An Action !!!
-			return tryCall;
-		}
-	}
-	return nullptr;
+			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr() + " " + res.matchs["pred_aux"]->repr();
+			auto actionDesc = std::make_shared<CBlockActionNamed>(anamed); //An Action !!!			
+			auto nn1 = Expression::parser_expression(p, res.matchs["noum1"]);
+			auto nn2 = Expression::parser_expression(p, res.matchs["noum2"]);
 
-
-	{
-		static std::vector<HPred> predList = {};
-		if (predList.empty())
-		{
-			predList.push_back(mk_HPredLiteral("try"));			
-			predList.push_back(mkHPredAny("Action"));						
-			predList.push_back(mkHPredAny("noum1"));
-			predList.push_back(mkHPredAny("noum2"));
-		}
-
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) 
-		{
-			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!			
-			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr());
-			auto nn2 = std::make_shared<CBlockNoum>(res.matchs["noum2"]->repr());
-
-			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc , nn1, nn2  ); //An Action !!!
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nn2); //An Action !!!
 			return actionCall;
 		}
 	}
+
 	{
-		static std::vector<HPred> predList = {};
-		if (predList.empty())
+		static std::vector<HPred> predList_b = {};
+		if (predList_b.empty())
 		{
-			predList.push_back(mk_HPredLiteral("try"));
-			predList.push_back(mkHPredAny("Action"));
-			predList.push_back(mkHPredAny("noum1")); 
+
+			predList_b.push_back(mkHPredWord("Action"));
+			predList_b.push_back(mkHPredAny("noum1"));
+			predList_b.push_back(mkHPredPreposition("pred")); 
+			predList_b.push_back(mkHPredAny("noum2"));
 		}
 
-		MatchResult res = CMatch(term, predList);
+		MatchResult res = CMatch(term, predList_b);
+		if (res.result == Equals)
+		{
+			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr();
+			auto actionDesc = std::make_shared<CBlockActionNamed>( anamed); //An Action !!!			
+			auto nn1 = Expression::parser_expression(p, res.matchs["noum1"]);
+			auto nn2 = Expression::parser_expression(p, res.matchs["noum2"]);
+
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nn2); //An Action !!!
+			return actionCall;
+		}
+	}
+
+
+
+	{
+		static std::vector<HPred> predList_a2 = {};
+		if (predList_a2.empty())
+		{
+		 
+			predList_a2.push_back(mkHPredWord("Action"));
+			predList_a2.push_back(mkHPredPreposition("pred"));
+			predList_a2.push_back(mkHPredBooleanOr("pred_aux", mk_HPredLiteral("to"), mk_HPredLiteral("of")));
+			predList_a2.push_back(mkHPredAny("noum1"));
+		}
+
+		MatchResult res = CMatch(term, predList_a2);
+		if (res.result == Equals)
+		{
+			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr() + " " + res.matchs["pred_aux"]->repr();
+			auto actionDesc = std::make_shared<CBlockActionNamed>(anamed); //An Action !!!			
+			auto nn1 = Expression::parser_expression(p, res.matchs["noum1"]);
+
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nullptr); //An Action !!!
+			return actionCall;
+		}
+	}
+
+
+	 
+
+
+
+ 
+
+	{
+		 static  std::vector<HPred> predList_c = {};
+		if (predList_c.empty())
+		{
+		 
+			predList_c.push_back(mkHPredWord("Action"));
+			predList_c.push_back(mkHPredAny("noum1"));
+			predList_c.push_back(mkHPredPreposition("pred"));	 
+			predList_c.push_back(mkHPredAny("noum2"));
+		}
+
+		auto s = term->repr();
+		printf("* %s \n",s.c_str());
+		MatchResult res = CMatch(term, predList_c);
+		if (res.result == Equals)
+		{
+			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr();
+			auto actionDesc = std::make_shared<CBlockActionNamed>(anamed); //An Action !!!			
+			auto nn1 = Expression::parser_expression(p, res.matchs["noum1"]);
+			auto nn2 = Expression::parser_expression(p, res.matchs["noum2"]);
+
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nn2); //An Action !!!
+			return actionCall;
+		}
+	}
+
+
+	{
+		static std::vector<HPred> predList_a1 = {};
+		if (predList_a1.empty())
+		{
+
+			predList_a1.push_back(mkHPredWord("Action"));
+			predList_a1.push_back(mkHPredPreposition("pred"));
+			predList_a1.push_back(mkHPredAny("noum1"));
+		}
+
+		MatchResult res = CMatch(term, predList_a1);
+
+		if (res.result == Equals)
+		{
+			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr();
+			auto actionDesc = std::make_shared<CBlockActionNamed>(anamed); //An Action !!!			
+			auto nn1 = Expression::parser_expression(p, res.matchs["noum1"]);
+
+			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nullptr); //An Action !!!
+			return actionCall;
+		}
+	}
+
+	{
+		static std::vector<HPred> predList_d = {};
+		if (predList_d.empty())
+		{
+		 
+			predList_d.push_back(mkHPredWord("Action"));
+			predList_d.push_back(mkHPredAny("noum1"));
+		}
+
+		MatchResult res = CMatch(term, predList_d);
 		if (res.result == Equals)
 		{
 			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!			
-			auto nn1 = std::make_shared<CBlockNoum>(res.matchs["noum1"]->repr()); 
+			auto nn1 = Expression::parser_expression( p,res.matchs["noum1"] );
 			auto actionCall = std::make_shared<CBlockActionCallNamed>(actionDesc, nn1, nullptr); //An Action !!!
 			return actionCall;
 		}
 	}
 	{
-		static std::vector<HPred> predList = {};
-		if (predList.empty())
+		static std::vector<HPred> predList_e = {};
+		if (predList_e.empty())
 		{
-			predList.push_back(mk_HPredLiteral("try"));
-			predList.push_back(mkHPredAny("Action")); 
+			 
+			predList_e.push_back(mkHPredWord("Action"));
 		}
 
-		MatchResult res = CMatch(term, predList);
+		MatchResult res = CMatch(term, predList_e);
 		if (res.result == Equals)
 		{
 			auto actionDesc = std::make_shared<CBlockActionNamed>((res.matchs["Action"]->repr())); //An Action !!!		 
@@ -459,6 +543,62 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 			return actionCall;
 		}
 	}
+	return nullptr;
+
+
+}
+
+
+HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTerm>&  term)
+{
+	//{
+	//	static std::vector<HPred> predList = {};
+	//	if (predList.empty())
+	//	{
+	//		predList.push_back(mk_HPredLiteral("try"));
+	//		predList.push_back(mkHPredAny("sentence"));
+	//	}
+
+	//	MatchResult res = CMatch(term, predList);
+	//	if (res.result == Equals)
+	//	{
+	//		std::pair<HBlockList, std::list<HTerm> >    clist_ia = pack_terms(std::list<HTerm>(term.begin(), term.end()));
+	//		HBlockList clist = clist_ia.first;
+	//		if (!clist_ia.second.empty())
+	//		{
+	//			return nullptr;
+	//		}
+	//		clist->lista.pop_front();
+	//		clist->dump("");
+	//		auto tryCall = std::make_shared<CBlockTryCall>(clist); //An Action !!!
+	//		return tryCall;
+	//	}
+	//}
+	//return nullptr;
+  
+
+	{
+		static std::vector<HPred> predList_a = {};
+		if (predList_a.empty())
+		{
+			predList_a.push_back(mk_HPredLiteral("try"));
+			predList_a.push_back(mkHPredAny("ActionRemainder"));
+ 
+		}
+
+		MatchResult res = CMatch(term, predList_a);
+		if (res.result == Equals)
+		{
+			auto actionRemainder = Dispatch_action_call(p,res.matchs["ActionRemainder"]);  
+			if (actionRemainder != nullptr)
+			{
+				auto TryactionCall = std::make_shared<CBlockTryCall>(actionRemainder);
+				return TryactionCall;
+			}
+		}
+	}
+
+	 
 	return nullptr;
 }
 

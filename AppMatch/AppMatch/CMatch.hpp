@@ -23,6 +23,8 @@ namespace NSTerm
 		void applyCombinatorias(std::vector<HTerm>& lst, size_t n, FuncCombinatoria &func);
 
 		std::string get_repr(MTermSetCombinatoriaList lst);
+	 
+		 
 
 		std::string get_repr(MTermSetCombinatoria lst);
 
@@ -115,6 +117,10 @@ namespace NSTerm
 			virtual EqualsResul match(HTerm h) override;
 		};
 
+
+ 
+
+
 		class CPredBoolean : public CPred {
 		public:
 			CPredBoolean(const std::string &_named);
@@ -183,6 +189,9 @@ namespace NSTerm
 
 		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
 			const HPred &c_pred3);
+
+
+		HPred  mkHPredPreposition(const std::string &_named);
 
 		CPredAtom* asPredAtom(CTerm* c);
 		CPredList* asPredList(CTerm* c);

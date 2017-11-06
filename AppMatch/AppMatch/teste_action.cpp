@@ -19,14 +19,16 @@ R"(
 thing is an kind of entity
 apple is a thing 
 orange is a thing
-eat_this  is ( an action  applying to ( an thing ) )
+eating  is  an action  applying to ( an thing ) 
+putting into is   an action  applying to (  thing  and   container ) 
 understand : eat  ( a thing ) as eat_this
-
 )";
 
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true)); 
-	f_now("try eat ( bad apple ) and orange "); 
+	//f_now("try eating ( bad apple ) and orange "); 
+	f_now("try putting  apple box  ");
+	f_now("try putting  apple inside box  ");
 
 	return;
 }

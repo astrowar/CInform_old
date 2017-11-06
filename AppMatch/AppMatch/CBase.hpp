@@ -22,6 +22,7 @@ namespace NSTerm
 		PredBooleanAnd,
 		PredBooleanOr,
 		PredWord
+		
 	};
 
 
