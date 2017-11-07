@@ -85,6 +85,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::vector<NoumDefinition> nregisters;
 		std::vector<HBlockAssertion_is> assertions;
 
+		//Phases
+		std::list<HBlockPhraseDefine> phrases;
+
 		//Relations
 		std::map<string, HBlockRelationBase > staticRelation;
 		std::list<HBlockRelationInstance > relInstances;
@@ -345,6 +348,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext query_decides(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
 		
 		bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		bool CBlockInterpreter::insert_newPhrase(HBlockPhraseDefine phrase_dec);
 		bool insert_newVerb(HBlockVerb verb_dec);
 
 

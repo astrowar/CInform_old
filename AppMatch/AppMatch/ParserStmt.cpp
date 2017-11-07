@@ -126,7 +126,8 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 	HBlock rblock_Lookup = (ParseRelation::DynamicLookup_Seletor(p,lst));
 	if (rblock_Lookup != nullptr) return rblock_Lookup;
 
-
+	HBlock rblock_phrase_1 = (DynamicDispatch::parser_PhraseInvoke(p, lst));
+	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
 	 
 
 	HBlock rblock_assert_1 = (ParseAssertion::parser_VerbAssign(p,lst));
@@ -205,7 +206,10 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	HBlock rblock_action_controls = (ParseAction::STMT_Action_Controls(p,lst, inner, err));
 	if (rblock_action_controls != nullptr) return rblock_action_controls;
 
+	HBlock rblock_phraseInvoke = (ParseAction::STMT_phrase_Invoken(p, lst));
+	if (rblock_phraseInvoke != nullptr) return rblock_phraseInvoke;
 
+ 
 
 	HBlock rblock_relatesTo = (ParseRelation::STMT_relates_Assertion(p,lst ));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
@@ -238,6 +242,8 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	HBlock rblock_register_verb = (ParseGrammar::STMT_register_verb(p,lst, inner, err));
 	if (rblock_register_verb != nullptr) return rblock_register_verb;
     
+
+
 	logError(get_repr(lst));
 
     return nullptr;

@@ -475,10 +475,10 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		}
     }
 
-	printf("Query :\n");
-	c_block->dump("");
-	c_block1->dump("");
-	printf("\n");
+	//printf("Query :\n");
+	//c_block->dump("");
+	//c_block1->dump("");
+	//printf("\n");
 
 
 	if (HBlockKind bkind = asHBlockKind(c_block1))
@@ -538,6 +538,24 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			}
 	}
 
+	if (HBlockActionNamed cann = asHBlockActionNamed(c_block))
+	{
+		if (HBlockNoum nnoum2 = asHBlockNoum(c_block1))
+		{			 
+			if ((cann->named == nnoum2->named))
+			{
+				return QEquals;
+			}
+		}
+	}
+	if (HBlockActionNamed cann = asHBlockActionNamed(c_block1))
+	{
+		if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
+		{
+			if ((cann->named == nnoum2->named)) return QEquals;
+		}
+	}
+
 
 	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
 	{
@@ -564,8 +582,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	}
 
- 
-
+	
+	
 
 	 
 		if (HBlockAction act = asHBlockAction(c_block))
@@ -646,7 +664,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
-			dct->queryToMatch->dump("D ");
+		 
 
 			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
 			if (dctValueWrap_1 != nullptr) {

@@ -509,14 +509,21 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 
 	}
 
+	if (HBlockPhraseDefine    reg_phrase = asHBlockPhraseDefine(p))
+	{
+		if (insert_newPhrase(reg_phrase)) return;
+
+	}
+
+
 	if (HBlockEventHandle    reg_event_handle = asHBlockEventHandle(p))
 	{
 		if (insert_newEventHandle(reg_event_handle)) return;
 
 	}
 
-
-	logError("not found block definition ");
 	p->dump("");
+	logError("not found block definition ");
+ 
 	return;
 }

@@ -253,11 +253,10 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
 {
  
-	printf("Is Match ?\n");
-	value->dump("   ");
-	M->dump("   ");
-	
-	printf("\n\n");
+	//printf("Is Match ?\n");
+	//value->dump("   ");
+	//M->dump("   ");	
+	//printf("\n\n");
 
 	if (auto vMatch = asHBlockMatch(value))
 	{
@@ -301,6 +300,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 					return CResultMatch( true );
 				}
 			}
+			if (auto cnInstance = asHBlockInstanceNamed(value))
+			{
+				if (cnInstance->named == inner_2->named) return CResultMatch(true);
+				//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
+				//	return CResultMatch(r.result == QEquals); 
+			}
+
 			if (auto cInst =  asHBlockInstance(value))
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
@@ -308,6 +314,11 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 
 				// Never Recall Query again over a Noum
+				auto rq = cInst->is_set(inner_2);
+				if (rq == QEquals ) return CResultMatch(true);
+				if (rq == QNotEquals) return CResultMatch(false);
+
+
 				return 	CResultMatch(false);
 
 				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
@@ -315,12 +326,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}
 			 
 
-			//if (auto cAction = asHBlockAction (value))
-			//{ 
-			//	if (cAction->named == inner_2->named) return CResultMatch( true );				 
+			if (auto cAction = asHBlockActionNamed (value))
+			{ 
+				if (cAction->named == inner_2->named) return CResultMatch( true );				 
 			//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
 			//	return CResultMatch(r.result == QEquals); 
-			//}
+			}
 
 			return CResultMatch(false);
 			//Never call query again over a Noum

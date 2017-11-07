@@ -837,7 +837,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockNoum nn = asHBlockNoum(c_block))
 	{
-		 
+		nn->dump("");
 		auto  obj = has_resolve_noum(nn, localsEntry, std::list<std::string>());
 		if (obj != nullptr)
 		{
@@ -856,9 +856,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return nIns;
 	}
 
-	if (HBlockAction nAction = asHBlockAction(c_block))
+	if (HBlockActionInstance nAction = asHBlockActionInstance(c_block))
 	{
-		return nAction;
+		return   nAction ;
+	}
+
+	if (HBlockActionNamed nAction = asHBlockActionNamed(c_block))
+	{
+		return has_resolve_string_noum( nAction->named ,localsEntry ,{} );
 	}
 
 
@@ -1009,6 +1014,55 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 	
  
+	if (auto phr = asHBlockPhraseInvoke(c_block))
+	{
+		for (auto ph : phrases)
+		{
+			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
+
+			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
+			{
+				if (ph->header->pred1->named !=  phr->header->pred1->named) continue;
+			}
+
+
+			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
+			{
+				if (ph->header->pred2->named != phr->header->pred2->named) continue;
+			}
+
+
+		 
+			
+			{
+				auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+
+
+				CResultMatch result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+
+				if (result_1.hasMatch)
+				{
+					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+					auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+
+					CResultMatch result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
+					if (result_2.hasMatch)
+					{
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
+						localsNext->dump("");
+						return  exec_eval(ph->body, localsNext, stk);
+					}
+				}
+			}			
+		}
+		return nullptr;
+	}
+
 	for (auto cc : constant_assignments)
 	{
 		if (CBlock::isSame(cc->get_obj().get(), c_block.get()))
@@ -1017,10 +1071,16 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		}
 	}
 
+	if (auto t = asHBlockTryCall(c_block))
+	{
+		execute_now(t->sentence);
+		return Nothing;
+	}
+
 	if (localsEntry!=nullptr)localsEntry->dump("");
 	 
 	// Bla ! 
-	//c_block->dump("");
+	c_block->dump("");
 	//throw "Unhandle CBlock";
 
 	return nullptr;
@@ -1204,12 +1264,14 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 
 PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 {
+	
 	HRunLocalScope localsEntry = make_shared< CRunLocalScope >(nullptr);
 	auto b =   execute_now(p, localsEntry);
 	if (b.hasExecuted == false)
 	{
 		logWarring("fail to execute ");
 		p->dump("");
+		logWarring("fail to execute ");
 	 
 	}
 	return b;
@@ -1417,7 +1479,8 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 			auto pret = execute_now(cmd, nextLocals, stk);
 			if (pret.hasExecuted == false)
 			{ 
-				p->dump(""); 
+				printf("fail \n");
+				cmd->dump("   ");
 				return false;
 			}
 			rs_result = pret;			
@@ -1464,6 +1527,52 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 
 
+	if (auto phr = asHBlockPhraseInvoke(p))
+	{
+		for (auto ph : phrases)
+		{
+			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
+
+			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
+			{
+				if (ph->header->pred1->named != phr->header->pred1->named) continue;
+			}
+
+
+			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
+			{
+				if (ph->header->pred2->named != phr->header->pred2->named) continue;
+			}
+
+			{
+				auto arg1 = resolve_argument(phr->arg1, localsEntry, stk); 
+				CResultMatch result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+				if (result_1.hasMatch)
+				{
+					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+					auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+
+					CResultMatch result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
+					if (result_2.hasMatch)
+					{
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
+					 
+						return  execute_now(ph->body, localsNext, stk);
+					}
+				}
+			}
+			
+		}
+		return PhaseResult(false);
+	}
+
+
+
 	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
 	{ 
 		//determina quem eh o action do dynamica dispatch
@@ -1472,6 +1581,12 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		{ 
 			return execute_now(dispExec->block , dispExec->locals);
 		}
+	}
+
+	if (HBlockTryCall tCall = asHBlockTryCall (p))
+	{
+		execute_now(tCall->sentence);
+		return PhaseResult(true);
 	}
 
 	if (HBlockActionCall  vCall = asHBlockActionCall (p))

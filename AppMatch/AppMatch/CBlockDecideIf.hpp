@@ -128,4 +128,70 @@ namespace CBlocking
 
 	using HBlockToDecideOn = std::shared_ptr<CBlockToDecideOn>;
 
+
+
+
+
+
+
+
+	//Pharses
+
+
+	class CBlockPhraseHeader : public CBlock  // bloco que equivale a um return no decide
+	{
+	public:
+		CBlockPhraseHeader(CBlocking::HBlockNoum _verb , CBlocking::HBlockNoum _pred1, CBlocking::HBlockNoum _pred2, HBlockMatch _arg1, HBlockMatch _arg2) : verb(_verb), pred1(_pred1), pred2(_pred2), arg1(_arg1), arg2(_arg2)
+		{
+		}
+		 
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockPhraseHeader; }
+
+		CBlocking::HBlockNoum verb;
+		CBlocking::HBlockNoum pred1;
+		CBlocking::HBlockNoum pred2;
+		HBlockMatch arg1;
+		HBlockMatch arg2;
+
+	};
+
+	using HBlockPhraseHeader = std::shared_ptr<CBlockPhraseHeader>;
+
+
+
+	class CBlockPhraseDefine : public CBlock  // bloco que equivale a um return no decide
+	{
+	public:
+		CBlockPhraseDefine(CBlocking::HBlockPhraseHeader _header, CBlocking::HBlock  _body) : header(_header)  , body(_body){		}
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockPhraseDefine; }
+
+		CBlocking::HBlockPhraseHeader header;
+		CBlocking::HBlock  body;
+
+	};
+
+	using HBlockPhraseDefine = std::shared_ptr<CBlockPhraseDefine>;
+
+
+ 
+
+	class CBlockPhraseInvoke : public CBlock  // bloco que equivale a um return no decide
+	{
+	public:
+		CBlockPhraseInvoke(CBlocking::HBlockPhraseHeader _header, CBlocking::HBlock  _arg1, CBlocking::HBlock  _arg2 ) : header(_header), arg1(_arg1), arg2(_arg2) {		}
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockPhraseInvoke; }
+
+		CBlocking::HBlockPhraseHeader header;
+		CBlocking::HBlock arg1;
+		CBlocking::HBlock arg2;
+
+	};
+
+	using HBlockPhraseInvoke = std::shared_ptr<CBlockPhraseInvoke>;
+
 }

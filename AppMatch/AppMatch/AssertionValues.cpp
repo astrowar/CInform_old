@@ -201,26 +201,31 @@ bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock
 
 bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBlock value) 
 {
-	if (HBlockKindAction   act = asHBlockKindAction(value))
-	{
-		if (HBlockAction abase = asHBlockAction(obj))
-		{
-			//actions_header.push_back(abase);
-			//actions_parameters.push_back(make_shared<CBlockActionNamed >( ) );  [abase->named] = act;
-			//return true;
-		}
+	 
 
 
 		if (HBlockNoum nbase = asHBlockNoum(obj))
 		{
 			 
-			this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, act));
-			return true;
+			 
+
+			if (value->type() == BlockActionApply)
+			{
+				HBlockActionApply app = asHBlockActionApply(value);
+				 
+				auto ainstance = make_shared<CBlockActionInstance>(instancia_id,make_shared<CBlockKindAction>(app ));
+				instancia_id++;
+
+				this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, make_shared<CBlockKindAction>(app)));
+
+				addSymbol(nbase->named, ainstance);
+				return true;
+			}
 
 			//auto haction = make_shared<CBlockAction>(nbase->named);			
 			//return assert_it_action(haction, value);
 		}
-	}
+ 
 
 
 

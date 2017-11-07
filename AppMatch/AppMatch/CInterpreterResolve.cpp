@@ -348,7 +348,7 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 			return s.second;
 		}
 	}  
-	 
+	
 	return nullptr;
 
 

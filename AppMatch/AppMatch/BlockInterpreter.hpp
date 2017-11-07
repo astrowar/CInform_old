@@ -253,8 +253,8 @@ namespace CBlocking
 		void dump(string ident) override;
 		virtual bool isValue() override { return true; }
 		virtual BlockType type() override { return BlockType::BlockKindAction; }
-		CBlockKindAction(string _baseActionName, HBlockActionApply _applyTo) :  baseClasseName(_baseActionName), applyTo(_applyTo) {} 
-		string baseClasseName;
+		CBlockKindAction(  HBlockActionApply _applyTo) :   applyTo(_applyTo) {} 
+		 
 		HBlockActionApply applyTo;
 	};
 

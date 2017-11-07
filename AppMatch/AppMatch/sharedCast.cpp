@@ -375,6 +375,30 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockBooleanAND>(c);
 			return nullptr;
 		}
+
+
+		HBlockPhraseInvoke asHBlockPhraseInvoke(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockPhraseInvoke)
+				return std::static_pointer_cast<CBlockPhraseInvoke>(c);
+			return nullptr;
+		}
+
+
+		HBlockPhraseHeader asHBlockPhraseHeader(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockPhraseHeader)
+				return std::static_pointer_cast<CBlockPhraseHeader>(c);
+			return nullptr;
+		}
+		HBlockPhraseDefine asHBlockPhraseDefine(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockPhraseDefine)
+				return std::static_pointer_cast<CBlockPhraseDefine>(c);
+			return nullptr;
+		}
+
+
 		HBlockVerb asHBlockVerb(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockVerb)
@@ -452,6 +476,13 @@ namespace CBlocking
 		{
 			if (c != nullptr && c->type() == BlockType::BlockActionNamed)
 				return std::static_pointer_cast<CBlockActionNamed>(c);
+			return nullptr;
+		}
+		HBlockTryCall asHBlockTryCall(CBlocking::HBlock c)
+		{
+			if (c == nullptr) return nullptr;
+			if ((c->type() == BlockType::BlockTryCall) )
+				return std::static_pointer_cast<CBlockTryCall>(c);
 			return nullptr;
 		}
 
@@ -584,6 +615,19 @@ namespace CBlocking
 		}
 
 	 
+		
+		HBlockInstanceNamed asHBlockInstanceNamed(CBlocking::HBlock c)
+		{
+
+			if (c == nullptr) return nullptr;
+			auto t = c->type();
+
+			if (t == BlockType::BlockInstanceNamed)
+				return std::static_pointer_cast<CBlockInstanceNamed>(c);
+			return nullptr;
+
+
+		}
 
 		HBlockInstance asHBlockInstance(CBlocking::HBlock c)
 		{

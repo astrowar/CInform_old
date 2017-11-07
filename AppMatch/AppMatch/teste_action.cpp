@@ -17,18 +17,27 @@ void testeParser_action1()
 	string ss1 =
 R"( 
 thing is an kind of entity
+container is an kind of entity
 apple is a thing 
 orange is a thing
+box is an container
 eating  is  an action  applying to ( an thing ) 
-putting into is   an action  applying to (  thing  and   container ) 
+putting into is an action  applying to (  thing  and   container ) 
+retreating is an action applying to nothing
 understand : eat  ( a thing ) as eat_this
 )";
 
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true)); 
-	//f_now("try eating ( bad apple ) and orange "); 
+	f_now("try putting  apple into box  ");
+
+	f_now("try eating ( bad apple ) and orange "); 
 	f_now("try putting  apple box  ");
 	f_now("try putting  apple inside box  ");
+	
+
+	f_eval("putting into ")->dump("");
+	//f_is("putting is an action  applying to (  thing  and   container ) ");
 
 	return;
 }
@@ -47,19 +56,36 @@ void testeParser_action2()
 		R"( 
 thing is an kind of entity
 apple is a thing 
-box is a thing 
-puting  is ( an action  applying to ( an thing ) and ( an thing)  )
+container is an kind of entity
+container can be open or closed
 
-understand : put  [ a thing called X ] intro [ box  called IB ]  as puting
-understand : insert  [ a thing called X ] intro [ thing called B ] as put X intro B 
+orange is a thing
+box is an container
+box is open
+eating  is  an action  applying to ( an thing ) 
+putting into is an action  applying to (  thing  and   container ) 
+retreating is an action applying to nothing
+understand : eat  ( a thing ) as eat_this
+
+before putting ( thing called X ) into box :
+  if box is closed :
+     say  (text i cant , container is closed !)
+     stop the action
+ 
+
+carry out putting ( thing called X ) into box :
+  say  (text done , i put into container !)  
 
 )";
 
 
-	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
-	f_now("insert ( apple and box )  intro  box  ");
-	f_now("try insert  apple and box  intro  box  ");
-	 
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));	 
+	
+	f_now("try putting  apple  into  box  "); 
+	f_now("  box is closed ");
+	f_is("box is closed");
+	f_now("try putting  apple  into  box  ");
+	f_now("try putting  apple  over  orange  ");
 
 	return;
 }
@@ -136,7 +162,8 @@ before eating ( thing called X  which is not edible ) :
   say  (text i cant eat  this !)
   stop the action
   
- 
+before doing something to apple: 
+  say (text apple is bad)
   
 carry out eating ( thing called X  which is edible ) :
   say  (text eaten !)
@@ -265,7 +292,7 @@ asking someone for something is speech
 
 void testAction_all()
 {
-	testeParser_action1();
+	testeParser_action2();
 	return;
 	testeParser_action1(); 
 	testeParser_action2(); 

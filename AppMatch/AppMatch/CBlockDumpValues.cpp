@@ -160,7 +160,7 @@ void CBlockASimetricRelation::dump(string ident)
 }
 
 void CBlockKindAction::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Action applying to:  ", baseClasseName.c_str());
+	printf("%s %s \n", ident.c_str(), "Action applying to:  " );
 		this->applyTo->dump(ident + "   ");
 		CBlock::dump(ident);
 }
@@ -469,7 +469,7 @@ void CBlockActionApply::dump(string ident) {
 }
 
 void CBlockActionInstance::dump(string ident) {
-	printf("%s %s %x\n", ident.c_str(), "Action Instance", uintptr_t(this));
+	printf("%s %s %x\n", ident.c_str(), "Action Instance", this->id);
 	for(auto nn: this->namedSlots) nn->dump(ident + "       ");
 	CBlock::dump(ident);
 
@@ -1275,3 +1275,40 @@ CBlockKindValue::CBlockKindValue(string _named) : named(_named)
 	}
 
 }
+
+
+void CBlockPhraseHeader::dump(string ident) 
+{
+	printf("%s %s \n", ident.c_str(), "Phrase Header " );
+	this->verb->dump(ident + "       ");
+	if (this->pred1!=nullptr) this->pred1->dump(ident + "       ");	
+	if (this->arg1 != nullptr)this->arg1->dump(ident + "       ");
+	if (this->pred2 != nullptr) this->pred2->dump(ident + "       ");
+	if (this->arg2 != nullptr)this->arg2->dump(ident + "       ");
+
+	CBlock::dump(ident);
+
+}
+
+void CBlockPhraseDefine::dump(string ident)
+{
+	printf("%s %s \n", ident.c_str(), "Phrase Define ");
+	this->header->dump(ident + "       ");
+	this->body->dump(ident + "       ");	
+
+	CBlock::dump(ident);
+
+}
+
+void CBlockPhraseInvoke::dump(string ident)
+{
+	printf("%s %s \n", ident.c_str(), "BlockPhrase Invoke ");
+	this->header->dump(ident + "       ");
+	this->arg1->dump(ident + "       ");
+	this->arg2->dump(ident + "       ");
+
+	CBlock::dump(ident);
+
+}
+
+ 

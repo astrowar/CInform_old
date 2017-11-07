@@ -14,8 +14,7 @@
 #include "CBlockControlFlux.hpp"
 #include "CblockAssertion.hpp"
 #include <condition_variable>
- 
-
+#include "CBlockDumpValues.hpp"
 
 
 namespace NSParser
@@ -171,6 +170,7 @@ namespace NSParser
 		std::list<StaticDispatchArgument> staticDispatch;
 		std::shared_ptr<NSTerm::CPredBooleanOr>  verbList;
 		std::list<SentenceDispatchPredicate> sentenceDispatch;
+		std::list<CBlocking::HBlockPhraseHeader> phrases;
 
 
 
@@ -319,6 +319,7 @@ namespace NSParser
 		std::list<CBlocking::HBlock>  ToMatchList(CParser *p, std::vector<NSTerm::HPred> pvector, NSTerm::NSMatch::MatchResult result);
 		CBlocking::HBlock Dispatch_action_call(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlock  TryDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
+		CBlocking::HBlock parser_PhraseInvoke(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  DynamicDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
 
 	}
@@ -327,6 +328,7 @@ namespace NSParser
 	{
 		CBlocking::HBlockMatchActionCall  parser_actionMatch(CParser * p, NSTerm::HTerm & term);
 		CBlocking::HBlock  STMT_Action_Controls(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock   STMT_phrase_Invoken(CParser * p, std::vector<NSTerm::HTerm>& term);
 	
 		CBlocking::HBlock  sys_say_action(CParser * p, std::vector<NSTerm::HTerm>&  term);
 	}
@@ -391,7 +393,7 @@ namespace NSParser
 		CBlocking::HBlockAssertion_is  parse_AssertionDirectAssign(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionDefaultAssign(CParser *p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionValuesOf(CParser * p, std::vector<NSTerm::HTerm>& term);
-		CBlocking::HBlock parse_ActionCompositionName(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlock parse_ActionCompositionName(CParser * p, bool two_noums, NSTerm::HTerm term);
 		CBlocking::HBlock  parse_AssertionAction(CParser * p, std::vector<NSTerm::HTerm> term);
 		CBlocking::HBlock parse_AssertionIsLocalValue(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  parse_AssertionIsVariable(CParser * p, std::vector<NSTerm::HTerm>& term);

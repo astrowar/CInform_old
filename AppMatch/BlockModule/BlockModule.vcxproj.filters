@@ -158,5 +158,8 @@
     <ClCompile Include="..\AppMatch\CBlockCompostion.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

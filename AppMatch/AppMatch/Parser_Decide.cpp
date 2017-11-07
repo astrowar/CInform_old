@@ -236,6 +236,49 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 
 			}
 		}
+
+
+		///
+
+		{
+
+			std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral("to"));
+				predList.push_back(mkHPredWord("Verb"));
+				predList.push_back(mkHPredAny("Match_arg1"));
+				predList.push_back(mkHPredPreposition("pred"));
+				predList.push_back(mkHPredAny("Match_arg2"));
+				predList.push_back(mk_HPredLiteral(":"));
+
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals) 
+			{
+				 
+
+				HBlockMatch  marg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg1"]);
+				if (marg1 != nullptr)
+				{
+					HBlockMatch  marg2 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg2"]);
+					if (marg2 != nullptr)
+					{
+
+						HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+						if (body != nullptr)
+						{
+							HBlockNoum nVerb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
+							HBlockNoum nPred = std::make_shared<CBlockNoum>(res.matchs["pred"]->repr());
+							HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb,nullptr , nPred, marg1 , marg2);
+							p->phrases.push_back(nheader);
+							return std::make_shared<CBlockPhraseDefine>(nheader, body);
+						}
+					} 
+				}
+			}
+		}
+
 	}
 
 

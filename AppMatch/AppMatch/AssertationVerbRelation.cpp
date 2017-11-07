@@ -977,6 +977,14 @@ bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,CBlocking
 	return false;
 }
 
+bool CBlockInterpreter::insert_newPhrase(HBlockPhraseDefine phrase_dec)
+{
+
+	phrases.push_back(phrase_dec);
+	return true;
+}
+
+
 
 bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
 {

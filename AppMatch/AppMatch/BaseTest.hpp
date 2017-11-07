@@ -70,3 +70,4 @@ void testedecide_all();
 void testeLogical_All();
 
 void testeComposition_all();
+void testePhases_all();

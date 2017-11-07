@@ -166,6 +166,7 @@
     <ClCompile Include="..\AppMatch\CBase.cpp" />
     <ClCompile Include="..\AppMatch\CBlockCommand.cpp" />
     <ClCompile Include="..\AppMatch\CBlockCompostion.cpp" />
+    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp" />
     <ClCompile Include="..\AppMatch\CBlockDumpValues.cpp" />
     <ClCompile Include="..\AppMatch\CBlockNumber.cpp" />
     <ClCompile Include="..\AppMatch\CBlockSerialize.cpp" />

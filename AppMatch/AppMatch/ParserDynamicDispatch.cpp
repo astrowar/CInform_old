@@ -379,7 +379,7 @@ HBlockList getNoumListing(std::vector<HTerm>  term)
 HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 {
 	{
-		static std::vector<HPred> predList_a = {};
+		  std::vector<HPred> predList_a = {};
 		if (predList_a.empty())
 		{
 			 
@@ -404,7 +404,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 	}
 
 	{
-		static std::vector<HPred> predList_b = {};
+		std::vector<HPred> predList_b = {};
 		if (predList_b.empty())
 		{
 
@@ -430,7 +430,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 
 
 	{
-		static std::vector<HPred> predList_a2 = {};
+		  std::vector<HPred> predList_a2 = {};
 		if (predList_a2.empty())
 		{
 		 
@@ -451,16 +451,9 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 			return actionCall;
 		}
 	}
-
-
 	 
-
-
-
- 
-
 	{
-		 static  std::vector<HPred> predList_c = {};
+		    std::vector<HPred> predList_c = {};
 		if (predList_c.empty())
 		{
 		 
@@ -487,7 +480,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 
 
 	{
-		static std::vector<HPred> predList_a1 = {};
+		  std::vector<HPred> predList_a1 = {};
 		if (predList_a1.empty())
 		{
 
@@ -510,7 +503,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 	}
 
 	{
-		static std::vector<HPred> predList_d = {};
+		  std::vector<HPred> predList_d = {};
 		if (predList_d.empty())
 		{
 		 
@@ -528,7 +521,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 		}
 	}
 	{
-		static std::vector<HPred> predList_e = {};
+		  std::vector<HPred> predList_e = {};
 		if (predList_e.empty())
 		{
 			 
@@ -600,6 +593,41 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 
 	 
 	return nullptr;
+}
+
+
+ 
+HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HTerm>&  term)
+{
+	for (auto ph : p->phrases)
+	{
+		if (ph->arg1 != nullptr && ph->pred1 == nullptr && ph->pred2 != nullptr && ph->arg1 != nullptr && ph->arg2 != nullptr)
+		{
+			std::vector<HPred> predList = {};
+			if (predList.empty())
+			{
+				predList.push_back(mk_HPredLiteral(ph->verb->named));
+				predList.push_back(mkHPredAny("Match_arg1"));
+				predList.push_back(mk_HPredLiteral(ph->pred2->named ));
+				predList.push_back(mkHPredAny("Match_arg2"));
+			}
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{				
+				HBlock marg1 = Expression::parser_expression(p, res.matchs["Match_arg1"]);			
+				if (marg1 != nullptr)
+				{
+					HBlock  marg2 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
+					if (marg2 != nullptr)
+					{
+						return   std::make_shared<CBlockPhraseInvoke>(ph, marg1, marg2);
+					}
+				}
+			}
+		}
+	}
+	return nullptr;
+
 }
 
 HBlock NSParser::DynamicDispatch::DynamicDispatch_action(CParser *p, std::vector<HTerm>&  term) {
