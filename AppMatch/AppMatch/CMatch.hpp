@@ -3,10 +3,11 @@
 #define _CMATCH_H
 
 #include "CBase.hpp"
-#include <vector>
-#include <map>
+
 #include "EqualsResult.hpp"
 #include <functional>
+#include <vector>
+#include <map>
 
 namespace NSTerm
 {
@@ -173,31 +174,69 @@ namespace NSTerm
 		//==========================================
 
 		//make hPreds
-		HPred mkHPredAtom(std::string _named, HTerm atom);
+		HPred pAtom(std::string _named, HTerm atom);
 
-		HPred mkHPredList(std::string _named, std::initializer_list<HPred> plist);
+		HPred pList(std::string _named, std::initializer_list<HPred> plist);
 
-		HPred mkHPredAny(std::string _named);
+		HPred pAny(std::string _named);
 
-		HPred mkHPredWord(std::string _named);
+		HPred pWord(std::string _named);
 
-		HPred mkHPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred pAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
-		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
 
-		HPred mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
 			const HPred &c_pred3);
 
 
-		HPred  mkHPredPreposition(const std::string &_named);
+		HPred  pPreposition(const std::string &_named);
 
 		CPredAtom* asPredAtom(CTerm* c);
 		CPredList* asPredList(CTerm* c);
 		CPredAny* asPredAny(CTerm* c);
 		CPredWord * asPredWord(CTerm* c);
 		HTerm convertToTerm(MTermSet &m);
+
+
+
+
+
+		//Classe que representa um conjunto de termos da Grmatica
+		class CPredSequence
+		{
+		public:
+			CPredSequence(std::vector<HPred> x) : data(std::move(x)) {}
+			CPredSequence(HPred x) : data({ x }) {}
+			std::vector<HPred> data;
+		};
+
+		using HTermSequence = std::shared_ptr<CPredSequence>;
+
+		CPredSequence operator<<(HPred a, HPred b)
+		{
+			return CPredSequence({ a,b });
+		}
+		CPredSequence operator<<(CPredSequence& a, HPred b)
+		{
+			a.data.push_back(b);
+			return std::move(a);
+		}
+
+		CPredSequence operator<<(CPredSequence& a, CPredSequence& b)
+		{
+			a.data.insert(a.data.end(), b.data.begin(), b.data.end());
+			return std::move(a);
+		}
+
+		 
+
+
+
+
+
 
 		namespace NSMatch
 		{
@@ -219,9 +258,11 @@ namespace NSTerm
 
 
 			MatchResult makeMatch(std::string named, HTerm value);
-			MatchResult CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
+			MatchResult CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
 			//MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
-			MatchResult CMatch(HTerm term, const std::vector<HPred>& predicates);
+			MatchResult CMatch__(HTerm term, const std::vector<HPred>& predicates);
+			MatchResult  CMatch(std::vector<HTerm>&  seq, const CPredSequence   &predicates);
+			MatchResult  CMatch(HTerm  seq, const CPredSequence   &predicates);
 			std::string get_repr(MatchResult r);
 
 

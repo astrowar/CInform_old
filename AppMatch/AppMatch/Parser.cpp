@@ -31,25 +31,25 @@ NSParser::CParser::CParser( ) {
     {
         std::list<HPred> alist;
         verbList = std::make_shared<CPredBooleanOr>("verbList", alist);
-        verbList->blist.push_back(mk_HPredLiteral("contains"));
+        verbList->blist.push_back(pLiteral("contains"));
     }
 
     {
         std::list<HPred> alist;
         actionPredList = std::make_shared<CPredBooleanOr>("actionList", alist);
-        actionPredList->blist.push_back(mk_HPredLiteral("getting"));
+        actionPredList->blist.push_back(pLiteral("getting"));
     }
 
 	{
 		
-		verbList->blist.push_back(mk_HPredLiteral("relates"));
+		verbList->blist.push_back(pLiteral("relates"));
 	}
 
 
     {
         //std::list<HPred> alist;
         //actionDinamicDispatch = std::make_shared<CPredBooleanOr>("actionList", alist);
-        //actionDinamicDispatch->blist.push_back(mk_HPredLiteral("getting"));
+        //actionDinamicDispatch->blist.push_back(pLiteral("getting"));
     }
 }
 
@@ -92,9 +92,9 @@ std::vector<HTerm> expandTerm( HTerm term)
 
 HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  term)
 {
-	std::vector<HPred> predList;
-	predList.push_back(mk_HPredLiteral("say"));
-	predList.push_back(mkHPredAny("Body"));
+	CPredSequence predList;
+	<<(pLiteral("say"));
+	<<(pAny("Body"));
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
 	{
@@ -114,11 +114,11 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
  
 	{
 		// and action applying to [one visible thing and requiring light]
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(verb_IS_NOT());
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("N2"));
+		CPredSequence predList;
+		<<(pAny("N1"));
+		<<(verb_IS_NOT());
+		<<(p->verbList);
+		<<(pAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -139,11 +139,11 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 	{
 		// and action applying to [one visible thing and requiring light]
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(mk_HPredLiteral("not"));
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("N2"));
+		CPredSequence predList;
+		<<(pAny("N1"));
+		<<(pLiteral("not"));
+		<<(p->verbList);
+		<<(pAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -165,11 +165,11 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 	{
 		// and action applying to [one visible thing and requiring light]
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(verb_IS());
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("N2"));
+		CPredSequence predList;
+		<<(pAny("N1"));
+		<<(verb_IS());
+		<<(p->verbList);
+		<<(pAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -191,10 +191,10 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 	{
 		// and action applying to [one visible thing and requiring light]
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("N2"));
+		CPredSequence predList;
+		<<(pAny("N1"));
+		<<(p->verbList);
+		<<(pAny("N2"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -220,12 +220,12 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 	{
 		// is a kind definition ??
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mkHPredAny("N1"));
-			predList.push_back(verb_IS_NOT());
-			predList.push_back(mkHPredAny("Value"));
+			<<(pAny("N1"));
+			<<(verb_IS_NOT());
+			<<(pAny("Value"));
 		}
 
 		MatchResult res = CMatch(term, predList);
@@ -249,12 +249,12 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_Loop_AssertionVerb(CParser * 
 
 	{
 		// is a kind definition ??
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mkHPredAny("N1"));
-			predList.push_back(verb_IS());
-			predList.push_back(mkHPredAny("Value"));
+			<<(pAny("N1"));
+			<<(verb_IS());
+			<<(pAny("Value"));
 		}
 
 		MatchResult res = CMatch(term, predList);
@@ -295,14 +295,14 @@ HBlock NSParser::ParseAssertion::sys_now_loop(CParser * p, std::vector<HTerm>&  
 	// now the table supports every stripper who is in New Jersey
 	// now Wilfred admires every woman
 
-	static std::vector<HPred> predList ={};
+	static CPredSequence predList ={};
 	if (predList.empty())
 	{
-		predList.push_back(mk_HPredLiteral("now"));
-		predList.push_back(mk_HPredLiteral("every"));
-		predList.push_back(mkHPredAny("Assertion"));
-		//predList.push_back(verb_IS());
-		//predList.push_back(mkHPredAny("Seletor_B"));
+		<<(pLiteral("now"));
+		<<(pLiteral("every"));
+		<<(pAny("Assertion"));
+		//<<(verb_IS());
+		//<<(pAny("Seletor_B"));
 	}
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
@@ -349,9 +349,9 @@ HBlock NSParser::ParseAssertion::sys_now_action(CParser * p, std::vector<HTerm>&
 
 
 
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("now"));
-        predList.push_back(mkHPredAny("Assertion"));
+        CPredSequence predList;
+        <<(pLiteral("now"));
+        <<(pAny("Assertion"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
         {
@@ -416,7 +416,7 @@ HBlock NSParser::ParseAssertion::STMT_understand_Assertion(CParser * p, std::vec
 HBlock NSParser::ParseAssertion::parse_removeArticle(CParser * p, std::vector<HTerm>& term) {
     if (term.size() > 1) {
 
-        if (mk_HPredLiteral("the")->match(term.front()) == Equals) {
+        if (pLiteral("the")->match(term.front()) == Equals) {
             auto gtail = get_tail(term);
             return Expression::parser_expression_lst(p,gtail);
         }
@@ -432,10 +432,10 @@ HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>&
 	
 
 
-    std::vector<HPred> predList;
+    CPredSequence predList;
      
-    //predList.push_back(undefinedArticle());
-    predList.push_back(mkHPredAny("Noum"));
+    //<<(undefinedArticle());
+    <<(pAny("Noum"));
     MatchResult res = CMatch(term, predList);
 
     if (res.result == Equals) 
@@ -475,16 +475,16 @@ HBlockAssertion_isInstanceOf NSParser::CParser::parseAssertion_isInstanceOf(std:
     //Injstance is Alwares derivadefrom a Kind
     {
         // is a kind definition ??
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("Noum"));
+        CPredSequence predList;
+        <<(pAny("Noum"));
 
-        auto L_a_an_kind = mkHPredList("kindpart", {verb_IS(), undefinedArticle()});
-        auto L_are_kinds = mkHPredList("kindpart", {verb_IS()});
+        auto L_a_an_kind = pList("kindpart", {verb_IS(), undefinedArticle()});
+        auto L_are_kinds = pList("kindpart", {verb_IS()});
 
-        //predList.push_back(mkHPredBooleanOr("kindpart", L_a_an_kind, L_are_kinds));
-        predList.push_back(L_a_an_kind);
+        //<<(pOr("kindpart", L_a_an_kind, L_are_kinds));
+        <<(L_a_an_kind);
 
-        predList.push_back(mkHPredAny("KindBase"));
+        <<(pAny("KindBase"));
 
         MatchResult res = CMatch(term, predList);
 
@@ -560,10 +560,10 @@ HBlock NSParser::ParseAssertion::STMT_Decide_Assertion(CParser * p, std::vector<
 HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector<HTerm>& term)
 {
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("obj_s"));
-		predList.push_back(mk_HPredLiteral("to"));
-		predList.push_back(mkHPredAny("obj_d"));
+		CPredSequence predList;
+		<<(pAny("obj_s"));
+		<<(pLiteral("to"));
+		<<(pAny("obj_d"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlock a = Expression::parser_expression(p, res.matchs["obj_s"]);
@@ -586,11 +586,11 @@ HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector
 HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTerm>& term) {
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral_OR("article", { "a", "an" }));
-		predList.push_back(mk_HPredLiteral("list"));
-		predList.push_back(mk_HPredLiteral("of"));
-		predList.push_back(mkHPredAny("kindBase"));
+		CPredSequence predList;
+		<<(mk_HPredLiteral_OR("article", { "a", "an" }));
+		<<(pLiteral("list"));
+		<<(pLiteral("of"));
+		<<(pAny("kindBase"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -603,10 +603,10 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
 	}
 
 	{
-			std::vector<HPred> predList;				
-			predList.push_back(mk_HPredLiteral("list"));
-			predList.push_back(mk_HPredLiteral("of"));
-			predList.push_back(mkHPredAny("kindBase"));
+			CPredSequence predList;				
+			<<(pLiteral("list"));
+			<<(pLiteral("of"));
+			<<(pAny("kindBase"));
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -621,10 +621,10 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
 
 	{
 
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("property"));
-        predList.push_back(mk_HPredLiteral("of"));
-        predList.push_back(mkHPredAny("obj"));
+        CPredSequence predList;
+        <<(pAny("property"));
+        <<(pLiteral("of"));
+        <<(pAny("obj"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{
@@ -644,11 +644,11 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
 
     //{
     //	std::cout << get_repr(term) << std::endl;
-    //	std::vector<HPred> predList;
-    //	predList.push_back(mk_HPredLiteral("the"));
-    //	predList.push_back(mkHPredAny("property"));
-    //	predList.push_back(mk_HPredLiteral("of"));
-    //	predList.push_back(mkHPredAny("obj"));
+    //	CPredSequence predList;
+    //	<<(pLiteral("the"));
+    //	<<(pAny("property"));
+    //	<<(pLiteral("of"));
+    //	<<(pAny("obj"));
     //	MatchResult res = CMatch(term, predList);
     //	if (res.result == Equals)
     //	{
@@ -685,11 +685,11 @@ HBlockEnums NSParser::ParseAssertion::parseAssertion_EnumTerms(CParser * p, HTer
 
 
 HBlock NSParser::ParseAssertion::STMT_canBe_Assertion(CParser * p, std::vector<HTerm>& lst) {
-    std::vector<HPred> predList;
-    predList.push_back(mkHPredAny("Target"));
-    predList.push_back(mk_HPredLiteral("can"));
-    predList.push_back(mk_HPredLiteral("be"));
-    predList.push_back(mkHPredAny("EnumValues"));
+    CPredSequence predList;
+    <<(pAny("Target"));
+    <<(pLiteral("can"));
+    <<(pLiteral("be"));
+    <<(pAny("EnumValues"));
     MatchResult res = CMatch(lst, predList);
 
     if (res.result != Equals) return nullptr;
@@ -712,10 +712,10 @@ HBlock NSParser::ParseAssertion::STMT_canBe_Assertion(CParser * p, std::vector<H
 HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, HTerm term) {
     {
         // the torch has a brightness called brightnessLevel ;
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("kindName"));
-        predList.push_back(mk_HPredLiteral("called"));
-        predList.push_back(mkHPredAny("propName"));
+        CPredSequence predList;
+        <<(pAny("kindName"));
+        <<(pLiteral("called"));
+        <<(pAny("propName"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockNoum a = std::make_shared<CBlockNoum>(res.matchs["kindName"]->repr());
@@ -736,13 +736,13 @@ HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, H
 
 
 HBlock NSParser::ParseAssertion::STMT_hasAn_Assertion(CParser * p, std::vector<HTerm>& lst) {
-    std::vector<HPred> predList;
+    CPredSequence predList;
 
 
-    predList.push_back(mkHPredAny("Target"));
-    predList.push_back(mk_HPredLiteral("has"));
-    predList.push_back(undefinedArticle());
-    predList.push_back(mkHPredAny("KindAndName"));
+    <<(pAny("Target"));
+    <<(pLiteral("has"));
+    <<(undefinedArticle());
+    <<(pAny("KindAndName"));
     MatchResult res = CMatch(lst, predList);
 
     if (res.result != Equals) {

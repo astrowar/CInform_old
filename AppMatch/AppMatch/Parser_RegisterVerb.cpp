@@ -43,13 +43,13 @@ std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations(C
 HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)
 { 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("register"));
-			predList.push_back(mk_HPredLiteral("verb"));
-			predList.push_back(mk_HPredLiteral("to"));
-			predList.push_back(mkHPredAny("verbNamed"));
+			<<(pLiteral("register"));
+			<<(pLiteral("verb"));
+			<<(pLiteral("to"));
+			<<(pAny("verbNamed"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -64,12 +64,12 @@ HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm
 
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("register"));
-			predList.push_back(mk_HPredLiteral("verb"));
-			predList.push_back(mkHPredAny("verbNamed"));
+			<<(pLiteral("register"));
+			<<(pLiteral("verb"));
+			<<(pAny("verbNamed"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
@@ -105,11 +105,11 @@ HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm
 string NSParser::ParseGrammar::expression_adapt_viewPoint(CParser * p, HTerm& term)
 {
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("the"));
-			predList.push_back(mkHPredAny("remainder"));
+			<<(pLiteral("the"));
+			<<(pAny("remainder"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -120,37 +120,37 @@ string NSParser::ParseGrammar::expression_adapt_viewPoint(CParser * p, HTerm& te
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("first"),mk_HPredLiteral("person"),mk_HPredLiteral("plural")  };		
+		static CPredSequence predList = { pLiteral("first"),pLiteral("person"),pLiteral("plural")  };		
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "1P";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("first"),mk_HPredLiteral("person"),mk_HPredLiteral("singular") };
+		static CPredSequence predList = { pLiteral("first"),pLiteral("person"),pLiteral("singular") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "1S";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("second"),mk_HPredLiteral("person"),mk_HPredLiteral("plural") };
+		static CPredSequence predList = { pLiteral("second"),pLiteral("person"),pLiteral("plural") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "2P";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("second"),mk_HPredLiteral("person"),mk_HPredLiteral("singular") };
+		static CPredSequence predList = { pLiteral("second"),pLiteral("person"),pLiteral("singular") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "2S";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("third"),mk_HPredLiteral("person"),mk_HPredLiteral("plural") };
+		static CPredSequence predList = { pLiteral("third"),pLiteral("person"),pLiteral("plural") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "3P";
 	}
 
 	{
-		static std::vector<HPred> predList = { mk_HPredLiteral("third"),mk_HPredLiteral("person"),mk_HPredLiteral("singular") };
+		static CPredSequence predList = { pLiteral("third"),pLiteral("person"),pLiteral("singular") };
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "3S";
 	}
@@ -163,11 +163,11 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("the"));
-			predList.push_back(mkHPredAny("remainder"));
+			<<(pLiteral("the"));
+			<<(pAny("remainder"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -178,11 +178,11 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	}
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("past"));
-			predList.push_back(mk_HPredLiteral("tense"));
+			<<(pLiteral("past"));
+			<<(pLiteral("tense"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) return   "VBD";
@@ -190,21 +190,21 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	}
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("present"));
-			predList.push_back(mk_HPredLiteral("participle"));
+			<<(pLiteral("present"));
+			<<(pLiteral("participle"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)  return   ("VBG");
 
 	}
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("gerund"));
+			<<(pLiteral("gerund"));
 		 
 		}
 		MatchResult res = CMatch(term, predList);
@@ -213,10 +213,10 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	}
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("present"));
+			<<(pLiteral("present"));
 
 		}
 		MatchResult res = CMatch(term, predList);
@@ -225,20 +225,20 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	}
 
 	{ 
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("past"));
-			predList.push_back(mk_HPredLiteral("participle"));
+			<<(pLiteral("past"));
+			<<(pLiteral("participle"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)  return   ("VBN");
 	}
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("infinitive"));
+			<<(pLiteral("infinitive"));
 
 		}
 		MatchResult res = CMatch(term, predList);
@@ -254,11 +254,11 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
  string parser_verb_noum(HTerm& term)
 {
 	// remove det
-	static std::vector<HPred> predList = {};
+	static CPredSequence predList = {};
 	if (predList.empty())
 	{
-		predList.push_back(mk_HPredLiteral("the"));
-		predList.push_back(mkHPredAny("verbNamed"));		 
+		<<(pLiteral("the"));
+		<<(pAny("verbNamed"));		 
 	}
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) return CtoString(expandBract(res.matchs["verbNamed"]));
@@ -271,15 +271,15 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& term)
 {
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			//predList.push_back(mk_HPredLiteral("adapt"));
-			predList.push_back(mkHPredAny("verbNamed"));
-			predList.push_back(mk_HPredLiteral("in"));
-			predList.push_back(mkHPredAny("TenseForm"));
-			predList.push_back(mk_HPredLiteral("from"));
-			predList.push_back(mkHPredAny("ViewPoint"));
+			//<<(pLiteral("adapt"));
+			<<(pAny("verbNamed"));
+			<<(pLiteral("in"));
+			<<(pAny("TenseForm"));
+			<<(pLiteral("from"));
+			<<(pAny("ViewPoint"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -300,13 +300,13 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& t
 
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			//predList.push_back(mk_HPredLiteral("adapt"));
-			predList.push_back(mkHPredAny("verbNamed"));
-			predList.push_back(mk_HPredLiteral("in"));
-			predList.push_back(mkHPredAny("TenseForm"));
+			//<<(pLiteral("adapt"));
+			<<(pAny("verbNamed"));
+			<<(pLiteral("in"));
+			<<(pAny("TenseForm"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -324,13 +324,13 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& t
 	}
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			//predList.push_back(mk_HPredLiteral("adapt"));
-			predList.push_back(mkHPredAny("verbNamed"));
-			predList.push_back(mk_HPredLiteral("from"));
-			predList.push_back(mkHPredAny("ViewPoint"));
+			//<<(pLiteral("adapt"));
+			<<(pAny("verbNamed"));
+			<<(pLiteral("from"));
+			<<(pAny("ViewPoint"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -348,11 +348,11 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& t
 
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			//predList.push_back(mk_HPredLiteral("adapt"));
-			predList.push_back(mkHPredAny("verbNamed"));			 
+			//<<(pLiteral("adapt"));
+			<<(pAny("verbNamed"));			 
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -374,11 +374,11 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& t
 HBlock NSParser::ParseGrammar::expression_adapt_verb(CParser * p, std::vector<HTerm>& term)
 {
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("adapt"));
-			predList.push_back(mkHPredAny("remainder"));
+			<<(pLiteral("adapt"));
+			<<(pAny("remainder"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -390,11 +390,11 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb(CParser * p, std::vector<HT
 	}
 
 	{
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("negate"));
-			predList.push_back(mkHPredAny("remainder"));
+			<<(pLiteral("negate"));
+			<<(pAny("remainder"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

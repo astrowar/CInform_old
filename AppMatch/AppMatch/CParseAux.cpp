@@ -46,8 +46,9 @@ std::vector<HTerm> decompose(std::string phase) {
 	return seglist;
 }
 
-HPred mk_HPredLiteral(string str) {
-    return mkHPredAtom("_", make_string(str));
+HPred pLiteral(string str) 
+{
+    return pAtom("_", make_string(str));
 }
 
  
@@ -129,7 +130,7 @@ HPred mk_HPredLiteral_OR(string _named, std::initializer_list<string> alist) {
     std::list<string> strList(alist);
     std::list<std::shared_ptr<CPred> > predlist;
     for (auto it = strList.begin(); it != strList.end(); ++it) {
-        predlist.push_back(mkHPredAtom("_", make_string(*it)));
+        predlist.push_back(pAtom("_", make_string(*it)));
     }
     return std::make_shared<CPredBooleanOr>(_named, predlist);
 }
@@ -144,30 +145,30 @@ CList *mk_CList_Literal(std::vector<HTerm> strList) {
 }
 
 HPred undefinedArticle() {
-    return mkHPredBooleanOr("_", mk_HPredLiteral("a"), mk_HPredLiteral("an"));
+    return pOr("_", pLiteral("a"), pLiteral("an"));
 }
 
 HPred verb_IS() {
-    return mkHPredBooleanOr("is", mk_HPredLiteral("are"), mk_HPredLiteral("is"));
+    return pOr("is", pLiteral("are"), pLiteral("is"));
 }
 
 HPred verb_IS_NOT() {
-    return mkHPredBooleanOr("isnot", mkHPredList("isNotList", {mk_HPredLiteral("is"), mk_HPredLiteral("not")}),
-                            mk_HPredLiteral("arent"));
+    return pOr("isnot", pList("isNotList", {pLiteral("is"), pLiteral("not")}),
+                            pLiteral("arent"));
 }
 
 HPred mk_What_Which() {
-    return mkHPredBooleanOr("what_TERM", mk_HPredLiteral("what"), mk_HPredLiteral("which"), mk_HPredLiteral("whether"));
+    return pOr("what_TERM", pLiteral("what"), pLiteral("which"), pLiteral("whether"));
 }
 
 std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
     {
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mkHPredAny("Verb"));
-			predList.push_back(mkHPredAny("Aux"));
+			<<(pAny("Verb"));
+			<<(pAny("Aux"));
 		}
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -175,21 +176,21 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr()));
             clist->push_back(std::make_shared<CBlockNoum>(res.matchs["Aux"]->repr()));
 
-            HPred verbMatch = (mkHPredList("VerbMatch", {
-                    mk_HPredLiteral(res.matchs["Verb"]->repr()),
-                    mk_HPredLiteral(res.matchs["Aux"]->repr()),
+            HPred verbMatch = (pList("VerbMatch", {
+                    pLiteral(res.matchs["Verb"]->repr()),
+                    pLiteral(res.matchs["Aux"]->repr()),
             }));
             return std::pair<HBlock, HPred>(clist, verbMatch);
         }
     }
 
     {
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("Verb"));
+        CPredSequence predList;
+        <<(pAny("Verb"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock clist = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-            HPred verbMatch = mk_HPredLiteral(res.matchs["Verb"]->repr());
+            HPred verbMatch = pLiteral(res.matchs["Verb"]->repr());
 
             return std::pair<HBlock, HPred>(clist, verbMatch);
         }
@@ -206,7 +207,7 @@ HPred convert_to_predicate(CTerm *termo) {
 		auto vlist = clist->asVector();
 		vlist = remove_boundaryListMark(vlist);
 
-		auto hpr = mkHPredList("predListing", {});
+		auto hpr = pList("predListing", {});
 		CPredList *predList = asPredList (hpr.get());
 
 		for (auto k : vlist) {
@@ -217,10 +218,10 @@ HPred convert_to_predicate(CTerm *termo) {
 	else {
 		if (CString *css = asCString(termo)) {
 
-			return mk_HPredLiteral(css->s);
+			return pLiteral(css->s);
 		}
 
 	}
 
-	return mk_HPredLiteral(termo->repr());
+	return pLiteral(termo->repr());
 }

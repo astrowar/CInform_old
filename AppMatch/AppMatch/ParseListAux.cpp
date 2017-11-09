@@ -16,10 +16,10 @@ using namespace NSTerm::NSMatch;
 
 HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HTerm term, HPred sep) {
 
-    std::vector<HPred> predList;
-    predList.push_back(mkHPredAny("N1"));
-    predList.push_back(sep);
-    predList.push_back(mkHPredAny("N2"));
+    CPredSequence predList;
+    <<(pAny("N1"));
+    <<(sep);
+    <<(pAny("N2"));
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
         HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
@@ -31,10 +31,10 @@ HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HT
 }
 
 HBlockList  NSParser::ParseAssertion::parseAssertionFirstTerm_COMMA_Supl( CParser * p, HTerm term, HPred sep, HBlockList cList) {
-    std::vector<HPred> predList;
-    predList.push_back(mkHPredAny("N1"));
-    predList.push_back(mkHPredBooleanOr("sep", mk_HPredLiteral(","), sep));
-    predList.push_back(mkHPredAny("N2"));
+    CPredSequence predList;
+    <<(pAny("N1"));
+    <<(pOr("sep", pLiteral(","), sep));
+    <<(pAny("N2"));
 
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
@@ -92,10 +92,10 @@ std::list<HBlock>  concat_terms(CBlocking::HBlock c1, CBlocking::HBlock c2)
 HBlockList  NSParser::ParseAssertion::parseAssertionList_COMMA_neutral(CParser * p, HTerm term ) 
 {
 	// obtem uma lista que esta separada apenas por virgula
-	std::vector<HPred> predList;
-	predList.push_back(mkHPredAny("N1"));
-	predList.push_back(mk_HPredLiteral(","));
-	predList.push_back(mkHPredAny("N2"));
+	CPredSequence predList;
+	<<(pAny("N1"));
+	<<(pLiteral(","));
+	<<(pAny("N2"));
 
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) {
@@ -112,21 +112,21 @@ HBlockList  NSParser::ParseAssertion::parseAssertionList_COMMA_neutral(CParser *
 
 
 HBlockList NSParser::ParseList::parseAssertionFirstTerm_COMMA_AND(CParser * p, HTerm term, HBlockList CList) {
-    return ParseAssertion::parseAssertionFirstTerm_COMMA_Supl(p,term, mk_HPredLiteral("and"), CList);
+    return ParseAssertion::parseAssertionFirstTerm_COMMA_Supl(p,term, pLiteral("and"), CList);
 }
 
 HBlockList NSParser::ParseList::parseAssertionFirstTerm_COMMA_OR(CParser * p, HTerm term, HBlockList CList) {
-    return ParseAssertion::parseAssertionFirstTerm_COMMA_Supl(p,term, mk_HPredLiteral("or"), CList);
+    return ParseAssertion::parseAssertionFirstTerm_COMMA_Supl(p,term, pLiteral("or"), CList);
 }
 
 
 HBlock NSParser::ParseList::parse_List_Neutral(CParser * p, std::vector<HTerm>& term)
 {
 	// obtem uma lista que esta separada apenas por virgula
-	std::vector<HPred> predList;
-	predList.push_back(mkHPredAny("N1"));
-	predList.push_back(mk_HPredLiteral(","));
-	predList.push_back(mkHPredAny("N2"));
+	CPredSequence predList;
+	<<(pAny("N1"));
+	<<(pLiteral(","));
+	<<(pAny("N2"));
 
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) 
@@ -159,11 +159,11 @@ HBlock NSParser::ParseList::parse_List_Neutral(CParser * p, std::vector<HTerm>& 
 HBlock NSParser::ParseList::parse_List_AND(CParser * p, std::vector<HTerm>& term) 
 {
     {
-        auto sep = mk_HPredLiteral("and");
-        std::vector<HPred> predList;
-        predList.push_back(mkHPredAny("N1"));
-        predList.push_back(sep);
-        predList.push_back(mkHPredAny("N2"));
+        auto sep = pLiteral("and");
+        CPredSequence predList;
+        <<(pAny("N1"));
+        <<(sep);
+        <<(pAny("N2"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{ 
@@ -190,11 +190,11 @@ HBlock NSParser::ParseList::parse_List_AND(CParser * p, std::vector<HTerm>& term
 
 HBlock NSParser::ParseList::parse_List_OR(CParser * p, std::vector<HTerm>& term) {
 	{
-		auto sep = mk_HPredLiteral("or");
-		std::vector<HPred> predList;
-		predList.push_back(mkHPredAny("N1"));
-		predList.push_back(sep);
-		predList.push_back(mkHPredAny("N2"));
+		auto sep = pLiteral("or");
+		CPredSequence predList;
+		<<(pAny("N1"));
+		<<(sep);
+		<<(pAny("N2"));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -223,9 +223,9 @@ HBlock NSParser::ParseList::parse_List_OR(CParser * p, std::vector<HTerm>& term)
 
 
 HBlockList NSParser::ParseList::parse_Strict_COMMA_AND(CParser * p, HTerm term) {
-    return parseAssertion_Strict_COMMA_Supl(p,term, mk_HPredLiteral("and"));
+    return parseAssertion_Strict_COMMA_Supl(p,term, pLiteral("and"));
 }
 
 HBlockList NSParser::ParseList::parse_Strict_COMMA_OR(CParser * p, HTerm term) {
-    return parseAssertion_Strict_COMMA_Supl(p,term, mk_HPredLiteral("or"));
+    return parseAssertion_Strict_COMMA_Supl(p,term, pLiteral("or"));
 }

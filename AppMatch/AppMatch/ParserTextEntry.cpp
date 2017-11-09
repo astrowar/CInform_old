@@ -14,11 +14,11 @@ HBlock NSParser::Statement::text_entry(CParser * p, std::vector<HTerm>&  term)
 {
 	{
 		 
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("text"));
-			predList.push_back(mkHPredAny("Contents"));
+			<<(pLiteral("text"));
+			<<(pAny("Contents"));
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 

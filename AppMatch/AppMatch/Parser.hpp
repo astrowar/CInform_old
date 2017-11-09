@@ -453,7 +453,7 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 
 	string get_repr(NSTerm::MTermSet lst);
 	NSTerm::HPred verb_IS_NOT();
-	NSTerm::HPred mk_HPredLiteral(string str);
+	NSTerm::HPred pLiteral(string str);
 
 
 	NSTerm::HPred verb_IS();

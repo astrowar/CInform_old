@@ -470,47 +470,47 @@ using namespace  NSMatch;
 
 		}
 
-		HPred NSTerm::mkHPredAtom(std::string _named, HTerm atom) 
+		HPred NSTerm::pAtom(std::string _named, HTerm atom) 
 		{
 			return std::make_shared<CPredAtom>(std::move(_named), std::move(atom));
 		};
 
-		HPred NSTerm::mkHPredList(std::string _named, std::initializer_list<HPred> plist) {
+		HPred NSTerm::pList(std::string _named, std::initializer_list<HPred> plist) {
 			return std::make_shared<CPredList>(std::move(_named), std::move((plist)));
 		};
 
-		HPred NSTerm::mkHPredAny(std::string _named) { return std::make_shared<CPredAny>(_named); };
+		HPred NSTerm::pAny(std::string _named) { return std::make_shared<CPredAny>(_named); };
 
-		HPred NSTerm::mkHPredWord(std::string _named) { return std::make_shared<CPredWord>(_named); };
+		HPred NSTerm::pWord(std::string _named) { return std::make_shared<CPredWord>(_named); };
 
-		HPred NSTerm::mkHPredBooleanAnd(const std::string &_named, const HPred &c_pred,
+		HPred NSTerm::pAnd(const std::string &_named, const HPred &c_pred,
 			const HPred &c_pred1) {
 			return std::make_shared<CPredBooleanAnd>(_named, c_pred, c_pred1);
 		};
 
-		HPred NSTerm::mkHPredBooleanOr(const std::string &_named, const HPred &c_pred,
+		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred,
 			const HPred &c_pred1) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1);
 		};
 
-		HPred NSTerm::mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2) {
+		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2);
 		};
 
-		HPred NSTerm::mkHPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
+		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
 			const HPred &c_pred3) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3);
 		};
 
-		HPred mk_HPredLiteral(std::string str);
-		HPred NSTerm::mkHPredPreposition(const std::string &_named ) 
+		HPred pdLiteral(std::string str);
+		HPred NSTerm::pPreposition(const std::string &_named ) 
 		{
 			std::list<std::string> vlist = std::list<std::string>({ "above", "across", "after", "against", "along", "among", "around","at", "before", "behind", "below", "beneath", "beside", "between", "things", "by", "down", "for", "from", "originates", "in", "inside", "into", "near", "off", "on", "onto", "opposite", "out", "outside", "over", "past", "round", "through", "throughout", "to", "towards", "under", "underneath", "up" ,"until" });
 			std::list<HPred> plist;
 			for (auto r : vlist)
 			{   
 			
-				plist.push_back(mk_HPredLiteral(r));
+				plist.push_back(pdLiteral(r));
 			}
 			auto r = std::make_shared<CPredBooleanOr>(_named,  plist);		 
 			return r;
@@ -642,7 +642,7 @@ using namespace  NSMatch;
 		MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPred *> predicates_ptr);
 		void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func);
 
-		MatchResult  NSMatch::CMatch(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) {
+		MatchResult  NSMatch::CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) {
 			int npred = predicates.size();
 			int a = lst.size();
 
@@ -695,7 +695,7 @@ using namespace  NSMatch;
 			return mmResultMatch;
 		}
 
-		MatchResult NSMatch::CMatch(HTerm term, const  std::vector<HPred>& predicates) {
+		MatchResult NSMatch::CMatch__(HTerm term, const  std::vector<HPred>& predicates) {
 			if (predicates.size() == 1) {
 				if (predicates.front()->match(term) == Equals) {
 					return makeMatch(predicates.front()->named, term);
@@ -709,6 +709,15 @@ using namespace  NSMatch;
 				return CMatch(v, predicates); // trata como uma lista
 			}
 			return MatchResult();;
+		}
+
+		MatchResult  NSMatch::CMatch(HTerm term, const CPredSequence  & predicates)		
+		{
+			return CMatch__(term , predicates.data);
+		}
+		MatchResult  NSMatch::CMatch(std::vector<HTerm>&    term, const CPredSequence   &predicates)
+		{
+			return CMatch__(term, predicates.data);
 		}
 
 

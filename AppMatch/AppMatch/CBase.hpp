@@ -117,6 +117,8 @@ namespace NSTerm
 	CNumber* asCNumber(CTerm* c);
 	CString* asCString(CTerm* c);
 
+
+ 
 }
 
 #endif

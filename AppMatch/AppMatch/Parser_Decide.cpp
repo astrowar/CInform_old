@@ -13,11 +13,11 @@ using namespace NSTerm::NSMatch;
 HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
 {
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_What_Which());
-		predList.push_back(mkHPredAny("kindReturn"));  // which (Person) is (the targert) -> Enforce (Return Value) as Person
-		predList.push_back(verb_IS());
-		predList.push_back(mkHPredAny("RemainderQuery"));
+		CPredSequence predList;
+		<<(mk_What_Which());
+		<<(pAny("kindReturn"));  // which (Person) is (the targert) -> Enforce (Return Value) as Person
+		<<(verb_IS());
+		<<(pAny("RemainderQuery"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -42,11 +42,11 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 HBlockMatchIs NSParser::ParseDecide::parser_What_Which_Verb_Assertion(CParser * p, HTerm term)
 {
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_What_Which());
-		predList.push_back(mkHPredAny("kindReturn"));  // which (Person) is (the targert) -> Enforce (Return Value) as Person
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("RemainderQuery"));
+		CPredSequence predList;
+		<<(mk_What_Which());
+		<<(pAny("kindReturn"));  // which (Person) is (the targert) -> Enforce (Return Value) as Person
+		<<(p->verbList);
+		<<(pAny("RemainderQuery"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -79,11 +79,11 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("if"));
-		predList.push_back(mkHPredAny("AValue"));
-		predList.push_back(p->verbList);
-		predList.push_back(mkHPredAny("BValue"));
+		CPredSequence predList;
+		<<(pLiteral("if"));
+		<<(pAny("AValue"));
+		<<(p->verbList);
+		<<(pAny("BValue"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -101,11 +101,11 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 	}
 
 	{
-		std::vector<HPred> predList;
-		predList.push_back(mk_HPredLiteral("if"));
-		predList.push_back(mkHPredAny("AValue"));
-		predList.push_back(verb_IS());
-		predList.push_back(mkHPredAny("BValue"));
+		CPredSequence predList;
+		<<(pLiteral("if"));
+		<<(pAny("AValue"));
+		<<(verb_IS());
+		<<(pAny("BValue"));
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -120,9 +120,9 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 		}
 	}
     {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("if"));
-        predList.push_back(mkHPredAny("AValue"));
+        CPredSequence predList;
+        <<(pLiteral("if"));
+        <<(pAny("AValue"));
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -149,14 +149,14 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 	if (inner == nullptr)
 	{
 		{
-			static std::vector<HPred> predList = {};
+			static CPredSequence predList = {};
 			if (predList.empty())
 			{
-				predList.push_back(mk_HPredLiteral("to"));
-				predList.push_back(mk_HPredLiteral("decide"));
-				predList.push_back(mkHPredAny("Match"));
-				predList.push_back(mk_HPredLiteral(":"));
-				predList.push_back(mkHPredAny("RemainBody"));
+				<<(pLiteral("to"));
+				<<(pLiteral("decide"));
+				<<(pAny("Match"));
+				<<(pLiteral(":"));
+				<<(pAny("RemainBody"));
 			}
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
@@ -198,13 +198,13 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 		//Com bloco inner 
 		{
 
-			static std::vector<HPred> predList = {};
+			static CPredSequence predList = {};
 			if (predList.empty())
 			{
-				predList.push_back(mk_HPredLiteral("to"));
-				predList.push_back(mk_HPredLiteral("decide"));
-				predList.push_back(mkHPredAny("Match"));
-				predList.push_back(mk_HPredLiteral(":"));
+				<<(pLiteral("to"));
+				<<(pLiteral("decide"));
+				<<(pAny("Match"));
+				<<(pLiteral(":"));
 
 			}
 			MatchResult res = CMatch(term, predList);
@@ -242,15 +242,15 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 
 		{
 
-			std::vector<HPred> predList = {};
+			CPredSequence predList = {};
 			if (predList.empty())
 			{
-				predList.push_back(mk_HPredLiteral("to"));
-				predList.push_back(mkHPredWord("Verb"));
-				predList.push_back(mkHPredAny("Match_arg1"));
-				predList.push_back(mkHPredPreposition("pred"));
-				predList.push_back(mkHPredAny("Match_arg2"));
-				predList.push_back(mk_HPredLiteral(":"));
+				<<(pLiteral("to"));
+				<<(pWord("Verb"));
+				<<(pAny("Match_arg1"));
+				<<(pPreposition("pred"));
+				<<(pAny("Match_arg2"));
+				<<(pLiteral(":"));
 
 			}
 			MatchResult res = CMatch(term, predList);
@@ -297,12 +297,12 @@ HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<H
 	if (inner == nullptr)
 	{
 		{
-			static std::vector<HPred> predList = {};
+			static CPredSequence predList = {};
 			if (predList.empty())
 			{
-				predList.push_back(mk_HPredLiteral("decide"));
-				predList.push_back(mk_HPredLiteral("on"));
-				predList.push_back(mkHPredAny("ExpressionBody"));
+				<<(pLiteral("decide"));
+				<<(pLiteral("on"));
+				<<(pAny("ExpressionBody"));
 			}
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) 
@@ -324,15 +324,15 @@ HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector
 {
 
     {
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			auto c1 = mkHPredList("def_A", { mk_HPredLiteral("definition"), mk_HPredLiteral(":") });
-			auto c2 = mk_HPredLiteral("definition:");
-			predList.push_back(mkHPredBooleanOr("kindpart", c1, c2));
-			predList.push_back(mkHPredAny("Match"));
-			predList.push_back(mk_HPredLiteral("if"));
-			predList.push_back(mkHPredAny("LogicalBody"));
+			auto c1 = pList("def_A", { pLiteral("definition"), pLiteral(":") });
+			auto c2 = pLiteral("definition:");
+			<<(pOr("kindpart", c1, c2));
+			<<(pAny("Match"));
+			<<(pLiteral("if"));
+			<<(pAny("LogicalBody"));
 		}
 
         MatchResult res = CMatch(term, predList);
@@ -365,20 +365,20 @@ HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector
 HBlock NSParser::ParseDecide::parse_toDecide_Entry(CParser * p, std::vector<HTerm>&  term) 
 {
     {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("to"));
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral(":"));
+        CPredSequence predList;
+        <<(pLiteral("to"));
+        <<(pLiteral("decide"));
+        <<(pLiteral(":"));
         return nullptr;
     }
 }
 
 HBlock NSParser::ParseDecide::parse_toDecide_Ret(CParser * p, std::vector<HTerm>&  term) {
     {
-        std::vector<HPred> predList;
-        predList.push_back(mk_HPredLiteral("decide"));
-        predList.push_back(mk_HPredLiteral("on"));
-        predList.push_back(mkHPredAny("Subst"));
+        CPredSequence predList;
+        <<(pLiteral("decide"));
+        <<(pLiteral("on"));
+        <<(pAny("Subst"));
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = Expression::parser_expression(p,res.matchs["Subst"]);

@@ -32,11 +32,11 @@ HBlockSelector   NSParser::ParseSelector::parser_List_selector(CParser * p, std:
 {
 	{
 		// is a kind definition ??
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("all"));
-			predList.push_back(mkHPredAny("List"));
+			<<(pLiteral("all"));
+			<<(pAny("List"));
 		}
 		MatchResult res = CMatch(term, predList);
 
@@ -50,11 +50,11 @@ HBlockSelector   NSParser::ParseSelector::parser_List_selector(CParser * p, std:
 
 	{
 		// is a kind definition ??
-		static std::vector<HPred> predList = {};
+		static CPredSequence predList = {};
 		if (predList.empty())
 		{
-			predList.push_back(mk_HPredLiteral("any"));
-			predList.push_back(mkHPredAny("List"));
+			<<(pLiteral("any"));
+			<<(pAny("List"));
 		}
 		MatchResult res = CMatch(term, predList);
 
