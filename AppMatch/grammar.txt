@@ -227,3 +227,50 @@ Action Kinds
 	[3] Before aggressive behaviour or inquisitive behaviour: ...
 	[4] Before aggressive behaviour or jumping: ...
 	
+
+Extensao de linguagem
+  Definir o ponto de vista (narrative view point) : primeira pessoa, segunda ou terceira , singular ou plural 
+  E o tempo verbal.
+  os brackets servem para definir a possivel consordancia verbal da frase.
+      say "[The actor] [put] [the noun] on [the second noun]."
+          You put the revolver on the table.
+	        General Lee puts the revolver on the table.
+  muitas respostas automaicas sao baseados nesse sistema de tempo e pessoa
+
+  o artigo quando esta no bracket tambem concorda com o noum
+    [the noum] -> a chave
+    [an noum] -> uma chave
+    [The noum]  -> O Duque
+    [algum noum] -> algumas chaves
+    Para que isso funcione eh preciso fazer o interpreter ter acesso ao artigo/genero/numero do item em questão.
+    tambem eh equivalente [an noum]  == [an] [noum]
+
+  Adicionar o pronome para que seja convertido ao tempo atual e possa propagar-se no verbo a ser escrito  
+        "[We] [carry] the Queen's warrant."
+        "The birds drop pebbles on [us]. Right on [our] heads!"
+        "[Ours] [are] the burdens of office, which [we] take on [ourselves]."
+
+  Tambem precisa fazer o verbo concordar com o sujeito da frase :
+      say "[regarding the noun][They] [have] no clear outline in this misty netherworld."
+
+  A medida que a frase vai sendo processada ele concorda com o sujeito em questao
+    "[We] [have] a look at [the noun], but [they] [are] just too big."
+    "[Eu] [olhei] para [o sujeito], mas [ele] [é]  muito grande.
+
+    pode ser reescrito no inform como :
+       Eu olhei para a arvore, mas ela era muito grande
+       Voce olha para a arvore, mas ela é muito grande
+       Nos olhamos para nós mesmos, mas nós somos muito grande
+
+    pode-se ignorar o sujeito, basta nao adicionar nos []
+	  "[We] [take] [the noun]. It [rain] harder."
+	  "[We] [take] [the noun]. [It] [rain] harder."       
+
+
+    Observe que o adjetivo concorda com o sujeito em portugues , mas não em ingles
+    "mas [noum] [é]  muito grande."
+
+  
+
+
+  
