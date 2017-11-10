@@ -22,12 +22,7 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		// Advancing is an action applying to nothing
 
 		//std::cout << term->repr() << std::endl;
-		CPredSequence predList; 
-		<<(undefinedArticle());
-		<<(pLiteral("action"));
-		<<(pLiteral("applying"));
-		<<(pLiteral("to"));
-		<<(pAny("ApplyRemainder"));
+		CPredSequence predList = undefinedArticle()		<<pLiteral("action")	<<pLiteral("applying") 		<<pLiteral("to") 		<<pAny("ApplyRemainder");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -43,9 +38,8 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		// and action applying to [one visible thing and requiring light]
 
 		//std::cout << term->repr() << std::endl;
-		CPredSequence predList;
-		<<(undefinedArticle());
-		<<(pLiteral("action"));
+		CPredSequence predList = undefinedArticle()	<<pLiteral("action");
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
  
@@ -180,11 +174,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 HBlock NSParser::ParseAssertion::parse_AssertionIsLocalValue(CParser * p, std::vector<HTerm>& term)
 {
 	// is a default ??
-	CPredSequence predList;
-	<<(pLiteral("let")); 
-	<<(pAny("VarName"));
-	<<(pLiteral("be"));
-	<<(pAny("VarValue"));
+	CPredSequence predList =pLiteral("let")<< pAny("VarName")<< pLiteral("be")<< pAny("VarValue");
 
 	MatchResult res = CMatch(term, predList);
 
@@ -211,16 +201,14 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsVariable(CParser * p, std::vec
 
     {
         // is a kind definition ??
-        CPredSequence predList;
-        <<(pAny("VariableNoum"));
+		auto L_a_an_kind = pList("kindpart", { verb_IS(), undefinedArticle() });
+		auto L_are_kinds = pList("kindpart", { verb_IS() });
 
-        auto L_a_an_kind = pList("kindpart", {verb_IS(), undefinedArticle()});
-        auto L_are_kinds = pList("kindpart", {verb_IS()});
-
-        <<(pOr("kindpart", L_a_an_kind, L_are_kinds));
-
-        <<(pAny("KindBase"));
-        <<(pList("variable", {pLiteral("that"), pLiteral("varies")}));
+		CPredSequence predList = 
+			   pAny("VariableNoum")
+			<< (pOr("kindpart", L_a_an_kind, L_are_kinds))
+			<< pAny("KindBase")
+			<< (pList("variable", { pLiteral("that"), pLiteral("varies") }));
 
         MatchResult res = CMatch(term, predList);
 
@@ -238,15 +226,10 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsVariable(CParser * p, std::vec
 HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term)
 {
 	{
-		 
-		CPredSequence predList;
 		auto a_1 = pList("kindDef", { undefinedArticle(), pLiteral("kind"), pLiteral("of") });;
 		auto a_2 = pList("kindDef", { pLiteral("kind"), pLiteral("of") });
 		auto a_3 = pList("kindDef", { pLiteral("kinds"), pLiteral("of") });
-
-		<<(pOr("kindBase_l", a_1, a_2, a_3));
-
-		<<(pAny("kindBase"));
+		CPredSequence predList = (pOr("kindBase_l", a_1, a_2, a_3))	<<pAny("kindBase");
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{	 
@@ -256,9 +239,7 @@ HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term
 	}
 
 	{
-		CPredSequence predList;
-		<<(pList("kindDef", { undefinedArticle(), pLiteral("kind") }));
-
+		CPredSequence predList = (pList("kindDef", { undefinedArticle(), pLiteral("kind") }));
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			logError("undefined Kind");
@@ -278,11 +259,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 {
   
 	{
-		CPredSequence predList;
-		<<(pLiteral("phrase"));		 
-		<<(pAny("kindBase"));
-		<<(pLiteral("->"));
-		<<(pAny("kindDst"));
+		CPredSequence predList = pLiteral("phrase")	<<pAny("kindBase")<<pLiteral("->")	<<pAny("kindDst");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -302,12 +279,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 
 
 	{
-		CPredSequence predList;
-		<<(pLiteral("relation"));
-		<<(pLiteral("of"));
-		<<(pAny("kindBase"));
-		<<(pLiteral("to"));
-		<<(pAny("kindDst"));
+		CPredSequence predList = pLiteral("relation")		<<pLiteral("of")		<<pAny("kindBase")		<<pLiteral("to")		<<pAny("kindDst");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -329,10 +301,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 
 
 	{
-		CPredSequence predList;
-		<<(pLiteral("list"));
-		<<(pLiteral("of"));
-		<<(pAny("kindBase"));
+		CPredSequence predList = pLiteral("list") <<pLiteral("of") 		<<pAny("kindBase");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -354,10 +323,7 @@ HBlockKind   NSParser::Expression::parse_CompositionOf(CParser * p, HTerm  term)
 HBlock NSParser::ParseAssertion::parse_AssertionIsCompositionOf(CParser * p, std::vector<HTerm>& term) {
 	{
 		// is a default ??
-		CPredSequence predList;
-		<<(pAny("Noum"));
-		<<(verb_IS());
-		<<(pAny("CompDef"));
+		CPredSequence predList = pAny("Noum") 	<<verb_IS()	<<pAny("CompDef");
 
 		MatchResult res = CMatch(term, predList);
 
@@ -377,10 +343,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsCompositionOf(CParser * p, std
 HBlock NSParser::ParseAssertion::parse_AssertionIsKindOf(CParser * p, std::vector<HTerm>& term) {
 	{
 		// is a default ??
-		CPredSequence predList;
-		<<(pAny("Noum"));
-		<<(verb_IS()); 
-		<<(pAny("KindDef"));
+		CPredSequence predList = pAny("Noum") 	<<verb_IS() 		<<pAny("KindDef");
 
 		MatchResult res = CMatch(term, predList);
 
@@ -408,15 +371,11 @@ HBlock NSParser::ParseAssertion::parse_AssertionValuesOf(CParser * p, std::vecto
 
     // $1.99 specifies a price.
     {
-        CPredSequence predList;
-        <<(pAny("valueName"));
-
+        
         auto L_single = pList("spc", {pLiteral("specifies"), undefinedArticle()});
         auto L_plural = pList("spc", {pLiteral("specifies")});
 
-        <<(pOr("spc_part", L_single, L_plural));
-
-        <<(pAny("valueKind"));
+		CPredSequence predList = pAny("valueName")     <<(pOr("spc_part", L_single, L_plural))     <<pAny("valueKind");
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
@@ -437,11 +396,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionDefaultAssign(CParser *p, std::v
 
     {
         // is a default ??
-        CPredSequence predList;
-        <<(pAny("Noum"));
-        <<(verb_IS());
-        <<(pLiteral("usually"));
-        <<(pAny("Value"));
+        CPredSequence predList = pAny("Noum")       <<verb_IS()        <<pLiteral("usually")        <<pAny("Value");
 
         MatchResult res = CMatch(term, predList);
 
@@ -456,11 +411,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionDefaultAssign(CParser *p, std::v
 
     {
         // is a always ??
-        CPredSequence predList;
-        <<(pAny("Noum"));
-        <<(verb_IS());
-        <<(pLiteral("always"));
-        <<(pAny("Value"));
+        CPredSequence predList = pAny("Noum") <<verb_IS()       <<pLiteral("always")        <<pAny("Value");
 
         MatchResult res = CMatch(term, predList);
 
@@ -475,11 +426,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionDefaultAssign(CParser *p, std::v
 
     {
         // is never  ??
-        CPredSequence predList;
-        <<(pAny("Noum"));
-        <<(verb_IS());
-        <<(pLiteral("never"));
-        <<(pAny("Value"));
+        CPredSequence predList = pAny("Noum")       <<verb_IS()    <<pLiteral("never")       <<pAny("Value");
 
         MatchResult res = CMatch(term, predList);
 
@@ -501,13 +448,8 @@ HBlock NSParser::ParseAssertion::parse_AssertionDefaultAssign(CParser *p, std::v
 HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser * p, std::vector<HTerm>& term) {
     {
         // is a kind definition ??
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pAny("Noum"));
-			<<(verb_IS_NOT());
-			<<(pAny("Value"));
-		}
+		  CPredSequence predList = 	 pAny("Noum")	<<verb_IS_NOT()			<<pAny("Value");
+		
 
         MatchResult res = CMatch(term, predList);
 
@@ -522,13 +464,8 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
     {
         // is a kind definition ??
          
-		static CPredSequence predList ={};
-		if (predList.empty())
-		{
-			<<(pAny("Noum"));
-			<<(verb_IS());
-			<<(pAny("Value"));
-		}
+		  CPredSequence predList  = pAny("Noum")	<<verb_IS()		<<pAny("Value");
+	 
 
         MatchResult res = CMatch(term, predList);
 

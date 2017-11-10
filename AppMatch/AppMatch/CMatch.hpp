@@ -215,21 +215,10 @@ namespace NSTerm
 
 		using HTermSequence = std::shared_ptr<CPredSequence>;
 
-		CPredSequence operator<<(HPred a, HPred b)
-		{
-			return CPredSequence({ a,b });
-		}
-		CPredSequence operator<<(CPredSequence& a, HPred b)
-		{
-			a.data.push_back(b);
-			return std::move(a);
-		}
-
-		CPredSequence operator<<(CPredSequence& a, CPredSequence& b)
-		{
-			a.data.insert(a.data.end(), b.data.begin(), b.data.end());
-			return std::move(a);
-		}
+		CPredSequence operator<<(HPred a, HPred b);		 
+		CPredSequence operator<<(CPredSequence& a, HPred b);
+		CPredSequence operator<<(CPredSequence& a, CPredSequence& b);
+		 
 
 		 
 

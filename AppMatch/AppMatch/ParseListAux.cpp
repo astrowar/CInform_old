@@ -16,10 +16,7 @@ using namespace NSTerm::NSMatch;
 
 HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HTerm term, HPred sep) {
 
-    CPredSequence predList;
-    <<(pAny("N1"));
-    <<(sep);
-    <<(pAny("N2"));
+    CPredSequence predList = pAny("N1")  <<sep   <<pAny("N2");
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
         HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
@@ -31,10 +28,7 @@ HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HT
 }
 
 HBlockList  NSParser::ParseAssertion::parseAssertionFirstTerm_COMMA_Supl( CParser * p, HTerm term, HPred sep, HBlockList cList) {
-    CPredSequence predList;
-    <<(pAny("N1"));
-    <<(pOr("sep", pLiteral(","), sep));
-    <<(pAny("N2"));
+    CPredSequence predList =pAny("N1")   <<(pOr("sep", pLiteral(","), sep))   <<pAny("N2");
 
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
@@ -92,10 +86,7 @@ std::list<HBlock>  concat_terms(CBlocking::HBlock c1, CBlocking::HBlock c2)
 HBlockList  NSParser::ParseAssertion::parseAssertionList_COMMA_neutral(CParser * p, HTerm term ) 
 {
 	// obtem uma lista que esta separada apenas por virgula
-	CPredSequence predList;
-	<<(pAny("N1"));
-	<<(pLiteral(","));
-	<<(pAny("N2"));
+	CPredSequence predList = pAny("N1")<<pLiteral(",")<<pAny("N2");
 
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) {
@@ -123,10 +114,7 @@ HBlockList NSParser::ParseList::parseAssertionFirstTerm_COMMA_OR(CParser * p, HT
 HBlock NSParser::ParseList::parse_List_Neutral(CParser * p, std::vector<HTerm>& term)
 {
 	// obtem uma lista que esta separada apenas por virgula
-	CPredSequence predList;
-	<<(pAny("N1"));
-	<<(pLiteral(","));
-	<<(pAny("N2"));
+	CPredSequence predList = pAny("N1") <<pLiteral(",")	<<pAny("N2");
 
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) 
@@ -160,10 +148,8 @@ HBlock NSParser::ParseList::parse_List_AND(CParser * p, std::vector<HTerm>& term
 {
     {
         auto sep = pLiteral("and");
-        CPredSequence predList;
-        <<(pAny("N1"));
-        <<(sep);
-        <<(pAny("N2"));
+        CPredSequence predList = pAny("N1")      <<sep       <<pAny("N2");
+
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{ 
@@ -191,10 +177,8 @@ HBlock NSParser::ParseList::parse_List_AND(CParser * p, std::vector<HTerm>& term
 HBlock NSParser::ParseList::parse_List_OR(CParser * p, std::vector<HTerm>& term) {
 	{
 		auto sep = pLiteral("or");
-		CPredSequence predList;
-		<<(pAny("N1"));
-		<<(sep);
-		<<(pAny("N2"));
+		CPredSequence predList = pAny("N1")	<<sep	<<pAny("N2");
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{

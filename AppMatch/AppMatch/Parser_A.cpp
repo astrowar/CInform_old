@@ -38,9 +38,7 @@ HBlock NSParser::Statement::parserBoolean(CParser * p, HTerm term) {
 HBlock NSParser::Statement::parserBoolean(CParser * p, std::vector<HTerm>& term)
 {
     {
-        CPredSequence predList;
-        <<(pLiteral("not"));
-        <<(pAny("N2"));
+        CPredSequence predList = pLiteral("not")     <<pAny("N2");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -50,10 +48,7 @@ HBlock NSParser::Statement::parserBoolean(CParser * p, std::vector<HTerm>& term)
     }
 
     {
-        CPredSequence predList;
-        <<(pAny("N1"));
-        <<(pLiteral("and"));
-        <<(pAny("N2"));
+        CPredSequence predList = pAny("N1")      <<pLiteral("and")       <<pAny("N2");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -64,10 +59,7 @@ HBlock NSParser::Statement::parserBoolean(CParser * p, std::vector<HTerm>& term)
     }
 
     {
-        CPredSequence predList;
-        <<(pAny("N1"));
-        <<(pLiteral("or"));
-        <<(pAny("N2"));
+        CPredSequence predList = pAny("N1")     <<pLiteral("or")      <<pAny("N2");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -82,12 +74,9 @@ HBlock NSParser::Statement::parserBoolean(CParser * p, std::vector<HTerm>& term)
 
 
 NSParser::ParserResult NSParser::ParseAssertion::parser_AssertionKind(CParser * p, std::vector<HTerm>& lst) {
-    CPredSequence predList;
-    <<(pAny("Object"));
-    <<(mk_HPredLiteral_OR("Verb", {"is", "are"}));
-    //<<(pAtom("Verb", make_string("is")));
-    <<(pList("kindpart", {pLiteral("a"), pLiteral("kind"), pLiteral("of")}));
-    <<(pAny("Kind"));
+    CPredSequence predList = pAny("Object")  << mk_HPredLiteral_OR("Verb", {"is", "are"})    
+                             <<pList("kindpart", {pLiteral("a"), pLiteral("kind"), pLiteral("of")})
+                             <<pAny("Kind");
 
     MatchResult res = CMatch(lst, predList);
     if (res.result != Equals) {
@@ -104,8 +93,7 @@ HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CPar
 {
 	{
 		// and action applying to [one visible thing and requiring light]
-		CPredSequence predList;		
-		<<(pLiteral("nothing"));		
+		CPredSequence predList = pLiteral("nothing");		
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			//HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
@@ -115,10 +103,8 @@ HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CPar
 	}
 	{
 		// and action applying to [one visible thing and requiring light]
-		CPredSequence predList;
-		<<(pAny("kind1"));
-		<<(pLiteral("and"));
-		<<(pAny("kind2"));
+		CPredSequence predList = pAny("kind1")<<pLiteral("and")	<<pAny("kind2");
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
@@ -129,9 +115,8 @@ HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CPar
 
 	{
 		// and action applying to [one visible thing and requiring light]
-		CPredSequence predList;
-		<<(pLiteral("two"));
-		<<(pAny("kind1"));
+		CPredSequence predList = pLiteral("two")	<<pAny("kind1");
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlock n1 = Expression::parser_kind(p, res.matchs["kind1"]);
@@ -142,9 +127,8 @@ HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CPar
 
     {
         // and action applying to [one visible thing and requiring light]
-        CPredSequence predList;
-        //<<(pLiteral("one"));
-        <<(pAny("kind1"));
+        CPredSequence predList = pAny("kind1");
+
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock n1 = Expression::parser_kind(p,res.matchs["kind1"]);

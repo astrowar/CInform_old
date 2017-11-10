@@ -502,7 +502,7 @@ using namespace  NSMatch;
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3);
 		};
 
-		HPred pdLiteral(std::string str);
+		HPred pLiteral(std::string str);
 		HPred NSTerm::pPreposition(const std::string &_named ) 
 		{
 			std::list<std::string> vlist = std::list<std::string>({ "above", "across", "after", "against", "along", "among", "around","at", "before", "behind", "below", "beneath", "beside", "between", "things", "by", "down", "for", "from", "originates", "in", "inside", "into", "near", "off", "on", "onto", "opposite", "out", "outside", "over", "past", "round", "through", "throughout", "to", "towards", "under", "underneath", "up" ,"until" });
@@ -510,13 +510,17 @@ using namespace  NSMatch;
 			for (auto r : vlist)
 			{   
 			
-				plist.push_back(pdLiteral(r));
+				plist.push_back(pLiteral(r));
 			}
 			auto r = std::make_shared<CPredBooleanOr>(_named,  plist);		 
 			return r;
 		};
 
-		 
+
+ 
+
+
+
 
 		//======================================
 
@@ -755,3 +759,26 @@ using namespace  NSMatch;
 			return nullptr;
 		};
 
+
+		namespace NSTerm
+		{
+
+
+			//======================================
+
+			CPredSequence operator<<(HPred a, HPred b)
+			{
+				return CPredSequence({ a,b });
+			}
+			CPredSequence operator<<(CPredSequence& a, HPred b)
+			{
+				a.data.push_back(b);
+				return std::move(a);
+			}
+
+			CPredSequence operator<<(CPredSequence& a, CPredSequence& b)
+			{
+				a.data.insert(a.data.end(), b.data.begin(), b.data.end());
+				return std::move(a);
+			}
+		}

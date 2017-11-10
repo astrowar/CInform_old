@@ -15,15 +15,8 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 {
 	
 	{
-		CPredSequence predList_b = {};
-		if (predList_b.empty())
-		{
-
-			predList_b.push_back(pWord("Action"));
-			predList_b.push_back(pAny("noum1"));
-			predList_b.push_back(pPreposition("pred"));
-			predList_b.push_back(pAny("noum2"));
-		}
+		CPredSequence predList_b =  pWord("Action") << pAny("noum1") << pPreposition("pred") <<pAny("noum2");
+		 
 
 		MatchResult res = CMatch(term, predList_b);
 		if (res.result == Equals)
@@ -42,14 +35,9 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 
 	 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			 
-			<<(pAny("ActionMatch"));
-			<<(pAny("Argument1"));
+		  CPredSequence predList = pAny("ActionMatch")	<<pAny("Argument1");
 		 
-		}
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{		 
@@ -62,13 +50,8 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			 
-			<<(pAny("ActionMatch"));
+		static CPredSequence predList = pAny("ActionMatch");
 		 
-		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -97,13 +80,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 	if (inner != nullptr)
 	{
 		{
-			static CPredSequence predList = {};
-			if (predList.empty())
-			{
-				<<(pLiteral("before"));
-				<<(pAny("ActionMatch"));
-				<<(pLiteral(":"));
-			}
+			  CPredSequence predList =  pLiteral("before")	<<pAny("ActionMatch")	<<pLiteral(":");
+			 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -122,13 +100,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 
 
 		{
-			static CPredSequence predList = {};
-			if (predList.empty())
-			{
-				<<(pLiteral("after"));
-				<<(pAny("ActionMatch"));
-				<<(pLiteral(":"));
-			}
+			  CPredSequence predList =  pLiteral("after")	<<pAny("ActionMatch")	<<pLiteral(":");
+			 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -147,13 +120,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 
 
 		{
-			static CPredSequence predList = {};
-			if (predList.empty())
-			{
-				<<(pLiteral("check"));
-				<<(pAny("ActionMatch"));
-				<<(pLiteral(":"));
-			}
+			  CPredSequence predList =  pLiteral("check")	<<pAny("ActionMatch")	<<pLiteral(":");
+		 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -172,13 +140,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 
 
 		{
-			static CPredSequence predList = {};
-			if (predList.empty())
-			{
-				<<(pLiteral("report"));
-				<<(pAny("ActionMatch"));
-				<<(pLiteral(":"));
-			}
+			  CPredSequence predList = pLiteral("report")	<<pAny("ActionMatch")	<<pLiteral(":");
+		 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{
@@ -196,13 +159,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 		}
 
 		{
-			static CPredSequence predList = {};
-			if (predList.empty())
-			{
-				<<(pLiteral("instead"));
-				<<(pAny("ActionMatch"));
-				<<(pLiteral(":"));
-			}
+			  CPredSequence predList = pLiteral("instead")	<<pAny("ActionMatch")	<<pLiteral(":");
+			 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals)
 			{

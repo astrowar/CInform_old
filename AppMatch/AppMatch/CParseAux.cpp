@@ -164,12 +164,8 @@ HPred mk_What_Which() {
 std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
     {
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pAny("Verb"));
-			<<(pAny("Aux"));
-		}
+		  CPredSequence predList = pAny("Verb") 	<<pAny("Aux");
+		 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
@@ -185,8 +181,8 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
     }
 
     {
-        CPredSequence predList;
-        <<(pAny("Verb"));
+        CPredSequence predList =pAny("Verb");
+
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
             HBlock clist = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());

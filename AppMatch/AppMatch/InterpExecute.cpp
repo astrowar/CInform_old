@@ -787,13 +787,6 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 
 
-
-
-
-
-
-
-
 	{
 		if (HBlockAssertion_isDirectAssign nDirect = asHBlockAssertion_isDirectAssign(c_block))
 		{

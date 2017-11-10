@@ -19,15 +19,8 @@ using namespace NSTerm::NSMatch;
 HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   term)
 {
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-
-			<<(pLiteral("stop"));
-			<<(pLiteral("the"));
-			<<(pLiteral("action"));
-			<<(pLiteral("with"));
-			<<(pAny("BValue"));
-		}
+		 CPredSequence predList  = pLiteral("stop")	<<pLiteral("the")	<<pLiteral("action")	<<pLiteral("with")			<<pAny("BValue");
+		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -39,13 +32,8 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 	}
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) 
-		{
-			<<(pLiteral("stop"));
-			<<(pLiteral("the"));
-			<<(pLiteral("action"));
-		}
+		CPredSequence predList = pLiteral("stop")<<pLiteral("the")	<<pLiteral("action");
+		 
 	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -55,13 +43,8 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 	}
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pLiteral("continue"));
-			<<(pLiteral("the"));
-			<<(pLiteral("action"));
-		}
+		  CPredSequence predList = pLiteral("continue")	<<pLiteral("the")	<<pLiteral("action");
+	 
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -77,11 +60,7 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 {
     {
-        CPredSequence predList;
-
-        <<(pAny("AValue"));
-        <<(pLiteral("or"));
-        <<(pAny("BValue"));
+        CPredSequence predList = pAny("AValue")      <<pLiteral("or")       <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -98,11 +77,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 	 
 
 	{
-		CPredSequence predList;
-
-		<<(pAny("AValue"));
-		<<(pLiteral("and"));
-		<<(pAny("BValue"));
+		CPredSequence predList = pAny("AValue")	<<pLiteral("and")	<<pAny("BValue");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -120,13 +95,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 
 	{
-		CPredSequence predList;
-
-		<<(pAny("AValue"));
-		<<(verb_IS());
-		<<(pLiteral("not"));
-		<<( p->verbList);
-		<<(pAny("BValue"));
+		CPredSequence predList = pAny("AValue") <<verb_IS()	<<pLiteral("not")<<( p->verbList)	<<pAny("BValue");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -144,12 +113,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 		}
 	}
 	{
-		CPredSequence predList;
-
-		<<(pAny("AValue"));
-		<<(verb_IS());
-		<<(p->verbList);
-		<<(pAny("BValue"));
+		CPredSequence predList = pAny("AValue")	<<verb_IS()	<<p->verbList	<<pAny("BValue");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -170,12 +134,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
    
  {
-        CPredSequence predList;
-
-        <<(pAny("AValue"));
-        <<(pLiteral("not"));
-        <<(p->verbList);
-        <<(pAny("BValue"));
+        CPredSequence predList = pAny("AValue")      <<pLiteral("not")   <<p->verbList     <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -193,11 +152,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
         }
     }
     {
-        CPredSequence predList;
-
-        <<(pAny("AValue"));
-        <<(p->verbList);
-        <<(pAny("BValue"));
+        CPredSequence predList = pAny("AValue")     <<p->verbList     <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -216,12 +171,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 
     {
-        CPredSequence predList;
-
-        <<(pAny("AValue"));        
-        <<(verb_IS());
-		<<(pLiteral("not"));
-        <<(pAny("BValue"));
+        CPredSequence predList = pAny("AValue")    <<verb_IS()	<<pLiteral("not")      <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -240,11 +190,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 
 	   {
-        CPredSequence predList;
-
-        <<(pAny("AValue"));
-        <<(verb_IS());
-        <<(pAny("BValue"));
+        CPredSequence predList = pAny("AValue")      <<verb_IS()       <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -268,14 +214,9 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 HBlock   NSParser::ControlFlux::parser_control_else(CParser *p, std::vector<HTerm>& term,   HGroupLines inner, ErrorInfo *err) {
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) 
-		{
-			<<(mk_HPredLiteral_OR("else", { "else" , "otherwise" }));
-			<<(pLiteral(":"));
-			<<(pAny("body"));
+		  CPredSequence predList =  mk_HPredLiteral_OR("else", { "else" , "otherwise" })<<pLiteral(":")<<pAny("body");
 
-		}
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 
@@ -295,12 +236,9 @@ HBlock   NSParser::ControlFlux::parser_control_else(CParser *p, std::vector<HTer
 	}
 	
 	{
-        static CPredSequence predList = {};
-        if (predList.empty()) {
-			<<(mk_HPredLiteral_OR("else", { "else" , "otherwise" }));
-			<<(pLiteral(":"));
+        CPredSequence predList = mk_HPredLiteral_OR("else", { "else" , "otherwise" })<<pLiteral(":");
  
-        }
+        
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
            
@@ -324,7 +262,7 @@ HBlock   NSParser::ControlFlux::parser_control_end(CParser *p, std::vector<HTerm
 	//{
 	//	static CPredSequence predList = {};
 	//	if (predList.empty()) {
-	//		<<(pLiteral("end"));
+	//		<<pLiteral("end");
 
 	//	}
 	//	MatchResult res = CMatch(term, predList);
@@ -343,13 +281,8 @@ HBlock  NSParser::ControlFlux::parser_control_for_loop(CParser *p, std::vector<H
 {
 	if (inner != nullptr)
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("for"));
-			<<(pLiteral("each"));
-			<<(pAny("Condition"));
-			<<(pLiteral(":"));			 
-		}
+	 CPredSequence predList = pLiteral("for")	<<pLiteral("each")	<<pAny("Condition")	<<pLiteral(":");			 
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -373,13 +306,8 @@ HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>&
 {
 	if(inner == nullptr)
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("if"));
-			<<(pAny("Condition"));
-			<<(pLiteral(":"));
-			<<(pAny("body"));
-		}
+		CPredSequence predList = pLiteral("if")		<<pAny("Condition")		<<pLiteral(":")		<<pAny("body");
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -401,12 +329,8 @@ HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>&
 	}
 	else 
     {
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("if"));
-			<<(pAny("Condition"));
-			<<(pLiteral(":"));
-		}
+		  CPredSequence predList = pLiteral("if")	<<pAny("Condition")	<<pLiteral(":");
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
         {
@@ -427,12 +351,8 @@ HBlock  NSParser::ControlFlux::parser_control_unless(CParser *p, std::vector<HTe
 {
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("unless"));
-			<<(pAny("Condition"));
-			<<(pLiteral(":"));
-		}
+		  CPredSequence predList   = pLiteral("unless")	<<pAny("Condition")	<<pLiteral(":");
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -473,13 +393,8 @@ HBlockControlSelect  NSParser::ControlFlux::parser_control_select(CParser *p, st
 
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("if"));
-			<<(pAny("object"));
-			<<(pLiteral("is"));
-			<<(pLiteral(":"));
-		}
+		  CPredSequence predList = pLiteral("if")	<<pAny("object")<<pLiteral("is")<<pLiteral(":");
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -515,13 +430,8 @@ HBlockControlSelect  NSParser::ControlFlux::parser_control_select(CParser *p, st
 HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
 {
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("--"));
-			<<(pAny("object"));			
-			<<(pLiteral(":"));
-			<<(pAny("body"));
-		}
+		  CPredSequence predList = pLiteral("--")	<<pAny("object")<<pLiteral(":")	<<pAny("body");
+	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -539,13 +449,9 @@ HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CPars
 	}
 
 	{
-		static CPredSequence predList = {};
-		if (predList.empty()) {
-			<<(pLiteral("--"));
-			<<(pAny("object"));
-			<<(pLiteral(":"));
+		  CPredSequence predList = pLiteral("--")	<<pAny("object")		<<pLiteral(":");
 			 
-		}
+		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{

@@ -12,14 +12,9 @@ using namespace NSTerm::NSMatch;
 
 HBlock NSParser::Statement::text_entry(CParser * p, std::vector<HTerm>&  term)
 {
-	{
+	{		 
+	    CPredSequence predList = pLiteral("text")<<pAny("Contents");
 		 
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pLiteral("text"));
-			<<(pAny("Contents"));
-		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{

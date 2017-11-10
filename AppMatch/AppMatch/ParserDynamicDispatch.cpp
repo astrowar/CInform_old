@@ -54,19 +54,9 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 
    // std::cout << "what:  " << get_repr(term) << std::endl;
     {
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-
-			<<(pAny("verb"));
-			//<<(pLiteral("["));
-			<<(pAny("kind1"));
-			//<<(pLiteral("]"));
-			<<(pAny("with_word"));
-			//<<(pLiteral("["));
-			<<(pAny("kind2"));
-			//<<(pLiteral("]"));
-		}
+		  CPredSequence predList = 		pAny("verb")	<<pAny("kind1")	<<pAny("with_word")		<<pAny("kind2");
+			
+		 
 
 
         MatchResult res = CMatch(term, predList);
@@ -79,30 +69,16 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
             HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
             HBlockMatch arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
 
-            CPredSequence replcList;
-            replcList.push_back(pLiteral(res.matchs["verb"]->repr()));
-            replcList.push_back(pAny("noum1"));
-            replcList.push_back(pLiteral(res.matchs["with_word"]->repr()));
-            replcList.push_back(pAny("noum2"));
+            CPredSequence replcList =        pLiteral(res.matchs["verb"]->repr()) <<pAny("noum1") <<   pLiteral(res.matchs["with_word"]->repr()) <<       pAny("noum2");
 
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2, c4}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1, c3, arg2}));
-            return NSParser::DispatchArguments(  replcList, mlist1, mlist2);
+            return NSParser::DispatchArguments(  replcList.data, mlist1, mlist2);
 
         }
     }
     {
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pAny("verb"));
-			//<<(pLiteral("["));
-			<<(pAny("kind1"));
-		//	<<(pLiteral("]"));
-			<<(pLiteral("["));
-			<<(pAny("kind2"));
-			//<<(pLiteral("]"));
-		}
+		  CPredSequence predList = pAny("verb")<< pAny("kind1")	<<pLiteral("[")	<<pAny("kind2") << pLiteral("]"); 
 
 
         MatchResult res = CMatch(term, predList);
@@ -114,28 +90,18 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
             HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
             HBlockMatch arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
 
-            CPredSequence replcList;
-            replcList.push_back(pLiteral(res.matchs["verb"]->repr()));
-            replcList.push_back(pAny("noum1"));
-            
-            replcList.push_back(pAny("noum2"));
+            CPredSequence replcList = pLiteral(res.matchs["verb"]->repr())<<   pAny("noum1") << pAny("noum2");
 
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2, c4}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1,   arg2}));
-            return NSParser::DispatchArguments(replcList, mlist1, mlist2);
+            return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
 
         }
     }
 	{
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pAny("verb"));
-			<<(pAny("aux"));
-		//	<<(pLiteral("["));
-			<<(pAny("kind1"));
-		//	<<(pLiteral("]"));
-		}
+		  CPredSequence predList = pAny("verb") 	<<pAny("aux")<<pAny("kind1");
+	 
+		 
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -148,28 +114,20 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 			//HBlockMatch c2 = std::make_shared<CBlockMatch>(std::make_shared<CBlockNoum>(res.matchs["kind1"]->repr()));
 			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument(p,res.matchs["kind1"]);
 			
-			CPredSequence replcList;
-			replcList.push_back(pLiteral(res.matchs["verb"]->repr()));
-			replcList.push_back(pLiteral(res.matchs["aux"]->repr()));
-			replcList.push_back(pAny("noum1"));
+			CPredSequence replcList =  pLiteral(res.matchs["verb"]->repr()) <<pLiteral(res.matchs["aux"]->repr())<<	pAny("noum1");
+
 			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
 			//return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
 			auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2 }));
 			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c1a, arg1 }));
-			return NSParser::DispatchArguments(replcList, mlist1, mlist2);
+			return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
 		}
 	}
 
 
     {
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			<<(pAny("verb"));
-	//		<<(pLiteral("["));
-			<<(pAny("kind1"));
-	//		<<(pLiteral("]"));
-		}
+		  CPredSequence predList =  pAny("verb")<<pAny("kind1");
+  
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 
 		{
@@ -182,13 +140,11 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>()); //este eh o match estatico .. ie .. aquele usado pelo parser para identificar as chamadas estaticas
 						
 
-            CPredSequence replcList;
-            replcList.push_back(pLiteral(res.matchs["verb"]->repr()));
-            replcList.push_back(pAny("noum1"));
+            CPredSequence replcList =       pLiteral(res.matchs["verb"]->repr()) <<       pAny("noum1");
             //return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1 }));
-            return NSParser::DispatchArguments(replcList, mlist1, mlist2);
+            return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
         }
     }
 
@@ -217,18 +173,8 @@ HBlock NSParser::DynamicDispatch::STMT_understand_generic_redirect(CParser *p, H
 HBlock NSParser::DynamicDispatch::STMT_understand_Action_Assertion_static(CParser *p, std::vector<HTerm>&  term) {
 
     {
-		static CPredSequence predList = {};
-		if (predList.empty())
-		{
-			predList = { pLiteral("understand") , pLiteral(":") ,pAny("What") ,pLiteral("as") ,pAny("Subst") };
-
-		/*	<<(pLiteral("understand"));
-			<<(pLiteral(":"));
-			<<(pAny("What"));
-			<<(pLiteral("as"));
-			<<(pAny("Subst"));*/
-		}
-
+		  CPredSequence  predList = pLiteral("understand") << pLiteral(":") << pAny("What") << pLiteral("as") <<pAny("Subst") ;
+		   
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
 
@@ -248,8 +194,8 @@ HBlock NSParser::DynamicDispatch::STMT_understand_Action_Assertion_static(CParse
                 }
 
 				//Rh um action !!
-				CPredSequence actionList;
-				actionList.push_back(p->actionPredList);
+				CPredSequence actionList = p->actionPredList;
+
 				MatchResult res_action = CMatch(sTerm, actionList);
 				if (res_action.result == Equals) {
 
@@ -379,16 +325,8 @@ HBlockList getNoumListing(std::vector<HTerm>  term)
 HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 {
 	{
-		CPredSequence predList_a = {};
-		if (predList_a.empty())
-		{
-			 
-			predList_a.push_back(pWord("Action"));
-			predList_a.push_back(pAny("noum1"));
-			predList_a.push_back(pPreposition("pred"));
-			predList_a.push_back(pOr("pred_aux", pLiteral("to"), pLiteral("of")));
-			predList_a.push_back(pAny("noum2"));
-		}
+		CPredSequence predList_a =     pWord("Action") << pAny("noum1") <<	 pPreposition("pred") << 	 pOr("pred_aux", pLiteral("to"), pLiteral("of")) <<	 pAny("noum2");
+	 
 
 		MatchResult res = CMatch(term, predList_a);
 		if (res.result == Equals)
@@ -404,16 +342,8 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 	}
 
 	{
-		CPredSequence predList_b = {};
-		if (predList_b.empty())
-		{
-
-			predList_b.push_back(pWord("Action"));
-			predList_b.push_back(pAny("noum1"));
-			predList_b.push_back(pPreposition("pred")); 
-			predList_b.push_back(pAny("noum2"));
-		}
-
+		CPredSequence predList_b =   pWord("Action") <<   pAny("noum1") <<  pPreposition("pred") <<   pAny("noum2");
+		
 		MatchResult res = CMatch(term, predList_b);
 		if (res.result == Equals)
 		{
@@ -430,15 +360,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 
 
 	{
-		CPredSequence predList_a2 = {};
-		if (predList_a2.empty())
-		{
-		 
-			predList_a2.push_back(pWord("Action"));
-			predList_a2.push_back(pPreposition("pred"));
-			predList_a2.push_back(pOr("pred_aux", pLiteral("to"), pLiteral("of")));
-			predList_a2.push_back(pAny("noum1"));
-		}
+		CPredSequence predList_a2 =  pWord("Action")	 << pPreposition("pred")	 << pOr("pred_aux", pLiteral("to"), pLiteral("of"))	 << pAny("noum1");
 
 		MatchResult res = CMatch(term, predList_a2);
 		if (res.result == Equals)
@@ -453,15 +375,8 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 	}
 	 
 	{
-		CPredSequence predList_c = {};
-		if (predList_c.empty())
-		{
-		 
-			predList_c.push_back(pWord("Action"));
-			predList_c.push_back(pAny("noum1"));
-			predList_c.push_back(pPreposition("pred"));	 
-			predList_c.push_back(pAny("noum2"));
-		}
+		CPredSequence predList_c =  pWord("Action")	 << pAny("noum1") << pPreposition("pred") << pAny("noum2");
+	 
 
 		auto s = term->repr();
 		printf("* %s \n",s.c_str());
@@ -480,14 +395,8 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 
 
 	{
-		CPredSequence predList_a1 = {};
-		if (predList_a1.empty())
-		{
+		CPredSequence predList_a1 =  pWord("Action") <<	  pPreposition("pred")<< 	  pAny("noum1");
 
-			predList_a1.push_back(pWord("Action"));
-			predList_a1.push_back(pPreposition("pred"));
-			predList_a1.push_back(pAny("noum1"));
-		}
 
 		MatchResult res = CMatch(term, predList_a1);
 
@@ -503,13 +412,8 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 	}
 
 	{
-		CPredSequence predList_d = {};
-		if (predList_d.empty())
-		{
+		CPredSequence predList_d = 	 pWord("Action") <<	 pAny("noum1");
 		 
-			predList_d.push_back(pWord("Action"));
-			predList_d.push_back(pAny("noum1"));
-		}
 
 		MatchResult res = CMatch(term, predList_d);
 		if (res.result == Equals)
@@ -521,12 +425,7 @@ HBlock NSParser::DynamicDispatch::Dispatch_action_call(CParser *p, HTerm  term)
 		}
 	}
 	{
-		CPredSequence predList_e = {};
-		if (predList_e.empty())
-		{
-			 
-			predList_e.push_back(pWord("Action"));
-		}
+		CPredSequence predList_e = pWord("Action");
 
 		MatchResult res = CMatch(term, predList_e);
 		if (res.result == Equals)
@@ -548,8 +447,8 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 	//	static CPredSequence predList = {};
 	//	if (predList.empty())
 	//	{
-	//		<<(pLiteral("try"));
-	//		<<(pAny("sentence"));
+	//		<<pLiteral("try");
+	//		<<pAny("sentence");
 	//	}
 
 	//	MatchResult res = CMatch(term, predList);
@@ -606,10 +505,10 @@ HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HT
 			//CPredSequence predList = {};
 			//if (predList.empty())
 			//{
-			//	<<(pLiteral(ph->verb->named));
-			//	<<(pAny("Match_arg1"));
+			//	<<pLiteral(ph->verb->named);
+			//	<<pAny("Match_arg1");
 			//	<<(pLiteral(ph->pred2->named ));
-			//	<<(pAny("Match_arg2"));
+			//	<<pAny("Match_arg2");
 			//}
 
 			CPredSequence  predList = pLiteral(ph->verb->named) << pAny("Match_arg1") << pLiteral(ph->pred2->named) << pAny("Match_arg2");
