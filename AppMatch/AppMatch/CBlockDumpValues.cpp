@@ -91,6 +91,15 @@ void CBlockNoum::dump(string ident) {
 
 
 
+void CBlockNoumSupl::dump(string ident) {
+	printf("%s %s  (%s, %s)\n", ident.c_str(), this->named.c_str(), this->number.c_str(), this->gender.c_str());
+	CBlock::dump(ident);
+}
+
+
+ 
+
+
 void CBlockEnums::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "Enum:");
 		for (auto e = values.begin(); e != values.end(); ++e) {
@@ -946,6 +955,13 @@ void CBlockVerbAdapt::dump(string ident)
 	CBlock::dump(ident);
 }
 
+void CBlockVerbNegate::dump(string ident)
+{
+	printf("%s Negate \n", ident.c_str());
+	this->verbAdapt->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
 
 void CBlockVerbConjugation::dump(string ident)
 {
@@ -1030,6 +1046,17 @@ void CBlockText::dump(string ident)
 	CBlock::dump(ident);
 }
 
+void CBlockTextSentence::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Text Sentence:  " );
+	for(auto &t : this->contents)
+	{
+		t->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+
+ 
 
 void CBlockRelationInstance::dump(string ident)
 {

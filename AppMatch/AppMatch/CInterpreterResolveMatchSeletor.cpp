@@ -54,15 +54,15 @@ std::vector<string> isHBlockMatchNoumList(const std::vector<HBlockMatch>  &mlist
 
 string CBlockInterpreter::getStringPrexfedFromList(const std::vector<string>& noumFragmented , std::list<string> allStringNames )
 {
-	size_t lst_size_t = noumFragmented.size();
+	auto  lst_size_t = noumFragmented.size();
 	for (auto &ss : allStringNames)
 	{
 		std::vector<string> kindNameFramented = split_string_noum(ss, " ");
-		size_t n_k_size_t = kindNameFramented.size();
+		auto  n_k_size_t = kindNameFramented.size();
 		if (lst_size_t != n_k_size_t) continue;
 
 		bool isEquals_b = true;
-		for (size_t i = 0; i<lst_size_t; ++i)
+		for (auto  i = 0; i<lst_size_t; ++i)
 		{
 			if (isSameString(kindNameFramented[i], noumFragmented[i]) == false)
 			{

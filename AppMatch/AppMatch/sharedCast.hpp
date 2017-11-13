@@ -41,6 +41,8 @@ namespace CBlocking
 		HBlockCompositionRelation asHBlockCompositionRelation(CBlocking::HBlock c);
 
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c);
+		HBlockNoumSupl asHBlockNoumSupl(CBlocking::HBlock c);
+
 		HBlockKindNamed  asHBlockKindNamed(CBlocking::HBlock c);
 		HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(CBlocking::HBlock c);
 		HBlockAssertion_isDirectAssign asHBlockAssertion_isDirectAssign(CBlocking::HBlock c);
@@ -83,6 +85,7 @@ namespace CBlocking
 
 		HBlockVerb asHBlockVerb(CBlocking::HBlock c);
 		HBlockVerbAdapt asHBlockVerbAdapt(CBlocking::HBlock c);
+		HBlockVerbNegate asHBlockVerbNegate(CBlocking::HBlock c);
 		HBlockEventHandle asHBlockEventHandle(CBlocking::HBlock c);
 		HBlockBooleanOR asHBlockBooleanOR(CBlocking::HBlock c);
 		HBlockBooleanNOT asHBlockBooleanNOT(CBlocking::HBlock c);
@@ -115,6 +118,7 @@ namespace CBlocking
 
 		HBlockArgumentInput asHBlockArgumentInput(CBlocking::HBlock c);
 		HBlockText asHBlockText(CBlocking::HBlock c);
+		HBlockTextSentence asHBlockTextSentence(CBlocking::HBlock c);
 		HBlockInstanceNamed asHBlockInstanceNamed(CBlocking::HBlock c);
 		HBlockInstance asHBlockInstance(CBlocking::HBlock c);
 

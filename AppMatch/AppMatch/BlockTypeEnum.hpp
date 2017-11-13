@@ -5,6 +5,9 @@
 #ifndef APPMATCH_BLOCKTYPEENUM_HPP
 #define APPMATCH_BLOCKTYPEENUM_HPP
 
+
+
+
 enum BlockType {
 	BlockKind,
 	Unresolved,
@@ -122,6 +125,9 @@ enum BlockType {
 	BlockAnything,
 	BlockPhraseDefine,
 	BlockPhraseInvoke,
-	BlockPhraseHeader
+	BlockPhraseHeader,
+	BlockTextSentence,
+	BlockVerbNegate,
+	BlockNoumSupl
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

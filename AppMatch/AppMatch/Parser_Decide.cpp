@@ -106,7 +106,7 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 		}
 	}
     {
-        CPredSequence predList = pLiteral("if")    <<pAny("AValue");
+        CPredSequence predList = pLiteral("if") <<pAny("AValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -133,7 +133,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 	if (inner == nullptr)
 	{
 		{
-			  CPredSequence predList = pLiteral("to")		<<pLiteral("decide")<<pAny("Match")	<<pLiteral(":")	<<pAny("RemainBody");
+			  CPredSequence predList = pLiteral("to") <<pLiteral("decide")<<pAny("Match")	<<pLiteral(":")	<<pAny("RemainBody");
 		 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
@@ -175,7 +175,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 		//Com bloco inner 
 		{
 
-			  CPredSequence predList = pLiteral("to")	<<pLiteral("decide")	<<pAny("Match")		<<pLiteral(":");
+			  CPredSequence predList = pLiteral("to")	<<pLiteral("decide")	<<pAny("Match") <<pLiteral(":");
  
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) {
@@ -212,7 +212,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 
 		{
 
-			CPredSequence predList  = pLiteral("to")		<<pWord("Verb")		<<pAny("Match_arg1")	<<pPreposition("pred")		<<pAny("Match_arg2")	<<pLiteral(":");
+			CPredSequence predList  = pLiteral("to") <<pWord("Verb") <<pAny("Match_arg1")	<<pPreposition("pred") <<pAny("Match_arg2")	<<pLiteral(":");
 
 			 
 			MatchResult res = CMatch(term, predList);
@@ -259,7 +259,7 @@ HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<H
 	if (inner == nullptr)
 	{
 		{
-			  CPredSequence predList =  			pLiteral("decide")		<<pLiteral("on")	<<pAny("ExpressionBody");
+			  CPredSequence predList =  			pLiteral("decide") <<pLiteral("on")	<<pAny("ExpressionBody");
 			 
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) 
@@ -280,10 +280,11 @@ HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<H
 HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector<HTerm>&  term)
 {
 
-    {	  auto c1 = pList("def_A", { pLiteral("definition"), pLiteral(":") });
+    {
+		  auto c1 = pList({ pLiteral("definition"), pLiteral(":") });
 		  auto c2 = pLiteral("definition:");
 
-		  CPredSequence predList  = (pOr("kindpart", c1, c2))	<<pAny("Match")		<<pLiteral("if")	<<pAny("LogicalBody");
+		  CPredSequence predList  = (pOr("kindpart", c1, c2))	<<pAny("Match") <<pLiteral("if")	<<pAny("LogicalBody");
 		 
 
         MatchResult res = CMatch(term, predList);
@@ -316,14 +317,14 @@ HBlock NSParser::ParseDecide::STMT_Definition_Assertion(CParser * p, std::vector
 HBlock NSParser::ParseDecide::parse_toDecide_Entry(CParser * p, std::vector<HTerm>&  term) 
 {
     {
-        CPredSequence predList = pLiteral("to")      <<pLiteral("decide")      <<pLiteral(":");
+        CPredSequence predList = pLiteral("to") <<pLiteral("decide") <<pLiteral(":");
         return nullptr;
     }
 }
 
 HBlock NSParser::ParseDecide::parse_toDecide_Ret(CParser * p, std::vector<HTerm>&  term) {
     {
-        CPredSequence predList = pLiteral("decide")     <<pLiteral("on")      <<pAny("Subst");
+        CPredSequence predList = pLiteral("decide") <<pLiteral("on") <<pAny("Subst");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {

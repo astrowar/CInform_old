@@ -296,7 +296,11 @@ namespace NSParser
 		CBlocking::HBlock   parser_GroupLine(CParser * p, std::string v, HGroupLines inner, ErrorInfo *err);
  
 
+		CBlocking::HBlock Text_Sentence(CParser * p, std::string text);
+
 		CBlocking::HBlock  text_entry(CParser * p, std::vector<NSTerm::HTerm>&  term);
+
+		CBlocking::HBlock text_literal(CParser * p, std::vector<NSTerm::HTerm>& term);
 
 		namespace Verbal
 		{
@@ -438,15 +442,17 @@ namespace NSParser
 
 	namespace ParseGrammar
 	{
+		 
 		CBlocking::HBlock  STMT_register_verb(CParser * p, std::vector<NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo* err);
-		std::list<CBlocking::HBlockVerbConjugation> get_verb_conjugations(CParser * p, std::string verb);
+		std::list<CBlocking::HBlockVerbConjugation> get_verb_conjugations( std::string verb);
 		string  expression_adapt_viewPoint(CParser * p, NSTerm::HTerm& term);
 		string  expression_adapt_tense(CParser * p, NSTerm::HTerm& term);
-		CBlocking::HBlock  expression_adapt_verb_inner(CParser * p,  NSTerm::HTerm& term);
+		CBlocking::HBlockVerbAdapt  expression_adapt_verb_inner(CParser * p,  NSTerm::HTerm& term);
 		CBlocking::HBlock  expression_adapt_verb(CParser * p, std::vector<NSTerm::HTerm>& term);
 	}
 };
 
+bool is_empty_string(std::string s);
 	std::vector<NSTerm::HTerm> decompose(string phase);
 	string  decompose_bracket(string phase, string dlm);
 NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);

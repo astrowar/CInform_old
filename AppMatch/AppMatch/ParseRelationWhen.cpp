@@ -37,7 +37,7 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 
 
 	{
-		CPredSequence predList  = pAny("kind") 	<<pLiteral("called") <<pAny("var_named");
+		CPredSequence predList  = pAny("kind") <<pLiteral("called") <<pAny("var_named");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -131,7 +131,7 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 
 	//relation 
 	{
-		  CPredSequence predList =  pAny("K2")	<<pLiteral("relates")	<<pLiteral("to")	<<pLiteral("by")		<<pAny("RelationName");
+		  CPredSequence predList =  pAny("K2")	<<pLiteral("relates")	<<pLiteral("to")	<<pLiteral("by") <<pAny("RelationName");
 		 
 
 		MatchResult res = CMatch(term, predList);
@@ -156,7 +156,7 @@ HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   ter
 
 	
 	{
-		  CPredSequence predList = pLiteral("relates")	<<pLiteral("to")	<<pAny("K2")	<<pLiteral("by")		<<pAny("RelationName");
+		  CPredSequence predList = pLiteral("relates")	<<pLiteral("to")	<<pAny("K2")	<<pLiteral("by") <<pAny("RelationName");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -230,14 +230,8 @@ HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<
 	/*{
 		 static CPredSequence predList = {};
 		if (predList.empty())
-		{
-			<<pAny("K1");
-			<<mk_What_Which();
-			<<pAny("K2");
-			<<pLiteral("relates");
-			<<pLiteral("to");
-			<<pLiteral("by");
-			<<pAny("RelationName");
+		{ <<pAny("K1");
+			<<mk_What_Which(); <<pAny("K2"); <<pLiteral("relates"); <<pLiteral("to"); <<pLiteral("by"); <<pAny("RelationName");
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -261,14 +255,8 @@ HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<
 	{
 		static CPredSequence predList = {};
 		if (predList.empty())
-		{
-			<<pAny("K1");
-			<<mk_What_Which();			
-			<<pLiteral("relates");
-			<<pLiteral("to");
-			<<pAny("K2");
-			<<pLiteral("by");
-			<<pAny("RelationName");
+		{ <<pAny("K1");
+			<<mk_What_Which(); <<pLiteral("relates"); <<pLiteral("to"); <<pAny("K2"); <<pLiteral("by"); <<pAny("RelationName");
 		}
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -379,7 +367,7 @@ HBlock   NSParser::ParseRelation::parser_SeletorVerb(CParser *p, HTerm   term, H
 
 
 	{
-		  CPredSequence predList =  verb_IS() 	<<p->verbList	<<pAny("K2");
+		  CPredSequence predList =  verb_IS() <<p->verbList	<<pAny("K2");
 	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

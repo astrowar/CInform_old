@@ -54,7 +54,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 
    // std::cout << "what:  " << get_repr(term) << std::endl;
     {
-		  CPredSequence predList = 		pAny("verb")	<<pAny("kind1")	<<pAny("with_word")		<<pAny("kind2");
+		  CPredSequence predList = 		pAny("verb")	<<pAny("kind1")	<<pAny("with_word") <<pAny("kind2");
 			
 		 
 
@@ -99,7 +99,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
         }
     }
 	{
-		  CPredSequence predList = pAny("verb") 	<<pAny("aux")<<pAny("kind1");
+		  CPredSequence predList = pAny("verb") <<pAny("aux")<<pAny("kind1");
 	 
 		 
 
@@ -447,8 +447,8 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 	//	static CPredSequence predList = {};
 	//	if (predList.empty())
 	//	{
-	//		<<pLiteral("try");
-	//		<<pAny("sentence");
+	// <<pLiteral("try");
+	// <<pAny("sentence");
 	//	}
 
 	//	MatchResult res = CMatch(term, predList);

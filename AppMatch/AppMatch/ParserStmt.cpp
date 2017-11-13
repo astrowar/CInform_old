@@ -104,12 +104,12 @@ HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTerm>&   lst)
 {
 
+	HBlock rblock_literalEntry = (Statement::text_literal(p, lst));
+	if (rblock_literalEntry != nullptr) return rblock_literalEntry;
+
 	HBlock rblock_textEntry = (Statement::text_entry(p,lst));
 	if (rblock_textEntry != nullptr) return rblock_textEntry;
 
-
-
-	 
 	 
 
 	HBlock adapt_verb = ParseGrammar::expression_adapt_verb(p,lst);

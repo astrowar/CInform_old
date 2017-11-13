@@ -479,6 +479,10 @@ using namespace  NSMatch;
 			return std::make_shared<CPredList>(std::move(_named), std::move((plist)));
 		};
 
+		HPred NSTerm::pList( std::initializer_list<HPred> plist) {
+			return std::make_shared<CPredList>( "_", std::move((plist)));
+		};
+
 		HPred NSTerm::pAny(std::string _named) { return std::make_shared<CPredAny>(_named); };
 
 		HPred NSTerm::pWord(std::string _named) { return std::make_shared<CPredWord>(_named); };
@@ -770,13 +774,13 @@ using namespace  NSMatch;
 			{
 				return CPredSequence({ a,b });
 			}
-			CPredSequence operator<<(CPredSequence& a, HPred b)
+			CPredSequence operator<<(CPredSequence a, HPred b)
 			{
 				a.data.push_back(b);
 				return std::move(a);
 			}
 
-			CPredSequence operator<<(CPredSequence& a, CPredSequence& b)
+			CPredSequence operator<<(CPredSequence a, CPredSequence& b)
 			{
 				a.data.insert(a.data.end(), b.data.begin(), b.data.end());
 				return std::move(a);

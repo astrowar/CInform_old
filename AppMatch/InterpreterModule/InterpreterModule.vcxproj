@@ -151,6 +151,7 @@
     <ClCompile Include="..\AppMatch\InterpreterMatch.cpp" />
     <ClCompile Include="..\AppMatch\InterpreterQuery.cpp" />
     <ClCompile Include="..\AppMatch\InterpreterRelationEngine.cpp" />
+    <ClCompile Include="..\AppMatch\Interpreter_Adapt_Text.cpp" />
     <ClCompile Include="..\AppMatch\QueryItem.cpp" />
     <ClCompile Include="..\AppMatch\RuntimeErrors.cpp" />
   </ItemGroup>

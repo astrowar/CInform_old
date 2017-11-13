@@ -178,6 +178,7 @@
     <ClCompile Include="GrammarParseEn.cpp" />
     <ClCompile Include="GrammarParser.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="testeAdaptivePhases.cpp" />
     <ClCompile Include="testeLista.cpp" />
     <ClCompile Include="testeSerialize.cpp" />
     <ClCompile Include="testesParser.cpp" />

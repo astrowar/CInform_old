@@ -13,7 +13,7 @@ using namespace NSTerm::NSMatch;
 #include  "verb_en.hpp"
 using namespace CBlocking;
 
-std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations(CParser * p, std::string verb)  
+std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations(  std::string verb)  
 {
 	static const VERBTABLE verb_eng = verb_table(); 
 	int  n = verb_eng.numEntries;
@@ -33,10 +33,8 @@ std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations(C
 			} 
 			break;
 		}
-	}
-
-	return  vlist;
-
+	} 
+	return  vlist; 
 }
 
 //register verb funciona como um load especifico de um conjunto de verbos
@@ -50,7 +48,7 @@ HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm
 		{
 			{
 				auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
-				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(p, vrepr));
+				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(  vrepr));
 				return vbase;
 			}
 		}
@@ -65,7 +63,7 @@ HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm
 		{			
 			{
 				auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
-				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations(p,vrepr));
+				auto vbase = std::make_shared<CBlockVerb>(vrepr, get_verb_conjugations( vrepr));
 				return vbase;
 			}
 		}
@@ -94,7 +92,7 @@ HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm
 string NSParser::ParseGrammar::expression_adapt_viewPoint(CParser * p, HTerm& term)
 {
 	{
-		CPredSequence predList = pLiteral("the") 	<<pAny("remainder");
+		CPredSequence predList = pLiteral("the") <<pAny("remainder");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -148,7 +146,7 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 	
 
 	{
-		  CPredSequence predList =  pLiteral("the") 	<<pAny("remainder");
+		  CPredSequence predList =  pLiteral("the") <<pAny("remainder");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -222,10 +220,10 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 }
 
 
-HBlock NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& term)
+ HBlockVerbAdapt NSParser::ParseGrammar::expression_adapt_verb_inner(CParser * p, HTerm& term)
 {
 	{
-		  CPredSequence predList =  pAny("verbNamed")<<pLiteral("in")<<pAny("TenseForm")<<pLiteral("from")	<<pAny("ViewPoint");
+		CPredSequence predList =  pAny("verbNamed")<<pLiteral("in")<<pAny("TenseForm")<<pLiteral("from")	<<pAny("ViewPoint");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -318,7 +316,9 @@ HBlock NSParser::ParseGrammar::expression_adapt_verb(CParser * p, std::vector<HT
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			return expression_adapt_verb_inner(p,res.matchs["remainder"]); 
+			auto v = expression_adapt_verb_inner(p, res.matchs["remainder"]);
+			if (v!=nullptr)
+			return   std::make_shared<CBlockVerbNegate>(v); 
 		}
 	}
 

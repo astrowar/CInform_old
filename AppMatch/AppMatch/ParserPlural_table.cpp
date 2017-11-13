@@ -63,10 +63,13 @@ int binary_search(const char *list_of_words[],  int isize, const  char *target)
 
 std::string plural_of(const std::string singular_noum, PLURALTABLE *ptable)
 {
-	int k = binary_search(ptable->base,   ptable->n, singular_noum.c_str());
-	if (k < 0) return nullptr;
-	k = ptable->base_idx[k];
-	return std::string(ptable->plurals[k]);
+	int k1 = binary_search(ptable->base,   ptable->n, singular_noum.c_str());
+	if (k1 < 0) return "";
+	
+	int k2 = ptable->base_idx[k1];
+	printf("%i %i \n", k1, k2);
+
+	return std::string(ptable->plurals[k2]);
 
 
 }
@@ -74,7 +77,7 @@ std::string plural_of(const std::string singular_noum, PLURALTABLE *ptable)
 std::string singular_of(const std::string plural_noum, PLURALTABLE *ptable)
 {
 	int k = binary_search(ptable->plurals,  ptable->n, plural_noum.c_str());
-	if (k < 0) return nullptr;
+	if (k < 0) return "";
 	k = ptable->plurals_idx[k];
 	return std::string(ptable->base[k]);
 }

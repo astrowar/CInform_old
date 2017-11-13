@@ -177,6 +177,7 @@ namespace NSTerm
 		HPred pAtom(std::string _named, HTerm atom);
 
 		HPred pList(std::string _named, std::initializer_list<HPred> plist);
+		HPred pList(std::initializer_list<HPred> plist);
 
 		HPred pAny(std::string _named);
 
@@ -216,8 +217,8 @@ namespace NSTerm
 		using HTermSequence = std::shared_ptr<CPredSequence>;
 
 		CPredSequence operator<<(HPred a, HPred b);		 
-		CPredSequence operator<<(CPredSequence& a, HPred b);
-		CPredSequence operator<<(CPredSequence& a, CPredSequence& b);
+		CPredSequence operator<<(CPredSequence a, HPred b);
+		CPredSequence operator<<(CPredSequence a, CPredSequence& b);
 		 
 
 		 

@@ -64,6 +64,21 @@ struct  NamedValue
 };
  
 
+class SentenceBlock
+{
+public:
+	SentenceBlock(bool inner, const std::string& text)
+		: inner(inner),
+		text(text)
+	{
+	}
+
+	bool inner;
+	std::string text;
+};
+
+
+
 using ListOfNamedValue = std::list<NamedValue>;
 
 
@@ -241,10 +256,13 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool set_relation_property(HBlockNoum property_noum, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 		bool set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
 		bool unset_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk);
-		
+
+		string adapt_verb_inner_inner(const string& verb, string tense, string person, HRunLocalScope localsEntry);
 		string adapt_verb_inner(const string& verb, string tense, string person, HRunLocalScope localsEntry);
 		HBlockNoum adapt_verb(HBlockVerbAdapt nVerbAdp, HRunLocalScope localsEntry);
-		
+		HBlockNoum adapt_negate_verb(HBlockVerbNegate negVerbAdp, HRunLocalScope localsEntry);
+
+
 		string getStringPrexfedFromList(const std::vector<string>& noumFragmented, std::list<string> allStringNames);
 		std::list<HBlock> getInstancesFromKind(HBlockKind kind, HRunLocalScope localsEntry);
 		std::list<HBlock> getInstancesFromSelector(HBlockMatch seletor, HRunLocalScope localsEntry);
@@ -359,7 +377,11 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk);
 
 
-
+		std::list<HBlockVerbConjugation> get_verb_conjugations(std::string verb) const;
+		HBlockNoum get_verbal_regarding(string verb, HRunLocalScope localsEntry, QueryStack * stk);
+		HBlockNoumSupl resolve_number_gender(string  n, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlockNoumSupl textual_representation(HBlock x, string person, string number, string gender, HRunLocalScope localsEntry, QueryStack* stk);
+		HBlockText adapt_text(HBlockTextSentence text, HRunLocalScope localsEntry, QueryStack *stk);
 
 
 	   NSTerm::HTerm executeAssertion_is(HBlockAssertion_is b);

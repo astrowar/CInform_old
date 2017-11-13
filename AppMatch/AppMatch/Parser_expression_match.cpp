@@ -133,7 +133,7 @@ HBlockMatchProperty  NSParser::ExpressionMatch::parse_PropertyOf_Match(CParser *
 {
 	{
 
-		  CPredSequence predList = pAny("property")	<<pLiteral("of")		<<pAny("obj");
+		  CPredSequence predList = pAny("property")	<<pLiteral("of") <<pAny("obj");
 	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -362,7 +362,7 @@ HBlockMatch   NSParser::ExpressionMatch::parse_Which_DirectAssign_Match(CParser 
 	{
 		// is a kind definition ??
 
-		  CPredSequence predList =  pAny("Noum")	<<mk_What_Which()	<<verb_IS_NOT()		<<pAny("Value");
+		  CPredSequence predList =  pAny("Noum")	<<mk_What_Which()	<<verb_IS_NOT() <<pAny("Value");
 		 
 
 		MatchResult res = CMatch(term, predList);
@@ -383,7 +383,7 @@ HBlockMatch   NSParser::ExpressionMatch::parse_Which_DirectAssign_Match(CParser 
 	}
 	{
 		// is a kind definition ??
-		  CPredSequence predList = pAny("Noum")	<<mk_What_Which()	<<verb_IS()		<<pAny("Value");
+		  CPredSequence predList = pAny("Noum")	<<mk_What_Which()	<<verb_IS() <<pAny("Value");
 		 
 
 		MatchResult res = CMatch(term, predList);

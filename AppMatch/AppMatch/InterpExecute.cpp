@@ -416,6 +416,7 @@ HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockI
 
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
 {
+	 
 	HBlock b =  exec_eval_internal(c_block, localsEntry, stk);
 
 	//printf("_______________________________________\nEval\n");
@@ -830,7 +831,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockNoum nn = asHBlockNoum(c_block))
 	{
-		nn->dump("");
+		 
 		auto  obj = has_resolve_noum(nn, localsEntry, std::list<std::string>());
 		if (obj != nullptr)
 		{
@@ -958,11 +959,25 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		
 	}
 
+	if (HBlockVerbNegate nVerbNeg = asHBlockVerbNegate(c_block))
+	{
+
+	 return  adapt_negate_verb(nVerbNeg , localsEntry);
+
+	}
+
+
 	
 	if (HBlockText ntext = asHBlockText(c_block))
 	{
 		return ntext;
 	}
+
+	if (HBlockTextSentence ntexts = asHBlockTextSentence(c_block))
+	{
+		return adapt_text(ntexts , localsEntry, stk );
+	}
+
 
 	if (asHBlockSimetricRelation(c_block) != nullptr) return c_block; //fundamental value
 	if (asHBlockASimetricRelation(c_block) != nullptr) return c_block; //fundamental value

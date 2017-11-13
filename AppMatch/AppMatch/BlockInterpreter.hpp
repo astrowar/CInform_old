@@ -47,6 +47,7 @@ namespace CBlocking
 	NoumDefinitions join_definitions(NoumDefinitions a, NoumDefinitions b);
 
 
+ 
 
 
 
@@ -152,18 +153,25 @@ namespace CBlocking
 	public:
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockNoum; }
-
 		CBlockNoum() {};
 		CBlockNoum(string _named);
-
-		const string named;
-
-		 
+		const string named; 
 	};
-
 	using HBlockNoum = std::shared_ptr<CBlockNoum>;
 
-	 
+
+	class CBlockNoumSupl : public CBlockNoum //retorna um valor generico
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockNoumSupl; }
+		string number; // singular, plural ...
+		string gender; // male, female, neutral
+		CBlockNoumSupl(string _named , string _number, string _gender  ) :CBlockNoum( _named ), number(_number), gender(_gender) { };
+		 
+	};
+	using HBlockNoumSupl = std::shared_ptr<CBlockNoumSupl>;
+
 
 
 
@@ -588,6 +596,18 @@ namespace CBlocking
 		CBlockVerbAdapt(string _verb, string _tense, string _viewPoint) :verb(_verb), tense(_tense), viewPoint(_viewPoint) {};
 	};
 	using HBlockVerbAdapt = std::shared_ptr<CBlockVerbAdapt>;
+
+
+	class CBlockVerbNegate : public CBlock //retorna uma declaracao
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockVerbNegate; }
+		HBlockVerbAdapt verbAdapt;
+		CBlockVerbNegate(HBlockVerbAdapt _verbAdapt) :verbAdapt(_verbAdapt)  {};
+	};
+	using HBlockVerbNegate = std::shared_ptr<CBlockVerbNegate>;
+
 
 
 

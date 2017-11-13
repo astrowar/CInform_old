@@ -19,7 +19,7 @@ using namespace NSTerm::NSMatch;
 HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   term)
 {
 	{
-		 CPredSequence predList  = pLiteral("stop")	<<pLiteral("the")	<<pLiteral("action")	<<pLiteral("with")			<<pAny("BValue");
+		 CPredSequence predList  = pLiteral("stop")	<<pLiteral("the")	<<pLiteral("action")	<<pLiteral("with")	  <<pAny("BValue");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -60,7 +60,7 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 {
     {
-        CPredSequence predList = pAny("AValue")      <<pLiteral("or")       <<pAny("BValue");
+        CPredSequence predList = pAny("AValue") <<pLiteral("or") <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -134,7 +134,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
    
  {
-        CPredSequence predList = pAny("AValue")      <<pLiteral("not")   <<p->verbList     <<pAny("BValue");
+        CPredSequence predList = pAny("AValue") <<pLiteral("not") <<p->verbList <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -152,7 +152,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
         }
     }
     {
-        CPredSequence predList = pAny("AValue")     <<p->verbList     <<pAny("BValue");
+        CPredSequence predList = pAny("AValue") <<p->verbList <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -171,7 +171,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 
     {
-        CPredSequence predList = pAny("AValue")    <<verb_IS()	<<pLiteral("not")      <<pAny("BValue");
+        CPredSequence predList = pAny("AValue")    <<verb_IS()	<<pLiteral("not") <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -190,7 +190,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 
 
 	   {
-        CPredSequence predList = pAny("AValue")      <<verb_IS()       <<pAny("BValue");
+        CPredSequence predList = pAny("AValue")      <<verb_IS() <<pAny("BValue");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals)
@@ -262,7 +262,7 @@ HBlock   NSParser::ControlFlux::parser_control_end(CParser *p, std::vector<HTerm
 	//{
 	//	static CPredSequence predList = {};
 	//	if (predList.empty()) {
-	//		<<pLiteral("end");
+	// <<pLiteral("end");
 
 	//	}
 	//	MatchResult res = CMatch(term, predList);
@@ -306,7 +306,7 @@ HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>&
 {
 	if(inner == nullptr)
 	{
-		CPredSequence predList = pLiteral("if")		<<pAny("Condition")		<<pLiteral(":")		<<pAny("body");
+		CPredSequence predList = pLiteral("if")  <<pAny("Condition") <<pLiteral(":")  <<pAny("body");
 	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -449,7 +449,7 @@ HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CPars
 	}
 
 	{
-		  CPredSequence predList = pLiteral("--")	<<pAny("object")		<<pLiteral(":");
+		  CPredSequence predList = pLiteral("--")	<<pAny("object") <<pLiteral(":");
 			 
 		 
 		MatchResult res = CMatch(term, predList);

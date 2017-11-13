@@ -15,6 +15,16 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 
 
+bool is_empty_string(std::string s)
+{
+	if (s.size() == 0) return true;
+	if (s.find_first_not_of(' ') == std::string::npos)
+	{
+		return true;
+	}
+	return false;
+}
+
 std::string  decompose_bracket(std::string phase, std::string dlm) {
 
 	size_t b = phase.find(dlm);
@@ -22,6 +32,14 @@ std::string  decompose_bracket(std::string phase, std::string dlm) {
 		std::string sa = phase.substr(0, b);
 		std::string sb = phase.substr(b + 1, phase.size() - b - 1);
 		sb = decompose_bracket(sb, dlm);
+		if (is_empty_string(sb))
+		{
+			return sa + " " + dlm;
+		}
+		if (is_empty_string(sa))
+		{
+			return dlm + " " + sb;
+		}
 		return sa + " " + dlm + " " + sb;
 	}
 	return phase;
@@ -164,7 +182,7 @@ HPred mk_What_Which() {
 std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
     {
-		  CPredSequence predList = pAny("Verb") 	<<pAny("Aux");
+		  CPredSequence predList = pAny("Verb") <<pAny("Aux");
 		 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {

@@ -90,6 +90,9 @@
     <ClCompile Include="..\AppMatch\RuntimeErrors.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
+    <ClCompile Include="..\AppMatch\Interpreter_Adapt_Text.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AppMatch\CBlockInterpreterRuntime.hpp">

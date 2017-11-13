@@ -168,8 +168,19 @@ namespace CBlocking
 		{
 			if (c != nullptr && c->type() == BlockType::BlockNoum)
 				return std::static_pointer_cast<CBlockNoum>(c);
+			if (c != nullptr && c->type() == BlockType::BlockNoumSupl)
+				return std::static_pointer_cast<CBlockNoum>(c);
 			return nullptr;
 		}
+
+		HBlockNoumSupl asHBlockNoumSupl(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockNoumSupl)
+				return std::static_pointer_cast<CBlockNoumSupl>(c);
+			return nullptr;
+		}
+		
+
 		HBlockKind_InstanceVariable asHBlockKind_InstanceVariable(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockKind_InstanceVariable)
@@ -412,6 +423,15 @@ namespace CBlocking
 			return nullptr;
 		}
 
+		HBlockVerbNegate asHBlockVerbNegate(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == (BlockType::BlockVerbNegate))
+				return std::static_pointer_cast<CBlockVerbNegate>(c);
+			return nullptr;
+		}
+
+		 
+
 		HBlockEventHandle asHBlockEventHandle(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockEventHandle)
@@ -614,7 +634,15 @@ namespace CBlocking
 			return nullptr;
 		}
 
+		 
+        HBlockTextSentence asHBlockTextSentence(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockTextSentence)
+				return std::static_pointer_cast<CBlockTextSentence>(c);
+			return nullptr;
+		}
 	 
+
 		
 		HBlockInstanceNamed asHBlockInstanceNamed(CBlocking::HBlock c)
 		{

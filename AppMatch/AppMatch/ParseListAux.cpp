@@ -16,7 +16,7 @@ using namespace NSTerm::NSMatch;
 
 HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HTerm term, HPred sep) {
 
-    CPredSequence predList = pAny("N1")  <<sep   <<pAny("N2");
+    CPredSequence predList = pAny("N1")  <<sep <<pAny("N2");
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
         HBlockList cList = std::make_shared<CBlockList>(std::list<HBlock>());
@@ -28,7 +28,7 @@ HBlockList NSParser::ParseList::parseAssertion_Strict_COMMA_Supl(CParser * p, HT
 }
 
 HBlockList  NSParser::ParseAssertion::parseAssertionFirstTerm_COMMA_Supl( CParser * p, HTerm term, HPred sep, HBlockList cList) {
-    CPredSequence predList =pAny("N1")   <<(pOr("sep", pLiteral(","), sep))   <<pAny("N2");
+    CPredSequence predList =pAny("N1")   <<(pOr("sep", pLiteral(","), sep)) <<pAny("N2");
 
     MatchResult res = CMatch(term, predList);
     if (res.result == Equals) {
@@ -148,7 +148,7 @@ HBlock NSParser::ParseList::parse_List_AND(CParser * p, std::vector<HTerm>& term
 {
     {
         auto sep = pLiteral("and");
-        CPredSequence predList = pAny("N1")      <<sep       <<pAny("N2");
+        CPredSequence predList = pAny("N1")      <<sep <<pAny("N2");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) 

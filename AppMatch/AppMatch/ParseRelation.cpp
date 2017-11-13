@@ -44,7 +44,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 	// R relates one K to another
 
 	{
-		  CPredSequence predList = 		pAny("relationName")	<<pLiteral("relates")	<<pAny("K1")<<pLiteral("to")		<<pLiteral("each")	<<pLiteral("other")	<<pLiteral("in")	<<pLiteral("groups");
+		  CPredSequence predList = 		pAny("relationName")	<<pLiteral("relates")	<<pAny("K1")<<pLiteral("to") <<pLiteral("each")	<<pLiteral("other")	<<pLiteral("in")	<<pLiteral("groups");
 
 		 
 		MatchResult res = CMatch(term, predList);
@@ -89,7 +89,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 
 
 	{  
-		 CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")	<<mk_HPredLiteral_OR("various",{"various","many"})	<<pAny("K1")	<<pLiteral("to")	<<(mk_HPredLiteral_OR("various", { "various","many" }))		<<pAny("K2");
+		 CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")	<<mk_HPredLiteral_OR("various",{"various","many"})	<<pAny("K1")	<<pLiteral("to")	<<(mk_HPredLiteral_OR("various", { "various","many" }))  <<pAny("K2");
 		
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -114,7 +114,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 	}
 
 	{
-		CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")	<<(mk_HPredLiteral_OR("various", { "various","many" }))			<<pAny("K1")	<<pLiteral("to")	<<pAny("K2");
+		CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")	<<(mk_HPredLiteral_OR("various", { "various","many" }))	  <<pAny("K1")	<<pLiteral("to")	<<pAny("K2");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -200,7 +200,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 	}
 
 	{
-		 CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")		<<pAny("K1")	<<pLiteral("to")	<<pAny("K2");
+		 CPredSequence predList =  pAny("relationName")	<<pLiteral("relates")  <<pAny("K1")	<<pLiteral("to")	<<pAny("K2");
 		
 
 		MatchResult res = CMatch(term, predList);

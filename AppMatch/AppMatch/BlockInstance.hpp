@@ -83,7 +83,15 @@ namespace CBlocking
 	};
 	using HBlockText = std::shared_ptr<CBlockText>;
 
-
+	class CBlockTextSentence : public CBlock //retorna um valor generico
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockTextSentence; }
+		std::list<HBlock> contents;
+		CBlockTextSentence(std::list<HBlock> _contents) : contents(_contents) {}
+	};
+	using HBlockTextSentence = std::shared_ptr<CBlockTextSentence>;
 
 }
 
