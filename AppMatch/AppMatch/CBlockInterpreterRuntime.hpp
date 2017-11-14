@@ -452,6 +452,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock eval_relation_property(HBlockNoum propNoum, HBlock obj, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlock eval_property(HBlockProperty pblock, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlock get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block, HRunLocalScope localsEntry, QueryStack * stk);
+		HBlock disptch_action_call(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlock exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack* stk);
 		HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);
 		HExecutionBlock create_dispach_env(HBlockList p, HRunLocalScope localsEntry);

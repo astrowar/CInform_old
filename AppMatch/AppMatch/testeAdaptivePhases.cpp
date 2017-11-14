@@ -108,17 +108,20 @@ void testeAdaptivePhases_3()
 thing is an kind of entity
 keys  is a thing
 book  is a thing
-to say danger message :
-   say "Warring"
-   say "ahead"
+ 
+to say printed name of (an thing called M ):
+   say "public name of [M]"
 
+to say   (an thing called M ):
+   say "a thing called [M] "
 )";
 
 
 	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
 	
-	f_eval("\"message [danger message]\"")->dump("");	
-
+	//f_eval("\"message [danger message]\"")->dump("");	
+	//f_eval("\"object = [book]\"")->dump("");
+	f_eval("\" [ printed name of book ]\"")->dump("");
 
 	//f_eval("\"[book] [are] in room \"")->dump("");
 	//f_eval("\"[( book , keys )] [are] items  \"")->dump("");

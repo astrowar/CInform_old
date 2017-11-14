@@ -10,6 +10,26 @@ using namespace NSTerm::NSMatch;
 
 HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm term)
 {
+
+	{
+		CPredSequence predList = pAny("PropName") << pLiteral("of") << pAny("Object");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+			string sNoum = CtoString(expandBract(res.matchs["PropName"])->removeArticle());
+			std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(sNoum));
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(sNoum));
+			HBlockMatch c2 = parser_MatchArgument(p, res.matchs["Object"]);
+			if (c2 != nullptr)
+			{
+				return  std::make_shared<CBlockMatchProperty>(c1, c2);
+			}
+		}
+	}
+
+
+
 	{
 		  CPredSequence predList = pAny("ListKind")	<<pLiteral("called")<<pAny("var_named");
 		 
@@ -53,7 +73,7 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 	}
 
 	{
-		  CPredSequence predList = pAny("kind")	<<pLiteral("-")	<<pAny("var_named");
+		CPredSequence predList = pAny("kind")	<<pLiteral("-")	<<pAny("var_named");
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -63,6 +83,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 			return n1;
 		}
 	}
+
+
+
+
 	//std::cout << "Argument:  " <<  (term)->repr() << std::endl;
 	string sNoum =  CtoString(expandBract(term)->removeArticle());
 	if (sNoum == "not")
