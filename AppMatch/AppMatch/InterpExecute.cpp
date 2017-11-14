@@ -975,7 +975,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockTextSentence ntexts = asHBlockTextSentence(c_block))
 	{
-		return adapt_text(ntexts , localsEntry, stk );
+			return adapt_text(ntexts , localsEntry, stk );
 	}
 
 
@@ -1022,7 +1022,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	}
 	
  
-	if (auto phr = asHBlockPhraseInvoke(c_block))
+	if (HBlockPhraseInvoke phr = asHBlockPhraseInvoke(c_block))
 	{
 		for (auto ph : phrases)
 		{
@@ -1045,19 +1045,26 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 
 		 
-			
+			//dois argumentos
+			if (ph->header->arg1 !=nullptr && ph->header->arg2 !=nullptr)
 			{
-				auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-
-
-				CResultMatch result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-
+				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
+				if (result_1.hasMatch == false)
+				{
+					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+				}
 				if (result_1.hasMatch)
 				{
 					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-					auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+					CResultMatch result_2 = this->Match(ph->header->arg2, phr->arg2, localsEntry, stk);
 
-					CResultMatch result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
+					if (result_2.hasMatch ==false )
+					{
+						auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+						result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk); 
+					}
+
 					if (result_2.hasMatch)
 					{
 						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
@@ -1066,7 +1073,34 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 						return  exec_eval(ph->body, localsNext, stk);
 					}
 				}
-			}			
+			}
+			//um argumento
+			if (ph->header->arg1 != nullptr && ph->header->arg2 == nullptr)
+			{
+				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
+				if (result_1.hasMatch == false)
+				{
+					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+				}
+				if (result_1.hasMatch)
+				{
+					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch); 
+					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);				 
+					//localsNext->dump("");
+					//ph->body->dump("B ");
+					//return  exec_eval(ph->body, localsNext, stk);
+					auto q = execute_now(ph->body, localsNext, stk);
+					if (q.hasExecuted)
+					{
+						return Nothing;
+					}
+					
+
+				}
+
+			}
+
 		}
 		return nullptr;
 	}
@@ -1600,8 +1634,21 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	if (HBlockActionCall  vCall = asHBlockActionCall (p))
 	{	 		 
 		{	
+			//vCall->dump("");
 			HBlockActionCall rCall = ActionResolveArguments(vCall, localsEntry, stk);
-			auto r1 = execute_system_action(rCall);
+			if (rCall->noum1 == nullptr) 
+				if (HBlockNoum  n1 = asHBlockNoum(vCall->noum1))
+				{
+					rCall->noum1 = n1;
+				}
+			if (rCall->noum2 == nullptr)
+				if (HBlockNoum  n2 = asHBlockNoum(vCall->noum2))
+				{
+					rCall->noum2 = n2;
+				}
+
+			 
+			auto r1 = execute_system_action(rCall, localsEntry, stk);
 			if (r1.hasExecuted ) return r1;
 			auto r2 = execute_user_action(rCall, localsEntry, stk);
 			if (r2.hasExecuted ) return r2;

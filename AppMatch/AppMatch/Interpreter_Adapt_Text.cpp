@@ -7,6 +7,7 @@
 #include "QueryStack.hpp"
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
+#include <algorithm>
 using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
@@ -95,6 +96,9 @@ HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope 
 HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	static PLURALTABLE plural_tab = plura_table();
+
+	 
+
 	auto pSingle = singular_of(n , &plural_tab);
 	if (pSingle.empty() == false)
 	{
@@ -110,6 +114,8 @@ HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScop
 }
 
 
+
+
 HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string person,   string number, string gender, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	static PLURALTABLE plural_tab = plura_table();
@@ -119,15 +125,62 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 
 	auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
 
+
+	{
+		// Existe algum "To Say" associado com esse X
+		HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoum>("say"), nullptr, nullptr, nullptr, nullptr);
+		HBlockPhraseInvoke to_say = std::make_shared<CBlockPhraseInvoke>(say_callheader, x, nullptr);
+		string xs = "";
+		bool has_call = false;
+		this->say_output = [&](std::string a) { xs = xs + a; has_call = true;  return true; };
+		this->exec_eval(to_say, localsNext, stk);
+		this->say_output = nullptr;
+		if (has_call)
+		{
+			return std::make_shared<CBlockNoumSupl>( xs , "singular", "neutral");
+		}
+	}
+
 	auto y = exec_eval(x, localsNext, stk);
-
-
 
 	// o verbo que vem a seguir concorda com o noum atual
 	if (auto n = asHBlockNoumSupl(y)) return n ;
-	if (auto n = asHBlockNamedValue(y)) return resolve_number_gender(n->named  , localsNext, stk);
-	if (auto n = asHBlockInstanceNamed(y)) return resolve_number_gender(n->named , localsNext, stk);
+	if (auto n = asHBlockNamedValue(y)) return resolve_number_gender(n->named   , localsNext, stk);
+	if (auto n = asHBlockInstanceNamed(y)) return resolve_number_gender(n->named, localsNext, stk);
 	
+
+	if (auto n = asHBlockList(y))
+	{
+		if (n->lista.empty())   return std::make_shared<CBlockNoumSupl>("{}", "singular", "neutral");
+
+		if (n->lista.size() == 1)
+		{
+			return  textual_representation(n->lista.front(), person, number, gender, localsNext, stk);			
+		}
+		std::list<string> slist ;
+		for(auto ni : n->lista)
+		{
+			HBlockNoumSupl nni = textual_representation(ni, person, number, gender, localsNext, stk);			
+			slist.push_back(nni->named);
+			slist.push_back(", ");
+		}
+		//remove last comma
+		slist.pop_back();
+		if (slist.size() >1)
+		{
+			//replace last comma by "and"
+			auto it = slist.rbegin();
+			++it;//last word
+			*it = " and ";
+		}
+		
+		string snoum =""; 
+		for (auto si : slist)  snoum = snoum + si;
+		return std::make_shared<CBlockNoumSupl>(snoum, "plural", "neutral");		
+		
+	}
+
+
     if (auto n = asHBlockNoum(y))
 		{
 		 
@@ -155,16 +208,18 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 	return std::make_shared<CBlockNoumSupl>( "###", "singular", "neutral");
 }
 
+bool BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
 
 HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScope localsEntry, QueryStack *stk)
 {
+	
 	std::string s = "";
 
 	std::string number = "singular";
 	std::string gender = "neutral";
 	std::string person = "3S";
 
-
+	bool starting = true;
 	for(auto t : texts->contents)
 	{
 		if (HBlockText tx = asHBlockText(t)) s = s + tx->contents;
@@ -172,12 +227,19 @@ HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScop
 		{
 			auto nx = textual_representation(t,person, number , gender,  localsEntry, stk);
 			//nx->dump("+ ");
-			s = s + " " +  nx->named;
+			if (starting == false) s = s + " ";
+			s = s +  nx->named;
 			if (nx->gender != "") gender = nx->gender;
 			if (nx->number != "") number = nx->number;
+
+			starting = false;
 		}
 	}
 
+ 
+
+	std::string::iterator new_end = std::unique(s.begin(), s.end(), BothAreSpaces);
+	s.erase(new_end, s.end());
 	 
 	return std::make_shared<CBlockText>(s);
 }

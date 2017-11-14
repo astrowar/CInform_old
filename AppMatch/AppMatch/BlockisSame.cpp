@@ -8,6 +8,7 @@
 #include "CblockAssertion.hpp"
 #include "CBlockComposition.hpp"
 
+#include <algorithm>
 using namespace CBlocking;
 
 bool isSame(const CBlocking::HBlock &b1, const CBlocking::HBlock &b2)
@@ -59,7 +60,24 @@ bool isSame_BlockKindNamed(CBlockKindNamed* b1, CBlockKindNamed* b2)
 {
 	return b1->named == b2->named;
 }
+ 
+bool BothAreSpaces(char lhs, char rhs);
+bool isSame_BlockText(CBlockText* b1, CBlockText* b2)
+{
+	if (b1->contents == b2->contents) return true;
+	string a1 = b1->contents;
+	string a2 = b2->contents;
+	
+	std::string::iterator aa1 = std::unique(a1.begin(), a1.end(), BothAreSpaces); a1.erase(aa1, a1.end());
+	std::string::iterator aa2 = std::unique(a2.begin(), a2.end(), BothAreSpaces); a2.erase(aa2, a2.end());
 
+	while (a1.size()>1 && a1[0]==' ') a1 = a1.substr(1, a1.size()-1);
+	while (a1.size()>1 && a1.back() == ' ') a1 = a1.substr(0, a1.size() - 1);
+	while (a2.size()>1 && a2[0] == ' ') a2 = a2.substr(1, a2.size() - 1);
+	while (a2.size()>1 && a2.back() == ' ') a2 = a2.substr(0, a2.size() - 1);
+	
+	return a1==a2;
+}
  
 
 bool isSame_BlockList_AND(CBlockList* b1, CBlockList* b2)
@@ -210,6 +228,8 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	if (b1->type() == BlockCompositionList)  return isSame_BlockCompositionList(static_cast<CBlockCompositionList*>(b1), static_cast<CBlockCompositionList*>(b2));
 	if (b1->type() == BlockKindNamed)  return isSame_BlockKindNamed(static_cast<CBlockKindNamed*>(b1), static_cast<CBlockKindNamed*>(b2));
 	if (b1->type() == BlockKindOf)   return false;
+
+	if (b1->type() == BlockText)   return isSame_BlockText(static_cast<CBlockText*>(b1), static_cast<CBlockText*>(b2)); ;
 
 	b1->dump("");
 	b2->dump("");

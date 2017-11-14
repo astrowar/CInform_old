@@ -296,6 +296,8 @@ namespace NSParser
 		CBlocking::HBlock   parser_GroupLine(CParser * p, std::string v, HGroupLines inner, ErrorInfo *err);
  
 
+		std::list<CBlocking::HBlock> Text_Sentence_bakret(CParser * p, std::string text);
+
 		CBlocking::HBlock Text_Sentence(CParser * p, std::string text);
 
 		CBlocking::HBlock  text_entry(CParser * p, std::vector<NSTerm::HTerm>&  term);

@@ -9,6 +9,48 @@ using namespace NSTerm::NSMatch;
 
 
 
+bool _startWith(std::string str, std::string prefix)
+{
+	if (str.size() < prefix.size()) return false;
+	while (str.size()>1 && str[0] == ' ') str = str.substr(1, str.size() - 1); //remove start spaces 
+	if (str.substr(0, prefix.size()) == prefix) return true;
+
+
+	return false;
+}
+
+
+
+
+std::list<HBlock> NSParser::Statement::Text_Sentence_bakret(CParser * p, std::string str)
+{
+	std::list<HBlock> ret;
+
+	str = decompose_bracket(str, "(");
+	str = decompose_bracket(str, ")");
+	str = decompose_bracket(str, ",");
+	str = decompose_bracket(str, "\"");
+	str = decompose_bracket(str, ";");
+
+	std::vector<HTerm> lst = decompose(str);
+	auto term = convertToTerm(lst);
+
+
+	{
+		CPredSequence predList = pOr("Article", pLiteral("A"), pLiteral("An"), pLiteral("a"), pLiteral("an") , pLiteral("the"), pLiteral("The")  ) << pAny("Remainder");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			string  sArticle = CtoString(res.matchs["Article"]) +" ";
+			return{ std::make_shared<CBlockText >(sArticle) , Expression::parser_expression(p, res.matchs["Remainder"]) };
+		}
+	}
+	 
+
+	auto segment = Expression::parser_expression(p, term);
+	if (segment != nullptr)	ret.push_back(segment);
+	return ret;
+}
 
 HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 {
@@ -43,12 +85,9 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 			//is inner !
 			if (s.empty() == false)
 			{
-				auto segment = Expression::Parser_Expression(p, s ,false );
-				//blocos->contents.push_back(std::make_shared< CBlockText >(s));
-				if (segment != nullptr)
-				{
-					blocos->contents.push_back(segment);
-				}
+				auto segments = Text_Sentence_bakret( p, s   );				
+				for(auto si : segments)  blocos->contents.push_back(si);
+				
 				s = "";
 			}
 			is_inner = false;
@@ -104,6 +143,7 @@ HBlock NSParser::Statement::text_literal(CParser * p, std::vector<HTerm>&  term)
 			string  ss = CtoString(res.matchs["Contents"]);
 			return  Text_Sentence(p,ss);
 		}
+		 
 	}
 
 

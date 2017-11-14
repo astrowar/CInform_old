@@ -67,7 +67,7 @@ std::string plural_of(const std::string singular_noum, PLURALTABLE *ptable)
 	if (k1 < 0) return "";
 	
 	int k2 = ptable->base_idx[k1];
-	printf("%i %i \n", k1, k2);
+ 
 
 	return std::string(ptable->plurals[k2]);
 

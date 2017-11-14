@@ -49,14 +49,9 @@ string CBlockInterpreter::adapt_verb_inner_inner( const  string &  verb ,   stri
 	}
 
 	if (person == "default")
-	{
-		auto nn = localsEntry->resolve("viewPoint");
-		if (auto nviewPoint = asHBlockNoum(nn))
-		{
-			person = nviewPoint->named;
-		}
-		logError( " view Point Undefined");
-		return "!!!!";
+	{ 
+		logError(" view Point Undefined");
+		return "!!!!"; 
 	}
 
 	if (tense == "VBP")//non-3rd person singular present
@@ -104,8 +99,17 @@ string CBlockInterpreter::adapt_verb_inner_inner( const  string &  verb ,   stri
 
 string CBlockInterpreter::adapt_verb_inner(const  string &  verb, string   tense, string person, HRunLocalScope localsEntry)
 {
+	if (person == "default")
+	{
+		auto nn = localsEntry->resolve("viewPoint");
+		if (auto nviewPoint = asHBlockNoum(nn))
+		{
+			person = nviewPoint->named; 
+		} 
+	}
+
 	auto x = adapt_verb_inner_inner(verb, tense, person, localsEntry);
-	printf("%s  in %s  %s  = %s \n", verb.c_str(), person.c_str(), tense.c_str(), x.c_str());
+	printf("%s in %s  %s=%s\n", verb.c_str(), person.c_str(), tense.c_str(), x.c_str());
 	return x;
 }
  

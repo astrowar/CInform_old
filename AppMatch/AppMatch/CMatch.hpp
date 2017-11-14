@@ -151,8 +151,7 @@ namespace NSTerm
 			std::string repr() override;
 			virtual TermType type() override { return TermType::PredBooleanOr; }
 
-			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
-				const HPred &c_pred3);
+			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,	const HPred &c_pred3);
 
 			CPredBooleanOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
 
@@ -189,8 +188,9 @@ namespace NSTerm
 
 		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
 
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
-			const HPred &c_pred3);
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,	const HPred &c_pred3);
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3, const HPred &c_pred4 );
+		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3,const HPred &c_pred4, const HPred &c_pred5 );
 
 
 		HPred  pPreposition(const std::string &_named);

@@ -506,6 +506,16 @@ using namespace  NSMatch;
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3);
 		};
 
+		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3 , const HPred &c_pred4 ) {
+			return std::make_shared<CPredBooleanOr>(_named, std::list<HPred>({ c_pred, c_pred1, c_pred2, c_pred3, c_pred4 }));
+		};
+
+		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3, const HPred &c_pred4, const HPred &c_pred5) {
+			return std::make_shared<CPredBooleanOr>(_named, std::list<HPred>({ c_pred, c_pred1, c_pred2, c_pred3, c_pred4, c_pred5 }));
+		};
+
+
+
 		HPred pLiteral(std::string str);
 		HPred NSTerm::pPreposition(const std::string &_named ) 
 		{

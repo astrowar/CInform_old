@@ -186,7 +186,7 @@ PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, H
 
 
 
-PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
+PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
 
@@ -194,30 +194,39 @@ PhaseResult CBlockInterpreter::execute_system_action(HBlockActionCall v_call)
 	{
 	 
 		 
-		if (v_calln->action->named == "say_text")
+		if (v_calln->action->named == "say_text" || v_calln->action->named == "say")
 		{
 			 
+			if (HBlockTextSentence ntexts = asHBlockTextSentence(v_call->noum1))
+			{
+				 auto resolved_text = adapt_text(ntexts, localsEntry, stk);
+				 if (say_output)
+				 {
+					 say_output(resolved_text->contents.c_str());
+				 }
+				 else
+				 {
+					 printf("root$ %s \n", resolved_text->contents.c_str());
+				 }
+				 return PhaseResult(true);;
 
+			}
 			if (HBlockText  ntext = asHBlockText(v_call->noum1))
 			{
-				printf("root$ %s \n", ntext->contents.c_str());
+				//printf("root$ %s \n", ntext->contents.c_str());
+				if (say_output)
+				{
+					say_output(ntext->contents.c_str());
+				}
+				else
+				{
+					printf("root$ %s \n", ntext->contents.c_str());
+				}
 				return PhaseResult(true);;
 			}
 			return PhaseResult(false);
 		}
-
-		if (v_calln->action->named == "say")
-		{
-			if (HBlockText  ntext = asHBlockText(v_call->noum1))
-			{
-				printf("root$ %s \n", ntext->contents.c_str());
-				return PhaseResult(true);;
-			}
-			return PhaseResult(false);;
-		}
-
-
-
+		 
 	}
 	return PhaseResult(false);
 

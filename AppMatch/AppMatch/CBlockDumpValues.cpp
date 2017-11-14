@@ -1042,7 +1042,7 @@ void CExecutionBlock::dump(string ident) const
 
 void CBlockText::dump(string ident)
 {
-	printf("%s %s %s\n", ident.c_str(), "Text:  ", contents.c_str());
+	printf("%s %s \'%s\'\n", ident.c_str(), "Text:  ", contents.c_str());
 	CBlock::dump(ident);
 }
 

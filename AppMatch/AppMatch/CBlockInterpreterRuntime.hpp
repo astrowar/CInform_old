@@ -166,9 +166,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockKind MetaKindText;
 
 		HBlockKind MetaKindAny;
-		
-		
-		 
+		std::function<bool(std::string)>  say_output;
+
 
 		//if (asHBlockText(c)) return true;
 		//if (asHBlockNothing(c)) return true;
@@ -465,7 +464,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		PhaseResult execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 		PhaseResult execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 		PhaseResult execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
-		PhaseResult execute_system_action(HBlockActionCall v_call);
+		PhaseResult execute_system_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack* stk);
+ 
 		PhaseResult execute_user_action(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk);
 		HBlockActionCallNamed replaceByUndestandAction(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack * stk);
 		PhaseResult execute_user_action(HBlockActionCallNamed v_call, HRunLocalScope localsEntry, QueryStack *stk);

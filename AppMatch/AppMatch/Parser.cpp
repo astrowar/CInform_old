@@ -97,8 +97,13 @@ HBlock NSParser::ParseAction::sys_say_action(CParser * p, std::vector<HTerm>&  t
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals)
 	{
-		auto nterms = expandTerm(res.matchs["Body"]);
-		HBlock value = Expression::parser_expression_lst(p,nterms);		
+		//auto nterms = expandTerm(res.matchs["Body"]);
+		//HBlock value = Expression::parser_expression_lst(p,nterms);	
+		std::string ss =res.matchs["Body"]->repr();
+		 
+
+		HBlock value = Expression::parser_expression(p, res.matchs["Body"]);
+		 
 		HBlockActionNamed say_Action = std::make_shared<CBlockActionNamed>("say_text");
 		return std::make_shared<CBlockActionCallNamed>(say_Action, value, nullptr);
 	}
@@ -729,6 +734,7 @@ HBlock NSParser::Statement::parser_stmt_str(CParser * p, string str, HGroupLines
     str = decompose_bracket(str, "(");
     str = decompose_bracket(str, ")");
     str = decompose_bracket(str, ",");
+	str = decompose_bracket(str, "\"");
     std::vector<HTerm> lst = decompose(str);
     return Statement::parser_stmt_inner(p,lst,inner,err);
 }
@@ -848,6 +854,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 {
 	auto vstr = decompose_bracket(v, "(");
 	vstr = decompose_bracket(vstr, ")");
+	vstr = decompose_bracket(vstr, "\"");
 	vstr = decompose_bracket(vstr, ",");
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
