@@ -403,8 +403,8 @@ void testePlurals()
 void testeExecute5();
 int main() {
 
-	testeAdaptivePhases_all();
-    //testePhases_all();
+	//testeAdaptivePhases_all();
+    testePhases_all();
 	 
 
 	return 0;

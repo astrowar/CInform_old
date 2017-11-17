@@ -83,6 +83,9 @@ namespace CBlocking
 		HBlockPhraseHeader asHBlockPhraseHeader(CBlocking::HBlock c);		 
 		HBlockPhraseDefine asHBlockPhraseDefine(CBlocking::HBlock c);
 
+		HBlockIsAdverbialComparasion asHBlockIsAdverbialComparasion(CBlocking::HBlock c);
+		HBlockMatchIsAdverbialComparasion asHBlockMatchIsAdverbialComparasion(CBlocking::HBlock c);
+
 		HBlockVerb asHBlockVerb(CBlocking::HBlock c);
 		HBlockVerbAdapt asHBlockVerbAdapt(CBlocking::HBlock c);
 		HBlockVerbNegate asHBlockVerbNegate(CBlocking::HBlock c);

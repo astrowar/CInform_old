@@ -62,6 +62,12 @@ HBlock NSParser::Expression::parser_assertionTarger(CParser *p, HTerm term)
 HBlock   NSParser::ParseAssertion::parser_VerbAssign(CParser * p, std::vector<HTerm>& term)
 {
 
+	HBlock adVerb = parse_AssertionAdverb(p, term);
+	if (adVerb != nullptr)
+	{
+		return adVerb;
+	}
+
 	HBlock aVerb = parse_AssertionVerb(p,term);
 	if (aVerb != nullptr)
 	{
@@ -165,7 +171,10 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 		return relation_argument;
 	}
 	 
-
+	HBlock noum_decide = ParseAssertion::parse_decide_on(p, lst);
+	if (noum_decide != nullptr) {
+		return noum_decide;
+	}
  
 
     HBlock noum_Assign = ParseAssertion::parse_noum(p,lst);

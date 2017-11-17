@@ -330,6 +330,11 @@ void CBlockMatchList::dump(string ident) {
 	CBlock::dump(ident);
 }
 
+CBlockMatchList::CBlockMatchList(std::list<HBlockMatch> _matchList): CBlockMatch(), matchList(_matchList)
+{
+	printf("match list \n");
+}
+
 void CBlockMatchAND::dump(string ident)
 {
 	printf("%s %s\n",ident.c_str(), "Match AND [");
@@ -426,6 +431,18 @@ void CBlockMatchIsNotVerb::dump(string ident)
 	}
 	CBlock::dump(ident);
 }
+
+ 
+void CBlockMatchIsAdverbialComparasion::dump(string ident)
+{
+	printf("%s Match Adverb: %s\n", ident.c_str(), adverb.c_str());
+	{
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+ 
 
 void CBlockMatchProperty::dump(string ident)
 {
@@ -833,6 +850,18 @@ void CBlockIsVerb::dump(string ident) {
 		printf("%s %s\n", ident.c_str(), "related ");
 		this->n2->dump(ident + "       ");
 		CBlock::dump(ident);
+}
+
+
+void CBlocking::CBlockIsAdverbialComparasion::dump(string ident)
+{
+	printf("%s Adverb: %s\n", ident.c_str(), adverb.c_str());
+	{
+		this->n1->dump(ident + "       ");
+		printf("%s THAN\n", ident.c_str());
+		this->n2->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
 }
 
 void CBlockIsNotVerb::dump(string ident) {

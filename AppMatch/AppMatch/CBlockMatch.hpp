@@ -119,7 +119,7 @@ namespace CBlocking
 		// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
 		std::list<HBlockMatch> matchList;
 
-		CBlockMatchList(std::list<HBlockMatch> _matchList) : CBlockMatch(), matchList(_matchList) {};
+		CBlockMatchList(std::list<HBlockMatch> _matchList);;
 	};
 	using HBlockMatchList = std::shared_ptr<CBlockMatchList>;
 
@@ -298,6 +298,26 @@ namespace CBlocking
 	};
 	using HBlockMatchIsNotVerb = std::shared_ptr<CBlockMatchIsNotVerb>;
 
+
+
+	 
+	class CBlockMatchIsAdverbialComparasion : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockMatchIsAdverbialComparasion; }
+		std::string adverb;
+
+
+		CBlockMatchIsAdverbialComparasion(string _adverb, HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), adverb(_adverb) {
+			if (_adverb == "from")
+			{
+				logError("wrong");
+			}
+
+		};
+	};
+	using HBlockMatchIsAdverbialComparasion = std::shared_ptr<CBlockMatchIsAdverbialComparasion>;
 
 
 	class CBlockMatchProperty : public CBlockMatch //retorna um valor generico

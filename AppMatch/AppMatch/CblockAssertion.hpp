@@ -302,6 +302,33 @@ namespace CBlocking
 	using HBlockIsNotVerb = std::shared_ptr<CBlockIsNotVerb>;
 
 
+
+
+
+	 
+
+	class CBlockIsAdverbialComparasion : public CBlockAssertion_is    //retorna uma declaracao
+	{
+	public:
+		CBlocking::HBlock get_obj() override;
+		CBlocking::HBlock get_definition() override;
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockIsAdverbialComparasion; }
+
+		string adverb;
+		CBlocking::HBlock n1;
+		CBlocking::HBlock n2;
+
+		CBlockIsAdverbialComparasion(string _adverb, CBlocking::HBlock _n1, CBlocking::HBlock _n2) : adverb((_adverb)), n1((_n1)), n2((_n2))
+		{
+
+		};
+	};
+	using HBlockIsAdverbialComparasion = std::shared_ptr<CBlockIsAdverbialComparasion>;
+
+
+
+
 	class CBlockAssert : CBlock    //retorna uma declaracao
 	{
 	public:

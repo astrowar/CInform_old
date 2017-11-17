@@ -301,6 +301,22 @@ HBlock NSParser::ParseAssertion::sys_now_loop(CParser * p, std::vector<HTerm>&  
 	return nullptr;
 }
 
+CBlocking::HBlock NSParser::ParseAssertion::parse_decide_on(CParser * p, std::vector<std::shared_ptr<NSTerm::CTerm>> term)
+{
+	{
+		CPredSequence predList = pLiteral("decide") << pLiteral("on") << pAny("ExpressionBody");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			logMessage((res.matchs["ExpressionBody"]->repr()));
+			HBlock body = Expression::parser_expression(p, res.matchs["ExpressionBody"]);
+			return std::make_shared<CBlockToDecideOn>(body);
+		}
+	}
+	return nullptr;
+}
+
 HBlock NSParser::ParseAssertion::sys_now_action(CParser * p, std::vector<HTerm>&  term)
 {
 

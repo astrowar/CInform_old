@@ -250,6 +250,16 @@ CBlocking::HBlock CBlockIsNotVerb::get_definition()
 	return n2;
 }
 
-  
+CBlocking::HBlock CBlockIsAdverbialComparasion::get_obj()
+{
+	return n1;
+}
+
+CBlocking::HBlock CBlockIsAdverbialComparasion::get_definition()
+{
+	return n2;
+}
+
+ 
 
  

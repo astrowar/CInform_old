@@ -271,7 +271,35 @@ HBlockMatch NSParser::ExpressionMatch::parse_Which_Verb_Match(CParser *p, std::v
 }
 
 
-HBlockMatch NSParser::ExpressionMatch::parse_AssertionVerb_Match(CParser *p, std::vector<HTerm>&  term) {
+ 
+
+HBlockMatch NSParser::ExpressionMatch::parse_AssertionAdverb_Match(CParser *p, std::vector<HTerm>&  term)
+{
+	// and action applying to [one visible thing and requiring light]
+	CPredSequence predList = pAny("N1") << verb_IS() << pAny("ADV") << pLiteral("than") << pAny("N2");
+
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals) {
+		HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+		if (n1 != nullptr)
+		{
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				auto vrepr = CtoString(expandBract(res.matchs["ADV"]));
+				return std::make_shared<CBlockMatchIsAdverbialComparasion>(vrepr, n1, n2);
+
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+HBlockMatch NSParser::ExpressionMatch::parse_AssertionVerb_Match(CParser *p, std::vector<HTerm>&  term) 
+{
 	{
 		// and action applying to [one visible thing and requiring light]
 		CPredSequence predList = pAny("N1")	<<verb_IS_NOT()	<<p->verbList	<<pAny("N2");
@@ -467,6 +495,12 @@ HBlockMatch   NSParser::ExpressionMatch::parse_AssertionDirectAssign_Match(CPars
 
 HBlockMatch   NSParser::ExpressionMatch::parser_Verb_Match(CParser *p, std::vector<HTerm>&  term)
 {
+
+	HBlockMatch aDVerb = parse_AssertionAdverb_Match(p, term);
+	if (aDVerb != nullptr)
+	{
+		return aDVerb;
+	}
 
 	HBlockMatch aWVerb = parse_Which_Verb_Match(p,term);
 	if (aWVerb != nullptr)
@@ -743,6 +777,8 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 
 	HBlockMatch  rblock_dynamicEntry_1 = (DynamicDispatch_action_match(p,lst));
 	if (rblock_dynamicEntry_1 != nullptr) return rblock_dynamicEntry_1;
+
+ 
 
 	HBlockMatch rblock_assert_1 = (parser_Verb_Match(p,lst));
 	if (rblock_assert_1 != nullptr) return rblock_assert_1;

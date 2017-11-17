@@ -1156,6 +1156,115 @@ QueryResultContext CBlockInterpreter::query_decides(HBlock q, HRunLocalScope loc
 
  
 
+QueryResultContext Interpreter::CBlockInterpreter::query_comp(string cs, HBlock vr1, HBlock vr2, HRunLocalScope localsEntry, QueryStack * stk)
+{
+
+	// vr1 e vr2 sao enum do mesmo tipo ?
+	
+	if (HBlockMatchNoum mm1 = asHBlockMatchNoum(vr1))
+	{
+		auto ax = resolve_argument(mm1->inner, localsEntry, stk);
+		if (ax != nullptr)
+		{
+			if (CBlock::isSame(vr1.get(), ax.get()) == false)
+			{
+				return query_comp(cs,  ax, vr2, localsEntry, stk);
+			}
+		}
+	}
+
+
+	 if (HBlockMatchNoum mm2 = asHBlockMatchNoum(vr2))
+	 {
+		 auto ax = resolve_argument(mm2->inner, localsEntry, stk);
+		 if (ax !=nullptr)
+		 {
+			 if (CBlock::isSame( vr2.get() , ax.get() ) ==false )
+			 {
+				 return query_comp(cs, vr1, ax, localsEntry, stk);
+			 }
+		 }
+	 }
+
+	if (cs == "greater" || cs == "less")
+	{
+		if (HBlockInstanceNamed in1 = asHBlockInstanceNamed(vr1))
+		{
+			if (HBlockInstanceNamed in2 = asHBlockInstanceNamed(vr2))
+			{
+				auto k1 = in1->baseKind;
+				auto k2 = in2->baseKind;
+
+				if (HBlockKindValue kv1 = asHBlockKindValue(k1))
+					if (HBlockKindValue kv2 = asHBlockKindValue(k2))
+					{
+						bool is_equivalent = false;
+
+						if (CBlock::isSame(kv1.get(), kv2.get()))is_equivalent = true;
+						else
+						{
+							if (is_derivadeOf(k1, k2) || is_derivadeOf(k2, k1))is_equivalent = true;
+						}
+						if(is_equivalent)
+						{
+							if ((cs == "greater")&&(in1->id > in2->id)) return QueryResultContext(QEquals);
+							if ((cs == "greater") && (in1->id <= in2->id)) return QueryResultContext(QNotEquals);
+							if ((cs == "less") && (in1->id < in2->id)) return QueryResultContext(QEquals);
+							if ((cs == "less") && (in1->id >= in2->id)) return QueryResultContext(QNotEquals);
+						}
+						else
+						{
+							logError("incompatible comparasion");
+						}
+					}
+			}
+		}
+	}
+
+	// tem algum decide para isso ?
+	for (auto dctIF : decides_if)
+	{
+		if (HBlockMatchIsAdverbialComparasion  mAdvComp = asHBlockMatchIsAdverbialComparasion(dctIF->queryToMatch))
+		{
+			 
+			if (mAdvComp->adverb == cs)
+			{
+
+				auto result1 = Match(mAdvComp->obj, vr1, localsEntry, stk);
+				if (result1.hasMatch == true)
+				{
+					printf("Matched\n");
+					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result1.maptch);
+					
+					auto result2 = Match(mAdvComp->value, vr2, localsNext, stk);
+					if (result2.hasMatch == true)
+					{
+
+						HRunLocalScope localsNext_inner = std::make_shared< CRunLocalScope >(localsNext, result2.maptch);
+				 
+
+						auto r = getDecidedValue(dctIF->decideBody, localsNext_inner, stk);
+
+						if (r.result == QEquals)
+						{
+							return r;
+						}
+						return r;
+					}
+				}
+			}
+		}
+	}
+
+
+	printf("==============================\n");
+	localsEntry->dump("");
+	vr1->dump("");
+	vr2->dump("");
+
+	return QueryResultContext(QUndefined);
+}
+
 QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry ,QueryStack *stk  )
 {
  
@@ -1220,7 +1329,14 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 
 
 
-		 
+		if (HBlockIsAdverbialComparasion q_comp = asHBlockIsAdverbialComparasion (q))
+		{
+			auto vr1 = resolve_if_noum(q_comp->get_obj(), localsEntry, std::list<std::string>());
+			auto vr2 = resolve_if_noum(q_comp->get_definition(), localsEntry, std::list<std::string>());
+
+			QueryResultContext rr = query_comp( q_comp->adverb,vr1,vr2, localsEntry, stk);
+			return rr;
+		}
 
 
 	//Booleans

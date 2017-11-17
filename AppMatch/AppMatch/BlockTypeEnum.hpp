@@ -128,6 +128,8 @@ enum BlockType {
 	BlockPhraseHeader,
 	BlockTextSentence,
 	BlockVerbNegate,
-	BlockNoumSupl
+	BlockNoumSupl,
+	BlockIsAdverbialComparasion,
+	BlockMatchIsAdverbialComparasion
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

@@ -70,9 +70,26 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 {
     
 
-
 	{
-		CPredSequence predList = pLiteral("if")	<<pAny("AValue")<<p->verbList	<<pAny("BValue");
+		CPredSequence predList = pLiteral("if") << pAny("AValue") << verb_IS() << pAny("ADV") << pLiteral("than") << pAny("BValue");
+
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+
+			auto vrepr = CtoString(expandBract(res.matchs["ADV"]));
+
+			return std::make_shared<CBlockMatchIsAdverbialComparasion>(vrepr, AValue, BValue);
+		}
+	}
+	{
+		CPredSequence predList = pLiteral("if")	<<pAny("AValue")<< p->verbList	<<pAny("BValue");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)

@@ -59,6 +59,9 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 
 HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 {
+
+ 	 
+
     {
         CPredSequence predList = pAny("AValue") <<pLiteral("or") <<pAny("BValue");
 
@@ -92,7 +95,23 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 		}
 	}
 
+	{
+		CPredSequence predList = pAny("AValue") << verb_IS() << pAny("ADV") << pLiteral("than")  << pAny("BValue");
 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			auto vrepr = CtoString(expandBract(res.matchs["ADV"]));
+
+			HBlock AValue = Expression::parser_expression(p, res.matchs["AValue"]);
+			if (AValue == nullptr) return nullptr;
+
+			HBlock  BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+			if (BValue == nullptr) return nullptr;
+			return std::make_shared<CBlockIsAdverbialComparasion >(vrepr, AValue, BValue);		 
+
+		}
+	}
 
 	{
 		CPredSequence predList = pAny("AValue") <<verb_IS()	<<pLiteral("not")<<( p->verbList)	<<pAny("BValue");

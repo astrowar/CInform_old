@@ -1,4 +1,5 @@
 #include "BaseTest.hpp"
+#include <cassert>
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -54,7 +55,49 @@ to decide which text is (text called T) repeated (a color called C) times:
 }
 
 
+
+void testeParser_phase2()
+{
+
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, true), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"( 
+thing is an kind of entity
+brightness is a kind of value
+brightness  are guttering, weak, radiant and blazing
+
+To decide if ( a brightness called X ) is brighter than ( a brightness called Y ) : 
+   if X is greater than Y : decide on yes
+   decide on no
+
+To decide if ( a brightness called X ) is darker than ( a brightness called Y ) : 
+   if X is less than Y : decide on yes
+   decide on no
+
+)";
+
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+
+
+	//f_now("dig north until south  ");
+	//f_now("dig red until red  ");
+	assert(f_is("guttering is brighter than  radiant ") ==false );
+	assert(f_is("guttering is darker than  radiant ") );
+	assert(f_is("blazing is greater than  weak "));
+
+	return;
+}
+
+
+
 void testePhases_all()
 {
-	testeParser_phase1();
+	//testeParser_phase1();
+	testeParser_phase2();
 }

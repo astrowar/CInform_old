@@ -388,6 +388,20 @@ namespace CBlocking
 		}
 
 
+		HBlockIsAdverbialComparasion asHBlockIsAdverbialComparasion(CBlocking::HBlock c)
+		{
+		if (c != nullptr && c->type() == BlockType::BlockIsAdverbialComparasion)
+		return std::static_pointer_cast<CBlockIsAdverbialComparasion>(c);
+		return nullptr;
+		}
+
+		HBlockMatchIsAdverbialComparasion asHBlockMatchIsAdverbialComparasion(CBlocking::HBlock c)
+		{
+			if (c != nullptr && c->type() == BlockType::BlockMatchIsAdverbialComparasion)
+			return std::static_pointer_cast<CBlockMatchIsAdverbialComparasion>(c);
+		return nullptr;
+		}
+
 		HBlockPhraseInvoke asHBlockPhraseInvoke(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockPhraseInvoke)

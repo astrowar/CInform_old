@@ -260,6 +260,7 @@ namespace NSParser
 	    CBlocking::HBlockMatch parse_match_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
 	 
 		CBlocking::HBlockMatch  parse_Which_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
+		CBlocking::HBlockMatch parse_AssertionAdverb_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockMatch parse_AssertionVerb_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
 		std::list<CBlocking::HBlockMatch>  ToMatchListMatc(CParser *p, std::vector<NSTerm::HPred> pvector, NSTerm::NSMatch::MatchResult result);
 		CBlocking::HBlockMatch   parse_Which_DirectAssign_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
@@ -388,6 +389,7 @@ namespace NSParser
 		CBlocking::HBlockList   parseAssertionFirstTerm_COMMA_Supl(CParser * p, NSTerm::HTerm term, NSTerm::HPred sep, CBlocking::HBlockList cList);
 		CBlocking::HBlockList parseAssertionList_COMMA_neutral(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockList parseAssertionFirstTerm_COMMA_neutral(CParser * p, NSTerm::HTerm term, CBlocking::HBlockList cList);
+		CBlocking::HBlockAssertion_is parse_AssertionAdverb(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockAssertion_is  parse_AssertionVerb(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock parseAssertionFirstTerm(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock parseAssertionFirstTerm_Compose(CParser *p, NSTerm::HTerm term);
@@ -412,6 +414,7 @@ namespace NSParser
 		CBlocking::HBlock   STMT_system_Assertion(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  sys_now_action(CParser * p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock  sys_now_loop(CParser * p, std::vector<NSTerm::HTerm>&  term);
+		CBlocking::HBlock parse_decide_on(CParser* c_parser, std::vector<std::shared_ptr<NSTerm::CTerm>> lst);
 	}
 
 	namespace ParseAssertionSecondary

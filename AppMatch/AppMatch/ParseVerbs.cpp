@@ -6,7 +6,29 @@ using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 
+HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionAdverb(CParser *p, std::vector<HTerm>&  term)
+{
+	{
+		// and action applying to [one visible thing and requiring light]
+		CPredSequence predList = pAny("N1") << verb_IS() << pAny("ADV") << pLiteral("than")  << pAny("N2");
 
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlock n1 = Expression::parser_assertionTarger(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlock n2 = Expression::parser_expression(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					auto vrepr = CtoString(expandBract(res.matchs["ADV"]));
+					return std::make_shared<CBlockIsAdverbialComparasion>(vrepr, n1, n2);
+				}
+			}
+		}
+	}
+	return nullptr;
+}
 
 
 HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std::vector<HTerm>&  term)

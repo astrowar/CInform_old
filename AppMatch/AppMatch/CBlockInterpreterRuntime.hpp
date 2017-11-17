@@ -369,7 +369,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool insert_newVerb(HBlockVerb verb_dec);
 
 
-
+		QueryResultContext query_comp(string cs, HBlock vr1, HBlock vr2, HRunLocalScope shared_ptr, QueryStack* stk);
 		QueryResultContext query(HBlock q, HRunLocalScope localsEntry, QueryStack *stk);
 		QueryResultContext query(HBlock  vquery);
 		QueryResultContext query_direct_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack * stk_in);
