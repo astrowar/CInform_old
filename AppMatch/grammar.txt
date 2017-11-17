@@ -271,6 +271,20 @@ Extensao de linguagem
     "mas [noum] [é]  muito grande."
 
   
+  Superlativos
+    the largest container ...
+      to decide which container is (largest container):
+         decide by maximum container by capacity
+	 
+      to decide which container is (largest container):	 
+         let S is list of container
+	 sort S in reverse capacity order
+	 decibe by (  entry 1  of S )
+	 
+      to decide which ( K ) is maximum K by Z :	 	 
+         let S is list of K
+	 sort S in reverse Z order
+	 decibe by (  entry 1  of S )  
 
 
   
