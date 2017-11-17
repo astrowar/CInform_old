@@ -445,12 +445,27 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	{
 		if (HBlockProperty    vProp = asHBlockProperty(value))
 		{
-			QueryResultContext rProp = query_is( mProp->prop , vProp->prop, nullptr, stk);
-			if (rProp.result == QEquals)
+			if (HBlockMatch    mmmProp = asHBlockMatch(mProp->prop))
 			{
-				CResultMatch mres =  Match(mProp->obj, vProp->obj, localsEntry, stk);
-				return mres;
+				CResultMatch mres = Match(mmmProp, vProp->prop, localsEntry, stk);
+				if (mres.hasMatch)
+				{
+					auto locals_value = std::make_shared< CRunLocalScope >(localsEntry, mres.maptch);
+					CResultMatch mres_obj = Match(mProp->obj, vProp->obj, locals_value, stk);					
+					mres_obj.append(mres); 
+					return mres_obj;
+				}
 			}
+			else
+			{
+				QueryResultContext rProp = query_is(mProp->prop, vProp->prop, nullptr, stk);
+				if (rProp.result == QEquals)
+				{
+					CResultMatch mres = Match(mProp->obj, vProp->obj, localsEntry, stk);
+					return mres;
+				}
+			}
+		  
 		}
 		else
 		{
@@ -459,8 +474,6 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			for(auto &o : objList->lista )
 			{
 				HBlockProperty propToProbe =  make_shared<CBlockProperty>(mProp->prop, o);
-
-		 
 				auto prop_value =  query_is_propertyOf_value(propToProbe, value, localsEntry, stk);
 				if (prop_value.result == QEquals)
 				{

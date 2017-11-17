@@ -129,12 +129,17 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 	{
 		// Existe algum "To Say" associado com esse X
 		HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoum>("say"), nullptr, nullptr, nullptr, nullptr);
+		
+		auto ax = resolve_argument(x, localsEntry, stk);
+		if (ax != nullptr) x = ax;
 		HBlockPhraseInvoke to_say = std::make_shared<CBlockPhraseInvoke>(say_callheader, x, nullptr);
 		string xs = "";
 		bool has_call = false;
+		auto prev_hook = this->say_output;
 		this->say_output = [&](std::string a) { xs = xs + a; has_call = true;  return true; };
+		 
 		this->exec_eval(to_say, localsNext, stk);
-		this->say_output = nullptr;
+		this->say_output = prev_hook;
 		if (has_call)
 		{
 			return std::make_shared<CBlockNoumSupl>( xs , "singular", "neutral");

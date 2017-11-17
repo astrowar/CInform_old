@@ -7,7 +7,33 @@
 using namespace CBlocking;
 
 
- 
+bool QueryStack::contains_phase_execution(CBlocking::HBlock action, CBlocking::HBlock b1, CBlocking::HBlock b2)
+{
+	 
+	for (auto &e : execution_stack)
+	{
+		if (CBlock::isSame(e[0].get(), action.get()))
+		{
+
+			if (  (e[1] == nullptr && b1 == nullptr)  || CBlock::isSame(e[1].get(), b1.get()))
+			{
+				if ((e[2] == nullptr && b2 == nullptr) || CBlock::isSame(e[2].get(), b2.get()))
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+void QueryStack::add_phase_execution(CBlocking::HBlock action, CBlocking::HBlock b1, CBlocking::HBlock b2)
+{
+	std::array<HBlock, 3> x;
+	x[0] = action;
+	x[1] = b1;
+	x[2] = b2;
+	execution_stack.push_back(x);
+}
 
 void QueryStack::addQuery(string vb, HBlock b1, HBlock b2) {
 	items.push_back(QueryItem(vb, b1, b2));
@@ -86,3 +112,24 @@ std::unique_ptr<QueryStack>  generateNextStack( QueryStack  *stk_in, string _ver
 	stk->addQuery(_verb, route_object_ptr, b1, b2);
 	return stk_unique;
 }
+
+
+
+std::unique_ptr<QueryStack>  generateNextStack(QueryStack  *stk_in )
+{
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+
+	if (stk_in != nullptr)
+	{		
+		stk_unique = std::make_unique<QueryStack>(*stk_in);
+	}
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>();
+	}
+
+	QueryStack *stk = stk_unique.get();
+	
+	return stk_unique;
+}
+

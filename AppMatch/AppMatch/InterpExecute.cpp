@@ -681,10 +681,114 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 
 
 
+HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk_in)
+{
+	std::unique_ptr<QueryStack> stk_ptr = generateNextStack(stk_in);
+	QueryStack* stk = stk_ptr.get();
+	{
+		//uma acao nao pode chamar ela mesma com os mesmo argumentos 
+		for (auto ph : phrases)
+		{
+			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
 
+			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
+			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
+			{
+				if (ph->header->pred1->named != phr->header->pred1->named) continue;
+			}
+
+
+			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
+			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
+			{
+				if (ph->header->pred2->named != phr->header->pred2->named) continue;
+			}
+
+ 
+
+ 
+
+			//dois argumentos
+			if (ph->header->arg1 != nullptr && ph->header->arg2 != nullptr)
+			{
+				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
+				if (result_1.hasMatch == false)
+				{
+					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+				}
+				if (result_1.hasMatch)
+				{
+					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+					CResultMatch result_2 = this->Match(ph->header->arg2, phr->arg2, localsEntry, stk);
+
+					if (result_2.hasMatch == false)
+					{
+						auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+						result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
+					}
+
+					if (result_2.hasMatch)
+					{
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
+						localsNext->dump("");
+						return  exec_eval(ph->body, localsNext, stk);
+					}
+				}
+			}
+			//um argumento
+			if (ph->header->arg1 != nullptr && ph->header->arg2 == nullptr)
+			{
+				HBlock arg1 = phr->arg1;
+				HBlock arg2 = nullptr;
+				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
+				if (result_1.hasMatch == false)
+				{
+					arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+				}
+				  
+
+				if (result_1.hasMatch)
+				{
+					if (stk->contains_phase_execution(ph, arg1, arg2) == false)
+					{
+						stk->add_phase_execution(ph,  arg1,  arg2);
+						printf("-------------------------------\n");
+						ph->dump("");
+						if ( arg1 != nullptr)  arg1->dump("");
+				 
+						printf("\n");
+
+
+
+						auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+						//localsNext->dump("");
+						//ph->body->dump("B ");
+						//return  exec_eval(ph->body, localsNext, stk);
+						auto q = execute_now(ph->body, localsNext, stk);
+						if (q.hasExecuted)
+						{
+							return Nothing;
+						}
+					}
+
+				}
+
+			}
+
+		}
+		return nullptr;
+	}
+}
 
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
+	 
 
 	if (c_block == nullptr)
 	{
@@ -1024,85 +1128,8 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
  
 	if (HBlockPhraseInvoke phr = asHBlockPhraseInvoke(c_block))
 	{
-		for (auto ph : phrases)
-		{
-			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
-
-			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
-			{
-				if (ph->header->pred1->named !=  phr->header->pred1->named) continue;
-			}
-
-
-			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
-			{
-				if (ph->header->pred2->named != phr->header->pred2->named) continue;
-			}
-
-
-		 
-			//dois argumentos
-			if (ph->header->arg1 !=nullptr && ph->header->arg2 !=nullptr)
-			{
-				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
-				if (result_1.hasMatch == false)
-				{
-					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-				}
-				if (result_1.hasMatch)
-				{
-					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-					CResultMatch result_2 = this->Match(ph->header->arg2, phr->arg2, localsEntry, stk);
-
-					if (result_2.hasMatch ==false )
-					{
-						auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
-						result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk); 
-					}
-
-					if (result_2.hasMatch)
-					{
-						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
-						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
-						localsNext->dump("");
-						return  exec_eval(ph->body, localsNext, stk);
-					}
-				}
-			}
-			//um argumento
-			if (ph->header->arg1 != nullptr && ph->header->arg2 == nullptr)
-			{
-				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
-				if (result_1.hasMatch == false)
-				{
-					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-				}
-				if (result_1.hasMatch)
-				{
-					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch); 
-					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);				 
-					//localsNext->dump("");
-					//ph->body->dump("B ");
-					//return  exec_eval(ph->body, localsNext, stk);
-					auto q = execute_now(ph->body, localsNext, stk);
-					if (q.hasExecuted)
-					{
-						return Nothing;
-					}
-					
-
-				}
-
-			}
-
-		}
-		return nullptr;
+		return disptch_action_call(phr, localsEntry, stk);
+	 
 	}
 
 	for (auto cc : constant_assignments)
@@ -1452,6 +1479,19 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 		return resolve_argument_match(value_2, localsEntry, stk);
 	}
 	
+	if (HBlockProperty nnoum_p = DynamicCasting::asHBlockProperty(value))
+	{
+		HBlock resolved_obj = resolve_argument(nnoum_p->obj, localsEntry,stk);
+		if (resolved_obj != nullptr)
+		{
+		   auto tmp = std::make_shared<CBlockProperty>(nnoum_p->prop, resolved_obj);
+		   auto prop_value =  exec_eval_internal(tmp, localsEntry, stk);
+		   if (prop_value != nullptr) return  prop_value;
+		   return tmp;
+		}
+		 
+	}
+
 
 	if (HBlockNoum nnoum_2 = DynamicCasting::asHBlockNoum(value_2))
 	{

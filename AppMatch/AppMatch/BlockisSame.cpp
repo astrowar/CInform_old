@@ -79,6 +79,48 @@ bool isSame_BlockText(CBlockText* b1, CBlockText* b2)
 	return a1==a2;
 }
  
+ 
+bool isSame_BlockPhraseDefine(CBlockPhraseDefine* b1, CBlockPhraseDefine* b2)
+{
+	if (CBlock::isSame(b1->header.get(), b2->header.get()) == false) return false;
+
+	if (CBlock::isSame(b1->body.get() , b2->body.get()) == false) return false;
+
+	return true;
+}
+
+
+bool isSame_BlockPhraseHeader(CBlockPhraseHeader* b1, CBlockPhraseHeader* b2)
+{
+
+	if (CBlock::isSame(b1->verb.get(), b2->verb.get()) == false) return false;
+
+	if (b1->arg1.get() != nullptr && b2->arg1.get() != nullptr)
+	{
+		if (CBlock::isSame(b1->arg1.get(), b2->arg1.get()) == false) return false;
+	}
+	if (b1->arg2.get() != nullptr && b2->arg2.get() != nullptr)
+	{
+		if (CBlock::isSame(b1->arg2.get(), b2->arg2.get()) == false) return false;
+	}
+
+	if (b1->arg1.get() == nullptr && b2->arg1.get() != nullptr) return false;
+	if (b1->arg1.get() != nullptr && b2->arg1.get() == nullptr) return false;
+	if (b1->arg2.get() == nullptr && b2->arg2.get() != nullptr) return false;
+	if (b1->arg2.get() != nullptr && b2->arg2.get() == nullptr) return false;
+
+	if (b1->pred1.get() == nullptr && b2->pred1.get() != nullptr) return false;
+	if (b1->pred1.get() != nullptr && b2->pred1.get() == nullptr) return false;
+	if (b1->pred2.get() == nullptr && b2->pred2.get() != nullptr) return false;
+	if (b1->pred2.get() != nullptr && b2->pred2.get() == nullptr) return false;
+
+
+	if (CBlock::isSame(b1->pred1.get(), b2->pred1.get()) == false) return false;
+	if (CBlock::isSame(b1->pred2.get(), b2->pred2.get()) == false) return false;
+
+	return true;
+}
+
 
 bool isSame_BlockList_AND(CBlockList* b1, CBlockList* b2)
 {
@@ -230,7 +272,8 @@ bool isSame_BlockMatchList(CBlockMatchList  * b1, CBlockMatchList* b2)
 	if (b1->type() == BlockKindOf)   return false;
 
 	if (b1->type() == BlockText)   return isSame_BlockText(static_cast<CBlockText*>(b1), static_cast<CBlockText*>(b2)); ;
-
+	if (b1->type() == BlockPhraseDefine)   return isSame_BlockPhraseDefine(static_cast<CBlockPhraseDefine*>(b1), static_cast<CBlockPhraseDefine*>(b2)); ;
+	if (b1->type() == BlockPhraseHeader)   return isSame_BlockPhraseHeader(static_cast<CBlockPhraseHeader*>(b1), static_cast<CBlockPhraseHeader*>(b2)); ;
 	b1->dump("");
 	b2->dump("");
 
