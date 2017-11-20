@@ -226,6 +226,10 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	HBlock rblock_decide_1 = (ParseAssertion::STMT_Decide_Assertion(p,lst, inner, err));
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 
+	HBlock rblock_phrase_1 = (ParseAssertion::STMT_Declare_Phrase(p, lst, inner, err));
+	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
+
+
     HBlock rblock_verb_1n = (Verbal::STMT_verb_Assertion_N(p,lst ));
     if (rblock_verb_1n != nullptr) return rblock_verb_1n;
 

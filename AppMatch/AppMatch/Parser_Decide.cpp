@@ -215,7 +215,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match != nullptr)
 				{
-
+					 
 					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 					return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
@@ -225,7 +225,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 		}
 
 
-		///
+	
 
 		{
 			// to doing somthig with another thing

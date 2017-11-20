@@ -90,6 +90,9 @@
     <ClCompile Include="..\AppMatch\StaticDispatchFunctions.cpp">
       <Filter>Source\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\AppMatch\Parse_PhraseDeclare.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AppMatch\CResultMatch.hpp">

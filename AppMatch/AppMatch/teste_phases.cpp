@@ -115,7 +115,7 @@ color is a kind of value
 color  are red and blue
 brightness has a color called colour
 colour of radiant is red
-To decide which  ( X ) is related (P)  by  ( Y ) :    
+To decide which  ( X ) is related ( P )  by  ( Y ) :    
    decide on P of Y
 
 )";
@@ -126,9 +126,38 @@ To decide which  ( X ) is related (P)  by  ( Y ) :
 	return;
 }
 
+
+void testeParser_phase4()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, true), nullptr, nullptr).result == QEquals; };
+	std::function<HBlock(std::string)> f_eval = [&](std::string a) { return  interpreter->exec_eval(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr); };
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
+
+	string ss1 =
+		R"( 
+container is an kind of entity
+ 
+to sort (S) in reverse (Z) order :
+  try say "sorted [S]"
+
+to sort (list called L):
+  say "nada"
+ 
+
+)";
+
+	interpreter->execute_init(ParseText::parser_text(&parse, ss1, true));
+	f_eval("sort \"container\" in reverse kind order ")->dump("");
+
+	return;
+}
+
 void testePhases_all()
 {
 	//testeParser_phase1();
 	//testeParser_phase2();
-	testeParser_phase3();
+	//testeParser_phase3();
+	testeParser_phase4();
 }

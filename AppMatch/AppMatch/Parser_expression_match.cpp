@@ -85,6 +85,93 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 	}
 
 
+	{
+		CPredSequence predList = pLiteral("(") << pWord("VAR") << pLiteral(")");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+			string str = res.matchs["VAR"]->repr();
+			if (isupper(str[0]) && str.size() < 2)
+			{
+				HBlockMatch c1 = std::make_shared<CBlockMatchAny>();
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(str, c1);
+				return n1;
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pWord("W1") << pAny("W2") << pAny("W3") << pAny("W4");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			auto w1 = parser_MatchArgument(p, res.matchs["W1"]);
+			if (w1 != nullptr)
+			{
+				auto w2 = parser_MatchArgument(p, res.matchs["W2"]);
+				if (w2 != nullptr)
+				{
+					auto w3 = parser_MatchArgument(p, res.matchs["W3"]);
+					if (w3 != nullptr)
+					{
+						auto w4 = parser_MatchArgument(p, res.matchs["W4"]);
+						if (w4 != nullptr)
+						{
+							return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ w1, w2, w3 , w4 }));
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pWord("W1") << pAny("W2") << pAny("W3");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			auto w1 = parser_MatchArgument(p, res.matchs["W1"]);
+			if (w1 != nullptr)
+			{
+				auto w2 = parser_MatchArgument(p, res.matchs["W2"]);
+				if (w2 != nullptr)
+				{
+					auto w3 = parser_MatchArgument(p, res.matchs["W3"]);
+					if (w3 != nullptr)
+					{
+						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>( { w1, w2, w3 }));
+					}
+				}
+			}
+		}
+	}
+
+	{
+		CPredSequence predList = pWord("W1") <<  pAny("W2");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			auto w1 = parser_MatchArgument(p, res.matchs["W1"]);
+			if (w1 != nullptr)
+			{
+				auto w2 = parser_MatchArgument(p, res.matchs["W2"]);
+				if (w2 != nullptr)
+				{
+					 
+					 
+					{
+						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ w1, w2  }));
+					}
+				}
+			}
+		}
+	}
+
+
+
 
 
 	//std::cout << "Argument:  " <<  (term)->repr() << std::endl;
@@ -93,6 +180,16 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 	{
 		return nullptr;
 	}
+
+
+	 
+	if (isupper(sNoum[0]) && sNoum.size() < 2)
+	{
+		HBlockMatch c1 = std::make_shared<CBlockMatchAny>();
+		HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(sNoum, c1);
+		return n1;
+	}
+
 	return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(sNoum));
 	return nullptr;
 }

@@ -150,6 +150,7 @@
     <ClCompile Include="..\AppMatch\Parser_RegisterVerb.cpp" />
     <ClCompile Include="..\AppMatch\Parser_VerbTable_en.cpp" />
     <ClCompile Include="..\AppMatch\ParseVerbs.cpp" />
+    <ClCompile Include="..\AppMatch\Parse_PhraseDeclare.cpp" />
     <ClCompile Include="..\AppMatch\Parse_TokensGroup.cpp" />
     <ClCompile Include="..\AppMatch\StaticDispatchFunctions.cpp" />
   </ItemGroup>

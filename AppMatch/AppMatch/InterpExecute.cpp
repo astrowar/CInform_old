@@ -1151,7 +1151,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (auto t = asHBlockTryCall(c_block))
 	{
-		execute_now(t->sentence);
+		execute_now(t->sentence, localsEntry);
 		return Nothing;
 	}
 

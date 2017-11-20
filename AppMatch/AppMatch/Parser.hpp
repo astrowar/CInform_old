@@ -418,6 +418,7 @@ namespace NSParser
 		CBlocking::HBlock  sys_now_action(CParser * p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock  sys_now_loop(CParser * p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock parse_decide_on(CParser* c_parser, std::vector<std::shared_ptr<NSTerm::CTerm>> lst);
+		CBlocking::HBlock STMT_Declare_Phrase(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo * err);
 	}
 
 	namespace ParseAssertionSecondary
