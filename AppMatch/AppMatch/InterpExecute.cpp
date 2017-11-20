@@ -1116,12 +1116,21 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		 {
 			 auto b = std::make_shared<CBlockProperty>(kprop->prop, obj);
 
+			 if (HBlockNoum pNoum = asHBlockNoum(kprop->prop))
+			 if (localsEntry != nullptr)
+			 {
+				 auto next_prop = localsEntry->resolve(pNoum->named);
+				 if (next_prop != nullptr)
+				 {
+					 b->prop = next_prop;
+				 }
+			 }
 
 			 //printf("------------------------------\n");
 			 //b->dump("");
 			 //kprop->obj->dump("");
-			 return  exec_eval(b, localsEntry, stk);
-
+			 auto pres =   exec_eval(b, localsEntry, stk);
+			 return pres;
 		 }
 	}
 	
@@ -1151,6 +1160,21 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	// Bla ! 
 	c_block->dump("");
 	//throw "Unhandle CBlock";
+
+	if (auto nn = asHBlockNoum(c_block))
+	{
+		HBlock  lnoum = nullptr;
+		if (localsEntry != nullptr )  lnoum = localsEntry->resolve(nn->named);
+		auto xs = resolve_noum(nn, localsEntry);
+		if (xs == nullptr)
+		{
+			if (lnoum != nullptr) return lnoum; 
+		}
+		else
+		{
+			return xs;
+		}
+	}
 
 	return nullptr;
 }
@@ -1457,6 +1481,12 @@ HBlockMatch CBlockInterpreter::resolve_argument_match(HBlock  value, HRunLocalSc
 		}
 		 
 		 
+	}
+
+
+	if (HBlockMatchAny aa = DynamicCasting::asHBlockMatchAny(value))
+	{
+		return aa;
 	}
 
 	value->dump("uR");

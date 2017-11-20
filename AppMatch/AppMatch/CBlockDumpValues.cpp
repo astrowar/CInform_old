@@ -291,6 +291,26 @@ matchInner(_matchInner)
 
 }
 
+CBlockMatchNoum::CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inner) 
+{
+	assert(_inner->named != "not");
+	assert(_inner->named != "the");
+	assert(_inner->named != "a");
+	assert(_inner->named != "an");
+	assert(_inner->named != "is");
+	assert(_inner->named[0] != '[');
+	assert(_inner->named[0] != '(');
+	
+	//std::list<std::string> vlist = std::list<std::string>({ "above", "across", "after", "against", "along", "among", "around","at", "before", "behind", "below", "beneath", "beside", "between", "things", "by", "down", "for", "from", "originates", "in", "inside", "into", "near", "off", "on", "onto", "opposite", "out", "outside", "over", "past", "round", "through", "throughout", "to", "towards", "under", "underneath", "up" ,"until" });
+	//for (auto &s : vlist)
+	//{
+	//	assert(s != _inner->named);
+	//}
+
+	inner->dump("");
+};
+
+
 
 
 void CBlockMatchNoum::dump(string ident)

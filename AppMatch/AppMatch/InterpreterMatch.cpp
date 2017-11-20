@@ -247,7 +247,148 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 	return CResultMatch(false); 
 }
  
+std::vector<std::string> split_string_comb(const std::string& str, const std::string& delimiter)
+{
+	std::vector<std::string> strings;
 
+	std::string::size_type pos = 0;
+	std::string::size_type prev = 0;
+	while ((pos = str.find(delimiter, prev)) != std::string::npos)
+	{
+		strings.push_back(str.substr(prev, pos - prev));
+		prev = pos + 1;
+	}
+
+	// To get the last substring (or only, if delimiter is not found)
+	strings.push_back(str.substr(prev));
+
+	return strings;
+}
+
+std::string joint_terms(const std::vector<std::string>&  x, int i1, int i2)
+{
+	std::string acc = "";
+	for (int i = i1; i < i2; ++i)
+	{
+		if (i != i1) acc = acc + " ";
+		acc = acc + x[i];
+	}
+	return acc;
+}
+
+CResultMatch  apply_string_combinatoria_4(const std::vector<std::string>&  x, std::function<CResultMatch(std::vector<std::string>)> f_combinatoria)
+{
+	int xn = x.size();
+	for (int i1 = 0; i1 < xn - 3; ++i1)
+		for (int i2 = i1 + 1; i2 < xn - 2; ++i2)
+			for (int i3 = i2 + 1; i3 < xn-1; ++i3)
+				for (int i4= i3 + 1; i4 < xn; ++i4)
+			{
+				std::vector<std::string> args = { joint_terms(x, i1, i2) , joint_terms(x, i2, i3) , joint_terms(x, i3, i4) , joint_terms(x, i4, xn) };
+				CResultMatch r = f_combinatoria(args);
+				if (r.hasMatch) return r;
+			}
+	return   CResultMatch(false);
+}
+
+
+CResultMatch  apply_string_combinatoria_3(const std::vector<std::string>&  x, std::function<CResultMatch(std::vector<std::string>)> f_combinatoria)
+{
+	int xn = x.size();
+	for (int i1 = 0; i1 < xn - 2; ++i1)
+		for (int i2 = i1 + 1; i2 < xn-1; ++i2)
+			for (int i3 = i2 + 1; i3 < xn; ++i3)
+		{
+			std::vector<std::string> args = { joint_terms(x, i1, i2) , joint_terms(x, i2, i3) , joint_terms(x, i3, xn) };
+			CResultMatch r = f_combinatoria(args);
+			if (r.hasMatch) return r;
+		}
+	return   CResultMatch(false);
+}
+
+
+CResultMatch  apply_string_combinatoria_2(const std::vector<std::string>&  x,   std::function<CResultMatch(std::vector<std::string>)> f_combinatoria)
+{
+	int xn = x.size();
+	for (int i1 = 0; i1 < xn - 1; ++i1)
+		for (int i2 = i1+1; i2 < xn ; ++i2)
+		{
+			std::vector<std::string> args = { joint_terms(x, i1, i2) , joint_terms(x, i2, xn) };
+			CResultMatch r =  f_combinatoria(args);
+			if (r.hasMatch) return r;
+		}
+	return   CResultMatch(false);
+}
+
+CResultMatch  apply_string_combinatoria(string str, int n, std::function<CResultMatch(std::vector<std::string>)> f_combinatoria)
+{
+	if (n == 1) return f_combinatoria({ str });
+	std::vector<std::string>  x = split_string_comb(str, " ");
+
+	if (x.size() < n) return   CResultMatch(false);
+	if (x.size() == n) return   f_combinatoria(x);
+	 
+	
+	if (n == 2) return apply_string_combinatoria_2(x,f_combinatoria);
+	if (n == 3) return apply_string_combinatoria_3(x, f_combinatoria);
+	if (n == 4) return apply_string_combinatoria_4(x, f_combinatoria);
+ 
+	return   CResultMatch(false);
+}
+
+CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockNoum n, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	//de alguma forma n eh uma combinacao de termos que dao match em Ms
+	if (Ms->matchList.size() == 0) return CResultMatch(false);
+	if (Ms->matchList.size() == 1) return Match(Ms->matchList.front(), n, localsEntry, stk);
+
+	std::vector<HBlockMatch > mvec = std::vector<HBlockMatch >(Ms->matchList.begin(), Ms->matchList.end());
+
+	std::function<CResultMatch(std::vector<std::string> )> f_combinatoria = [&](std::vector<std::string> a)
+	{ 
+		//compara os noums primeiro
+
+		printf("> ");
+		for (int i = 0; i < mvec.size(); ++i)
+		{
+			printf("|%s", a[i].c_str());
+		}
+		printf("\n");
+
+		for (int i = 0; i < mvec.size(); ++i)
+		{
+			if (HBlockMatchNoum vn = asHBlockMatchNoum(mvec[i]))
+			{
+				if (isSameString(a[i], vn->inner->named ) ==false ) return CResultMatch(false);
+			}
+		}
+
+		auto locals_value = localsEntry;
+		std::map<string, CBlocking::HBlock> accum_vars;
+
+		CResultMatch acc_result  =   CResultMatch(true);
+		for (int i = 0; i < mvec.size(); ++i)
+		{
+			if ( asHBlockMatchNoum(mvec[i]) ==nullptr)			 
+			{
+				auto mres = Match(mvec[i], std::make_shared<CBlockNoum>(a[i]), locals_value, stk);
+				if (mres.hasMatch == false)
+				{
+					return CResultMatch(false);
+				}
+//				for (auto x : mres.maptch) accum_vars[x.first] = x.second;
+				acc_result.append(mres);
+				locals_value = std::make_shared< CRunLocalScope >(locals_value, mres.maptch); // ajusta para o proximo 
+			}
+		}
+		return acc_result;
+	};
+
+	return apply_string_combinatoria(n->named, Ms->matchList.size(), f_combinatoria);
+
+
+	return CResultMatch(false);
+}
 
 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
@@ -400,6 +541,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 					return CResultMatch(true);
 				}
 			} 
+		}
+		else
+		{
+			if (HBlockNoum   noumCompound = asHBlockNoum(value))
+			{
+				return MatchListCombinaria(mList, noumCompound, localsEntry, stk);
+			}
 		}
 		return CResultMatch(false);
 	}

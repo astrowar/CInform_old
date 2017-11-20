@@ -188,6 +188,30 @@ HBlockMatchNoum NSParser::ExpressionMatch::parse_match_SigleNoum(CParser *p, HTe
 }
 
 
+ 
+HBlockMatch NSParser::ExpressionMatch::parse_match_muteVariable(CParser *p, std::vector<HTerm>&  term)
+{
+
+	{
+		CPredSequence predList = CPredSequence(pWord("VAR"));
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+			string str = res.matchs["VAR"]->repr();
+			if (isupper(str[0]) && str.size() < 2)
+			{
+				HBlockMatch c1 = std::make_shared<CBlockMatchAny>();
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(str, c1);
+				return n1;
+			}
+		}
+	}
+
+	return nullptr;
+
+}
+
 HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<HTerm>&  term) {
 	
 	
@@ -608,7 +632,8 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	{
 		return nullptr;
 	}
-
+	if (sNoum == "(") return nullptr;
+	if (sNoum == ")") return nullptr;
 	auto nn =  std::make_shared<CBlockNoum>(sNoum);
 	return std::make_shared<CBlockMatchNoum>(nn);
 }
@@ -792,6 +817,33 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 	return nullptr;
 }
 
+HBlockMatch NSParser::ExpressionMatch::parse_APreposition(CParser *p, std::vector<HTerm>&     term)
+{
+	CPredSequence predList = pAny("N1") <<  pPreposition("prep") <<  pAny("N2");
+
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals) {
+
+		auto s1 = res.matchs["N1"]->repr();
+		auto s2 = res.matchs["N2"]->repr();
+		printf("%s P %s\n", s1.c_str(), s2.c_str());
+
+		HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+		if (n1 != nullptr)
+		{
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				auto vrepr = CtoString(expandBract(res.matchs["prep"]));				
+				auto mPP = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(vrepr));
+
+				return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, mPP, n2 });
+			}
+		}
+	}
+	return nullptr;
+}
+ 
 
  
 HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::vector<HTerm>&    lst)
@@ -813,7 +865,11 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 		return noum_propOF;
 	}
 
-	 
+ 
+	HBlockMatch maprep = parse_APreposition(p, lst);
+	if (maprep != nullptr) {
+		return maprep;
+	}
 
 	HBlockMatch arg_Assign = parser_MatchArgument(p,lst);
 	if (arg_Assign != nullptr) {
@@ -830,6 +886,11 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 	HBlockMatch list_Assign = parse_match_list(p,lst);
 	if (list_Assign != nullptr) {
 		return list_Assign;
+	}
+
+	HBlockMatch muteVariable_Assign = parse_match_muteVariable(p, lst);
+	if (muteVariable_Assign != nullptr) {
+		return muteVariable_Assign;
 	}
 
 	HBlockMatch noum_Assign = parse_match_noum(p,lst);

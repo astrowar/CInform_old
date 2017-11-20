@@ -257,7 +257,8 @@ namespace NSParser
 
 	    CBlocking::HBlockMatchProperty parse_PropertyOf_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockMatchNoum parse_match_SigleNoum(CParser * p, NSTerm::HTerm term);
-	    CBlocking::HBlockMatch parse_match_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlockMatch parse_match_muteVariable(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlockMatch parse_match_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
 	 
 		CBlocking::HBlockMatch  parse_Which_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch parse_AssertionAdverb_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
@@ -272,6 +273,8 @@ namespace NSParser
 		CBlocking::HBlockMatchList parse_match_comma_list(CParser * p, std::vector<NSTerm::HTerm>& term);
 		 
 		CBlocking::HBlockMatch    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
+
+	    CBlocking::HBlockMatch parse_APreposition(CParser * p, std::vector<NSTerm::HTerm>& term);
 
 
 

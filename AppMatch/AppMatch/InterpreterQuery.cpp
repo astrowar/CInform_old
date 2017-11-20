@@ -1258,7 +1258,7 @@ QueryResultContext Interpreter::CBlockInterpreter::query_comp(string cs, HBlock 
 
 
 	printf("==============================\n");
-	localsEntry->dump("");
+	if(localsEntry!=nullptr)localsEntry->dump("");
 	vr1->dump("");
 	vr2->dump("");
 
@@ -1332,7 +1332,10 @@ QueryResultContext CBlockInterpreter::query(HBlock q, HRunLocalScope localsEntry
 		if (HBlockIsAdverbialComparasion q_comp = asHBlockIsAdverbialComparasion (q))
 		{
 			auto vr1 = resolve_if_noum(q_comp->get_obj(), localsEntry, std::list<std::string>());
+			if (vr1 == nullptr && q_comp->get_obj() != nullptr) vr1 = q_comp->get_obj();
+
 			auto vr2 = resolve_if_noum(q_comp->get_definition(), localsEntry, std::list<std::string>());
+			if (vr2 == nullptr && q_comp->get_definition() != nullptr) vr2 = q_comp->get_definition();
 
 			QueryResultContext rr = query_comp( q_comp->adverb,vr1,vr2, localsEntry, stk);
 			return rr;

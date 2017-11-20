@@ -245,6 +245,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CResultMatch MatchList(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStack *stk);
 		CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk);
 		CResultMatch Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
+		CResultMatch MatchListCombinaria(HBlockMatchList Ms, HBlockNoum n, HRunLocalScope localsEntry, QueryStack * stk);
 		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStack *stk);
 
 

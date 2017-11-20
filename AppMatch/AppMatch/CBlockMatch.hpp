@@ -61,7 +61,7 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchNoum; }
 		HBlockNoum  inner;
-		CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inner) {};
+		CBlockMatchNoum(HBlockNoum _inner);
 	};
 	using HBlockMatchNoum = std::shared_ptr<CBlockMatchNoum>;
 
