@@ -210,6 +210,16 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 
 	}
 
+	if (auto ntxt = asHBlockText(x))
+	{
+		return std::make_shared<CBlockNoumSupl>(ntxt->contents, "singular", "neutral");
+	}
+	if (auto nstxt = asHBlockTextSentence(x))
+	{
+		HBlockText ntxt = adapt_text(nstxt, localsEntry, stk);
+		return std::make_shared<CBlockNoumSupl>(ntxt->contents, "singular", "neutral");
+	}
+
 	return std::make_shared<CBlockNoumSupl>( "###", "singular", "neutral");
 }
 
@@ -227,10 +237,15 @@ HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScop
 	bool starting = true;
 	for(auto t : texts->contents)
 	{
-		if (HBlockText tx = asHBlockText(t)) s = s + tx->contents;
+		if (HBlockText tx = asHBlockText(t))
+		{
+			s = s + tx->contents;
+		}
 		else
 		{
 			auto nx = textual_representation(t,person, number , gender,  localsEntry, stk);
+			 
+
 			//nx->dump("+ ");
 			if (starting == false) s = s + " ";
 			s = s +  nx->named;
