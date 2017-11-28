@@ -404,7 +404,9 @@ void testeExecute5();
 int main() {
 
 	//testeAdaptivePhases_all();
-    testePhases_all();
+    // testePhases_all();
+
+	testeGM_all();
 	 
 
 	return 0;

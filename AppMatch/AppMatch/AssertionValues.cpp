@@ -43,6 +43,11 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
         }
 
     }
+	if (existSymbol(called))
+	{
+		logError("Symbol alread exist \n");
+		return pair<HBlockKind, HBlockKind>( nullptr,nullptr);;
+	}
 	addSymbol(called, b);
     return pair<HBlockKind, HBlockKind>(b, bup);
 

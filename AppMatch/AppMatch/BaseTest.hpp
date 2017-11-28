@@ -72,3 +72,4 @@ void testeLogical_All();
 void testeComposition_all();
 void testePhases_all();
 void testeAdaptivePhases_all();
+void testeGM_all();

@@ -1009,6 +1009,12 @@ bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
 	return true;
 }
 
+bool Interpreter::CBlockInterpreter::existSymbol(string cs)
+{
+	for (auto s : symbols) if (s.first == cs) return true;
+	return false;
+}
+
 void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
 {
 	if (isReservedWord(cs))
@@ -1022,9 +1028,27 @@ void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
 	symbols.emplace_back(cs, value);
 }
 
+
+
 bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 {
-	std::string vstr = HtoString(value->verbNoum);
+	HBlock   verb = value->verbNoum;
+	if (HBlockList    v_list = DynamicCasting::asHBlockList(value->verbNoum))
+	{
+		if (v_list->lista.empty())
+		{
+			logError("Verb is empty ");
+			return false;
+		}
+		//limpa os to be na frente
+		while (v_list->lista.empty() == false && (HtoString(v_list->lista.front()) == "to")) v_list->lista.pop_front();
+		while (v_list->lista.empty() == false && (HtoString(v_list->lista.front()) == "be")) v_list->lista.pop_front();
+		
+		verb = v_list ;
+	}
+	 
+
+	std::string vstr = HtoString(verb);
 	//verifica se ja existe esse verbo
 
 	auto vfind = verbAssertation.find(vstr);

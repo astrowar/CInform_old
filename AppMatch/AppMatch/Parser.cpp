@@ -28,6 +28,8 @@ using namespace NSTerm::NSMatch;
 
 NSParser::CParser::CParser( ) {
     
+
+	blank_line = std::make_shared<CBlockNothing>("Blank Line");
     {
         std::list<HPred> alist;
         verbList = std::make_shared<CPredBooleanOr>("verbList", alist);
@@ -686,8 +688,14 @@ HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, H
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
+
+			auto propName = CtoString(expandBract(res.matchs["propName"]));
+
             HBlockNoum a = std::make_shared<CBlockNoum>(res.matchs["kindName"]->repr());
-            HBlockNoum b = std::make_shared<CBlockNoum>(res.matchs["propName"]->repr());
+            //HBlockNoum b = std::make_shared<CBlockNoum>(res.matchs["propName"]->repr());
+
+			HBlockNoum b = std::make_shared<CBlockNoum>(propName);
+
             return std::make_shared<CBlockInstanceVariable>(a, b);
         }
 
@@ -866,26 +874,41 @@ std::vector<string>  split_new_lines(const string &str)   {
    return sentences;
 }
  
- HBlock  NSParser::Statement::parser_GroupLine(CParser * p, std::string v , HGroupLines inner, ErrorInfo *err)
+ HBlock  NSParser::Statement::parser_GroupLine(CParser * p, string v , HGroupLines inner, ErrorInfo *err)
 {
+    v.erase(std::remove(v.begin(), v.end(), '\r'), v.end());
+
+	while (v.empty()==false && v.back() == ' ') v.pop_back();
+	while (v.empty() == false && v.back() == '.') v.pop_back();
+	
+	if (v.empty()) return p->blank_line; 
+
 	auto vstr = decompose_bracket(v, "(");
 	vstr = decompose_bracket(vstr, ")");
 	vstr = decompose_bracket(vstr, "\"");
 	vstr = decompose_bracket(vstr, ",");
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
-	 
-	HBlock  rblock_stmt = parser_stmt_inner (p,lst, inner , err);
-	if (rblock_stmt ==nullptr)
+
+	if (lst.size() == 0)
 	{
-		logError("|" + vstr+"|");
-		logError("parser Error :" + v );
+		return p->blank_line;
 	}
+	 
+	HBlock  rblock_stmt = parser_stmt_inner(p , lst , inner , err);
 	if (err->hasError)
 	{
 		logError("parser Error :" + v);
 		return nullptr;
 	}
+
+	if (rblock_stmt ==nullptr)
+	{
+		//err->setError("parser Error :" + v);
+		return nullptr;
+		
+	}
+	
 	return rblock_stmt;
 }
 
@@ -909,15 +932,14 @@ std::vector<string>  split_new_lines(const string &str)   {
 			 
 		 
 			blk = parser_GroupLine(p,rawLine, _inner, err);
-			if (blk == nullptr)
-			{
-			
+			if (blk == p->blank_line) continue;
+			if (blk == nullptr && err->hasError ==false )
+			{			
 				logError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
 				err->setError("Parser Error at " + std::to_string(inner->lines.front().linenumber));
 				return nullptr;
 			}
-
-			if (err->hasError)
+			else if (err->hasError)
 			{
 				 
 				logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));
@@ -986,7 +1008,8 @@ HBlock NSParser::ParseText::parser_text(CParser *p, string str, bool dump )
     }
     else
     {
-        printf("Parser Error\n");
+        printf("File Error\n");
+
     }
     return b;
 }

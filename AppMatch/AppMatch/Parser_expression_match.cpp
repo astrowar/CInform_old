@@ -233,8 +233,26 @@ HBlockMatchIs NSParser::ExpressionMatch::parserMatchIsCondition(CParser *p, HTer
 {
 	// Funcao Complexa ... determina todos os tipos de condicoes, tipo um Regex 
 	//Default is a direct Asign
+
 	{
-		CPredSequence predList = pAny("MatchBody")<<verb_IS()	<<pAny("valueToCheck");
+		CPredSequence predList = undefinedArticle() << pAny("MatchBody") << verb_IS() << pAny("valueToCheck");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			
+			HBlockMatch body = parser_MatchArgument(p, res.matchs["MatchBody"]);
+			//HBlockMatchNamed mbody = std::make_shared<CBlockMatchNamed>("it", body);
+			HBlockMatch value = parser_MatchArgument(p, res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				return std::make_shared<CBlockMatchDirectIs>(body, value);
+			}
+		}
+	}
+
+
+
+	{
+		CPredSequence predList = pAny("MatchBody")<< verb_IS()	<<pAny("valueToCheck");
 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
@@ -245,6 +263,9 @@ HBlockMatchIs NSParser::ExpressionMatch::parserMatchIsCondition(CParser *p, HTer
 			}
 		}
 	}
+
+
+
 	return nullptr;
 }
 

@@ -1,0 +1,51 @@
+the verb to carry  implies the carrying relation
+the verb to hold implies the holding relation
+the verb to wear implies   wearing relation
+the verb to be inside implies the reversed containment relation
+the verb to contain   implies the containment relation
+
+
+ 
+
+
+a room is a kind of entity
+a thing is a kind of entity
+a direction is a kind of entity
+a door is a kind of thing
+a container is a kind of thing
+a supporter is a kind of thing 
+a backdrop is a kind of thing 
+a person is a kind of thing
+a region is a kind of entity
+
+an thing has a text called specification
+an thing has a text called indefinite appearance text
+an thing has a value called variable initial value
+
+an thing has a text called printed name.
+an thing has a text called printed plural name.
+an thing has a text called an indefinite article.
+an thing can be plural-named or singular-named. 
+an thing is usually singular-named.
+an thing can be proper-named or improper-named. 
+an thing is usually improper-named.
+ 
+the location  is an room that varies.
+ 
+the verb to be adjacent to implies the reversed adjacency relation
+
+the verb to be regionally in implies the reversed regional-containment relation.
+
+the verb to be above implies the mapping-up relation.
+the verb to be mapped above implies the mapping-up relation.
+the verb to be below implies the mapping-down relation.
+the verb to be mapped below implies the mapping-down relation.
+
+
+definition: an room is adjacent if it is adjacent to the location.
+
+
+hall is an room
+garden is an room
+location is garden
+

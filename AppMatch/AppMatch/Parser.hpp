@@ -172,7 +172,7 @@ namespace NSParser
 		std::list<SentenceDispatchPredicate> sentenceDispatch;
 		std::list<CBlocking::HBlockPhraseHeader> phrases;
 
-
+		HBlock blank_line;
 
 		CParser(  );
 		virtual ~CParser();
@@ -310,9 +310,10 @@ namespace NSParser
 
 		namespace Verbal
 		{
-			CBlocking::HBlock  STMT_verb_Assertion(CParser * p, std::vector<NSTerm::HTerm>&  term);
-			CBlocking::HBlockVerbRelation STMT_verb_relation(CParser * p, CBlocking::HBlock a_verb, NSTerm::HTerm term);
-			CBlocking::HBlock   STMT_verb_Assertion_N(CParser * p, std::vector<NSTerm::HTerm>&  term);
+			CBlocking::HBlock  STMT_verb_Assertion(CParser * p, std::vector<NSTerm::HTerm>&  term, ErrorInfo *err);
+			CBlocking::HBlockVerbRelation STMT_verb_relation(CParser * p, CBlocking::HBlock a_verb, NSTerm::HTerm term, ErrorInfo *err);
+			CBlocking::HBlock   STMT_verb_Assertion_N(CParser * p, std::vector<NSTerm::HTerm>&  term, ErrorInfo *err);
+		 
 		}
 	}
 

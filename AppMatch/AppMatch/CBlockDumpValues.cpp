@@ -1154,9 +1154,9 @@ void CBlockRelationArguments::dump(string ident)
 {
 	printf("%s %s \n", ident.c_str(), "Relation Argument");
 	{
-		this->value1->dump(ident + "       ");
+		if(this->value1!=nullptr)	this->value1->dump(ident + "       ");
 	printf("%s To \n", ident.c_str());
-		this->value2->dump(ident + "       ");
+	if (this->value2 != nullptr)this->value2->dump(ident + "       ");
 
 	}
 	CBlock::dump(ident);

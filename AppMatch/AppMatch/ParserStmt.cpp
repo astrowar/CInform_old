@@ -195,24 +195,29 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
  
 
 	HBlock rblock_system_control = (ControlFlux::STMT_control_flux(p,lst,inner , err));
+	if (err->hasError) return nullptr;
 	if (rblock_system_control != nullptr) return rblock_system_control;
  
 	if (err->hasError) return nullptr;
 	//Apenas os termos que iniciam uma sentenca completa
 
 	HBlock rblock_tryEntry_1 = (DynamicDispatch::TryDispatch_action(p,lst));
+ 
 	if (rblock_tryEntry_1 != nullptr) return rblock_tryEntry_1;
 
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
 
 	HBlock rblock_system_stmt = (ParseAssertion::STMT_system_Assertion(p,lst  ));
+	if (err->hasError) return nullptr;
 	if (rblock_system_stmt != nullptr) return rblock_system_stmt;
 
     HBlock rblock_understand_1 = (ParseAssertion::STMT_understand_Assertion(p,lst  ));
+ 
     if (rblock_understand_1 != nullptr) return rblock_understand_1;
 
 	HBlock rblock_action_controls = (ParseAction::STMT_Action_Controls(p,lst, inner, err));
+	if (err->hasError) return nullptr;
 	if (rblock_action_controls != nullptr) return rblock_action_controls;
 
 	HBlock rblock_phraseInvoke = (ParseAction::STMT_phrase_Invoken(p, lst));
@@ -224,16 +229,20 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 
 	HBlock rblock_decide_1 = (ParseAssertion::STMT_Decide_Assertion(p,lst, inner, err));
+	if (err->hasError) return nullptr;
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 
 	HBlock rblock_phrase_1 = (ParseAssertion::STMT_Declare_Phrase(p, lst, inner, err));
+	if (err->hasError) return nullptr;
 	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
 
 
-    HBlock rblock_verb_1n = (Verbal::STMT_verb_Assertion_N(p,lst ));
+    HBlock rblock_verb_1n = (Verbal::STMT_verb_Assertion_N(p,lst,err ));
+	if (err->hasError) return nullptr;
     if (rblock_verb_1n != nullptr) return rblock_verb_1n;
 
-    HBlock rblock_verb_1 = (Verbal::STMT_verb_Assertion(p,lst ));
+    HBlock rblock_verb_1 = (Verbal::STMT_verb_Assertion(p,lst ,err));
+	if (err->hasError) return nullptr;
     if (rblock_verb_1 != nullptr) return rblock_verb_1;
 
     HBlock rblock_definition_1 = (ParseDecide::STMT_Definition_Assertion(p,lst)); //To define ...
@@ -253,11 +262,12 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
     if (rblock_assert_2 != nullptr) return rblock_assert_2;
 
 	HBlock rblock_register_verb = (ParseGrammar::STMT_register_verb(p,lst, inner, err));
+	if (err->hasError) return nullptr;
 	if (rblock_register_verb != nullptr) return rblock_register_verb;
     
 
 
-	logError(get_repr(lst));
+	//logError(get_repr(lst));
 
     return nullptr;
 

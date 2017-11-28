@@ -664,6 +664,15 @@ using namespace  NSMatch;
 			int npred = predicates.size();
 			int a = lst.size();
 
+			if (a == 0)
+			{
+				return MatchResult();
+			}
+
+			if (a < npred)
+			{
+				return MatchResult();
+			}
 #ifdef CMLOG
 			if (a == npred) {
 				std::cout << get_repr(lst) << std::endl;

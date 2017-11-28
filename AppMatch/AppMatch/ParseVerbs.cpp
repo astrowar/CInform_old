@@ -95,110 +95,117 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
             }
 
         }
-    }
+	}
 
-    {
-        // and action applying to [one visible thing and requiring light]
-        CPredSequence predList =  pAny("N1") <<p->verbList <<pAny("N2");
-         
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
+	{
+	// and action applying to [one visible thing and requiring light]
+	CPredSequence predList = pAny("N1") << p->verbList << pAny("N2");
 
-            auto s1 = CtoString(res.matchs["N1"]);
-             
-            HBlock n1 = Expression::parser_assertionTarger(p,res.matchs["N1"]);
-            if (n1 != nullptr)
-            {
-                HBlock n2 = Expression::parser_expression(p,res.matchs["N2"]);
-                if (n2 != nullptr)
-                {
-                    auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-                    auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);					 
-                    return r;
-                }
-                //eh um match ?
-                HBlock m2 = Expression::parser_expression(p, res.matchs["N2"]);
-                if (m2 != nullptr)
-                {
-                    auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-                    auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
-                    return r;
-                }
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals) {
 
-            }
+		auto s1 = CtoString(res.matchs["N1"]);
 
-        }
-     
-    }
-    //logMessage( verbList->repr() );
-     
+		HBlock n1 = Expression::parser_assertionTarger(p, res.matchs["N1"]);
+		if (n1 != nullptr)
+		{
+			HBlock n2 = Expression::parser_expression(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
+				auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				return r;
+			}
+			//eh um match ?
+			HBlock m2 = Expression::parser_expression(p, res.matchs["N2"]);
+			if (m2 != nullptr)
+			{
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
+				auto r = std::make_shared<CBlockIsVerb>(vrepr, n1, n2);
+				return r;
+			}
 
-    //logMessage( get_repr(term) );
-    return nullptr;
+		}
+
+	}
+
+	}
+	//logMessage( verbList->repr() );
+
+
+	//logMessage( get_repr(term) );
+	return nullptr;
 }
 
 
 
-HBlockMatchIsVerb  NSParser::ExpressionMatch::parserMatchIsConditionVerb(CParser* p,HTerm term)
+HBlockMatchIsVerb  NSParser::ExpressionMatch::parserMatchIsConditionVerb(CParser* p, HTerm term)
 {
- 
-    //Tambem pode ser um verbo definido
-    {
-        CPredSequence predList =  pAny("MatchBody")<<verb_IS()	<<p->verbList	<<pAny("valueToCheck");
 
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockMatch body = ExpressionMatch::parser_MatchArgument(p,res.matchs["MatchBody"]);
-            HBlockMatch value = ExpressionMatch::parser_MatchArgument(p,res.matchs["valueToCheck"]);
-            if (body != nullptr && value != nullptr) {
-                auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-                return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
-                //return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
-            }
-        }
-    }
+	//Tambem pode ser um verbo definido
+	{
+		CPredSequence predList = pAny("MatchBody") << verb_IS() << p->verbList << pAny("valueToCheck");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch body = ExpressionMatch::parser_MatchArgument(p, res.matchs["MatchBody"]);
+			HBlockMatch value = ExpressionMatch::parser_MatchArgument(p, res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
+				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
+				//return std::make_shared<CBlockAssertion_isDirectAssign>(body, value);
+			}
+		}
+	}
 
 
-    {
-        CPredSequence predList = pAny("MatchBody")	<<p->verbList	<<pAny("valueToCheck");
+	{
+		CPredSequence predList = pAny("MatchBody") << p->verbList << pAny("valueToCheck");
 
-        MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
-            HBlockMatch body = ExpressionMatch::parser_MatchArgument(p,res.matchs["MatchBody"]);
-            HBlockMatch value = ExpressionMatch::parser_MatchArgument(p,res.matchs["valueToCheck"]);
-            if (body != nullptr && value != nullptr) {
-                auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
-                return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
-            }
-        }
-    }
-return nullptr;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch body = ExpressionMatch::parser_MatchArgument(p, res.matchs["MatchBody"]);
+			HBlockMatch value = ExpressionMatch::parser_MatchArgument(p, res.matchs["valueToCheck"]);
+			if (body != nullptr && value != nullptr) {
+				auto vrepr = CtoString(expandBract(res.matchs[p->verbList->named]));
+				return std::make_shared<CBlockMatchIsVerb>(vrepr, body, value);
+			}
+		}
+	}
+	return nullptr;
 }
 
 
-HBlockVerbRelation NSParser::Statement::Verbal::STMT_verb_relation(CParser * p, HBlock a_verb, HTerm term)
+HBlockVerbRelation NSParser::Statement::Verbal::STMT_verb_relation(CParser * p, HBlock a_verb, HTerm term,   ErrorInfo *err)
 {
-    CPredSequence predList = pLiteral("reverse") << pAny("Relation");
+	//CPredSequence predList = pLiteral("reverse") << pAny("Relation");
+	CPredSequence predList = pOr("reverseLiteral", pLiteral("reverse"), pLiteral("reversed")) << pAny("Relation");
 
-     
-    MatchResult res = CMatch(term, predList);
 
-    if (res.result == Equals) {
-        // yes .. is an  reverse relation
-        
-        HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
-        return   std::make_shared<CBlockVerbReverseRelation>(a_verb, a_relation);
-         
-    }
-    else
-    {
+	MatchResult res = CMatch(term, predList);
+
+	if (res.result == Equals) {
+		// yes .. is an  reverse relation
+
+		HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
+		return   std::make_shared<CBlockVerbReverseRelation>(a_verb, a_relation);
+
+	}
+	else
+	{
+		auto relation_named = term->repr();
+		if (relation_named[0] == '[')
+		{
+			err->setError("relation name must be single noun");
+			return nullptr;
+		}
         HBlockNoum a_relation = std::make_shared<CBlockNoum>(term->repr());
         return   std::make_shared<CBlockVerbDirectRelation>(a_verb, a_relation);
     }
     return nullptr;
 }
  
-HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vector<HTerm>&  term)
+HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vector<HTerm>&  term, ErrorInfo *err)
 {
  
     {
@@ -246,7 +253,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
 
 
                  
-                return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+                return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
 
             } else {
                 //nao eh uma lista :-(
@@ -259,7 +266,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
 
 }
 
-HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector<HTerm>&  term) 
+HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector<HTerm>&  term,  ErrorInfo *err)
 { 
  
     {
@@ -293,7 +300,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
 
             p->verbList->blist.push_back(verbMatch);
             //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+            return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
         }
 
     }
@@ -328,7 +335,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
 
             p->verbList->blist.push_back(verbMatch);
             //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+            return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
         }
 
     }
@@ -364,7 +371,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
            // HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
             p->verbList->blist.push_back(verbMatch);
             //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+            return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
 
         }
 
@@ -395,7 +402,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
             //HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
             p->verbList->blist.push_back(verbMatch);
             //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+            return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
 
         }
 
@@ -445,7 +452,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
                     //HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                     p->verbList->blist.push_back(verbMatch);
                     //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                    return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+                    return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
                 }
             } else {
 
@@ -453,7 +460,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
                // HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                 p->verbList->blist.push_back(pLiteral(res.matchs["Verb"]->repr()));
                 //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+                return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
             }
         }
 
@@ -497,14 +504,14 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
                    // HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                     p->verbList->blist.push_back(verbMatch);
                     //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                    return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+                    return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
                 }
             } else {
                 HBlock a_verb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
                 //HBlockNoum a_relation = std::make_shared<CBlockNoum>(res.matchs["Relation"]->repr());
                 p->verbList->blist.push_back(pLiteral(res.matchs["Verb"]->repr()));
                 //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-                return STMT_verb_relation(p,a_verb, res.matchs["Relation"]);
+                return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
             }
         }
 

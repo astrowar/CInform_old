@@ -237,6 +237,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 
 		bool isReservedWord(string cs);
+		bool existSymbol(string cs);
 		void addSymbol(string cs, HBlock  value);
 		bool assert_newVerb(HBlockVerbRelation value);
 		bool insert_newEventHandle(HBlockEventHandle event_handle);

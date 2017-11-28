@@ -20,7 +20,7 @@ void logWarring(std::string str)
 
 void logError(std::string str)
 {
-	printf("#Error %s\n", str.c_str());
+	printf("LErr: %s\n", str.c_str());
 	printf("\n" );
 }
 void logMessage(std::string str)
