@@ -368,7 +368,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		QueryResultContext query_decides(HBlock q, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		
 		bool assert_it_verbRelation(std::string verbNamed, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
-		bool CBlockInterpreter::insert_newPhrase(HBlockPhraseDefine phrase_dec);
+		bool insert_newPhrase(HBlockPhraseDefine phrase_dec);
 		bool insert_newVerb(HBlockVerb verb_dec);
 
 

@@ -48,11 +48,13 @@ set(SOURCE_FILES
         AppMatch/AppMatch/AssertationVerbRelation.cpp
         AppMatch/AppMatch/ParserSelectorFunctional.cpp
         AppMatch/AppMatch/InterpreterListedFunctions.cpp
+        AppMatch/AppMatch/Interpreter_Adapt_Text.cpp
 
         AppMatch/AppMatch/InterpFunctionsCallcpp.cpp
         AppMatch/AppMatch/ParserTextEntry.cpp
         AppMatch/AppMatch/Parser_expression_match.cpp
         AppMatch/AppMatch/Parser_Decide.cpp
+        AppMatch/AppMatch/Parse_PhraseDeclare.cpp
         AppMatch/AppMatch/ParserDynamicDispatch.cpp
         AppMatch/AppMatch/InterpreterMatch.cpp
         AppMatch/AppMatch/InterpExecute.cpp
@@ -83,6 +85,7 @@ set(SOURCE_FILES
         AppMatch/AppMatch/teste_verb.cpp
         AppMatch/AppMatch/teste_selector.cpp
         AppMatch/AppMatch/teste_composition.cpp
+        AppMatch/AppMatch/testeGM.cpp
         AppMatch/AppMatch/CDataMananger.cpp
         AppMatch/AppMatch/Parse_TokensGroup.cpp
         AppMatch/AppMatch/Parser_ControlFlux.cpp

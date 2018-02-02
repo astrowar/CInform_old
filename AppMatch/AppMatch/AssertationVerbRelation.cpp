@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
+#include <cstring>
 using namespace std;
 
 using namespace CBlocking; 
@@ -472,7 +473,7 @@ CBlocking::HBlockList CBlockInterpreter::lookup_value_by_Selector(HBlockMatch va
 	}
 
 
-	// busca dentro desses matchs alguem que é um kind de algum tipo	 
+	// busca dentro desses matchs alguem que ï¿½ um kind de algum tipo	 
 
 	HBlockMatch resolvedMatch = Resolve_Selector(valueToMatch, localsEntry); 
 	 

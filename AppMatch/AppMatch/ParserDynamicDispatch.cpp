@@ -194,7 +194,7 @@ HBlock NSParser::DynamicDispatch::STMT_understand_Action_Assertion_static(CParse
                 }
 
 				//Rh um action !!
-				CPredSequence actionList = p->actionPredList;
+				CPredSequence actionList = CPredSequence(p->actionPredList);
 
 				MatchResult res_action = CMatch(sTerm, actionList);
 				if (res_action.result == Equals) {
