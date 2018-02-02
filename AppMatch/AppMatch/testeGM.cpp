@@ -36,7 +36,7 @@ void testeGM_1()
 	auto p_result = ParseText::parser_text(&parse, file_contents, true);
 	interpreter->execute_init(p_result);
 
-	auto x1 = f_is("location is garden");
+	//auto x1 = f_is("location is garden");
 	auto x2 = f_is("location is adjacent");
 
 	return;

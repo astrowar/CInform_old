@@ -122,18 +122,7 @@ CBlockActionApply::CBlockActionApply(CBlocking::HBlock _noum1, CBlocking::HBlock
 //  define ((action:A) is in the presence of (other:B) ) if (( location of (first noum of A) ) is same (location B)).
 //  eating something in the presence of Lady Bracknell
 
-void eatExample() {
-    /*CBlockAssertion(CBlockAction( CBlockNoum("Person"), "eat", CBlockNoum("Thing")));
-
-    CBlockAssertionCond(CBlockAssertion(CBlockAction("Action","A"), "in presence of", CBlockNoum("Person", "other")),
-    CBlockSame(CBlockProp(CBlockNoum("location"), CBlockProp(CBlockNoum("first noum"), CBlockNoum("A")),
-    CBlockProp(CBlockNoum("location"), CBlockNoum("other")))));
-
-    CBlockMatchAction((CBlockAction("eat"), CBlockNoum("something")), "in presence of", CBlockNoum("Lady Bracknell"));
-    */
-
-
-}
+ 
 
 
  

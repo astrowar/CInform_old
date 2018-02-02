@@ -5,9 +5,6 @@ the verb to be inside implies the reversed containment relation
 the verb to contain   implies the containment relation
 
 
- 
-
-
 a room is a kind of entity
 a thing is a kind of entity
 a direction is a kind of entity
@@ -42,7 +39,7 @@ the verb to be below implies the mapping-down relation.
 the verb to be mapped below implies the mapping-down relation.
 
 
-definition: an room is adjacent if it is adjacent to the location.
+definition: ( room called R ) is adjacent if R is adjacent to the location.
 
 
 hall is an room

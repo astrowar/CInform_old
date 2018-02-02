@@ -765,7 +765,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			if (next_stack != nullptr)
 			{
 			 
-
+				
 				auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
 				if (result.hasMatch == true)
 				{
@@ -780,6 +780,9 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
 					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
+					
+					localsNext->locals.push_back({ "it", c_block });
+
 					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
 					if (r.result ==QEquals)
 					{
