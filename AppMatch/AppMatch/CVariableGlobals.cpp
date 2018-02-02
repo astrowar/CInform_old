@@ -8,7 +8,7 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
+using namespace CBlocking::VariableSloting;
 
 bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , HBlock defaultValue )
 {

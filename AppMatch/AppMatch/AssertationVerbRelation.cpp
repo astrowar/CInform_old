@@ -11,6 +11,8 @@ using namespace std;
 
 using namespace CBlocking; 
 using namespace Interpreter;
+using namespace QueryStacking;
+
 
 //retorn  o primeiro termo
 CBlocking::HBlock  CBlockInterpreter::lookup_relation_X_Y_1(const string & relationNamed, CBlocking::HBlock c_block, CBlocking::HBlock value,  HRunLocalScope localsEntry, QueryStack *stk_in)

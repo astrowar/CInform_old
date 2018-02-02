@@ -33,7 +33,7 @@
 
 using namespace std;
 using namespace CBlocking;
-
+using namespace CBlocking::VariableSloting;
 
 void  CBlockInstance::dump_contents(string ident) 
 {

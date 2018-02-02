@@ -7,7 +7,7 @@
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 
 HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)

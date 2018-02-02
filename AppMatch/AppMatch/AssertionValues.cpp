@@ -7,11 +7,13 @@
  
 #include "sharedCast.hpp"
 #include "CBlockInterpreterRuntime.hpp"
+ 
 
 using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace CBlocking::VariableSloting;
 
 pair<HBlockKind, HBlockKind>
 CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {

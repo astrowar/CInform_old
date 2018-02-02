@@ -8,7 +8,7 @@ using namespace CBlocking;
  
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 
 

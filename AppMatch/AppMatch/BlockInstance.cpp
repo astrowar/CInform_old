@@ -12,7 +12,8 @@
 
 using  namespace  std   ;
 using namespace CBlocking;
-
+using namespace VariableSloting;
+ 
 
 CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
 {
@@ -206,36 +207,41 @@ bool NNisSameString(const string &s1, const string &s2)
 }
 
 
+ 
 
-QueryResul CBlockInstance::is_set(HBlockNoum  value)
+bool CBlockInstance::is_set(HBlockNoum  valueName, bool &value)
 {
 	 
 	for (auto &va : this->anomimousSlots)
 	{
 		if (HVariableSlotEnum  venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
-			if (venum->valueDefinition->contains(value->named))
+			if (venum->valueDefinition->contains(valueName->named))
 			{
-				if (NNisSameString(venum->value->named, value->named))
+				if (NNisSameString(venum->value->named, valueName->named))
 				{
-					return QEquals;
+					value = true;
+					return true;
 				}
-				return QNotEquals;
+				value = false;
+				return true;
 			}
 		}
-		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
+		if (const HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
-			if (vbool->valueDefinition->named == value->named)
+			if (vbool->valueDefinition->named == valueName->named)
 			{
 				if (vbool->value == true)
 				{
-					return QEquals;
+					value = true;
+					return true;
 				}
-				return QNotEquals;
+				value = false;
+				return true;
 			}
 		}
 	}
-	return QUndefined;
+	return false; //nao ha esse valor
 }
 
 

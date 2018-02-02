@@ -8,6 +8,8 @@
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+
 
 bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 {

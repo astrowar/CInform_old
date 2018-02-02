@@ -13,7 +13,7 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
+using namespace CBlocking::VariableSloting;
 
 HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 {

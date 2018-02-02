@@ -6,54 +6,63 @@
 #include <string>
 
 
-enum VarSlotType
+namespace CBlocking
 {
-	EnumSlot,
-	BoolSlot
-};
+	namespace VariableSloting
+	{
 
-class CVariableSlot {
-public:
-    virtual ~CVariableSlot() {
-    }
-	virtual VarSlotType  type() = 0;
-};
+		enum VarSlotType
+		{
+			EnumSlot,
+			BoolSlot
+		};
 
-using HVariableSlot = std::shared_ptr<CVariableSlot>;
+		class CVariableSlot {
+		public:
+			virtual ~CVariableSlot() {
+			}
+			virtual VarSlotType  type() = 0;
+		};
 
-class CVariableSlotEnum : public CVariableSlot {
-public:
-	CBlocking::HBlockNoum value;
-	CBlocking::HBlockEnums valueDefinition;
+		using HVariableSlot = std::shared_ptr<CVariableSlot>;
 
-    CVariableSlotEnum(CBlocking::HBlockEnums enums);
-	virtual VarSlotType  type() override  { return VarSlotType ::EnumSlot ; };
-};
+		class CVariableSlotEnum : public CVariableSlot {
+		public:
+			CBlocking::HBlockNoum value;
+			CBlocking::HBlockEnums valueDefinition;
 
-using HVariableSlotEnum = std::shared_ptr<CVariableSlotEnum>;
+			CVariableSlotEnum(CBlocking::HBlockEnums enums);
+			virtual VarSlotType  type() override { return VarSlotType::EnumSlot; };
+		};
 
-class CVariableSlotBool : public CVariableSlot {
-public:
-    bool value;
-	CBlocking::HBlockNoum valueDefinition;
+		using HVariableSlotEnum = std::shared_ptr<CVariableSlotEnum>;
 
-    CVariableSlotBool(CBlocking::HBlockNoum valueDef);
-	virtual VarSlotType  type() override  { return VarSlotType ::BoolSlot ; };
-};
+		class CVariableSlotBool : public CVariableSlot {
+		public:
+			bool value;
+			CBlocking::HBlockNoum valueDefinition;
 
-using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
+			CVariableSlotBool(CBlocking::HBlockNoum valueDef);
+			virtual VarSlotType  type() override { return VarSlotType::BoolSlot; };
+		};
 
-class CVariableNamed :public CBlocking::CBlock {
-public:
-	void dump(string ident) override;
-	virtual BlockType type() override { return BlockType::VariableNamed; }
+		using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
 
-	CBlocking::HBlock value;
-	CBlocking::HBlockKind kind;
-	CBlocking::HBlockNoum name; 
-    CVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
-};
+		class CVariableNamed :public CBlocking::CBlock {
+		public:
+			void dump(string ident) override;
+			virtual BlockType type() override { return BlockType::VariableNamed; }
 
-using HVariableNamed = std::shared_ptr<CVariableNamed>;
+			CBlocking::HBlock value;
+			CBlocking::HBlockKind kind;
+			CBlocking::HBlockNoum name;
+			CVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
+		};
+
+		using HVariableNamed = std::shared_ptr<CVariableNamed>;
 
 #endif
+
+	}
+
+}

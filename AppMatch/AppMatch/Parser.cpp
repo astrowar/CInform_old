@@ -22,7 +22,7 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 
 

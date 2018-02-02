@@ -13,6 +13,9 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+using namespace CBlocking::VariableSloting;
+
 
 QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {

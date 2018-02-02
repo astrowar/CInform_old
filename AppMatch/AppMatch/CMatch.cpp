@@ -8,6 +8,8 @@
 #include <functional>
 #include <iostream>
 
+#include "CMatchCombinatoria.hpp"
+
 #undef CMLOG 
 
 
@@ -18,7 +20,7 @@
 using namespace NSTerm;
 
 using namespace  NSMatch;
-
+using namespace EqualResulting;
 
  
 
@@ -656,9 +658,7 @@ using namespace  NSMatch;
 
  
 
-
-		MatchResult CMatch_combinacao(MTermSetCombinatoria &combinacao, std::vector<CPred *> predicates_ptr);
-		void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func);
+ 
 
 		MatchResult  NSMatch::CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) {
 			int npred = predicates.size();
@@ -710,7 +710,7 @@ using namespace  NSMatch;
 				std::cout << std::endl;
 #endif
 
-				MatchResult mm = CMatch_combinacao(x, predicates_ptr);
+				MatchResult mm = NSMatch::CMatch_combinacao(x, predicates_ptr);
 				if (mm.result == Equals) {
 					mmResultMatch = mm;
 					return true;

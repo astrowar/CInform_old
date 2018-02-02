@@ -4,6 +4,7 @@
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
 
+using namespace VariableSloting;
 
 namespace CBlocking
 {

@@ -13,6 +13,8 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+
 
 
 //Match engine
@@ -455,11 +457,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 
 				// Never Recall Query again over a Noum
-				auto rq = cInst->is_set(inner_2);
-				if (rq == QEquals ) return CResultMatch(true);
-				if (rq == QNotEquals) return CResultMatch(false);
-
-
+				bool actual_value = false;
+				
+				if (cInst->is_set(inner_2, actual_value))
+				{
+                  return CResultMatch(actual_value);					 
+				} 
 				return 	CResultMatch(false);
 
 				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);

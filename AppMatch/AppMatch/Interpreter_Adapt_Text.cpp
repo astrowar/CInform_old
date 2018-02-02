@@ -12,13 +12,28 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
+using namespace QueryStacking;
 
 
 #include  "verb_en.hpp" 
 #include "ParserPlural.hpp"
 
+namespace Auxiliar  {
+	bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
 
+	string complex_viewPoint(string person, string number, string gender)
+	{
+		string s = "";
+		if (person == "first") s = s + "1";
+		else if (person == "second ") s = s + "2";
+		else  s = s + "3"; //default 
+
+		if (number == "plural") s = s + "P";
+		else  s = s + "S"; //singular
+
+		return s;
+	}
+}
 
 std::list<HBlockVerbConjugation> CBlockInterpreter::get_verb_conjugations(std::string verb) const
 {
@@ -45,19 +60,7 @@ std::list<HBlockVerbConjugation> CBlockInterpreter::get_verb_conjugations(std::s
 }
 
 
-string complex_viewPoint( string person, string number, string gender )
-{
-	string s = "";
-	if (person == "first") s = s + "1";
-	else if (person == "second ") s = s + "2";
-	else  s = s + "3"; //default 
-
-	if (number == "plural") s = s + "P";
-	else  s = s + "S"; //singular
-	 
-	return s;
-
-}
+ 
 
 HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -120,7 +123,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 {
 	static PLURALTABLE plural_tab = plura_table();
 	
-	const  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoum >(complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoum >("present tense") } };
+	const  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoum >(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoum >("present tense") } };
 	
 
 	auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
@@ -223,7 +226,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 	return std::make_shared<CBlockNoumSupl>( "###", "singular", "neutral");
 }
 
-bool BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
+ 
 
 HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -258,7 +261,7 @@ HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScop
 
  
 
-	std::string::iterator new_end = std::unique(s.begin(), s.end(), BothAreSpaces);
+	std::string::iterator new_end = std::unique(s.begin(), s.end(), Auxiliar::BothAreSpaces);
 	s.erase(new_end, s.end());
 	 
 	return std::make_shared<CBlockText>(s);

@@ -34,11 +34,12 @@ namespace CBlocking
 
 		bool has_slot(HBlockNoum value);
 
-		HVariableNamed get_property(string named);
+		VariableSloting::HVariableNamed get_property(string named);
 
 		void set_property(string cs, CBlocking::HBlock value);
 
-		QueryResul is_set(HBlockNoum value);
+		 
+		bool is_set(HBlockNoum valueName , bool &value);
 
 		 
 		int id;  // id unico para cada instancia .. serve para saber se estamos a falar da mesma instancia
@@ -46,8 +47,8 @@ namespace CBlocking
 
 		 
 
-		std::vector<HVariableSlot> anomimousSlots;
-		std::vector<HVariableNamed> namedSlots;
+		std::vector<VariableSloting::HVariableSlot> anomimousSlots;
+		std::vector<VariableSloting::HVariableNamed> namedSlots;
 
 	};
 

@@ -10,7 +10,7 @@ using namespace CBlocking;
  
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
+using namespace CBlocking::VariableSloting;
 
 
 bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string propertyNamed , std::list<CBlockKind*> kindsUsed)

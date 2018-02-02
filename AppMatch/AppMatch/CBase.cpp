@@ -14,41 +14,41 @@ std::string  CString::repr() {
     return this->s;
 }
 
-EqualsResul  equals_cstring( CString *c1, CString *c2) {
-    if (c1 == nullptr || c2 == nullptr) return Undefined;
-    if (c1->s == c2->s) return Equals;
+EqualResulting::EqualsResul  equals_cstring( CString *c1, CString *c2) {
+    if (c1 == nullptr || c2 == nullptr) return EqualResulting::Undefined;
+    if (c1->s == c2->s) return EqualResulting::Equals;
 	if ((c1->s.size() == c2->s.size()) && (tolower(c1->s[0]) == tolower(c2->s[0])))
 	{
 		int n = c1->s.size();
 		for (int j = 0; j< n; ++j)
 		{
-			if (tolower(c1->s[j]) != tolower(c2->s[j])) return NotEquals;
+			if (tolower(c1->s[j]) != tolower(c2->s[j])) return EqualResulting::NotEquals;
 		}
-		return Equals;
+		return EqualResulting::Equals;
 	}
 
-    return NotEquals;
+    return EqualResulting::NotEquals;
 }
 
-EqualsResul  equals_cnumber(CNumber *c1, CNumber *c2) {
-    if (c1 == nullptr || c2 == nullptr) return Undefined;
-    if (c1->val == c2->val) return Equals;
-    return NotEquals;
+EqualResulting::EqualsResul  equals_cnumber(CNumber *c1, CNumber *c2) {
+    if (c1 == nullptr || c2 == nullptr) return EqualResulting::Undefined;
+    if (c1->val == c2->val) return EqualResulting::Equals;
+    return EqualResulting::NotEquals;
 }
 
-EqualsResul equals_clist(CList *c1, CList *c2) {
-    if (c1 == nullptr || c2 == nullptr) return Undefined;
-    if (c1->lst.size() != c2->lst.size()) return NotEquals;
-    if (c1->lst.empty()) return Equals;
+EqualResulting::EqualsResul equals_clist(CList *c1, CList *c2) {
+    if (c1 == nullptr || c2 == nullptr) return EqualResulting::Undefined;
+    if (c1->lst.size() != c2->lst.size()) return EqualResulting::NotEquals;
+    if (c1->lst.empty()) return EqualResulting::Equals;
     auto it1 = c1->lst.begin();
     auto it2 = c2->lst.begin();
     while (it1 != c1->lst.end()) {
-        EqualsResul q = NSTerm::equals((*it1).get(), (*it2).get());
-        if (q != Equals) return NotEquals;
+	    EqualResulting::EqualsResul q = NSTerm::equals((*it1).get(), (*it2).get());
+        if (q != EqualResulting::Equals) return EqualResulting::NotEquals;
         ++it1;
         ++it2;
     }
-    return Equals;
+    return EqualResulting::Equals;
 }
 
 CNumber::CNumber(int _val) : val(_val) {
@@ -106,8 +106,8 @@ CTerm *CList::removeArticle() {
     return this;
 }
 
-EqualsResul NSTerm::equals(CTerm *c1, CTerm *c2) {
-    EqualsResul q ;
+EqualResulting::EqualsResul NSTerm::equals(CTerm *c1, CTerm *c2) {
+	EqualResulting::EqualsResul q ;
    /* q = equals(dynamic_cast<CString *>(c1), dynamic_cast<CString *>(c2));
     if (q != Undefined) return q;
     q = equals(dynamic_cast<CNumber *>(c1), dynamic_cast<CNumber *>(c2));
@@ -116,16 +116,16 @@ EqualsResul NSTerm::equals(CTerm *c1, CTerm *c2) {
     if (q != Undefined) return q;*/
 
     q = equals_cstring(NSTerm::asCString(c1), NSTerm::asCString(c2));
-    if (q != Undefined) return q;
+    if (q != EqualResulting::Undefined) return q;
     q = equals_cnumber(NSTerm::asCNumber(c1), NSTerm::asCNumber(c2));
-    if (q != Undefined) return q;
+    if (q != EqualResulting::Undefined) return q;
     q = equals_clist(NSTerm::asCList(c1), NSTerm::asCList(c2));
-    if (q != Undefined) return q;
+    if (q != EqualResulting::Undefined) return q;
 
-    return Undefined;
+    return EqualResulting::Undefined;
 }
 
-EqualsResul NSTerm::equals(HTerm c1, HTerm c2) {
+EqualResulting::EqualsResul NSTerm::equals(HTerm c1, HTerm c2) {
     return NSTerm::equals(c1.get(), c2.get());
 }
 

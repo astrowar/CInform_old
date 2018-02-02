@@ -17,15 +17,19 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+using namespace CBlocking::VariableSloting;
 
 
 
 
 
+namespace CBlocking {
+	namespace Comparison {
+		bool   isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2);
+	}
+}
 
-
-
-bool isSame_BlockInstance(CBlockInstance* b1, CBlockInstance* b2);
 
 std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 {
@@ -105,6 +109,7 @@ QueryResultContext CBlockInterpreter::query_is_extern(HBlock c_block, HBlock c_b
 
 
 
+ 
 bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry, QueryStack *stk)
 {
 	if (c == nullptr)
@@ -165,11 +170,15 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
         if (HBlockNoum value = asHBlockNoum(c_block1)) {
             if (cinst->has_slot(value)) 
 			{
-               
-                if (cinst->is_set(value) == QEquals) {
-                    return QueryResultContext(QEquals);
-                }
-                return QueryResultContext(QNotEquals);
+				bool _value = false;
+				const bool has_value = cinst->is_set(value, _value);
+				if (has_value == true)
+				{
+					if (_value == true) {
+						return QueryResultContext(QEquals);
+					}
+					return QueryResultContext(QNotEquals);
+				}
             }
         }
     return QueryResultContext(QUndefined);
@@ -735,7 +744,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		if (HBlockInstance ninst_1 = asHBlockInstance(c_block))
 			if (HBlockInstance ninst_2 = asHBlockInstance(c_block1)) 
 			{
-				if (isSame_BlockInstance(ninst_1.get(), ninst_2.get()))
+				if (Comparison::isSame_BlockInstance(ninst_1.get(), ninst_2.get()))
 				{
 					return QEquals;
 				}

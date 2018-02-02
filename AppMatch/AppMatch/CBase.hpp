@@ -101,9 +101,8 @@ namespace NSTerm
 	};
 
 
-
-	EqualsResul equals(CTerm* c1, CTerm* c2);
-	EqualsResul equals(HTerm c1, HTerm c2);
+	EqualResulting::EqualsResul equals(CTerm* c1, CTerm* c2);
+	EqualResulting::EqualsResul equals(HTerm c1, HTerm c2);
 	HTerm make_number(int x);
 	HTerm make_string(std::string x);
 	HTerm make_list(std::initializer_list<HTerm> x);

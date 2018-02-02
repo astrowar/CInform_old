@@ -15,6 +15,9 @@
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+
+
 //
 //HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )
 //{

@@ -1,74 +1,76 @@
 #pragma once
  
 
-
+namespace CBlocking
+{
 class CRunLocalScope;
 using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
-
-class CRunLocalScope	 
-{
-public: 
-	HRunLocalScope previous; // stack anterior se nao tiver nessa 
-
-	std::list< std::pair<string, CBlocking::HBlock> > locals;
-	CRunLocalScope(HRunLocalScope _previous ) : previous(_previous)
+ 
+	class CRunLocalScope
 	{
-	
-	}
+	public:
+		HRunLocalScope previous; // stack anterior se nao tiver nessa 
 
-	CRunLocalScope(HRunLocalScope _previous , std::map<string,CBlocking::HBlock> varMap ) : previous(_previous)
-	{
-		for( auto &e: varMap)
+		std::list< std::pair<string, CBlocking::HBlock> > locals;
+		CRunLocalScope(HRunLocalScope _previous) : previous(_previous)
 		{
-			locals.push_back(e);
+
 		}
-	}
 
-	CBlocking::HBlock resolve(const std::string& noum)
-	{
-		for(auto &e:locals )
+		CRunLocalScope(HRunLocalScope _previous, std::map<string, CBlocking::HBlock> varMap) : previous(_previous)
 		{
-			 
-			if (e.first == noum)
-			{								 
-				return e.second;
+			for (auto &e : varMap)
+			{
+				locals.push_back(e);
 			}
 		}
-		if (previous != nullptr)
+
+		CBlocking::HBlock resolve(const std::string& noum)
 		{
-			return previous->resolve(noum);
+			for (auto &e : locals)
+			{
+
+				if (e.first == noum)
+				{
+					return e.second;
+				}
+			}
+			if (previous != nullptr)
+			{
+				return previous->resolve(noum);
+			}
+			return nullptr;
+
 		}
-		return nullptr;
-
-	}
-	void dump(string ident);
+		void dump(string ident);
 
 
-	//std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
-};
-
- 
-using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
+		//std::shared_ptr<CRunLocalScope> Union(std::shared_ptr<CRunLocalScope> other);
+	};
 
 
-HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn);
+	using HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
-class CExecutionBlock
-{
-public:
 
-	HRunLocalScope locals;
-	CBlocking::HBlock block;
-	CExecutionBlock(HRunLocalScope _locals,  CBlocking::HBlock _block  ): locals(_locals),block(_block)
+	HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn);
+
+	class CExecutionBlock
 	{
+	public:
 
-	}
-	void dump(string ident) const;
-};
+		HRunLocalScope locals;
+		CBlocking::HBlock block;
+		CExecutionBlock(HRunLocalScope _locals, CBlocking::HBlock _block) : locals(_locals), block(_block)
+		{
+
+		}
+		void dump(string ident) const;
+	};
 
 
-//HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
-using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
+	//HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
+	using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
 
 
+}

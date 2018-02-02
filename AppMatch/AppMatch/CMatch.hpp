@@ -45,10 +45,10 @@ namespace NSTerm
 			{
 			};
 
-			virtual EqualsResul match(MTermSet &h) = 0;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) = 0;
+			virtual EqualResulting::EqualsResul match(MTermSet &h) = 0;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) = 0;
 
-			virtual EqualsResul match(HTerm h) = 0;
+			virtual EqualResulting::EqualsResul match(HTerm h) = 0;
 
 			virtual bool isSame(HTerm b) = 0;
 
@@ -67,11 +67,11 @@ namespace NSTerm
 
 			CPredAtom(std::string _named, HTerm atom);
 
-			virtual EqualsResul match(MTermSet &_h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &_h) override;
 
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
 
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 		};
 
 		class CPredList : public CPred {
@@ -85,9 +85,9 @@ namespace NSTerm
 
 			CPredList(std::string _named, std::initializer_list<HPred> plist);
 
-			virtual EqualsResul match(MTermSet &_h) override;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &_h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 		};
 
 		class CPredAny : public CPred {
@@ -99,9 +99,9 @@ namespace NSTerm
 
 			CPredAny(std::string _named);;
 
-			virtual EqualsResul match(MTermSet &_h) override;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &_h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 		};
 
 		class CPredWord : public CPred {
@@ -113,9 +113,9 @@ namespace NSTerm
 
 			CPredWord(std::string _named);;
 
-			virtual EqualsResul match(MTermSet &_h) override;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &_h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 		};
 
 
@@ -134,9 +134,9 @@ namespace NSTerm
 			std::string repr() override;
 			virtual TermType type() override { return TermType::PredBooleanAnd; }
 
-			virtual EqualsResul match(MTermSet &h) override;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 
 			CPredBooleanAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
 
@@ -159,9 +159,9 @@ namespace NSTerm
 
 			CPredBooleanOr(const std::string &_named, std::list<HPred> plist);
 
-			virtual EqualsResul match(MTermSet &h) override;
-			virtual EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
-			virtual EqualsResul match(HTerm h) override;
+			virtual EqualResulting::EqualsResul match(MTermSet &h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
 
 		public:
 			std::vector<HPred> blist;
@@ -233,11 +233,11 @@ namespace NSTerm
 			//==========================================
 			class MatchResult {
 			public:
-				MatchResult() : result(Undefined) {
+				MatchResult() : result(EqualResulting::Undefined) {
 				}
 
 				std::map<std::string, HTerm> matchs;
-				EqualsResul result;
+				EqualResulting::EqualsResul result;
 
 				void setValue(std::string named, HTerm value);
 

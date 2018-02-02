@@ -76,9 +76,10 @@ CBlockEnums::CBlockEnums(vector<HBlockNoum> _values) : values(_values) {
 }
 
 bool CBlockEnums::contains(string cs) {
-    for (auto &n : values) {
-        if (n->named == cs) return true;
-    }
+    for (vector<shared_ptr<CBlockNoum>>::value_type& n : values)
+	{
+		if (n->named == cs) return true;
+	}
     return false;
 }
 

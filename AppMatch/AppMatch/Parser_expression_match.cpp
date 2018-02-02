@@ -5,7 +5,7 @@
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 
 HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm term)

@@ -155,6 +155,7 @@
     <ClInclude Include="..\AppMatch\CDataMananger.hpp" />
     <ClInclude Include="..\AppMatch\CInterpreterKindTree.hpp" />
     <ClInclude Include="..\AppMatch\CMatch.hpp" />
+    <ClInclude Include="..\AppMatch\CMatchCombinatoria.hpp" />
     <ClInclude Include="..\AppMatch\CMatchListValid.hpp" />
     <ClInclude Include="..\AppMatch\dynamicCast.hpp" />
     <ClInclude Include="..\AppMatch\EqualsResult.hpp" />

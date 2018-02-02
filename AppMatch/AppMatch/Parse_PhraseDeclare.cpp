@@ -14,7 +14,7 @@ HBlock NSParser::ParseAssertion::STMT_Declare_Phrase(CParser * p, std::vector<HT
 			CPredSequence predList = pLiteral("to") << pWord("InitialWord") << pAny("Match") << pLiteral(":") << pAny("RemainBody");
 
 			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
+			if (res.result == EqualResulting::Equals)
 			{
 
 
@@ -32,7 +32,7 @@ HBlock NSParser::ParseAssertion::STMT_Declare_Phrase(CParser * p, std::vector<HT
 			CPredSequence predList = pLiteral("to") << pWord("InitialWord") << pAny("Match") << pLiteral(":");
 
 			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
+			if (res.result == EqualResulting::Equals)
 			{
 
 

@@ -17,6 +17,9 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+using namespace CBlocking::VariableSloting;
+
 
 void CBlockInterpreter::initialize() {
 	for (auto &p : program) {
@@ -40,8 +43,8 @@ void   CBlockInterpreter::add_modifier_keyword(HBlockNoum _nn)
 
 
 bool CBlockInterpreter::assert_it_canBe(CBlocking::HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry) {
-	if (HBlockNoum nbase = DynamicCasting::asHBlockNoum(c_block)) {
-		CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
+	if (const HBlockNoum nbase = DynamicCasting::asHBlockNoum(c_block)) {
+		const CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
 		if (nobj != nullptr) {
 			
 			return assert_it_canBe(nobj, value,localsEntry);

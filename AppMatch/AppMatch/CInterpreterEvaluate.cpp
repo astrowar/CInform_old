@@ -9,7 +9,8 @@
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-
+using namespace QueryStacking;
+using namespace CBlocking::VariableSloting;
 
 CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*) > isSuitable)
 {

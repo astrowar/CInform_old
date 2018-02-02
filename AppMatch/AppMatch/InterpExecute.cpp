@@ -16,6 +16,8 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
+using namespace QueryStacking;
+using namespace CBlocking::VariableSloting;
 
 
 std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry)

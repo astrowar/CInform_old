@@ -6,7 +6,7 @@
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 
 bool _startWith(std::string str, std::string prefix)

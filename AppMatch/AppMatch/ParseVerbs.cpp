@@ -5,6 +5,7 @@
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
+using namespace EqualResulting;
 
 HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionAdverb(CParser *p, std::vector<HTerm>&  term)
 {

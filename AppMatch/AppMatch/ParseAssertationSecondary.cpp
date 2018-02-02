@@ -9,7 +9,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
-
+using namespace EqualResulting;
 
 HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_secondPart(CParser * p,  HTerm  term)
 {
