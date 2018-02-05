@@ -12,6 +12,11 @@ using namespace NSParser;
 string load_file(string filename )
 {
 	FILE *f = fopen(filename.c_str(), "rb");
+	if (f == NULL)
+	{
+		printf("Error , file not found \n");
+		return "";
+	}
 	fseek(f, 0, SEEK_END);
 	long fsize = ftell(f);
 	fseek(f, 0, SEEK_SET);  //same as rewind(f);
@@ -33,7 +38,7 @@ void testeGM_1()
 	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
 
 
-	std::string file_contents = load_file("teste_1.txt");
+	std::string file_contents = load_file("C:\\Users\\eraldo\\CLionProjects\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_1.txt");
 	auto p_result = ParseText::parser_text(&parse, file_contents, true);
 	interpreter->execute_init(p_result);
 
