@@ -36,15 +36,21 @@ void testeGM_1()
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
 	std::function<bool(std::string)> f_is = [&](std::string a) { return  interpreter->query(Expression::Parser_Expression(&parse, a, false), nullptr, nullptr).result == QEquals; };
-
+	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
 	std::string file_contents = load_file("C:\\Users\\eraldo\\CLionProjects\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_1.txt");
 	auto p_result = ParseText::parser_text(&parse, file_contents, true);
 	interpreter->execute_init(p_result);
 
-	//auto x1 = f_is("location is garden");
-	auto x2 = f_is("location is adjacent");
+	 
+	auto r = f_now("hall is adjacent to garden");
+	auto x1 = f_is("hall is adjacent to garden");
+	auto x1a = f_is("garden is adjacent to hall");
+	auto x2 = f_is("location is garden");
+	auto x3 = f_is("hall is adjacent");
 
+
+	assert(x3);
 	return;
 
 }

@@ -183,7 +183,7 @@ namespace CBlocking
 
 		CBlockRelationArguments(  HBlock  _value1, HBlock   _value2 ) :   value1(_value1), value2(_value2) 
 		{
-
+			 
 		}
 	};
 	using HBlockRelationArguments = std::shared_ptr<CBlockRelationArguments>;
