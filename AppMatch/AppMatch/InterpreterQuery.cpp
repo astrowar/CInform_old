@@ -1445,23 +1445,3 @@ NSTerm::HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
 }
 
 
-NSTerm::HTerm CBlockInterpreter::executeAssertion(HBlockAssertionBase b) {
-
-    if (HBlockAssertion_isInstanceOf inst = asHBlockAssertion_isInstanceOf(b)) {
-        instancias.push_back(inst->noum);
-    }
-
-    //assertions.push_back(b);
-    return nullptr;
-}
-
-NSTerm::HTerm CBlockInterpreter::execute(HBlock b) {
-    assert(b != nullptr);
-
-    if (asHBlockAssertion_is(b) != nullptr)
-        return executeAssertion(asHBlockAssertion_is(b));
-
-    return nullptr;
-}
-
-
