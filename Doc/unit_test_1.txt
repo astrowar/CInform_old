@@ -1,0 +1,43 @@
+// teste de unidade do action
+
+unit init
+    thing is an kind of entity
+    container is an kind of entity
+    apple is a thing 
+    orange is a thing
+    box is an container
+    eating  is  an action  applying to ( an thing ) 
+    putting into is an action  applying to (  thing  and   container ) 
+    retreating is an action applying to nothing
+    understand : eat  ( a thing ) as eat_this
+  
+
+
+test 
+   try putting  apple into box  
+expect
+   none
+
+
+test 
+   try eating ( bad apple ) and orange 
+expect
+   none
+
+
+test 
+   try putting  apple box
+expect
+   none
+   
+test 
+   try putting  apple inside box
+expect
+   none  
+   
+check 
+   putting is an action  applying to (  thing  and   container )
+expect
+   true
+   
+   
