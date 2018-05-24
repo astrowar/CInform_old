@@ -1,0 +1,28 @@
+// testes de unidade de relation 
+
+unit init
+
+thing is an kind of entity
+unloking relates (a thing ) to various thing
+the verb  unlock  implies a  unloking relation
+the verb ( unlocked by ) implies a reverse  unloking relation 
+key is a thing
+box is a thing
+apple is a thing
+ 
+ 
+ 
+test
+  now key unlock box
+expect
+  key unlock box
+  box is unlocked by key
+  apple not unlock box
+  
+  
+(unlock A with B ) is an action apply to and thing and an thing
+
+before unlock X with Y:
+  if X is not in location:
+     say ("unable to do")
+     stop action
