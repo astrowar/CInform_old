@@ -35,3 +35,55 @@ assert :  color of foreground is red
 unit test :
    now color of foreground is brown
 assert :  color of foreground is brown
+
+
+
+unit init :
+    thing is a kind  
+    ice cube is a thing
+    Heat is a kind of value
+    The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
+    thing has a heat 
+    The heat of a thing is usually room temperature
+  
+    
+assert : heat of ice cube is room temperature 
+unit test :
+  now heat of ice cube is frosty
+assert : heat of ice cube is frosty
+
+
+unit init:
+   Brightness is a kind of value
+   The brightnesses are guttering, weak, radiant and blazing
+   A brightness can be adequate or inadequate 
+   A brightness is usually adequate 
+   Guttering is inadequate
+
+assert : weak is adequate
+unit test :
+    now weak is not adequate
+assert : weak is inadequate    
+
+
+unit init:    
+    color is an kind of value    
+    red,blue are color
+    The fashionable shade is a colour that varies
+    The sky  is always blue
+    
+assert : fashionable shade is red   
+unit test :
+    now fashionable shade is blue
+assert : fashionable shade is blue
+assert : fashionable shade is not red
+
+unit test :
+    now sky   is red
+assert : sky is blue
+
+
+
+
+    
+    
