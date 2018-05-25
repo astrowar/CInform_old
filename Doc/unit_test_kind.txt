@@ -1,0 +1,37 @@
+unit init :
+    thing is an kind     
+    fruit is a kind of thing
+    box is a thing
+    apple is a fruit
+ 
+
+unit test :
+    pass
+assert :  apple is a fruit
+assert :  apple is a thing
+assert :  fruit is a kind
+assert :  fruit is a kind of kind
+assert :  apple is not a kind
+
+
+
+
+unit init :
+    color is an kind of value    
+    red,blue are color
+    secundary color is a kind of color
+    brown is a secundary color
+    
+    thing is an kind     
+    ink is an kind of thing
+    ink as a color called color
+    foreground and background are ink
+    
+unit test :
+   now color of foreground is red
+assert :  color of foreground is red
+
+
+unit test :
+   now color of foreground is brown
+assert :  color of foreground is brown
