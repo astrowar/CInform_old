@@ -1,0 +1,48 @@
+unit init:
+  thing is an kind
+  people is a thing
+  
+  Diagnosing is an action applying to an thing
+  Understand "diagnose (thing)" as diagnosing
+  apple is an thing
+  Fred is an person
+  
+  Check diagnosing: 
+      if noun is not a person:
+         say "Only people can have diagnoses." 
+         fail "not person"
+         stop action
+
+  Carry out diagnosing: 
+      say "You're not a medical expert."
+      fail "not medical"
+
+  Instead of diagnosing the player: 
+      say "You feel fine!"
+      
+    
+  
+unit test :    
+    try Diagnosing apple
+assert : said "Only people can have diagnoses." 
+  
+unit test :    
+    try Diagnosing Fred
+assert : said "You're not a medical expert."
+unit test :    
+    try silently Diagnosing Fred
+assert : said nothing
+
+
+unit init:
+     Diagnosing is an action applying to an thing
+     thing is an kind
+     key, apple, box are thing
+unit test :    
+    try silently Diagnosing Fred
+    catch "not medical":
+        say "You must have a cert for do that"
+assert : said "You must have a cert for do that"  
+
+     
+     
