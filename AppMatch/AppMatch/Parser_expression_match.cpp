@@ -102,6 +102,21 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 	}
 
 
+	//remove artigos
+	{
+		CPredSequence predList = undefinedArticle() << pWord("W1")  ;
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			auto w1 = parser_MatchArgument(p, res.matchs["W1"]);
+			if (w1 != nullptr)
+			{
+				return w1;
+			}
+		}
+	}
+
+
 	{
 		CPredSequence predList = pWord("W1") << pAny("W2") << pAny("W3") << pAny("W4");
 

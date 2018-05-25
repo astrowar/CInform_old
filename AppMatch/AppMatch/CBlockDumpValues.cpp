@@ -1283,6 +1283,35 @@ void CBlockControlSelectItem::dump(string ident)
 }
 
 
+ 
+void CBlockUnitInit::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Unit INIT");
+	{
+		this->contents->dump(ident + "       "); 
+	}
+	CBlock::dump(ident);
+}
+
+
+
+void CBlockUnitTest::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Unit TEST");
+	{
+		this->contents->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+
+void CBlockUnitExpect::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Unit EXPECT");
+	{
+		this->contents->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
 
 void CBlockComandList::dump(string ident)
 {

@@ -1,6 +1,6 @@
-// teste de unidade do action
+ 
 
-unit init
+unit init :
     thing is an kind of entity
     container is an kind of entity
     apple is a thing 
@@ -13,31 +13,26 @@ unit init
   
 
 
-test 
+unit test :
    try putting  apple into box  
-expect
-   none
+expect :   nothing
 
 
-test 
+unit test :
    try eating ( bad apple ) and orange 
-expect
-   none
+expect :      nothing
 
 
-test 
+unit test :
    try putting  apple box
-expect
-   none
+expect :      nothing
    
-test 
+unit test :
    try putting  apple inside box
-expect
-   none  
+expect :       apple is inside box  
    
-check 
+unit test :
    putting is an action  applying to (  thing  and   container )
-expect
-   true
+expect :   true
    
    

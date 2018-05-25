@@ -29,6 +29,22 @@ string load_file(string filename )
 	return std::string(a);
 }
 
+void testeUnit()
+{
+	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
+	CParser parse;
+
+	std::string file_contents = load_file("C:\\Users\\eraldo\\Source\\Repos\\CMatchIteractiveFic\\Doc\\unit_test_1.txt");
+	auto p_result = ParseText::parser_text(&parse, file_contents, true);
+
+	p_result->dump("  "); 
+	//interpreter->execute_init(p_result);
+
+	return;
+
+}
+
+
 void testeGM_1()
 {
 	// testes GM sao grand major. testam a engine como um todo

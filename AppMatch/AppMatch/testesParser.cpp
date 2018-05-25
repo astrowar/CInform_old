@@ -400,13 +400,15 @@ void testePlurals()
 	return;
 }
 
+void testeUnit();
 void testeExecute5();
 int main() {
 
 	//testeAdaptivePhases_all();
     // testePhases_all();
 
-	testeGM_all();
+	testeUnit();
+	//testeGM_all();
 	 
 
 	return 0;

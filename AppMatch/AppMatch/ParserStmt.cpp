@@ -192,7 +192,13 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 }
 HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
- 
+
+
+	HBlock rblock_unit = (ControlFlux::STMT_unit_test(p, lst, inner, err));
+	if (err->hasError) return nullptr;
+	if (rblock_unit != nullptr) return rblock_unit;
+
+
 
 	HBlock rblock_system_control = (ControlFlux::STMT_control_flux(p,lst,inner , err));
 	if (err->hasError) return nullptr;
@@ -265,6 +271,10 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	if (err->hasError) return nullptr;
 	if (rblock_register_verb != nullptr) return rblock_register_verb;
     
+	HBlock rblock_pass = (ControlFlux::STMT_pass(p, lst, inner, err));
+	if (err->hasError) return nullptr;
+	if (rblock_pass != nullptr) return rblock_pass;
+
 
 
 	//logError(get_repr(lst));

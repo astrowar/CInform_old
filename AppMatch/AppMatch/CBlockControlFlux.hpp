@@ -149,6 +149,51 @@ class CBlockControlForEach
 	using HBlockExecutionResultFlag = std::shared_ptr<CBlockExecutionResultFlag>;
 
 
+
+
+
+
+	//Unit Blocks
+
+
+	class CBlockUnitInit :public CBlock
+	{
+	public:
+		CBlocking::HBlock contents;
+		CBlockUnitInit(CBlocking::HBlock _contents): contents(_contents){}
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockUnitInit; }
+	};
+	using HBlockUnitInit = std::shared_ptr<CBlockUnitInit>;
+
+
+	class CBlockUnitTest :public CBlock
+	{
+	public:
+		CBlocking::HBlock contents;
+		CBlockUnitTest(CBlocking::HBlock _contents) : contents(_contents) {}
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockUnitTry; }
+	};
+	using HBlockUnitTest = std::shared_ptr<CBlockUnitTest>;
+
+
+
+	class CBlockUnitExpect :public CBlock
+	{
+	public:
+		CBlocking::HBlock contents;
+		CBlockUnitExpect(CBlocking::HBlock _contents) : contents(_contents) {}
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockUnitExpect; }
+	};
+	using HBlockUnitExpect = std::shared_ptr<CBlockUnitExpect>;
+
+
+	//BlockUnitInit,	BlockUnitTry,		BlockUnitExpect
+
+
+
 }
 
 #endif

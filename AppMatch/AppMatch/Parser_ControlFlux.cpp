@@ -468,7 +468,7 @@ HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CPars
 	}
 
 	{
-		  CPredSequence predList = pLiteral("--")	<<pAny("object") <<pLiteral(":");
+		CPredSequence predList = pLiteral("--")	<<pAny("object") <<pLiteral(":");
 			 
 		 
 		MatchResult res = CMatch(term, predList);
@@ -536,6 +536,99 @@ HBlock  NSParser::ControlFlux::STMT_control_flux(CParser *p, std::vector<HTerm>&
 
     return nullptr;
 }
+
+
+ 
+HBlock  NSParser::ControlFlux::STMT_pass(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+{
+	CPredSequence predList = pLiteral("pass");
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		return   std::make_shared<CBlockNothing>("nothing");
+	}
+	return nullptr;
+}
+
+HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo *err)
+{
+
+	//unity init ?
+	{
+		CPredSequence predList = pLiteral("unit") << pLiteral("init") << pLiteral(":");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			if (inner != nullptr)
+			{
+				HBlock executeBlock = nullptr;
+				executeBlock = Statement::parser_stmt_inner(p, inner, err);
+				if (executeBlock == nullptr)
+				{
+					err->setError("missing unity init block ");
+					return nullptr;
+				}
+				HBlockUnitInit unit_init = std::make_shared<CBlockUnitInit>(executeBlock);
+				return unit_init;
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pLiteral("unit") << pLiteral("test") << pLiteral(":");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			if (inner != nullptr)
+			{
+				HBlock executeBlock = nullptr;
+				executeBlock = Statement::parser_stmt_inner(p, inner, err);
+				if (executeBlock == nullptr)
+				{
+					err->setError("missing unity test block ");
+					return nullptr;
+				}
+				
+				HBlockUnitTest unit_init = std::make_shared<CBlockUnitTest>(executeBlock);
+				return unit_init;
+			}
+		}
+	}
+
+
+
+	{
+		CPredSequence predList = pLiteral("expect") <<   pLiteral(":") << pAny("result");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			if (inner == nullptr)
+			{
+				 
+
+				HBlock executeBlock =  Expression::parser_expression(p, res.matchs["result"]  );
+				if (executeBlock == nullptr)
+				{
+					err->setError("missing unity expect value ");
+					return nullptr;
+				}
+
+				HBlockUnitExpect unit_init = std::make_shared<CBlockUnitExpect>(executeBlock);
+				return unit_init;
+			}
+			else
+			{
+				err->setError("idention error");
+			}
+		}
+	}
+
+
+
+	return nullptr;
+}
+
 
 std::list<HBlock >   NSParser::ControlFlux::post_process_tokens(CParser *p,  std::list<HBlock>  lst, ErrorInfo* err)
 {

@@ -130,6 +130,10 @@ enum BlockType {
 	BlockVerbNegate,
 	BlockNoumSupl,
 	BlockIsAdverbialComparasion,
-	BlockMatchIsAdverbialComparasion
+	BlockMatchIsAdverbialComparasion,
+	BlockUnitInit,
+	BlockUnitTry,
+	BlockUnitExpect
+		
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

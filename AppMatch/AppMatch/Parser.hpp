@@ -218,7 +218,9 @@ namespace NSParser
 	}
 	namespace ControlFlux
 	{
-		CBlocking::HBlock STMT_control_flux(CParser * p, std::vector< NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
+		CBlocking::HBlock STMT_control_flux(CParser * p, std::vector< NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);	 
+		CBlocking::HBlock STMT_unit_test(CParser * p, std::vector< NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);		
+		CBlocking::HBlock STMT_pass(CParser * p, std::vector< NSTerm::HTerm>& term, HGroupLines inner, ErrorInfo * err);
 		std::list<CBlocking::HBlock> post_process_tokens(CParser * p, std::list<CBlocking::HBlock> lst, ErrorInfo * err);
 		CBlocking::HBlock stmt_resultflag(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock parser_if_condition(CParser * p, NSTerm::HTerm term);
