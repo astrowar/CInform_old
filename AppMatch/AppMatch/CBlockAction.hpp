@@ -26,9 +26,9 @@ namespace CBlocking
 		virtual BlockType type() override { return BlockType::BlockActionInstance; }
 		CBlockActionInstance(int _id,HBlockKindAction _base_kind) : id(_id), base_kind(_base_kind) 	{		}
 		void newNamedVariable(HBlockNoum called, HBlockKind kind);
-		VariableSloting::HVariableNamed get_property(string pnamed);
+		 HBlockVariableNamed get_property(string pnamed);
 		void set_property(string pnamed, CBlocking::HBlock value);
-		std::vector<VariableSloting::HVariableNamed> namedSlots;
+		std::vector<HBlockVariableNamed> namedSlots;
 		HBlockKindAction base_kind;
 		int id;
 		virtual HBlockKindAction get_base() override  { return base_kind; }

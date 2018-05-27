@@ -9,7 +9,7 @@
 
 
 enum BlockType {
-	BlockKind,
+	//BlockKind,
 	Unresolved,
 	BlockKindOf,
 	BlockKindNamed,
@@ -61,7 +61,7 @@ enum BlockType {
 	BlockActionInstance,
 	BlockTryCall,
 	BlockActionCall,
-	VariableNamed,
+	BlockVariableNamed,
 	BlockUnderstandDynamic,
 	BlockUnderstandStatic,
 	BlockToDecideWhether,
@@ -88,6 +88,7 @@ enum BlockType {
 	BlockDinamicDispatch,
 	BlockNow,
 	BlockControlIF,
+	BlockControlUnless,
 	BlockControlToken,
 	BlockComandList,
 	BlockControlSelect,
@@ -132,8 +133,8 @@ enum BlockType {
 	BlockIsAdverbialComparasion,
 	BlockMatchIsAdverbialComparasion,
 	BlockUnitInit,
-	BlockUnitTry,
-	BlockUnitExpect
+	BlockUnitTest,
+	BlockUnitAssert
 		
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

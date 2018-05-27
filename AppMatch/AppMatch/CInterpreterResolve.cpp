@@ -13,7 +13,7 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-using namespace CBlocking::VariableSloting;
+ 
 
 HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 {
@@ -67,7 +67,7 @@ std::list<HBlock>  CBlockInterpreter::resolve_as_list(HBlock qlist, HRunLocalSco
 		}
 	}
 
-	if (HVariableNamed 	nvar  = asHVariableNamed (qlist))
+	if (HBlockVariableNamed 	nvar  = asHBlockVariableNamed (qlist))
 	{
 		return resolve_as_list(nvar->value,localsEntry, noumsToResolve);
 	}
@@ -387,7 +387,7 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 	//}
 
 	//for (auto &defs : global_variables) {
-	//	if (HVariableNamed nnvar = asHVariableNamed(defs)) {
+	//	if (HBlockVariableNamed nnvar = asHBlockVariableNamed(defs)) {
 	//		//logMessage( nnamed << std::endl;
 	//		if (isSameString(nnvar->name->named , named)) {
 	//			return resolve_if_noum(nnvar, localsEntry, noumsToResolve);
@@ -462,7 +462,7 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n) 
 {
 	for (auto &defs : global_variables) {
-		if (HVariableNamed nnvar = asHVariableNamed(defs)) {
+		if (HBlockVariableNamed nnvar = asHBlockVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
 			if (isSameString(nnvar->name->named, n->named))
 			{

@@ -10,7 +10,7 @@ using namespace CBlocking;
  
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-using namespace CBlocking::VariableSloting;
+ 
 
 
 bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string propertyNamed , std::list<CBlockKind*> kindsUsed)
@@ -184,7 +184,7 @@ bool  CBlockInterpreter::assert_it_ConstantAssign(CBlocking::HBlock obj, CBlocki
 		return assert_property_ConstantValue(pbase, value, localsEntry);
 	}
 
-	if (HVariableNamed vbase = asHVariableNamed(obj))
+	if (HBlockVariableNamed vbase = asHBlockVariableNamed(obj))
 	{
 		
 		auto kdef = make_shared<CBlockAssertion_isConstantAssign>(vbase, value);

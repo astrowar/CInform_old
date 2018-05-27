@@ -599,7 +599,7 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 
 
 	{
-		CPredSequence predList = pLiteral("expect") <<   pLiteral(":") << pAny("result");
+		CPredSequence predList = pLiteral("assert") <<   pLiteral(":") << pAny("result");
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -614,7 +614,7 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 					return nullptr;
 				}
 
-				HBlockUnitExpect unit_init = std::make_shared<CBlockUnitExpect>(executeBlock);
+				HBlockUnitAssert unit_init = std::make_shared<CBlockUnitAssert>(executeBlock);
 				return unit_init;
 			}
 			else

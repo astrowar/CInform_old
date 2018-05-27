@@ -15,6 +15,8 @@ void logWarring(std::string str);
 using std::string;
 
 
+
+
 namespace CBlocking
 {
 
@@ -137,7 +139,7 @@ namespace CBlocking
 
 
 
-	class CBlockBooleanResult  : public CBlockValue  // um tipo de bloco que retorna true ou false
+	class CBlockBooleanResult  : public CBlockValue  // um tipo de bloco que retorna true ou false  ...  abstract
 	{
 	public:
 		virtual ~CBlockBooleanResult() {
@@ -183,7 +185,7 @@ namespace CBlocking
 
         BlockType type() override { return BlockType::BlockKindNamed; }
 		string named;
-        explicit CBlockKindNamed(string _named) : named(std::move(_named)) {};
+         CBlockKindNamed(string _named) : named(std::move(_named)) {};
     };
 
     using HBlockKindNamed = std::shared_ptr<CBlockKindNamed>;
@@ -293,20 +295,7 @@ namespace CBlocking
 	using HBlockKindEntity = std::shared_ptr<CBlockKindEntity>;
 
 
-	// Obsoleto , Use Composite
-	//class CBlockListOfKind : public CBlockKind // algo como List<Kind> 
-	//{
-	//public:
-	//	virtual bool isValue() override { return true; }
-	//	void dump(string ident) override;
-	//	virtual BlockType type() override { return BlockType::BlockListOfKind; }
-	//	CBlockListOfKind(HBlockKind _itemKind) : CBlockKind("list@" + _itemKind->named), itemKind(_itemKind) {}
-	//	HBlockKind itemKind;
-	//	virtual NoumDefinitions noumDefinitions() override { return single_definitions("list@" + itemKind->named, this); };
-	//};
-	//using HBlockListOfKind = std::shared_ptr<CBlockListOfKind>;
-
-
+ 
 
 
 	class CBlockNamedValue : public CBlockValue //named value eh um noum que eh representa seu proprio valor ... red, blue, opaque ...
@@ -473,19 +462,26 @@ namespace CBlocking
 	{
 		 
 	};
+	using HBlockFilter = std::shared_ptr<CBlockFilter>;
 
-
-	class CBlockFilterAtom : public CBlockFilter {
-		explicit CBlockFilterAtom(HBlock input)
+	class CBlockFilterAtom : public CBlockFilter 
+	{
+		  CBlockFilterAtom(HBlock input)
 			: input(input) {
 		}
 		HBlock input;	 
 	};
+	using HBlockFilterAtom = std::shared_ptr<CBlockFilterAtom>;
+
+
+
 
 	class CBlockFilterList : public CBlockFilter 
 	{
 		HBlockList input;	 
+		CBlockFilterList(HBlockList _input): input(_input){}
 	};
+	using HBlockFilterList = std::shared_ptr<CBlockFilterList>;
 
 
 
@@ -517,10 +513,13 @@ namespace CBlocking
 		}
 		HBlock input;
 	};
+	using HBlockTransform = std::shared_ptr<CBlockTransform>;
+
 
 
 	class CBlockIF : public CBlock  // um bloco do tipo if then else
 	{
+ 
 		CBlockIF(HBlockBooleanResult input_if, HBlock input_then, HBlock input_else)
 			: input_if(input_if),
 			input_then(input_then),
@@ -531,6 +530,8 @@ namespace CBlocking
 		HBlock input_then;
 		HBlock input_else;
 	};
+	using HBlockIF = std::shared_ptr<CBlockIF>;
+
 
 	class CBlockSame : public   CBlockBooleanResult  // um bloco do tipo if then else
 	{
@@ -541,7 +542,7 @@ namespace CBlocking
 		HBlock input_A;
 		HBlock input_B;
 	};
-
+	using HBlockSame = std::shared_ptr<CBlockSame>;
 
 	//class CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
 	//{

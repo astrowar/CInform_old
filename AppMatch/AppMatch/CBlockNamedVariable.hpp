@@ -8,8 +8,8 @@
 
 namespace CBlocking
 {
-	namespace VariableSloting
-	{
+	//namespace VariableSloting {
+	
 
 		enum VarSlotType
 		{
@@ -48,21 +48,21 @@ namespace CBlocking
 
 		using HVariableSlotBool = std::shared_ptr<CVariableSlotBool>;
 
-		class CVariableNamed :public CBlocking::CBlock {
+		class CBlockVariableNamed :public  CBlock {
 		public:
 			void dump(string ident) override;
-			virtual BlockType type() override { return BlockType::VariableNamed; }
+			virtual BlockType type() override { return BlockType::BlockVariableNamed; }
 
 			CBlocking::HBlock value;
 			CBlocking::HBlockKind kind;
 			CBlocking::HBlockNoum name;
-			CVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
+			CBlockVariableNamed(CBlocking::HBlockNoum _name, CBlocking::HBlockKind _kind, CBlocking::HBlock _value);
 		};
 
-		using HVariableNamed = std::shared_ptr<CVariableNamed>;
+		using HBlockVariableNamed = std::shared_ptr<CBlockVariableNamed>;
 
 #endif
 
 	}
 
-}
+//}

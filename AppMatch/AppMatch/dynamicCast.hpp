@@ -58,7 +58,7 @@ namespace CBlocking
 		CBlockStaticDispatch* asCBlockStaticDispatch(CBlock* c);
 		CBlockAction* asCBlockAction(CBlock* c);
 		CBlockActionCall* asCBlockActionCall(CBlock* c);
-		VariableSloting::CVariableNamed* asCVariableNamed(CBlock* c);
+		CBlockVariableNamed* asCBlockVariableNamed(CBlock* c);
 		CBlockUnderstandDynamic* asCBlockUnderstandDynamic(CBlock* c);
 		CBlockUnderstandStatic* asCBlockUnderstandStatic(CBlock* c);
 		CBlockToDecideWhether* asCBlockToDecideWhether(CBlock* c);

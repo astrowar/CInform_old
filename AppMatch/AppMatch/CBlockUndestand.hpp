@@ -17,12 +17,11 @@ namespace CBlocking
 		CBlocking::HBlock output_n;
 
 		CBlockUnderstand(HBlockMatch _input_n, CBlocking::HBlock _output_n) : input_n(_input_n), output_n((_output_n)) {};
-		template <class HArchive>  void serialize(HArchive& ar)
-		{
-			ar(input_n);
-			ar(output_n);
-		}
+		 
 	};
+	using HBlockUnderstand = std::shared_ptr<CBlockUnderstand>;
+
+
 
 
 	class CBlockUnderstandStatic : public CBlock    //retorna uma declaracao
@@ -37,12 +36,7 @@ namespace CBlocking
 		CBlockUnderstandStatic(int _entryID, HBlockMatchList _argument_match, CBlocking::HBlock _output_n) : argument_match(_argument_match),
 			output_n((_output_n)), entryID(_entryID)
 		{};
-		template <class HArchive>  void serialize(HArchive& ar)
-		{
-			ar(entryID);
-			ar(argument_match);
-			ar(output_n);
-		}
+		 
 	};
 
 	using HBlockUnderstandStatic = std::shared_ptr<CBlockUnderstandStatic>;

@@ -34,7 +34,8 @@ namespace CBlocking
 
 		bool has_slot(HBlockNoum value);
 
-		VariableSloting::HVariableNamed get_property(string named);
+		HBlockVariableNamed get_property(string named);
+		 
 
 		void set_property(string cs, CBlocking::HBlock value);
 
@@ -47,8 +48,8 @@ namespace CBlocking
 
 		 
 
-		std::vector<VariableSloting::HVariableSlot> anomimousSlots;
-		std::vector<VariableSloting::HVariableNamed> namedSlots;
+		std::vector<HVariableSlot> anomimousSlots;
+		std::vector<HBlockVariableNamed> namedSlots;
 
 	};
 

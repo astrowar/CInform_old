@@ -5,8 +5,7 @@
 
 namespace CBlocking
 {
-	class CBlockToDecide
-		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	class CBlockToDecide  : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
 		CBlockToDecide()
@@ -19,8 +18,7 @@ namespace CBlocking
 
 
 
-	class CBlockToDecideIf
-		: public CBlockToDecide  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	class CBlockToDecideIf  : public CBlockToDecide  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
 		CBlockToDecideIf(HBlockMatchIs _queryToMatch, CBlocking::HBlock _decideBody)
@@ -42,8 +40,7 @@ namespace CBlocking
 
 
 
-	class CBlockToDecideWhether
-		: public CBlockToDecide
+	class CBlockToDecideWhether  : public CBlockToDecide
 	{
 	public:
 		CBlockToDecideWhether
@@ -64,8 +61,7 @@ namespace CBlocking
 
 
 
-	class CBlockToDecideWhat
-		: public CBlockToDecide
+	class CBlockToDecideWhat  : public CBlockToDecide
 	{
 	public:
 		CBlockToDecideWhat
@@ -88,8 +84,7 @@ namespace CBlocking
 
 
 
-	class CBlockToDecideWhat_FirstNoum
-		: public CBlockToDecide
+	class CBlockToDecideWhat_FirstNoum  : public CBlockToDecide
 	{
 	public:
 		CBlockToDecideWhat_FirstNoum

@@ -327,8 +327,8 @@ CResultMatch  apply_string_combinatoria(string str, int n, std::function<CResult
 	if (n == 1) return f_combinatoria({ str });
 	std::vector<std::string>  x = split_string_comb(str, " ");
 
-	if (x.size() < n) return   CResultMatch(false);
-	if (x.size() == n) return   f_combinatoria(x);
+	if (static_cast<int>(x.size()) < n) return   CResultMatch(false);
+	if (static_cast<int>(x.size()) == n) return   f_combinatoria(x);
 	 
 	
 	if (n == 2) return apply_string_combinatoria_2(x,f_combinatoria);
@@ -351,13 +351,13 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 		//compara os noums primeiro
 
 		printf("> ");
-		for (int i = 0; i < mvec.size(); ++i)
+		for (size_t i = 0; i < mvec.size(); ++i)
 		{
 			printf("|%s", a[i].c_str());
 		}
 		printf("\n");
 
-		for (int i = 0; i < mvec.size(); ++i)
+		for (size_t i = 0; i < mvec.size(); ++i)
 		{
 			if (HBlockMatchNoum vn = asHBlockMatchNoum(mvec[i]))
 			{
@@ -369,7 +369,7 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 		std::map<string, CBlocking::HBlock> accum_vars;
 
 		CResultMatch acc_result  =   CResultMatch(true);
-		for (int i = 0; i < mvec.size(); ++i)
+		for (size_t i = 0; i < mvec.size(); ++i)
 		{
 			if ( asHBlockMatchNoum(mvec[i]) ==nullptr)			 
 			{

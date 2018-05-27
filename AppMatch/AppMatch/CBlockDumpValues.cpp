@@ -33,7 +33,7 @@
 
 using namespace std;
 using namespace CBlocking;
-using namespace CBlocking::VariableSloting;
+ 
 
 void  CBlockInstance::dump_contents(string ident) 
 {
@@ -523,7 +523,7 @@ void CBlockActionInstance::dump(string ident) {
 
 void CBlockActionInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 {
-	this->namedSlots.push_back(std::make_shared< CVariableNamed>(called, kind, nullptr));
+	this->namedSlots.push_back(std::make_shared< CBlockVariableNamed>(called, kind, nullptr));
  
 }
 
@@ -732,7 +732,7 @@ void CBlockStaticDispatch::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-HVariableNamed CBlockActionInstance::get_property(string pnamed)
+HBlockVariableNamed CBlockActionInstance::get_property(string pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -921,7 +921,7 @@ void CBlockVerbReverseRelation::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CVariableNamed::dump(string ident)
+void CBlockVariableNamed::dump(string ident)
 {
 	printf("%s VAriable Named  %s\n",ident.c_str() ,   name->named.c_str());
 		this->kind->dump(ident + "       ");
@@ -1076,7 +1076,7 @@ HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn)
 
 }
 
-void CExecutionBlock::dump(string ident) const
+void CBlockExecution::dump(string ident) const
 {
 	printf("%s %s\n", ident.c_str(), "ExecutionBlock "); 
 	{
@@ -1304,9 +1304,9 @@ void CBlockUnitTest::dump(string ident)
 	CBlock::dump(ident);
 }
 
-void CBlockUnitExpect::dump(string ident)
+void CBlockUnitAssert::dump(string ident)
 {
-	printf("%s %s\n", ident.c_str(), "Unit EXPECT");
+	printf("%s %s\n", ident.c_str(), "Unit ASSERT");
 	{
 		this->contents->dump(ident + "       ");
 	}

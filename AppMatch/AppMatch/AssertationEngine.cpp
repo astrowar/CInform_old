@@ -18,7 +18,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-using namespace CBlocking::VariableSloting;
+ 
 
 
 void CBlockInterpreter::initialize() {
@@ -316,7 +316,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 
 		if (HBlockInstance cinst = asHBlockInstance(obj))
 		{
-			HVariableNamed vv = cinst->get_property(property_noum->named);
+			HBlockVariableNamed vv = cinst->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
 				if ( is_primitive_value(value, localsEntry, stk) == false )
@@ -343,7 +343,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 		if (HBlockActionInstance cAction = asHBlockActionInstance(obj))
 		{
 
-			HVariableNamed vv = cAction->get_property(property_noum->named);
+			HBlockVariableNamed vv = cAction->get_property(property_noum->named);
 			if (vv != nullptr)
 			{
 				if (is_primitive_value(value, localsEntry, stk) == false)

@@ -17,7 +17,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-using namespace CBlocking::VariableSloting;
+ 
 
 
 std::list<HBlock> CBlockInterpreter::getMatchedObjects(HBlock seletor, HRunLocalScope localsEntry)
@@ -249,7 +249,7 @@ PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLoc
 	}*/
 
 	//
-	if (HVariableNamed  var_n = asHVariableNamed(obj)) {
+	if (HBlockVariableNamed  var_n = asHBlockVariableNamed(obj)) {
 
 		HBlock destination = var_n->value;
 		if (value_can_be_assign_to(value, var_n->kind, localsEntry))
@@ -307,7 +307,7 @@ HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock p
 	{
 		if (HBlockNoum property_noum = asHBlockNoum( (propname)))
 		{
-			HVariableNamed pvar = cinst->get_property(property_noum->named);
+			HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
 			if (pvar != nullptr) 
 			{ 
 				if (pvar->value != nullptr)
@@ -635,7 +635,7 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 
 				//objInst->dump("P  ");
 
-				HVariableNamed pvar = objInst->get_property(propNoum->named);
+				HBlockVariableNamed pvar = objInst->get_property(propNoum->named);
 
 				//pvar->dump("P  ");
 
@@ -972,7 +972,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return kIns;
 	}
 
-	if (auto  kvar = asHVariableNamed(c_block))
+	if (auto  kvar = asHBlockVariableNamed(c_block))
 	{
 		if (kvar->value == nullptr) return Nothing;
 		return kvar->value;
@@ -1209,7 +1209,7 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
 		return actionCall;
 	}
 
-	if (HVariableNamed callAsVar = asHVariableNamed(p))
+	if (HBlockVariableNamed callAsVar = asHBlockVariableNamed(p))
 	{
 		auto actionCall_1 = callAsVar->value;
 		return  resolve_as_callCommand(actionCall_1, localsEntry);
@@ -1219,7 +1219,7 @@ HBlock CBlockInterpreter::resolve_as_callCommand(HBlock p, HRunLocalScope locals
 	return nullptr;
 }
 
-HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalScope localsEntry)
+HBlockExecution  CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalScope localsEntry)
 {
 	QueryStack *stk = nullptr;
 	for (auto &d : dynamic_understand)
@@ -1345,10 +1345,10 @@ HExecutionBlock CBlockInterpreter::create_dispach_env(HBlockList  p, HRunLocalSc
 				
 				 HRunLocalScope localsNextp = std::make_shared< CRunLocalScope >(localsEntry , result.maptch);
 				  
-				return  make_shared< CExecutionBlock >(localsNextp, std::make_shared<CBlockActionCallNamed>(actionCall, ref_Arg_1 , ref_Arg_2));
+				return  make_shared< CBlockExecution >(localsNextp, std::make_shared<CBlockActionCallNamed>(actionCall, ref_Arg_1 , ref_Arg_2));
 			 } 
 
-			 HExecutionBlock executionBlock = make_shared< CExecutionBlock >(localsNext, output_block);
+			 HBlockExecution executionBlock = make_shared< CBlockExecution >(localsNext, output_block);
 			 return executionBlock;
 
 		 }
@@ -1690,7 +1690,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	if (HBlockDinamicDispatch  vdyn = asHBlockDinamicDispatch(p))
 	{ 
 		//determina quem eh o action do dynamica dispatch
-		HExecutionBlock dispExec = create_dispach_env(vdyn->commandList, localsEntry);
+		HBlockExecution  dispExec = create_dispach_env(vdyn->commandList, localsEntry);
 		if (dispExec != nullptr)
 		{ 
 			return execute_now(dispExec->block , dispExec->locals);

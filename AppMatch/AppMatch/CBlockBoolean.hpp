@@ -7,8 +7,7 @@
 
 namespace CBlocking
 {
-	class CBlockBooleanValue
-		: public CBlockValue  // um bloco que especifica um valor Booleano
+	class CBlockBooleanValue  : public CBlockValue  // um bloco que especifica um valor Booleano
 	{
 	public:
 		CBlockBooleanValue(bool _state) :state(_state) {}
@@ -19,8 +18,7 @@ namespace CBlocking
 	using HBlockBooleanValue = std::shared_ptr<CBlockBooleanValue>;
 
 
-	class CBlockBooleanAND
-		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	class CBlockBooleanAND  : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
 		CBlockBooleanAND(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
@@ -39,8 +37,7 @@ namespace CBlocking
 
 
 
-	class CBlockBooleanOR
-		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	class CBlockBooleanOR 	: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
 		CBlockBooleanOR(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
@@ -59,8 +56,7 @@ namespace CBlocking
 
 
 
-	class CBlockBooleanNOT
-		: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
+	class CBlockBooleanNOT : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
 		CBlockBooleanNOT(CBlocking::HBlock input_a)

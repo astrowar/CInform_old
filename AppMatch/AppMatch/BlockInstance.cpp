@@ -12,7 +12,7 @@
 
 using  namespace  std   ;
 using namespace CBlocking;
-using namespace VariableSloting;
+ 
  
 
 CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
@@ -29,7 +29,7 @@ CVariableSlotBool::CVariableSlotBool(CBlocking::HBlockNoum valueDef)
 
  
 
-CVariableNamed::CVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CBlocking::HBlock _value): value(_value), kind(_kind), name(_name)
+CBlockVariableNamed::CBlockVariableNamed(CBlocking::HBlockNoum _name, HBlockKind _kind, CBlocking::HBlock _value): value(_value), kind(_kind), name(_name)
 {
 	if (_kind == nullptr)
 	{
@@ -63,7 +63,7 @@ void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 	{
 		if (s->name->named == called->named) return; //ja tem um slot com esse nome 
 	}
-	this->namedSlots.push_back(make_shared< CVariableNamed>(called, kind, nullptr));
+	this->namedSlots.push_back(make_shared< CBlockVariableNamed>(called, kind, nullptr));
 }
 
 
@@ -157,7 +157,7 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 	return false;
 }
 
-HVariableNamed  CBlockInstance::get_property( string  pnamed)
+HBlockVariableNamed  CBlockInstance::get_property( string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
@@ -167,7 +167,7 @@ HVariableNamed  CBlockInstance::get_property( string  pnamed)
 			if (va->value == nullptr)
 			{
 				//retorna o valor como nothing ...
-				return std::make_shared< CVariableNamed>(va->name, va->kind, std::make_shared<CBlockNothing>("nothing"));
+				return std::make_shared< CBlockVariableNamed>(va->name, va->kind, std::make_shared<CBlockNothing>("nothing"));
 				//return va;
 			}
 			return va;

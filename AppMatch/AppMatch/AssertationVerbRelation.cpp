@@ -340,10 +340,10 @@ CBlocking::HBlock CBlockInterpreter::lookup_intersection(HBlock v1, HBlock v2,  
 	}
 
 	HBlockList lista_ret = std::make_shared<CBlockList>(std::list<HBlock>());
-	for (int i1 = 0; i1 < p1.size(); ++i1)
+	for (size_t i1 = 0; i1 < p1.size(); ++i1)
 	{
 		bool exist = false;
-		for (int i2 = 0; i2 < p2.size(); ++i2)
+		for (size_t i2 = 0; i2 < p2.size(); ++i2)
 		{
 			if (CBlock::isSame(p1[i1].get(), p2[i2].get()))
 			{

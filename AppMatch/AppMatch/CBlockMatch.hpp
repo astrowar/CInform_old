@@ -11,8 +11,7 @@ namespace CBlocking
 {
 
 
-	class CBlockMatch
-		: public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatch : public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		// virtual void dump(string ident) override;
@@ -25,8 +24,7 @@ namespace CBlocking
 
 	using HBlockMatch = std::shared_ptr<CBlockMatch>;
 
-	class CBlockMatchAny
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatchAny : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -81,8 +79,7 @@ namespace CBlocking
 
 
 
-	class CBlockMatchKind
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatchKind : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -108,10 +105,11 @@ namespace CBlocking
 
 		HBlockMatch previous_match;
 	};
+	using HBlockMatchWith = std::shared_ptr<CBlockMatchWith>;
 
 
-	class CBlockMatchList
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+
+	class CBlockMatchList : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -126,8 +124,7 @@ namespace CBlocking
 
 	//And Block
 
-	class CBlockMatchAND
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatchAND : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -143,8 +140,7 @@ namespace CBlocking
 	using HBlockMatchAND = std::shared_ptr<CBlockMatchAND>;
 
 	// NOT 
-	class CBlockMatchNOT
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatchNOT : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -163,8 +159,7 @@ namespace CBlocking
 
 	//OR  Block
 
-	class CBlockMatchOR
-		: public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
+	class CBlockMatchOR : public CBlockMatch // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
 	public:
 		virtual void dump(string ident) override;
@@ -186,16 +181,15 @@ namespace CBlocking
 
 
 	//  eating something in the presence of Lady Bracknell
-	class CBlockMatchAction : public CBlockMatch // um bloco que serve para dar Match em uma Acao
-	{
-	public:
-		CBlockMatchAction(HBlockAction _input)
-			: CBlockMatch(), input(_input) {
-		}
+	//cls CBlockMatchAction : public CBlockMatch // um bloco que serve para dar Match em uma Acao
+	//{
+	//public:
+	//	CBlockMatchAction(HBlockAction _input): CBlockMatch(), input(_input) 
+	//	{		}
 
-		HBlockAction input;
-	};
-	using HBlockMatchAction = std::shared_ptr<CBlockMatchAction>;
+	//	HBlockAction input;
+	//};
+	//using HBlockMatchAction = std::shared_ptr<CBlockMatchAction>;
 
 	class CBlockMatchActionCall : public CBlockMatch // um bloco que serve para dar Match em uma Acao
 	{
@@ -290,7 +284,7 @@ namespace CBlocking
 
 	class CBlockMatchIsNotVerb : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
 	{
-	public:
+	public
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchIsNotVerb; }
 		std::string verb;

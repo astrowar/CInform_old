@@ -55,13 +55,13 @@ using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
 	HRunLocalScope copy_CRunLocalScope(HRunLocalScope _inn);
 
-	class CExecutionBlock
+	class CBlockExecution
 	{
 	public:
 
 		HRunLocalScope locals;
 		CBlocking::HBlock block;
-		CExecutionBlock(HRunLocalScope _locals, CBlocking::HBlock _block) : locals(_locals), block(_block)
+		CBlockExecution(HRunLocalScope _locals, CBlocking::HBlock _block) : locals(_locals), block(_block)
 		{
 
 		}
@@ -70,7 +70,7 @@ using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 
 
 	//HRunLocalScope newScope(HRunLocalScope oldEntry, HRunLocalScope headerEntry);
-	using HExecutionBlock = std::shared_ptr<CExecutionBlock>;
+	using HBlockExecution = std::shared_ptr<CBlockExecution>;
 
 
 }

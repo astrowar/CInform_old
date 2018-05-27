@@ -9,8 +9,7 @@
 namespace CBlocking
 {
 
-	class CBlockNumber  //number se refere sempre a uma instancia do Kind chamado number
-		: public CBlockValue
+	class CBlockNumber  //number se refere sempre a uma instancia do Kind chamado number  : public CBlockValue
 	{
 	public:
 		CBlockNumber() {}
@@ -21,8 +20,7 @@ namespace CBlocking
 
 
 
-	class CBlockIntegerNumber     // default Class ??
-		: public CBlockNumber
+	class CBlockIntegerNumber     // default Class ??  : public CBlockNumber
 	{
 	public:
 		CBlockIntegerNumber(int _value) :value(_value) {}
@@ -34,8 +32,7 @@ namespace CBlocking
 
 
 
-	class CBlockFactionalNumber
-		: public CBlockNumber
+	class CBlockFactionalNumber  : public CBlockNumber
 	{
 	public:
 		CBlockFactionalNumber(float _value) :value(_value) {}

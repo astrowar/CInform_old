@@ -9,8 +9,7 @@
 
 namespace CBlocking
 {
-	class CBlockControlToken //classe que diz que aqui tem um TOKEN especifico de controle
-		: public CBlock
+	class CBlockControlToken //classe que diz que aqui tem um TOKEN especifico de controle  : public CBlock
 	{
 	public:
 		CBlockControlToken(string _token, CBlocking::HBlock _contents)
@@ -25,8 +24,7 @@ namespace CBlocking
 	using HBlockControlToken = std::shared_ptr<CBlockControlToken>;
 
 
-	class CBlockControlIF
-		: public CBlock
+	class CBlockControlIF  : public CBlock
 	{
 	public:
 		CBlockControlIF(CBlocking::HBlock _block_if, CBlocking::HBlock _block_then, CBlocking::HBlock _block_else)
@@ -44,8 +42,7 @@ namespace CBlocking
 
 
 
-	class CBlockControlUnless
-		: public CBlock
+	class CBlockControlUnless  : public CBlock
 	{
 	public:
 		CBlockControlUnless(CBlocking::HBlock _block_if, CBlocking::HBlock _block_then, CBlocking::HBlock _block_else)
@@ -63,8 +60,7 @@ namespace CBlocking
 
 
 
-	class CBlockControlSelectItem
-		: public CBlock
+	class CBlockControlSelectItem  : public CBlock
 	{
 	public:
 		CBlockControlSelectItem(CBlocking::HBlock _block_seletor, CBlocking::HBlock _block_execute)
@@ -79,8 +75,7 @@ namespace CBlocking
 
 
 
-	class CBlockControlSelect
-		: public CBlock
+	class CBlockControlSelect  : public CBlock
 	{
 	public:
 		CBlockControlSelect(CBlocking::HBlock _block_seletor, std::list<HBlockControlSelectItem> _block_selectList, CBlocking::HBlock _block_else)
@@ -102,8 +97,7 @@ namespace CBlocking
 
  
 
-class CBlockControlForEach
-		: public CBlock
+class CBlockControlForEach  : public CBlock
 	{
 	public:
 		CBlockControlForEach(CBlocking::HBlock _block_variable, CBlocking::HBlock _block_body )
@@ -133,8 +127,7 @@ class CBlockControlForEach
 
 	};
 
-	class CBlockExecutionResultFlag //classe que diz que aqui tem um TOKEN especifico de controle
-		: public CBlock
+	class CBlockExecutionResultFlag //classe que diz que aqui tem um TOKEN especifico de controle  : public CBlock
 	{
 	public:
 		CBlockExecutionResultFlag(PhaseResultFlag _flag, CBlocking::HBlock _contents)
@@ -173,24 +166,24 @@ class CBlockControlForEach
 		CBlocking::HBlock contents;
 		CBlockUnitTest(CBlocking::HBlock _contents) : contents(_contents) {}
 		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockUnitTry; }
+		virtual BlockType type() override { return BlockType::BlockUnitTest; }
 	};
 	using HBlockUnitTest = std::shared_ptr<CBlockUnitTest>;
 
 
 
-	class CBlockUnitExpect :public CBlock
+	class CBlockUnitAssert :public CBlock
 	{
 	public:
 		CBlocking::HBlock contents;
-		CBlockUnitExpect(CBlocking::HBlock _contents) : contents(_contents) {}
+		CBlockUnitAssert(CBlocking::HBlock _contents) : contents(_contents) {}
 		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockUnitExpect; }
+		virtual BlockType type() override { return BlockType::BlockUnitAssert; }
 	};
-	using HBlockUnitExpect = std::shared_ptr<CBlockUnitExpect>;
+	using HBlockUnitAssert = std::shared_ptr<CBlockUnitAssert>;
 
 
-	//BlockUnitInit,	BlockUnitTry,		BlockUnitExpect
+	//BlockUnitInit,	BlockUnitTry,		BlockUnitAssert
 
 
 

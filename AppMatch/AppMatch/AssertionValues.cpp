@@ -13,7 +13,7 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-using namespace CBlocking::VariableSloting;
+ 
 
 pair<HBlockKind, HBlockKind>
 CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
@@ -179,7 +179,7 @@ bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock
         return assert_it_property(propNamed, destination, value,localsEntry,nullptr );
     }
 
-    if (HVariableNamed  var_n = asHVariableNamed(obj)) {
+    if (HBlockVariableNamed  var_n = asHBlockVariableNamed(obj)) {
          
         CBlocking::HBlock destination = var_n->value;
         if (value_can_be_assign_to(value , var_n->kind,localsEntry))

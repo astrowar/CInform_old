@@ -14,7 +14,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-using namespace CBlocking::VariableSloting;
+ 
 
 
 QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
@@ -27,7 +27,7 @@ QueryResultContext CBlockInterpreter::queryVerb_ListedIn(HBlock n1, HBlock n2, H
 		return queryVerb_ListedIn(n1, resolved, localsEntry, stk);
 	}
 
-	if (HVariableNamed   nvar2 = asHVariableNamed(n2))
+	if (HBlockVariableNamed   nvar2 = asHBlockVariableNamed(n2))
 	{ 
 		return queryVerb_ListedIn(n1, nvar2->value, localsEntry,  stk);
 	}

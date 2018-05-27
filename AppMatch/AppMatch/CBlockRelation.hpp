@@ -24,8 +24,7 @@ namespace CBlocking
 
 
 
-	class CBlockRelationBase
-		: public CBlock  //  define uma relacao .. este bloco eh abstrato
+	class CBlockRelationBase  : public CBlock  //  define uma relacao .. este bloco eh abstrato
 	{
 	public:
 		CBlockRelationBase(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_1, bool _various_2)

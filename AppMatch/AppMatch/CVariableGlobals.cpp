@@ -8,7 +8,7 @@ using namespace std;
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
-using namespace CBlocking::VariableSloting;
+ 
 
 bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , HBlock defaultValue )
 {
@@ -68,7 +68,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 	if (HBlockKind  kind = asHBlockKind(baseKind))
 	{
 		if (HBlockNoum nameVar = asHBlockNoum(obj)) {
-			HVariableNamed newVar = make_shared<CVariableNamed>(nameVar, kind, defaultValue);
+			HBlockVariableNamed newVar = make_shared<CBlockVariableNamed>(nameVar, kind, defaultValue);
 
 			logMessage("Add VAR " + newVar->name->named);
 		 

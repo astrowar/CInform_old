@@ -15,24 +15,24 @@ unit init :
 
 unit test :
    try putting  apple into box  
-expect :   nothing
+assert:   nothing
 
 
 unit test :
    try eating ( bad apple ) and orange 
-expect :      nothing
+assert:      nothing
 
 
 unit test :
    try putting  apple box
-expect :      nothing
+assert:      nothing
    
 unit test :
    try putting  apple inside box
-expect :       apple is inside box  
+assert:       apple is inside box  
    
 unit test :
    putting is an action  applying to (  thing  and   container )
-expect :   true
+assert:   true
    
    

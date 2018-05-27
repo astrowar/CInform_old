@@ -61,7 +61,7 @@ namespace CBlocking
 
 	using HBlockAssertion_canBe = std::shared_ptr<CBlockAssertion_canBe>;
 
-	class CBlockAssertion_isKindOf : public CBlockAssertion_is //retorna uma declaracao
+	class CBlockAssertion_isKindOf : public CBlockAssertion_is //retorna uma declaracao  asbtract
 	{
 	public:
 		CBlocking::HBlock get_obj() override;
@@ -248,22 +248,26 @@ namespace CBlocking
 
 	using HBlockAssertion_isNotDirectAssign = std::shared_ptr<CBlockAssertion_isNotDirectAssign>;
 
-	class CBlockAssertion_isActionOf : public CBlockAssertion_is //retorna uma declaracao
-	{
-	public:
-		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockAssertion_isActionOf; }
-		HBlockNoum noum;
-		HBlockAction action;
-		HBlockActionApply application;
+	//cls CBlockAssertion_isActionOf : public CBlockAssertion_is //retorna uma declaracao
+	//{
+	//public:
+	//	void dump(string ident) override;
+	//	virtual BlockType type() override { return BlockType::BlockAssertion_isActionOf; }
+	//	HBlockNoum noum;
+	//	HBlockAction action;
+	//	HBlockActionApply application;
 
-		CBlockAssertion_isActionOf(HBlockNoum _noum, HBlockAction _action, HBlockActionApply _application) : noum(_noum),
-			action(_action),
-			application(
-				_application) {};
-	};
+	//	CBlocking::HBlock get_obj() {	return noum;};
+	//	CBlocking::HBlock get_definition() override; {	return nullptr; };
 
-	using HBlockAssertion_isActionOf = std::shared_ptr<CBlockAssertion_isActionOf>;
+
+	//	CBlockAssertion_isActionOf(HBlockNoum _noum, HBlockAction _action, HBlockActionApply _application) : noum(_noum),
+	//		action(_action),
+	//		application(
+	//			_application) {};
+	//};
+
+	//using HBlockAssertion_isActionOf = std::shared_ptr<CBlockAssertion_isActionOf>;
 
 	class CBlockIsVerb : public CBlockAssertion_is    //retorna uma declaracao
 	{
@@ -329,7 +333,7 @@ namespace CBlocking
 
 
 
-	class CBlockAssert : CBlock    //retorna uma declaracao
+	class CBlockAssert : public CBlock    //retorna uma declaracao
 	{
 	public:
  
@@ -375,5 +379,6 @@ namespace CBlocking
 		public:
 			HBlockBooleanResult cond;
 		};
+		using HCBlockAssertionCond = std::shared_ptr<CBlockAssertionCond>;
 }
 #endif //CBLOCKMATCH_H

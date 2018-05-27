@@ -103,7 +103,7 @@ namespace CBlocking
 		HBlockActionCall asHBlockActionCall(CBlocking::HBlock c);
 
 		HBlockActionCallNamed asHBlockActionCallNamed(CBlocking::HBlock c);
-		VariableSloting::HVariableNamed asHVariableNamed(CBlocking::HBlock c);
+		HBlockVariableNamed asHBlockVariableNamed(CBlocking::HBlock c);
 		HBlockUnderstandDynamic asHBlockUnderstandDynamic(CBlocking::HBlock c);
 		HBlockUnderstandStatic asHBlockUnderstandStatic(CBlocking::HBlock c);
 
@@ -143,8 +143,8 @@ namespace CBlocking
 		HBlockNow asHBlockNow(CBlocking::HBlock c);
 		HBlockEvery asHBlockEvery(CBlocking::HBlock c);
 
-		VariableSloting::HVariableSlotEnum asHVariableSlotEnum(VariableSloting::HVariableSlot c);
-		VariableSloting::HVariableSlotBool asHVariableSlotBool(VariableSloting::HVariableSlot c);
+		HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c);
+		HVariableSlotBool asHVariableSlotBool(HVariableSlot c);
 
 		HBlockControlToken asHBlockControlToken(CBlocking::HBlock c);
 		HBlockControlIF asHBlockControlIF(CBlocking::HBlock c);

@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "dynamicCast.hpp"
-using namespace CBlocking::VariableSloting;
+ 
 
 namespace CBlocking
 {
@@ -266,10 +266,10 @@ namespace CBlocking
 				return static_cast<CBlockActionCall*>(c);
 			return nullptr;
 		}
-		CVariableNamed* asCVariableNamed(CBlock* c)
+		CBlockVariableNamed* asCBlockVariableNamed(CBlock* c)
 		{
 			if (c->type() == BlockType::VariableNamed)
-				return static_cast<CVariableNamed*>(c);
+				return static_cast<CBlockVariableNamed*>(c);
 			return nullptr;
 		}
 		CBlockUnderstandDynamic* asCBlockUnderstandDynamic(CBlock* c)

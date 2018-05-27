@@ -10,7 +10,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-using namespace CBlocking::VariableSloting;
+ 
 
 CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlock c_block, HBlockNoum property_noum, HRunLocalScope localsEntry, QueryStack *stk, std::function< CBlocking::HBlock(CBlocking::HBlock, HRunLocalScope, QueryStack*) > isSuitable)
 {
@@ -53,7 +53,7 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cp
 				{
 					if (HBlockInstance cinst = asHBlockInstance(object))
 					{
-						HVariableNamed pvar = cinst->get_property(property_noum->named);
+						HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
 						if (pvar != nullptr)
 						{
 							return evaluate_values(pvar->value, localsEntry, stk, isSuitable);
@@ -139,7 +139,7 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_values(CBlocking::HBlock c_block,
 		}
 
 
-		if (HVariableNamed nvar1 = asHVariableNamed(c_block))
+		if (HBlockVariableNamed nvar1 = asHBlockVariableNamed(c_block))
 		{
 			if (nvar1->value != nullptr)
 			{

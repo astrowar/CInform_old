@@ -4,7 +4,7 @@
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
 
-using namespace VariableSloting;
+ 
 
 namespace CBlocking
 {
@@ -539,10 +539,10 @@ namespace CBlocking
 				}
 
 
-		HVariableNamed asHVariableNamed(CBlocking::HBlock c)
+		HBlockVariableNamed asHBlockVariableNamed(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::VariableNamed)
-				return std::static_pointer_cast<CVariableNamed>(c);
+				return std::static_pointer_cast<CBlockVariableNamed>(c);
 			return nullptr;
 		}
 		HBlockUnderstandDynamic asHBlockUnderstandDynamic(CBlocking::HBlock c)

@@ -59,7 +59,7 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 	bool is_inner = false;
 	string s = "";
 	HBlockTextSentence blocos =   std::make_shared<CBlockTextSentence >( std::list<HBlock>() );  
-	for (int i = 0; i < text.size(); ++i)
+	for (size_t i = 0; i < text.size(); ++i)
 	{
 		if (text[i] == '[')
 		{

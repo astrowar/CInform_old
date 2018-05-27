@@ -62,7 +62,7 @@ string CBlockInterpreter::getStringPrexfedFromList(const std::vector<string>& no
 		if (lst_size_t != n_k_size_t) continue;
 
 		bool isEquals_b = true;
-		for (auto  i = 0; i<lst_size_t; ++i)
+		for (size_t  i = 0; i<lst_size_t; ++i)
 		{
 			if (isSameString(kindNameFramented[i], noumFragmented[i]) == false)
 			{
@@ -256,7 +256,7 @@ CBlocking::HBlockMatch  CBlockInterpreter::Resolve_Selector_Noum_fragment(std::v
 CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_NoumList(std::vector<string> strList_in, std::list<string> &allKindsNames, std::list<string> &allEnumNames, HRunLocalScope localsEntry)
 {
 
-	int pivot_a = 0;
+	size_t pivot_a = 0;
 	
 
 	std::list<HBlockMatch> resolve_list;

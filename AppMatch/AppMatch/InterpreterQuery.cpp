@@ -18,7 +18,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-using namespace CBlocking::VariableSloting;
+ 
 
 
 
@@ -219,7 +219,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 			if (HBlockInstance cinst = asHBlockInstance(propObj))
 			{
 				{
-					HVariableNamed pvar = cinst->get_property(property_noum->named);
+					HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
 					if (pvar != nullptr)
 					{
 						auto next_var = pvar->value;
@@ -354,13 +354,13 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 		}
     }
 
-    if (HVariableNamed nvar1 = asHVariableNamed(c_block))
+    if (HBlockVariableNamed nvar1 = asHBlockVariableNamed(c_block))
     {
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", nvar1, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
 			if (nvar1->value == nullptr) return QUndefined;
-			if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
+			if (HBlockVariableNamed nvar2 = asHBlockVariableNamed(c_block1))
 			{
 				if (nvar2->value == nullptr) return QUndefined;
 				if (nvar1 == nvar2) return QEquals; //same reference			 
@@ -370,7 +370,7 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
 		}
     }
 
-    if (HVariableNamed nvar2 = asHVariableNamed(c_block1))
+    if (HBlockVariableNamed nvar2 = asHBlockVariableNamed(c_block1))
     {
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", nvar2, c_block, c_block1);
 		if (next_stack != nullptr)
@@ -492,7 +492,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	if (HBlockKind bkind = asHBlockKind(c_block1))
 	{
-		if (auto avar = asHVariableNamed(c_block))
+		if (auto avar = asHBlockVariableNamed(c_block))
 		{
 			c_block->dump("");
 			c_block1->dump("");
@@ -523,13 +523,13 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
  
 
 
-	if (auto vvar = asCVariableNamed(c_block1.get()))
+	if (auto vvar = asCBlockVariableNamed(c_block1.get()))
 	{
 		auto r_var = vvar->value;
 		if (r_var == nullptr) r_var = Nothing;
 		return query_is(c_block, r_var, localsEntry, stk);
 	}
-	if (auto vvar = asCVariableNamed(c_block.get()))
+	if (auto vvar = asCBlockVariableNamed(c_block.get()))
 	{
 		auto r_var = vvar->value;
 		if (r_var == nullptr) r_var = Nothing;
@@ -856,13 +856,13 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
     }
 
 
-	if (HVariableNamed var_n = asHVariableNamed(c_block1))
+	if (HBlockVariableNamed var_n = asHBlockVariableNamed(c_block1))
 	{
 		if (var_n->value == nullptr)	return query_is(c_block, Nothing, localsEntry,  stk);
 		return query_is(c_block, var_n->value, localsEntry, stk);
 	}
 
-	if (HVariableNamed var_n = asHVariableNamed(c_block))
+	if (HBlockVariableNamed var_n = asHBlockVariableNamed(c_block))
 	{
 		if (var_n->value == nullptr)	return query_is( Nothing, c_block1, localsEntry, stk);
 		return query_is(var_n->value ,c_block1,   localsEntry, stk);

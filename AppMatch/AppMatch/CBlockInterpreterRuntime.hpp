@@ -118,7 +118,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::vector<HBlockAssertionBase> dynamic_assertions;
 		std::vector<HBlockNoum> registred_adjetives;
 		std::vector<HBlockAssertion_is> kindDefinitions;
-		std::vector<VariableSloting::HVariableNamed> global_variables;
+		std::vector<HBlockVariableNamed> global_variables;
 		
 		std::vector<HBlockAssertion_isConstantAssign>  constant_assignments;
 		std::vector<HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
@@ -458,7 +458,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock disptch_action_call(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		HBlock exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
 		HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);
-		HExecutionBlock create_dispach_env(HBlockList p, HRunLocalScope localsEntry);
+		HBlockExecution create_dispach_env(HBlockList p, HRunLocalScope localsEntry);
 
 
 
