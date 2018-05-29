@@ -13,12 +13,13 @@
     follow the appraisal rules.
     
  rules tambem possuem argumentos de entrada, as regras de entrada funcionam como match do racket. mas sao verificados em ordem: 
+ 
     Grading is a number based rulebook 
     Grading 5: say "It's five. What can I say?" instead. 
     Grading an odd number (called N): say "There's something odd about [N]." instead. 
     Grading a number (called N): say "Just [N]." instead.
     
-    a palavra chave (instead) interrompe o fluxo de regras e executa uma saida
+a palavra chave (instead) interrompe o fluxo de regras e executa uma saida
     
  
  
@@ -27,6 +28,7 @@
  
  
  The pick a plan rules are a rulebook. 
+ 
         The pick a plan rules have default outcome success. [ Or failure, or no outcome ]
         The pick a plan rules have a number called the aptitude mark.
         A pick a plan rule: say "I always fail, regardless the rulebook's default."; rule fails.
@@ -36,12 +38,15 @@
  cada termo eh executado em ordem de listagem. 
  
  Eh possivel inserir rulebook dentro de rulebook : 
+ 
    The key location rule is listed in pick a plan rules.
    
 remover de uma listagem especifica   
+
    The can't act in the dark rule is not listed in the visibility rules. 
 
 listado em lugar nenhum    
+
    The can't remove from people rule is not listed in any rulebook.
 
 Ou mesmo substiuir toda uma regra:
@@ -87,23 +92,26 @@ X is (K based rulebook )
 X is (rulebook producing L )
 X is (K based rulebook producing L)
 
-exemplo :
-  The ( nearest item ) rules is a rulebook producing an object
-  ( nearest item ) when (thing  called T)  is in pocket: 
-    rule succeeds with result T
-  ( nearest item ) when (thing  called T)  is in location: 
-    rule succeeds with result T    
-  ( nearest item ) rule: 
-     say "Nothing near to use "
-     rule succeeds with result Nothing    
+exemplo : 
+
+    The ( nearest item ) rules is a rulebook producing an object
+    ( nearest item ) when (thing  called T)  is in pocket: 
+       rule succeeds with result T
+    ( nearest item ) when (thing  called T)  is in location: 
+       rule succeeds with result T    
+    ( nearest item ) rule: 
+       say "Nothing near to use "
+       rule succeeds with result Nothing    
 
 para acessar o item use a sintaxe :
  let (the near item)  be (the object) produced by ( nearest item ) rules
  
  ou seja :
-  value = K produced by R rules
+
+    value = K produced by R rules
   
 Para passar os argumentos :
+
     let (the near item)  be (the object) produced by ( nearest item ) rules for (argument) 
     follow  ( nearest item ) rules for (argument)    -> nao tem valor de retorno
     
@@ -111,20 +119,20 @@ Se tentar invocar sem argumento , ha um rumtime erro. invocar com retorno sem us
 
 eh possivel fazer o resultado de uma regra ser o resultado de uma regra interna usando o  abide 
 
-abide R rule by Y :
-  follow  R rules for Y
-  if rule succeeded :
-     rule succeeds 
-  if rule failed :     
-     rule failed 
+    abide R rule by Y :
+       follow  R rules for Y
+       if rule succeeded :
+          rule succeeds 
+       if rule failed :     
+          rule failed 
 
 
-anonymously  abide R rule by Y :
-  follow  R rules for Y
-  if rule succeeded :
-     rule succeeds with result ( K produced by R rules)   
-  if rule failed :     
-     rule failed with result ( K produced by R rules)       
+    anonymously  abide R rule by Y :
+      follow  R rules for Y
+      if rule succeeded :
+         rule succeeds with result ( K produced by R rules)   
+      if rule failed :     
+         rule failed with result ( K produced by R rules)       
    
 
          
