@@ -284,7 +284,7 @@ namespace CBlocking
 
 	class CBlockMatchIsNotVerb : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
 	{
-	public
+	public :
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchIsNotVerb; }
 		std::string verb;

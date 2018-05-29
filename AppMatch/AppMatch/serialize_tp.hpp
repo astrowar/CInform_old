@@ -31,6 +31,9 @@ public:
 
 };
 
+
+
+
 void store_type(BlockType tp, ArchiveContext *ar);
 void store_block(CBlocking::HBlock  s, ArchiveContext *ar);
 
@@ -47,19 +50,19 @@ void store_block_i(const CBlockAssert* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_canBe* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_InstanceVariable* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_is* b, ArchiveContext * ar);
-void store_block_i(const CBlockAssertion_isActionOf* b, ArchiveContext * ar);
+//void store_block_i(const CBlockAssertion_isActionOf* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isConstantAssign* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isDefaultAssign* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isDirectAssign* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isForbiddenAssign* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isInstanceOf* b, ArchiveContext * ar);
-void store_block_i(const CBlockAssertion_isKindOf* b, ArchiveContext * ar);
+//void store_block_i(const CBlockAssertion_isKindOf* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isLocalVariable* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isNamedValueOf* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isNotDirectAssign* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertion_isVariable* b, ArchiveContext * ar);
 void store_block_i(const CBlockAssertionBase* b, ArchiveContext * ar);
-void store_block_i(const CBlockAssertionCond* b, ArchiveContext * ar);
+//void store_block_i(const CBlockAssertionCond* b, ArchiveContext * ar);
 void store_block_i(const CBlockBooleanAND* b, ArchiveContext * ar);
 void store_block_i(const CBlockBooleanNOT* b, ArchiveContext * ar);
 void store_block_i(const CBlockBooleanOR* b, ArchiveContext * ar);
@@ -104,7 +107,7 @@ void store_block_i(const CBlockList* b, ArchiveContext * ar);
 void store_block_i(const CBlockList_AND* b, ArchiveContext * ar);
 void store_block_i(const CBlockList_OR* b, ArchiveContext * ar);
 void store_block_i(const CBlockMatch* b, ArchiveContext * ar);
-void store_block_i(const CBlockMatchAction* b, ArchiveContext * ar);
+//void store_block_i(const CBlockMatchAction* b, ArchiveContext * ar);
 void store_block_i(const CBlockMatchActionCall* b, ArchiveContext * ar);
 void store_block_i(const CBlockMatchAND* b, ArchiveContext * ar);
 void store_block_i(const CBlockMatchAny* b, ArchiveContext * ar);
@@ -156,7 +159,7 @@ void store_block_i(const CBlockToDecideOn* b, ArchiveContext * ar);
 void store_block_i(const CBlockToDecideWhat* b, ArchiveContext * ar);
 void store_block_i(const CBlockToDecideWhat_FirstNoum* b, ArchiveContext * ar);
 void store_block_i(const CBlockToDecideWhether* b, ArchiveContext * ar);
-void store_block_i(const CBlockTransform* b, ArchiveContext * ar);
+//void store_block_i(const CBlockTransform* b, ArchiveContext * ar);
 void store_block_i(const CBlockTryCall* b, ArchiveContext * ar);
 void store_block_i(const CBlockUnderstand* b, ArchiveContext * ar);
 void store_block_i(const CBlockUnderstandDynamic* b, ArchiveContext * ar);

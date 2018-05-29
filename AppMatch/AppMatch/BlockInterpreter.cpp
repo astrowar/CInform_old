@@ -137,13 +137,11 @@ CBlockAssertion_canBe::CBlockAssertion_canBe(CBlocking::HBlock _obj, HBlockEnums
                                                                                      obj(_obj) {
 }
 
-CBlocking::HBlock CBlockAssertion_isKindOf::get_obj() {
-    return noum;
-}
+//CBlocking::HBlock CBlockAssertion_isKindOf::get_obj() {   return noum;}
 
  
 
-CBlocking::HBlock CBlockAssertion_isKindOf::get_definition() { return baseKind; }
+//CBlocking::HBlock CBlockAssertion_isKindOf::get_definition() { return baseKind; }
 
 CBlocking::HBlock CBlockAssertion_isInstanceOf::get_obj() {
     return noum;

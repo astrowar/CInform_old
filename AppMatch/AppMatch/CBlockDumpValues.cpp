@@ -707,10 +707,10 @@ void CBlockActionCallNamed::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockAssertion_isActionOf::dump(string ident) {
-	printf("%s %s\n", ident.c_str(), "Action ");
-	CBlock::dump(ident);
-}
+//void CBlockAssertion_isActionOf::dump(string ident) {
+//	printf("%s %s\n", ident.c_str(), "Action ");
+//	CBlock::dump(ident);
+//}
 
 void CBlockDinamicDispatch::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "DinamicDispatch ");
@@ -773,13 +773,13 @@ void CBlockAssertion_canBe::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockAssertion_isKindOf::dump(string ident) {
-	printf("%s %s\n", ident.c_str(), "is Kind Of ");
-		this->noum->dump(ident + "       ");
-		printf("%s %s\n", ident.c_str(), "Kind ");
-		this->baseKind->dump(ident + "       ");
-		CBlock::dump(ident);
-}
+//void CBlockAssertion_isKindOf::dump(string ident) {
+//	printf("%s %s\n", ident.c_str(), "is Kind Of ");
+//		this->noum->dump(ident + "       ");
+//		printf("%s %s\n", ident.c_str(), "Kind ");
+//		this->baseKind->dump(ident + "       ");
+//		CBlock::dump(ident);
+//}
 
 void CBlockAssertion_isInstanceOf::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "is Instance Of ");

@@ -228,12 +228,12 @@ namespace CBlocking
 				return std::static_pointer_cast<CBlockIsVerb>(c);
 			return nullptr;
 		}
-		HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c)
-		{
-			if (c != nullptr && c->type() == BlockType::BlockAssertion_isActionOf)
-				return std::static_pointer_cast<CBlockAssertion_isActionOf>(c);
-			return nullptr;
-		}
+		//HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c)
+		//{
+		//	if (c != nullptr && c->type() == BlockType::BlockAssertion_isActionOf)
+		//		return std::static_pointer_cast<CBlockAssertion_isActionOf>(c);
+		//	return nullptr;
+		//}
 		HBlockIsNotVerb asHBlockIsNotVerb(CBlocking::HBlock c)
 		{
 			if (c != nullptr && c->type() == BlockType::BlockIsNotVerb)
@@ -541,7 +541,7 @@ namespace CBlocking
 
 		HBlockVariableNamed asHBlockVariableNamed(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::VariableNamed)
+			if (c != nullptr && c->type() == BlockType::BlockVariableNamed)
 				return std::static_pointer_cast<CBlockVariableNamed>(c);
 			return nullptr;
 		}

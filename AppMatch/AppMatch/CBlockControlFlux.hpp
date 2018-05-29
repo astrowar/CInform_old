@@ -9,7 +9,7 @@
 
 namespace CBlocking
 {
-	class CBlockControlToken //classe que diz que aqui tem um TOKEN especifico de controle  : public CBlock
+	class CBlockControlToken : public CBlock //classe que diz que aqui tem um TOKEN especifico de controle  
 	{
 	public:
 		CBlockControlToken(string _token, CBlocking::HBlock _contents)
@@ -127,7 +127,7 @@ class CBlockControlForEach  : public CBlock
 
 	};
 
-	class CBlockExecutionResultFlag //classe que diz que aqui tem um TOKEN especifico de controle  : public CBlock
+	class CBlockExecutionResultFlag : public CBlock //classe que diz que aqui tem um TOKEN especifico de controle  
 	{
 	public:
 		CBlockExecutionResultFlag(PhaseResultFlag _flag, CBlocking::HBlock _contents)

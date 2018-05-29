@@ -43,8 +43,7 @@ namespace CBlocking
 	class CBlockToDecideWhether  : public CBlockToDecide
 	{
 	public:
-		CBlockToDecideWhether
-		(HBlockMatch _queryToMatch, CBlocking::HBlock _decideBody)
+		CBlockToDecideWhether(HBlockMatch _queryToMatch, CBlocking::HBlock _decideBody)
 			: queryToMatch(_queryToMatch),
 			decideBody(_decideBody) {
 		}
@@ -64,9 +63,7 @@ namespace CBlocking
 	class CBlockToDecideWhat  : public CBlockToDecide
 	{
 	public:
-		CBlockToDecideWhat
-		(HBlockMatch _queryToMatch, CBlocking::HBlock _decideBody)
-			: queryToMatch(_queryToMatch),
+		CBlockToDecideWhat(HBlockMatch _queryToMatch, CBlocking::HBlock _decideBody)			: queryToMatch(_queryToMatch),
 			decideBody(_decideBody) {
 		}
 
@@ -87,8 +84,7 @@ namespace CBlocking
 	class CBlockToDecideWhat_FirstNoum  : public CBlockToDecide
 	{
 	public:
-		CBlockToDecideWhat_FirstNoum
-		(HBlockMatchIs _queryToMatch, CBlocking::HBlock _decideBody)
+		CBlockToDecideWhat_FirstNoum(HBlockMatchIs _queryToMatch, CBlocking::HBlock _decideBody)
 			: queryToMatch(_queryToMatch),
 			decideBody(_decideBody) {
 		}

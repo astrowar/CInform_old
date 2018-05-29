@@ -49,7 +49,7 @@ namespace CBlocking
 		HBlockAssertion_canBe asHBlockAssertion_canBe(CBlocking::HBlock c);
 		HBlockAssertion_is asHBlockAssertion_is(CBlocking::HBlock c);
 		HBlockIsVerb asHBlockIsVerb(CBlocking::HBlock c);
-		HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c);
+		//HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c);
 		HBlockIsNotVerb asHBlockIsNotVerb(CBlocking::HBlock c);
 		HBlockMatchAny asHBlockMatchAny(CBlocking::HBlock c);
 

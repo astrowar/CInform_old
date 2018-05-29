@@ -33,7 +33,7 @@ namespace CBlocking
 		CBlockAssertion_canBe* asCBlockAssertion_canBe(CBlock* c);
 		CBlockAssertion_is* asCBlockAssertion_is(CBlock* c);
 		CBlockIsVerb* asCBlockIsVerb(CBlock* c);
-		CBlockAssertion_isActionOf* asCBlockAssertion_isActionOf(CBlock* c);
+//		CBlockAssertion_isActionOf* asCBlockAssertion_isActionOf(CBlock* c);
 		CBlockIsNotVerb* asCBlockIsNotVerb(CBlock* c);
 		CBlockMatchAny* asCBlockMatchAny(CBlock* c);
 		CBlockMatchNamed* asCBlockMatchNamed(CBlock* c);

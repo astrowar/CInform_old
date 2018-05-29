@@ -160,12 +160,12 @@ void store_block_i(const CBlockAssertion_is* b, ArchiveContext * ar)
 {
 	
 }
-void store_block_i(const CBlockAssertion_isActionOf* b, ArchiveContext * ar)
-{
-	store_block(b->noum , ar);
-	store_block(b->action, ar);
-	store_block(b->application, ar);	
-}
+//void store_block_i(const CBlockAssertion_isActionOf* b, ArchiveContext * ar)
+//{
+//	store_block(b->noum , ar);
+//	store_block(b->action, ar);
+//	store_block(b->application, ar);	
+//}
 void store_block_i(const CBlockAssertion_isConstantAssign* b, ArchiveContext * ar)
 {
 	store_block(b->variable, ar);
@@ -191,11 +191,11 @@ void store_block_i(const CBlockAssertion_isInstanceOf* b, ArchiveContext * ar)
 		store_block(b->baseKind, ar);
 		store_block(b->noum, ar);		
 }
-void store_block_i(const CBlockAssertion_isKindOf* b, ArchiveContext * ar)
-{
-	store_block(b->baseKind, ar);
-	store_block(b->noum, ar);
-}
+//void store_block_i(const CBlockAssertion_isKindOf* b, ArchiveContext * ar)
+//{
+//	store_block(b->baseKind, ar);
+//	store_block(b->noum, ar);
+//}
 void store_block_i(const CBlockAssertion_isLocalVariable* b, ArchiveContext * ar)
 {	
 		store_block(b->variableName, ar);
@@ -220,10 +220,10 @@ void store_block_i(const CBlockAssertionBase* b, ArchiveContext * ar)
 {
 	
 }
-void store_block_i(const CBlockAssertionCond* b, ArchiveContext * ar)
-{
-	store_block(b->cond, ar);	
-}
+//void store_block_i(const CBlockAssertionCond* b, ArchiveContext * ar)
+//{
+//	store_block(b->cond, ar);	
+//}
 
 
 void store_block_i(const CBlockAction* b, ArchiveContext * ar)
@@ -355,13 +355,13 @@ void store_block(CBlocking::HBlock  s, ArchiveContext *ar)
   if (tp == BlockAssertion_canBe) { const HBlockAssertion_canBe x = std::dynamic_pointer_cast < CBlockAssertion_canBe > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_InstanceVariable) { const HBlockAssertion_InstanceVariable x = std::dynamic_pointer_cast < CBlockAssertion_InstanceVariable > (s); store_block_i(x.get(), ar); return; }
  // if (tp == BlockAssertion_is) { const HBlockAssertion_is x = std::dynamic_pointer_cast < CBlockAssertion_is > (s); store_block_i(x.get(), ar); return; }
-  if (tp == BlockAssertion_isActionOf) { const HBlockAssertion_isActionOf x = std::dynamic_pointer_cast < CBlockAssertion_isActionOf > (s); store_block_i(x.get(), ar); return; }
+ // if (tp == BlockAssertion_isActionOf) { const HBlockAssertion_isActionOf x = std::dynamic_pointer_cast < CBlockAssertion_isActionOf > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isConstantAssign) { const HBlockAssertion_isConstantAssign x = std::dynamic_pointer_cast < CBlockAssertion_isConstantAssign > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isDefaultAssign) { const HBlockAssertion_isDefaultAssign x = std::dynamic_pointer_cast < CBlockAssertion_isDefaultAssign > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isDirectAssign) { const HBlockAssertion_isDirectAssign x = std::dynamic_pointer_cast < CBlockAssertion_isDirectAssign > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isForbiddenAssign) { const HBlockAssertion_isForbiddenAssign x = std::dynamic_pointer_cast < CBlockAssertion_isForbiddenAssign > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isInstanceOf) { const HBlockAssertion_isInstanceOf x = std::dynamic_pointer_cast < CBlockAssertion_isInstanceOf > (s); store_block_i(x.get(), ar); return; }
-  if (tp == BlockAssertion_isKindOf) { const HBlockAssertion_isKindOf x = std::dynamic_pointer_cast < CBlockAssertion_isKindOf > (s); store_block_i(x.get(), ar); return; }
+  //if (tp == BlockAssertion_isKindOf) { const HBlockAssertion_isKindOf x = std::dynamic_pointer_cast < CBlockAssertion_isKindOf > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isLocalVariable) { const HBlockAssertion_isLocalVariable x = std::dynamic_pointer_cast < CBlockAssertion_isLocalVariable > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isNamedValueOf) { const HBlockAssertion_isNamedValueOf x = std::dynamic_pointer_cast < CBlockAssertion_isNamedValueOf > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockAssertion_isNotDirectAssign) { const HBlockAssertion_isNotDirectAssign x = std::dynamic_pointer_cast < CBlockAssertion_isNotDirectAssign > (s); store_block_i(x.get(), ar); return; }
@@ -399,7 +399,7 @@ void store_block(CBlocking::HBlock  s, ArchiveContext *ar)
   if (tp == BlockIsAdverbialComparasion) { const HBlockIsAdverbialComparasion x = std::dynamic_pointer_cast < CBlockIsAdverbialComparasion > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockIsNotVerb) { const HBlockIsNotVerb x = std::dynamic_pointer_cast < CBlockIsNotVerb > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockIsVerb) { const HBlockIsVerb x = std::dynamic_pointer_cast < CBlockIsVerb > (s); store_block_i(x.get(), ar); return; }
-  if (tp == BlockKind) { const HBlockKind x = std::dynamic_pointer_cast < CBlockKind > (s); store_block_i(x.get(), ar); return; }
+ // if (tp == BlockKind) { const HBlockKind x = std::dynamic_pointer_cast < CBlockKind > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockKind_InstanceVariable) { const HBlockKind_InstanceVariable x = std::dynamic_pointer_cast < CBlockKind_InstanceVariable > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockKindAction) { const HBlockKindAction x = std::dynamic_pointer_cast < CBlockKindAction > (s); store_block_i(x.get(), ar); return; }
   if (tp == BlockKindEntity) { const HBlockKindEntity x = std::dynamic_pointer_cast < CBlockKindEntity > (s); store_block_i(x.get(), ar); return; }

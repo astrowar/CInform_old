@@ -12,12 +12,12 @@ namespace CBlocking
 
 
 		 
-		CBlockKind* asCBlockKind(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockKind)
-				return static_cast<CBlockKind*>(c);
-			return nullptr;
-		}
+		//CBlockKind* asCBlockKind(CBlock* c)
+		//{
+		//	if (c->type() == BlockType::BlockKind)
+		//		return static_cast<CBlockKind*>(c);
+		//	return nullptr;
+		//}
 		CUnresolved* asCBlockUnresolved(CBlock* c)
 		{
 			if (c->type() == BlockType::Unresolved)
@@ -116,12 +116,12 @@ namespace CBlocking
 				return static_cast<CBlockIsVerb*>(c);
 			return nullptr;
 		}
-		CBlockAssertion_isActionOf* asCBlockAssertion_isActionOf(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockAssertion_isActionOf)
-				return static_cast<CBlockAssertion_isActionOf*>(c);
-			return nullptr;
-		}
+		//CBlockAssertion_isActionOf* asCBlockAssertion_isActionOf(CBlock* c)
+		//{
+		//	if (c->type() == BlockType::BlockAssertion_isActionOf)
+		//		return static_cast<CBlockAssertion_isActionOf*>(c);
+		//	return nullptr;
+		//}
 		CBlockIsNotVerb* asCBlockIsNotVerb(CBlock* c)
 		{
 			if (c->type() == BlockType::BlockIsNotVerb)
@@ -268,7 +268,7 @@ namespace CBlocking
 		}
 		CBlockVariableNamed* asCBlockVariableNamed(CBlock* c)
 		{
-			if (c->type() == BlockType::VariableNamed)
+			if (c->type() == BlockType::BlockVariableNamed)
 				return static_cast<CBlockVariableNamed*>(c);
 			return nullptr;
 		}

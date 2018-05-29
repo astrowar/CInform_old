@@ -33,7 +33,7 @@ namespace CBlocking
 
 	using HCBlockAssertion_is = std::shared_ptr<CBlockAssertion_is>;
 
-	//class CBlockAssertion_property_canBe : public CBlockAssertionBase //retorna uma declaracao
+	//cls CBlockAssertion_property_canBe : public CBlockAssertionBase //retorna uma declaracao
 	//{
 	//public:
 	//	void dump(std::string ident) override;
@@ -61,19 +61,19 @@ namespace CBlocking
 
 	using HBlockAssertion_canBe = std::shared_ptr<CBlockAssertion_canBe>;
 
-	class CBlockAssertion_isKindOf : public CBlockAssertion_is //retorna uma declaracao  asbtract
-	{
-	public:
-		CBlocking::HBlock get_obj() override;
-	 
-		void dump(string ident) override;
-		virtual CBlocking::HBlock get_definition() override;;
-		HBlockKind noum;
-		HBlockKind baseKind;
-		CBlockAssertion_isKindOf(HBlockKind _noum, HBlockKind _baseKind) : noum(_noum), baseKind(_baseKind) {};
-	};
+	//cls CBlockAssertion_isKindOf : public CBlockAssertion_is //retorna uma declaracao  asbtract
+	//{
+	//public:
+	//	CBlocking::HBlock get_obj() override;
+	// 
+	//	void dump(string ident) override;
+	//	virtual CBlocking::HBlock get_definition() override;;
+	//	HBlockKind noum;
+	//	HBlockKind baseKind;
+	//	CBlockAssertion_isKindOf(HBlockKind _noum, HBlockKind _baseKind) : noum(_noum), baseKind(_baseKind) {};
+	//};
 
-	using HBlockAssertion_isKindOf = std::shared_ptr<CBlockAssertion_isKindOf>;
+	//using HBlockAssertion_isKindOf = std::shared_ptr<CBlockAssertion_isKindOf>;
 
 	class CBlockAssertion_isInstanceOf : public CBlockAssertion_is //retorna uma declaracao
 	{
@@ -374,11 +374,11 @@ namespace CBlocking
 		using HBlockAssertion_InstanceVariable = std::shared_ptr<CBlockAssertion_InstanceVariable>;
 
 
-		class CBlockAssertionCond : public CBlock // assertion com condicao
-		{
-		public:
-			HBlockBooleanResult cond;
-		};
-		using HCBlockAssertionCond = std::shared_ptr<CBlockAssertionCond>;
+		//CLS CBlockAssertionCond : public CBlock // assertion com condicao abstract
+		//{
+		//public:
+		//	HBlockBooleanResult cond;
+		//};
+		//using HCBlockAssertionCond = std::shared_ptr<CBlockAssertionCond>;
 }
 #endif //CBLOCKMATCH_H

@@ -506,14 +506,14 @@ namespace CBlocking
 	using HBlockDinamicDispatch = std::shared_ptr<CBlockDinamicDispatch>;
 
 
-	class CBlockTransform : public CBlock  // um bloco que trasnforma um valor em outro
-	{
-		explicit CBlockTransform(HBlock input)
-			: input(input) {
-		}
-		HBlock input;
-	};
-	using HBlockTransform = std::shared_ptr<CBlockTransform>;
+	//CLS CBlockTransform : public CBlock  // um bloco que trasnforma um valor em outro
+	//{
+	//	explicit CBlockTransform(HBlock input)
+	//		: input(input) {
+	//	}
+	//	HBlock input;
+	//};
+	//using HBlockTransform = std::shared_ptr<CBlockTransform>;
 
 
 
@@ -544,7 +544,7 @@ namespace CBlocking
 	};
 	using HBlockSame = std::shared_ptr<CBlockSame>;
 
-	//class CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
+	//CLS CBlockProp : public CBlock  // um bloco que especifica uma propiedade ( color OF book ) -> ( prop OF what )
 	//{
 	//	CBlockProp(HBlock what, HBlock prop)
 	//		: what(what),
