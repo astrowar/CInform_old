@@ -137,3 +137,20 @@ eh possivel fazer o resultado de uma regra ser o resultado de uma regra interna 
 
          
  
+## Internals
+
+Internamente as regras sao um CommandList. o valor de retorno dessa commandList eh um RuleResult , rule result tem como parametros: ruleSucess, ruleFail, ruleNone  . cada um deles vem com um valor associado que é o outcomme do return .
+Os valores do argumento de entrada, funcionam como no cado dos action.
+
+    if command == follow rule R with A       
+       set var_rule_outcome to R.defaultOutCome          
+       push arguments A
+       call (R.commandlist) # em algum momento ele vai mudar o var_rule_outcome       
+
+no inicio de cada bloco logico. a variavel var_rule_outcome tem um push e logo um pop 
+a variavel global var_rule_outcome armazena o retorno da ultima regra invocada
+
+
+
+   
+   
