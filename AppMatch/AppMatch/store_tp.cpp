@@ -162,7 +162,8 @@ public:
 	float  load_float() { return 0.0f; };
 	bool   load_bool() { return false; }; 
 	BlockType load_type() { return Unresolved; };
-
+	void new_line() { return; };
+	bool end_file() { return false; }
 	 std::map<int, HBlock> cache;
 };
 
@@ -183,9 +184,9 @@ int load_int(LoadContext *ctx)
 	return 0;
 }
 
-int load_float(LoadContext *ctx)
+float load_float(LoadContext *ctx)
 {
-	return 0.0;
+	return 0.0f;
 }
 bool load_bool(LoadContext *ctx) {return false; }
 
@@ -219,12 +220,13 @@ HBlock load_line(LoadContext *ctx)
 	const HBlock _b = load_CBlock(-1, ctx);
 	ctx->cache[slot_id] = _b;
 	ctx->new_line(); //le o new line do arquivo
+	return _b;
 }
 
 HBlock load_file(LoadContext *ctx)
 {
 	HBlock last = nullptr;
-	while (ctx.end_file())
+	while (ctx->end_file())
 	{
 		last = load_line(ctx);
 	}
@@ -243,10 +245,1890 @@ HBlock load_CBlock_slot(int slot_id, LoadContext *ctx)
 
 
 
+ 
+
+
+ 
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx);
+HBlockInstanceNamed  load_CBlockInstanceNamed(int tp, LoadContext *ctx);
+HBlockText  load_CBlockText(int tp, LoadContext *ctx);
+HBlockTextSentence  load_CBlockTextSentence(int tp, LoadContext *ctx);
+HBlockValue  load_CBlockValue(int tp, LoadContext *ctx);
+HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
+HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx);
+HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx);
+HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx);
+HBlockAnything  load_CBlockAnything(int tp, LoadContext *ctx);
+HBlockKindOfName  load_CBlockKindOfName(int tp, LoadContext *ctx);
+HBlockKindOf  load_CBlockKindOf(int tp, LoadContext *ctx);
+HBlockActionApply  load_CBlockActionApply(int tp, LoadContext *ctx);
+HBlockKindAction  load_CBlockKindAction(int tp, LoadContext *ctx);
+HBlockKindValue  load_CBlockKindValue(int tp, LoadContext *ctx);
+HBlockKindEntity  load_CBlockKindEntity(int tp, LoadContext *ctx);
+HBlockNamedValue  load_CBlockNamedValue(int tp, LoadContext *ctx);
+HBlockProperty  load_CBlockProperty(int tp, LoadContext *ctx);
+HBlockInstanceVariable  load_CBlockInstanceVariable(int tp, LoadContext *ctx);
+HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable(int tp, LoadContext *ctx);
+HBlockList  load_CBlockList(int tp, LoadContext *ctx);
+HBlockList_OR  load_CBlockList_OR(int tp, LoadContext *ctx);
+HBlockList_AND  load_CBlockList_AND(int tp, LoadContext *ctx);
+HBlockEnums  load_CBlockEnums(int tp, LoadContext *ctx);
+HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx);
+HBlockVerbDirectRelation  load_CBlockVerbDirectRelation(int tp, LoadContext *ctx);
+HBlockVerbReverseRelation  load_CBlockVerbReverseRelation(int tp, LoadContext *ctx);
+HBlockFilterAtom  load_CBlockFilterAtom(int tp, LoadContext *ctx);
+HBlockFilterList  load_CBlockFilterList(int tp, LoadContext *ctx);
+HBlockDinamicDispatch  load_CBlockDinamicDispatch(int tp, LoadContext *ctx);
+HBlockIF  load_CBlockIF(int tp, LoadContext *ctx);
+HBlockSame  load_CBlockSame(int tp, LoadContext *ctx);
+HBlockVerbConjugation  load_CBlockVerbConjugation(int tp, LoadContext *ctx);
+HBlockVerb  load_CBlockVerb(int tp, LoadContext *ctx);
+HBlockVerbAdapt  load_CBlockVerbAdapt(int tp, LoadContext *ctx);
+HBlockVerbNegate  load_CBlockVerbNegate(int tp, LoadContext *ctx);
+HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx);
+HBlockSelector_All  load_CBlockSelector_All(int tp, LoadContext *ctx);
+HBlockSelector_Any  load_CBlockSelector_Any(int tp, LoadContext *ctx);
+HBlockSelector_Where  load_CBlockSelector_Where(int tp, LoadContext *ctx);
+HBlockAction  load_CBlockAction(int tp, LoadContext *ctx);
+HBlockActionInstance  load_CBlockActionInstance(int tp, LoadContext *ctx);
+HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx);
+HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx);
+HBlockTryCall  load_CBlockTryCall(int tp, LoadContext *ctx);
+HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx);
+HBlockActionCallNamed  load_CBlockActionCallNamed(int tp, LoadContext *ctx);
+HBlockStaticDispatch  load_CBlockStaticDispatch(int tp, LoadContext *ctx);
+HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx);
+HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx);
+HBlockAssertion_canBe  load_CBlockAssertion_canBe(int tp, LoadContext *ctx);
+HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf(int tp, LoadContext *ctx);
+HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf(int tp, LoadContext *ctx);
+HBlockAssertion_isVariable  load_CBlockAssertion_isVariable(int tp, LoadContext *ctx);
+HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable(int tp, LoadContext *ctx);
+HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign(int tp, LoadContext *ctx);
+HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign(int tp, LoadContext *ctx);
+HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign(int tp, LoadContext *ctx);
+HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign(int tp, LoadContext *ctx);
+HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign(int tp, LoadContext *ctx);
+HBlockIsVerb  load_CBlockIsVerb(int tp, LoadContext *ctx);
+HBlockIsNotVerb  load_CBlockIsNotVerb(int tp, LoadContext *ctx);
+HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion(int tp, LoadContext *ctx);
+HBlockAssert  load_CBlockAssert(int tp, LoadContext *ctx);
+HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable(int tp, LoadContext *ctx);
+HBlockBooleanValue  load_CBlockBooleanValue(int tp, LoadContext *ctx);
+HBlockBooleanAND  load_CBlockBooleanAND(int tp, LoadContext *ctx);
+HBlockBooleanOR  load_CBlockBooleanOR(int tp, LoadContext *ctx);
+HBlockBooleanNOT  load_CBlockBooleanNOT(int tp, LoadContext *ctx);
+HBlockNow  load_CBlockNow(int tp, LoadContext *ctx);
+HBlockEvery  load_CBlockEvery(int tp, LoadContext *ctx);
+HBlockComandList  load_CBlockComandList(int tp, LoadContext *ctx);
+HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx);
+HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx);
+HBlockCompositionList  load_CBlockCompositionList(int tp, LoadContext *ctx);
+HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx);
+HBlockCompositionPhrase  load_CBlockCompositionPhrase(int tp, LoadContext *ctx);
+HBlockCompostionPhrase  load_CBlockCompostionPhrase(int tp, LoadContext *ctx);
+HBlockControlToken  load_CBlockControlToken(int tp, LoadContext *ctx);
+HBlockControlIF  load_CBlockControlIF(int tp, LoadContext *ctx);
+HBlockControlUnless  load_CBlockControlUnless(int tp, LoadContext *ctx);
+HBlockControlSelectItem  load_CBlockControlSelectItem(int tp, LoadContext *ctx);
+HBlockControlSelect  load_CBlockControlSelect(int tp, LoadContext *ctx);
+HBlockControlForEach  load_CBlockControlForEach(int tp, LoadContext *ctx);
+HBlockExecutionResultFlag  load_CBlockExecutionResultFlag(int tp, LoadContext *ctx);
+HBlockUnitInit  load_CBlockUnitInit(int tp, LoadContext *ctx);
+HBlockUnitTest  load_CBlockUnitTest(int tp, LoadContext *ctx);
+HBlockUnitAssert  load_CBlockUnitAssert(int tp, LoadContext *ctx);
+HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx);
+HBlockToDecideIf  load_CBlockToDecideIf(int tp, LoadContext *ctx);
+HBlockToDecideWhether  load_CBlockToDecideWhether(int tp, LoadContext *ctx);
+HBlockToDecideWhat  load_CBlockToDecideWhat(int tp, LoadContext *ctx);
+HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum(int tp, LoadContext *ctx);
+HBlockToDecideOn  load_CBlockToDecideOn(int tp, LoadContext *ctx);
+HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx);
+HBlockPhraseDefine  load_CBlockPhraseDefine(int tp, LoadContext *ctx);
+HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx);
+Interpreter::HBlockInterpreter  load_CBlockInterpreter(int tp, LoadContext *ctx);
+HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
+HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx);
+HBlockMatchNamed  load_CBlockMatchNamed(int tp, LoadContext *ctx);
+HBlockMatchNoum  load_CBlockMatchNoum(int tp, LoadContext *ctx);
+HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx);
+HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx);
+HBlockMatchWith  load_CBlockMatchWith(int tp, LoadContext *ctx);
+HBlockMatchList  load_CBlockMatchList(int tp, LoadContext *ctx);
+HBlockMatchAND  load_CBlockMatchAND(int tp, LoadContext *ctx);
+HBlockMatchNOT  load_CBlockMatchNOT(int tp, LoadContext *ctx);
+HBlockMatchOR  load_CBlockMatchOR(int tp, LoadContext *ctx);
+HBlockMatchActionCall  load_CBlockMatchActionCall(int tp, LoadContext *ctx);
+HBlockMatchBlock  load_CBlockMatchBlock(int tp, LoadContext *ctx);
+HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx);
+HBlockMatchDirectIs  load_CBlockMatchDirectIs(int tp, LoadContext *ctx);
+HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot(int tp, LoadContext *ctx);
+HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx);
+HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb(int tp, LoadContext *ctx);
+HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion(int tp, LoadContext *ctx);
+HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx);
+HBlockMatchWhich  load_CBlockMatchWhich(int tp, LoadContext *ctx);
+HBlockMatchWhichNot  load_CBlockMatchWhichNot(int tp, LoadContext *ctx);
+HBlockVariableNamed  load_CBlockVariableNamed(int tp, LoadContext *ctx);
+HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx);
+HBlockIntegerNumber  load_CBlockIntegerNumber(int tp, LoadContext *ctx);
+HBlockFactionalNumber  load_CBlockFactionalNumber(int tp, LoadContext *ctx);
+HBlockArgumentInput  load_CBlockArgumentInput(int tp, LoadContext *ctx);
+HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx);
+HBlockSimetricRelation  load_CBlockSimetricRelation(int tp, LoadContext *ctx);
+HBlockASimetricRelation  load_CBlockASimetricRelation(int tp, LoadContext *ctx);
+HBlockRelationInstance  load_CBlockRelationInstance(int tp, LoadContext *ctx);
+HBlockConditionalRelation  load_CBlockConditionalRelation(int tp, LoadContext *ctx);
+HBlockRelationLookup  load_CBlockRelationLookup(int tp, LoadContext *ctx);
+HBlockVerbLookup  load_CBlockVerbLookup(int tp, LoadContext *ctx);
+HBlockRelationArguments  load_CBlockRelationArguments(int tp, LoadContext *ctx);
+HBlockSelectorAND  load_CBlockSelectorAND(int tp, LoadContext *ctx);
+HBlockExecution  load_CBlockExecution(int tp, LoadContext *ctx);
+HBlockUnderstand  load_CBlockUnderstand(int tp, LoadContext *ctx);
+HBlockUnderstandStatic  load_CBlockUnderstandStatic(int tp, LoadContext *ctx);
+HBlockUnderstandDynamic  load_CBlockUnderstandDynamic(int tp, LoadContext *ctx);
+HBlockKind  load_CBlockKind(int tp, LoadContext *ctx);
+HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
+HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx);
+HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
+HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx);
+HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx);
+HBlockFilter  load_CBlockFilter(int tp, LoadContext *ctx);
+HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx);
+HBlock  load_CBlock(int tp, LoadContext *ctx);
+HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx);
+HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx);
+HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx);
+HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx);
+HBlockBooleanResult  load_CBlockBooleanResult(int tp, LoadContext *ctx);
+HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx);
+HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx);
+HBlockValue  load_CBlockValue(int tp, LoadContext *ctx);
+HBlockList  load_CBlockList(int tp, LoadContext *ctx);
+HBlockAction  load_CBlockAction(int tp, LoadContext *ctx);
+HBlockInstance  load_CBlockInstance_slot(int tp, LoadContext *ctx);
+HBlockInstanceNamed  load_CBlockInstanceNamed_slot(int tp, LoadContext *ctx);
+HBlockText  load_CBlockText_slot(int tp, LoadContext *ctx);
+HBlockTextSentence  load_CBlockTextSentence_slot(int tp, LoadContext *ctx);
+HBlockValue  load_CBlockValue_slot(int tp, LoadContext *ctx);
+HBlockKindReference  load_CBlockKindReference_slot(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
+HBlockNoumSupl  load_CBlockNoumSupl_slot(int tp, LoadContext *ctx);
+HBlockKindNamed  load_CBlockKindNamed_slot(int tp, LoadContext *ctx);
+HBlockNothing  load_CBlockNothing_slot(int tp, LoadContext *ctx);
+HBlockAnything  load_CBlockAnything_slot(int tp, LoadContext *ctx);
+HBlockKindOfName  load_CBlockKindOfName_slot(int tp, LoadContext *ctx);
+HBlockKindOf  load_CBlockKindOf_slot(int tp, LoadContext *ctx);
+HBlockActionApply  load_CBlockActionApply_slot(int tp, LoadContext *ctx);
+HBlockKindAction  load_CBlockKindAction_slot(int tp, LoadContext *ctx);
+HBlockKindValue  load_CBlockKindValue_slot(int tp, LoadContext *ctx);
+HBlockKindEntity  load_CBlockKindEntity_slot(int tp, LoadContext *ctx);
+HBlockNamedValue  load_CBlockNamedValue_slot(int tp, LoadContext *ctx);
+HBlockProperty  load_CBlockProperty_slot(int tp, LoadContext *ctx);
+HBlockInstanceVariable  load_CBlockInstanceVariable_slot(int tp, LoadContext *ctx);
+HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable_slot(int tp, LoadContext *ctx);
+HBlockList  load_CBlockList_slot(int tp, LoadContext *ctx);
+HBlockList_OR  load_CBlockList_OR_slot(int tp, LoadContext *ctx);
+HBlockList_AND  load_CBlockList_AND_slot(int tp, LoadContext *ctx);
+HBlockEnums  load_CBlockEnums_slot(int tp, LoadContext *ctx);
+HBlockVerbRelation  load_CBlockVerbRelation_slot(int tp, LoadContext *ctx);
+HBlockVerbDirectRelation  load_CBlockVerbDirectRelation_slot(int tp, LoadContext *ctx);
+HBlockVerbReverseRelation  load_CBlockVerbReverseRelation_slot(int tp, LoadContext *ctx);
+HBlockFilterAtom  load_CBlockFilterAtom_slot(int tp, LoadContext *ctx);
+HBlockFilterList  load_CBlockFilterList_slot(int tp, LoadContext *ctx);
+HBlockDinamicDispatch  load_CBlockDinamicDispatch_slot(int tp, LoadContext *ctx);
+HBlockIF  load_CBlockIF_slot(int tp, LoadContext *ctx);
+HBlockSame  load_CBlockSame_slot(int tp, LoadContext *ctx);
+HBlockVerbConjugation  load_CBlockVerbConjugation_slot(int tp, LoadContext *ctx);
+HBlockVerb  load_CBlockVerb_slot(int tp, LoadContext *ctx);
+HBlockVerbAdapt  load_CBlockVerbAdapt_slot(int tp, LoadContext *ctx);
+HBlockVerbNegate  load_CBlockVerbNegate_slot(int tp, LoadContext *ctx);
+HBlockSelector  load_CBlockSelector_slot(int tp, LoadContext *ctx);
+HBlockSelector_All  load_CBlockSelector_All_slot(int tp, LoadContext *ctx);
+HBlockSelector_Any  load_CBlockSelector_Any_slot(int tp, LoadContext *ctx);
+HBlockSelector_Where  load_CBlockSelector_Where_slot(int tp, LoadContext *ctx);
+HBlockAction  load_CBlockAction_slot(int tp, LoadContext *ctx);
+HBlockActionInstance  load_CBlockActionInstance_slot(int tp, LoadContext *ctx);
+HBlockActionNamed  load_CBlockActionNamed_slot(int tp, LoadContext *ctx);
+HBlockActionNamed  load_CBlockActionNamed_slot(int tp, LoadContext *ctx);
+HBlockTryCall  load_CBlockTryCall_slot(int tp, LoadContext *ctx);
+HBlockActionCall  load_CBlockActionCall_slot(int tp, LoadContext *ctx);
+HBlockActionCallNamed  load_CBlockActionCallNamed_slot(int tp, LoadContext *ctx);
+HBlockStaticDispatch  load_CBlockStaticDispatch_slot(int tp, LoadContext *ctx);
+HBlockAssertionBase  load_CBlockAssertionBase_slot(int tp, LoadContext *ctx);
+HBlockAssertion_is  load_CBlockAssertion_is_slot(int tp, LoadContext *ctx);
+HBlockAssertion_canBe  load_CBlockAssertion_canBe_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isVariable  load_CBlockAssertion_isVariable_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign_slot(int tp, LoadContext *ctx);
+HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign_slot(int tp, LoadContext *ctx);
+HBlockIsVerb  load_CBlockIsVerb_slot(int tp, LoadContext *ctx);
+HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int tp, LoadContext *ctx);
+HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion_slot(int tp, LoadContext *ctx);
+HBlockAssert  load_CBlockAssert_slot(int tp, LoadContext *ctx);
+HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable_slot(int tp, LoadContext *ctx);
+HBlockBooleanValue  load_CBlockBooleanValue_slot(int tp, LoadContext *ctx);
+HBlockBooleanAND  load_CBlockBooleanAND_slot(int tp, LoadContext *ctx);
+HBlockBooleanOR  load_CBlockBooleanOR_slot(int tp, LoadContext *ctx);
+HBlockBooleanNOT  load_CBlockBooleanNOT_slot(int tp, LoadContext *ctx);
+HBlockNow  load_CBlockNow_slot(int tp, LoadContext *ctx);
+HBlockEvery  load_CBlockEvery_slot(int tp, LoadContext *ctx);
+HBlockComandList  load_CBlockComandList_slot(int tp, LoadContext *ctx);
+HBlockEventHandle  load_CBlockEventHandle_slot(int tp, LoadContext *ctx);
+HBlockComposition  load_CBlockComposition_slot(int tp, LoadContext *ctx);
+HBlockCompositionList  load_CBlockCompositionList_slot(int tp, LoadContext *ctx);
+HBlockCompositionRelation  load_CBlockCompositionRelation_slot(int tp, LoadContext *ctx);
+HBlockCompositionPhrase  load_CBlockCompositionPhrase_slot(int tp, LoadContext *ctx);
+HBlockCompostionPhrase  load_CBlockCompostionPhrase_slot(int tp, LoadContext *ctx);
+HBlockControlToken  load_CBlockControlToken_slot(int tp, LoadContext *ctx);
+HBlockControlIF  load_CBlockControlIF_slot(int tp, LoadContext *ctx);
+HBlockControlUnless  load_CBlockControlUnless_slot(int tp, LoadContext *ctx);
+HBlockControlSelectItem  load_CBlockControlSelectItem_slot(int tp, LoadContext *ctx);
+HBlockControlSelect  load_CBlockControlSelect_slot(int tp, LoadContext *ctx);
+HBlockControlForEach  load_CBlockControlForEach_slot(int tp, LoadContext *ctx);
+HBlockExecutionResultFlag  load_CBlockExecutionResultFlag_slot(int tp, LoadContext *ctx);
+HBlockUnitInit  load_CBlockUnitInit_slot(int tp, LoadContext *ctx);
+HBlockUnitTest  load_CBlockUnitTest_slot(int tp, LoadContext *ctx);
+HBlockUnitAssert  load_CBlockUnitAssert_slot(int tp, LoadContext *ctx);
+HBlockToDecide  load_CBlockToDecide_slot(int tp, LoadContext *ctx);
+HBlockToDecideIf  load_CBlockToDecideIf_slot(int tp, LoadContext *ctx);
+HBlockToDecideWhether  load_CBlockToDecideWhether_slot(int tp, LoadContext *ctx);
+HBlockToDecideWhat  load_CBlockToDecideWhat_slot(int tp, LoadContext *ctx);
+HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum_slot(int tp, LoadContext *ctx);
+HBlockToDecideOn  load_CBlockToDecideOn_slot(int tp, LoadContext *ctx);
+HBlockPhraseHeader  load_CBlockPhraseHeader_slot(int tp, LoadContext *ctx);
+HBlockPhraseDefine  load_CBlockPhraseDefine_slot(int tp, LoadContext *ctx);
+HBlockPhraseInvoke  load_CBlockPhraseInvoke_slot(int tp, LoadContext *ctx);
+Interpreter::HBlockInterpreter  load_CBlockInterpreter_slot(int tp, LoadContext *ctx);
+HBlockMatch  load_CBlockMatch_slot(int tp, LoadContext *ctx);
+HBlockMatchAny  load_CBlockMatchAny_slot(int tp, LoadContext *ctx);
+HBlockMatchNamed  load_CBlockMatchNamed_slot(int tp, LoadContext *ctx);
+HBlockMatchNoum  load_CBlockMatchNoum_slot(int tp, LoadContext *ctx);
+HBlockMatchValue  load_CBlockMatchValue_slot(int tp, LoadContext *ctx);
+HBlockMatchKind  load_CBlockMatchKind_slot(int tp, LoadContext *ctx);
+HBlockMatchWith  load_CBlockMatchWith_slot(int tp, LoadContext *ctx);
+HBlockMatchList  load_CBlockMatchList_slot(int tp, LoadContext *ctx);
+HBlockMatchAND  load_CBlockMatchAND_slot(int tp, LoadContext *ctx);
+HBlockMatchNOT  load_CBlockMatchNOT_slot(int tp, LoadContext *ctx);
+HBlockMatchOR  load_CBlockMatchOR_slot(int tp, LoadContext *ctx);
+HBlockMatchActionCall  load_CBlockMatchActionCall_slot(int tp, LoadContext *ctx);
+HBlockMatchBlock  load_CBlockMatchBlock_slot(int tp, LoadContext *ctx);
+HBlockMatchIs  load_CBlockMatchIs_slot(int tp, LoadContext *ctx);
+HBlockMatchDirectIs  load_CBlockMatchDirectIs_slot(int tp, LoadContext *ctx);
+HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot_slot(int tp, LoadContext *ctx);
+HBlockMatchIsVerb  load_CBlockMatchIsVerb_slot(int tp, LoadContext *ctx);
+HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb_slot(int tp, LoadContext *ctx);
+HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion_slot(int tp, LoadContext *ctx);
+HBlockMatchProperty  load_CBlockMatchProperty_slot(int tp, LoadContext *ctx);
+HBlockMatchWhich  load_CBlockMatchWhich_slot(int tp, LoadContext *ctx);
+HBlockMatchWhichNot  load_CBlockMatchWhichNot_slot(int tp, LoadContext *ctx);
+HBlockVariableNamed  load_CBlockVariableNamed_slot(int tp, LoadContext *ctx);
+HBlockNumber  load_CBlockNumber_slot(int tp, LoadContext *ctx);
+HBlockIntegerNumber  load_CBlockIntegerNumber_slot(int tp, LoadContext *ctx);
+HBlockFactionalNumber  load_CBlockFactionalNumber_slot(int tp, LoadContext *ctx);
+HBlockArgumentInput  load_CBlockArgumentInput_slot(int tp, LoadContext *ctx);
+HBlockRelationBase  load_CBlockRelationBase_slot(int tp, LoadContext *ctx);
+HBlockSimetricRelation  load_CBlockSimetricRelation_slot(int tp, LoadContext *ctx);
+HBlockASimetricRelation  load_CBlockASimetricRelation_slot(int tp, LoadContext *ctx);
+HBlockRelationInstance  load_CBlockRelationInstance_slot(int tp, LoadContext *ctx);
+HBlockConditionalRelation  load_CBlockConditionalRelation_slot(int tp, LoadContext *ctx);
+HBlockRelationLookup  load_CBlockRelationLookup_slot(int tp, LoadContext *ctx);
+HBlockVerbLookup  load_CBlockVerbLookup_slot(int tp, LoadContext *ctx);
+HBlockRelationArguments  load_CBlockRelationArguments_slot(int tp, LoadContext *ctx);
+HBlockSelectorAND  load_CBlockSelectorAND_slot(int tp, LoadContext *ctx);
+HBlockExecution  load_CBlockExecution_slot(int tp, LoadContext *ctx);
+HBlockUnderstand  load_CBlockUnderstand_slot(int tp, LoadContext *ctx);
+HBlockUnderstandStatic  load_CBlockUnderstandStatic_slot(int tp, LoadContext *ctx);
+HBlockUnderstandDynamic  load_CBlockUnderstandDynamic_slot(int tp, LoadContext *ctx);
+HBlockKind  load_CBlockKind_slot(int tp, LoadContext *ctx);
+HBlockMatch  load_CBlockMatch_slot(int tp, LoadContext *ctx);
+HBlockComposition  load_CBlockComposition_slot(int tp, LoadContext *ctx);
+HBlockRelationBase  load_CBlockRelationBase_slot(int tp, LoadContext *ctx);
+HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
+HBlockActionCall  load_CBlockActionCall_slot(int tp, LoadContext *ctx);
+HBlockVerbRelation  load_CBlockVerbRelation_slot(int tp, LoadContext *ctx);
+HBlockFilter  load_CBlockFilter_slot(int tp, LoadContext *ctx);
+HBlockToDecide  load_CBlockToDecide_slot(int tp, LoadContext *ctx);
+HBlock  load_CBlock_slot(int tp, LoadContext *ctx);
+HBlockNumber  load_CBlockNumber_slot(int tp, LoadContext *ctx);
+HBlockInstance  load_CBlockInstance_slot(int tp, LoadContext *ctx);
+HBlockSelector  load_CBlockSelector_slot(int tp, LoadContext *ctx);
+HBlockAssertionBase  load_CBlockAssertionBase_slot(int tp, LoadContext *ctx);
+HBlockBooleanResult  load_CBlockBooleanResult_slot(int tp, LoadContext *ctx);
+HBlockAssertion_is  load_CBlockAssertion_is_slot(int tp, LoadContext *ctx);
+HBlockMatchIs  load_CBlockMatchIs_slot(int tp, LoadContext *ctx);
+HBlockValue  load_CBlockValue_slot(int tp, LoadContext *ctx);
+HBlockList  load_CBlockList_slot(int tp, LoadContext *ctx);
+HBlockAction  load_CBlockAction_slot(int tp, LoadContext *ctx);
+HBlockKind  load_CBlockKind_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKind(load_CBlock_slot(slot, ctx));
+}
+
+HBlockKind  load_CBlockKind(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockKindNamed) return load_CBlockKindNamed(tp, ctx);
+	if (tp == BlockType::BlockKindAction) return load_CBlockKindAction(tp, ctx);
+	if (tp == BlockType::BlockKindValue) return load_CBlockKindValue(tp, ctx);
+	if (tp == BlockType::BlockKindEntity) return load_CBlockKindEntity(tp, ctx);
+	if (tp == BlockType::BlockComposition) return load_CBlockComposition(tp, ctx);
+	return nullptr;
+}
+
+HBlockMatch  load_CBlockMatch_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatch(load_CBlock_slot(slot, ctx));
+}
+
+HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockMatchAny) return load_CBlockMatchAny(tp, ctx);
+	if (tp == BlockType::BlockMatchNamed) return load_CBlockMatchNamed(tp, ctx);
+	if (tp == BlockType::BlockMatchNoum) return load_CBlockMatchNoum(tp, ctx);
+	if (tp == BlockType::BlockMatchValue) return load_CBlockMatchValue(tp, ctx);
+	if (tp == BlockType::BlockMatchKind) return load_CBlockMatchKind(tp, ctx);
+	{ auto x = load_CBlockMatchWith(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockMatchList) return load_CBlockMatchList(tp, ctx);
+	if (tp == BlockType::BlockMatchAND) return load_CBlockMatchAND(tp, ctx);
+	if (tp == BlockType::BlockMatchNOT) return load_CBlockMatchNOT(tp, ctx);
+	if (tp == BlockType::BlockMatchOR) return load_CBlockMatchOR(tp, ctx);
+	if (tp == BlockType::BlockMatchActionCall) return load_CBlockMatchActionCall(tp, ctx);
+	if (tp == BlockType::BlockMatchBlock) return load_CBlockMatchBlock(tp, ctx);
+	{ auto x = load_CBlockMatchIs(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockMatchProperty) return load_CBlockMatchProperty(tp, ctx);
+	return nullptr;
+}
+
+HBlockComposition  load_CBlockComposition_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockComposition(load_CBlock_slot(slot, ctx));
+}
+
+HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockCompositionList) return load_CBlockCompositionList(tp, ctx);
+	if (tp == BlockType::BlockCompositionRelation) return load_CBlockCompositionRelation(tp, ctx);
+	if (tp == BlockType::BlockCompositionPhrase) return load_CBlockCompositionPhrase(tp, ctx);
+	return nullptr;
+}
+
+HBlockRelationBase  load_CBlockRelationBase_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockRelationBase(load_CBlock_slot(slot, ctx));
+}
+
+HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockSimetricRelation) return load_CBlockSimetricRelation(tp, ctx);
+	if (tp == BlockType::BlockASimetricRelation) return load_CBlockASimetricRelation(tp, ctx);
+	if (tp == BlockType::BlockConditionalRelation) return load_CBlockConditionalRelation(tp, ctx);
+	return nullptr;
+}
+
+HBlockNoum  load_CBlockNoum_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNoum(load_CBlock_slot(slot, ctx));
+}
+
+HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockNoumSupl) return load_CBlockNoumSupl(tp, ctx);
+	return nullptr;
+}
+
+HBlockActionCall  load_CBlockActionCall_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockActionCall(load_CBlock_slot(slot, ctx));
+}
+
+HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockActionCallNamed) return load_CBlockActionCallNamed(tp, ctx);
+	if (tp == BlockType::BlockStaticDispatch) return load_CBlockStaticDispatch(tp, ctx);
+	return nullptr;
+}
+
+HBlockVerbRelation  load_CBlockVerbRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbRelation(load_CBlock_slot(slot, ctx));
+}
+
+HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockVerbDirectRelation) return load_CBlockVerbDirectRelation(tp, ctx);
+	if (tp == BlockType::BlockVerbReverseRelation) return load_CBlockVerbReverseRelation(tp, ctx);
+	return nullptr;
+}
+
+
+
+HBlockFilter  load_CBlockFilter(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	{ auto x = load_CBlockFilterAtom(tp, ctx); if (x != nullptr) return x; };
+	{ auto x = load_CBlockFilterList(tp, ctx); if (x != nullptr) return x; };
+	return nullptr;
+}
+
+HBlockToDecide  load_CBlockToDecide_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecide(load_CBlock_slot(slot, ctx));
+}
+
+HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockToDecideIf) return load_CBlockToDecideIf(tp, ctx);
+	if (tp == BlockType::BlockToDecideWhether) return load_CBlockToDecideWhether(tp, ctx);
+	if (tp == BlockType::BlockToDecideWhat) return load_CBlockToDecideWhat(tp, ctx);
+	if (tp == BlockType::BlockToDecideWhat_FirstNoum) return load_CBlockToDecideWhat_FirstNoum(tp, ctx);
+	return nullptr;
+}
+
+
+
+HBlock  load_CBlock(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockInstance) return load_CBlockInstance(tp, ctx);
+	if (tp == BlockType::BlockText) return load_CBlockText(tp, ctx);
+	if (tp == BlockType::BlockTextSentence) return load_CBlockTextSentence(tp, ctx);
+	{ auto x = load_CBlockKind(tp, ctx); if (x != nullptr) return x; };
+	{ auto x = load_CBlockValue(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockNoum) return load_CBlockNoum(tp, ctx);
+	if (tp == BlockType::BlockNothing) return load_CBlockNothing(tp, ctx);
+	if (tp == BlockType::BlockAnything) return load_CBlockAnything(tp, ctx);
+	if (tp == BlockType::BlockKindOfName) return load_CBlockKindOfName(tp, ctx);
+	if (tp == BlockType::BlockKindOf) return load_CBlockKindOf(tp, ctx);
+	if (tp == BlockType::BlockActionApply) return load_CBlockActionApply(tp, ctx);
+	if (tp == BlockType::BlockProperty) return load_CBlockProperty(tp, ctx);
+	if (tp == BlockType::BlockInstanceVariable) return load_CBlockInstanceVariable(tp, ctx);
+	if (tp == BlockType::BlockKind_InstanceVariable) return load_CBlockKind_InstanceVariable(tp, ctx);
+	if (tp == BlockType::BlockList) return load_CBlockList(tp, ctx);
+	if (tp == BlockType::BlockEnums) return load_CBlockEnums(tp, ctx);
+	{ auto x = load_CBlockVerbRelation(tp, ctx); if (x != nullptr) return x; };
+	{ auto x = load_CBlockFilter(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockDinamicDispatch) return load_CBlockDinamicDispatch(tp, ctx);
+	{ auto x = load_CBlockIF(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockVerbConjugation) return load_CBlockVerbConjugation(tp, ctx);
+	if (tp == BlockType::BlockVerb) return load_CBlockVerb(tp, ctx);
+	if (tp == BlockType::BlockVerbAdapt) return load_CBlockVerbAdapt(tp, ctx);
+	if (tp == BlockType::BlockVerbNegate) return load_CBlockVerbNegate(tp, ctx);
+	{ auto x = load_CBlockSelector(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockAction) return load_CBlockAction(tp, ctx);
+	if (tp == BlockType::BlockTryCall) return load_CBlockTryCall(tp, ctx);
+	if (tp == BlockType::BlockActionCall) return load_CBlockActionCall(tp, ctx);
+	{ auto x = load_CBlockAssertionBase(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockAssert) return load_CBlockAssert(tp, ctx);
+	if (tp == BlockType::BlockAssertion_InstanceVariable) return load_CBlockAssertion_InstanceVariable(tp, ctx);
+	if (tp == BlockType::BlockBooleanAND) return load_CBlockBooleanAND(tp, ctx);
+	if (tp == BlockType::BlockBooleanOR) return load_CBlockBooleanOR(tp, ctx);
+	if (tp == BlockType::BlockBooleanNOT) return load_CBlockBooleanNOT(tp, ctx);
+	if (tp == BlockType::BlockNow) return load_CBlockNow(tp, ctx);
+	if (tp == BlockType::BlockEvery) return load_CBlockEvery(tp, ctx);
+	if (tp == BlockType::BlockComandList) return load_CBlockComandList(tp, ctx);
+	if (tp == BlockType::BlockEventHandle) return load_CBlockEventHandle(tp, ctx);
+	if (tp == BlockType::BlockCompostionPhrase) return load_CBlockCompostionPhrase(tp, ctx);
+	if (tp == BlockType::BlockControlToken) return load_CBlockControlToken(tp, ctx);
+	if (tp == BlockType::BlockControlIF) return load_CBlockControlIF(tp, ctx);
+	if (tp == BlockType::BlockControlUnless) return load_CBlockControlUnless(tp, ctx);
+	if (tp == BlockType::BlockControlSelectItem) return load_CBlockControlSelectItem(tp, ctx);
+	if (tp == BlockType::BlockControlSelect) return load_CBlockControlSelect(tp, ctx);
+	if (tp == BlockType::BlockControlForEach) return load_CBlockControlForEach(tp, ctx);
+	if (tp == BlockType::BlockExecutionResultFlag) return load_CBlockExecutionResultFlag(tp, ctx);
+	{ auto x = load_CBlockToDecide(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockToDecideOn) return load_CBlockToDecideOn(tp, ctx);
+	if (tp == BlockType::BlockPhraseHeader) return load_CBlockPhraseHeader(tp, ctx);
+	if (tp == BlockType::BlockPhraseDefine) return load_CBlockPhraseDefine(tp, ctx);
+	if (tp == BlockType::BlockPhraseInvoke) return load_CBlockPhraseInvoke(tp, ctx);
+	{ auto x = load_CBlockMatch(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockArgumentInput) return load_CBlockArgumentInput(tp, ctx);
+	{ auto x = load_CBlockRelationBase(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockRelationInstance) return load_CBlockRelationInstance(tp, ctx);
+	if (tp == BlockType::BlockRelationLookup) return load_CBlockRelationLookup(tp, ctx);
+	if (tp == BlockType::BlockVerbLookup) return load_CBlockVerbLookup(tp, ctx);
+	if (tp == BlockType::BlockRelationArguments) return load_CBlockRelationArguments(tp, ctx);
+	if (tp == BlockType::BlockSelectorAND) return load_CBlockSelectorAND(tp, ctx);
+	{ auto x = load_CBlockUnderstand(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockUnderstandStatic) return load_CBlockUnderstandStatic(tp, ctx);
+	if (tp == BlockType::BlockUnderstandDynamic) return load_CBlockUnderstandDynamic(tp, ctx);
+	return nullptr;
+}
+
+HBlockNumber  load_CBlockNumber_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNumber(load_CBlock_slot(slot, ctx));
+}
+
+HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockIntegerNumber) return load_CBlockIntegerNumber(tp, ctx);
+	if (tp == BlockType::BlockFactionalNumber) return load_CBlockFactionalNumber(tp, ctx);
+	return nullptr;
+}
+
+HBlockInstance  load_CBlockInstance_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockInstance(load_CBlock_slot(slot, ctx));
+}
+
+HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockInstanceNamed) return load_CBlockInstanceNamed(tp, ctx);
+	return nullptr;
+}
+
+HBlockSelector  load_CBlockSelector_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSelector(load_CBlock_slot(slot, ctx));
+}
+
+HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockSelector_All) return load_CBlockSelector_All(tp, ctx);
+	if (tp == BlockType::BlockSelector_Any) return load_CBlockSelector_Any(tp, ctx);
+	if (tp == BlockType::BlockSelector_Where) return load_CBlockSelector_Where(tp, ctx);
+	return nullptr;
+}
+
+HBlockAssertionBase  load_CBlockAssertionBase_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertionBase(load_CBlock_slot(slot, ctx));
+}
+
+HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	{ auto x = load_CBlockAssertion_is(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockAssertion_canBe) return load_CBlockAssertion_canBe(tp, ctx);
+	return nullptr;
+}
+
+
+
+HBlockBooleanResult  load_CBlockBooleanResult(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	{ auto x = load_CBlockSame(tp, ctx); if (x != nullptr) return x; };
+	return nullptr;
+}
+
+HBlockAssertion_is  load_CBlockAssertion_is_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_is(load_CBlock_slot(slot, ctx));
+}
+
+HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockAssertion_isInstanceOf) return load_CBlockAssertion_isInstanceOf(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isNamedValueOf) return load_CBlockAssertion_isNamedValueOf(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isVariable) return load_CBlockAssertion_isVariable(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isLocalVariable) return load_CBlockAssertion_isLocalVariable(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isDefaultAssign) return load_CBlockAssertion_isDefaultAssign(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isConstantAssign) return load_CBlockAssertion_isConstantAssign(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isForbiddenAssign) return load_CBlockAssertion_isForbiddenAssign(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isDirectAssign) return load_CBlockAssertion_isDirectAssign(tp, ctx);
+	if (tp == BlockType::BlockAssertion_isNotDirectAssign) return load_CBlockAssertion_isNotDirectAssign(tp, ctx);
+	if (tp == BlockType::BlockIsVerb) return load_CBlockIsVerb(tp, ctx);
+	if (tp == BlockType::BlockIsNotVerb) return load_CBlockIsNotVerb(tp, ctx);
+	if (tp == BlockType::BlockIsAdverbialComparasion) return load_CBlockIsAdverbialComparasion(tp, ctx);
+	return nullptr;
+}
+
+HBlockMatchIs  load_CBlockMatchIs_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchIs(load_CBlock_slot(slot, ctx));
+}
+
+HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockMatchDirectIs) return load_CBlockMatchDirectIs(tp, ctx);
+	if (tp == BlockType::BlockMatchDirectIsNot) return load_CBlockMatchDirectIsNot(tp, ctx);
+	if (tp == BlockType::BlockMatchIsVerb) return load_CBlockMatchIsVerb(tp, ctx);
+	if (tp == BlockType::BlockMatchIsNotVerb) return load_CBlockMatchIsNotVerb(tp, ctx);
+	if (tp == BlockType::BlockMatchIsAdverbialComparasion) return load_CBlockMatchIsAdverbialComparasion(tp, ctx);
+	if (tp == BlockType::BlockMatchWhich) return load_CBlockMatchWhich(tp, ctx);
+	if (tp == BlockType::BlockMatchWhichNot) return load_CBlockMatchWhichNot(tp, ctx);
+	return nullptr;
+}
+
+HBlockValue  load_CBlockValue_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockValue(load_CBlock_slot(slot, ctx));
+}
+
+HBlockValue  load_CBlockValue(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockKindReference) return load_CBlockKindReference(tp, ctx);
+	{ auto x = load_CBlockBooleanResult(tp, ctx); if (x != nullptr) return x; };
+	if (tp == BlockType::BlockNamedValue) return load_CBlockNamedValue(tp, ctx);
+	if (tp == BlockType::BlockBooleanValue) return load_CBlockBooleanValue(tp, ctx);
+	{ auto x = load_CBlockNumber(tp, ctx); if (x != nullptr) return x; };
+	return nullptr;
+}
+
+HBlockList  load_CBlockList_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockList(load_CBlock_slot(slot, ctx));
+}
+
+HBlockList  load_CBlockList(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockList_OR) return load_CBlockList_OR(tp, ctx);
+	if (tp == BlockType::BlockList_AND) return load_CBlockList_AND(tp, ctx);
+	return nullptr;
+}
+
+HBlockAction  load_CBlockAction_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAction(load_CBlock_slot(slot, ctx));
+}
+
+HBlockAction  load_CBlockAction(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	if (tp == BlockType::BlockActionInstance) return load_CBlockActionInstance(tp, ctx);
+	if (tp == BlockType::BlockActionNamed) return load_CBlockActionNamed(tp, ctx);
+	return nullptr;
+}
+
+HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockIsNotVerb(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlSelect  load_CBlockControlSelect_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlSelect(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockArgumentInput  load_CBlockArgumentInput_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockArgumentInput(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockSelector_Where  load_CBlockSelector_Where_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSelector_Where(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockASimetricRelation  load_CBlockASimetricRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockASimetricRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+
+
+
+HBlockKindAction  load_CBlockKindAction_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindAction(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockUnderstandStatic  load_CBlockUnderstandStatic_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockUnderstandStatic(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbNegate  load_CBlockVerbNegate_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbNegate(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindOf  load_CBlockKindOf_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindOf(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAnything  load_CBlockAnything_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAnything(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindNamed  load_CBlockKindNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockMatch
+HBlockSimetricRelation  load_CBlockSimetricRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSimetricRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockCompositionPhrase  load_CBlockCompositionPhrase_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockCompositionPhrase(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockToDecideIf  load_CBlockToDecideIf_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecideIf(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockActionCallNamed  load_CBlockActionCallNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockActionCallNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbReverseRelation  load_CBlockVerbReverseRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbReverseRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlSelectItem  load_CBlockControlSelectItem_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlSelectItem(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockNoumSupl  load_CBlockNoumSupl_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNoumSupl(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isVariable  load_CBlockAssertion_isVariable_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isVariable(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isForbiddenAssign(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchDirectIsNot(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVariableNamed  load_CBlockVariableNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVariableNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockProperty  load_CBlockProperty_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockProperty(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockPhraseHeader  load_CBlockPhraseHeader_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockPhraseHeader(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchWhich  load_CBlockMatchWhich_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchWhich(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockUnitInit  load_CBlockUnitInit_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockUnitInit(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockUnitTest  load_CBlockUnitTest_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockUnitTest(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockComposition
 HBlockInstanceVariable  load_CBlockInstanceVariable_slot(int slot, LoadContext *ctx)
 {
 	return DynamicCasting::asHBlockInstanceVariable(load_CBlock_slot(slot, ctx));
+
 }
+
+
+// BASE CBlockAssertionBase
+HBlockIF  load_CBlockIF_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+HBlockMatchList  load_CBlockMatchList_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchList(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockAssertion_is
+// BASE CBlockValue
+HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKind_InstanceVariable(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockText  load_CBlockText_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockText(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssert  load_CBlockAssert_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssert(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_InstanceVariable(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockSelector_Any  load_CBlockSelector_Any_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSelector_Any(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockExecution  load_CBlockExecution_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+// BASE CBlockNoum
+HBlockMatchAND  load_CBlockMatchAND_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchAND(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockBooleanAND  load_CBlockBooleanAND_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockBooleanAND(load_CBlock_slot(slot, ctx));
+
+}
+
+
+Interpreter::HBlockInterpreter  load_CBlockInterpreter_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+HBlockSelectorAND  load_CBlockSelectorAND_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSelectorAND(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockBooleanNOT  load_CBlockBooleanNOT_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockBooleanNOT(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockToDecideWhether  load_CBlockToDecideWhether_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecideWhether(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindReference  load_CBlockKindReference_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindReference(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchAny  load_CBlockMatchAny_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchAny(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockConditionalRelation  load_CBlockConditionalRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockConditionalRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockEvery  load_CBlockEvery_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockEvery(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockSelector_All  load_CBlockSelector_All_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockSelector_All(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockEnums  load_CBlockEnums_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockEnums(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchNoum  load_CBlockMatchNoum_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchNoum(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockPhraseDefine  load_CBlockPhraseDefine_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockPhraseDefine(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockNow  load_CBlockNow_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNow(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockList_OR  load_CBlockList_OR_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockList_OR(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isConstantAssign(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindEntity  load_CBlockKindEntity_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindEntity(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchIsNotVerb(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchIsVerb  load_CBlockMatchIsVerb_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchIsVerb(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockBooleanOR  load_CBlockBooleanOR_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockBooleanOR(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockActionApply  load_CBlockActionApply_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockActionApply(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchWith  load_CBlockMatchWith_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+HBlockNamedValue  load_CBlockNamedValue_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNamedValue(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockIntegerNumber  load_CBlockIntegerNumber_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockIntegerNumber(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockExecutionResultFlag  load_CBlockExecutionResultFlag_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockExecutionResultFlag(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchKind  load_CBlockMatchKind_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchKind(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockBooleanValue  load_CBlockBooleanValue_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockBooleanValue(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchDirectIs  load_CBlockMatchDirectIs_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchDirectIs(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchProperty  load_CBlockMatchProperty_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchProperty(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockVerbRelation
+HBlockCompostionPhrase  load_CBlockCompostionPhrase_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+// BASE CBlockToDecide
+HBlockInstanceNamed  load_CBlockInstanceNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockInstanceNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockMatchIs
+// BASE CBlockInstance
+HBlockToDecideWhat  load_CBlockToDecideWhat_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecideWhat(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockComandList  load_CBlockComandList_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockComandList(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isInstanceOf(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockNothing  load_CBlockNothing_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockNothing(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockRelationLookup  load_CBlockRelationLookup_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockRelationLookup(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlForEach  load_CBlockControlForEach_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlForEach(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockList_AND  load_CBlockList_AND_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockList_AND(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindOfName  load_CBlockKindOfName_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindOfName(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbDirectRelation  load_CBlockVerbDirectRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbDirectRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_canBe  load_CBlockAssertion_canBe_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_canBe(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockCompositionList  load_CBlockCompositionList_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockCompositionList(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockDinamicDispatch  load_CBlockDinamicDispatch_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockDinamicDispatch(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlToken  load_CBlockControlToken_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlToken(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchBlock  load_CBlockMatchBlock_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchBlock(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchValue  load_CBlockMatchValue_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchValue(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockRelationArguments  load_CBlockRelationArguments_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockRelationArguments(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockCompositionRelation  load_CBlockCompositionRelation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockCompositionRelation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockSame  load_CBlockSame_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+// BASE CBlockAction
+HBlockEventHandle  load_CBlockEventHandle_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockEventHandle(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockNumber
+HBlockRelationInstance  load_CBlockRelationInstance_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockRelationInstance(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbLookup  load_CBlockVerbLookup_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbLookup(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbAdapt  load_CBlockVerbAdapt_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbAdapt(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockStaticDispatch  load_CBlockStaticDispatch_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockStaticDispatch(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockFilterAtom  load_CBlockFilterAtom_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+HBlockToDecideOn  load_CBlockToDecideOn_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecideOn(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isNamedValueOf(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockToDecideWhat_FirstNoum(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockTryCall  load_CBlockTryCall_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockTryCall(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockFactionalNumber  load_CBlockFactionalNumber_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockFactionalNumber(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isNotDirectAssign(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockKindValue  load_CBlockKindValue_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockKindValue(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchWhichNot  load_CBlockMatchWhichNot_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchWhichNot(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlIF  load_CBlockControlIF_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlIF(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerbConjugation  load_CBlockVerbConjugation_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerbConjugation(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchActionCall  load_CBlockMatchActionCall_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchActionCall(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockSelector
+HBlockMatchNOT  load_CBlockMatchNOT_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchNOT(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockVerb  load_CBlockVerb_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockVerb(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockMatchNamed  load_CBlockMatchNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isDirectAssign(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockUnderstand  load_CBlockUnderstand_slot(int slot, LoadContext *ctx)
+{
+	return nullptr;
+
+}
+
+
+HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchIsAdverbialComparasion(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockActionNamed  load_CBlockActionNamed_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockActionNamed(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockUnitAssert  load_CBlockUnitAssert_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockUnitAssert(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockIsAdverbialComparasion(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockActionCall
+HBlockUnderstandDynamic  load_CBlockUnderstandDynamic_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockUnderstandDynamic(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockControlUnless  load_CBlockControlUnless_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockControlUnless(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isLocalVariable(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockAssertion_isDefaultAssign(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockActionInstance  load_CBlockActionInstance_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockActionInstance(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockPhraseInvoke  load_CBlockPhraseInvoke_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockPhraseInvoke(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockTextSentence  load_CBlockTextSentence_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockTextSentence(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockIsVerb  load_CBlockIsVerb_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockIsVerb(load_CBlock_slot(slot, ctx));
+
+}
+
+
+// BASE CBlockList
+// BASE CBlockRelationBase
+HBlockMatchOR  load_CBlockMatchOR_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchOR(load_CBlock_slot(slot, ctx));
+
+}
+
+
+HBlockIsNotVerb  load_CBlockIsNotVerb(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockIsNotVerb);
+	const string _verb = load_string(ctx);
+	const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockIsNotVerb* ret = new CBlockIsNotVerb(_verb, _n1, _n2);
+	return  std::shared_ptr<CBlockIsNotVerb>(ret);
+
+}
+
+
+HBlockControlSelect  load_CBlockControlSelect(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlSelect);
+	const HBlock _block_seletor = load_CBlock_slot(load_id(ctx), ctx);
+	const std::list<HBlockControlSelectItem> _block_selectList = load_list<CBlockControlSelectItem>(ctx);
+	const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlSelect* ret = new CBlockControlSelect(_block_seletor, _block_selectList, _block_else);
+	return  std::shared_ptr<CBlockControlSelect>(ret);
+
+}
+
+
+HBlockArgumentInput  load_CBlockArgumentInput(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockArgumentInput);
+	const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const string _named = load_string(ctx);
+	CBlockArgumentInput* ret = new CBlockArgumentInput(_kind, _named);
+	return  std::shared_ptr<CBlockArgumentInput>(ret);
+
+}
+
+
+HBlockSelector_Where  load_CBlockSelector_Where(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockSelector_Where);
+	const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockSelector_Where* ret = new CBlockSelector_Where(_what);
+	return  std::shared_ptr<CBlockSelector_Where>(ret);
+
+}
+
+
+HBlockASimetricRelation  load_CBlockASimetricRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockASimetricRelation);
+	const std::string _named = load_string(ctx);
+	const HBlockArgumentInput input_A = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
+	const HBlockArgumentInput input_B = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
+	const bool _various_noum1 = load_bool(ctx);
+	const bool _various_noum2 = load_bool(ctx);
+	CBlockASimetricRelation* ret = new CBlockASimetricRelation(_named, input_A, input_B, _various_noum1, _various_noum2);
+	return  std::shared_ptr<CBlockASimetricRelation>(ret);
+
+}
+
+
+
+HBlockKindAction  load_CBlockKindAction(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindAction);
+	const HBlockActionApply _applyTo = load_CBlockActionApply_slot(load_id(ctx), ctx);
+	CBlockKindAction* ret = new CBlockKindAction(_applyTo);
+	return  std::shared_ptr<CBlockKindAction>(ret);
+
+}
+
+
+HBlockUnderstandStatic  load_CBlockUnderstandStatic(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockUnderstandStatic);
+	const int _entryID = load_int(ctx);
+	const HBlockMatchList _argument_match = load_CBlockMatchList_slot(load_id(ctx), ctx);
+	const HBlock _output_n = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockUnderstandStatic* ret = new CBlockUnderstandStatic(_entryID, _argument_match, _output_n);
+	return  std::shared_ptr<CBlockUnderstandStatic>(ret);
+
+}
+
+
+HBlockVerbNegate  load_CBlockVerbNegate(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbNegate);
+	const HBlockVerbAdapt _verbAdapt = load_CBlockVerbAdapt_slot(load_id(ctx), ctx);
+	CBlockVerbNegate* ret = new CBlockVerbNegate(_verbAdapt);
+	return  std::shared_ptr<CBlockVerbNegate>(ret);
+
+}
+
+
+HBlockKindOf  load_CBlockKindOf(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindOf);
+	const HBlockKind _baseClasse = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockKindOf* ret = new CBlockKindOf(_baseClasse);
+	return  std::shared_ptr<CBlockKindOf>(ret);
+
+}
+
+
+HBlockAnything  load_CBlockAnything(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAnything);
+	const string _named = load_string(ctx);
+	CBlockAnything* ret = new CBlockAnything(_named);
+	return  std::shared_ptr<CBlockAnything>(ret);
+
+}
+
+
+HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindNamed);
+	const string _named = load_string(ctx);
+	CBlockKindNamed* ret = new CBlockKindNamed(_named);
+	return  std::shared_ptr<CBlockKindNamed>(ret);
+
+}
+
+
+// BASE CBlockMatch
+HBlockSimetricRelation  load_CBlockSimetricRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockSimetricRelation);
+	const std::string _named = load_string(ctx);
+	const HBlockArgumentInput input_A = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
+	const HBlockArgumentInput input_B = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
+	const bool _various_noum1 = load_bool(ctx);
+	const bool _various_noum2 = load_bool(ctx);
+	CBlockSimetricRelation* ret = new CBlockSimetricRelation(_named, input_A, input_B, _various_noum1, _various_noum2);
+	return  std::shared_ptr<CBlockSimetricRelation>(ret);
+
+}
+
+
+HBlockCompositionPhrase  load_CBlockCompositionPhrase(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockCompositionPhrase);
+	const HBlockKind _fromKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const HBlockKind _toKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockCompositionPhrase* ret = new CBlockCompositionPhrase(_fromKind, _toKind);
+	return  std::shared_ptr<CBlockCompositionPhrase>(ret);
+
+}
+
+
+HBlockToDecideIf  load_CBlockToDecideIf(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockToDecideIf);
+	const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(load_id(ctx), ctx);
+	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockToDecideIf* ret = new CBlockToDecideIf(_queryToMatch, _decideBody);
+	return  std::shared_ptr<CBlockToDecideIf>(ret);
+
+}
+
+
+HBlockActionCallNamed  load_CBlockActionCallNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockActionCallNamed);
+	const HBlockActionNamed _action = load_CBlockActionNamed_slot(load_id(ctx), ctx);
+	const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockActionCallNamed* ret = new CBlockActionCallNamed(_action, _noum1, _noum2);
+	return  std::shared_ptr<CBlockActionCallNamed>(ret);
+
+}
+
+
+HBlockVerbReverseRelation  load_CBlockVerbReverseRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbReverseRelation);
+	const HBlock _verbNoum = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlockNoum _relationNoum = load_CBlockNoum_slot(load_id(ctx), ctx);
+	CBlockVerbReverseRelation* ret = new CBlockVerbReverseRelation(_verbNoum, _relationNoum);
+	return  std::shared_ptr<CBlockVerbReverseRelation>(ret);
+
+}
+
+
+HBlockControlSelectItem  load_CBlockControlSelectItem(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlSelectItem);
+	const HBlock _block_seletor = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_execute = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlSelectItem* ret = new CBlockControlSelectItem(_block_seletor, _block_execute);
+	return  std::shared_ptr<CBlockControlSelectItem>(ret);
+
+}
+
+
+HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNoumSupl);
+	const string _named = load_string(ctx);
+	const string _number = load_string(ctx);
+	const string _gender = load_string(ctx);
+	CBlockNoumSupl* ret = new CBlockNoumSupl(_named, _number, _gender);
+	return  std::shared_ptr<CBlockNoumSupl>(ret);
+
+}
+
+
+HBlockAssertion_isVariable  load_CBlockAssertion_isVariable(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isVariable);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _baseKind = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isVariable* ret = new CBlockAssertion_isVariable(_variable, _baseKind);
+	return  std::shared_ptr<CBlockAssertion_isVariable>(ret);
+
+}
+
+
+HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isForbiddenAssign);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isForbiddenAssign* ret = new CBlockAssertion_isForbiddenAssign(_variable, _value);
+	return  std::shared_ptr<CBlockAssertion_isForbiddenAssign>(ret);
+
+}
+
+
+HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchDirectIsNot);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchDirectIsNot* ret = new CBlockMatchDirectIsNot(_obj, _value);
+	return  std::shared_ptr<CBlockMatchDirectIsNot>(ret);
+
+}
+
+
+HBlockVariableNamed  load_CBlockVariableNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVariableNamed);
+	const HBlockNoum _name = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockVariableNamed* ret = new CBlockVariableNamed(_name, _kind, _value);
+	return  std::shared_ptr<CBlockVariableNamed>(ret);
+
+}
+
+
+HBlockProperty  load_CBlockProperty(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockProperty);
+	const HBlock _prop = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _obj = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockProperty* ret = new CBlockProperty(_prop, _obj);
+	return  std::shared_ptr<CBlockProperty>(ret);
+
+}
+
+
+HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockPhraseHeader);
+	const HBlockNoum _verb = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockNoum _pred1 = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockNoum _pred2 = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockMatch _arg1 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _arg2 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockPhraseHeader* ret = new CBlockPhraseHeader(_verb, _pred1, _pred2, _arg1, _arg2);
+	return  std::shared_ptr<CBlockPhraseHeader>(ret);
+
+}
+
+
+HBlockMatchWhich  load_CBlockMatchWhich(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchWhich);
+	const string _verb = load_string(ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchWhich* ret = new CBlockMatchWhich(_verb, _obj, _value);
+	return  std::shared_ptr<CBlockMatchWhich>(ret);
+
+}
+
+
+HBlockUnitInit  load_CBlockUnitInit(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockUnitInit);
+	const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockUnitInit* ret = new CBlockUnitInit(_contents);
+	return  std::shared_ptr<CBlockUnitInit>(ret);
+
+}
+
+
+HBlockUnitTest  load_CBlockUnitTest(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockUnitTest);
+	const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockUnitTest* ret = new CBlockUnitTest(_contents);
+	return  std::shared_ptr<CBlockUnitTest>(ret);
+
+}
+
+
+// BASE CBlockComposition
 HBlockInstanceVariable  load_CBlockInstanceVariable(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
@@ -259,2946 +2141,1038 @@ HBlockInstanceVariable  load_CBlockInstanceVariable(int tp, LoadContext *ctx)
 }
 
 
- 
-
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-	HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx);
-  HBlockInstanceNamed  load_CBlockInstanceNamed(int tp, LoadContext *ctx);
-  HBlockText  load_CBlockText(int tp, LoadContext *ctx);
-  HBlockTextSentence  load_CBlockTextSentence(int tp, LoadContext *ctx);
-  HBlockValue  load_CBlockValue(int tp, LoadContext *ctx);
-  HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
-  HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx);
-  HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx);
-  HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx);
-  HBlockAnything  load_CBlockAnything(int tp, LoadContext *ctx);
-  HBlockKindOfName  load_CBlockKindOfName(int tp, LoadContext *ctx);
-  HBlockKindOf  load_CBlockKindOf(int tp, LoadContext *ctx);
-  HBlockActionApply  load_CBlockActionApply(int tp, LoadContext *ctx);
-  HBlockKindAction  load_CBlockKindAction(int tp, LoadContext *ctx);
-  HBlockKindValue  load_CBlockKindValue(int tp, LoadContext *ctx);
-  HBlockKindEntity  load_CBlockKindEntity(int tp, LoadContext *ctx);
-  HBlockNamedValue  load_CBlockNamedValue(int tp, LoadContext *ctx);
-  HBlockProperty  load_CBlockProperty(int tp, LoadContext *ctx);
-  HBlockInstanceVariable  load_CBlockInstanceVariable(int tp, LoadContext *ctx);
-  HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable(int tp, LoadContext *ctx);
-  HBlockList  load_CBlockList(int tp, LoadContext *ctx);
-  HBlockList_OR  load_CBlockList_OR(int tp, LoadContext *ctx);
-  HBlockList_AND  load_CBlockList_AND(int tp, LoadContext *ctx);
-  HBlockEnums  load_CBlockEnums(int tp, LoadContext *ctx);
-  HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx);
-  HBlockVerbDirectRelation  load_CBlockVerbDirectRelation(int tp, LoadContext *ctx);
-  HBlockVerbReverseRelation  load_CBlockVerbReverseRelation(int tp, LoadContext *ctx);
-  HBlockFilterAtom  load_CBlockFilterAtom(int tp, LoadContext *ctx);
-  HBlockFilterList  load_CBlockFilterList(int tp, LoadContext *ctx);
-  HBlockDinamicDispatch  load_CBlockDinamicDispatch(int tp, LoadContext *ctx);
-  HBlockIF  load_CBlockIF(int tp, LoadContext *ctx);
-  HBlockSame  load_CBlockSame(int tp, LoadContext *ctx);
-  HBlockVerbConjugation  load_CBlockVerbConjugation(int tp, LoadContext *ctx);
-  HBlockVerb  load_CBlockVerb(int tp, LoadContext *ctx);
-  HBlockVerbAdapt  load_CBlockVerbAdapt(int tp, LoadContext *ctx);
-  HBlockVerbNegate  load_CBlockVerbNegate(int tp, LoadContext *ctx);
-  HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx);
-  HBlockSelector_All  load_CBlockSelector_All(int tp, LoadContext *ctx);
-  HBlockSelector_Any  load_CBlockSelector_Any(int tp, LoadContext *ctx);
-  HBlockSelector_Where  load_CBlockSelector_Where(int tp, LoadContext *ctx);
-  HBlockAction  load_CBlockAction(int tp, LoadContext *ctx);
-  HBlockActionInstance  load_CBlockActionInstance(int tp, LoadContext *ctx);
-  HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx);
-  HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx);
-  HBlockTryCall  load_CBlockTryCall(int tp, LoadContext *ctx);
-  HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx);
-  HBlockActionCallNamed  load_CBlockActionCallNamed(int tp, LoadContext *ctx);
-  HBlockStaticDispatch  load_CBlockStaticDispatch(int tp, LoadContext *ctx);
-  HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx);
-  HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx);
-  HBlockAssertion_canBe  load_CBlockAssertion_canBe(int tp, LoadContext *ctx);
-  HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf(int tp, LoadContext *ctx);
-  HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf(int tp, LoadContext *ctx);
-  HBlockAssertion_isVariable  load_CBlockAssertion_isVariable(int tp, LoadContext *ctx);
-  HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable(int tp, LoadContext *ctx);
-  HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign(int tp, LoadContext *ctx);
-  HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign(int tp, LoadContext *ctx);
-  HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign(int tp, LoadContext *ctx);
-  HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign(int tp, LoadContext *ctx);
-  HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign(int tp, LoadContext *ctx);
-  HBlockIsVerb  load_CBlockIsVerb(int tp, LoadContext *ctx);
-  HBlockIsNotVerb  load_CBlockIsNotVerb(int tp, LoadContext *ctx);
-  HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion(int tp, LoadContext *ctx);
-  HBlockAssert  load_CBlockAssert(int tp, LoadContext *ctx);
-  HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable(int tp, LoadContext *ctx);
-  HBlockBooleanValue  load_CBlockBooleanValue(int tp, LoadContext *ctx);
-  HBlockBooleanAND  load_CBlockBooleanAND(int tp, LoadContext *ctx);
-  HBlockBooleanOR  load_CBlockBooleanOR(int tp, LoadContext *ctx);
-  HBlockBooleanNOT  load_CBlockBooleanNOT(int tp, LoadContext *ctx);
-  HBlockNow  load_CBlockNow(int tp, LoadContext *ctx);
-  HBlockEvery  load_CBlockEvery(int tp, LoadContext *ctx);
-  HBlockComandList  load_CBlockComandList(int tp, LoadContext *ctx);
-  HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx);
-  HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx);
-  HBlockCompositionList  load_CBlockCompositionList(int tp, LoadContext *ctx);
-  HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx);
-  HBlockCompositionPhrase  load_CBlockCompositionPhrase(int tp, LoadContext *ctx);
-  HBlockCompostionPhrase  load_CBlockCompostionPhrase(int tp, LoadContext *ctx);
-  HBlockControlToken  load_CBlockControlToken(int tp, LoadContext *ctx);
-  HBlockControlIF  load_CBlockControlIF(int tp, LoadContext *ctx);
-  HBlockControlUnless  load_CBlockControlUnless(int tp, LoadContext *ctx);
-  HBlockControlSelectItem  load_CBlockControlSelectItem(int tp, LoadContext *ctx);
-  HBlockControlSelect  load_CBlockControlSelect(int tp, LoadContext *ctx);
-  HBlockControlForEach  load_CBlockControlForEach(int tp, LoadContext *ctx);
-  HBlockExecutionResultFlag  load_CBlockExecutionResultFlag(int tp, LoadContext *ctx);
-  HBlockUnitInit  load_CBlockUnitInit(int tp, LoadContext *ctx);
-  HBlockUnitTest  load_CBlockUnitTest(int tp, LoadContext *ctx);
-  HBlockUnitAssert  load_CBlockUnitAssert(int tp, LoadContext *ctx);
-  HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx);
-  HBlockToDecideIf  load_CBlockToDecideIf(int tp, LoadContext *ctx);
-  HBlockToDecideWhether  load_CBlockToDecideWhether(int tp, LoadContext *ctx);
-  HBlockToDecideWhat  load_CBlockToDecideWhat(int tp, LoadContext *ctx);
-  HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum(int tp, LoadContext *ctx);
-  HBlockToDecideOn  load_CBlockToDecideOn(int tp, LoadContext *ctx);
-  HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx);
-  HBlockPhraseDefine  load_CBlockPhraseDefine(int tp, LoadContext *ctx);
-  HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx);
-Interpreter::HBlockInterpreter  load_CBlockInterpreter(int tp, LoadContext *ctx);
-  HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
-  HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx);
-  HBlockMatchNamed  load_CBlockMatchNamed(int tp, LoadContext *ctx);
-  HBlockMatchNoum  load_CBlockMatchNoum(int tp, LoadContext *ctx);
-  HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx);
-  HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx);
-  HBlockMatchWith  load_CBlockMatchWith(int tp, LoadContext *ctx);
-  HBlockMatchList  load_CBlockMatchList(int tp, LoadContext *ctx);
-  HBlockMatchAND  load_CBlockMatchAND(int tp, LoadContext *ctx);
-  HBlockMatchNOT  load_CBlockMatchNOT(int tp, LoadContext *ctx);
-  HBlockMatchOR  load_CBlockMatchOR(int tp, LoadContext *ctx);
-  HBlockMatchActionCall  load_CBlockMatchActionCall(int tp, LoadContext *ctx);
-  HBlockMatchBlock  load_CBlockMatchBlock(int tp, LoadContext *ctx);
-  HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx);
-  HBlockMatchDirectIs  load_CBlockMatchDirectIs(int tp, LoadContext *ctx);
-  HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot(int tp, LoadContext *ctx);
-  HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx);
-  HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb(int tp, LoadContext *ctx);
-  HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion(int tp, LoadContext *ctx);
-  HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx);
-  HBlockMatchWhich  load_CBlockMatchWhich(int tp, LoadContext *ctx);
-  HBlockMatchWhichNot  load_CBlockMatchWhichNot(int tp, LoadContext *ctx);
-  HBlockVariableNamed  load_CBlockVariableNamed(int tp, LoadContext *ctx);
-  HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx);
-  HBlockIntegerNumber  load_CBlockIntegerNumber(int tp, LoadContext *ctx);
-  HBlockFactionalNumber  load_CBlockFactionalNumber(int tp, LoadContext *ctx);
-  HBlockArgumentInput  load_CBlockArgumentInput(int tp, LoadContext *ctx);
-  HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx);
-  HBlockSimetricRelation  load_CBlockSimetricRelation(int tp, LoadContext *ctx);
-  HBlockASimetricRelation  load_CBlockASimetricRelation(int tp, LoadContext *ctx);
-  HBlockRelationInstance  load_CBlockRelationInstance(int tp, LoadContext *ctx);
-  HBlockConditionalRelation  load_CBlockConditionalRelation(int tp, LoadContext *ctx);
-  HBlockRelationLookup  load_CBlockRelationLookup(int tp, LoadContext *ctx);
-  HBlockVerbLookup  load_CBlockVerbLookup(int tp, LoadContext *ctx);
-  HBlockRelationArguments  load_CBlockRelationArguments(int tp, LoadContext *ctx);
-  HBlockSelectorAND  load_CBlockSelectorAND(int tp, LoadContext *ctx);
-  HBlockExecution  load_CBlockExecution(int tp, LoadContext *ctx);
-  HBlockUnderstand  load_CBlockUnderstand(int tp, LoadContext *ctx);
-  HBlockUnderstandStatic  load_CBlockUnderstandStatic(int tp, LoadContext *ctx);
-  HBlockUnderstandDynamic  load_CBlockUnderstandDynamic(int tp, LoadContext *ctx);
-  HBlockValue  load_CBlockValue(int tp, LoadContext *ctx);
-  HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx);
-  HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx);
-  HBlockAction  load_CBlockAction(int tp, LoadContext *ctx);
-  HBlock  load_CBlock(int tp, LoadContext *ctx);
-  HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx);
-  HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx);
-  HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx);
-  HBlockFilter  load_CBlockFilter(int tp, LoadContext *ctx);
-  HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx);
-  HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
-  HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
-  HBlockBooleanResult  load_CBlockBooleanResult(int tp, LoadContext *ctx);
-  HBlockList  load_CBlockList(int tp, LoadContext *ctx);
-  HBlockKind  load_CBlockKind(int tp, LoadContext *ctx);
-  HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx);
-  HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx);
-  HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx);
-  HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx);
-  HBlockInstance  load_CBlockInstance_slot(int tp, LoadContext *ctx);
-  HBlockInstanceNamed  load_CBlockInstanceNamed_slot(int tp, LoadContext *ctx);
-  HBlockText  load_CBlockText_slot(int tp, LoadContext *ctx);
-  HBlockTextSentence  load_CBlockTextSentence_slot(int tp, LoadContext *ctx);
-  HBlockValue  load_CBlockValue_slot(int tp, LoadContext *ctx);
-  HBlockKindReference  load_CBlockKindReference_slot(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
-  HBlockNoumSupl  load_CBlockNoumSupl_slot(int tp, LoadContext *ctx);
-  HBlockKindNamed  load_CBlockKindNamed_slot(int tp, LoadContext *ctx);
-  HBlockNothing  load_CBlockNothing_slot(int tp, LoadContext *ctx);
-  HBlockAnything  load_CBlockAnything_slot(int tp, LoadContext *ctx);
-  HBlockKindOfName  load_CBlockKindOfName_slot(int tp, LoadContext *ctx);
-  HBlockKindOf  load_CBlockKindOf_slot(int tp, LoadContext *ctx);
-  HBlockActionApply  load_CBlockActionApply_slot(int tp, LoadContext *ctx);
-  HBlockKindAction  load_CBlockKindAction_slot(int tp, LoadContext *ctx);
-  HBlockKindValue  load_CBlockKindValue_slot(int tp, LoadContext *ctx);
-  HBlockKindEntity  load_CBlockKindEntity_slot(int tp, LoadContext *ctx);
-  HBlockNamedValue  load_CBlockNamedValue_slot(int tp, LoadContext *ctx);
-  HBlockProperty  load_CBlockProperty_slot(int tp, LoadContext *ctx);
-  HBlockInstanceVariable  load_CBlockInstanceVariable_slot(int tp, LoadContext *ctx);
-  HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable_slot(int tp, LoadContext *ctx);
-  HBlockList  load_CBlockList_slot(int tp, LoadContext *ctx);
-  HBlockList_OR  load_CBlockList_OR_slot(int tp, LoadContext *ctx);
-  HBlockList_AND  load_CBlockList_AND_slot(int tp, LoadContext *ctx);
-  HBlockEnums  load_CBlockEnums_slot(int tp, LoadContext *ctx);
-  HBlockVerbRelation  load_CBlockVerbRelation_slot(int tp, LoadContext *ctx);
-  HBlockVerbDirectRelation  load_CBlockVerbDirectRelation_slot(int tp, LoadContext *ctx);
-  HBlockVerbReverseRelation  load_CBlockVerbReverseRelation_slot(int tp, LoadContext *ctx);
-  HBlockFilterAtom  load_CBlockFilterAtom_slot(int tp, LoadContext *ctx);
-  HBlockFilterList  load_CBlockFilterList_slot(int tp, LoadContext *ctx);
-  HBlockDinamicDispatch  load_CBlockDinamicDispatch_slot(int tp, LoadContext *ctx);
-  HBlockIF  load_CBlockIF_slot(int tp, LoadContext *ctx);
-  HBlockSame  load_CBlockSame_slot(int tp, LoadContext *ctx);
-  HBlockVerbConjugation  load_CBlockVerbConjugation_slot(int tp, LoadContext *ctx);
-  HBlockVerb  load_CBlockVerb_slot(int tp, LoadContext *ctx);
-  HBlockVerbAdapt  load_CBlockVerbAdapt_slot(int tp, LoadContext *ctx);
-  HBlockVerbNegate  load_CBlockVerbNegate_slot(int tp, LoadContext *ctx);
-  HBlockSelector  load_CBlockSelector_slot(int tp, LoadContext *ctx);
-  HBlockSelector_All  load_CBlockSelector_All_slot(int tp, LoadContext *ctx);
-  HBlockSelector_Any  load_CBlockSelector_Any_slot(int tp, LoadContext *ctx);
-  HBlockSelector_Where  load_CBlockSelector_Where_slot(int tp, LoadContext *ctx);
-  HBlockAction  load_CBlockAction_slot(int tp, LoadContext *ctx);
-  HBlockActionInstance  load_CBlockActionInstance_slot(int tp, LoadContext *ctx);
-  HBlockActionNamed  load_CBlockActionNamed_slot(int tp, LoadContext *ctx);
-  HBlockActionNamed  load_CBlockActionNamed_slot(int tp, LoadContext *ctx);
-  HBlockTryCall  load_CBlockTryCall_slot(int tp, LoadContext *ctx);
-  HBlockActionCall  load_CBlockActionCall_slot(int tp, LoadContext *ctx);
-  HBlockActionCallNamed  load_CBlockActionCallNamed_slot(int tp, LoadContext *ctx);
-  HBlockStaticDispatch  load_CBlockStaticDispatch_slot(int tp, LoadContext *ctx);
-  HBlockAssertionBase  load_CBlockAssertionBase_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_is  load_CBlockAssertion_is_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_canBe  load_CBlockAssertion_canBe_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isVariable  load_CBlockAssertion_isVariable_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign_slot(int tp, LoadContext *ctx);
-  HBlockIsVerb  load_CBlockIsVerb_slot(int tp, LoadContext *ctx);
-  HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int tp, LoadContext *ctx);
-  HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion_slot(int tp, LoadContext *ctx);
-  HBlockAssert  load_CBlockAssert_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable_slot(int tp, LoadContext *ctx);
-  HBlockBooleanValue  load_CBlockBooleanValue_slot(int tp, LoadContext *ctx);
-  HBlockBooleanAND  load_CBlockBooleanAND_slot(int tp, LoadContext *ctx);
-  HBlockBooleanOR  load_CBlockBooleanOR_slot(int tp, LoadContext *ctx);
-  HBlockBooleanNOT  load_CBlockBooleanNOT_slot(int tp, LoadContext *ctx);
-  HBlockNow  load_CBlockNow_slot(int tp, LoadContext *ctx);
-  HBlockEvery  load_CBlockEvery_slot(int tp, LoadContext *ctx);
-  HBlockComandList  load_CBlockComandList_slot(int tp, LoadContext *ctx);
-  HBlockEventHandle  load_CBlockEventHandle_slot(int tp, LoadContext *ctx);
-  HBlockComposition  load_CBlockComposition_slot(int tp, LoadContext *ctx);
-  HBlockCompositionList  load_CBlockCompositionList_slot(int tp, LoadContext *ctx);
-  HBlockCompositionRelation  load_CBlockCompositionRelation_slot(int tp, LoadContext *ctx);
-  HBlockCompositionPhrase  load_CBlockCompositionPhrase_slot(int tp, LoadContext *ctx);
-  HBlockCompostionPhrase  load_CBlockCompostionPhrase_slot(int tp, LoadContext *ctx);
-  HBlockControlToken  load_CBlockControlToken_slot(int tp, LoadContext *ctx);
-  HBlockControlIF  load_CBlockControlIF_slot(int tp, LoadContext *ctx);
-  HBlockControlUnless  load_CBlockControlUnless_slot(int tp, LoadContext *ctx);
-  HBlockControlSelectItem  load_CBlockControlSelectItem_slot(int tp, LoadContext *ctx);
-  HBlockControlSelect  load_CBlockControlSelect_slot(int tp, LoadContext *ctx);
-  HBlockControlForEach  load_CBlockControlForEach_slot(int tp, LoadContext *ctx);
-  HBlockExecutionResultFlag  load_CBlockExecutionResultFlag_slot(int tp, LoadContext *ctx);
-  HBlockUnitInit  load_CBlockUnitInit_slot(int tp, LoadContext *ctx);
-  HBlockUnitTest  load_CBlockUnitTest_slot(int tp, LoadContext *ctx);
-  HBlockUnitAssert  load_CBlockUnitAssert_slot(int tp, LoadContext *ctx);
-  HBlockToDecide  load_CBlockToDecide_slot(int tp, LoadContext *ctx);
-  HBlockToDecideIf  load_CBlockToDecideIf_slot(int tp, LoadContext *ctx);
-  HBlockToDecideWhether  load_CBlockToDecideWhether_slot(int tp, LoadContext *ctx);
-  HBlockToDecideWhat  load_CBlockToDecideWhat_slot(int tp, LoadContext *ctx);
-  HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum_slot(int tp, LoadContext *ctx);
-  HBlockToDecideOn  load_CBlockToDecideOn_slot(int tp, LoadContext *ctx);
-  HBlockPhraseHeader  load_CBlockPhraseHeader_slot(int tp, LoadContext *ctx);
-  HBlockPhraseDefine  load_CBlockPhraseDefine_slot(int tp, LoadContext *ctx);
-  HBlockPhraseInvoke  load_CBlockPhraseInvoke_slot(int tp, LoadContext *ctx);
-Interpreter::HBlockInterpreter  load_CBlockInterpreter_slot(int tp, LoadContext *ctx);
-  HBlockMatch  load_CBlockMatch_slot(int tp, LoadContext *ctx);
-  HBlockMatchAny  load_CBlockMatchAny_slot(int tp, LoadContext *ctx);
-  HBlockMatchNamed  load_CBlockMatchNamed_slot(int tp, LoadContext *ctx);
-  HBlockMatchNoum  load_CBlockMatchNoum_slot(int tp, LoadContext *ctx);
-  HBlockMatchValue  load_CBlockMatchValue_slot(int tp, LoadContext *ctx);
-  HBlockMatchKind  load_CBlockMatchKind_slot(int tp, LoadContext *ctx);
-  HBlockMatchWith  load_CBlockMatchWith_slot(int tp, LoadContext *ctx);
-  HBlockMatchList  load_CBlockMatchList_slot(int tp, LoadContext *ctx);
-  HBlockMatchAND  load_CBlockMatchAND_slot(int tp, LoadContext *ctx);
-  HBlockMatchNOT  load_CBlockMatchNOT_slot(int tp, LoadContext *ctx);
-  HBlockMatchOR  load_CBlockMatchOR_slot(int tp, LoadContext *ctx);
-  HBlockMatchActionCall  load_CBlockMatchActionCall_slot(int tp, LoadContext *ctx);
-  HBlockMatchBlock  load_CBlockMatchBlock_slot(int tp, LoadContext *ctx);
-  HBlockMatchIs  load_CBlockMatchIs_slot(int tp, LoadContext *ctx);
-  HBlockMatchDirectIs  load_CBlockMatchDirectIs_slot(int tp, LoadContext *ctx);
-  HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot_slot(int tp, LoadContext *ctx);
-  HBlockMatchIsVerb  load_CBlockMatchIsVerb_slot(int tp, LoadContext *ctx);
-  HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb_slot(int tp, LoadContext *ctx);
-  HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion_slot(int tp, LoadContext *ctx);
-  HBlockMatchProperty  load_CBlockMatchProperty_slot(int tp, LoadContext *ctx);
-  HBlockMatchWhich  load_CBlockMatchWhich_slot(int tp, LoadContext *ctx);
-  HBlockMatchWhichNot  load_CBlockMatchWhichNot_slot(int tp, LoadContext *ctx);
-  HBlockVariableNamed  load_CBlockVariableNamed_slot(int tp, LoadContext *ctx);
-  HBlockNumber  load_CBlockNumber_slot(int tp, LoadContext *ctx);
-  HBlockIntegerNumber  load_CBlockIntegerNumber_slot(int tp, LoadContext *ctx);
-  HBlockFactionalNumber  load_CBlockFactionalNumber_slot(int tp, LoadContext *ctx);
-  HBlockArgumentInput  load_CBlockArgumentInput_slot(int tp, LoadContext *ctx);
-  HBlockRelationBase  load_CBlockRelationBase_slot(int tp, LoadContext *ctx);
-  HBlockSimetricRelation  load_CBlockSimetricRelation_slot(int tp, LoadContext *ctx);
-  HBlockASimetricRelation  load_CBlockASimetricRelation_slot(int tp, LoadContext *ctx);
-  HBlockRelationInstance  load_CBlockRelationInstance_slot(int tp, LoadContext *ctx);
-  HBlockConditionalRelation  load_CBlockConditionalRelation_slot(int tp, LoadContext *ctx);
-  HBlockRelationLookup  load_CBlockRelationLookup_slot(int tp, LoadContext *ctx);
-  HBlockVerbLookup  load_CBlockVerbLookup_slot(int tp, LoadContext *ctx);
-  HBlockRelationArguments  load_CBlockRelationArguments_slot(int tp, LoadContext *ctx);
-  HBlockSelectorAND  load_CBlockSelectorAND_slot(int tp, LoadContext *ctx);
-  HBlockExecution  load_CBlockExecution_slot(int tp, LoadContext *ctx);
-  HBlockUnderstand  load_CBlockUnderstand_slot(int tp, LoadContext *ctx);
-  HBlockUnderstandStatic  load_CBlockUnderstandStatic_slot(int tp, LoadContext *ctx);
-  HBlockUnderstandDynamic  load_CBlockUnderstandDynamic_slot(int tp, LoadContext *ctx);
-  HBlockValue  load_CBlockValue_slot(int tp, LoadContext *ctx);
-  HBlockAssertion_is  load_CBlockAssertion_is_slot(int tp, LoadContext *ctx);
-  HBlockVerbRelation  load_CBlockVerbRelation_slot(int tp, LoadContext *ctx);
-  HBlockAction  load_CBlockAction_slot(int tp, LoadContext *ctx);
-  HBlock  load_CBlock_slot(int tp, LoadContext *ctx);
-  HBlockRelationBase  load_CBlockRelationBase_slot(int tp, LoadContext *ctx);
-  HBlockAssertionBase  load_CBlockAssertionBase_slot(int tp, LoadContext *ctx);
-  HBlockInstance  load_CBlockInstance_slot(int tp, LoadContext *ctx);
-  HBlockFilter  load_CBlockFilter_slot(int tp, LoadContext *ctx);
-  HBlockSelector  load_CBlockSelector_slot(int tp, LoadContext *ctx);
-  HBlockMatch  load_CBlockMatch_slot(int tp, LoadContext *ctx);
-  HBlockMatchIs  load_CBlockMatchIs_slot(int tp, LoadContext *ctx);
-  HBlockNoum  load_CBlockNoum_slot(int tp, LoadContext *ctx);
-  HBlockBooleanResult  load_CBlockBooleanResult_slot(int tp, LoadContext *ctx);
-  HBlockList  load_CBlockList_slot(int tp, LoadContext *ctx);
-  HBlockKind  load_CBlockKind_slot(int tp, LoadContext *ctx);
-  HBlockActionCall  load_CBlockActionCall_slot(int tp, LoadContext *ctx);
-  HBlockToDecide  load_CBlockToDecide_slot(int tp, LoadContext *ctx);
-  HBlockNumber  load_CBlockNumber_slot(int tp, LoadContext *ctx);
-  HBlockComposition  load_CBlockComposition_slot(int tp, LoadContext *ctx);
-  HBlockValue  load_CBlockValue_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockValue(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockValue  load_CBlockValue(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockKindReference) return load_CBlockKindReference(tp, ctx);
-	  { auto x = load_CBlockBooleanResult(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockNamedValue) return load_CBlockNamedValue(tp, ctx);
-	  if (tp == BlockType::BlockBooleanValue) return load_CBlockBooleanValue(tp, ctx);
-	  { auto x = load_CBlockNumber(tp, ctx); if (x != nullptr) return x; };
-	  return nullptr;
-  }
-
-  HBlockAssertion_is  load_CBlockAssertion_is_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_is(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockAssertion_isInstanceOf) return load_CBlockAssertion_isInstanceOf(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isNamedValueOf) return load_CBlockAssertion_isNamedValueOf(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isVariable) return load_CBlockAssertion_isVariable(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isLocalVariable) return load_CBlockAssertion_isLocalVariable(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isDefaultAssign) return load_CBlockAssertion_isDefaultAssign(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isConstantAssign) return load_CBlockAssertion_isConstantAssign(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isForbiddenAssign) return load_CBlockAssertion_isForbiddenAssign(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isDirectAssign) return load_CBlockAssertion_isDirectAssign(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_isNotDirectAssign) return load_CBlockAssertion_isNotDirectAssign(tp, ctx);
-	  if (tp == BlockType::BlockIsVerb) return load_CBlockIsVerb(tp, ctx);
-	  if (tp == BlockType::BlockIsNotVerb) return load_CBlockIsNotVerb(tp, ctx);
-	  if (tp == BlockType::BlockIsAdverbialComparasion) return load_CBlockIsAdverbialComparasion(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockVerbRelation  load_CBlockVerbRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbRelation(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockVerbRelation  load_CBlockVerbRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockVerbDirectRelation) return load_CBlockVerbDirectRelation(tp, ctx);
-	  if (tp == BlockType::BlockVerbReverseRelation) return load_CBlockVerbReverseRelation(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockAction  load_CBlockAction_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAction(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockAction  load_CBlockAction(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockActionInstance) return load_CBlockActionInstance(tp, ctx);
-	  if (tp == BlockType::BlockActionNamed) return load_CBlockActionNamed(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlock  load_CBlock_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlock(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlock  load_CBlock(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockInstance) return load_CBlockInstance(tp, ctx);
-	  if (tp == BlockType::BlockText) return load_CBlockText(tp, ctx);
-	  if (tp == BlockType::BlockTextSentence) return load_CBlockTextSentence(tp, ctx);
-	  { auto x = load_CBlockKind(tp, ctx); if (x != nullptr) return x; };
-	  { auto x = load_CBlockValue(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockNoum) return load_CBlockNoum(tp, ctx);
-	  if (tp == BlockType::BlockNothing) return load_CBlockNothing(tp, ctx);
-	  if (tp == BlockType::BlockAnything) return load_CBlockAnything(tp, ctx);
-	  if (tp == BlockType::BlockKindOfName) return load_CBlockKindOfName(tp, ctx);
-	  if (tp == BlockType::BlockKindOf) return load_CBlockKindOf(tp, ctx);
-	  if (tp == BlockType::BlockActionApply) return load_CBlockActionApply(tp, ctx);
-	  if (tp == BlockType::BlockProperty) return load_CBlockProperty(tp, ctx);
-	  if (tp == BlockType::BlockInstanceVariable) return load_CBlockInstanceVariable(tp, ctx);
-	  if (tp == BlockType::BlockKind_InstanceVariable) return load_CBlockKind_InstanceVariable(tp, ctx);
-	  if (tp == BlockType::BlockList) return load_CBlockList(tp, ctx);
-	  if (tp == BlockType::BlockEnums) return load_CBlockEnums(tp, ctx);
-	  { auto x = load_CBlockVerbRelation(tp, ctx); if (x != nullptr) return x; };
-	  { auto x = load_CBlockFilter(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockDinamicDispatch) return load_CBlockDinamicDispatch(tp, ctx);
-	  { auto x = load_CBlockIF(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockVerbConjugation) return load_CBlockVerbConjugation(tp, ctx);
-	  if (tp == BlockType::BlockVerb) return load_CBlockVerb(tp, ctx);
-	  if (tp == BlockType::BlockVerbAdapt) return load_CBlockVerbAdapt(tp, ctx);
-	  if (tp == BlockType::BlockVerbNegate) return load_CBlockVerbNegate(tp, ctx);
-	  { auto x = load_CBlockSelector(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockAction) return load_CBlockAction(tp, ctx);
-	  if (tp == BlockType::BlockTryCall) return load_CBlockTryCall(tp, ctx);
-	  if (tp == BlockType::BlockActionCall) return load_CBlockActionCall(tp, ctx);
-	  { auto x = load_CBlockAssertionBase(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockAssert) return load_CBlockAssert(tp, ctx);
-	  if (tp == BlockType::BlockAssertion_InstanceVariable) return load_CBlockAssertion_InstanceVariable(tp, ctx);
-	  if (tp == BlockType::BlockBooleanAND) return load_CBlockBooleanAND(tp, ctx);
-	  if (tp == BlockType::BlockBooleanOR) return load_CBlockBooleanOR(tp, ctx);
-	  if (tp == BlockType::BlockBooleanNOT) return load_CBlockBooleanNOT(tp, ctx);
-	  if (tp == BlockType::BlockNow) return load_CBlockNow(tp, ctx);
-	  if (tp == BlockType::BlockEvery) return load_CBlockEvery(tp, ctx);
-	  if (tp == BlockType::BlockComandList) return load_CBlockComandList(tp, ctx);
-	  if (tp == BlockType::BlockEventHandle) return load_CBlockEventHandle(tp, ctx);
-	  if (tp == BlockType::BlockCompostionPhrase) return load_CBlockCompostionPhrase(tp, ctx);
-	  if (tp == BlockType::BlockControlToken) return load_CBlockControlToken(tp, ctx);
-	  if (tp == BlockType::BlockControlIF) return load_CBlockControlIF(tp, ctx);
-	  if (tp == BlockType::BlockControlUnless) return load_CBlockControlUnless(tp, ctx);
-	  if (tp == BlockType::BlockControlSelectItem) return load_CBlockControlSelectItem(tp, ctx);
-	  if (tp == BlockType::BlockControlSelect) return load_CBlockControlSelect(tp, ctx);
-	  if (tp == BlockType::BlockControlForEach) return load_CBlockControlForEach(tp, ctx);
-	  if (tp == BlockType::BlockExecutionResultFlag) return load_CBlockExecutionResultFlag(tp, ctx);
-	  { auto x = load_CBlockToDecide(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockToDecideOn) return load_CBlockToDecideOn(tp, ctx);
-	  if (tp == BlockType::BlockPhraseHeader) return load_CBlockPhraseHeader(tp, ctx);
-	  if (tp == BlockType::BlockPhraseDefine) return load_CBlockPhraseDefine(tp, ctx);
-	  if (tp == BlockType::BlockPhraseInvoke) return load_CBlockPhraseInvoke(tp, ctx);
-	  { auto x = load_CBlockMatch(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockArgumentInput) return load_CBlockArgumentInput(tp, ctx);
-	  { auto x = load_CBlockRelationBase(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockRelationInstance) return load_CBlockRelationInstance(tp, ctx);
-	  if (tp == BlockType::BlockRelationLookup) return load_CBlockRelationLookup(tp, ctx);
-	  if (tp == BlockType::BlockVerbLookup) return load_CBlockVerbLookup(tp, ctx);
-	  if (tp == BlockType::BlockRelationArguments) return load_CBlockRelationArguments(tp, ctx);
-	  if (tp == BlockType::BlockSelectorAND) return load_CBlockSelectorAND(tp, ctx);
-	  { auto x = load_CBlockUnderstand(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockUnderstandStatic) return load_CBlockUnderstandStatic(tp, ctx);
-	  if (tp == BlockType::BlockUnderstandDynamic) return load_CBlockUnderstandDynamic(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockRelationBase  load_CBlockRelationBase_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockRelationBase(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockRelationBase  load_CBlockRelationBase(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockSimetricRelation) return load_CBlockSimetricRelation(tp, ctx);
-	  if (tp == BlockType::BlockASimetricRelation) return load_CBlockASimetricRelation(tp, ctx);
-	  if (tp == BlockType::BlockConditionalRelation) return load_CBlockConditionalRelation(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockAssertionBase  load_CBlockAssertionBase_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertionBase(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockAssertionBase  load_CBlockAssertionBase(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  { auto x = load_CBlockAssertion_is(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockAssertion_canBe) return load_CBlockAssertion_canBe(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockInstance  load_CBlockInstance_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockInstance(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockInstance  load_CBlockInstance(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockInstanceNamed) return load_CBlockInstanceNamed(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockFilter  load_CBlockFilter_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockFilter(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockFilter  load_CBlockFilter(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  { auto x = load_CBlockFilterAtom(tp, ctx); if (x != nullptr) return x; };
-	  { auto x = load_CBlockFilterList(tp, ctx); if (x != nullptr) return x; };
-	  return nullptr;
-  }
-
-  HBlockSelector  load_CBlockSelector_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSelector(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockSelector  load_CBlockSelector(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockSelector_All) return load_CBlockSelector_All(tp, ctx);
-	  if (tp == BlockType::BlockSelector_Any) return load_CBlockSelector_Any(tp, ctx);
-	  if (tp == BlockType::BlockSelector_Where) return load_CBlockSelector_Where(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockMatch  load_CBlockMatch_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatch(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockMatchAny) return load_CBlockMatchAny(tp, ctx);
-	  if (tp == BlockType::BlockMatchNamed) return load_CBlockMatchNamed(tp, ctx);
-	  if (tp == BlockType::BlockMatchNoum) return load_CBlockMatchNoum(tp, ctx);
-	  if (tp == BlockType::BlockMatchValue) return load_CBlockMatchValue(tp, ctx);
-	  if (tp == BlockType::BlockMatchKind) return load_CBlockMatchKind(tp, ctx);
-	  { auto x = load_CBlockMatchWith(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockMatchList) return load_CBlockMatchList(tp, ctx);
-	  if (tp == BlockType::BlockMatchAND) return load_CBlockMatchAND(tp, ctx);
-	  if (tp == BlockType::BlockMatchNOT) return load_CBlockMatchNOT(tp, ctx);
-	  if (tp == BlockType::BlockMatchOR) return load_CBlockMatchOR(tp, ctx);
-	  if (tp == BlockType::BlockMatchActionCall) return load_CBlockMatchActionCall(tp, ctx);
-	  if (tp == BlockType::BlockMatchBlock) return load_CBlockMatchBlock(tp, ctx);
-	  { auto x = load_CBlockMatchIs(tp, ctx); if (x != nullptr) return x; };
-	  if (tp == BlockType::BlockMatchProperty) return load_CBlockMatchProperty(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockMatchIs  load_CBlockMatchIs_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchIs(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockMatchDirectIs) return load_CBlockMatchDirectIs(tp, ctx);
-	  if (tp == BlockType::BlockMatchDirectIsNot) return load_CBlockMatchDirectIsNot(tp, ctx);
-	  if (tp == BlockType::BlockMatchIsVerb) return load_CBlockMatchIsVerb(tp, ctx);
-	  if (tp == BlockType::BlockMatchIsNotVerb) return load_CBlockMatchIsNotVerb(tp, ctx);
-	  if (tp == BlockType::BlockMatchIsAdverbialComparasion) return load_CBlockMatchIsAdverbialComparasion(tp, ctx);
-	  if (tp == BlockType::BlockMatchWhich) return load_CBlockMatchWhich(tp, ctx);
-	  if (tp == BlockType::BlockMatchWhichNot) return load_CBlockMatchWhichNot(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockNoum  load_CBlockNoum_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNoum(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockNoumSupl) return load_CBlockNoumSupl(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockBooleanResult  load_CBlockBooleanResult_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockBooleanResult(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockBooleanResult  load_CBlockBooleanResult(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  { auto x = load_CBlockSame(tp, ctx); if (x != nullptr) return x; };
-	  return nullptr;
-  }
-
-  HBlockList  load_CBlockList_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockList(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockList  load_CBlockList(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockList_OR) return load_CBlockList_OR(tp, ctx);
-	  if (tp == BlockType::BlockList_AND) return load_CBlockList_AND(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockKind  load_CBlockKind_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKind(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockKind  load_CBlockKind(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockKindNamed) return load_CBlockKindNamed(tp, ctx);
-	  if (tp == BlockType::BlockKindAction) return load_CBlockKindAction(tp, ctx);
-	  if (tp == BlockType::BlockKindValue) return load_CBlockKindValue(tp, ctx);
-	  if (tp == BlockType::BlockKindEntity) return load_CBlockKindEntity(tp, ctx);
-	  if (tp == BlockType::BlockComposition) return load_CBlockComposition(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockActionCall  load_CBlockActionCall_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockActionCall(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockActionCall  load_CBlockActionCall(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockActionCallNamed) return load_CBlockActionCallNamed(tp, ctx);
-	  if (tp == BlockType::BlockStaticDispatch) return load_CBlockStaticDispatch(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockToDecide  load_CBlockToDecide_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecide(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockToDecide  load_CBlockToDecide(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockToDecideIf) return load_CBlockToDecideIf(tp, ctx);
-	  if (tp == BlockType::BlockToDecideWhether) return load_CBlockToDecideWhether(tp, ctx);
-	  if (tp == BlockType::BlockToDecideWhat) return load_CBlockToDecideWhat(tp, ctx);
-	  if (tp == BlockType::BlockToDecideWhat_FirstNoum) return load_CBlockToDecideWhat_FirstNoum(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockNumber  load_CBlockNumber_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNumber(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockNumber  load_CBlockNumber(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockIntegerNumber) return load_CBlockIntegerNumber(tp, ctx);
-	  if (tp == BlockType::BlockFactionalNumber) return load_CBlockFactionalNumber(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockComposition  load_CBlockComposition_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockComposition(load_CBlock_slot(slot, ctx));
-  }
-
-  HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  if (tp == BlockType::BlockCompositionList) return load_CBlockCompositionList(tp, ctx);
-	  if (tp == BlockType::BlockCompositionRelation) return load_CBlockCompositionRelation(tp, ctx);
-	  if (tp == BlockType::BlockCompositionPhrase) return load_CBlockCompositionPhrase(tp, ctx);
-	  return nullptr;
-  }
-
-  HBlockRelationLookup  load_CBlockRelationLookup_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockRelationLookup(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchBlock  load_CBlockMatchBlock_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchBlock(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockAssertion_is
-  HBlockUnitTest  load_CBlockUnitTest_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnitTest(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockFactionalNumber  load_CBlockFactionalNumber_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockFactionalNumber(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchNoum  load_CBlockMatchNoum_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchNoum(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockControlIF  load_CBlockControlIF_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlIF(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isInstanceOf(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockActionApply  load_CBlockActionApply_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockActionApply(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockCompositionList  load_CBlockCompositionList_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockCompositionList(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_canBe  load_CBlockAssertion_canBe_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_canBe(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockSimetricRelation  load_CBlockSimetricRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSimetricRelation(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isDefaultAssign(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockPhraseHeader  load_CBlockPhraseHeader_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockPhraseHeader(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockComandList  load_CBlockComandList_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockComandList(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockControlSelect  load_CBlockControlSelect_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlSelect(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchAND  load_CBlockMatchAND_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchAND(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockIntegerNumber  load_CBlockIntegerNumber_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockIntegerNumber(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockNumber
-  HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isForbiddenAssign(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockFilterList  load_CBlockFilterList_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockFilterList(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKindOf  load_CBlockKindOf_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindOf(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKindValue  load_CBlockKindValue_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindValue(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockTryCall  load_CBlockTryCall_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockTryCall(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKind_InstanceVariable(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKindAction  load_CBlockKindAction_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindAction(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockConditionalRelation  load_CBlockConditionalRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockConditionalRelation(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockCompositionRelation  load_CBlockCompositionRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockCompositionRelation(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockFilterAtom  load_CBlockFilterAtom_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockFilterAtom(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockList_AND  load_CBlockList_AND_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockList_AND(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchWhichNot  load_CBlockMatchWhichNot_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchWhichNot(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockText  load_CBlockText_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockText(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockSelector_Where  load_CBlockSelector_Where_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSelector_Where(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockComposition
-  HBlockUnderstandStatic  load_CBlockUnderstandStatic_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnderstandStatic(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKindEntity  load_CBlockKindEntity_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindEntity(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchIsVerb  load_CBlockMatchIsVerb_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchIsVerb(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchWith  load_CBlockMatchWith_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchWith(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockAction
-  HBlockVerbAdapt  load_CBlockVerbAdapt_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbAdapt(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockActionNamed  load_CBlockActionNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockActionNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchList  load_CBlockMatchList_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchList(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockToDecideWhether  load_CBlockToDecideWhether_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecideWhether(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockUnitInit  load_CBlockUnitInit_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnitInit(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockRelationArguments  load_CBlockRelationArguments_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockRelationArguments(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockKindNamed  load_CBlockKindNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockBooleanAND  load_CBlockBooleanAND_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockBooleanAND(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockArgumentInput  load_CBlockArgumentInput_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockArgumentInput(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchNamed  load_CBlockMatchNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockAssertionBase
-  // BASE CBlockList
-  HBlockMatchKind  load_CBlockMatchKind_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchKind(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockControlForEach  load_CBlockControlForEach_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlForEach(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchAny  load_CBlockMatchAny_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchAny(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockRelationBase
-  HBlockInstanceNamed  load_CBlockInstanceNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockInstanceNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockVariableNamed  load_CBlockVariableNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVariableNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchValue  load_CBlockMatchValue_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchValue(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchProperty  load_CBlockMatchProperty_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchProperty(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockPhraseDefine  load_CBlockPhraseDefine_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockPhraseDefine(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockList_OR  load_CBlockList_OR_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockList_OR(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockActionCallNamed  load_CBlockActionCallNamed_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockActionCallNamed(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchOR  load_CBlockMatchOR_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchOR(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockActionInstance  load_CBlockActionInstance_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockActionInstance(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockSame  load_CBlockSame_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSame(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isVariable  load_CBlockAssertion_isVariable_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isVariable(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockBooleanNOT  load_CBlockBooleanNOT_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockBooleanNOT(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockToDecideWhat  load_CBlockToDecideWhat_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecideWhat(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockUnderstandDynamic  load_CBlockUnderstandDynamic_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnderstandDynamic(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockMatchIs
-  // BASE CBlockNoum
-  HBlockControlUnless  load_CBlockControlUnless_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlUnless(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isConstantAssign(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockMatch
-  HBlockBooleanOR  load_CBlockBooleanOR_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockBooleanOR(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchIsAdverbialComparasion(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecideWhat_FirstNoum(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockValue
-  HBlockToDecideOn  load_CBlockToDecideOn_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecideOn(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockVerbRelation
-  // BASE CBlockInstance
-  HBlockControlToken  load_CBlockControlToken_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlToken(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isNotDirectAssign(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  // BASE CBlockSelector
-  HBlockVerbDirectRelation  load_CBlockVerbDirectRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbDirectRelation(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isDirectAssign(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockVerbReverseRelation  load_CBlockVerbReverseRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbReverseRelation(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockUnderstand  load_CBlockUnderstand_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnderstand(load_CBlock_slot(slot, ctx));
-
-  }
-
-
-  HBlockVerbConjugation  load_CBlockVerbConjugation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbConjugation(load_CBlock_slot(slot, ctx));
-
-  }
+// BASE CBlockAssertionBase
 
+HBlockMatchList  load_CBlockMatchList(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchList);
+	const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
+	CBlockMatchList* ret = new CBlockMatchList(_matchList);
+	return  std::shared_ptr<CBlockMatchList>(ret);
 
-  HBlockEvery  load_CBlockEvery_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockEvery(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+// BASE CBlockAssertion_is
+// BASE CBlockValue
+HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKind_InstanceVariable);
+	const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const HBlockInstanceVariable _variableNamed = load_CBlockInstanceVariable_slot(load_id(ctx), ctx);
+	CBlockKind_InstanceVariable* ret = new CBlockKind_InstanceVariable(_kind, _variableNamed);
+	return  std::shared_ptr<CBlockKind_InstanceVariable>(ret);
 
-  HBlockSelector_All  load_CBlockSelector_All_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSelector_All(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockText  load_CBlockText(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockText);
+	const std::string _contents = load_string(ctx);
+	CBlockText* ret = new CBlockText(_contents);
+	return  std::shared_ptr<CBlockText>(ret);
 
-  HBlockMatchDirectIs  load_CBlockMatchDirectIs_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchDirectIs(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockAssert  load_CBlockAssert(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssert);
+	const HBlock _expression = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _result = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssert* ret = new CBlockAssert(_expression, _result);
+	return  std::shared_ptr<CBlockAssert>(ret);
 
-  HBlockNamedValue  load_CBlockNamedValue_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNamedValue(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_InstanceVariable);
+	const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlockInstanceVariable _instance_variable = load_CBlockInstanceVariable_slot(load_id(ctx), ctx);
+	CBlockAssertion_InstanceVariable* ret = new CBlockAssertion_InstanceVariable(_noum, _instance_variable);
+	return  std::shared_ptr<CBlockAssertion_InstanceVariable>(ret);
 
-  HBlockExecution  load_CBlockExecution_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockExecution(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockSelector_Any  load_CBlockSelector_Any(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockSelector_Any);
+	const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockSelector_Any* ret = new CBlockSelector_Any(_what);
+	return  std::shared_ptr<CBlockSelector_Any>(ret);
 
-  HBlockDinamicDispatch  load_CBlockDinamicDispatch_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockDinamicDispatch(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
 
-  HBlockMatchWhich  load_CBlockMatchWhich_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchWhich(load_CBlock_slot(slot, ctx));
+// BASE CBlockNoum
+HBlockMatchAND  load_CBlockMatchAND(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchAND);
+	const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
+	CBlockMatchAND* ret = new CBlockMatchAND(_matchList);
+	return  std::shared_ptr<CBlockMatchAND>(ret);
 
-  }
+}
 
 
-  HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockIsNotVerb(load_CBlock_slot(slot, ctx));
+HBlockBooleanAND  load_CBlockBooleanAND(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockBooleanAND);
+	const HBlock input_A = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock input_B = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockBooleanAND* ret = new CBlockBooleanAND(input_A, input_B);
+	return  std::shared_ptr<CBlockBooleanAND>(ret);
 
-  }
+}
 
 
-  HBlockVerb  load_CBlockVerb_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerb(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockSelectorAND  load_CBlockSelectorAND(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockSelectorAND);
+	const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockSelectorAND* ret = new CBlockSelectorAND(_value1, _value2);
+	return  std::shared_ptr<CBlockSelectorAND>(ret);
 
+}
 
-  HBlockAssert  load_CBlockAssert_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssert(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockBooleanNOT  load_CBlockBooleanNOT(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockBooleanNOT);
+	const HBlock input_A = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockBooleanNOT* ret = new CBlockBooleanNOT(input_A);
+	return  std::shared_ptr<CBlockBooleanNOT>(ret);
 
+}
 
-  HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockIsAdverbialComparasion(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockToDecideWhether  load_CBlockToDecideWhether(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockToDecideWhether);
+	const HBlockMatch _queryToMatch = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockToDecideWhether* ret = new CBlockToDecideWhether(_queryToMatch, _decideBody);
+	return  std::shared_ptr<CBlockToDecideWhether>(ret);
 
+}
 
-  HBlockAnything  load_CBlockAnything_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAnything(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindReference);
+	const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockKindReference* ret = new CBlockKindReference(_kind);
+	return  std::shared_ptr<CBlockKindReference>(ret);
 
+}
 
-  HBlockVerbLookup  load_CBlockVerbLookup_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbLookup(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchAny);
+	CBlockMatchAny* ret = new CBlockMatchAny();
+	return  std::shared_ptr<CBlockMatchAny>(ret);
 
+}
 
-  HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchDirectIsNot(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockConditionalRelation  load_CBlockConditionalRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockConditionalRelation);
+	const HBlockRelationBase _relation = load_CBlockRelationBase_slot(load_id(ctx), ctx);
+	const HBlock _coditional = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockConditionalRelation* ret = new CBlockConditionalRelation(_relation, _coditional);
+	return  std::shared_ptr<CBlockConditionalRelation>(ret);
 
+}
 
-  HBlockUnitAssert  load_CBlockUnitAssert_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockUnitAssert(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockEvery  load_CBlockEvery(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockEvery);
+	const HBlock _assertation = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockEvery* ret = new CBlockEvery(_assertation);
+	return  std::shared_ptr<CBlockEvery>(ret);
 
+}
 
-  HBlockBooleanValue  load_CBlockBooleanValue_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockBooleanValue(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockSelector_All  load_CBlockSelector_All(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockSelector_All);
+	const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockSelector_All* ret = new CBlockSelector_All(_what);
+	return  std::shared_ptr<CBlockSelector_All>(ret);
 
+}
 
-  HBlockIF  load_CBlockIF_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockIF(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockEnums  load_CBlockEnums(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockEnums);
+	const std::vector<HBlockNoum> _values = load_vector<CBlockNoum>(ctx);
+	CBlockEnums* ret = new CBlockEnums(_values);
+	return  std::shared_ptr<CBlockEnums>(ret);
 
+}
 
-  HBlockCompostionPhrase  load_CBlockCompostionPhrase_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockCompostionPhrase(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockMatchNoum  load_CBlockMatchNoum(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchNoum);
+	const HBlockNoum _inner = load_CBlockNoum_slot(load_id(ctx), ctx);
+	CBlockMatchNoum* ret = new CBlockMatchNoum(_inner);
+	return  std::shared_ptr<CBlockMatchNoum>(ret);
 
+}
 
-  HBlockControlSelectItem  load_CBlockControlSelectItem_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockControlSelectItem(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockPhraseDefine  load_CBlockPhraseDefine(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockPhraseDefine);
+	const HBlockPhraseHeader _header = load_CBlockPhraseHeader_slot(load_id(ctx), ctx);
+	const HBlock _body = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockPhraseDefine* ret = new CBlockPhraseDefine(_header, _body);
+	return  std::shared_ptr<CBlockPhraseDefine>(ret);
 
+}
 
-  HBlockSelectorAND  load_CBlockSelectorAND_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSelectorAND(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockNow  load_CBlockNow(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNow);
+	const HBlockAssertion_is _assertation = load_CBlockAssertion_is_slot(load_id(ctx), ctx);
+	CBlockNow* ret = new CBlockNow(_assertation);
+	return  std::shared_ptr<CBlockNow>(ret);
 
+}
 
-  HBlockASimetricRelation  load_CBlockASimetricRelation_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockASimetricRelation(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockList_OR  load_CBlockList_OR(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockList_OR);
+	const std::list<HBlock> _lista = load_list<CBlock>(ctx);
+	CBlockList_OR* ret = new CBlockList_OR(_lista);
+	return  std::shared_ptr<CBlockList_OR>(ret);
 
+}
 
-  HBlockSelector_Any  load_CBlockSelector_Any_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockSelector_Any(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isConstantAssign);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isConstantAssign* ret = new CBlockAssertion_isConstantAssign(_variable, _value);
+	return  std::shared_ptr<CBlockAssertion_isConstantAssign>(ret);
 
+}
 
-  HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isLocalVariable(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockKindEntity  load_CBlockKindEntity(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindEntity);
+	const string _named = load_string(ctx);
+	CBlockKindEntity* ret = new CBlockKindEntity(_named);
+	return  std::shared_ptr<CBlockKindEntity>(ret);
 
+}
 
-  HBlockProperty  load_CBlockProperty_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockProperty(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchIsNotVerb);
+	const string _verb = load_string(ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchIsNotVerb* ret = new CBlockMatchIsNotVerb(_verb, _obj, _value);
+	return  std::shared_ptr<CBlockMatchIsNotVerb>(ret);
 
+}
 
-  HBlockRelationInstance  load_CBlockRelationInstance_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockRelationInstance(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchIsVerb);
+	const string _verb = load_string(ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchIsVerb* ret = new CBlockMatchIsVerb(_verb, _obj, _value);
+	return  std::shared_ptr<CBlockMatchIsVerb>(ret);
 
+}
 
-  HBlockEventHandle  load_CBlockEventHandle_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockEventHandle(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockBooleanOR  load_CBlockBooleanOR(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockBooleanOR);
+	const HBlock input_A = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock input_B = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockBooleanOR* ret = new CBlockBooleanOR(input_A, input_B);
+	return  std::shared_ptr<CBlockBooleanOR>(ret);
 
+}
 
-  HBlockToDecideIf  load_CBlockToDecideIf_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockToDecideIf(load_CBlock_slot(slot, ctx));
 
-  }
+HBlockActionApply  load_CBlockActionApply(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockActionApply);
+	const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockActionApply* ret = new CBlockActionApply(_noum1, _noum2);
+	return  std::shared_ptr<CBlockActionApply>(ret);
 
+}
 
-  HBlockKindOfName  load_CBlockKindOfName_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindOfName(load_CBlock_slot(slot, ctx));
 
-  }
 
+HBlockNamedValue  load_CBlockNamedValue(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNamedValue);
+	const string _named = load_string(ctx);
+	CBlockNamedValue* ret = new CBlockNamedValue(_named);
+	return  std::shared_ptr<CBlockNamedValue>(ret);
 
-  HBlockExecutionResultFlag  load_CBlockExecutionResultFlag_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockExecutionResultFlag(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockIntegerNumber  load_CBlockIntegerNumber(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockIntegerNumber);
+	const int _value = load_int(ctx);
+	CBlockIntegerNumber* ret = new CBlockIntegerNumber(_value);
+	return  std::shared_ptr<CBlockIntegerNumber>(ret);
 
-  HBlockVerbNegate  load_CBlockVerbNegate_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockVerbNegate(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockExecutionResultFlag  load_CBlockExecutionResultFlag(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockExecutionResultFlag);
+	const PhaseResultFlag _flag = load_PhaseResultFlag(ctx);
+	const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockExecutionResultFlag* ret = new CBlockExecutionResultFlag(_flag, _contents);
+	return  std::shared_ptr<CBlockExecutionResultFlag>(ret);
 
-  HBlockKindReference  load_CBlockKindReference_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockKindReference(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchKind);
+	const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockMatchKind* ret = new CBlockMatchKind(_kind);
+	return  std::shared_ptr<CBlockMatchKind>(ret);
 
-  // BASE CBlockActionCall
-  HBlockPhraseInvoke  load_CBlockPhraseInvoke_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockPhraseInvoke(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockBooleanValue  load_CBlockBooleanValue(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockBooleanValue);
+	const bool _state = load_bool(ctx);
+	CBlockBooleanValue* ret = new CBlockBooleanValue(_state);
+	return  std::shared_ptr<CBlockBooleanValue>(ret);
 
-  HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchIsNotVerb(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockMatchDirectIs  load_CBlockMatchDirectIs(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchDirectIs);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchDirectIs* ret = new CBlockMatchDirectIs(_obj, _value);
+	return  std::shared_ptr<CBlockMatchDirectIs>(ret);
 
-  HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_isNamedValueOf(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchProperty);
+	const HBlock _prop = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchProperty* ret = new CBlockMatchProperty(_prop, _obj);
+	return  std::shared_ptr<CBlockMatchProperty>(ret);
 
-  HBlockCompositionPhrase  load_CBlockCompositionPhrase_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockCompositionPhrase(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+// BASE CBlockVerbRelation
+HBlockCompostionPhrase  load_CBlockCompostionPhrase(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockCompostionPhrase);
+	CBlockCompostionPhrase* ret = new CBlockCompostionPhrase();
+	return  std::shared_ptr<CBlockCompostionPhrase>(ret);
 
-Interpreter::HBlockInterpreter  load_CBlockInterpreter_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockInterpreter(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+// BASE CBlockToDecide
+HBlockInstanceNamed  load_CBlockInstanceNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockInstanceNamed);
+	const string _named = load_string(ctx);
+	const int _id = load_int(ctx);
+	const HBlockKind _baseKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockInstanceNamed* ret = new CBlockInstanceNamed(_named, _id, _baseKind);
+	return  std::shared_ptr<CBlockInstanceNamed>(ret);
 
-  HBlockInstanceVariable  load_CBlockInstanceVariable_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockInstanceVariable(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+// BASE CBlockMatchIs
+// BASE CBlockInstance
+HBlockToDecideWhat  load_CBlockToDecideWhat(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockToDecideWhat);
+	const HBlockMatch _queryToMatch = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockToDecideWhat* ret = new CBlockToDecideWhat(_queryToMatch, _decideBody);
+	return  std::shared_ptr<CBlockToDecideWhat>(ret);
 
-  HBlockNothing  load_CBlockNothing_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNothing(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockComandList  load_CBlockComandList(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockComandList);
+	const std::list<HBlock> _lista = load_list<CBlock>(ctx);
+	CBlockComandList* ret = new CBlockComandList(_lista);
+	return  std::shared_ptr<CBlockComandList>(ret);
 
-  HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockAssertion_InstanceVariable(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isInstanceOf);
+	const HBlockInstance _noum = load_CBlockInstance_slot(load_id(ctx), ctx);
+	const HBlockKind _baseKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockAssertion_isInstanceOf* ret = new CBlockAssertion_isInstanceOf(_noum, _baseKind);
+	return  std::shared_ptr<CBlockAssertion_isInstanceOf>(ret);
 
-  HBlockIsVerb  load_CBlockIsVerb_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockIsVerb(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNothing);
+	const string _named = load_string(ctx);
+	CBlockNothing* ret = new CBlockNothing(_named);
+	return  std::shared_ptr<CBlockNothing>(ret);
 
-  HBlockMatchNOT  load_CBlockMatchNOT_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchNOT(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockRelationLookup  load_CBlockRelationLookup(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockRelationLookup);
+	const string _relation = load_string(ctx);
+	const HBlockMatch _value1 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value2 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const NoumLocation _term_to_query = load_NoumLocation(ctx);
+	CBlockRelationLookup* ret = new CBlockRelationLookup(_relation, _value1, _value2, _term_to_query);
+	return  std::shared_ptr<CBlockRelationLookup>(ret);
 
-  HBlockNow  load_CBlockNow_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNow(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockControlForEach  load_CBlockControlForEach(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlForEach);
+	const HBlock _block_variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_body = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlForEach* ret = new CBlockControlForEach(_block_variable, _block_body);
+	return  std::shared_ptr<CBlockControlForEach>(ret);
 
-  HBlockEnums  load_CBlockEnums_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockEnums(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockList_AND  load_CBlockList_AND(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockList_AND);
+	const std::list<HBlock> _lista = load_list<CBlock>(ctx);
+	CBlockList_AND* ret = new CBlockList_AND(_lista);
+	return  std::shared_ptr<CBlockList_AND>(ret);
 
-  HBlockNoumSupl  load_CBlockNoumSupl_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockNoumSupl(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockKindOfName  load_CBlockKindOfName(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindOfName);
+	const string _baseClasseName = load_string(ctx);
+	CBlockKindOfName* ret = new CBlockKindOfName(_baseClasseName);
+	return  std::shared_ptr<CBlockKindOfName>(ret);
 
-  HBlockStaticDispatch  load_CBlockStaticDispatch_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockStaticDispatch(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockVerbDirectRelation  load_CBlockVerbDirectRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbDirectRelation);
+	const HBlock _verbNoum = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlockNoum _relationNoum = load_CBlockNoum_slot(load_id(ctx), ctx);
+	CBlockVerbDirectRelation* ret = new CBlockVerbDirectRelation(_verbNoum, _relationNoum);
+	return  std::shared_ptr<CBlockVerbDirectRelation>(ret);
 
-  HBlockMatchActionCall  load_CBlockMatchActionCall_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockMatchActionCall(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockAssertion_canBe  load_CBlockAssertion_canBe(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_canBe);
+	const HBlock _obj = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlockEnums _definition = load_CBlockEnums_slot(load_id(ctx), ctx);
+	CBlockAssertion_canBe* ret = new CBlockAssertion_canBe(_obj, _definition);
+	return  std::shared_ptr<CBlockAssertion_canBe>(ret);
 
-  // BASE CBlockToDecide
-  HBlockTextSentence  load_CBlockTextSentence_slot(int slot, LoadContext *ctx)
-  {
-	  return DynamicCasting::asHBlockTextSentence(load_CBlock_slot(slot, ctx));
+}
 
-  }
 
+HBlockCompositionList  load_CBlockCompositionList(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockCompositionList);
+	const HBlockKind _itemKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockCompositionList* ret = new CBlockCompositionList(_itemKind);
+	return  std::shared_ptr<CBlockCompositionList>(ret);
 
-  HBlockRelationLookup  load_CBlockRelationLookup(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockRelationLookup);
-	  const string _relation = load_string(ctx);
-	  const HBlockMatch _value1 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value2 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const NoumLocation _term_to_query = load_NoumLocation(ctx);
-	  CBlockRelationLookup* ret = new CBlockRelationLookup(_relation, _value1, _value2, _term_to_query);
-	  return  std::shared_ptr<CBlockRelationLookup>(ret);
+}
 
-  }
 
+HBlockDinamicDispatch  load_CBlockDinamicDispatch(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockDinamicDispatch);
+	const HBlockList _commandList = load_CBlockList_slot(load_id(ctx), ctx);
+	CBlockDinamicDispatch* ret = new CBlockDinamicDispatch(_commandList);
+	return  std::shared_ptr<CBlockDinamicDispatch>(ret);
 
-  HBlockMatchBlock  load_CBlockMatchBlock(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchBlock);
-	  const HBlock _inner = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockMatchBlock* ret = new CBlockMatchBlock(_inner);
-	  return  std::shared_ptr<CBlockMatchBlock>(ret);
+}
 
-  }
 
+HBlockControlToken  load_CBlockControlToken(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlToken);
+	const string _token = load_string(ctx);
+	const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlToken* ret = new CBlockControlToken(_token, _contents);
+	return  std::shared_ptr<CBlockControlToken>(ret);
 
-  // BASE CBlockAssertion_is
-  HBlockUnitTest  load_CBlockUnitTest(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockUnitTest);
-	  const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockUnitTest* ret = new CBlockUnitTest(_contents);
-	  return  std::shared_ptr<CBlockUnitTest>(ret);
+}
 
-  }
 
+HBlockMatchBlock  load_CBlockMatchBlock(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchBlock);
+	const HBlock _inner = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockMatchBlock* ret = new CBlockMatchBlock(_inner);
+	return  std::shared_ptr<CBlockMatchBlock>(ret);
 
-  HBlockFactionalNumber  load_CBlockFactionalNumber(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockFactionalNumber);
-	  const float _value = load_float(ctx);
-	  CBlockFactionalNumber* ret = new CBlockFactionalNumber(_value);
-	  return  std::shared_ptr<CBlockFactionalNumber>(ret);
+}
 
-  }
 
+HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchValue);
+	const HBlock _inner = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockMatchValue* ret = new CBlockMatchValue(_inner);
+	return  std::shared_ptr<CBlockMatchValue>(ret);
 
-  HBlockMatchNoum  load_CBlockMatchNoum(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchNoum);
-	  const HBlockNoum _inner = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  CBlockMatchNoum* ret = new CBlockMatchNoum(_inner);
-	  return  std::shared_ptr<CBlockMatchNoum>(ret);
+}
 
-  }
 
+HBlockRelationArguments  load_CBlockRelationArguments(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockRelationArguments);
+	const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockRelationArguments* ret = new CBlockRelationArguments(_value1, _value2);
+	return  std::shared_ptr<CBlockRelationArguments>(ret);
 
-  HBlockControlIF  load_CBlockControlIF(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlIF);
-	  const HBlock _block_if = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_then = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlIF* ret = new CBlockControlIF(_block_if, _block_then, _block_else);
-	  return  std::shared_ptr<CBlockControlIF>(ret);
+}
 
-  }
 
+HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockCompositionRelation);
+	const HBlockKind _fromKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const HBlockKind _toKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockCompositionRelation* ret = new CBlockCompositionRelation(_fromKind, _toKind);
+	return  std::shared_ptr<CBlockCompositionRelation>(ret);
 
-  HBlockAssertion_isInstanceOf  load_CBlockAssertion_isInstanceOf(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isInstanceOf);
-	  const HBlockInstance _noum = load_CBlockInstance_slot(load_id(ctx), ctx);
-	  const HBlockKind _baseKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isInstanceOf* ret = new CBlockAssertion_isInstanceOf(_noum, _baseKind);
-	  return  std::shared_ptr<CBlockAssertion_isInstanceOf>(ret);
+}
 
-  }
 
 
-  HBlockActionApply  load_CBlockActionApply(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockActionApply);
-	  const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockActionApply* ret = new CBlockActionApply(_noum1, _noum2);
-	  return  std::shared_ptr<CBlockActionApply>(ret);
+// BASE CBlockAction
+HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockEventHandle);
+	const EventHandleStage _stage = load_EventHandleStage(ctx);
+	const HBlockMatchActionCall _eventToObserve = load_CBlockMatchActionCall_slot(load_id(ctx), ctx);
+	const HBlockComandList _body = load_CBlockComandList_slot(load_id(ctx), ctx);
+	CBlockEventHandle* ret = new CBlockEventHandle(_stage, _eventToObserve, _body);
+	return  std::shared_ptr<CBlockEventHandle>(ret);
 
-  }
+}
 
 
-  HBlockCompositionList  load_CBlockCompositionList(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockCompositionList);
-	  const HBlockKind _itemKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockCompositionList* ret = new CBlockCompositionList(_itemKind);
-	  return  std::shared_ptr<CBlockCompositionList>(ret);
+// BASE CBlockNumber
+HBlockRelationInstance  load_CBlockRelationInstance(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockRelationInstance);
+	const HBlockRelationBase _relation = load_CBlockRelationBase_slot(load_id(ctx), ctx);
+	const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockRelationInstance* ret = new CBlockRelationInstance(_relation, _value1, _value2);
+	return  std::shared_ptr<CBlockRelationInstance>(ret);
 
-  }
+}
 
 
-  HBlockAssertion_canBe  load_CBlockAssertion_canBe(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_canBe);
-	  const HBlock _obj = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlockEnums _definition = load_CBlockEnums_slot(load_id(ctx), ctx);
-	  CBlockAssertion_canBe* ret = new CBlockAssertion_canBe(_obj, _definition);
-	  return  std::shared_ptr<CBlockAssertion_canBe>(ret);
+HBlockVerbLookup  load_CBlockVerbLookup(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbLookup);
+	const string _verb = load_string(ctx);
+	const HBlockMatch _value1 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value2 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const NoumLocation _term_to_query = load_NoumLocation(ctx);
+	CBlockVerbLookup* ret = new CBlockVerbLookup(_verb, _value1, _value2, _term_to_query);
+	return  std::shared_ptr<CBlockVerbLookup>(ret);
 
-  }
+}
 
 
-  HBlockSimetricRelation  load_CBlockSimetricRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockSimetricRelation);
-	  const std::string _named = load_string(ctx);
-	  const HBlockArgumentInput input_a = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
-	  const HBlockArgumentInput input_b = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
-	  const bool _various_1 = load_bool(ctx);
-	  const bool _various_2 = load_bool(ctx);
-	  CBlockSimetricRelation* ret = new CBlockSimetricRelation(_named, input_a, input_b, _various_1, _various_2);
-	  return  std::shared_ptr<CBlockSimetricRelation>(ret);
+HBlockVerbAdapt  load_CBlockVerbAdapt(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbAdapt);
+	const string _verb = load_string(ctx);
+	const string _tense = load_string(ctx);
+	const string _viewPoint = load_string(ctx);
+	CBlockVerbAdapt* ret = new CBlockVerbAdapt(_verb, _tense, _viewPoint);
+	return  std::shared_ptr<CBlockVerbAdapt>(ret);
 
-  }
+}
 
 
-  HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isDefaultAssign);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isDefaultAssign* ret = new CBlockAssertion_isDefaultAssign(_variable, _value);
-	  return  std::shared_ptr<CBlockAssertion_isDefaultAssign>(ret);
+HBlockStaticDispatch  load_CBlockStaticDispatch(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockStaticDispatch);
+	const int _staticEntryTable = load_int(ctx);
+	const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockStaticDispatch* ret = new CBlockStaticDispatch(_staticEntryTable, _noum1, _noum2);
+	return  std::shared_ptr<CBlockStaticDispatch>(ret);
 
-  }
+}
 
 
-  HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockPhraseHeader);
-	  const HBlockNoum _verb = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlockNoum _pred1 = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlockNoum _pred2 = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlockMatch _arg1 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _arg2 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockPhraseHeader* ret = new CBlockPhraseHeader(_verb, _pred1, _pred2, _arg1, _arg2);
-	  return  std::shared_ptr<CBlockPhraseHeader>(ret);
 
-  }
+HBlockToDecideOn  load_CBlockToDecideOn(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockToDecideOn);
+	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockToDecideOn* ret = new CBlockToDecideOn(_decideBody);
+	return  std::shared_ptr<CBlockToDecideOn>(ret);
 
+}
 
-  HBlockComandList  load_CBlockComandList(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockComandList);
-	  const std::list<HBlock> _lista = load_list<CBlock>(ctx);
-	  CBlockComandList* ret = new CBlockComandList(_lista);
-	  return  std::shared_ptr<CBlockComandList>(ret);
 
-  }
+HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isNamedValueOf);
+	const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _baseKind = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isNamedValueOf* ret = new CBlockAssertion_isNamedValueOf(_noum, _baseKind);
+	return  std::shared_ptr<CBlockAssertion_isNamedValueOf>(ret);
 
+}
 
-  HBlockControlSelect  load_CBlockControlSelect(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlSelect);
-	  const HBlock _block_seletor = load_CBlock_slot(load_id(ctx), ctx);
-	  const std::list<HBlockControlSelectItem> _block_selectList = load_list<CBlockControlSelectItem>(ctx);
-	  const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlSelect* ret = new CBlockControlSelect(_block_seletor, _block_selectList, _block_else);
-	  return  std::shared_ptr<CBlockControlSelect>(ret);
 
-  }
+HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockToDecideWhat_FirstNoum);
+	const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(load_id(ctx), ctx);
+	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockToDecideWhat_FirstNoum* ret = new CBlockToDecideWhat_FirstNoum(_queryToMatch, _decideBody);
+	return  std::shared_ptr<CBlockToDecideWhat_FirstNoum>(ret);
 
+}
 
-  HBlockMatchAND  load_CBlockMatchAND(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchAND);
-	  const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
-	  CBlockMatchAND* ret = new CBlockMatchAND(_matchList);
-	  return  std::shared_ptr<CBlockMatchAND>(ret);
 
-  }
+HBlockTryCall  load_CBlockTryCall(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockTryCall);
+	const HBlock _sentence = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockTryCall* ret = new CBlockTryCall(_sentence);
+	return  std::shared_ptr<CBlockTryCall>(ret);
 
+}
 
-  HBlockIntegerNumber  load_CBlockIntegerNumber(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockIntegerNumber);
-	  const int _value = load_int(ctx);
-	  CBlockIntegerNumber* ret = new CBlockIntegerNumber(_value);
-	  return  std::shared_ptr<CBlockIntegerNumber>(ret);
 
-  }
+HBlockFactionalNumber  load_CBlockFactionalNumber(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockFactionalNumber);
+	const float _value = load_float(ctx);
+	CBlockFactionalNumber* ret = new CBlockFactionalNumber(_value);
+	return  std::shared_ptr<CBlockFactionalNumber>(ret);
 
+}
 
-  // BASE CBlockNumber
-  HBlockAssertion_isForbiddenAssign  load_CBlockAssertion_isForbiddenAssign(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isForbiddenAssign);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isForbiddenAssign* ret = new CBlockAssertion_isForbiddenAssign(_variable, _value);
-	  return  std::shared_ptr<CBlockAssertion_isForbiddenAssign>(ret);
 
-  }
+HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isNotDirectAssign);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isNotDirectAssign* ret = new CBlockAssertion_isNotDirectAssign(_variable, _value);
+	return  std::shared_ptr<CBlockAssertion_isNotDirectAssign>(ret);
 
+}
 
 
-  HBlockKindOf  load_CBlockKindOf(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindOf);
-	  const HBlockKind _baseClasse = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockKindOf* ret = new CBlockKindOf(_baseClasse);
-	  return  std::shared_ptr<CBlockKindOf>(ret);
+HBlockKindValue  load_CBlockKindValue(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockKindValue);
+	const string _named = load_string(ctx);
+	CBlockKindValue* ret = new CBlockKindValue(_named);
+	return  std::shared_ptr<CBlockKindValue>(ret);
 
-  }
+}
 
 
-  HBlockKindValue  load_CBlockKindValue(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindValue);
-	  const string _named = load_string(ctx);
-	  CBlockKindValue* ret = new CBlockKindValue(_named);
-	  return  std::shared_ptr<CBlockKindValue>(ret);
+HBlockMatchWhichNot  load_CBlockMatchWhichNot(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchWhichNot);
+	const string _verb = load_string(ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchWhichNot* ret = new CBlockMatchWhichNot(_verb, _obj, _value);
+	return  std::shared_ptr<CBlockMatchWhichNot>(ret);
 
-  }
+}
 
 
-  HBlockTryCall  load_CBlockTryCall(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockTryCall);
-	  const HBlock _sentence = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockTryCall* ret = new CBlockTryCall(_sentence);
-	  return  std::shared_ptr<CBlockTryCall>(ret);
+HBlockControlIF  load_CBlockControlIF(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlIF);
+	const HBlock _block_if = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_then = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlIF* ret = new CBlockControlIF(_block_if, _block_then, _block_else);
+	return  std::shared_ptr<CBlockControlIF>(ret);
 
-  }
+}
 
 
-  HBlockKind_InstanceVariable  load_CBlockKind_InstanceVariable(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKind_InstanceVariable);
-	  const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  const HBlockInstanceVariable _variableNamed = load_CBlockInstanceVariable_slot(load_id(ctx), ctx);
-	  CBlockKind_InstanceVariable* ret = new CBlockKind_InstanceVariable(_kind, _variableNamed);
-	  return  std::shared_ptr<CBlockKind_InstanceVariable>(ret);
+HBlockVerbConjugation  load_CBlockVerbConjugation(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerbConjugation);
+	const string _word = load_string(ctx);
+	const string _tense = load_string(ctx);
+	CBlockVerbConjugation* ret = new CBlockVerbConjugation(_word, _tense);
+	return  std::shared_ptr<CBlockVerbConjugation>(ret);
 
-  }
+}
 
 
-  HBlockKindAction  load_CBlockKindAction(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindAction);
-	  const HBlockActionApply _applyTo = load_CBlockActionApply_slot(load_id(ctx), ctx);
-	  CBlockKindAction* ret = new CBlockKindAction(_applyTo);
-	  return  std::shared_ptr<CBlockKindAction>(ret);
+HBlockMatchActionCall  load_CBlockMatchActionCall(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchActionCall);
+	const HBlockMatch _action = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _argument1 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _argument2 = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchActionCall* ret = new CBlockMatchActionCall(_action, _argument1, _argument2);
+	return  std::shared_ptr<CBlockMatchActionCall>(ret);
 
-  }
+}
 
 
-  HBlockConditionalRelation  load_CBlockConditionalRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockConditionalRelation);
-	  const HBlockRelationBase _relation = load_CBlockRelationBase_slot(load_id(ctx), ctx);
-	  const HBlock _coditional = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockConditionalRelation* ret = new CBlockConditionalRelation(_relation, _coditional);
-	  return  std::shared_ptr<CBlockConditionalRelation>(ret);
+// BASE CBlockSelector
+HBlockMatchNOT  load_CBlockMatchNOT(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchNOT);
+	const HBlockMatch _input = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchNOT* ret = new CBlockMatchNOT(_input);
+	return  std::shared_ptr<CBlockMatchNOT>(ret);
 
-  }
+}
 
 
-  HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockCompositionRelation);
-	  const HBlockKind _fromKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  const HBlockKind _toKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockCompositionRelation* ret = new CBlockCompositionRelation(_fromKind, _toKind);
-	  return  std::shared_ptr<CBlockCompositionRelation>(ret);
+HBlockVerb  load_CBlockVerb(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockVerb);
+	const string _named = load_string(ctx);
+	const std::list<HBlockVerbConjugation> _conjugations = load_list<CBlockVerbConjugation>(ctx);
+	CBlockVerb* ret = new CBlockVerb(_named, _conjugations);
+	return  std::shared_ptr<CBlockVerb>(ret);
 
-  }
+}
 
 
+HBlockMatchNamed  load_CBlockMatchNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchNamed);
+	const string _named = load_string(ctx);
+	const HBlockMatch _matchInner = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchNamed* ret = new CBlockMatchNamed(_named, _matchInner);
+	return  std::shared_ptr<CBlockMatchNamed>(ret);
 
-  HBlockList_AND  load_CBlockList_AND(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockList_AND);
-	  const std::list<HBlock> _lista = load_list<CBlock>(ctx);
-	  CBlockList_AND* ret = new CBlockList_AND(_lista);
-	  return  std::shared_ptr<CBlockList_AND>(ret);
+}
 
-  }
 
+HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isDirectAssign);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isDirectAssign* ret = new CBlockAssertion_isDirectAssign(_variable, _value);
+	return  std::shared_ptr<CBlockAssertion_isDirectAssign>(ret);
 
-  HBlockMatchWhichNot  load_CBlockMatchWhichNot(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchWhichNot);
-	  const string _verb = load_string(ctx);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchWhichNot* ret = new CBlockMatchWhichNot(_verb, _obj, _value);
-	  return  std::shared_ptr<CBlockMatchWhichNot>(ret);
+}
 
-  }
 
 
-  HBlockText  load_CBlockText(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockText);
-	  const std::string _contents = load_string(ctx);
-	  CBlockText* ret = new CBlockText(_contents);
-	  return  std::shared_ptr<CBlockText>(ret);
+HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchIsAdverbialComparasion);
+	const string _adverb = load_string(ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchIsAdverbialComparasion* ret = new CBlockMatchIsAdverbialComparasion(_adverb, _obj, _value);
+	return  std::shared_ptr<CBlockMatchIsAdverbialComparasion>(ret);
 
-  }
+}
 
 
-  HBlockSelector_Where  load_CBlockSelector_Where(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockSelector_Where);
-	  const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockSelector_Where* ret = new CBlockSelector_Where(_what);
-	  return  std::shared_ptr<CBlockSelector_Where>(ret);
+HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockActionNamed);
+	const std::string _named = load_string(ctx);
+	const HBlockKindAction _actionKind = load_CBlockKindAction_slot(load_id(ctx), ctx);
+	CBlockActionNamed* ret = new CBlockActionNamed(_named, _actionKind);
+	return  std::shared_ptr<CBlockActionNamed>(ret);
 
-  }
+}
 
 
-  // BASE CBlockComposition
-  HBlockUnderstandStatic  load_CBlockUnderstandStatic(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockUnderstandStatic);
-	  const int _entryID = load_int(ctx);
-	  const HBlockMatchList _argument_match = load_CBlockMatchList_slot(load_id(ctx), ctx);
-	  const HBlock _output_n = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockUnderstandStatic* ret = new CBlockUnderstandStatic(_entryID, _argument_match, _output_n);
-	  return  std::shared_ptr<CBlockUnderstandStatic>(ret);
+HBlockUnitAssert  load_CBlockUnitAssert(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockUnitAssert);
+	const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockUnitAssert* ret = new CBlockUnitAssert(_contents);
+	return  std::shared_ptr<CBlockUnitAssert>(ret);
 
-  }
+}
 
 
-  HBlockKindEntity  load_CBlockKindEntity(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindEntity);
-	  const string _named = load_string(ctx);
-	  CBlockKindEntity* ret = new CBlockKindEntity(_named);
-	  return  std::shared_ptr<CBlockKindEntity>(ret);
+HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockIsAdverbialComparasion);
+	const string _adverb = load_string(ctx);
+	const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockIsAdverbialComparasion* ret = new CBlockIsAdverbialComparasion(_adverb, _n1, _n2);
+	return  std::shared_ptr<CBlockIsAdverbialComparasion>(ret);
 
-  }
+}
 
 
-  HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchIsVerb);
-	  const string _verb = load_string(ctx);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchIsVerb* ret = new CBlockMatchIsVerb(_verb, _obj, _value);
-	  return  std::shared_ptr<CBlockMatchIsVerb>(ret);
+// BASE CBlockActionCall
+HBlockUnderstandDynamic  load_CBlockUnderstandDynamic(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockUnderstandDynamic);
+	const HBlockMatch _input_n = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatchList _argument_n = load_CBlockMatchList_slot(load_id(ctx), ctx);
+	const HBlock _output_n = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockUnderstandDynamic* ret = new CBlockUnderstandDynamic(_input_n, _argument_n, _output_n);
+	return  std::shared_ptr<CBlockUnderstandDynamic>(ret);
 
-  }
+}
 
 
+HBlockControlUnless  load_CBlockControlUnless(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockControlUnless);
+	const HBlock _block_if = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_then = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockControlUnless* ret = new CBlockControlUnless(_block_if, _block_then, _block_else);
+	return  std::shared_ptr<CBlockControlUnless>(ret);
 
-  // BASE CBlockAction
-  HBlockVerbAdapt  load_CBlockVerbAdapt(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbAdapt);
-	  const string _verb = load_string(ctx);
-	  const string _tense = load_string(ctx);
-	  const string _viewPoint = load_string(ctx);
-	  CBlockVerbAdapt* ret = new CBlockVerbAdapt(_verb, _tense, _viewPoint);
-	  return  std::shared_ptr<CBlockVerbAdapt>(ret);
+}
 
-  }
 
+HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isLocalVariable);
+	const HBlockNoum _variableName = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlock _valueExpression = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isLocalVariable* ret = new CBlockAssertion_isLocalVariable(_variableName, _valueExpression);
+	return  std::shared_ptr<CBlockAssertion_isLocalVariable>(ret);
 
-  HBlockActionNamed  load_CBlockActionNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockActionNamed);
-	  const std::string _named = load_string(ctx);
-	  const HBlockKindAction _act = load_CBlockKindAction_slot(load_id(ctx), ctx);
-	  CBlockActionNamed* ret = new CBlockActionNamed(_named, _act);
-	  return  std::shared_ptr<CBlockActionNamed>(ret);
+}
 
-  }
 
+HBlockAssertion_isDefaultAssign  load_CBlockAssertion_isDefaultAssign(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockAssertion_isDefaultAssign);
+	const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockAssertion_isDefaultAssign* ret = new CBlockAssertion_isDefaultAssign(_variable, _value);
+	return  std::shared_ptr<CBlockAssertion_isDefaultAssign>(ret);
 
-  HBlockMatchList  load_CBlockMatchList(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchList);
-	  const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
-	  CBlockMatchList* ret = new CBlockMatchList(_matchList);
-	  return  std::shared_ptr<CBlockMatchList>(ret);
+}
 
-  }
 
+HBlockActionInstance  load_CBlockActionInstance(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockActionInstance);
+	const int _id = load_int(ctx);
+	const HBlockKindAction _base_kind = load_CBlockKindAction_slot(load_id(ctx), ctx);
+	CBlockActionInstance* ret = new CBlockActionInstance(_id, _base_kind);
+	return  std::shared_ptr<CBlockActionInstance>(ret);
 
-  HBlockToDecideWhether  load_CBlockToDecideWhether(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockToDecideWhether);
-	  const HBlockMatch _queryToMatch = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockToDecideWhether* ret = new CBlockToDecideWhether(_queryToMatch, _decideBody);
-	  return  std::shared_ptr<CBlockToDecideWhether>(ret);
+}
 
-  }
 
+HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockPhraseInvoke);
+	const HBlockPhraseHeader _header = load_CBlockPhraseHeader_slot(load_id(ctx), ctx);
+	const HBlock _arg1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _arg2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockPhraseInvoke* ret = new CBlockPhraseInvoke(_header, _arg1, _arg2);
+	return  std::shared_ptr<CBlockPhraseInvoke>(ret);
 
-  HBlockUnitInit  load_CBlockUnitInit(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockUnitInit);
-	  const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockUnitInit* ret = new CBlockUnitInit(_contents);
-	  return  std::shared_ptr<CBlockUnitInit>(ret);
+}
 
-  }
 
+HBlockTextSentence  load_CBlockTextSentence(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockTextSentence);
+	const std::list<HBlock> _contents = load_list<CBlock>(ctx);
+	CBlockTextSentence* ret = new CBlockTextSentence(_contents);
+	return  std::shared_ptr<CBlockTextSentence>(ret);
 
-  HBlockRelationArguments  load_CBlockRelationArguments(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockRelationArguments);
-	  const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockRelationArguments* ret = new CBlockRelationArguments(_value1, _value2);
-	  return  std::shared_ptr<CBlockRelationArguments>(ret);
+}
 
-  }
 
+HBlockIsVerb  load_CBlockIsVerb(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockIsVerb);
+	const string _verb = load_string(ctx);
+	const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
+	const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
+	CBlockIsVerb* ret = new CBlockIsVerb(_verb, _n1, _n2);
+	return  std::shared_ptr<CBlockIsVerb>(ret);
 
-  HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindNamed);
-	  const string _named = load_string(ctx);
-	  CBlockKindNamed* ret = new CBlockKindNamed(_named);
-	  return  std::shared_ptr<CBlockKindNamed>(ret);
+}
 
-  }
 
+// BASE CBlockList
+// BASE CBlockRelationBase
+HBlockMatchOR  load_CBlockMatchOR(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchOR);
+	const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
+	CBlockMatchOR* ret = new CBlockMatchOR(_matchList);
+	return  std::shared_ptr<CBlockMatchOR>(ret);
 
-  HBlockBooleanAND  load_CBlockBooleanAND(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockBooleanAND);
-	  const HBlock input_a = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock input_b = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockBooleanAND* ret = new CBlockBooleanAND(input_a, input_b);
-	  return  std::shared_ptr<CBlockBooleanAND>(ret);
+}
 
-  }
-
-
-  HBlockArgumentInput  load_CBlockArgumentInput(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockArgumentInput);
-	  const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  const string _named = load_string(ctx);
-	  CBlockArgumentInput* ret = new CBlockArgumentInput(_kind, _named);
-	  return  std::shared_ptr<CBlockArgumentInput>(ret);
-
-  }
-
-
-  HBlockMatchNamed  load_CBlockMatchNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchNamed);
-	  const string _named = load_string(ctx);
-	  const HBlockMatch _matchInner = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchNamed* ret = new CBlockMatchNamed(_named, _matchInner);
-	  return  std::shared_ptr<CBlockMatchNamed>(ret);
-
-  }
-
-
-  // BASE CBlockAssertionBase
-  // BASE CBlockList
-  HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchKind);
-	  const HBlockKind _kindInnter = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockMatchKind* ret = new CBlockMatchKind(_kindInnter);
-	  return  std::shared_ptr<CBlockMatchKind>(ret);
-
-  }
-
-
-  HBlockControlForEach  load_CBlockControlForEach(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlForEach);
-	  const HBlock _block_variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_body = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlForEach* ret = new CBlockControlForEach(_block_variable, _block_body);
-	  return  std::shared_ptr<CBlockControlForEach>(ret);
-
-  }
-
-
-  HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchAny);
-	  CBlockMatchAny* ret = new CBlockMatchAny();
-	  return  std::shared_ptr<CBlockMatchAny>(ret);
-
-  }
-
-
-  // BASE CBlockRelationBase
-  HBlockInstanceNamed  load_CBlockInstanceNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockInstanceNamed);
-	  const string _named = load_string(ctx);
-	  const int _id = load_int(ctx);
-	  const HBlockKind _base = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockInstanceNamed* ret = new CBlockInstanceNamed(_named, _id, _base);
-	  return  std::shared_ptr<CBlockInstanceNamed>(ret);
-
-  }
-
-
-  HBlockVariableNamed  load_CBlockVariableNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVariableNamed);
-	  const HBlockNoum _name = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlockKind _kind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockVariableNamed* ret = new CBlockVariableNamed(_name, _kind, _value);
-	  return  std::shared_ptr<CBlockVariableNamed>(ret);
-
-  }
-
-
-  HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchValue);
-	  const HBlock _inner = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockMatchValue* ret = new CBlockMatchValue(_inner);
-	  return  std::shared_ptr<CBlockMatchValue>(ret);
-
-  }
-
-
-  HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchProperty);
-	  const HBlock _prop = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlockMatch b = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchProperty* ret = new CBlockMatchProperty(_prop, b);
-	  return  std::shared_ptr<CBlockMatchProperty>(ret);
-
-  }
-
-
-  HBlockPhraseDefine  load_CBlockPhraseDefine(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockPhraseDefine);
-	  const HBlockPhraseHeader _header = load_CBlockPhraseHeader_slot(load_id(ctx), ctx);
-	  const HBlock _body = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockPhraseDefine* ret = new CBlockPhraseDefine(_header, _body);
-	  return  std::shared_ptr<CBlockPhraseDefine>(ret);
-
-  }
-
-
-  HBlockList_OR  load_CBlockList_OR(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockList_OR);
-	  const std::list<HBlock> _lista = load_list<CBlock>(ctx);
-	  CBlockList_OR* ret = new CBlockList_OR(_lista);
-	  return  std::shared_ptr<CBlockList_OR>(ret);
-
-  }
-
-
-  HBlockActionCallNamed  load_CBlockActionCallNamed(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockActionCallNamed);
-	  const HBlockActionNamed _action = load_CBlockActionNamed_slot(load_id(ctx), ctx);
-	  const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockActionCallNamed* ret = new CBlockActionCallNamed(_action, _noum1, _noum2);
-	  return  std::shared_ptr<CBlockActionCallNamed>(ret);
-
-  }
-
-
-  HBlockMatchOR  load_CBlockMatchOR(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchOR);
-	  const std::list<HBlockMatch> _matchList = load_list<CBlockMatch>(ctx);
-	  CBlockMatchOR* ret = new CBlockMatchOR(_matchList);
-	  return  std::shared_ptr<CBlockMatchOR>(ret);
-
-  }
-
-
-  HBlockActionInstance  load_CBlockActionInstance(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockActionInstance);
-	  const int _id = load_int(ctx);
-	  const HBlockKindAction _base_kind = load_CBlockKindAction_slot(load_id(ctx), ctx);
-	  CBlockActionInstance* ret = new CBlockActionInstance(_id, _base_kind);
-	  return  std::shared_ptr<CBlockActionInstance>(ret);
-
-  }
-
-
-
-  HBlockAssertion_isVariable  load_CBlockAssertion_isVariable(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isVariable);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _baseKind = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isVariable* ret = new CBlockAssertion_isVariable(_variable, _baseKind);
-	  return  std::shared_ptr<CBlockAssertion_isVariable>(ret);
-
-  }
-
-
-  HBlockBooleanNOT  load_CBlockBooleanNOT(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockBooleanNOT);
-	  const HBlock input_a = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockBooleanNOT* ret = new CBlockBooleanNOT(input_a);
-	  return  std::shared_ptr<CBlockBooleanNOT>(ret);
-
-  }
-
-
-  HBlockToDecideWhat  load_CBlockToDecideWhat(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockToDecideWhat);
-	  const HBlockMatch _queryToMatch = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockToDecideWhat* ret = new CBlockToDecideWhat(_queryToMatch, _decideBody);
-	  return  std::shared_ptr<CBlockToDecideWhat>(ret);
-
-  }
-
-
-  HBlockUnderstandDynamic  load_CBlockUnderstandDynamic(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockUnderstandDynamic);
-	  const HBlockMatch _input_n = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatchList _argumentMatchs = load_CBlockMatchList_slot(load_id(ctx), ctx);
-	  const HBlock _output_n = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockUnderstandDynamic* ret = new CBlockUnderstandDynamic(_input_n, _argumentMatchs, _output_n);
-	  return  std::shared_ptr<CBlockUnderstandDynamic>(ret);
-
-  }
-
-
-  // BASE CBlockMatchIs
-  // BASE CBlockNoum
-  HBlockControlUnless  load_CBlockControlUnless(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlUnless);
-	  const HBlock _block_if = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_then = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_else = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlUnless* ret = new CBlockControlUnless(_block_if, _block_then, _block_else);
-	  return  std::shared_ptr<CBlockControlUnless>(ret);
-
-  }
-
-
-  HBlockAssertion_isConstantAssign  load_CBlockAssertion_isConstantAssign(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isConstantAssign);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isConstantAssign* ret = new CBlockAssertion_isConstantAssign(_variable, _value);
-	  return  std::shared_ptr<CBlockAssertion_isConstantAssign>(ret);
-
-  }
-
-
-  // BASE CBlockMatch
-  HBlockBooleanOR  load_CBlockBooleanOR(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockBooleanOR);
-	  const HBlock input_a = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock input_b = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockBooleanOR* ret = new CBlockBooleanOR(input_a, input_b);
-	  return  std::shared_ptr<CBlockBooleanOR>(ret);
-
-  }
-
-
-  HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchIsAdverbialComparasion);
-	  const string _adverb = load_string(ctx);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchIsAdverbialComparasion* ret = new CBlockMatchIsAdverbialComparasion(_adverb, _obj, _value);
-	  return  std::shared_ptr<CBlockMatchIsAdverbialComparasion>(ret);
-
-  }
-
-
-  HBlockToDecideWhat_FirstNoum  load_CBlockToDecideWhat_FirstNoum(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockToDecideWhat_FirstNoum);
-	  const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(load_id(ctx), ctx);
-	  const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockToDecideWhat_FirstNoum* ret = new CBlockToDecideWhat_FirstNoum(_queryToMatch, _decideBody);
-	  return  std::shared_ptr<CBlockToDecideWhat_FirstNoum>(ret);
-
-  }
-
-
-  // BASE CBlockValue
-  HBlockToDecideOn  load_CBlockToDecideOn(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockToDecideOn);
-	  const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockToDecideOn* ret = new CBlockToDecideOn(_decideBody);
-	  return  std::shared_ptr<CBlockToDecideOn>(ret);
-
-  }
-
-
-  // BASE CBlockVerbRelation
-  // BASE CBlockInstance
-  HBlockControlToken  load_CBlockControlToken(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlToken);
-	  const string _token = load_string(ctx);
-	  const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlToken* ret = new CBlockControlToken(_token, _contents);
-	  return  std::shared_ptr<CBlockControlToken>(ret);
-
-  }
-
-
-  HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isNotDirectAssign);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isNotDirectAssign* ret = new CBlockAssertion_isNotDirectAssign(_variable, _value);
-	  return  std::shared_ptr<CBlockAssertion_isNotDirectAssign>(ret);
-
-  }
-
-
-  // BASE CBlockSelector
-  HBlockVerbDirectRelation  load_CBlockVerbDirectRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbDirectRelation);
-	  const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlockNoum _relationNoum = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  CBlockVerbDirectRelation* ret = new CBlockVerbDirectRelation(_noum, _relationNoum);
-	  return  std::shared_ptr<CBlockVerbDirectRelation>(ret);
-
-  }
-
-
-  HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isDirectAssign);
-	  const HBlock _variable = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isDirectAssign* ret = new CBlockAssertion_isDirectAssign(_variable, _value);
-	  return  std::shared_ptr<CBlockAssertion_isDirectAssign>(ret);
-
-  }
-
-
-  HBlockVerbReverseRelation  load_CBlockVerbReverseRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbReverseRelation);
-	  const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlockNoum _relationNoum = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  CBlockVerbReverseRelation* ret = new CBlockVerbReverseRelation(_noum, _relationNoum);
-	  return  std::shared_ptr<CBlockVerbReverseRelation>(ret);
-
-  }
-
-
-
-  HBlockVerbConjugation  load_CBlockVerbConjugation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbConjugation);
-	  const string _word = load_string(ctx);
-	  const string _tense = load_string(ctx);
-	  CBlockVerbConjugation* ret = new CBlockVerbConjugation(_word, _tense);
-	  return  std::shared_ptr<CBlockVerbConjugation>(ret);
-
-  }
-
-
-  HBlockEvery  load_CBlockEvery(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockEvery);
-	  const HBlock _n = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockEvery* ret = new CBlockEvery(_n);
-	  return  std::shared_ptr<CBlockEvery>(ret);
-
-  }
-
-
-  HBlockSelector_All  load_CBlockSelector_All(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockSelector_All);
-	  const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockSelector_All* ret = new CBlockSelector_All(_what);
-	  return  std::shared_ptr<CBlockSelector_All>(ret);
-
-  }
-
-
-  HBlockMatchDirectIs  load_CBlockMatchDirectIs(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchDirectIs);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchDirectIs* ret = new CBlockMatchDirectIs(_obj, _value);
-	  return  std::shared_ptr<CBlockMatchDirectIs>(ret);
-
-  }
-
-
-  HBlockNamedValue  load_CBlockNamedValue(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockNamedValue);
-	  const string _named = load_string(ctx);
-	  CBlockNamedValue* ret = new CBlockNamedValue(_named);
-	  return  std::shared_ptr<CBlockNamedValue>(ret);
-
-  }
-
-
-
-  HBlockDinamicDispatch  load_CBlockDinamicDispatch(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockDinamicDispatch);
-	  const HBlockList _command = load_CBlockList_slot(load_id(ctx), ctx);
-	  CBlockDinamicDispatch* ret = new CBlockDinamicDispatch(_command);
-	  return  std::shared_ptr<CBlockDinamicDispatch>(ret);
-
-  }
-
-
-  HBlockMatchWhich  load_CBlockMatchWhich(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchWhich);
-	  const string _verb = load_string(ctx);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchWhich* ret = new CBlockMatchWhich(_verb, _obj, _value);
-	  return  std::shared_ptr<CBlockMatchWhich>(ret);
-
-  }
-
-
-  HBlockIsNotVerb  load_CBlockIsNotVerb(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockIsNotVerb);
-	  const string _verb = load_string(ctx);
-	  const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockIsNotVerb* ret = new CBlockIsNotVerb(_verb, _n1, _n2);
-	  return  std::shared_ptr<CBlockIsNotVerb>(ret);
-
-  }
-
-
-  HBlockVerb  load_CBlockVerb(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerb);
-	  const string _named = load_string(ctx);
-	  const std::list<HBlockVerbConjugation> _conjugations = load_list<CBlockVerbConjugation>(ctx);
-	  CBlockVerb* ret = new CBlockVerb(_named, _conjugations);
-	  return  std::shared_ptr<CBlockVerb>(ret);
-
-  }
-
-
-  HBlockAssert  load_CBlockAssert(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssert);
-	  const HBlock _expression = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _result = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssert* ret = new CBlockAssert(_expression, _result);
-	  return  std::shared_ptr<CBlockAssert>(ret);
-
-  }
-
-
-  HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockIsAdverbialComparasion);
-	  const string _adverb = load_string(ctx);
-	  const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockIsAdverbialComparasion* ret = new CBlockIsAdverbialComparasion(_adverb, _n1, _n2);
-	  return  std::shared_ptr<CBlockIsAdverbialComparasion>(ret);
-
-  }
-
-
-  HBlockAnything  load_CBlockAnything(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAnything);
-	  const string _named = load_string(ctx);
-	  CBlockAnything* ret = new CBlockAnything(_named);
-	  return  std::shared_ptr<CBlockAnything>(ret);
-
-  }
-
-
-  HBlockVerbLookup  load_CBlockVerbLookup(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbLookup);
-	  const string _verb = load_string(ctx);
-	  const HBlockMatch _value1 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value2 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const NoumLocation _term_to_query = load_NoumLocation(ctx);
-	  CBlockVerbLookup* ret = new CBlockVerbLookup(_verb, _value1, _value2, _term_to_query);
-	  return  std::shared_ptr<CBlockVerbLookup>(ret);
-
-  }
-
-
-  HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchDirectIsNot);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchDirectIsNot* ret = new CBlockMatchDirectIsNot(_obj, _value);
-	  return  std::shared_ptr<CBlockMatchDirectIsNot>(ret);
-
-  }
-
-
-  HBlockUnitAssert  load_CBlockUnitAssert(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockUnitAssert);
-	  const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockUnitAssert* ret = new CBlockUnitAssert(_contents);
-	  return  std::shared_ptr<CBlockUnitAssert>(ret);
-
-  }
-
-
-  HBlockBooleanValue  load_CBlockBooleanValue(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockBooleanValue);
-	  const bool _state = load_bool(ctx);
-	  CBlockBooleanValue* ret = new CBlockBooleanValue(_state);
-	  return  std::shared_ptr<CBlockBooleanValue>(ret);
-
-  }
-
-
-
-  HBlockCompostionPhrase  load_CBlockCompostionPhrase(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockCompostionPhrase);
-	  CBlockCompostionPhrase* ret = new CBlockCompostionPhrase();
-	  return  std::shared_ptr<CBlockCompostionPhrase>(ret);
-
-  }
-
-
-  HBlockControlSelectItem  load_CBlockControlSelectItem(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockControlSelectItem);
-	  const HBlock _block_seletor = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _block_execute = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockControlSelectItem* ret = new CBlockControlSelectItem(_block_seletor, _block_execute);
-	  return  std::shared_ptr<CBlockControlSelectItem>(ret);
-
-  }
-
-
-  HBlockSelectorAND  load_CBlockSelectorAND(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockSelectorAND);
-	  const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockSelectorAND* ret = new CBlockSelectorAND(_value1, _value2);
-	  return  std::shared_ptr<CBlockSelectorAND>(ret);
-
-  }
-
-
-  HBlockASimetricRelation  load_CBlockASimetricRelation(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockASimetricRelation);
-	  const std::string _named = load_string(ctx);
-	  const HBlockArgumentInput input_a = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
-	  const HBlockArgumentInput input_b = load_CBlockArgumentInput_slot(load_id(ctx), ctx);
-	  const bool _various_1 = load_bool(ctx);
-	  const bool _various_2 = load_bool(ctx);
-	  CBlockASimetricRelation* ret = new CBlockASimetricRelation(_named, input_a, input_b, _various_1, _various_2);
-	  return  std::shared_ptr<CBlockASimetricRelation>(ret);
-
-  }
-
-
-  HBlockSelector_Any  load_CBlockSelector_Any(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockSelector_Any);
-	  const HBlock _what = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockSelector_Any* ret = new CBlockSelector_Any(_what);
-	  return  std::shared_ptr<CBlockSelector_Any>(ret);
-
-  }
-
-
-  HBlockAssertion_isLocalVariable  load_CBlockAssertion_isLocalVariable(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isLocalVariable);
-	  const HBlockNoum _variableName = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlock _valueExpression = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isLocalVariable* ret = new CBlockAssertion_isLocalVariable(_variableName, _valueExpression);
-	  return  std::shared_ptr<CBlockAssertion_isLocalVariable>(ret);
-
-  }
-
-
-  HBlockProperty  load_CBlockProperty(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockProperty);
-	  const HBlock _prop = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _obj = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockProperty* ret = new CBlockProperty(_prop, _obj);
-	  return  std::shared_ptr<CBlockProperty>(ret);
-
-  }
-
-
-  HBlockRelationInstance  load_CBlockRelationInstance(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockRelationInstance);
-	  const HBlockRelationBase _relation = load_CBlockRelationBase_slot(load_id(ctx), ctx);
-	  const HBlock _value1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _value2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockRelationInstance* ret = new CBlockRelationInstance(_relation, _value1, _value2);
-	  return  std::shared_ptr<CBlockRelationInstance>(ret);
-
-  }
-
-
-  HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockEventHandle);
-	  const EventHandleStage _stage = load_EventHandleStage(ctx);
-	  const HBlockMatchActionCall _eventToObserve = load_CBlockMatchActionCall_slot(load_id(ctx), ctx);
-	  const HBlockComandList _body = load_CBlockComandList_slot(load_id(ctx), ctx);
-	  CBlockEventHandle* ret = new CBlockEventHandle(_stage, _eventToObserve, _body);
-	  return  std::shared_ptr<CBlockEventHandle>(ret);
-
-  }
-
-
-  HBlockToDecideIf  load_CBlockToDecideIf(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockToDecideIf);
-	  const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(load_id(ctx), ctx);
-	  const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockToDecideIf* ret = new CBlockToDecideIf(_queryToMatch, _decideBody);
-	  return  std::shared_ptr<CBlockToDecideIf>(ret);
-
-  }
-
-
-  HBlockKindOfName  load_CBlockKindOfName(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindOfName);
-	  const string _baseClasseName = load_string(ctx);
-	  CBlockKindOfName* ret = new CBlockKindOfName(_baseClasseName);
-	  return  std::shared_ptr<CBlockKindOfName>(ret);
-
-  }
-
-
-  HBlockExecutionResultFlag  load_CBlockExecutionResultFlag(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockExecutionResultFlag);
-	  const PhaseResultFlag _flag = load_PhaseResultFlag(ctx);
-	  const HBlock _contents = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockExecutionResultFlag* ret = new CBlockExecutionResultFlag(_flag, _contents);
-	  return  std::shared_ptr<CBlockExecutionResultFlag>(ret);
-
-  }
-
-
-  HBlockVerbNegate  load_CBlockVerbNegate(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockVerbNegate);
-	  const HBlockVerbAdapt _verbAdapt = load_CBlockVerbAdapt_slot(load_id(ctx), ctx);
-	  CBlockVerbNegate* ret = new CBlockVerbNegate(_verbAdapt);
-	  return  std::shared_ptr<CBlockVerbNegate>(ret);
-
-  }
-
-
-  HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockKindReference);
-	  const HBlockKind k = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockKindReference* ret = new CBlockKindReference(k);
-	  return  std::shared_ptr<CBlockKindReference>(ret);
-
-  }
-
-
-  // BASE CBlockActionCall
-  HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockPhraseInvoke);
-	  const HBlockPhraseHeader _header = load_CBlockPhraseHeader_slot(load_id(ctx), ctx);
-	  const HBlock _arg1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _arg2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockPhraseInvoke* ret = new CBlockPhraseInvoke(_header, _arg1, _arg2);
-	  return  std::shared_ptr<CBlockPhraseInvoke>(ret);
-
-  }
-
-
-  HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchIsNotVerb);
-	  const string _verb = load_string(ctx);
-	  const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchIsNotVerb* ret = new CBlockMatchIsNotVerb(_verb, _obj, _value);
-	  return  std::shared_ptr<CBlockMatchIsNotVerb>(ret);
-
-  }
-
-
-  HBlockAssertion_isNamedValueOf  load_CBlockAssertion_isNamedValueOf(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_isNamedValueOf);
-	  const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _baseKind = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockAssertion_isNamedValueOf* ret = new CBlockAssertion_isNamedValueOf(_noum, _baseKind);
-	  return  std::shared_ptr<CBlockAssertion_isNamedValueOf>(ret);
-
-  }
-
-
-  HBlockCompositionPhrase  load_CBlockCompositionPhrase(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockCompositionPhrase);
-	  const HBlockKind _fromKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  const HBlockKind _toKind = load_CBlockKind_slot(load_id(ctx), ctx);
-	  CBlockCompositionPhrase* ret = new CBlockCompositionPhrase(_fromKind, _toKind);
-	  return  std::shared_ptr<CBlockCompositionPhrase>(ret);
-
-  }
-
-
-
-  HBlockInstanceVariable  load_CBlockInstanceVariable(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockInstanceVariable);
-	  const HBlockNoum _kind_name = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  const HBlockNoum _property_name = load_CBlockNoum_slot(load_id(ctx), ctx);
-	  CBlockInstanceVariable* ret = new CBlockInstanceVariable(_kind_name, _property_name);
-	  return  std::shared_ptr<CBlockInstanceVariable>(ret);
-
-  }
-
-
-  HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockNothing);
-	  const string _named = load_string(ctx);
-	  CBlockNothing* ret = new CBlockNothing(_named);
-	  return  std::shared_ptr<CBlockNothing>(ret);
-
-  }
-
-
-  HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockAssertion_InstanceVariable);
-	  const HBlock _noum = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlockInstanceVariable _instance_variable = load_CBlockInstanceVariable_slot(load_id(ctx), ctx);
-	  CBlockAssertion_InstanceVariable* ret = new CBlockAssertion_InstanceVariable(_noum, _instance_variable);
-	  return  std::shared_ptr<CBlockAssertion_InstanceVariable>(ret);
-
-  }
-
-
-  HBlockIsVerb  load_CBlockIsVerb(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockIsVerb);
-	  const string _verb = load_string(ctx);
-	  const HBlock _n1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _n2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockIsVerb* ret = new CBlockIsVerb(_verb, _n1, _n2);
-	  return  std::shared_ptr<CBlockIsVerb>(ret);
-
-  }
-
-
-  HBlockMatchNOT  load_CBlockMatchNOT(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchNOT);
-	  const HBlockMatch _input = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchNOT* ret = new CBlockMatchNOT(_input);
-	  return  std::shared_ptr<CBlockMatchNOT>(ret);
-
-  }
-
-
-  HBlockNow  load_CBlockNow(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockNow);
-	  const HBlockAssertion_is _n = load_CBlockAssertion_is_slot(load_id(ctx), ctx);
-	  CBlockNow* ret = new CBlockNow(_n);
-	  return  std::shared_ptr<CBlockNow>(ret);
-
-  }
-
-
-  HBlockEnums  load_CBlockEnums(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockEnums);
-	  const std::vector<HBlockNoum> _values = load_vector<CBlockNoum>(ctx);
-	  CBlockEnums* ret = new CBlockEnums(_values);
-	  return  std::shared_ptr<CBlockEnums>(ret);
-
-  }
-
-
-  HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockNoumSupl);
-	  const string _named = load_string(ctx);
-	  const string _number = load_string(ctx);
-	  const string _gender = load_string(ctx);
-	  CBlockNoumSupl* ret = new CBlockNoumSupl(_named, _number, _gender);
-	  return  std::shared_ptr<CBlockNoumSupl>(ret);
-
-  }
-
-
-  HBlockStaticDispatch  load_CBlockStaticDispatch(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockStaticDispatch);
-	  const int _staticEntryTable = load_int(ctx);
-	  const HBlock _noum1 = load_CBlock_slot(load_id(ctx), ctx);
-	  const HBlock _noum2 = load_CBlock_slot(load_id(ctx), ctx);
-	  CBlockStaticDispatch* ret = new CBlockStaticDispatch(_staticEntryTable, _noum1, _noum2);
-	  return  std::shared_ptr<CBlockStaticDispatch>(ret);
-
-  }
-
-
-  HBlockMatchActionCall  load_CBlockMatchActionCall(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockMatchActionCall);
-	  const HBlockMatch _action = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _argument1 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  const HBlockMatch _argument2 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	  CBlockMatchActionCall* ret = new CBlockMatchActionCall(_action, _argument1, _argument2);
-	  return  std::shared_ptr<CBlockMatchActionCall>(ret);
-
-  }
-
-
-  // BASE CBlockToDecide
-  HBlockTextSentence  load_CBlockTextSentence(int tp, LoadContext *ctx)
-  {
-	  if (tp == -1) tp = load_type(ctx);
-	  cmp_type(tp, BlockType::BlockTextSentence);
-	  const std::list<HBlock> _contents = load_list<CBlock>(ctx);
-	  CBlockTextSentence* ret = new CBlockTextSentence(_contents);
-	  return  std::shared_ptr<CBlockTextSentence>(ret);
-
-  }
-
-
-
- 

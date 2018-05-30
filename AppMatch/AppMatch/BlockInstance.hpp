@@ -20,7 +20,7 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockInstance; }
 
-		CBlockInstance(  int id, HBlockKind base);
+		CBlockInstance(int _id, HBlockKind _baseKind);
 
 		void newEnumVariableSlot(HBlockEnums definition);
 
@@ -64,7 +64,7 @@ namespace CBlocking
 			virtual BlockType type() override { return BlockType::BlockInstanceNamed; }
 
 		string named;
-		CBlockInstanceNamed(string _named, int _id, HBlockKind _base) : CBlockInstance(_id,_base), named(_named){}
+		CBlockInstanceNamed(string _named, int _id, HBlockKind _baseKind) : CBlockInstance(_id, _baseKind), named(_named){}
 	};
 	using HBlockInstanceNamed = std::shared_ptr<CBlockInstanceNamed>;
 

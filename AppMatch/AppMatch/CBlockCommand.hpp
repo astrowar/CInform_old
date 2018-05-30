@@ -18,7 +18,7 @@ namespace CBlocking
 		virtual BlockType type() override { return BlockType::BlockNow; }
 
 		HBlockAssertion_is assertation;
-		CBlockNow(HBlockAssertion_is _n) : assertation(_n) {};
+		CBlockNow(HBlockAssertion_is _assertation) : assertation(_assertation) {};
 	};
 
 	using HBlockNow = std::shared_ptr<CBlockNow>;
@@ -30,7 +30,7 @@ namespace CBlocking
 		virtual BlockType type() override { return BlockType::BlockEvery; }
 
 		CBlocking::HBlock assertation;
-		CBlockEvery(CBlocking::HBlock _n) : assertation(_n) {};
+		CBlockEvery(CBlocking::HBlock _assertation) : assertation(_assertation) {};
 	};
 
 	using HBlockEvery = std::shared_ptr<CBlockEvery>;

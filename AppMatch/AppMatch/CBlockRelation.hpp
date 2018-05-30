@@ -27,10 +27,10 @@ namespace CBlocking
 	class CBlockRelationBase  : public CBlock  //  define uma relacao .. este bloco eh abstrato
 	{
 	public:
-		CBlockRelationBase(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_1, bool _various_2)
+		CBlockRelationBase(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_noum1, bool _various_noum2)
 			: named(_named),
 			input_A(input_a),
-			input_B(input_b), various_noum1(_various_1), various_noum2(_various_2)
+			input_B(input_b), various_noum1(_various_noum1), various_noum2(_various_noum2)
 		{
 		}
 
@@ -54,7 +54,7 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockSimetricRelation; }
 
-		CBlockSimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_1, bool _various_2) : CBlockRelationBase(_named, input_a, input_b, _various_1, _various_2)
+		CBlockSimetricRelation(std::string _named, HBlockArgumentInput input_A, HBlockArgumentInput input_B, bool _various_noum1, bool _various_noum2) : CBlockRelationBase(_named, input_A, input_B, _various_noum1, _various_noum2)
 		{
 		}
 		virtual bool is_symetric()override { return true; }
@@ -69,7 +69,7 @@ namespace CBlocking
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockASimetricRelation; }
-		CBlockASimetricRelation(std::string _named, HBlockArgumentInput input_a, HBlockArgumentInput input_b, bool _various_1, bool _various_2) : CBlockRelationBase(_named, input_a, input_b, _various_1, _various_2)
+		CBlockASimetricRelation(std::string _named, HBlockArgumentInput input_A, HBlockArgumentInput input_B, bool _various_noum1, bool _various_noum2) : CBlockRelationBase(_named, input_A, input_B, _various_noum1, _various_noum2)
 		{
 		}
 

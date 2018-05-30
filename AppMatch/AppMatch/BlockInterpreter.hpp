@@ -131,7 +131,7 @@ namespace CBlocking
 	public:
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockKindReference; }
-		CBlockKindReference( HBlockKind k) :kind(k) {};
+		CBlockKindReference( HBlockKind _kind) :kind(_kind) {};
 		const HBlockKind kind;
 	};
 	using HBlockKindReference = std::shared_ptr<CBlockKindReference>;
@@ -418,7 +418,7 @@ namespace CBlocking
 	public:
 		HBlock  verbNoum; // Pode ser simples ou com a preposicao
 		HBlockNoum relationNoum;
-		CBlockVerbRelation(HBlock  _noum, HBlockNoum _relationNoum) : verbNoum((_noum)), relationNoum((_relationNoum)) {};
+		CBlockVerbRelation(HBlock  _verbNoum, HBlockNoum _relationNoum) : verbNoum((_verbNoum)), relationNoum((_relationNoum)) {};
 	};
 	using HBlockVerbRelation = std::shared_ptr<CBlockVerbRelation>;
 
@@ -429,7 +429,7 @@ namespace CBlocking
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockVerbDirectRelation; }
-		CBlockVerbDirectRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
+		CBlockVerbDirectRelation(HBlock  _verbNoum, HBlockNoum _relationNoum) : CBlockVerbRelation(_verbNoum, _relationNoum) {};
 	};
 	using HBlockVerbDirectRelation = std::shared_ptr<CBlockVerbDirectRelation>;
 
@@ -441,7 +441,7 @@ namespace CBlocking
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockVerbReverseRelation; }
-		CBlockVerbReverseRelation(HBlock  _noum, HBlockNoum _relationNoum) : CBlockVerbRelation(_noum, _relationNoum) {};
+		CBlockVerbReverseRelation(HBlock  _verbNoum, HBlockNoum _relationNoum) : CBlockVerbRelation(_verbNoum, _relationNoum) {};
 	};
 	using HBlockVerbReverseRelation = std::shared_ptr<CBlockVerbReverseRelation>;
 
@@ -498,7 +498,7 @@ namespace CBlocking
 
 		HBlockList  commandList;
 		//    CBlockDinamicDispatch(string _command) : CBlockAction(  std::make_shared<CBlockNoum>(_command)), command(_command) {}
-		CBlockDinamicDispatch(HBlockList _command) : commandList(_command) {}
+		CBlockDinamicDispatch(HBlockList _commandList) : commandList(_commandList) {}
 		void dump(string ident) override;
 
 		virtual BlockType type() override { return BlockType::BlockDinamicDispatch; }

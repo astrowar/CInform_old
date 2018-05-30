@@ -90,7 +90,7 @@ namespace CBlocking
 
 		HBlockKind kind;
 
-		CBlockMatchKind(HBlockKind _kindInnter) : CBlockMatch(), kind(_kindInnter) {};
+		CBlockMatchKind(HBlockKind _kind) : CBlockMatch(), kind(_kind) {};
 	};
 	using HBlockMatchKind = std::shared_ptr<CBlockMatchKind>;
 
@@ -319,7 +319,7 @@ namespace CBlocking
 	public:
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchProperty; }
-		CBlockMatchProperty(CBlocking::HBlock _prop, HBlockMatch b) : prop(_prop), obj(b) {}
+		CBlockMatchProperty(CBlocking::HBlock _prop, HBlockMatch _obj) : prop(_prop), obj(_obj) {}
 		CBlocking::HBlock prop;
 		HBlockMatch obj;
 

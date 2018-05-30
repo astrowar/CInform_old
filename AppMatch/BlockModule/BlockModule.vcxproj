@@ -185,6 +185,7 @@
     <ClCompile Include="..\AppMatch\CMatchCombinatoria.cpp" />
     <ClCompile Include="..\AppMatch\CMatchListValid.cpp" />
     <ClCompile Include="..\AppMatch\dynamicCast.cpp" />
+    <ClCompile Include="..\AppMatch\save_ctx.cpp" />
     <ClCompile Include="..\AppMatch\serialize_tp.cpp" />
     <ClCompile Include="..\AppMatch\sharedCast.cpp" />
     <ClCompile Include="..\AppMatch\store_tp.cpp" />

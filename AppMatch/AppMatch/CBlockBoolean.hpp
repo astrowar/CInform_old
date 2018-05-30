@@ -21,9 +21,9 @@ namespace CBlocking
 	class CBlockBooleanAND  : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
-		CBlockBooleanAND(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
-			: input_A(input_a),
-			input_B(input_b) {
+		CBlockBooleanAND(CBlocking::HBlock input_A, CBlocking::HBlock input_B)
+			: input_A(input_A),
+			input_B(input_B) {
 		}
 
 		CBlocking::HBlock input_A;
@@ -40,9 +40,9 @@ namespace CBlocking
 	class CBlockBooleanOR 	: public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
-		CBlockBooleanOR(CBlocking::HBlock input_a, CBlocking::HBlock input_b)
-			: input_A(input_a),
-			input_B(input_b) {
+		CBlockBooleanOR(CBlocking::HBlock input_A, CBlocking::HBlock input_B)
+			: input_A(input_A),
+			input_B(input_B) {
 		}
 
 		CBlocking::HBlock input_A;
@@ -59,8 +59,8 @@ namespace CBlocking
 	class CBlockBooleanNOT : public CBlock  // um bloco que especifica um valor Customizado ( color OF book ) -> ( prop OF what )
 	{
 	public:
-		CBlockBooleanNOT(CBlocking::HBlock input_a)
-			: input_A(input_a) {}
+		CBlockBooleanNOT(CBlocking::HBlock input_A)
+			: input_A(input_A) {}
 
 		CBlocking::HBlock input_A;
 

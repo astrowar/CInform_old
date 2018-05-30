@@ -56,7 +56,7 @@ namespace CBlocking
 		HBlockMatch input_n; // Pode ser simples ou com a preposicao
 		HBlockMatchList argument_n;
 		CBlocking::HBlock output_n;
-		CBlockUnderstandDynamic(HBlockMatch _input_n, HBlockMatchList _argumentMatchs, CBlocking::HBlock _output_n) : input_n(_input_n), argument_n(_argumentMatchs), output_n(_output_n) {};
+		CBlockUnderstandDynamic(HBlockMatch _input_n, HBlockMatchList _argument_n, CBlocking::HBlock _output_n) : input_n(_input_n), argument_n(_argument_n), output_n(_output_n) {};
 	};
 
 	using HBlockUnderstandDynamic = std::shared_ptr<CBlockUnderstandDynamic>;

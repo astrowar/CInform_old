@@ -43,7 +43,7 @@ namespace CBlocking
 		std::string named;
 		HBlockKindAction actionKind;
 		CBlockActionNamed(std::string _named) : named(_named) { actionKind = nullptr; }
-		CBlockActionNamed(std::string _named, HBlockKindAction _act) :actionKind(_act), named(_named)  {}
+		CBlockActionNamed(std::string _named, HBlockKindAction _actionKind) :actionKind(_actionKind), named(_named)  {}
 
 		virtual HBlockKindAction get_base() override  { return actionKind ; }
 		virtual void dump(string ident) override;
@@ -79,7 +79,7 @@ namespace CBlocking
 			noum2(_noum2) {}
 
 	 
-		virtual BlockType type() override { return BlockType::BlockActionCall; }
+		//virtual BlockType type() override { return BlockType::BlockActionCall; }
 	};
 
 	using HBlockActionCall = std::shared_ptr<CBlockActionCall>;
