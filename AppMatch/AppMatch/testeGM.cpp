@@ -1,5 +1,6 @@
 #include "BaseTest.hpp"
 #include <cassert>
+#include "serialize_tp.hpp"
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -35,11 +36,15 @@ void testeUnit()
 	CParser parse;
 
 	std::string file_contents = load_file("C:\\Users\\eraldo\\Source\\Repos\\CMatchIteractiveFic\\Doc\\unit_test_1.txt");
-	auto p_result = ParseText::parser_text(&parse, file_contents, true);
+	HBlock p_result = ParseText::parser_text(&parse, file_contents, true);
 
 	p_result->dump("  "); 
-	//interpreter->execute_init(p_result);
 
+
+	SaveContext ctx("tmp.txt");
+	save_CBlock(p_result,&ctx);
+	//interpreter->execute_init(p_result);
+	p_result->dump("  ");
 	return;
 
 }
@@ -55,7 +60,7 @@ void testeGM_1()
 	std::function<PhaseResult(std::string)> f_now = [&](std::string a) { return  interpreter->execute_now(Statement::Parser_Stmt(&parse, a, false)); };
 
 	std::string file_contents = load_file("C:\\Users\\eraldo\\CLionProjects\\CMatchIteractiveFic\\AppMatch\\AppMatch\\teste_1.txt");
-	auto p_result = ParseText::parser_text(&parse, file_contents, true);
+	HBlock p_result = ParseText::parser_text(&parse, file_contents, true);
 	interpreter->execute_init(p_result);
 
 	 

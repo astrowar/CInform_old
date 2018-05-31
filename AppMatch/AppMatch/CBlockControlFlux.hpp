@@ -149,22 +149,22 @@ class CBlockControlForEach  : public CBlock
 	//Unit Blocks
 
 
-	class CBlockUnitInit :public CBlock
+	class CBlockUnitInit  : public CBlock
 	{
 	public:
-		CBlocking::HBlock contents;
-		CBlockUnitInit(CBlocking::HBlock _contents): contents(_contents){}
+		HBlock contents;
+		CBlockUnitInit( HBlock _contents) : contents(_contents){}
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockUnitInit; }
 	};
 	using HBlockUnitInit = std::shared_ptr<CBlockUnitInit>;
 
 
-	class CBlockUnitTest :public CBlock
+	class CBlockUnitTest : public CBlock
 	{
 	public:
-		CBlocking::HBlock contents;
-		CBlockUnitTest(CBlocking::HBlock _contents) : contents(_contents) {}
+		 HBlock contents;
+		CBlockUnitTest( HBlock _contents) : contents(_contents) {}
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockUnitTest; }
 	};
@@ -172,11 +172,11 @@ class CBlockControlForEach  : public CBlock
 
 
 
-	class CBlockUnitAssert :public CBlock
+	class CBlockUnitAssert : public CBlock
 	{
 	public:
-		CBlocking::HBlock contents;
-		CBlockUnitAssert(CBlocking::HBlock _contents) : contents(_contents) {}
+		 HBlock contents;
+		CBlockUnitAssert( HBlock _contents) : contents(_contents) {}
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockUnitAssert; }
 	};

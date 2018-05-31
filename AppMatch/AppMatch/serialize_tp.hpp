@@ -10,8 +10,36 @@
 #include "CBlockCompostion.hpp"
 #include "CBlockNumber.hpp"
 #include "CBlockControlFlux.hpp"
+#include <set>
 
 // templates para dar save e load de cada tipo
+
+
+class SaveContext
+{
+public:
+	std::map<CBlock*, int> locals;
+	std::set<CBlock*> locked;
+	int current_id;
+	SaveContext(string filename) :current_id(1) { }
+
+	void write(string s);
+	void write(int i);
+	void write(float  x);
+};
+
+int  save_CBlock(HBlock x, SaveContext * ctx);
+
+
+
+
+
+
+
+
+
+
+
 
 class ArchiveContext
 {
@@ -24,12 +52,7 @@ public:
 	void process_id(BlockType t);
 };
 
-class SaveContext : public ArchiveContext
-{
-public:
-	SaveContext(){}
-
-};
+ 
 
 
 

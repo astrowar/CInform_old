@@ -179,5 +179,8 @@
     <ClCompile Include="..\AppMatch\save_ctx.cpp">
       <Filter>Source\save_ctx</Filter>
     </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockAction.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

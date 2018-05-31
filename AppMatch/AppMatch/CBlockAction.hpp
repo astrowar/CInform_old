@@ -42,8 +42,8 @@ namespace CBlocking
 	public:
 		std::string named;
 		HBlockKindAction actionKind;
-		CBlockActionNamed(std::string _named) : named(_named) { actionKind = nullptr; }
-		CBlockActionNamed(std::string _named, HBlockKindAction _actionKind) :actionKind(_actionKind), named(_named)  {}
+		CBlockActionNamed(std::string _named);
+		CBlockActionNamed(std::string _named, HBlockKindAction _actionKind);
 
 		virtual HBlockKindAction get_base() override  { return actionKind ; }
 		virtual void dump(string ident) override;
