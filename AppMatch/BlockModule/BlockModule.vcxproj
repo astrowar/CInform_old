@@ -165,6 +165,7 @@
     <ClInclude Include="..\AppMatch\EqualsResult.hpp" />
     <ClInclude Include="..\AppMatch\GrammarParser.h" />
     <ClInclude Include="..\AppMatch\QueryStack.hpp" />
+    <ClInclude Include="..\AppMatch\save_ctx.hpp" />
     <ClInclude Include="..\AppMatch\serialize_tp.hpp" />
     <ClInclude Include="..\AppMatch\serialRegister.hpp" />
     <ClInclude Include="..\AppMatch\sharedCast.hpp" />

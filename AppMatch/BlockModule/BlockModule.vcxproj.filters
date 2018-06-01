@@ -120,6 +120,9 @@
     <ClInclude Include="..\AppMatch\serialize_tp.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\AppMatch\save_ctx.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AppMatch\BlockisSame.cpp">

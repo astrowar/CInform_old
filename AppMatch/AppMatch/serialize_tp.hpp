@@ -15,24 +15,8 @@
 // templates para dar save e load de cada tipo
 
 
-class SaveContext
-{
-public:
-	std::map<CBlock*, int> locals;
-	std::set<CBlock*> locked;
-	int current_id;
-	SaveContext(string filename) :current_id(1) { }
-
-	void write(string s);
-	void write(int i);
-	void write(float  x);
-};
-
-int  save_CBlock(HBlock x, SaveContext * ctx);
-
-
-
-
+ 
+ 
 
 
 

@@ -6,40 +6,26 @@
 #include "CBlockControlFlux.hpp"
 #include "CBlockComposition.hpp"
 #include "sharedCast.hpp"
-
-#include <set>
-
-class SaveContext
-{
-public:
-	std::map<CBlock*, int> locals;
-	std::set<CBlock*> locked;
-	int current_id ;
-	SaveContext( string filename ):current_id(1) { }
-
-	void write(string s);
-	void write(int i);
-	void write(float  x);
-	void end_line();
-};
-
+ 
+ 
+#include "save_ctx.hpp"
 
 void SaveContext::write(string s)
 {
-	printf("%s ", s.c_str());
+	fprintf(file ,"%s ", s.c_str());
 }
 void SaveContext::write(int i)
 {
-	printf("%d ", i);
+	fprintf(file, "%d ", i);
 }
 void SaveContext::write(float x)
 {
-	printf("%f ", x);
+	fprintf(file, "%f ", x);
 }
 
 void SaveContext::end_line()
 {
-	printf("\r\n");
+	fprintf(file, "\r\n");
 }
 
 int cached(CBlock *c, SaveContext *ctx)
