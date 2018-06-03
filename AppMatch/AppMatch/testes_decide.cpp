@@ -233,7 +233,7 @@ to decide  if ( person called P1  ) is ( suitable  for  ( person called P2  ) ) 
 	qList->dump("");
 
 
-	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoum>("best person")  ,nullptr);
+	//auto qr = interpreter->exec_eval(std::make_shared<CBlockNoumStr>("best person")  ,nullptr);
 	//qr->dump("");
 
 	//auto q3 = interpreter->query(Statement::Parser_Stmt(&parse,"best person is Mary  ", ISLOG));

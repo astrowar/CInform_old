@@ -55,9 +55,12 @@ CUnresolved::CUnresolved(string _contents) : contents(_contents)
 {
 }
 
+CBlockNoum::CBlockNoum(string _value) : named(_value)
+{
+	
+}
 
-
-CBlockNoum::CBlockNoum(string _value) : named(_value) {
+CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
     
 	assert(_value != "not");
 	assert(_value != "the");
@@ -105,9 +108,11 @@ CBlockInstanceVariable::CBlockInstanceVariable(HBlockNoum _kind_name, HBlockNoum
 
  
 
-void CBlockList::push_back(CBlocking::HBlock c_block_value) {
-    lista.push_back((c_block_value));
+void CBlockCollection::push_back(HBlock c_block_value)
+{
+	    lista.push_back((c_block_value));
 }
+ 
 
  
 

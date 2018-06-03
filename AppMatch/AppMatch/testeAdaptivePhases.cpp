@@ -107,14 +107,13 @@ void testeAdaptivePhases_3()
 	string ss1 =
 		R"( 
 thing is an kind of entity
-keys  is a thing
+ 
 book  is a thing
  
 to say printed name of (an thing called M ):
    say "public name of [M]"
 
-to say   (an thing called M ):
-   say "a thing called [M] "
+ 
 )";
 
 

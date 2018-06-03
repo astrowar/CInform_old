@@ -79,7 +79,7 @@ namespace CBlocking
 			noum2(_noum2) {}
 
 	 
-		//virtual BlockType type() override { return BlockType::BlockActionCall; }
+		 
 	};
 
 	using HBlockActionCall = std::shared_ptr<CBlockActionCall>;

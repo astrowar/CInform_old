@@ -153,13 +153,25 @@ namespace CBlocking
 	class CBlockNoum : public CBlock //retorna um valor generico
 	{
 	public:
-		void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockNoum; }
-		CBlockNoum() {};
-		CBlockNoum(string _named);
+		//void dump(string ident) override;
+		 
+		
+		CBlockNoum(string _named) ;
 		const string named; 
 	};
 	using HBlockNoum = std::shared_ptr<CBlockNoum>;
+
+ 
+
+	class CBlockNoumStr : public CBlockNoum //retorna um valor generico
+	{
+	public:
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockNoumStr; }		 
+		CBlockNoumStr(string _named);
+		
+	};
+	using HBlockNoumStr = std::shared_ptr<CBlockNoumStr>;
 
 
 	class CBlockNoumSupl : public CBlockNoum //retorna um valor generico
@@ -332,7 +344,7 @@ namespace CBlocking
 	using HBlockProperty = std::shared_ptr<CBlockProperty>;
 
 
-	//?????
+ 
 	class CBlockInstanceVariable : public CBlock //retorna um valor generico
 	{
 	public:
@@ -358,45 +370,57 @@ namespace CBlocking
 	};
 	using HBlockKind_InstanceVariable = std::shared_ptr<CBlockKind_InstanceVariable>;
 
+	 
+
+	class CBlockCollection : public CBlock //Lista generica,interface 
+	{
+	public:
+ 
+		std::list<HBlock> lista;
+		CBlockCollection(std::list<HBlock>  _lista) :lista(_lista) {}
+		void push_back(HBlock c_block_value);
+		 
+	};
+	using HBlockCollection = std::shared_ptr<CBlockCollection>;
 
 
 
 
-
-	class CBlockList : public CBlock //Lista generica, sem tipo associado
+	class CBlockList : public CBlockCollection //Lista generica, sem tipo associado
 	{
 	public:
 		virtual void dump(string ident) override;
-		virtual BlockType type() override { return BlockType::BlockList; }
-		std::list<HBlock> lista;
-		CBlockList(std::list<HBlock>  _lista) :lista(_lista) {}
-		void push_back(HBlock c_block_value);
-		 
+		virtual BlockType type() override { return BlockType::BlockList; } 
+		CBlockList(std::list<HBlock>  _lista) :CBlockCollection(_lista) {}
+ 
+
 	};
 	using HBlockList = std::shared_ptr<CBlockList>;
 
 
 
-	class CBlockList_OR : public CBlockList // lista de termos OU
+
+
+	class CBlockList_OR : public CBlockCollection // lista de termos OU
 	{ 
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockList_OR; }
 		CBlockList_OR(std::list<HBlock>  _lista)
-			: CBlockList(_lista)
+			: CBlockCollection(_lista)
 		{
 		}
 	};
 	using HBlockList_OR = std::shared_ptr<CBlockList_OR>;
 
 
-	class CBlockList_AND : public CBlockList //Lista de termos AND
+	class CBlockList_AND : public CBlockCollection //Lista de termos AND
 	{
 	public:
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockList_AND ; }
 		CBlockList_AND(std::list<HBlock>  _lista)
-			: CBlockList(_lista)
+			: CBlockCollection(_lista)
 		{
 		}
 	};
@@ -503,7 +527,7 @@ namespace CBlocking
 	public:
 
 		HBlockList  commandList;
-		//    CBlockDinamicDispatch(string _command) : CBlockAction(  std::make_shared<CBlockNoum>(_command)), command(_command) {}
+		//    CBlockDinamicDispatch(string _command) : CBlockAction(  std::make_shared<CBlockNoumStr>(_command)), command(_command) {}
 		CBlockDinamicDispatch(HBlockList _commandList) : commandList(_commandList) {}
 		void dump(string ident) override;
 

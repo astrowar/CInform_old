@@ -14,14 +14,14 @@ public:
 	std::set<CBlocking::CBlock*> locked;
 	int current_id;
 
-	FILE *file;
+	std::string data;
 	SaveContext(string filename) :current_id(1)
 	{
-		file = fopen(filename.c_str(), "w");
+		//file = fopen(filename.c_str(), "w");
 	}
 	~SaveContext()
 	{
-		fclose(file);
+		//fclose(file);
 	}
 
 	SaveContext(const SaveContext&) = delete;

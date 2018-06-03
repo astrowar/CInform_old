@@ -169,6 +169,7 @@
     <ClInclude Include="..\AppMatch\serialize_tp.hpp" />
     <ClInclude Include="..\AppMatch\serialRegister.hpp" />
     <ClInclude Include="..\AppMatch\sharedCast.hpp" />
+    <ClInclude Include="..\AppMatch\store_tp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AppMatch\BlockInstance.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="..\AppMatch\CMatchCombinatoria.cpp" />
     <ClCompile Include="..\AppMatch\CMatchListValid.cpp" />
     <ClCompile Include="..\AppMatch\dynamicCast.cpp" />
+    <ClCompile Include="..\AppMatch\load_ctx.cpp" />
     <ClCompile Include="..\AppMatch\save_ctx.cpp" />
     <ClCompile Include="..\AppMatch\serialize_tp.cpp" />
     <ClCompile Include="..\AppMatch\sharedCast.cpp" />

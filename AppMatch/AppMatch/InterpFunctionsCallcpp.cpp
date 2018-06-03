@@ -164,6 +164,7 @@ PhaseResult CBlockInterpreter::execute_phase_before(HBlockActionCall v_call, HRu
 
 PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
+
 	for (auto evh : event_handles)
 	{
 		if (evh->stage == StageCarryOut)
@@ -179,6 +180,7 @@ PhaseResult CBlockInterpreter::execute_phase_carryOut(HBlockActionCall v_call, H
 					}
 				}
 			}
+			 
 		}
 	}
 

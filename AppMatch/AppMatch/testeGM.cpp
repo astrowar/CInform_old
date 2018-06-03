@@ -2,6 +2,7 @@
 #include <cassert>
 #include "serialize_tp.hpp"
 #include "save_ctx.hpp"
+#include "store_tp.hpp"
 
 using namespace CBlocking;
 using namespace Interpreter;
@@ -37,13 +38,26 @@ void testeUnit()
 	CParser parse;
 
 	std::string file_contents = load_file("C:\\Users\\eraldo\\Source\\Repos\\CMatchIteractiveFic\\Doc\\unit_test_1.txt");
-	HBlock p_result = ParseText::parser_text(&parse, file_contents, true);
+	HBlock p_result = ParseText::parser_text(&parse, file_contents, false);
 
 	p_result->dump("  "); 
 
+	interpreter->execute_init(p_result);
+
+	interpreter->start();
+	return;
 
 	SaveContext ctx("tmp.txt");
 	save_CBlock(p_result,&ctx);
+	printf(ctx.data.c_str());
+
+	LoadContext lx= LoadContext(ctx.data);
+
+	auto h = load_file(&lx);
+	h->dump(" ");
+	 
+
+	
 	//interpreter->execute_init(p_result);
 	p_result->dump("  ");
 	return;

@@ -97,14 +97,14 @@ HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 
 		return r;
 	}
-	//return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
+	//return std::make_shared<CBlockNoumStr>(term->removeArticle()->repr());
 	//std::cout << term->repr() << std::endl; 
 	{
 		//auto ss = term->repr();
 		//printf("@35  %s \n", ss.c_str());
 	}
 
-	return std::make_shared<CBlockNoum>(CtoString( term->removeArticle()) );
+	return std::make_shared<CBlockNoumStr>(CtoString( term->removeArticle()) );
 }
 
 HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTerm>&   lst)

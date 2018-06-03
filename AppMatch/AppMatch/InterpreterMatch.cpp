@@ -75,13 +75,13 @@ HBlockList getCompoundNoumAsList(HBlockNoum noum)
 		while ((pos = str.find(delimiter, prev)) != std::string::npos)
 		{
 			string ssi = str.substr(prev, pos - prev);
-			noums.push_back(make_shared<CBlockNoum>(ssi));
+			noums.push_back(make_shared<CBlockNoumStr>(ssi));
 			prev = pos + 1;
 		}
 
 		// To get the last substring (or only, if delimiter is not found)
 		string sss = str.substr(prev);
-		noums.push_back(make_shared<CBlockNoum>(sss));
+		noums.push_back(make_shared<CBlockNoumStr>(sss));
 
 	 
 	}
@@ -373,7 +373,7 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 		{
 			if ( asHBlockMatchNoum(mvec[i]) ==nullptr)			 
 			{
-				auto mres = Match(mvec[i], std::make_shared<CBlockNoum>(a[i]), locals_value, stk);
+				auto mres = Match(mvec[i], std::make_shared<CBlockNoumStr>(a[i]), locals_value, stk);
 				if (mres.hasMatch == false)
 				{
 					return CResultMatch(false);
@@ -391,6 +391,208 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 
 	return CResultMatch(false);
 }
+
+
+bool CBlockInterpreter::is_kind_match(HBlockMatch M )
+{
+	if (auto   mVNamed = asHBlockMatchNamed(M))
+	{
+		return  is_kind_match(mVNamed->matchInner);
+	}
+	if (auto   mn = asHBlockMatchNoum(M))
+	{
+		const auto knamed = this->resolve_kind(mn->inner->named);
+		if (knamed != nullptr) return true;
+	}
+	return false;
+}
+
+
+CResultMatch CBlockInterpreter::adjetive_match( std::list<HBlockMatch>  mlist , HBlockInstance value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	std::list<HBlockMatch>  nlist;
+	
+	bool has_all_match = true;
+	
+	std::list<HBlockMatch > mnoumlist;
+	string acc = "";
+
+	// agrupa os noum 
+	while(mlist.empty() ==false )
+	{		 
+		HBlockMatch item = mlist.front();
+		mlist.pop_front(); 
+
+		const HBlockMatchNoum cnoum = asHBlockMatchNoum(item);
+		if (cnoum != nullptr)
+		{
+			QueryResultContext rr = query_is( cnoum->inner, value, localsEntry, stk);
+			if (rr.result != QEquals)
+			{
+				has_all_match = false;
+				break;
+			}
+		}
+		 
+	}
+
+
+
+
+
+	for (auto mi : mlist)
+		{
+			HBlockMatchNoum cnoum = asHBlockMatchNoum(mi);
+			if (cnoum ==nullptr)
+			{
+				QueryResultContext rr = query_is(value, value, localsEntry, stk);
+				if (rr.result != QEquals)
+				{
+					has_all_match = false;
+					break;
+				}
+			}
+			else if (HBlockMatchList cnoumList = asHBlockMatchList(mi))
+			{
+				CResultMatch cr = CBlockInterpreter::adjetive_match(cnoumList->matchList, value, localsEntry, stk);
+				if (cr.hasMatch ==false )
+				{
+					has_all_match = false;
+					break;
+				}
+			}
+		}
+
+	//cheguei aqui e agora ???
+	if (has_all_match) return CResultMatch(true);
+
+     
+}
+
+HBlockMatchNoum concatenate_MatchNoum(HBlockMatchNoum a, HBlockMatchNoum b)
+{
+  return 	make_shared<CBlockMatchNoum>(make_shared<CBlockNoumStr>(a->inner->named + " "+b->inner->named));
+}
+
+
+  std::list<HBlockMatch> concatenate_MatchNoum(std::list<HBlockMatch> mList)
+{
+	//if (mList.size() < 2) return mList;
+
+    for(auto it = mList.begin() ; it!= mList.end() ;++it )
+    {
+	    if (HBlockMatchNoum anoum = asHBlockMatchNoum(*it))
+	    {
+			auto x = std::next(it);
+			if (x != mList.end() )
+			{
+				if (HBlockMatchNoum bnoum = asHBlockMatchNoum(*x))  //tem dois noum em sequencia  !
+				{
+					*it = concatenate_MatchNoum(anoum, bnoum);
+					mList.erase(x);		
+					it = mList.begin();
+				}
+			}
+	    } 
+		if (HBlockMatchList aList= asHBlockMatchList(*it))
+		{
+			auto nList = concatenate_MatchNoum(aList->matchList);				
+			*it = make_shared<CBlockMatchList>(nList);
+		}
+    }
+
+	return mList;
+}
+
+//tenta descobrir os advetivos utilizados
+CResultMatch  CBlockInterpreter::Match_list_adjetivos_instance(HBlockMatchList mList, HBlockInstance value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	//adjetive Ordem
+	std::list<HBlockMatch> lst = mList->matchList;
+	auto ret =  CResultMatch(true);
+
+	auto m = lst.back();
+	lst.pop_back();
+
+	if ( is_kind_match(m))
+	{
+		CResultMatch r = Match(m, value, localsEntry, stk);
+		if (r.hasMatch == false) return CResultMatch(false);
+		ret.append(r);
+	}
+
+	auto mfront = concatenate_MatchNoum(lst);
+	for(auto it = mfront.begin();it!= mfront.end();++it)
+	{
+		CResultMatch r = Match(*it, value, localsEntry, stk);
+		if (r.hasMatch == false) return CResultMatch(false);
+		ret.append(r);
+	}
+
+	 
+	return ret;
+}
+
+CResultMatch  CBlockInterpreter::Match_list_adjetivos(HBlockMatchList mList, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+ 
+	if (mList->matchList.size() == 1)
+	{
+		return Match(mList->matchList.front(), value, localsEntry, stk);
+	}
+
+		bool is_compound_noum = true;
+		for (auto m : mList->matchList) { if (m->type() != BlockMatchNoum)is_compound_noum = false; }
+		if (is_compound_noum)
+		{
+			string nnoum = "";
+			for (auto m : mList->matchList)
+			{
+				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
+				if (is_article(cnoum->inner->named)) continue;
+				if (nnoum.empty())
+				{
+					nnoum = cnoum->inner->named;
+				}
+				else
+				{
+					nnoum = nnoum + " " + cnoum->inner->named;
+				}
+			}
+
+			if (HBlockNoum   noumCompound = asHBlockNoum(value))
+			{
+				if (isSameString(nnoum, noumCompound->named))
+				{
+					return CResultMatch(true);
+				}
+			}
+
+			auto resolved = resolve_string_noum(nnoum, localsEntry, std::list<std::string>());
+			if (resolved)
+			{
+				QueryResultContext rr = query_is(value, resolved, localsEntry, stk);
+				if (rr.result == QEquals)
+				{
+					return CResultMatch(true);
+				}
+			}
+		}
+		else
+		{
+			if (HBlockNoum   noumCompound = asHBlockNoum(value))
+			{
+				return MatchListCombinaria(mList, noumCompound, localsEntry, stk);
+			}
+			if (HBlockInstance   nInst = asHBlockInstance(value))
+			{
+				return Match_list_adjetivos_instance(mList, nInst, localsEntry, stk);
+			}
+		}
+		return CResultMatch(false);
+	}
+
+
 
 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
@@ -507,54 +709,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	}
 
 	//Noum composto que forma um noum conecido no sistema
-	if (HBlockMatchList   mList = asHBlockMatchList(M))
-	{
-		bool is_compound_noum = true ;
-		for (auto m : mList->matchList) {if (m->type() != BlockMatchNoum)is_compound_noum = false;}
-		if (is_compound_noum)
-		{			
-			string nnoum = "";
-			for (auto m : mList->matchList)
-			{
-				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
-				if (is_article(cnoum->inner->named)) continue;
-				if (nnoum.empty())
-				    {
-						nnoum = cnoum->inner->named; }
-				else 
-				    {
-						nnoum = nnoum + " " + cnoum->inner->named;
-				}
-			}
-
-			if (HBlockNoum   noumCompound = asHBlockNoum(value))
-			{
-				if ( isSameString(nnoum , noumCompound->named))
-				{
-					 return CResultMatch(true);
-				}
-			}
-
-			auto resolved = resolve_string_noum(   nnoum ,localsEntry ,std::list<std::string>());
-			if (resolved)
-			{
-				QueryResultContext rr = query_is(value, resolved , localsEntry, stk);
-				if (rr.result == QEquals)
-				{
-					return CResultMatch(true);
-				}
-			} 
-		}
-		else
-		{
-			if (HBlockNoum   noumCompound = asHBlockNoum(value))
-			{
-				return MatchListCombinaria(mList, noumCompound, localsEntry, stk);
-			}
-		}
-		return CResultMatch(false);
-	}
-
+	
 	if (HBlockMatchList   mList = asHBlockMatchList(M))
 	{
 		if (HBlockList   vList = asHBlockList(value))
@@ -568,10 +723,12 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			auto rList =  MatchList(mList, vNoumList, localsEntry, stk);
 			return rList;
 		}
-		return CResultMatch(false);
+		return Match_list_adjetivos(mList, value, localsEntry, stk);
+
+		//return CResultMatch(false);
 	}
 
-	 
+	
 
 
 	if (HBlockMatchAND   mAnnd = asHBlockMatchAND(M))
@@ -794,6 +951,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			return CResultMatch(qkind.result == QEquals);
 		
 	}
+
 
 
 	logError("Match not handled ");

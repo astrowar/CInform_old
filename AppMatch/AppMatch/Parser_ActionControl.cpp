@@ -22,7 +22,7 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 		if (res.result == Equals)
 		{
 			std::string anamed = res.matchs["Action"]->repr() + " " + res.matchs["pred"]->repr();
-			HBlockMatch m_action = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoum>(anamed)); 
+			HBlockMatch m_action = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(anamed)); 
 
 			auto nn1 = ExpressionMatch::parser_expression_match(p, res.matchs["noum1"]);
 			auto nn2 = ExpressionMatch::parser_expression_match(p, res.matchs["noum2"]);

@@ -27,7 +27,7 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p,res.matchs["ApplyRemainder"]);
-			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoum>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoum>(res.matchs["Noum2"]->removeArticle()->repr() ));
+			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoumStr>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoumStr>(res.matchs["Noum2"]->removeArticle()->repr() ));
 			return std::make_shared<CBlockKindAction>( applyTO);
 
 		}
@@ -73,7 +73,7 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 				auto sPred = CtoString(res.matchs["pred"]);
 				auto sPredAux = CtoString(res.matchs["pred_aux"]);
 				
-				HBlock _naction = std::make_shared<CBlockNoum>(sActionName + s_it + sPred + " " + sPredAux);
+				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName + s_it + sPred + " " + sPredAux);
 				return _naction;
 			}
 		}
@@ -91,7 +91,7 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 				auto sActionName = CtoString(res.matchs["ActionName"]);
 				auto sPred = CtoString(res.matchs["pred"]);
 				 
-				HBlock _naction = std::make_shared<CBlockNoum>(sActionName + s_it + sPred  );
+				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName + s_it + sPred  );
 				return _naction;
 			}
 		}
@@ -109,7 +109,7 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 			if (res.result == Equals)
 			{
 				auto sActionName = CtoString(res.matchs["ActionName"]); 
-				HBlock _naction = std::make_shared<CBlockNoum>(sActionName );
+				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName );
 				return _naction;
 			}
 		}
@@ -154,7 +154,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 			//	
 			//	HBlockKindAction action = applyTO;
 			//	auto sActionName = CtoString(res.matchs["ActionName"]); 
-			//	HBlock _naction = std::make_shared<CBlockNoum>(sActionName);
+			//	HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName);
 			//	HPred actionMatch = pLiteral(sActionName); 
 			//	p->actionPredList->blist.push_back( actionMatch);
 			//	return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
@@ -183,7 +183,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsLocalValue(CParser * p, std::v
 		auto varName = Expression::parser_expression(p, res.matchs["VarName"]);
 		if (HBlockNoum varNameNoum = DynamicCasting::asHBlockNoum(varName))
 		{
-			//auto varName = std::make_shared<CBlockNoum>(res.matchs["VarName"]->removeArticle()->repr());
+			//auto varName = std::make_shared<CBlockNoumStr>(res.matchs["VarName"]->removeArticle()->repr());
 			auto varValue = Expression::parser_expression(p, res.matchs["VarValue"]);
 			return std::make_shared<CBlockAssertion_isLocalVariable>(varNameNoum, varValue);
 		}
@@ -477,7 +477,7 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
 			if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) {
 				auto sterm = expandBract(res.matchs["Noum"]);
 				//HBlock _naction = std::make_shared<CBlockActionNamed>( (sterm->repr()));
-				HBlock _naction = std::make_shared<CBlockNoum>((sterm->repr()));
+				HBlock _naction = std::make_shared<CBlockNoumStr>((sterm->repr()));
 
 				HPred actionMatch = convert_to_predicate(sterm.get());
 				//	std::cout << "found " << actionMatch->repr()  << std::endl;

@@ -456,7 +456,7 @@ HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>&
 			return nullptr;
 		}
 
-		return std::make_shared<CBlockNoum>(nstr);
+		return std::make_shared<CBlockNoumStr>(nstr);
     }
     return nullptr;
 }
@@ -480,7 +480,7 @@ HBlockAssertion_isInstanceOf NSParser::CParser::parseAssertion_isInstanceOf(std:
             }
             */
             //HBlockInstance  noumInstance = std::make_shared<CBlockInstance> (res.matchs["Noum"]->removeArticle()->repr());
-            //HBlockNoum           baseKind = std::make_shared<CBlockNoum>(res.matchs["KindBase"]->removeArticle()->repr());
+            //HBlockNoum           baseKind = std::make_shared<CBlockNoumStr>(res.matchs["KindBase"]->removeArticle()->repr());
 
             //return  std::make_shared<CBlockAssertion_isInstanceOf>(noumInstance, baseKind);
         }
@@ -606,7 +606,7 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
             if (a != nullptr) {
                 HBlock b = Expression::parser_expression(p,res.matchs["obj"]);
                 if (b != nullptr) {
-                    //HBlockNoum  object_Name = std::make_shared<CBlockNoum>(res.matchs["obj"]->removeArticle()->repr());
+                    //HBlockNoum  object_Name = std::make_shared<CBlockNoumStr>(res.matchs["obj"]->removeArticle()->repr());
                     return std::make_shared<CBlockProperty>(a, b);
                 }
             }
@@ -632,7 +632,7 @@ HBlock  NSParser::ParseAssertion::parse_PropertyOf(CParser * p, std::vector<HTer
     //			HBlock b = parser(res.matchs["obj"]);
     //			if (b != nullptr)
     //			{
-    //				//HBlockNoum  object_Name = std::make_shared<CBlockNoum>(res.matchs["obj"]->removeArticle()->repr());
+    //				//HBlockNoum  object_Name = std::make_shared<CBlockNoumStr>(res.matchs["obj"]->removeArticle()->repr());
     //				return std::make_shared<CBlockProperty>(a, b);
     //			}
     //		}
@@ -691,10 +691,10 @@ HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, H
 
 			auto propName = CtoString(expandBract(res.matchs["propName"]));
 
-            HBlockNoum a = std::make_shared<CBlockNoum>(res.matchs["kindName"]->repr());
-            //HBlockNoum b = std::make_shared<CBlockNoum>(res.matchs["propName"]->repr());
+            HBlockNoum a = std::make_shared<CBlockNoumStr>(res.matchs["kindName"]->repr());
+            //HBlockNoum b = std::make_shared<CBlockNoumStr>(res.matchs["propName"]->repr());
 
-			HBlockNoum b = std::make_shared<CBlockNoum>(propName);
+			HBlockNoum b = std::make_shared<CBlockNoumStr>(propName);
 
             return std::make_shared<CBlockInstanceVariable>(a, b);
         }
@@ -703,8 +703,8 @@ HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, H
 
     {
         // the torch has a brightness   ;  -> called brightness
-        HBlockNoum a = std::make_shared<CBlockNoum>(term->repr());
-        HBlockNoum b = std::make_shared<CBlockNoum>(term->repr());
+        HBlockNoum a = std::make_shared<CBlockNoumStr>(term->repr());
+        HBlockNoum b = std::make_shared<CBlockNoumStr>(term->repr());
         return std::make_shared<CBlockInstanceVariable>(a, b);
     }
 
@@ -724,7 +724,7 @@ HBlock NSParser::ParseAssertion::STMT_hasAn_Assertion(CParser * p, std::vector<H
         return nullptr;
     }
 
-    //HBlockNoum  defintionFirst_KindOrInstance = std::make_shared<CBlockNoum>( res.matchs["Target"]->removeArticle()->repr());
+    //HBlockNoum  defintionFirst_KindOrInstance = std::make_shared<CBlockNoumStr>( res.matchs["Target"]->removeArticle()->repr());
     HBlock defintionFirst_KindOrInstance = Expression::parser_kind_or_instance(p,res.matchs["Target"]);
 
     return std::make_shared<CBlockAssertion_InstanceVariable>(defintionFirst_KindOrInstance,
@@ -742,7 +742,7 @@ HBlock NSParser::Statement::parser_stmt(CParser * p, HTerm term, HGroupLines inn
 
         return r;
     }
-    return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
+    return std::make_shared<CBlockNoumStr>(term->removeArticle()->repr());
 }
 
 

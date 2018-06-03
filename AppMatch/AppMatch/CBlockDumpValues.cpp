@@ -61,7 +61,7 @@ void  CBlockInstance::dump_contents(string ident)
 }
 
 
-void  CBlockInstance::dump(string ident)
+void  CBlockInstanceAnonymous::dump(string ident)
 {
 	printf("%s %s %i\n", ident.c_str(), "Instance: ",  this->id);
 	CBlock::dump(ident);
@@ -84,7 +84,7 @@ void CBlockKindReference::dump(string ident) {
 	CBlock::dump(ident);
 }
 
-void CBlockNoum::dump(string ident) {
+void CBlockNoumStr::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), this->named.c_str());
 	CBlock::dump(ident);
 }
@@ -225,8 +225,8 @@ void CBlockKind_InstanceVariable::dump(string ident)
 		CBlock::dump(ident);
 }
 
- 
 
+ 
 void CBlockList::dump(string ident) {
 	printf("%s %s\n", ident.c_str(), "List: ");
 		for (auto e = lista.begin(); e != lista.end(); ++e)

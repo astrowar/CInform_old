@@ -167,7 +167,7 @@ namespace CBlocking
 
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c)
 		{
-			if (c != nullptr && c->type() == BlockType::BlockNoum)
+			if (c != nullptr && c->type() == BlockType::BlockNoumStr)
 				return std::static_pointer_cast<CBlockNoum>(c);
 			if (c != nullptr && c->type() == BlockType::BlockNoumSupl)
 				return std::static_pointer_cast<CBlockNoum>(c);
@@ -913,8 +913,19 @@ namespace CBlocking
 
 
 
+		//invalidos 
 
-
+		Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c) { return nullptr; }
+		HBlockBooleanResult    asHBlockBooleanResult(CBlocking::HBlock  c) { return nullptr; }
+		HBlockFilter    asHBlockFilter(CBlocking::HBlock  c) { return nullptr; }
+		HBlockUnderstand asHBlockUnderstand(CBlocking::HBlock  c) { return nullptr; }
+		HBlockCompostionPhrase asHBlockCompostionPhrase(CBlocking::HBlock  c) { return nullptr; }
+		HBlockIF  asHBlockIF(CBlocking::HBlock  c) { return nullptr; }
+		HBlockFilterList asHBlockFilterList(CBlocking::HBlock  c) { return nullptr; }
+		HBlockExecution asHBlockExecution(CBlocking::HBlock  c) { return nullptr; }
+		HBlockFilterAtom asHBlockFilterAtom(CBlocking::HBlock  c) { return nullptr; }
+		HBlockMatchWith asHBlockMatchWith(CBlocking::HBlock  c) { return nullptr; }
+		HBlockSame asHBlockSame(CBlocking::HBlock  c) { return nullptr; }
 
 
   
@@ -923,6 +934,7 @@ namespace CBlocking
 		if (c == nullptr)   return nullptr;
 		auto   t = c->type();
 		if (t == BlockType::BlockNoumSupl) return std::static_pointer_cast < CBlockNoum > (c);
+		if (t == BlockType::BlockNoumStr) return std::static_pointer_cast < CBlockNoum > (c);
 		return nullptr;
 	}
 
@@ -1022,12 +1034,22 @@ namespace CBlocking
 		  return nullptr;
 	  }
 
+	  HBlockCollection asHBlockCollection(CBlocking::HBlock c)
+	  {
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockList ) return std::static_pointer_cast < CBlockCollection > (c);
+		  if (t == BlockType::BlockList_OR) return std::static_pointer_cast < CBlockCollection > (c);
+		  if (t == BlockType::BlockList_AND) return std::static_pointer_cast < CBlockCollection > (c);
+		  return nullptr;
+	  }
+
 	  HBlockList    asHBlockList(CBlocking::HBlock  c)
 	  {
 		  if (c == nullptr)   return nullptr;
 		  auto   t = c->type();
-		  if (t == BlockType::BlockList_OR) return std::static_pointer_cast < CBlockList > (c);
-		  if (t == BlockType::BlockList_AND) return std::static_pointer_cast < CBlockList > (c);
+		  if (t == BlockType::BlockList ) return std::static_pointer_cast < CBlockList > (c);
+	 
 		  return nullptr;
 	  }
 
@@ -1932,6 +1954,14 @@ namespace CBlocking
 		  return nullptr;
 	  }
 
+	  HBlockInstanceAnonymous asHBlockInstanceAnonymous(CBlocking::HBlock c)
+		{
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockInstanceAnonymous) return std::static_pointer_cast < CBlockInstanceAnonymous > (c);
+		  return nullptr;
+		}
+
 	  HBlockInstanceNamed    asHBlockInstanceNamed(CBlocking::HBlock  c)
 	  {
 		  if (c == nullptr)   return nullptr;
@@ -2003,6 +2033,16 @@ namespace CBlocking
 		  if (t == BlockType::BlockNoumSupl) return std::static_pointer_cast < CBlockNoumSupl > (c);
 		  return nullptr;
 	  }
+
+	  HBlockNoumStr    asHBlockNoumStr(CBlocking::HBlock  c)
+	  {
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockNoumStr) return std::static_pointer_cast < CBlockNoumStr > (c);
+		  return nullptr;
+	  }
+
+
 
 	  HBlockIsAdverbialComparasion    asHBlockIsAdverbialComparasion(CBlocking::HBlock  c)
 	  {

@@ -39,7 +39,7 @@ HBlockList  NSParser::ParseAssertion::parseAssertionFirstTerm_COMMA_Supl( CParse
 
     HBlock ret = Expression::parser_expression(p,term);
     cList->push_back(ret);
-    //cList->push_back(std::make_shared<CBlockNoum>(  term->removeArticle()->repr()));
+    //cList->push_back(std::make_shared<CBlockNoumStr>(  term->removeArticle()->repr()));
     return cList;
 }
 

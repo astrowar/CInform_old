@@ -227,7 +227,7 @@ CBlocking::HBlockMatch noum_joined(std::vector<string> strList_in)
 		fir = false;
 	}
 	printf("\n");
-	return make_shared<CBlockMatchNoum>(make_shared<CBlockNoum>(sret));;
+	return make_shared<CBlockMatchNoum>(make_shared<CBlockNoumStr>(sret));;
 }
 
 
@@ -248,7 +248,7 @@ CBlocking::HBlockMatch  CBlockInterpreter::Resolve_Selector_Noum_fragment(std::v
 	string ennFound = getStringPrexfedFromList(strList_in, allEnumNames);
 	if (!(ennFound.empty()))
 	{
-		return make_shared<CBlockMatchNoum>(make_shared<CBlockNoum>(ennFound));
+		return make_shared<CBlockMatchNoum>(make_shared<CBlockNoumStr>(ennFound));
 	}
 	return nullptr;
 }

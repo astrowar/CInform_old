@@ -119,20 +119,20 @@ HBlockNoum CBlockInterpreter::adapt_verb(HBlockVerbAdapt nVerbAdp,   HRunLocalSc
 	if (nVerbAdp->tense == "past")
 	{
 		auto nn = adapt_verb_inner(nVerbAdp->verb, "VBD", nVerbAdp->viewPoint, localsEntry);
-		if (nn != "None") return   std::make_shared<CBlockNoum>(nn);
+		if (nn != "None") return   std::make_shared<CBlockNoumStr>(nn);
 	}
 
 	if (nVerbAdp->tense == "gerund" || nVerbAdp->tense == "present participle" )
 	{
 		auto nn = adapt_verb_inner(nVerbAdp->verb, "VBG", nVerbAdp->viewPoint, localsEntry);
-		if (nn != "None") return   std::make_shared<CBlockNoum>(nn);
+		if (nn != "None") return   std::make_shared<CBlockNoumStr>(nn);
 	}
 
 	if ( nVerbAdp->tense == "present perfect")
 	{
 		string n1 = adapt_verb_inner("have", "VBP", nVerbAdp->viewPoint, localsEntry);
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VBN", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>(n1 + " " + n2);
+		return std::make_shared<CBlockNoumStr>(n1 + " " + n2);
 	}
 
 	if (nVerbAdp->tense == "past perfect")
@@ -140,7 +140,7 @@ HBlockNoum CBlockInterpreter::adapt_verb(HBlockVerbAdapt nVerbAdp,   HRunLocalSc
 		string n1 = adapt_verb_inner("have", "VBD", nVerbAdp->viewPoint, localsEntry);
 		//string n1 = "had";
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VBN", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>( n1+" "+n2);
+		return std::make_shared<CBlockNoumStr>( n1+" "+n2);
 	}
 
 	if (nVerbAdp->tense == "future")
@@ -148,12 +148,12 @@ HBlockNoum CBlockInterpreter::adapt_verb(HBlockVerbAdapt nVerbAdp,   HRunLocalSc
 		//string n1 = adapt_verb_inner("will", "VBD", nVerbAdp->viewPoint, localsEntry);
 		string n1 = "will";
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VB", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>(n1 + " " + n2);
+		return std::make_shared<CBlockNoumStr>(n1 + " " + n2);
 	}
 
 
 	auto nn =  adapt_verb_inner(nVerbAdp->verb, nVerbAdp->tense, nVerbAdp->viewPoint, localsEntry);
-	if(nn !="None") return   std::make_shared<CBlockNoum>(nn); 
+	if(nn !="None") return   std::make_shared<CBlockNoumStr>(nn); 
 	 
 	return nullptr;
 }
@@ -166,22 +166,22 @@ HBlockNoum CBlockInterpreter::adapt_negate_verb(HBlockVerbNegate negVerbAdp, HRu
 	{
 		auto n1 = adapt_verb_inner("be", "VBD", nVerbAdp->viewPoint, localsEntry);
 		auto nn = adapt_verb_inner(nVerbAdp->verb, "VBD", nVerbAdp->viewPoint, localsEntry);
-		if (nn != "None") return std::make_shared<CBlockNoum>(n1 + " not " + nn);
+		if (nn != "None") return std::make_shared<CBlockNoumStr>(n1 + " not " + nn);
 	}
 
 	if (nVerbAdp->tense == "gerund" || nVerbAdp->tense == "present participle" || nVerbAdp->tense == "VBG")
 	{
 		auto n1 = adapt_verb_inner("be", "VBG", nVerbAdp->viewPoint, localsEntry);
 		auto nn = adapt_verb_inner(nVerbAdp->verb, "VBG", nVerbAdp->viewPoint, localsEntry);
-		//if (nn != "None") return   std::make_shared<CBlockNoum>(n1 + " " + nn);
-		if (nn != "None") return   std::make_shared<CBlockNoum>("not " + nn);
+		//if (nn != "None") return   std::make_shared<CBlockNoumStr>(n1 + " " + nn);
+		if (nn != "None") return   std::make_shared<CBlockNoumStr>("not " + nn);
 	}
 
 	if (nVerbAdp->tense == "present perfect" || nVerbAdp->tense == "VBP")
 	{
 		string n1 = adapt_verb_inner("have", "VBP", nVerbAdp->viewPoint, localsEntry);
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VBN", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>( n1 +" not "+ n2);
+		return std::make_shared<CBlockNoumStr>( n1 +" not "+ n2);
 	}
 
 	if (nVerbAdp->tense == "past perfect" || nVerbAdp->tense == "VBD")
@@ -189,7 +189,7 @@ HBlockNoum CBlockInterpreter::adapt_negate_verb(HBlockVerbNegate negVerbAdp, HRu
 		string n1 = adapt_verb_inner("have", "VBD", nVerbAdp->viewPoint, localsEntry);
 		//string n1 = "had";
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VBN", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>(n1 + " not " + n2);
+		return std::make_shared<CBlockNoumStr>(n1 + " not " + n2);
 	}
 
 	if (nVerbAdp->tense == "future"|| nVerbAdp->tense == "future tense" || nVerbAdp->tense == "VB")
@@ -197,12 +197,12 @@ HBlockNoum CBlockInterpreter::adapt_negate_verb(HBlockVerbNegate negVerbAdp, HRu
 		//string n1 = adapt_verb_inner("will", "VBD", nVerbAdp->viewPoint, localsEntry);
 		string n1 = "will";
 		string n2 = adapt_verb_inner(nVerbAdp->verb, "VB", nVerbAdp->viewPoint, localsEntry);
-		return std::make_shared<CBlockNoum>(n1 + " not " + n2);
+		return std::make_shared<CBlockNoumStr>(n1 + " not " + n2);
 	}
 
 
 	//auto nn = adapt_verb_inner(nVerbAdp->verb, nVerbAdp->tense, nVerbAdp->viewPoint, localsEntry);
-	//if (nn != "None") return   std::make_shared<CBlockNoum>(nn);
+	//if (nn != "None") return   std::make_shared<CBlockNoumStr>(nn);
 
 	nVerbAdp->dump("?");
 	return nullptr;

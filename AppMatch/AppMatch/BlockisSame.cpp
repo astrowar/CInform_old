@@ -191,6 +191,16 @@ namespace CBlocking {
 			return b1 == b2;
 		}
 
+		bool isSame_BlockActionNamed(CBlockActionNamed * b1, CBlockActionNamed* b2)
+		{
+
+			return  (b1->named == b2->named);
+		}
+		bool isSame_BlockActionInstance(CBlockActionInstance * b1, CBlockActionInstance* b2)
+		{
+
+			return b1->id == b2->id;
+		}
 
 
 
@@ -277,10 +287,12 @@ bool CBlock::isSame(CBlock* b1, CBlock* b2)
 	if (b1->type() != b2->type()) return false;
 
 
-	if (b1->type() == BlockNoum)  return Comparison::isSame_BlockNoum(static_cast<CBlockNoum*>(b1), static_cast<CBlockNoum*>(b2));
-	if (b1->type() == BlockInstance)  return Comparison::isSame_BlockInstance(static_cast<CBlockInstance*>(b1), static_cast<CBlockInstance*>(b2));
+	if (b1->type() == BlockNoumStr)  return Comparison::isSame_BlockNoum(static_cast<CBlockNoumStr*>(b1), static_cast<CBlockNoumStr*>(b2));
+	if (b1->type() == BlockInstanceAnonymous)  return Comparison::isSame_BlockInstance(static_cast<CBlockInstanceAnonymous*>(b1), static_cast<CBlockInstanceAnonymous*>(b2));
 	if (b1->type() == BlockInstanceNamed)  return Comparison::isSame_BlockInstanceNamed(static_cast<CBlockInstanceNamed*>(b1), static_cast<CBlockInstanceNamed*>(b2));
-	if (b1->type() == BlockAction)  return Comparison::isSame_BlockAction(static_cast<CBlockAction*>(b1), static_cast<CBlockAction*>(b2));
+	if (b1->type() == BlockActionNamed)  return Comparison::isSame_BlockActionNamed(static_cast<CBlockActionNamed*>(b1), static_cast<CBlockActionNamed*>(b2));
+	if (b1->type() == BlockActionInstance)  return Comparison::isSame_BlockActionInstance(static_cast<CBlockActionInstance*>(b1), static_cast<CBlockActionInstance*>(b2));
+
 	if (b1->type() == BlockKindEntity)  return Comparison::isSame_BlockKindEntity(static_cast<CBlockKindEntity*>(b1), static_cast<CBlockKindEntity*>(b2));
 	if (b1->type() == BlockKindValue)  return Comparison::isSame_BlockKindValue(static_cast<CBlockKindValue*>(b1), static_cast<CBlockKindValue*>(b2));
 	if (b1->type() == BlockMatchNoum)  return Comparison::isSame_BlockMatchNoum(static_cast<CBlockMatchNoum*>(b1), static_cast<CBlockMatchNoum*>(b2));

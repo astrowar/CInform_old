@@ -87,12 +87,12 @@ HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope 
 		 
 		if (conjugadet != "None")
 		{
-			return   std::make_shared<CBlockNoum>(conjugadet);
+			return   std::make_shared<CBlockNoumStr>(conjugadet);
 		}
 
 	}
 
-	return std::make_shared<CBlockNoum >("[Missing ViewPoint]");
+	return std::make_shared<CBlockNoumStr>("[Missing ViewPoint]");
 
 }
 
@@ -123,7 +123,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 {
 	static PLURALTABLE plural_tab = plura_table();
 	
-	const  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoum >(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoum >("present tense") } };
+	const  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoumStr>(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoumStr>("present tense") } };
 	
 
 	auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
@@ -131,7 +131,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 
 	{
 		// Existe algum "To Say" associado com esse X
-		HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoum>("say"), nullptr, nullptr, nullptr, nullptr);
+		HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoumStr>("say"), nullptr, nullptr, nullptr, nullptr);
 		
 		auto ax = resolve_argument(x, localsEntry, stk);
 		if (ax != nullptr) x = ax;

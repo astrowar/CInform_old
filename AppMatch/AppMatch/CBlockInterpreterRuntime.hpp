@@ -20,6 +20,7 @@
 #include "CBlockCommand.hpp"
 #include "CBlockMatch.hpp"
 #include "EqualsResult.hpp"
+#include "CBlockControlFlux.hpp"
 
 //class CBlockAssertionBase;
 //class CBlockAssertion_is;
@@ -76,6 +77,23 @@ public:
 
 	bool inner;
 	std::string text;
+};
+
+
+class UnitTest_Single
+{
+public :
+	HBlockUnitTest test;
+	std::list<HBlockUnitAssert> assertion;
+	UnitTest_Single(HBlockUnitTest _test ):test(_test) {}
+};
+	class UnitTest_Env
+{
+	public:
+		HBlockUnitInit init;
+	std::list<	UnitTest_Single> tests;
+
+	UnitTest_Env(HBlockUnitInit _init): init(_init){}
 };
 
 
@@ -168,6 +186,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		HBlockKind MetaKindAny;
 		std::function<bool(std::string)>  say_output;
+		std::list<UnitTest_Env> unit_test;
 
 
 		//if (asHBlockText(c)) return true;
@@ -248,6 +267,15 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch MatchListCombinaria(HBlockMatchList Ms, HBlockNoum n, HRunLocalScope localsEntry, QueryStacking::QueryStack * stk);
+		bool is_kind_match(HBlockMatch M);
+		CResultMatch adjetive_match(std::list<HBlockMatch> mlist, HBlockInstance value, HRunLocalScope localsEntry,
+		                            QueryStacking::QueryStack* stk);
+
+		CResultMatch Match_list_adjetivos_instance(HBlockMatchList mList, HBlockInstance value, HRunLocalScope localsEntry,
+		                                           QueryStacking::QueryStack* stk);
+		CResultMatch Match_list_adjetivos(HBlockMatchList mList, HBlock value, HRunLocalScope localsEntry,
+		                                  QueryStacking::QueryStack* stk);
+		
 		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 
@@ -289,6 +317,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		~CBlockInterpreter();
 
 		void initialize();
+
+		void start();
+
 		void add_modifier_keyword(HBlockEnums _enums);
 		void add_modifier_keyword(HBlockNoum _nn);
 		bool assert_it_canBe(HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry);
@@ -302,6 +333,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool assert_it_property(HBlock propname, HBlock obj, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		bool assert_it_not_Value(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		void add_new_init(HBlockUnitInit shared);
+		void add_new_test(HBlockUnitTest shared);
+		void add_new_assertion( HBlockUnitAssert shared);
+
 		void execute_init(HBlock p);
 
 		bool assert_decideBlock(HBlockToDecide dct);
@@ -350,7 +385,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry);
 		std::list<HBlock> resolve_as_list(HBlock qlist, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 		HBlockKind getKindOf(HBlockInstance obj);
-		string BlockNoum(HBlock c_block);
+		string asBlockNoum(HBlock c_block);
 		// bool MatchOld(HBlock c_block, HBlockMatch m);
 		HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
 		HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
@@ -494,6 +529,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		HBlockNoum get_plural_of(string s);
 		bool isSameString(string s1, string s2);
+		 
 	};
 
 	using  HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

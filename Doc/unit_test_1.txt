@@ -1,9 +1,21 @@
  
 
+
+    
+
+    
+carry out eating  bad (thing called X )   :
+    say (text bad eating)
+
+ 
+
 unit init :
     thing is an kind of entity
+    thing has a container called location
     container is an kind of entity
     apple is a thing 
+    apple can be bad or good
+    apple is bad
     orange is a thing
     box is an container
     eating  is  an action  applying to ( an thing ) 
@@ -14,13 +26,20 @@ unit init :
 
 
 unit test :
+   try eating (  apple ) 
+assert:      nothing
+
+unit test :
+   try eating (  apple ) 
+assert:      nothing
+
+
+unit test :
    try putting  apple into box  
 assert:   nothing
 
 
-unit test :
-   try eating ( bad apple ) and orange 
-assert:      nothing
+
 
 
 unit test :

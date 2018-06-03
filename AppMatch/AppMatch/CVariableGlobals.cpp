@@ -79,7 +79,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 		}
 		else if (HBlockProperty nameProperty = asHBlockProperty(obj))
 		{
-			return assert_it_variableGlobal(   make_shared<CBlockNoum>(HtoString(nameProperty)) ,kind, defaultValue) ;
+			return assert_it_variableGlobal(   make_shared<CBlockNoumStr>(HtoString(nameProperty)) ,kind, defaultValue) ;
 		}
 		else
 		{

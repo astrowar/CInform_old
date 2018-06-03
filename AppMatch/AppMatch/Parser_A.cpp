@@ -139,7 +139,7 @@ HBlockActionApply NSParser::ParseAssertion::parse_AssertionAction_ApplyngTo(CPar
 
 
 //HBlock NSParser::CParser::parseAssertion_DecideWhat(HTerm term) {
-//    return std::make_shared<CBlockNoum>(term->removeArticle()->repr());
+//    return std::make_shared<CBlockNoumStr>(term->removeArticle()->repr());
 //}
 
 

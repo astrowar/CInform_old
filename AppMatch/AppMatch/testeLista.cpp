@@ -7,7 +7,7 @@ using namespace Interpreter;
 using namespace NSParser;
 
 
-HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoum>(n); };
+HBlockNoum noum(std::string n) {return std::make_shared<CBlockNoumStr>(n); };
 
 void testeParser_listA()
 {
@@ -27,10 +27,10 @@ void testeParser_listA()
 
      interpreter->execute_init(Statement::Parser_Stmt(&parse,"the verb listed in implies the listed_in relation", ISLOG));
 
-	 auto q_true = interpreter->query_is_extern(std::make_shared<CBlockNoum>("target"), std::make_shared<CBlockNoum>("book"));
+	 auto q_true = interpreter->query_is_extern(std::make_shared<CBlockNoumStr>("target"), std::make_shared<CBlockNoumStr>("book"));
 	 assert(q_true.result == QEquals);
 
-	 auto q_true_2 = interpreter->query_is_extern(std::make_shared<CBlockNoum>("book"), std::make_shared<CBlockNoum>("target"));
+	 auto q_true_2 = interpreter->query_is_extern(std::make_shared<CBlockNoumStr>("book"), std::make_shared<CBlockNoumStr>("target"));
 	 assert(q_true_2.result == QEquals);
 
 	interpreter->execute_init(Statement::Parser_Stmt(&parse,"items is a list of object  that varies", ISLOG));

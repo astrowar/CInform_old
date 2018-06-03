@@ -18,6 +18,23 @@ namespace CBlocking
 	namespace DynamicCasting
 	{
 
+
+		//invalidos	
+		Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c);
+		HBlockBooleanResult    asHBlockBooleanResult(CBlocking::HBlock  c);
+		HBlockFilter    asHBlockFilter(CBlocking::HBlock  c);
+		HBlockUnderstand asHBlockUnderstand(CBlocking::HBlock  c);
+		HBlockCompostionPhrase asHBlockCompostionPhrase(CBlocking::HBlock  c);
+		HBlockIF  asHBlockIF(CBlocking::HBlock  c);
+		HBlockFilterList asHBlockFilterList(CBlocking::HBlock  c);
+		HBlockExecution asHBlockExecution(CBlocking::HBlock  c);
+		HBlockFilterAtom asHBlockFilterAtom(CBlocking::HBlock  c);
+		HBlockMatchWith asHBlockMatchWith(CBlocking::HBlock  c);
+		HBlockSame asHBlockSame(CBlocking::HBlock  c);
+
+
+
+
 		HBlockEnums asHBlockEnums(CBlocking::HBlock c);
 		HBlockKind asHBlockKind(CBlocking::HBlock c);
 		HUnresolved asHUnresolved(CBlocking::HBlock c);
@@ -29,6 +46,7 @@ namespace CBlocking
  
 		HBlockAssertion_isLocalVariable asHBlockAssertion_isLocalVariable(CBlocking::HBlock c);
 		HBlockInstanceVariable asHBlockInstanceVariable(CBlocking::HBlock c);
+		HBlockCollection asHBlockCollection(CBlocking::HBlock c);
 		HBlockList asHBlockList(CBlocking::HBlock c);
 		HBlockList_AND asHBlockList_AND(CBlocking::HBlock c);
 		HBlockList_OR asHBlockList_OR(CBlocking::HBlock c);
@@ -124,6 +142,7 @@ namespace CBlocking
 		HBlockText asHBlockText(CBlocking::HBlock c);
 		HBlockTextSentence asHBlockTextSentence(CBlocking::HBlock c);
 		HBlockInstanceNamed asHBlockInstanceNamed(CBlocking::HBlock c);
+		HBlockInstanceAnonymous asHBlockInstanceAnonymous(CBlocking::HBlock c);
 		HBlockInstance asHBlockInstance(CBlocking::HBlock c);
 
 		HBlockRelationBase asHBlockRelationBase(CBlocking::HBlock c);
@@ -299,6 +318,7 @@ namespace CBlocking
 		HBlockTextSentence    asHBlockTextSentence(CBlocking::HBlock  c);
 		HBlockVerbNegate    asHBlockVerbNegate(CBlocking::HBlock  c);
 		HBlockNoumSupl    asHBlockNoumSupl(CBlocking::HBlock  c);
+		HBlockNoumStr    asHBlockNoumStr(CBlocking::HBlock  c);
 		HBlockIsAdverbialComparasion    asHBlockIsAdverbialComparasion(CBlocking::HBlock  c);
 		HBlockMatchIsAdverbialComparasion    asHBlockMatchIsAdverbialComparasion(CBlocking::HBlock  c);
 		HBlockUnitInit    asHBlockUnitInit(CBlocking::HBlock  c);

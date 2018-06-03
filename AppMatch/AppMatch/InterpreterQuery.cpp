@@ -133,8 +133,8 @@ bool CBlockInterpreter::is_primitive_value(HBlock c , HRunLocalScope localsEntry
 
 
 QueryResultContext CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk) {
-    string name1 = BlockNoum(c_block);
-    string name2 = BlockNoum(c_block1);
+    string name1 = asBlockNoum(c_block);
+    string name2 = asBlockNoum(c_block1);
     if (name1 == "" || name2 == "") return QUndefined;
     //std::cout << name1 << "  " << name2 << std::endl;
     if ( isSameString(name1 ,name2)) 
@@ -202,7 +202,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 			//eh plural de algo ?
 			if (isSameString(property_noum->named, "plural"))
 			{
-				string c = BlockNoum(propObj);
+				string c = asBlockNoum(propObj);
 				if (c != "")
 				{
 					HBlockNoum plural_named = get_plural_of(c);
@@ -260,7 +260,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 	}
 	else
 	{
-		logError("some mistake where\n");
+		//logError("some mistake where\n");
 		return QueryResultContext(QUndefined);
 	}
     return QueryResultContext(QUndefined);

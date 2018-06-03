@@ -243,8 +243,8 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 						HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 						if (body != nullptr)
 						{
-							HBlockNoum nVerb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
-							HBlockNoum nPred = std::make_shared<CBlockNoum>(res.matchs["pred"]->repr());
+							HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
+							HBlockNoum nPred = std::make_shared<CBlockNoumStr>(res.matchs["pred"]->repr());
 							HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb,nullptr , nPred, marg1 , marg2);
 							p->phrases.push_back(nheader);
 							return std::make_shared<CBlockPhraseDefine>(nheader, body);
@@ -268,7 +268,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
 					if (body != nullptr)
 					{
-						HBlockNoum nVerb = std::make_shared<CBlockNoum>(res.matchs["Verb"]->repr());
+						HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
 						HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nullptr, marg1, nullptr);
 						p->phrases.push_back(nheader);
 						return std::make_shared<CBlockPhraseDefine>(nheader, body);

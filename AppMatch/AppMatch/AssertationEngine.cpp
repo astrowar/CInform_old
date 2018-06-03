@@ -28,6 +28,29 @@ void CBlockInterpreter::initialize() {
 
 }
 
+void CBlockInterpreter::start()
+{
+	//verifica se tem algum unit init ?
+	for(const auto u_env : this->unit_test)
+	{
+		if (u_env.init != nullptr)
+		{
+			this->execute_init(u_env.init->contents);
+		}
+		for(auto t : u_env.tests)
+		{
+			auto r =   this->execute_now( t.test->contents );
+			if (r.result)
+			{
+				r.result->dump("");
+				
+			}
+		};
+
+			
+	}
+}
+
 void   CBlockInterpreter::add_modifier_keyword(HBlockEnums _enums)
 {
 	for (auto e : _enums->values)
@@ -401,6 +424,30 @@ bool CBlockInterpreter::assert_it_not_Value(CBlocking::HBlock obj, CBlocking::HB
 	return false;
 }
 
+void CBlockInterpreter::add_new_init(HBlockUnitInit u_init)
+{
+	this->unit_test.push_back(UnitTest_Env(u_init));
+}
+
+void CBlockInterpreter::add_new_test(HBlockUnitTest u_test)
+{
+	if (this->unit_test.empty())
+	{
+		this->unit_test.push_back(UnitTest_Env( nullptr));
+	}
+	this->unit_test.back().tests.push_back(UnitTest_Single(u_test ));
+}
+
+void CBlockInterpreter::add_new_assertion(HBlockUnitAssert asserti)
+{
+	if (this->unit_test.empty() ==false)
+	{
+		if (this->unit_test.back().tests.empty() == false)
+		{
+			this->unit_test.back().tests.back().assertion.push_back(asserti);
+		}
+	}
+}
 
 
 void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
@@ -523,6 +570,24 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 	{
 		if (insert_newEventHandle(reg_event_handle)) return;
 
+	}
+
+
+	if (HBlockUnitInit   unit_init = asHBlockUnitInit(p))
+	{
+		this->add_new_init(unit_init);
+		return;
+	}
+
+	if (HBlockUnitTest  unit_test = asHBlockUnitTest(p))
+	{
+		this->add_new_test(unit_test);
+		return;
+	}
+	if (HBlockUnitAssert  unit_assert = asHBlockUnitAssert(p))
+	{
+		this->add_new_assertion(unit_assert);
+		return;
 	}
 
 	p->dump("");

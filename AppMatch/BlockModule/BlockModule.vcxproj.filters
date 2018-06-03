@@ -123,6 +123,9 @@
     <ClInclude Include="..\AppMatch\save_ctx.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\AppMatch\store_tp.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AppMatch\BlockisSame.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="..\AppMatch\CBlockAction.cpp">
       <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\load_ctx.cpp">
+      <Filter>Source\save_ctx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

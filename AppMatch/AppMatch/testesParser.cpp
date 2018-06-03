@@ -44,11 +44,11 @@ void testeParser_6()//kind of value
 
 	{
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"black is a color", ISLOG));
-		auto q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
-												 std::make_shared<CBlockNoum>("light"));
+		auto q_tru = interpreter->query_is_extern(std::make_shared<CBlockNoumStr>("black"),
+												 std::make_shared<CBlockNoumStr>("light"));
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"black is dark", ISLOG));
-		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("black"),
-												std::make_shared<CBlockNoum>("light"));
+		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoumStr>("black"),
+												std::make_shared<CBlockNoumStr>("light"));
 
 		string phase_1 = " ... ";
 	}
@@ -57,8 +57,8 @@ void testeParser_6()//kind of value
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"warm color is usually warm", ISLOG));
 
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"red is a warm color", ISLOG));
-		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoum>("red"),
-												std::make_shared<CBlockNoum>("warm"));
+		auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockNoumStr>("red"),
+												std::make_shared<CBlockNoumStr>("warm"));
 
 		string phase_1 = " ... ";
 	}
@@ -80,9 +80,9 @@ void testeParser_6a()//kind of value
 		interpreter->execute_init(Statement::Parser_Stmt(&parse,"color of book is red ", ISLOG));
 	}
 
-	auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoum>("color"),
-																			 std::make_shared<CBlockNoum>("book")),
-											std::make_shared<CBlockNoum>("red"));
+	auto q_fa = interpreter->query_is_extern(std::make_shared<CBlockProperty>(std::make_shared<CBlockNoumStr>("color"),
+																			 std::make_shared<CBlockNoumStr>("book")),
+											std::make_shared<CBlockNoumStr>("red"));
 
 	logMessage("");
 }
@@ -407,7 +407,7 @@ int main() {
 	//testeAdaptivePhases_all();
     // testePhases_all();
 
-	testeUnit();
+	 testeUnit();
 	//testeGM_all();
 	 
 

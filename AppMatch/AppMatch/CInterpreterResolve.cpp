@@ -108,7 +108,7 @@ HBlockKind CBlockInterpreter::getKindOf(HBlockInstance obj) {
 }
 
 
-string CBlockInterpreter::BlockNoum(HBlock c_block) 
+string CBlockInterpreter::asBlockNoum(HBlock c_block) 
 {
 
 	//if (HBlockKind k0 = asHBlockKind(c_block)) 
@@ -157,7 +157,7 @@ string CBlockInterpreter::BlockNoum(HBlock c_block)
 
 
 //HBlock CBlockInterpreter::resolve(NSTerm::CTerm *b) {
-//	return make_shared<CBlockNoum>(b->repr());
+//	return make_shared<CBlockNoumStr>(b->repr());
 //}
 
 HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {

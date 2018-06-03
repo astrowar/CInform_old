@@ -80,10 +80,10 @@ namespace CBlocking
 				return static_cast<CBlockAssertion_isDefaultAssign*>(c);
 			return nullptr;
 		}
-		CBlockNoum* asCBlockNoum(CBlock* c)
+		CBlockNoumStr* asCBlockNoumStr(CBlock* c)
 		{
-			if (c->type() == BlockType::BlockNoum)
-				return static_cast<CBlockNoum*>(c);
+			if (c->type() == BlockType::BlockNoumStr)
+				return static_cast<CBlockNoumStr*>(c);
 			return nullptr;
 		}
 		CBlockKind_InstanceVariable* asCKind_InstanceVariable(CBlock* c)
@@ -254,18 +254,8 @@ namespace CBlocking
 				return static_cast<CBlockStaticDispatch*>(c);
 			return nullptr;
 		}
-		CBlockAction* asCBlockAction(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockAction)
-				return static_cast<CBlockAction*>(c);
-			return nullptr;
-		}
-		CBlockActionCall* asCBlockActionCall(CBlock* c)
-		{
-			if (c->type() == BlockType::BlockActionCall)
-				return static_cast<CBlockActionCall*>(c);
-			return nullptr;
-		}
+		 
+	 
 		CBlockVariableNamed* asCBlockVariableNamed(CBlock* c)
 		{
 			if (c->type() == BlockType::BlockVariableNamed)
@@ -338,10 +328,10 @@ namespace CBlocking
 				return static_cast<CBlockText*>(c);
 			return nullptr;
 		}
-		CBlockInstance* asCBlockInstance(CBlock* c)
+		CBlockInstanceAnonymous* asCBlockInstanceAnonymous(CBlock* c)
 		{
-			if (c->type() == BlockType::BlockInstance)
-				return static_cast<CBlockInstance*>(c);
+			if (c->type() == BlockType::BlockInstanceAnonymous)
+				return static_cast<CBlockInstanceAnonymous*>(c);
 			return nullptr;
 		}
 		CBlockSimetricRelation* asCBlockSimetricRelation(CBlock* c)

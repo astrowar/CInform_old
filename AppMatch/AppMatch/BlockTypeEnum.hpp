@@ -5,9 +5,6 @@
 #ifndef APPMATCH_BLOCKTYPEENUM_HPP
 #define APPMATCH_BLOCKTYPEENUM_HPP
 
-
-
-
 enum BlockType {
 	//BlockKind,
 	Unresolved,
@@ -27,7 +24,7 @@ enum BlockType {
 	BlockProperty,
 	BlockAssertion_isDefaultAssign,
 	BlockKindReference,
-	BlockNoum,
+	BlockNoumStr,
 	BlockKind_InstanceVariable,
 	BlockAssertion_isDirectAssign,
 	BlockAssertion_canBe,
@@ -56,11 +53,11 @@ enum BlockType {
 	BlockSelector_All,
 	BlockSelector_Any,
 	BlockStaticDispatch,
-	BlockAction,
+	 
 	BlockActionNamed,
 	BlockActionInstance,
 	BlockTryCall,
-	BlockActionCall,
+ 
 	BlockVariableNamed,
 	BlockUnderstandDynamic,
 	BlockUnderstandStatic,
@@ -72,8 +69,9 @@ enum BlockType {
 	BlockActionApply,
 	BlockKindOfName,
 	BlockArgumentInput,
-	BlockText,
-	BlockInstance,
+	BlockText,	
+	BlockInstanceNamed,
+	BlockInstanceAnonymous,
 	BlockSimetricRelation,
 	BlockASimetricRelation,
 	BlockRelationInstance,
@@ -121,7 +119,7 @@ enum BlockType {
 	BlockNothing,
 	BlockCompostionPhrase,
 	BlockActionCallNamed,
-	BlockInstanceNamed,
+	 
 	BlockMatchValue,
 	BlockAnything,
 	BlockPhraseDefine,

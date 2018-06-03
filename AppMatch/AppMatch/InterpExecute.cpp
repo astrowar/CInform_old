@@ -450,60 +450,60 @@ HBlock CBlockInterpreter :: eval_boolean_AND(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("false");
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("false");
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state ==false) return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->state ==false) return std::make_shared<CBlockNoumStr>("false");
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
 	{
-		if (ndecideValue->state == false) return std::make_shared<CBlockNoum>("false");
+		if (ndecideValue->state == false) return std::make_shared<CBlockNoumStr>("false");
 	}
 
-	return std::make_shared<CBlockNoum>("true");
+	return std::make_shared<CBlockNoumStr>("true");
 }
 
 HBlock CBlockInterpreter :: eval_boolean_OR(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("true"); 
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("true"); 
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("true");		 
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("true");		 
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("true");
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("true");
 	}
 
-	return std::make_shared<CBlockNoum>("false");
+	return std::make_shared<CBlockNoumStr>("false");
 }
 
 HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoum>("false");
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoum>("true");
+		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("true");
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
@@ -511,8 +511,8 @@ HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoum>("false");
-		if (ndecideValue->state == false) return std::make_shared<CBlockNoum>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->state == false) return std::make_shared<CBlockNoumStr>("true");
 	}
 
 	 
@@ -544,7 +544,7 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 	if (HBlockBooleanNOT nbool_not = asHBlockBooleanNOT(c_block))
 	{
 		auto b1 = exec_eval(nbool_not->input_A, localsEntry, stk);	 
-		return std::make_shared<CBlockNoum>("true");
+		return std::make_shared<CBlockNoumStr>("true");
 		return eval_boolean_NOT(b1);
 	}
 
@@ -617,7 +617,7 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 			{
 				if (isSameString(propNoum->named, "plural"))
 				{
-					string c = BlockNoum(kprop->obj);
+					string c = asBlockNoum(kprop->obj);
 					if (!(c.empty()))
 					{
 						return  get_plural_of(c);
@@ -898,32 +898,32 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		if (HBlockAssertion_isDirectAssign nDirect = asHBlockAssertion_isDirectAssign(c_block))
 		{
 			QueryResultContext q = query(nDirect, localsEntry, stk);
-			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
-			return std::make_shared<CBlockNoum>("false");
+			if (q.result == QEquals) return std::make_shared<CBlockNoumStr>("true");
+			return std::make_shared<CBlockNoumStr>("false");
 		}
 
 
 		if (HBlockIsVerb  nVerbDirect = asHBlockIsVerb(c_block))
 		{
 			QueryResultContext q = query(nVerbDirect, localsEntry, stk);
-			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
-			return std::make_shared<CBlockNoum>("false");
+			if (q.result == QEquals) return std::make_shared<CBlockNoumStr>("true");
+			return std::make_shared<CBlockNoumStr>("false");
 		}
 
 
 		if (HBlockAssertion_isNotDirectAssign nDirectv = asHBlockAssertion_isNotDirectAssign(c_block))
 		{
 			QueryResultContext q = query(nDirectv, localsEntry, stk);
-			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
-			return std::make_shared<CBlockNoum>("false");
+			if (q.result == QEquals) return std::make_shared<CBlockNoumStr>("true");
+			return std::make_shared<CBlockNoumStr>("false");
 		}
 
 
 		if (HBlockIsNotVerb  nVerbDirectv = asHBlockIsNotVerb(c_block))
 		{
 			QueryResultContext q = query(nVerbDirectv, localsEntry, stk);
-			if (q.result == QEquals) return std::make_shared<CBlockNoum>("true");
-			return std::make_shared<CBlockNoum>("false");
+			if (q.result == QEquals) return std::make_shared<CBlockNoumStr>("true");
+			return std::make_shared<CBlockNoumStr>("false");
 		}
 	}
 
@@ -1562,7 +1562,7 @@ HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCal
 {
 	if (HBlockActionCallNamed  vCalln = asHBlockActionCallNamed(vCall))
 	{
-	HBlockActionCallNamed c = std::make_shared< CBlockActionCallNamed >(vCalln->action, nullptr,nullptr );
+	HBlockActionCallNamed c = std::make_shared< CBlockActionCallNamed >(vCalln->action, vCall->noum1, vCall->noum2);
 	if (vCall->noum1 != nullptr)
 	{
 		c->noum1 = resolve_argument(vCall->noum1, localsEntry, stk);
