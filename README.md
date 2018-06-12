@@ -20,6 +20,10 @@ Recursos de metaprogramacao será implemetado no futuro, quando a liguagem estiv
 A maquina virtual que roda essa implementacao é propria. nao depende de outras tais como o glux ou z-machine. O codigo gerado é um bytecode em forma de arvore. que é uma conversao direta do codigo fonte. isso trasnfere o trabalho do compilador para o interpreter.
 Remover essa dependencia permite a iteracao direta do codigo com o ambiente de execucao. tal como inserir HTML , incorporar imagens, extrapolar os limites de memoria e ate mesmo a inclusao de multitarefa nativa.
 
+### Focus
+
+OOriginalmente, o inform 7 é focado totalmente no desenvolvimento de ficção iterativa. sendo presso ao subgenero de sala, objetos, ações. reimplementar a linguagem em sua propria maquina virtual pe
+
 ## Supported Languages
 
 Ate o momento o parser esta pronto para reconhecer apenas o ingles. e de uma forma simples.
