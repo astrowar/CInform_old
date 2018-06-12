@@ -34,4 +34,9 @@ Essa separacao abrupta permite que linguagens muito diferentes entre si possam e
   sugestões para o sistema de linguagem para gerar frases em cada linguagem são bem vindas , ja que essa parte esta quase vazia.
   um Modelo de mundo ( define o que é uma sala , porta, pessoa , adjetivos , ações basicas )  tambem pode ser elaborado antes da conclusão dos codigos.
   
-  ## how Contrib
+  ### how Contrib
+   Até o momento a melhor forma de contribuir é fazendo o fork , implementar as mudancas e submeter o pull request.  
+   Outra forma é escrever a sugestão como um issue usando a devida Flag. 
+   No momento o codigo estão tão complexo e pouco documentado que contribuições no source code estão congeladas até uma documentação mais profunda seja elaborada.
+   
+   
