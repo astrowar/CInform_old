@@ -1,0 +1,36 @@
+carry out eating  bad (thing called X )   :
+    say (text bad eating)
+
+ 
+
+unit init :
+    thing is an kind of entity
+    texture is a kind of value
+    texture  are rough, stubbly and smooth
+    thing has a texture
+    apple is an thing
+    apple  is rough
+  
+
+
+unit test :
+   now apple  is smooth
+assert:  apple  is smooth
+
+unit test :
+   now apple  is stubbly 
+assert:  apple  is stubbly 
+assert:  apple  is not  rough
+
+
+unit init :
+   people is an kind of entity 
+   people can be evasive or elusive
+   people is usually evasive
+   Thomas is an elusive people
+   Bob is an people
+   
+unit test :
+   pass
+assert : Thomas is elusive   
+assert : Bob is evasive
