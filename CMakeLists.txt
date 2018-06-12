@@ -98,4 +98,4 @@ set(SOURCE_FILES
 
         AppMatch/AppMatch/CBlockComposition.hpp)
 
-add_executable(apx ${SOURCE_FILES} AppMatch/AppMatch/CBlockComposition.hpp)
+add_executable(apx ${SOURCE_FILES} )
