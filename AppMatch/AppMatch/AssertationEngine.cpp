@@ -45,6 +45,18 @@ void CBlockInterpreter::start()
 				r.result->dump("");
 				
 			}
+			for (auto asrt : t.assertion)
+			{
+				auto result = query(asrt->contents, nullptr, nullptr).result;
+				if (result != QEquals)
+				{					
+					printf("Assertion Failed \n");
+					asrt->dump(" ");
+					printf("\n");
+				}
+			}
+			
+
 		};
 
 			

@@ -9,8 +9,8 @@ enum VerbCj { VB, VBP,VBD,VBN, VBG , VBZ  };
 typedef struct verbalConj
 {
 public:
-	char* verb;
-	char* base;
+	char const * verb;
+	char const * base;
 	VerbCj tempo;	
 	//verbalConj(std::string s, VerbCj tp ) :base(s),tempo(tp){}
 }verbalConj
@@ -20,8 +20,8 @@ enum noumCj { NN,NNS };
 typedef struct noumConj
 {
 public:
-	char* noum;
-	char* base;
+	char const * noum;
+	char const * base;
 	noumCj modificador;
 	 
 }noumConj;

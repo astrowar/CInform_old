@@ -37,7 +37,11 @@ void testeUnit()
 	HBlockInterpreter interpreter = std::make_shared<CBlockInterpreter>();
 	CParser parse;
 
-	std::string file_contents = load_file("C:\\Users\\eraldo\\Source\\Repos\\CMatchIteractiveFic\\Doc\\unit_test_1.txt");
+	//std::string file_contents = load_file("..\\..\\Doc\\unit_test_adjetivos.txt");
+    std::string file_contents = load_file("/Users/astrowar/ClionProjects/CIteractiveFiction/Doc/unit_test_adjetivos.txt");
+
+
+
 	HBlock p_result = ParseText::parser_text(&parse, file_contents, false);
 
 	p_result->dump("  "); 
@@ -49,7 +53,7 @@ void testeUnit()
 
 	SaveContext ctx("tmp.txt");
 	save_CBlock(p_result,&ctx);
-	printf(ctx.data.c_str());
+	 printf("%s \n", ctx.data.c_str());
 
 	LoadContext lx= LoadContext(ctx.data);
 

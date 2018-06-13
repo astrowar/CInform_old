@@ -402,7 +402,7 @@ void testePlurals()
 
 void testeUnit();
 void testeExecute5();
-int main() {
+int main(int argc, char** argv) {
 
 	//testeAdaptivePhases_all();
     // testePhases_all();

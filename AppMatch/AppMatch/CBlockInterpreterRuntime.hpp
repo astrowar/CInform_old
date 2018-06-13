@@ -103,6 +103,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 	class CBlockInterpreter {
 
+
+ 
+
 		std::vector<HBlock> program; // main program .. to run IT
 
 		std::list< std::pair<string, HBlock> > symbols;
@@ -199,7 +202,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		//if (asHBlockNamedValue(c)) return true;
 
 
-
+	 
+		QueryResultContext query_is_instance_valueSet_valueInstance(HBlockInstance obj, HBlockInstanceNamed valueName);
 		QueryResultContext query_is_instance_valueSet(HBlock c_block, HBlock c_block1, QueryStacking::QueryStack *stk);
 		HBlock resolve_by_evaluation(HBlock c_block,   HRunLocalScope localsEntry, QueryStacking::QueryStack * stk_in);
 		QueryResultContext query_is_propertyOf_value_imp(HBlock propname, HBlock propObj, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
@@ -216,7 +220,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::list<HBlockKind> getUpperKinds(HBlockKind kind);
 		bool is_derivadeOf(HBlockInstance a, HBlockKind b, HRunLocalScope localsEntry);
 
-		bool is_InstanceOf(HBlock a, HBlockKind b);
+		 
 
 		void dump_instance(string str, HRunLocalScope localsEntry);
 		void add_constantValueVariableToAllinstances(HBlockAssertion_isConstantAssign kvar);
@@ -324,7 +328,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		void add_modifier_keyword(HBlockNoum _nn);
 		bool assert_it_canBe(HBlock c_block, HBlockEnums value, HRunLocalScope localsEntry);
 
-
+		bool is_InstanceOf(HBlock a, HBlockKind b);
 		void dump_instance(string str);
 		bool assert_newUnderstand(HBlockUnderstandDynamic value);
 
@@ -473,6 +477,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 	 
 		PhaseResult execute_verb_unset(HBlockIsNotVerb vverb, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		PhaseResult execute_unset(HBlock obj, HBlock value, HRunLocalScope localsEntry);
+		PhaseResult execute_set_direct_valueInstance(HBlockInstance obj, HBlockInstanceNamed value,
+		                                             HRunLocalScope localsEntry);
 		PhaseResult execute_set_inn(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 		PhaseResult execute_set(HBlock obj, HBlock value, HRunLocalScope localsEntry);
 		HBlock exec_eval_property_value_imp(HBlock prop, HBlock c_block);

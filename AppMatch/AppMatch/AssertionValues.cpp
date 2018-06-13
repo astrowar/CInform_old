@@ -144,7 +144,8 @@ bool CBlockInterpreter::assert_it_composition(CBlocking::HBlock obj, CBlocking::
 
 bool CBlockInterpreter::assert_it_Value(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
-    execute_set(obj, value,localsEntry);
+	PhaseResult pr =  execute_set(obj, value,localsEntry);
+	if (pr.hasExecuted) return  true;
 
 
  

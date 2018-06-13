@@ -208,6 +208,39 @@ PhaseResult CBlockInterpreter::execute_unset(HBlock obj, HBlock value, HRunLocal
 
 
 
+PhaseResult CBlockInterpreter::execute_set_direct_valueInstance(HBlockInstance obj, HBlockInstanceNamed value, HRunLocalScope localsEntry)
+{
+	
+	//tem alguma propriedade cujo name eh igual ao tipo ?
+	for (auto &va : obj->namedSlots)
+	{
+	 
+		{
+			//if (va_kindnamed->named == va->name->named)
+			{
+
+				if (HBlockKindValue kindv = asHBlockKindValue(va->kind))
+				{
+					if (kindv->named == va->name->named)
+					{
+						if (is_InstanceOf(value, va->kind))
+						{
+							// pode ser  assigned ...					 
+								{
+									va->value = value;
+									return true;
+								}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	return false;
+}
+
 PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLocalScope localsEntry)
 {
 
@@ -233,6 +266,15 @@ PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLoc
 		        nInst->set(nvalue);
 				return true; 
 		}
+		if (HBlockInstanceNamed ivalue = asHBlockInstanceNamed(value))
+		{
+			//eh instancia de um kindValue ??  apple is red por exemplo, sendo red um Kind of value 
+			//nInst->set(invalue);
+			PhaseResult  p = execute_set_direct_valueInstance(nInst, ivalue, localsEntry);
+			if (p.hasExecuted)return true;
+			return true;
+		}
+
 	}
 
 	if (HBlockProperty prop_n = asHBlockProperty(obj)) {
@@ -241,6 +283,10 @@ PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLoc
 		 
 		return assert_it_property(propNamed, destination, value, localsEntry, nullptr);
 	}
+
+ 
+
+
 
 	/*if (HBlockProperty prop_n = asHBlockProperty(value)) {
 		HBlock propNamed = prop_n->prop;

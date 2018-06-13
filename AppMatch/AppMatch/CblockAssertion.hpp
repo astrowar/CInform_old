@@ -2,12 +2,18 @@
 #ifndef CBLOCKASSERTATION_H
 #define CBLOCKASSERTATION_H
 
-#include "BlockInterpreter.hpp"
-#include "BlockInstance.hpp"
 #include "CBlockAction.hpp"
+
+#include "BlockInstance.hpp"
+#include "BlockInterpreter.hpp"
+
 
 namespace CBlocking
 {
+
+	class CBlockInstance;
+	using HCBlockInstance = std::shared_ptr<CBlockInstance>;
+
 	class CBlockAssertionBase : public CBlock //retorna uma declaracao
 	{
 	public:

@@ -162,13 +162,42 @@ PhaseResult::PhaseResult(bool _hasExecuted): hasExecuted(_hasExecuted)
 	result = nullptr;
 }
 
+QueryResultContext CBlockInterpreter::query_is_instance_valueSet_valueInstance(HBlockInstance obj, HBlockInstanceNamed   valueName)
+{
+
+	for (auto &va : obj->namedSlots)
+	{
+		if (HBlockKindValue kindv = DynamicCasting::asHBlockKindValue(va->kind))
+		{
+			if (kindv->named == va->name->named)
+			{
+				if (is_InstanceOf(valueName, va->kind))
+				{
+					// pode ser  assigned ...
+					if (CBlock::isSame(va->value.get(), valueName.get()))
+					{
+						return QueryResultContext(QEquals);
+					}
+					return  QueryResultContext(QNotEquals);
+				}
+			}
+		}
+	}
+
+	return QueryResultContext(QUndefined);
+
+}
+
+
+
 QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block, HBlock c_block1 , QueryStack *stk) {
 
     
 
-    if (HBlockInstance cinst = asHBlockInstance(c_block))
-        if (HBlockNoum value = asHBlockNoum(c_block1)) {
-            if (cinst->has_slot(value)) 
+	if (HBlockInstance cinst = asHBlockInstance(c_block))
+	{
+		if (HBlockNoum value = asHBlockNoum(c_block1)) {
+			if (cinst->has_slot(value))
 			{
 				bool _value = false;
 				const bool has_value = cinst->is_set(value, _value);
@@ -179,8 +208,23 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet(HBlock c_block,
 					}
 					return QueryResultContext(QNotEquals);
 				}
-            }
-        }
+			}
+		}
+
+
+
+		if (HBlockInstanceNamed nvalue = asHBlockInstanceNamed(c_block1)) {
+			{
+				bool _value = false;
+				const QueryResultContext  has_value = query_is_instance_valueSet_valueInstance(cinst, nvalue);
+				if (has_value.result != QUndefined) return has_value;
+				
+			}
+		}
+
+
+
+	}
     return QueryResultContext(QUndefined);
 
 }
@@ -568,6 +612,12 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	if (HBlockInstance cinst1 = asHBlockInstance(c_block))
 	{
+		if (HBlockInstanceNamed cinstvalNamed = asHBlockInstanceNamed(c_block1))
+		{
+			auto req = query_is_instance_valueSet_valueInstance(cinst1 , cinstvalNamed  );
+			if (req.result != QUndefined) return req;
+		}
+
 		if (HBlockInstance cinst2 = asHBlockInstance(c_block1))
 		{
 			//if (isSameString(cinst1  , cinst2 )) return QEquals;

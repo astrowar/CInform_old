@@ -8,6 +8,7 @@
 #include <memory>
 #include <functional>
 #include "CMatchListValid.hpp"
+#include <cstdlib>
 
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
@@ -376,7 +377,7 @@ namespace NSTerm {
 
 		void applyCombinatorias_smart_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend, size_t n, std::vector<CPred *> preds, FuncCombinatoria &func)
 		{
-			size_t isize = abs(vend - vbegin);
+			size_t isize = std::abs(vend - vbegin);
 
 			if (isize < n)
 			{

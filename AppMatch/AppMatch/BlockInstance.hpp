@@ -7,11 +7,16 @@
 #ifndef APPMATCH_BLOCKINSTANCE_H
 #define APPMATCH_BLOCKINSTANCE_H
 
-#include "BlockInterpreter.hpp"
 #include <string>
+
+
 #include "CBlockNamedVariable.hpp"
+
+ 
+
 namespace CBlocking
 {
+
 
 	class CBlockInstance : public CBlock //retorna um valor generico
 	{
@@ -27,7 +32,10 @@ namespace CBlocking
 		void unset(HBlockNoum c_block);
 		bool has_slot(HBlockNoum value);
 		HBlockVariableNamed get_property(string named); 
-		void set_property(string cs, CBlocking::HBlock value); 
+		void set_property(string cs, CBlocking::HBlock value);
+
+
+
 		bool is_set(HBlockNoum valueName , bool &value); 		 
 		int id;  // id unico para cada instancia .. serve para saber se estamos a falar da mesma instancia
 		HBlockKind baseKind; 

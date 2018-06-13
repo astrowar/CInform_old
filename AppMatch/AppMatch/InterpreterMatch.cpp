@@ -466,7 +466,7 @@ CResultMatch CBlockInterpreter::adjetive_match( std::list<HBlockMatch>  mlist , 
 	//cheguei aqui e agora ???
 	if (has_all_match) return CResultMatch(true);
 
-     
+     return CResultMatch(false);
 }
 
 HBlockMatchNoum concatenate_MatchNoum(HBlockMatchNoum a, HBlockMatchNoum b)

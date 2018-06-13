@@ -277,7 +277,7 @@ template<typename T>  std::list<std::shared_ptr<T> > load_list(LoadContext *ctx)
 		if (s == ")") break;
 
 		const int slot = stoi(s);
-		ret.push_back(  std::dynamic_pointer_cast<T>(load_CBlock_slot(slot,ctx)));
+		ret.push_back(  std::static_pointer_cast<T>(load_CBlock_slot(slot,ctx)));
 		
 	}
 	return ret;
@@ -296,7 +296,7 @@ template<typename T>  std::vector<std::shared_ptr<T> > load_vector(LoadContext *
 	{		s = ctx->load_item(); 
 		if (s == ")") break;
 		const int slot = stoi(s);
-		ret.push_back(std::dynamic_pointer_cast<T>(load_CBlock_slot(slot, ctx)));
+		ret.push_back(std::static_pointer_cast<T>(load_CBlock_slot(slot, ctx)));
 
 	}
 	return ret;

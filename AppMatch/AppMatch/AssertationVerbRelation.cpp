@@ -933,7 +933,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	return QueryResul::QUndefined;
 }
 
-static char* reserved_words[] = {
+static char const * reserved_words[] = {
 	"nothing",
 	"value",
 	"true",
@@ -958,7 +958,7 @@ static char* reserved_words[] = {
 
 bool CBlockInterpreter::isReservedWord(string cs)
 {
-	char** w = reserved_words;
+	const char** w = reserved_words;
 	while (*w)
 	{
 		if (strcmp(*w, cs.c_str()) == 0) return true;
