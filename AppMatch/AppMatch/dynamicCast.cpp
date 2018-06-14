@@ -4,6 +4,7 @@
 #include "dynamicCast.hpp"
  
 
+
 namespace CBlocking
 {
 	namespace DynamicCasting

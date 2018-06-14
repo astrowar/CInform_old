@@ -170,12 +170,6 @@
     <ClCompile Include="..\AppMatch\CMatch.cpp">
       <Filter>Source\Match</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\AppMatch\serialize_tp.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
@@ -190,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="..\AppMatch\load_ctx.cpp">
       <Filter>Source\save_ctx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp">
+      <Filter>Source\Block</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

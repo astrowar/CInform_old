@@ -15,6 +15,7 @@
 #include "CblockAssertion.hpp"
 #include <condition_variable>
 #include "CBlockDumpValues.hpp"
+#include "CBlockDecideIf.hpp"
 
 
 namespace NSParser
@@ -172,7 +173,7 @@ namespace NSParser
 		std::list<SentenceDispatchPredicate> sentenceDispatch;
 		std::list<CBlocking::HBlockPhraseHeader> phrases;
 
-		HBlock blank_line;
+		CBlocking::HBlock blank_line;
 
 		CParser(  );
 		virtual ~CParser();

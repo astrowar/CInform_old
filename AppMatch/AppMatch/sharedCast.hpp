@@ -12,6 +12,8 @@
 #include "CBlockNumber.hpp"
 #include "CBlockComposition.hpp"
 #include "CBlockCompostion.hpp"
+#include "CBlockScope.hpp"
+#include "CBlockInterpreterRuntime.hpp"
 
 namespace CBlocking
 {

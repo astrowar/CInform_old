@@ -7,6 +7,8 @@
 #include "CBlockDumpValues.hpp"
 #include "CBlockCommand.hpp"
 #include "CBlockBoolean.hpp"
+#include "CblockAssertion.hpp"
+ 
 
 namespace CBlocking
 {
