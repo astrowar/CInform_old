@@ -3,7 +3,7 @@
 Portugues é um idioma bem complexo e precisa ser tratado com cuidado. uma vez estabelecido as bases, fica mais facil portar os mesmos conceitos para as demais linguas latinas.
 
 
-## Diferebcas entre o inform 7 Padrão
+## Diferenças do Inform 7 Padrão
 
 No portugues os todos substantivos possuem genero. só isso ja adiciona uma dimensao a mais no tratamento da sintaxe.
 
