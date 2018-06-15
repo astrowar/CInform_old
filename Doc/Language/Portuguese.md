@@ -19,7 +19,9 @@ Outra diferença está na ordem dos adjetivos. em portugues eles vem depois do s
     get the red apple
     
 O verbo IS do ingues se traduz como o verbo ser, mas tambem pode ser "estar" , mas estar nao é ser ...
+
 IS == SER , IS == ESTAR , BUT SER != ESTAR   
+
 
 O que leva a uma outra questão ... qual é usado ?
 
