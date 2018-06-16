@@ -1,12 +1,9 @@
 
-
-#include "CResultMatch.hpp"
-#include <memory>
-
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 #include "CBlockScope.hpp"
-#include "QueryStack.hpp"
+#include "interpreter/QueryStack.hpp"
 #include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include <memory>
 #include <algorithm>
 using namespace std;
 using namespace CBlocking;
@@ -16,7 +13,7 @@ using namespace QueryStacking;
 
 
 #include  "verb_en.hpp" 
-#include "ParserPlural.hpp"
+#include "Parser\ParserPlural.hpp"
 
 namespace Auxiliar  {
 	bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
@@ -123,10 +120,10 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 {
 	static PLURALTABLE plural_tab = plura_table();
 	
-	const  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoumStr>(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoumStr>("present tense") } };
-	
+	  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoumStr>(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoumStr>("present tense") } };
 
-	auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
+
+	 auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
 
 
 	{

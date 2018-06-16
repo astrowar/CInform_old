@@ -7,10 +7,7 @@
 #include "BlockInterpreter.hpp"
 #include "CblockAssertion.hpp"
 #include "CBlockMatch.hpp"
-#include <functional> 
-#include <map>
 #include "CBlockUndestand.hpp"
-#include <condition_variable>
 #include "CBlockDecideIf.hpp"
 #include "CBlockScope.hpp"
 #include <condition_variable>
@@ -19,8 +16,11 @@
 #include "QueryStack.hpp"
 #include "CBlockCommand.hpp"
 #include "CBlockMatch.hpp"
-#include "EqualsResult.hpp"
+#include "base/EqualsResult.hpp"
 #include "CBlockControlFlux.hpp"
+
+#include <functional> 
+#include <map>
 
 //class CBlockAssertionBase;
 //class CBlockAssertion_is;
@@ -425,13 +425,12 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockText adapt_text(HBlockTextSentence text, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 
-	   NSTerm::HTerm executeAssertion_is(HBlockAssertion_is b);
+	   //NSTerm::HTerm executeAssertion_is(HBlockAssertion_is b);
+	   //NSTerm::HTerm executeAssertion(HBlockAssertionBase b);
+	   //NSTerm::HTerm execute(HBlock b);
+	   //HBlock resolve(NSTerm::CTerm *b);
 
-	   NSTerm::HTerm executeAssertion(HBlockAssertionBase b);
 
-	   NSTerm::HTerm execute(HBlock b);
-
-		HBlock resolve(NSTerm::CTerm *b);
 
 		HBlock resolve_of(HBlock b, HBlock a);
 		HBlockKind resolve_system_kind(string n);

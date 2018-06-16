@@ -9,11 +9,12 @@
 // copies or substantial portions of the Software.
 
 #include <memory>
+#include "sharedCast.hpp"
 #include "CResultMatch.hpp"
  
-#include "QueryStack.hpp"
-#include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "interpreter/QueryStack.hpp"
+
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 using namespace std;
 
 

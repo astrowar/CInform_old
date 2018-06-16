@@ -2,8 +2,8 @@
 
 
 #include <string>
-#include "Parser.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "Parser\Parser.hpp"
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 
 using namespace CBlocking;
 using namespace Interpreter;

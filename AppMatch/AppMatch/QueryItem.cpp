@@ -10,9 +10,10 @@
 
 
 #include "BlockInterpreter.hpp"
-#include  "QueryStack.hpp"
 
- 
+#include <interpreter/QueryStack.hpp>
+
+
 using namespace CBlocking;
 
 

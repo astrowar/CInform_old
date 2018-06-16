@@ -10,7 +10,7 @@
 // copies or substantial portions of the Software.
 
 
-#include "ParserPlural.hpp"
+#include "Parser\ParserPlural.hpp"
 #include <cstring>
 #include <cstdio>
 #include <algorithm>

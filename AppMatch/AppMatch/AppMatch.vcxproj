@@ -78,23 +78,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;C:\Users\Eraldo.rangel\Source\Repos\CMatchIteractiveFic\AppMatch\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

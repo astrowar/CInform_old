@@ -2,9 +2,10 @@
 #ifndef BLOCKInterpreter_H
 #define BLOCKInterpreter_H
 
-#include "CBase.hpp"
-
-
+#include <string>
+#include <memory>
+#include <vector>
+#include <list>
 
 
 #include "BlockTypeEnum.hpp"

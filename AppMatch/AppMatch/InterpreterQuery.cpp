@@ -12,12 +12,12 @@
 #include "BlockInterpreter.hpp"
  
 #include "CblockAssertion.hpp"
-#include "QueryStack.hpp"
+#include "interpreter/QueryStack.hpp"
 #include "CResultMatch.hpp"
 #include "dynamicCast.hpp"
 #include "sharedCast.hpp"
 #include <cassert>
- #include "CBlockInterpreterRuntime.hpp"
+ #include "interpreter/CBlockInterpreterRuntime.hpp"
 
 using namespace std;
 
@@ -1481,24 +1481,24 @@ QueryResultContext CBlockInterpreter::query(HBlock q)
 }
 
 
-NSTerm::HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
-
-    // is what ??
-
-    if (HBlockNamedValue is_namedValue = asHBlockNamedValue(b->get_obj())) {
-
-
-    }
-
-    if (HBlockAssertion_canBe noum_canBe = asHBlockAssertion_canBe(b->get_definition())) {
-
-    }
-
-    if (HBlockKind is_define_kind = asHBlockKind(b->get_definition())) {
-
-    }
-    return nullptr;
-
-}
+//NSTerm::HTerm CBlockInterpreter::executeAssertion_is(HBlockAssertion_is b) {
+//
+//    // is what ??
+//
+//    if (HBlockNamedValue is_namedValue = asHBlockNamedValue(b->get_obj())) {
+//
+//
+//    }
+//
+//    if (HBlockAssertion_canBe noum_canBe = asHBlockAssertion_canBe(b->get_definition())) {
+//
+//    }
+//
+//    if (HBlockKind is_define_kind = asHBlockKind(b->get_definition())) {
+//
+//    }
+//    return nullptr;
+//
+//}
 
 

@@ -1,3 +1,5 @@
+#ifndef SharedCast_HPP
+#define SharedCast_HPP
 
 #include "BlockInterpreter.hpp"
 #include "CBlockAction.hpp"
@@ -13,7 +15,9 @@
 #include "CBlockComposition.hpp"
 #include "CBlockCompostion.hpp"
 #include "CBlockScope.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "CblockAssertion.hpp"
+
+//#include "interpreter/CBlockInterpreterRuntime.hpp"
 
 namespace CBlocking
 {
@@ -22,7 +26,7 @@ namespace CBlocking
 
 
 		//invalidos	
-		Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c);
+		//Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c);
 		HBlockBooleanResult    asHBlockBooleanResult(CBlocking::HBlock  c);
 		HBlockFilter    asHBlockFilter(CBlocking::HBlock  c);
 		HBlockUnderstand asHBlockUnderstand(CBlocking::HBlock  c);
@@ -331,3 +335,5 @@ namespace CBlocking
 
 	}
 }
+
+#endif

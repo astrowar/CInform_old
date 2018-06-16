@@ -13,9 +13,9 @@
  
 
 #include "CblockAssertion.hpp"
-#include "QueryStack.hpp"
+#include "interpreter/QueryStack.hpp"
 #include "CResultMatch.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 using namespace std;
 
 using namespace CBlocking;

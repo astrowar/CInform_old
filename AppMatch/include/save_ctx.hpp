@@ -34,5 +34,5 @@ public:
 };
 
 
-int  save_CBlock(HBlock x, SaveContext * ctx);
+int  save_CBlock(CBlocking::HBlock x, SaveContext * ctx);
 #endif // SAVE_CTX_HPP

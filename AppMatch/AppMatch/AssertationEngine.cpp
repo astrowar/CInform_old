@@ -15,7 +15,7 @@
 #include "CBlockDecideIf.hpp"
 #include "CBlockRelation.hpp"
 #include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 #include "CBlockNumber.hpp"
 
 

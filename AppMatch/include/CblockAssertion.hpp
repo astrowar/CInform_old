@@ -2,10 +2,12 @@
 #ifndef CBLOCKASSERTATION_H
 #define CBLOCKASSERTATION_H
 
-#include "CBlockAction.hpp"
 
-#include "BlockInstance.hpp"
+
+
 #include "BlockInterpreter.hpp"
+#include "BlockInstance.hpp"
+#include "CBlockAction.hpp"
 
 
 namespace CBlocking

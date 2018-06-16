@@ -8,7 +8,7 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include "Parser.hpp"
+#include "Parser\Parser.hpp"
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 using namespace EqualResulting;

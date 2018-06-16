@@ -9,6 +9,9 @@
  
  
 #include "save_ctx.hpp"
+#include <CblockAssertion.hpp>
+
+using namespace CBlocking;
 
 void SaveContext::write(string s)
 {   

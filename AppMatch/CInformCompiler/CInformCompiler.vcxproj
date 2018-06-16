@@ -72,20 +72,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\AppMatch;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\eraldo\Source\Repos\CInform\AppMatch\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

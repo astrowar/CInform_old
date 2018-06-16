@@ -38,6 +38,7 @@
 #include <cassert>
 #include <cstring>
 #include <cstdio>
+#include <CblockAssertion.hpp>
 
 using namespace std;
 using namespace CBlocking;

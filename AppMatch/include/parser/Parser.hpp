@@ -2,18 +2,15 @@
 #ifndef CPARSER_H
 #define CPARSER_H
 
-#include "CBase.hpp"
+#include "base\CBase.hpp"
+#include "match\CMatch.hpp"
+
 #include "BlockInterpreter.hpp"
 #include "CBlockMatch.hpp"
-#include "CMatch.hpp"
-
 #include "CBlockRelation.hpp"
-#include <condition_variable>
 #include "CBlockCommand.hpp"
-#include <condition_variable>
 #include "CBlockControlFlux.hpp"
 #include "CblockAssertion.hpp"
-#include <condition_variable>
 #include "CBlockDumpValues.hpp"
 #include "CBlockDecideIf.hpp"
 

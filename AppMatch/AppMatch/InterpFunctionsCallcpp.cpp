@@ -13,13 +13,16 @@
 
 
 #include "CResultMatch.hpp"
-#include <memory>
+
  
 #include "CBlockScope.hpp"
-#include "QueryStack.hpp"
-#include "sharedCast.hpp"
-#include "CBlockInterpreterRuntime.hpp"
+#include "interpreter/QueryStack.hpp"
+
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 #include <iostream>
+#include "sharedCast.hpp"
+#include <memory>
+
 using namespace std;
 
 using namespace CBlocking;

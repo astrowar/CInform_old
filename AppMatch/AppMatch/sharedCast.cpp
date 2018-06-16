@@ -10,8 +10,8 @@
 
 #include "sharedCast.hpp"
 #include "CBlockNumber.hpp"
+#include <CblockAssertion.hpp>
 
- 
 
 namespace CBlocking
 {
@@ -922,7 +922,7 @@ namespace CBlocking
 
 		//invalidos 
 
-		Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c) { return nullptr; }
+		//Interpreter::HBlockInterpreter asHBlockInterpreter(CBlocking::HBlock  c) { return nullptr; }
 		HBlockBooleanResult    asHBlockBooleanResult(CBlocking::HBlock  c) { return nullptr; }
 		HBlockFilter    asHBlockFilter(CBlocking::HBlock  c) { return nullptr; }
 		HBlockUnderstand asHBlockUnderstand(CBlocking::HBlock  c) { return nullptr; }

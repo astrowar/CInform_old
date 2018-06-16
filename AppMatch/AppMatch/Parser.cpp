@@ -6,11 +6,11 @@
 // copies or substantial portions of the Software.
 
 
-#include "PARSER.HPP"
+#include "Parser\Parser.hpp"
 // PVS
 // PVQ
 
-#include "Parser.hpp"
+#include "Parser\Parser.hpp"
 #include <list>
 
 #include <algorithm>

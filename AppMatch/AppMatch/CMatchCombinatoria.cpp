@@ -8,13 +8,14 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include "CBase.hpp"
-#include <vector>
-#include "CMatch.hpp"
+#include "base\CBase.hpp"
 
+#include "match\CMatch.hpp"
+#include "match\CMatchListValid.hpp"
+
+#include <vector>
 #include <memory>
 #include <functional>
-#include "CMatchListValid.hpp"
 #include <cstdlib>
 
 using namespace NSTerm;

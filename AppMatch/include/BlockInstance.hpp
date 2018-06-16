@@ -2,7 +2,7 @@
 // Created by Eraldo Rangel on 19/08/16.
 //
 
- 
+#pragma once 
 
 #ifndef APPMATCH_BLOCKINSTANCE_H
 #define APPMATCH_BLOCKINSTANCE_H

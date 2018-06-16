@@ -1,6 +1,11 @@
 #pragma once
  
+#include "BlockInterpreter.hpp"
 #include <map>
+#include <list>
+#include <string>
+#include <memory>
+
 
 namespace CBlocking
 {
@@ -13,7 +18,7 @@ using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 	public:
 		HRunLocalScope previous; // stack anterior se nao tiver nessa 
 
-		std::list< std::pair<string, CBlocking::HBlock> > locals;
+		std::list< std::pair<std::string, CBlocking::HBlock> > locals;
 		CRunLocalScope(HRunLocalScope _previous) : previous(_previous)
 		{
 

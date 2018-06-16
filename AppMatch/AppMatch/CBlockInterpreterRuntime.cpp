@@ -8,8 +8,8 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include "CBlockInterpreterRuntime.hpp"
-#include "EqualsResult.hpp"
+#include "interpreter/CBlockInterpreterRuntime.hpp"
+#include "base/EqualsResult.hpp"
 
 using namespace CBlocking;
 using namespace Interpreter;
