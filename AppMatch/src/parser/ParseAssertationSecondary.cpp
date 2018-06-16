@@ -71,8 +71,6 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 		CPredSequence predList_a = pWord("ActionName") << pPreposition("pred") << pOr("pred_aux", pLiteral("to"), pLiteral("of"));
 		 
 		{
- 
-
 			MatchResult res = CMatch(term, predList_a);
 			if (res.result == Equals)
 			{
@@ -109,9 +107,6 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 		  CPredSequence predList_c( pWord("ActionName"));
 		 
 		{
-			 
-		 
-
 			MatchResult res = CMatch(term, predList_c);
 			if (res.result == Equals)
 			{
@@ -184,7 +179,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsLocalValue(CParser * p, std::v
 	CPredSequence predList =pLiteral("let")<< pAny("VarName")<< pLiteral("be")<< pAny("VarValue");
 
 	MatchResult res = CMatch(term, predList);
-
+	
 	if (res.result == Equals)
 	{ 
 		auto varName = Expression::parser_expression(p, res.matchs["VarName"]);

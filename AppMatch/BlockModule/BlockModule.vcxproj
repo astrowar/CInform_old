@@ -190,27 +190,25 @@
     <ClInclude Include="..\AppMatch\store_tp.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\AppMatch\BlockInstance.cpp" />
-    <ClCompile Include="..\AppMatch\BlockInterpreter.cpp" />
-    <ClCompile Include="..\AppMatch\BlockisSame.cpp" />
-    <ClCompile Include="..\AppMatch\CBase.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockAction.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockCommand.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockDumpValues.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockNumber.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockSerialize.cpp" />
-    <ClCompile Include="..\AppMatch\CDataMananger.cpp" />
-    <ClCompile Include="..\AppMatch\CMatch.cpp" />
-    <ClCompile Include="..\AppMatch\CMatchCombinatoria.cpp" />
-    <ClCompile Include="..\AppMatch\CMatchListValid.cpp" />
-    <ClCompile Include="..\AppMatch\dynamicCast.cpp" />
-    <ClCompile Include="..\AppMatch\load_ctx.cpp" />
-    <ClCompile Include="..\AppMatch\save_ctx.cpp" />
-    <ClCompile Include="..\AppMatch\serialize_tp.cpp" />
-    <ClCompile Include="..\AppMatch\sharedCast.cpp" />
-    <ClCompile Include="..\AppMatch\store_tp.cpp" />
+    <ClCompile Include="..\src\base\CBase.cpp" />
+    <ClCompile Include="..\src\base\CMatch.cpp" />
+    <ClCompile Include="..\src\base\CMatchCombinatoria.cpp" />
+    <ClCompile Include="..\src\base\CMatchListValid.cpp" />
+    <ClCompile Include="..\src\Block\BlockInstance.cpp" />
+    <ClCompile Include="..\src\Block\BlockInterpreter.cpp" />
+    <ClCompile Include="..\src\Block\BlockisSame.cpp" />
+    <ClCompile Include="..\src\Block\BlockTypeEnum.cpp" />
+    <ClCompile Include="..\src\Block\CBlockAction.cpp" />
+    <ClCompile Include="..\src\Block\CBlockCommand.cpp" />
+    <ClCompile Include="..\src\Block\CBlockCompostion.cpp" />
+    <ClCompile Include="..\src\Block\CBlockDecideIf.cpp" />
+    <ClCompile Include="..\src\Block\CBlockDumpValues.cpp" />
+    <ClCompile Include="..\src\Block\CBlockNumber.cpp" />
+    <ClCompile Include="..\src\Block\CBlockSerialize.cpp" />
+    <ClCompile Include="..\src\Block\dynamicCast.cpp" />
+    <ClCompile Include="..\src\Block\save_ctx.cpp" />
+    <ClCompile Include="..\src\Block\sharedCast.cpp" />
+    <ClCompile Include="..\src\Block\store_tp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -720,23 +720,24 @@ HBlockInstanceVariable NSParser::ParseAssertion::CProperty_called(CParser * p, H
 
 
 HBlock NSParser::ParseAssertion::STMT_hasAn_Assertion(CParser * p, std::vector<HTerm>& lst) {
-    CPredSequence predList = pAny("Target") <<pLiteral("has")  <<undefinedArticle() <<pAny("KindAndName");
-    MatchResult res = CMatch(lst, predList);
+	CPredSequence predList = pAny("Target") << pLiteral("has") << undefinedArticle() << pAny("KindAndName");
+	MatchResult res = CMatch(lst, predList);
 
-    if (res.result != Equals) {
-        return nullptr;
-    }
+	if (res.result == Equals)
+	{
 
-    HBlockInstanceVariable definitionProperty_kindAndName = CProperty_called(p,res.matchs["KindAndName"]);
-    if (definitionProperty_kindAndName == nullptr) {
-        return nullptr;
-    }
+		HBlockInstanceVariable definitionProperty_kindAndName = CProperty_called(p, res.matchs["KindAndName"]);
+		if (definitionProperty_kindAndName == nullptr) {
+			return nullptr;
+		}
 
-    //HBlockNoum  defintionFirst_KindOrInstance = std::make_shared<CBlockNoumStr>( res.matchs["Target"]->removeArticle()->repr());
-    HBlock defintionFirst_KindOrInstance = Expression::parser_kind_or_instance(p,res.matchs["Target"]);
+		//HBlockNoum  defintionFirst_KindOrInstance = std::make_shared<CBlockNoumStr>( res.matchs["Target"]->removeArticle()->repr());
+		HBlock defintionFirst_KindOrInstance = Expression::parser_kind_or_instance(p, res.matchs["Target"]);
 
-    return std::make_shared<CBlockAssertion_InstanceVariable>(defintionFirst_KindOrInstance,
-                                                              definitionProperty_kindAndName);
+		return std::make_shared<CBlockAssertion_InstanceVariable>(defintionFirst_KindOrInstance,
+			definitionProperty_kindAndName);
+	}
+	return nullptr;
 }
 
 

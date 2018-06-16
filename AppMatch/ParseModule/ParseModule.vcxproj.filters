@@ -19,80 +19,12 @@
     <Filter Include="Header\Parser">
       <UniqueIdentifier>{a0934d6f-083b-483d-9310-881e58035eb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\english">
+      <UniqueIdentifier>{f5485886-d3d4-456b-ac9a-20907eb781a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\AppMatch\ParseAssertationSecondary.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CParseAux.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParseListAux.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParserDynamicDispatch.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParseRelation.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParseRelationWhen.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParserPlural_table.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParserSelectorFunctional.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParserStmt.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParserTextEntry.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_A.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_ActionControl.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_ControlFlux.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_Decide.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_expression_match.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_Plurals_En.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_RegisterVerb.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parser_VerbTable_en.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\ParseVerbs.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parse_TokensGroup.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\StaticDispatchFunctions.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Parse_PhraseDeclare.cpp">
-      <Filter>Source\Parser</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AppMatch\CResultMatch.hpp">
@@ -107,5 +39,85 @@
     <ClInclude Include="..\AppMatch\verb_en.hpp">
       <Filter>Header\Parser</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\parser\CParseAux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parse_PhraseDeclare.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parse_TokensGroup.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parse_verbArray_en.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseAssertationSecondary.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseDictionary.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseListAux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_A.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_ActionControl.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_ControlFlux.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_Decide.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_expression_match.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_Plurals_En.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_RegisterVerb.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\Parser_VerbTable_en.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParserDynamicDispatch.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseRelation.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseRelationWhen.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParserPlural_table.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParserSelectorFunctional.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParserStmt.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParserTextEntry.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\ParseVerbs.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\StaticDispatchFunctions.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser_Eng\Predicates.cpp">
+      <Filter>Source\english</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

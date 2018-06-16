@@ -156,35 +156,38 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\AppMatch\CParseAux.cpp" />
-    <ClCompile Include="..\AppMatch\ParseAssertationSecondary.cpp" />
-    <ClCompile Include="..\AppMatch\ParseListAux.cpp" />
-    <ClCompile Include="..\AppMatch\Parser.cpp" />
-    <ClCompile Include="..\AppMatch\ParserDynamicDispatch.cpp" />
-    <ClCompile Include="..\AppMatch\ParseRelation.cpp" />
-    <ClCompile Include="..\AppMatch\ParseRelationWhen.cpp" />
-    <ClCompile Include="..\AppMatch\ParserPlural_table.cpp" />
-    <ClCompile Include="..\AppMatch\ParserSelectorFunctional.cpp" />
-    <ClCompile Include="..\AppMatch\ParserStmt.cpp" />
-    <ClCompile Include="..\AppMatch\ParserTextEntry.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_A.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_ActionControl.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_ControlFlux.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_Decide.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_expression_match.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_Plurals_En.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_RegisterVerb.cpp" />
-    <ClCompile Include="..\AppMatch\Parser_VerbTable_en.cpp" />
-    <ClCompile Include="..\AppMatch\ParseVerbs.cpp" />
-    <ClCompile Include="..\AppMatch\Parse_PhraseDeclare.cpp" />
-    <ClCompile Include="..\AppMatch\Parse_TokensGroup.cpp" />
-    <ClCompile Include="..\AppMatch\StaticDispatchFunctions.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\AppMatch\CResultMatch.hpp" />
     <ClInclude Include="..\AppMatch\Parser.hpp" />
     <ClInclude Include="..\AppMatch\ParserPlural.hpp" />
     <ClInclude Include="..\AppMatch\verb_en.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\parser\CParseAux.cpp" />
+    <ClCompile Include="..\src\parser\ParseAssertationSecondary.cpp" />
+    <ClCompile Include="..\src\parser\ParseDictionary.cpp" />
+    <ClCompile Include="..\src\parser\ParseListAux.cpp" />
+    <ClCompile Include="..\src\parser\Parser.cpp" />
+    <ClCompile Include="..\src\parser\ParserDynamicDispatch.cpp" />
+    <ClCompile Include="..\src\parser\ParseRelation.cpp" />
+    <ClCompile Include="..\src\parser\ParseRelationWhen.cpp" />
+    <ClCompile Include="..\src\parser\ParserPlural_table.cpp" />
+    <ClCompile Include="..\src\parser\ParserSelectorFunctional.cpp" />
+    <ClCompile Include="..\src\parser\ParserStmt.cpp" />
+    <ClCompile Include="..\src\parser\ParserTextEntry.cpp" />
+    <ClCompile Include="..\src\parser\Parser_A.cpp" />
+    <ClCompile Include="..\src\parser\Parser_ActionControl.cpp" />
+    <ClCompile Include="..\src\parser\Parser_ControlFlux.cpp" />
+    <ClCompile Include="..\src\parser\Parser_Decide.cpp" />
+    <ClCompile Include="..\src\parser\Parser_expression_match.cpp" />
+    <ClCompile Include="..\src\parser\Parser_Plurals_En.cpp" />
+    <ClCompile Include="..\src\parser\Parser_RegisterVerb.cpp" />
+    <ClCompile Include="..\src\parser\Parser_VerbTable_en.cpp" />
+    <ClCompile Include="..\src\parser\ParseVerbs.cpp" />
+    <ClCompile Include="..\src\parser\Parse_PhraseDeclare.cpp" />
+    <ClCompile Include="..\src\parser\Parse_TokensGroup.cpp" />
+    <ClCompile Include="..\src\parser\Parse_verbArray_en.cpp" />
+    <ClCompile Include="..\src\parser\StaticDispatchFunctions.cpp" />
+    <ClCompile Include="..\src\parser_Eng\Predicates.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

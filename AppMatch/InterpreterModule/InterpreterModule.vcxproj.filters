@@ -21,82 +21,82 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\AppMatch\AssertationDefaultValue.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\AssertationEngine.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockInterpreterRuntime.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockInterpreter_Verb_En.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CInterpreterEvaluate.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CInterpreterRelation.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CInterpreterResolveMatchSeletor.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CResultMatch.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CVariableGlobals.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpExecute.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpFunctionsCallcpp.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpreterListedFunctions.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpreterMatch.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpreterRelationEngine.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\AssertationVerbRelation.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\AssertionValues.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockInterpreterDecideBody.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CInterpreterKindTree.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CInterpreterResolve.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CreateInstanceInterpreter.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\InterpreterQuery.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\QueryItem.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\RuntimeErrors.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\Interpreter_Adapt_Text.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\AppMatch\CBlockInterpreterRuntime.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\interpreter\AssertationDefaultValue.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\AssertationEngine.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\AssertationVerbRelation.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\AssertionValues.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CBlockInterpreter_Verb_En.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CBlockInterpreterDecideBody.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CBlockInterpreterRuntime.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterEvaluate.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterKindTree.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterRelation.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterResolve.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterResolveMatchSeletor.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CInterpreterRuntimeExecute.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CreateInstanceInterpreter.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\CVariableGlobals.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpExecute.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpFunctionsCallcpp.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\Interpreter_Adapt_Text.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpreterListedFunctions.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpreterMatch.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpreterQuery.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\InterpreterRelationEngine.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\QueryItem.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interpreter\RuntimeErrors.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

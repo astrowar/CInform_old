@@ -128,68 +128,62 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\AppMatch\BlockisSame.cpp">
+    <ClCompile Include="..\src\Block\BlockInstance.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockCommand.cpp">
+    <ClCompile Include="..\src\Block\BlockInterpreter.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockNumber.cpp">
+    <ClCompile Include="..\src\Block\BlockisSame.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockSerialize.cpp">
+    <ClCompile Include="..\src\Block\BlockTypeEnum.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CDataMananger.cpp">
+    <ClCompile Include="..\src\Block\CBlockAction.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\dynamicCast.cpp">
+    <ClCompile Include="..\src\Block\CBlockCommand.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\BlockInstance.cpp">
+    <ClCompile Include="..\src\Block\CBlockCompostion.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\BlockInterpreter.cpp">
+    <ClCompile Include="..\src\Block\CBlockDecideIf.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBase.cpp">
+    <ClCompile Include="..\src\Block\CBlockDumpValues.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockDumpValues.cpp">
+    <ClCompile Include="..\src\Block\CBlockNumber.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\sharedCast.cpp">
+    <ClCompile Include="..\src\Block\CBlockSerialize.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CMatchCombinatoria.cpp">
+    <ClCompile Include="..\src\Block\dynamicCast.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Block\sharedCast.cpp">
+      <Filter>Source\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\base\CBase.cpp">
       <Filter>Source\Match</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CMatchListValid.cpp">
+    <ClCompile Include="..\src\base\CMatch.cpp">
       <Filter>Source\Match</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CMatch.cpp">
+    <ClCompile Include="..\src\base\CMatchCombinatoria.cpp">
       <Filter>Source\Match</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\serialize_tp.cpp">
-      <Filter>Source\Block</Filter>
+    <ClCompile Include="..\src\base\CMatchListValid.cpp">
+      <Filter>Source\Match</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\store_tp.cpp">
-      <Filter>Source\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\save_ctx.cpp">
+    <ClCompile Include="..\src\Block\save_ctx.cpp">
       <Filter>Source\save_ctx</Filter>
     </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockAction.cpp">
-      <Filter>Source\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\load_ctx.cpp">
+    <ClCompile Include="..\src\Block\store_tp.cpp">
       <Filter>Source\save_ctx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockCompostion.cpp">
-      <Filter>Source\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="..\AppMatch\CBlockDecideIf.cpp">
-      <Filter>Source\Block</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

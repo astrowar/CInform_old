@@ -156,33 +156,33 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\AppMatch\AssertationDefaultValue.cpp" />
-    <ClCompile Include="..\AppMatch\AssertationEngine.cpp" />
-    <ClCompile Include="..\AppMatch\AssertationVerbRelation.cpp" />
-    <ClCompile Include="..\AppMatch\AssertionValues.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockInterpreterDecideBody.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockInterpreterRuntime.cpp" />
-    <ClCompile Include="..\AppMatch\CBlockInterpreter_Verb_En.cpp" />
-    <ClCompile Include="..\AppMatch\CInterpreterEvaluate.cpp" />
-    <ClCompile Include="..\AppMatch\CInterpreterKindTree.cpp" />
-    <ClCompile Include="..\AppMatch\CInterpreterRelation.cpp" />
-    <ClCompile Include="..\AppMatch\CInterpreterResolve.cpp" />
-    <ClCompile Include="..\AppMatch\CInterpreterResolveMatchSeletor.cpp" />
-    <ClCompile Include="..\AppMatch\CreateInstanceInterpreter.cpp" />
-    <ClCompile Include="..\AppMatch\CResultMatch.cpp" />
-    <ClCompile Include="..\AppMatch\CVariableGlobals.cpp" />
-    <ClCompile Include="..\AppMatch\InterpExecute.cpp" />
-    <ClCompile Include="..\AppMatch\InterpFunctionsCallcpp.cpp" />
-    <ClCompile Include="..\AppMatch\InterpreterListedFunctions.cpp" />
-    <ClCompile Include="..\AppMatch\InterpreterMatch.cpp" />
-    <ClCompile Include="..\AppMatch\InterpreterQuery.cpp" />
-    <ClCompile Include="..\AppMatch\InterpreterRelationEngine.cpp" />
-    <ClCompile Include="..\AppMatch\Interpreter_Adapt_Text.cpp" />
-    <ClCompile Include="..\AppMatch\QueryItem.cpp" />
-    <ClCompile Include="..\AppMatch\RuntimeErrors.cpp" />
+    <ClInclude Include="..\AppMatch\CBlockInterpreterRuntime.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\AppMatch\CBlockInterpreterRuntime.hpp" />
+    <ClCompile Include="..\src\interpreter\AssertationDefaultValue.cpp" />
+    <ClCompile Include="..\src\interpreter\AssertationEngine.cpp" />
+    <ClCompile Include="..\src\interpreter\AssertationVerbRelation.cpp" />
+    <ClCompile Include="..\src\interpreter\AssertionValues.cpp" />
+    <ClCompile Include="..\src\interpreter\CBlockInterpreterDecideBody.cpp" />
+    <ClCompile Include="..\src\interpreter\CBlockInterpreterRuntime.cpp" />
+    <ClCompile Include="..\src\interpreter\CBlockInterpreter_Verb_En.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterEvaluate.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterKindTree.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterRelation.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterResolve.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterResolveMatchSeletor.cpp" />
+    <ClCompile Include="..\src\interpreter\CInterpreterRuntimeExecute.cpp" />
+    <ClCompile Include="..\src\interpreter\CreateInstanceInterpreter.cpp" />
+    <ClCompile Include="..\src\interpreter\CVariableGlobals.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpExecute.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpFunctionsCallcpp.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpreterListedFunctions.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpreterMatch.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpreterQuery.cpp" />
+    <ClCompile Include="..\src\interpreter\InterpreterRelationEngine.cpp" />
+    <ClCompile Include="..\src\interpreter\Interpreter_Adapt_Text.cpp" />
+    <ClCompile Include="..\src\interpreter\QueryItem.cpp" />
+    <ClCompile Include="..\src\interpreter\RuntimeErrors.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
