@@ -1,0 +1,19 @@
+thing is an kind of entity
+
+Poe is an thing
+a apple is an thing
+an key is an thing
+some coins  is an thing
+the book is an thing
+the nose is an thing
+indefinite article of nose is (text your)
+
+unit test :
+   pass
+assert:   indefinite article of Poe is nothing
+assert:   indefinite article of apple is (text a)
+assert:   indefinite article of key is (text an)
+assert:   indefinite article of coins is (text some)
+assert:   indefinite article of book is (text the)
+assert:   indefinite article of nose is (text your)
+ 

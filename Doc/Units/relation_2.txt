@@ -1,0 +1,17 @@
+person is an kind of entity
+
+Meeting relates people to each other
+the verb  meet  implies a  meeting relation 
+bob is a person
+joe is a person
+mary is a person
+
+
+unit test :
+    now bob meet mary
+assert :  bob  meet mary
+assert :  mary meet bob
+
+assert :  mary relates to  bob by the meeting relation
+assert :  joe  not relates to  mary by the meeting relation
+

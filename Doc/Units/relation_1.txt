@@ -1,0 +1,17 @@
+thing is an kind of entity
+unloking relates (a thing ) to various things
+the verb  unlock  implies a  unloking relation
+the verb ( unlocked by ) implies a reverse  unloking relation 
+key is a thing
+box is a thing
+apple is a thing
+
+
+unit test :
+    now key unlock box
+assert :  key unlock box
+assert :  box is unlocked by key
+assert :  apple not unlock box
+assert :  apple is not unlocked by box
+assert :  key is not unlock by apple
+assert :  apple is not unlocked by key

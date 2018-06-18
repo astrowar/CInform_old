@@ -253,4 +253,5 @@ paket-files/
 .idea/
 *.sln.iml
 /cmake-build-debug
+CMakeFiles/
 *.bak

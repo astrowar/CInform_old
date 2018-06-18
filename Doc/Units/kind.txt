@@ -1,0 +1,12 @@
+thing is an kind of entity
+thing can be fixed or portable
+
+door is an kind of thing
+door is always fixed
+
+portal is an door
+
+
+unit test :
+   now portal is portable
+assert:  portal is fixed
