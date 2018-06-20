@@ -16,8 +16,8 @@ using namespace QueryStacking;
 #include "Parser\ParserPlural.hpp"
 
 namespace Auxiliar  {
-	bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
-
+	//bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
+	bool  BothAreSpaces(char lhs, char rhs) ;
 	string complex_viewPoint(string person, string number, string gender)
 	{
 		string s = "";

@@ -10,6 +10,8 @@
 
 
 #include "BlockInterpreter.hpp"
+#include "interpreter/CBlockInterpreterRuntime.hpp"
+
  
 #include "CblockAssertion.hpp"
 #include "interpreter/QueryStack.hpp"
@@ -17,7 +19,7 @@
 #include "dynamicCast.hpp"
 #include "sharedCast.hpp"
 #include <cassert>
- #include "interpreter/CBlockInterpreterRuntime.hpp"
+
 
 using namespace std;
 

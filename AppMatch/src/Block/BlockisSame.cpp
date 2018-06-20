@@ -19,8 +19,9 @@
 #include <algorithm>
 using namespace CBlocking;
 
-namespace Auxiliar {
-	bool  BothAreSpaces(char lhs, char rhs);
+namespace Auxiliar
+{
+	bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
 }
 
 namespace CBlocking {
@@ -286,7 +287,7 @@ namespace CBlocking {
 	}
 }
 
-bool CBlock::isSame(CBlock* b1, CBlock* b2)
+ bool CBlock::isSame(CBlock* b1, CBlock* b2)
 {
 	if (b1 == b2) return true;
 	if (b1 == nullptr && b2 != nullptr) return false;

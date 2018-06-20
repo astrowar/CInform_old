@@ -16,7 +16,7 @@ set(SOURCE_FILES_PARSER
         AppMatch/src/parser/ParserDynamicDispatch.cpp
         AppMatch/src/parser/ParseRelation.cpp
         AppMatch/src/parser/ParseRelationWhen.cpp
-        AppMatch/src/parser/ParserPlural_table.cpp
+
         AppMatch/src/parser/ParserSelectorFunctional.cpp
         AppMatch/src/parser/ParserStmt.cpp
         AppMatch/src/parser/ParserTextEntry.cpp
@@ -64,11 +64,21 @@ set(SOURCE_FILES_BASE
         AppMatch/src/base/CMatchListValid.cpp
 )
 
+
 set(SOURCE_FILES_COMPILER
           AppMatch/src/compiler/CInformCompiler.cpp 
 )
 
 set(SOURCE_FILES_INTERPRETER
+        AppMatch/src/interpreterMain/CInformInterpreter.cpp
+        AppMatch/src/parser_Eng/ParserPlural_table.cpp
+        AppMatch/src/parser/Parser_Plurals_En.cpp
+        AppMatch/src/parser/Parser_VerbTable_en.cpp
+        )
+
+
+
+set(SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/AssertationDefaultValue.cpp
         AppMatch/src/interpreter/AssertationEngine.cpp
         AppMatch/src/interpreter/AssertationVerbRelation.cpp
@@ -93,6 +103,7 @@ set(SOURCE_FILES_INTERPRETER
         AppMatch/src/interpreter/Interpreter_Adapt_Text.cpp
         AppMatch/src/interpreter/QueryItem.cpp
         AppMatch/src/interpreter/RuntimeErrors.cpp
+        AppMatch/src/interpreter/CResultMatch.cpp
 )
 
 
@@ -217,6 +228,17 @@ set(SOURCE_FILES
 
         )
 
+
+
+add_library(BaseLibrary  ${SOURCE_FILES_BASE})
+add_library(BlockLibrary  ${SOURCE_FILES_BLOCK})
+add_library(ParseLibrary  ${SOURCE_FILES_PARSER})
+add_library(interpreterRuntimeLibrary  ${SOURCE_FILES_INTERPRETERRUNTIME})
+
 #add_executable(CInformCompiler ${SOURCE_FILES}  )
-add_executable(CInformCompiler ${SOURCE_FILES_COMPILER} ${SOURCE_FILES_BLOCK} ${SOURCE_FILES_BASE} ${SOURCE_FILES_PARSER} )
-add_executable(CInformInterpreter ${SOURCE_FILES_COMPILER} ${SOURCE_FILES_BLOCK} ${SOURCE_FILES_BASE} ${SOURCE_FILES_PARSER} )
+add_executable(CInformCompiler ${SOURCE_FILES_COMPILER}   )
+add_executable(CInformInterpreter ${SOURCE_FILES_INTERPRETER}    )
+
+
+target_link_libraries (CInformCompiler    ParseLibrary BlockLibrary BaseLibrary)
+target_link_libraries (CInformInterpreter     interpreterRuntimeLibrary BlockLibrary BaseLibrary)

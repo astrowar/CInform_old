@@ -1,3 +1,9 @@
+#include <utility>
+
+#include <utility>
+
+#include <utility>
+
 // PVS
 // PVQ
 
@@ -10,8 +16,8 @@
 
 
 #include "BlockInterpreter.hpp"
-
-#include <interpreter/QueryStack.hpp>
+#include <string>
+#include "interpreter/QueryStack.hpp"
 
 
 using namespace CBlocking;
@@ -41,19 +47,19 @@ namespace QueryStacking {
 	void QueryStack::add_phase_execution(CBlocking::HBlock action, CBlocking::HBlock b1, CBlocking::HBlock b2)
 	{
 		std::array<HBlock, 3> x;
-		x[0] = action;
-		x[1] = b1;
-		x[2] = b2;
+		x[0] = std::move(action);
+		x[1] = std::move(b1);
+		x[2] = std::move(b2);
 		execution_stack.push_back(x);
 	}
 
 	void QueryStack::addQuery(string vb, HBlock b1, HBlock b2) {
-		items.push_back(QueryItem(vb, b1, b2));
+		items.emplace_back(vb, b1, b2);
 	}
 
 	void QueryStack::addQuery(string _verb, CBlocking::HBlock route_object_ptr, CBlocking::HBlock b1, CBlocking::HBlock b2)
 	{
-		itemsRoute.push_back(QueryItemRoute(_verb, route_object_ptr, b1, b2));
+		itemsRoute.emplace_back(_verb, route_object_ptr, b1, b2);
 	}
 
 
@@ -77,7 +83,7 @@ namespace QueryStacking {
 
 	int QueryStack::size() const
 	{
-		return items.size();
+		return static_cast<int>(items.size());
 	}
 
 	void  QueryStack::dump()
@@ -142,7 +148,7 @@ namespace QueryStacking {
 			stk_unique = std::make_unique<QueryStack>();
 		}
 
-		QueryStack *stk = stk_unique.get();
+		//QueryStack *stk = stk_unique.get();
 
 		return stk_unique;
 	}

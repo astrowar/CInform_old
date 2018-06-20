@@ -8,11 +8,13 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
+
+#include "interpreter/CBlockInterpreterRuntime.hpp"
 #include "interpreter/QueryStack.hpp"
 #include "CResultMatch.hpp"
 
 #include <algorithm>
-#include "interpreter/CBlockInterpreterRuntime.hpp"
+
 #include "sharedCast.hpp"
 #include <cstring>
 using namespace std;

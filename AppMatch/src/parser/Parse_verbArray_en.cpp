@@ -1437,7 +1437,7 @@ const char* const vwords[] =
  "yarned", "yarning", "yarns", "yarn", "yawed", "yawing", "yawned", "yawning", "yawns", "yawn", "yaws", "yaw", "yearned", "yearning", "yearns", "yearn", "yelled", "yelling", "yellowed", "yellowing", "yellows", "yellow", "yells", "yell", "yelped", "yelping",
  "yelps", "yelp", "yielded", "yielding", "yields", "yield", "yoked", "yokes", "yoke", "yoking", "yowled", "yowling", "yowls", "yowl", "zapped", "zapping", "zaps", "zap", "zeroed", "zeroes", "zeroing", "zeros", "zero", "zig-zagged", "zigzagged", "zig-zagging",
  "zigzagging", "zig-zags", "zigzags", "zig-zag", "zigzag", "zipped", "zipping", "zips", "zip", "zoned", "zones", "zone", "zoning", "zoomed", "zooming", "zooms", "zoom"}; 
-const int const v_table[] = { 
+ int const v_table[] = {
 0   , 0 , 0   , 0 , 1   , 1 , 2   , 1 , 3   , 2 , 4   , 3 , 5 , -1  ,
 1   , 4 , 0   , 4 , 1   , 5 , 2   , 5 , 3   , 6 , 5   , 11 , 4 , -1  ,
 2   , 7 , 0   , 7 , 1   , 8 , 2   , 8 , 3   , 9 , 5   , 10 , 4 , -1  ,
