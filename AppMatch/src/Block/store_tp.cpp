@@ -6,7 +6,9 @@
 #include "CBlockControlFlux.hpp"
 #include "CBlockComposition.hpp"
 #include "sharedCast.hpp"
-
+#include <algorithm>
+#include <cctype>
+#include <locale>
 
 /*
 
@@ -162,24 +164,37 @@ public:
 
 	std::string   get_line()
 	{
-		for(int i = cursor; i < data.size();++i)
+		int scursor = cursor; //nao varia o cursor
+		for(int i = scursor; i < data.size();++i)
 		{
-			if (data[i] == '\n')   
+			if ((data[i] == '\n') || (data[i] == '\r'))
 			{ 
-				auto ret = data.substr(cursor, i - cursor);
-			    cursor = i + 1;
+				auto ret = data.substr(scursor, i - scursor);
+				scursor = i + 1;
 			    return ret;
 			}
 		}
-		return  data.substr(cursor, data.size() - cursor);
+		return  data.substr(scursor, data.size() - scursor);
 	};
+
+	bool is_empty_line()
+	{
+		if (cursor >= data.size()) return true;
+		std::string s = get_line();
+		s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {	return !std::isspace(ch); }));
+		s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {	return !std::isspace(ch);}).base(), s.end());
+		return s.size() == 0;
+	}
+
 
 	std::string   load_item()
 	{
+        printf("item %.10s \n", data.c_str()+cursor);
 		while (data[cursor] == ' ') cursor++;
 		for (int i = cursor; i < data.size(); ++i)
 		{
-			if (data[i] == ' ')
+			//if ((data[i] == ' ')||(data[i] == '\n')||(data[i] == '\r')||(data[i] == '\t') )
+			if (data[i] == ' ') 
 			{
 				auto ret = data.substr(cursor, i - cursor);
 				cursor = i + 1;
@@ -226,7 +241,12 @@ public:
 	};
 	void new_line()
 	{
-		while (data[cursor] != '\n') cursor++;
+		if (cursor >= data.size()) return;
+		while (data[cursor] != '\n')
+		{
+			cursor++;
+			if (cursor >= data.size()) return;
+		}
 		cursor++; //posicao na proxima linha
 	};
 	bool end_file() 
@@ -252,6 +272,9 @@ int load_int(LoadContext *ctx)
 {
 	return ctx->load_int();
 }
+
+ 
+
 
 float load_float(LoadContext *ctx)
 {
@@ -321,18 +344,29 @@ void cmp_type(int tp, BlockType t)
  
 HBlock load_CBlock(int tp, LoadContext *ctx);
 
+ 
+
+
 HBlock load_line(LoadContext *ctx)
 {
+	auto s = ctx->get_line(); 
+	printf("Line:|%s|\n", s.c_str());
 	const int slot_id = load_int(ctx);
 	const HBlock _b = load_CBlock(-1, ctx);
 	ctx->cache[slot_id] = _b;
 	ctx->new_line(); //le o new line do arquivo
+	while (ctx->is_empty_line())
+	{
+		ctx->new_line();
+		if (ctx->end_file()) break;
+	}
 	return _b;
 }
 
 HBlock load_file(LoadContext *ctx)
 {
 	HBlock last = nullptr;
+
 	while (ctx->end_file() ==false )
 	{
 		last = load_line(ctx);

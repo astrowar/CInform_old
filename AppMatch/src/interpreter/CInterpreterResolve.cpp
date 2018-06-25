@@ -277,6 +277,104 @@ HBlock CBlockInterpreter::resolve_if_noum(HBlock  n, HRunLocalScope localsEntry,
 	return n;
 }
 
+
+std::vector<std::string> splited_words(std::string s)
+{
+	std::vector<std::string> lst;
+	int i1 = 0;
+	int i2 = 1;
+	int n = s.size();
+	while(i1 < n)
+	{
+		
+		while ((i1 < n) && (isspace(s[i1])))
+		{
+			i1++;
+		}
+		if (i1 >= n) return lst;
+		i2 = i1 + 1;
+		while ((i2 < n) && (isspace(s[i2]) == false) )
+		{
+			i2++;
+		}
+		//word = i1-i2
+		if (i2 != i1)
+		{
+			auto w = s.substr(i1, i2 - i1);
+			lst.push_back(w);
+			i1 = i2;
+		}
+	}
+
+	return lst;
+	
+
+}
+
+
+HBlockNoum asConcatenateNoum(std::vector<std::string>::iterator a, std::vector<std::string>::iterator b)
+{
+	if (a == b) return nullptr;
+	std::string s = "";
+	bool first = true;
+	for (auto it = a; it != b; ++it)
+	{
+		if (first) { s =  *it; }
+		else { s = s+=" "+ (*it); }
+		first = false;
+	}
+
+	return std::make_shared<CBlockNoumStr>(s);
+}
+
+
+std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HBlockNoum noum, HRunLocalScope localsEntry)
+{
+
+
+	// recorda o j-1
+	std::vector<std::string> sw = splited_words(noum->named);
+
+	//printf("%s :", noum->named.c_str());
+	//for (auto w : sw)
+	//{
+	//	printf("|%s|", w.c_str());
+	//}
+	//printf("\n");
+
+
+	int nw = sw.size();
+
+
+	for (int i = 0; i < nw; ++i)
+	{
+		HBlockNoum head = asConcatenateNoum(sw.begin(), sw.begin() + i);
+		HBlockNoum tail = asConcatenateNoum(sw.begin() + i, sw.end());
+		//if (head == nullptr) continue;
+		if (tail == nullptr) continue;
+
+		//if (head != nullptr) head->dump("H ");
+		//if (tail != nullptr) tail->dump("T ");
+		//printf("--------------------------------------------------------\n");
+
+
+		for (auto s : this->symbols)
+		{
+			if (HBlockKind k = asHBlockKind(s.second))
+			{
+				if (s.first == tail->named)
+				{
+					return std::pair<HBlockNoum, HBlockKind >(head, k);
+				}
+			}
+		}
+	}
+
+
+	return std::pair<HBlockNoum, HBlockKind >(nullptr, nullptr);
+}
+
+
  
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry)
@@ -350,6 +448,7 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 
 	for (auto s : symbols)
 	{
+		//printf("%s is %s ? \n",s.first.c_str(), named.c_str());
 		if (s.first == named)
 		{
 			return s.second;

@@ -1,3 +1,6 @@
+ 
+
+
 carry out eating  bad (thing called X )   :
     say (text bad eating)
 
@@ -24,13 +27,20 @@ assert:  apple  is not  rough
 
 
 unit init :
-   people is an kind of entity 
+   people is a kind of entity 
    people can be evasive or elusive
-   people is usually evasive
-   Thomas is an elusive people
+   people can be male or female
+   people can be blond , red head or  brown
+   people is usually male    
+   people is usually evasive    
+   Thomas is elusive people
    Bob is an people
+   Mary is an red head ,female, elusive people
    
 unit test :
    pass
 assert : Thomas is elusive   
 assert : Bob is evasive
+assert : Mary is female
+assert : Mary is red head
+ 

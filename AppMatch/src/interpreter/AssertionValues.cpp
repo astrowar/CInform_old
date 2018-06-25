@@ -318,17 +318,35 @@ bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock 
 
 bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBlock baseKind, HRunLocalScope localsEntry) {
 
-    if (HBlockList nobjList = asHBlockList(obj))
+    if (HBlockList baseList = asHBlockList(baseKind))
     {
-        for (auto &e : nobjList->lista) {
-            assert_it_instance(e, baseKind, localsEntry);
-        }
+
+		//bool p1 = assert_it_instance(obj, baseList->lista.back(), localsEntry);
+
+		for (auto ee = baseList->lista.rbegin(); ee != baseList->lista.rend(); ++ee)
+		{
+			assert_assertation(obj, *ee, localsEntry);
+		}
+        
         return true;
     }
 
+	if (HBlockList nobjList = asHBlockList(obj))
+	{
+
+		for (auto &e : nobjList->lista)
+		{
+			assert_it_instance(e, baseKind, localsEntry);
+		}
+		return true;
+	}
+
+
+
 	if (HBlockList_AND nobjList = asHBlockList_AND(obj))
 	{
-		for (auto &e : nobjList->lista) {
+		for (auto &e : nobjList->lista) 
+		{
 			assert_it_instance(e, baseKind, localsEntry);
 		}
 		return true;
@@ -341,6 +359,22 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
         {
             return assert_it_instance(obj, bbase, localsEntry);
         }
+
+
+		std::pair<HBlockNoum, CBlocking::HBlockKind>  descritive_kind = resolve_descritive_kind(nbaseKind, localsEntry);
+		if (descritive_kind.second != nullptr)
+		{
+			 bool p1 =  assert_it_instance(obj, descritive_kind.second, localsEntry);
+			 if (p1)
+			 {
+				 return assert_it_Value(obj, descritive_kind.first, localsEntry); 
+			 }
+			 else
+			 {
+				  
+				 return false;
+			 }
+		}
         else
         {
             logError("Kind not found " + nbaseKind->named);

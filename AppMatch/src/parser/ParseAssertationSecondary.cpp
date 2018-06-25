@@ -463,12 +463,14 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
 			return std::make_shared<CBlockAssertion_isNotDirectAssign>(noum, value);
 		}
 	}
+
+ 
+
+
 	{
 		// is a kind definition ??
 		 
-		  CPredSequence predList  = pAny("Noum")	<<verb_IS()  <<pAny("Value");
-	 
-
+		CPredSequence predList  = pAny("Noum")	<<verb_IS()  <<pAny("Value"); 
 		MatchResult res = CMatch(term, predList);
 
 		if (res.result == Equals) {

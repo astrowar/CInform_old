@@ -1,4 +1,4 @@
-static const noumConj noms[] = {
+constexpr static const noumConj noms[] = {
 {"a","a",NN},
 {"aardvark","aardvark",NN},
 {"aardvarks","aardvark",NNS},

@@ -1418,7 +1418,7 @@ PhaseResult  CBlockInterpreter::execute_now(HBlock p) //executa STMT
 	if (b.hasExecuted == false)
 	{
 		logWarring("fail to execute ");
-		p->dump("");
+		p->dump(">");
 		logWarring("fail to execute ");
 	 
 	}
@@ -1635,6 +1635,11 @@ HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCal
 
 PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack *stk ) //executa STMT
 {	 
+	if (asHBlockNothing(p) != nullptr)
+	{
+		return PhaseResult(true);
+	}
+
 	if (HBlockComandList  vCommandList= asHBlockComandList(p))
 	{
 		 

@@ -43,9 +43,10 @@ std::list<HBlockVerbConjugation> CBlockInterpreter::get_verb_conjugations(std::s
 		if (verb_eng.verbs[i].verb == verb)
 		{
 			auto &ventry = verb_eng.verbs[i];
-			int nk = ventry.tenses.size();
-			for (auto &ve : ventry.tenses)
+			int nk = ventry.n;
+			for (int j = 0; j< nk;++j)
 			{
+				auto ve = ventry.tenses[j];
 				auto vj = std::make_shared<CBlockVerbConjugation>(std::string(ve.world), std::string(ve.tense));
 				vlist.push_back(vj);
 
@@ -100,7 +101,7 @@ HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScop
 	 
 
 	auto pSingle = singular_of(n , &plural_tab);
-	if (pSingle.empty() == false)
+	if (!pSingle.empty())
 	{
 		return std::make_shared<CBlockNoumSupl>(n , "plural", "neutral");
 	}

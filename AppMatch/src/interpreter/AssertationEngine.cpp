@@ -61,6 +61,10 @@ void CBlockInterpreter::start()
 					asrt->dump(" ");
 					printf("\n");
 				}
+				else
+				{
+					printf("Assertion Pass \n");
+				}
 			}
 			
 

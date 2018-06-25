@@ -129,11 +129,14 @@ int main(int argc, char **argv)
 
     if (!iflags.files.empty())
     {
-
+        printf("begin Loading\n");
         auto bytecodeContents = load_file_i(iflags.files.front());
+        printf("end Loading\n");
 
         LoadContext lx= LoadContext(bytecodeContents);
+        printf("begin Parse\n");
         auto h = load_file(&lx);
+        printf("end Parse\n");
         h->dump(" ");
 
         Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>();

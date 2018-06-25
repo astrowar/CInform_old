@@ -31,18 +31,23 @@ std::list<HBlockVerbConjugation> NSParser::ParseGrammar::get_verb_conjugations( 
 		if (verb_eng.verbs[i].verb == verb)
 		{
 			auto &ventry = verb_eng.verbs[i];
-			int nk = ventry.tenses.size();
-			for (auto &ve : ventry.tenses)
+			int nk = ventry.n;
+			for (int j = 0; j< nk;++j)
 			{
-				auto vj = std::make_shared<CBlockVerbConjugation>(  std::string( ve.world ), std::string(ve.tense));
+				auto ve = ventry.tenses[j];
+				auto vj = std::make_shared<CBlockVerbConjugation>(std::string(ve.world), std::string(ve.tense));
 				vlist.push_back(vj);
-				 
+
 			} 
 			break;
 		}
 	} 
 	return  vlist; 
 }
+
+
+
+
 
 //register verb funciona como um load especifico de um conjunto de verbos
 HBlock NSParser::ParseGrammar::STMT_register_verb(CParser * p, std::vector<HTerm>& term, HGroupLines inner, ErrorInfo* err)

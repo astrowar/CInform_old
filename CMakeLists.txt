@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 project(CInform)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -fno-exceptions -fno-rtti  ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -fno-exceptions -fno-rtti -g ")
 
 include_directories( AppMatch/include/ )
 
@@ -54,6 +54,7 @@ set(SOURCE_FILES_BLOCK
         AppMatch/src/Block/save_ctx.cpp
         AppMatch/src/Block/sharedCast.cpp
         AppMatch/src/Block/store_tp.cpp
+
 )
 
 
@@ -71,14 +72,14 @@ set(SOURCE_FILES_COMPILER
 
 set(SOURCE_FILES_INTERPRETER
         AppMatch/src/interpreterMain/CInformInterpreter.cpp
-        AppMatch/src/parser_Eng/ParserPlural_table.cpp
+        AppMatch/src/parser/ParserPlural_table.cpp
         AppMatch/src/parser/Parser_Plurals_En.cpp
         AppMatch/src/parser/Parser_VerbTable_en.cpp
         )
 
 
 
-set(SOURCE_FILES_INTERPRETERRUNTIME
+set( SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/AssertationDefaultValue.cpp
         AppMatch/src/interpreter/AssertationEngine.cpp
         AppMatch/src/interpreter/AssertationVerbRelation.cpp
@@ -104,6 +105,7 @@ set(SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/QueryItem.cpp
         AppMatch/src/interpreter/RuntimeErrors.cpp
         AppMatch/src/interpreter/CResultMatch.cpp
+
 )
 
 
@@ -233,7 +235,7 @@ set(SOURCE_FILES
 add_library(BaseLibrary  ${SOURCE_FILES_BASE})
 add_library(BlockLibrary  ${SOURCE_FILES_BLOCK})
 add_library(ParseLibrary  ${SOURCE_FILES_PARSER})
-add_library(interpreterRuntimeLibrary  ${SOURCE_FILES_INTERPRETERRUNTIME})
+add_library(interpreterRuntimeLibrary   ${SOURCE_FILES_INTERPRETERRUNTIME})
 
 #add_executable(CInformCompiler ${SOURCE_FILES}  )
 add_executable(CInformCompiler ${SOURCE_FILES_COMPILER}   )

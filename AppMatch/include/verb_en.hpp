@@ -5,22 +5,24 @@ typedef struct VERBTENSE
 {
 	const char* tense;
 	const char* world;
-	VERBTENSE(const char* t, const char* w) : tense(t), world(w) {}
+	constexpr VERBTENSE(const char* t, const char* w) : tense(t), world(w) {}
 }
 VERBTENSE;
 
 typedef struct VERBDEF
 {
 	const char* verb;
-	const std::vector<VERBTENSE>  tenses;
-	VERBDEF(const char* v, const std::vector<VERBTENSE> vv) : verb(v), tenses(vv) {}
+	const int n ;
+	const VERBTENSE*  tenses;
+	constexpr VERBDEF(const char* v,int _n , const VERBTENSE* vv) : verb(v), n(_n), tenses(vv) {}
 }
 VERBDEF;
 
 typedef struct VERBTABLE
 {
-	VERBDEF* verbs;
+	const VERBDEF* verbs;
 	long numEntries;
+    constexpr VERBTABLE(long _numEntries ,const VERBDEF* _verbs): numEntries(_numEntries),verbs(_verbs){}
 }VERBTABLE;
 
 VERBTABLE verb_table();
