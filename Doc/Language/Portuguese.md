@@ -1,4 +1,4 @@
-# Modulo para lingua Portuguesa
+ # Modulo para lingua Portuguesa
 
 Portugues é um idioma bem complexo e precisa ser tratado com cuidado. uma vez estabelecido as bases, fica mais facil portar os mesmos conceitos para as demais linguas latinas.
 
@@ -148,3 +148,18 @@ Aplicando o sou/estou
 
 Isso nos leva ao runtime parser. a peça que falta no interpreter. ler os comandos do user, entender e chamar os comandos em si.
 No caso do parser padrão, cada entrada do usuario. chama um action no parser.
+
+o comando do player segue a logica de before e after:
+Before reading a command:
+After reading a command:
+(the player's command) é a variavel que contem o texto de entrada
+
+para entender o parser interno devemos introduzir o comando  stack 
+
+    An list other location rule:   
+        stack (location of noun) as location:
+           follow (list room items) rule; 
+
+cada  stack armazena a varivel atual em uma stack, e puxa um novo valor. quando aquela variavel global for requisitada. sera o valor no topo da pilha.
+Ao sair do escopo do stack o valor volta a stack atual
+      
