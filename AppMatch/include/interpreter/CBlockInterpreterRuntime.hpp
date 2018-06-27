@@ -443,7 +443,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		HBlockKind resolve_kind(string n);
 		HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
-		std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HBlockNoum n, HRunLocalScope localsEntry);
+		std::pair<HBlockNoum, HBlockKind > resolve_descritive_kind(HBlockNoum n, HRunLocalScope localsEntry);
 		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
 		HBlock has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);
 		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);

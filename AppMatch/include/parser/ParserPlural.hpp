@@ -8,7 +8,7 @@ typedef struct PLURALTABLE
 	const char** plurals;
 	const int* plurals_idx; // plural id to singular id
 	const int* base_idx; // singular id to plural id
-    PLURALTABLE(int _n, const  char** _base, const  char** _plurals, const  int* _plurals_idx, const  int* _base_idx) :
+    constexpr  PLURALTABLE(int _n, const  char** _base, const  char** _plurals, const  int* _plurals_idx, const  int* _base_idx) :
             n(_n),
             base(_base),
             plurals(_plurals),
@@ -21,7 +21,7 @@ typedef struct PLURALTABLE
 } PLURALTABLE;
 
 
-PLURALTABLE plura_table(); // obtem a tabela de plurals
+ PLURALTABLE plura_table(); // obtem a tabela de plurals
 
 
 #include <string>

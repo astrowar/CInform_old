@@ -93,7 +93,7 @@ std::string CList::repr() {
 }
 
 CTerm *CList::removeArticle() {
-    if (this->lst.size() > 0) {
+    if (!this->lst.empty()) {
         if ((this->lst.front()->repr() == "a") || (this->lst.front()->repr() == "the") ||
             (this->lst.front()->repr() == "an")) {
 
@@ -104,7 +104,7 @@ CTerm *CList::removeArticle() {
                 return it->get()->removeArticle();
             }
 
-            CList *r = new CList();
+            auto *r = new CList();
             r->lst = this->lst;
             r->lst.pop_front();
             return r;

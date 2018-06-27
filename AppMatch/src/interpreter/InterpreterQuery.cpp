@@ -1,3 +1,5 @@
+#include <utility>
+
 // PVS
 // PVQ
 
@@ -45,41 +47,6 @@ std::list<HBlockRelationInstance> CBlockInterpreter::getRelations()
 	return  relInstances;
 }
 
-CBlockInterpreter::CBlockInterpreter() {
-	instancia_id = 0;
-	Nothing = make_shared<CBlockNothing>("nothing");
-	Anything = make_shared<CBlockAnything>("anything");
-
-	MetaKind = make_shared<CBlockKindNamed>("kind");
-	MetaKindRelation = make_shared<CBlockKindNamed>("relation");
-	MetaKindPhrase = make_shared<CBlockKindNamed>("phrase");
-	MetaKindEntity = make_shared<CBlockKindNamed>("entity");
-	 
-	  MetaKindBoolean = make_shared<CBlockKindNamed>("boolean");
-	  MetaKindAction = make_shared<CBlockKindNamed>("action");
-	  MetaKindList = make_shared<CBlockKindNamed>("list");
-	  MetaKindText = make_shared<CBlockKindNamed>("text");
-
-	  MetaKindAny = make_shared<CBlockKindNamed>("any");
-
-
-
-	symbols.emplace_back("kind", MetaKind);
-	symbols.emplace_back("relation", MetaKindRelation );
-	symbols.emplace_back("phrase", MetaKindPhrase );
-	symbols.emplace_back("entity", MetaKindEntity);
-	symbols.emplace_back("text", MetaKindText);
- 
-
-	symbols.emplace_back("anything", Anything);
-	symbols.emplace_back("nothing", Nothing);
- 
-
-}
-
-CBlockInterpreter::~CBlockInterpreter() {
-}
-
 
 
 //bool CBlockInterpreter::query_is_sameKind(CBlock* c_block, CBlock* c_block1)
@@ -113,7 +80,7 @@ QueryResultContext CBlockInterpreter::query_is_List(CBlock *c_block, CBlock *c_b
 QueryResultContext CBlockInterpreter::query_is_extern(HBlock c_block, HBlock c_block1)
 {
 	
-    return  query_is(c_block, c_block1,nullptr, nullptr);
+    return  query_is(std::move(c_block), std::move(c_block1),nullptr, nullptr);
 }
 
 

@@ -157,20 +157,20 @@ using namespace  CBlocking;
 class LoadContext
 {
 	std::string data;
-	int cursor;
+	size_t cursor;
 	
 public:
 	LoadContext(string _data);
 
 	std::string   get_line()
 	{
-		int scursor = cursor; //nao varia o cursor
-		for(int i = scursor; i < data.size();++i)
+		size_t scursor = cursor; //nao varia o cursor
+		for(size_t i = scursor; i < data.size();++i)
 		{
 			if ((data[i] == '\n') || (data[i] == '\r'))
 			{ 
 				auto ret = data.substr(scursor, i - scursor);
-				scursor = i + 1;
+
 			    return ret;
 			}
 		}
