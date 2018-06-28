@@ -105,43 +105,30 @@ using ListOfNamedValue = std::list<NamedValue>;
 	class CBlockInterpreter {
 
 
-
+		LanguageDepend* language;
 
 		std::vector<HBlock> program; // main program .. to run IT
 
 		std::list< std::pair<string, HBlock> > symbols;
-
 		std::list<HBlockActionNamed>  system_actions;
-
-
 		std::vector<HBlockInstance> instancias;
-
 		std::vector<HBlockInstanceVariable> instancias_vars;
 		std::vector<HBlockAssertionBase> assertions_functional; //To define and others
-
-
 		std::vector<NoumDefinition> nregisters;
 		std::vector<HBlockAssertion_is> assertions;
-
 		//Phases
 		std::list<HBlockPhraseDefine> phrases;
-
 		//Relations
 		std::map<string, HBlockRelationBase > staticRelation;
 		std::list<HBlockRelationInstance > relInstances;
-
-
 		//Verb to relation
 		std::list<  HBlockVerb > verbs;
 		std::map<string, HBlockVerbRelation > verbRelationAssoc;
 		std::map<string, std::list<HBlockAssertion_is> > verbAssertation;
-
-
 		std::vector<HBlockAssertionBase> dynamic_assertions;
 		std::vector<HBlockNoum> registred_adjetives;
 		std::vector<HBlockAssertion_is> kindDefinitions;
 		std::vector<HBlockVariableNamed> global_variables;
-		
 		std::vector<HBlockAssertion_isConstantAssign>  constant_assignments;
 		std::vector<HBlockAssertion_isForbiddenAssign>  forbiden_assignments;
 		std::vector<HBlockAssertion_isDefaultAssign> default_assignments;
@@ -193,14 +180,15 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::list<UnitTest_Env> unit_test;
 
 
-		//if (asHBlockText(c)) return true;
-		//if (asHBlockNothing(c)) return true;
-		//if (asHBlockBooleanValue(c)) return true;
-		//if (asHBlockList(c)) return true;
-		//if (asHBlockInstance(c)) return true;
-		//if (asHBlockRelationBase(c)) return true;
-		//if (asHBlockAction(c)) return true;
-		//if (asHBlockNamedValue(c)) return true;
+
+		CBlockInterpreter clone(); //create an clone of actual interpreter
+		
+
+
+
+
+
+
 
 
 	 
@@ -538,9 +526,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		HBlockNoum get_plural_of(string s);
 		HBlockNoum get_singular_of(string s);
-		bool isSameString(string s1, string s2);
+		bool isSameString(const string& s1, const string& s2);
 
-		LanguageDepend* language;
+
 	};
 
 	using  HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

@@ -39,3 +39,9 @@ Interpreter::CBlockInterpreter::CBlockInterpreter(LanguageDepend* language )
 
 Interpreter::CBlockInterpreter::~CBlockInterpreter() {
 }
+
+
+Interpreter::CBlockInterpreter   Interpreter::CBlockInterpreter::clone()
+{
+	return Interpreter::CBlockInterpreter(this->language);
+}

@@ -76,6 +76,8 @@ CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
 	assert(strchr(_value.c_str(), ',') == 0);
 	assert(strncmp(_value.c_str(), "the", 3) != 0);
 	assert(strncmp(_value.c_str(), "the", 3) != 0);
+	assert(strncmp(_value.c_str(), "to ", 3) != 0);
+
     assert(named[0] != '[');
 	assert(named[0] != '(');
 

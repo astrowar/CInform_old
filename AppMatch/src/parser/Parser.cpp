@@ -415,7 +415,8 @@ HBlock NSParser::ParseAssertion::STMT_understand_Assertion(CParser * p, std::vec
 HBlock NSParser::ParseAssertion::parse_removeArticle(CParser * p, std::vector<HTerm>& term) {
     if (term.size() > 1) {
 
-        if (pLiteral("the")->match(term.front()) == Equals) {
+        if (pLiteral("the")->match(term.front()) == Equals)
+		{
             auto gtail = get_tail(term);
             return Expression::parser_expression_lst(p,gtail);
         }
@@ -456,6 +457,33 @@ HBlockNoum NSParser::ParseAssertion::parse_noum_single(CParser * p, std::vector<
 			return nullptr;
 		}
 
+		if ((nstr.find('(') != std::string::npos))
+		{
+			return nullptr;
+		}
+
+		if ((nstr.find(']') != std::string::npos))
+		{
+			return nullptr;
+		}
+
+		if ((nstr.find(')') != std::string::npos))
+		{
+			return nullptr;
+		}
+
+		if ((nstr.find("to ") == 0))
+		{
+			return nullptr;
+		}
+
+		if ((nstr.find("from ") == 0))
+		{
+			return nullptr;
+		}
+
+
+
 		return std::make_shared<CBlockNoumStr>(nstr);
 	}
 	return nullptr;
@@ -470,7 +498,7 @@ HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, HTerm  term)
 HBlockNoum NSParser::ParseAssertion::parse_noumVec(CParser * p, std::vector<HTerm>& term)
 {
 	// anula se tiver uma palavra chave reservada	
-	CPredSequence predList_det = mk_HPredLiteral_OR("det", {"A","a","An","An", "The","the" }) << pAny("Noum");
+	CPredSequence predList_det = mk_HPredLiteral_OR("det", {"A","a","An","an", "The","the" }) << pAny("Noum");
 	MatchResult res_det = CMatch(term, predList_det);
 	if (res_det.result == Equals)
 	{

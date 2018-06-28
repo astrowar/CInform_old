@@ -60,6 +60,7 @@ void CBlockInterpreter::start()
 					printf("Assertion Failed \n");
 					asrt->dump(" ");
 					printf("\n");
+					auto result_2 = query(asrt->contents, nullptr, nullptr).result;
 				}
 				else
 				{

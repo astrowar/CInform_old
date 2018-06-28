@@ -96,14 +96,14 @@ HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope 
 
 HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	static PLURALTABLE plural_tab = plura_table();
-	auto pSingle = singular_of(n , &plural_tab);
-	if (!pSingle.empty())
+	//static PLURALTABLE plural_tab = plura_table();
+	auto pSingle = language->get_singular_of(n );
+	if (pSingle != nullptr )
 	{
 		return std::make_shared<CBlockNoumSupl>(n , "plural", "neutral");
 	}
-	auto pPlural = plural_of(n , &plural_tab);
-	if (pPlural.empty() == false)
+	auto pPlural = language->get_plural_of(n  );
+	if (pPlural != nullptr)
 	{
 		return std::make_shared<CBlockNoumSupl>(n , "singular", "neutral");
 	}
@@ -116,7 +116,7 @@ HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScop
 
 HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string person,   string number, string gender, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	static PLURALTABLE plural_tab = plura_table();
+	//static PLURALTABLE plural_tab = plura_table();
 	
 	  std::map<string, CBlocking::HBlock> nextVarSet = { { "viewPoint" , std::make_shared<CBlockNoumStr>(Auxiliar::complex_viewPoint(person, number, gender))  },{ "tense" , std::make_shared<CBlockNoumStr>("present tense") } };
 

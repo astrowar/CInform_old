@@ -17,7 +17,7 @@ public:
     virtual HBlockBooleanValue asBoolean(HBlockNoum noum) = 0;
     virtual bool is_nothing(HBlockNoum noum) = 0 ;
     virtual HBlockKind metaKind(string kind) = 0;
-    virtual bool isSameString(string a, string b) = 0;
+    virtual bool isSameString(const string &a, const string &b) = 0;
 
     virtual  string   getNothing () = 0;
     virtual  string   getAnything()= 0;
@@ -31,16 +31,21 @@ public:
     virtual  string   getMetaKindText ()= 0;
     virtual  string   getMetaKindAny ()= 0;
 
+
+	virtual HBlockNoum   get_plural_of(string s) = 0;
+	virtual HBlockNoum  get_singular_of(string s) = 0 ;
 };
 
 
 
-class LanguageEn : LanguageDepend
+ 
+
+class LanguageEn : public LanguageDepend
 {
     HBlockBooleanValue asBoolean(HBlockNoum noum) override ;
     bool is_nothing(HBlockNoum noum) override ;
-    virtual HBlockKind metaKind(string kind) override ;
-
+      HBlockKind metaKind(string kind) override ;
+	  bool isSameString(const string &a, const string &b) override;
 
        string   getNothing () override;
        string   getAnything()override;
@@ -54,6 +59,9 @@ class LanguageEn : LanguageDepend
        string   getMetaKindText ()override;
        string   getMetaKindAny ()override;
 
+
+	    HBlockNoum   get_plural_of(string s) override;
+	    HBlockNoum  get_singular_of(string s) override;
 };
 
 #endif //CINFORM_LANGUAGEDEPEND_H

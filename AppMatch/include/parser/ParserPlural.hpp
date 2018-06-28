@@ -21,7 +21,6 @@ typedef struct PLURALTABLE
 } PLURALTABLE;
 
 
- PLURALTABLE plura_table(); // obtem a tabela de plurals
 
 
 #include <string>

@@ -146,7 +146,8 @@ int main(int argc, char **argv)
 		
         h->dump(" ");
 
-        Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>();
+		LanguageEn english_proxy ;
+        Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>(&english_proxy);
 
         interpreter->execute_init(h);
         interpreter->start();

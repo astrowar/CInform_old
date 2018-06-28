@@ -21,7 +21,7 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
  
-#include "Parser\ParserPlural.hpp"
+
 
 HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 {
@@ -33,15 +33,9 @@ HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 		}
 	}
 
-	static PLURALTABLE plural_tab = plura_table();
-	auto pPlural = plural_of(s, &plural_tab);
-	if (!pPlural.empty())
-	{
-		return std::make_shared<CBlockNoumStr>(pPlural);
-	}
+	return language->get_plural_of(s);
 
-
-	return nullptr;
+	
 }
 
 
@@ -55,33 +49,15 @@ HBlockNoum  CBlockInterpreter::get_singular_of(string s)
 		}
 	}
 
-	static PLURALTABLE plural_tab = plura_table();
-	auto pSingle = singular_of(s, &plural_tab);
-	if (!pSingle.empty())
-	{
-		return std::make_shared<CBlockNoumStr>(pSingle);
-	}
-
-
-
-	return nullptr;
+	return language->get_singular_of(s);
+ 
 }
 
 
 
-bool CBlockInterpreter::isSameString(string s1 , string s2)
+bool CBlockInterpreter::isSameString(const string& s1 , const string& s2)
 {
-	if (s1 == s2) return true;
-	if (( s1.size() ==  s2.size()) && (tolower( s1[0]) == tolower(s2[0])))
-	{
-		int n = s1.size();
-		for(int j = 0 ; j< n ;++j )
-		{
-			if (tolower(s1[j]) != tolower(s2[j])) return false;
-		}
-		return true;
-	}
-	return false;
+	return language->isSameString(s1, s2);
 }
 
 

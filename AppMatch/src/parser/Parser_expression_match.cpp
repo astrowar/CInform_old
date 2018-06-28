@@ -365,6 +365,10 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<
 		{
 			return nullptr;
 		} 
+		/*if (nstr.find(" ") != std::string::npos)
+		{
+			return nullptr;
+		}*/
 		return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(nstr));
 	}
 	return nullptr;
@@ -739,7 +743,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	{
 		return nullptr;
 	}
-
+	if (sNoum == "to")
+	{
+		return nullptr;
+	}
 	if (sNoum == "not")
 	{
 		return nullptr;
@@ -774,6 +781,9 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	}
 	if (sNoum == "(") return nullptr;
 	if (sNoum == ")") return nullptr;
+
+	if (sNoum.find("to ") == 0) return nullptr;
+
 	auto nn =  std::make_shared<CBlockNoumStr>(sNoum);
 	return std::make_shared<CBlockMatchNoum>(nn);
 }
@@ -844,16 +854,23 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, st
 			HBlockMatchList n2s = parse_match_comma_list(p, res.matchs["N2"]);
 			if (n2s != nullptr)
 			{
-				for(auto nn : n2s->matchList) n1s->matchList.push_back(nn);
-				return n1s;
+				auto mlist = n2s->matchList;
+				for (auto nn : n2s->matchList)
+				{
+					mlist.push_back(nn);
+				}
+				//return n1s;
+				return std::make_shared<CBlockMatchList>(mlist);
 			}
 
 
 			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
 			if (n2 != nullptr)
 			{
-				n1s->matchList.push_back(n2);
-				return n1s;
+				auto mlist = n1s->matchList;
+				mlist.push_back(n2);
+				//n1s->matchList.push_back(n2);
+				return std::make_shared<CBlockMatchList>(mlist);
 			}
 		}
 
@@ -865,8 +882,11 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, st
 			HBlockMatchList n2s = parse_match_comma_list(p, res.matchs["N2"]);
 			if (n2s != nullptr)
 			{
-				n2s->matchList.push_front(n1);
-				return n2s;
+				//n2s->matchList.push_front(n1);
+				//return n2s;
+				auto mlist = n2s->matchList;
+				mlist.push_back(n1);
+				return std::make_shared<CBlockMatchList>(mlist);
 			}
 
 			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
@@ -927,8 +947,11 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
-					HBlockMatch n3 = parser_expression_match(p,res.matchs["N3"]);
-					return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2 ,n3 });
+					HBlockMatch n3 = parser_expression_match(p,res.matchs["N3"]);					
+					if (n3 != nullptr)
+					{
+						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2, n3 });
+					}
 				}
 			}
 

@@ -29,6 +29,18 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 
 	{
 		//Various never has name called
+		CPredSequence predList = undefinedArticle() << pAny("KindCalled");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return parser_KindCalled(p, res.matchs["KindCalled"]);
+		}
+	}
+
+
+	{
+		//Various never has name called
 		CPredSequence predList = pLiteral("various")<<pAny("kind");
 
 		MatchResult res = CMatch(term, predList);

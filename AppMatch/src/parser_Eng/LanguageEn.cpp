@@ -3,6 +3,8 @@
 //
 
 #include "LanguageDepend.h"
+#include "Parser\ParserPlural.hpp"
+
 
 using namespace CBlocking;
 bool LanguageEn::is_nothing(HBlockNoum noum)
@@ -20,6 +22,21 @@ HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum) {
     if (isSameString(noum->named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
     if (isSameString(noum->named , "no")) return std::make_shared<CBlockBooleanValue>(false);
     return nullptr;
+}
+
+bool LanguageEn::isSameString(const string &s1, const string& s2)
+{
+	if (s1 == s2) return true;
+	if ((s1.size() == s2.size()) && (tolower(s1[0]) == tolower(s2[0])))
+	{
+		int n = s1.size();
+		for (int j = 0; j< n; ++j)
+		{
+			if (tolower(s1[j]) != tolower(s2[j])) return false;
+		}
+		return true;
+	}
+	return false;
 }
 
 HBlockKind LanguageEn::metaKind(string n)
@@ -59,4 +76,31 @@ string  LanguageEn::getMetaKindList (){ return  "list";}
 string  LanguageEn::getMetaKindText (){ return   "text";}
 string  LanguageEn::getMetaKindAny (){ return   "any";}
 
+
+
+
+PLURALTABLE plura_tableEn(); // obtem a tabela de plurals para ingles
+
+HBlockNoum  LanguageEn::get_plural_of(string s)
+{ 
+	static PLURALTABLE plural_tab = plura_tableEn();
+	auto pPlural = plural_of(s, &plural_tab);
+	if (!pPlural.empty())
+	{
+		return std::make_shared<CBlockNoumStr>(pPlural);
+	}
+	return nullptr;
+}
+
+
+HBlockNoum  LanguageEn::get_singular_of(string s)
+{ 
+	static PLURALTABLE plural_tab = plura_tableEn();
+	auto pSingle = singular_of(s, &plural_tab);
+	if (!pSingle.empty())
+	{
+		return std::make_shared<CBlockNoumStr>(pSingle);
+	}
+	return nullptr;
+}
 

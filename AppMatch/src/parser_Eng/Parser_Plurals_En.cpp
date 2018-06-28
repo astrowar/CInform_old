@@ -13,7 +13,7 @@
 #include <vector>
 #include "parser/ParserPlural.hpp"
 
-PLURALTABLE plura_table() {
+PLURALTABLE plura_tableEn() {
 
 
     static const char *nbase[18365] = {"aardvark", "ab", "abacus", "abacus", "abalone", "abatement", "abattoir",

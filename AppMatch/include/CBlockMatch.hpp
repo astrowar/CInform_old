@@ -115,7 +115,7 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockMatchList; }
 		// CBlockMatc("reward for (victim - a person)") -> filtra aquery reward of XXX, sendo XXX uma instancia de Person, tageado como "victim"
-		std::list<HBlockMatch> matchList;
+		const std::list<HBlockMatch> matchList;
 
 		CBlockMatchList(std::list<HBlockMatch> _matchList);;
 	};
