@@ -78,6 +78,11 @@ CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
 	assert(strncmp(_value.c_str(), "the", 3) != 0);
     assert(named[0] != '[');
 	assert(named[0] != '(');
+
+	if ((named[0] == 'A') && (named[1] == ' '))
+	{
+		_value[0] = 'a';
+	}
 }
 
 
@@ -260,6 +265,5 @@ CBlocking::HBlock CBlockIsAdverbialComparasion::get_definition()
 	return n2;
 }
 
- 
 
- 
+

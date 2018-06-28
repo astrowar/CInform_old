@@ -173,6 +173,7 @@ int main(int argc, char **argv)
 	if (!comp.files.empty())
 	{
 		auto hcc = compile_files(comp.files);
+		if (hcc != nullptr)hcc->dump("");
 		write_bytecode(hcc, comp.options["output"]);
 	}
     return 0;

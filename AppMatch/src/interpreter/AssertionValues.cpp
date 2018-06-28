@@ -422,16 +422,32 @@ bool CBlockInterpreter::assert_it_valuesDefinitions_list(CBlocking::HBlock c_blo
 		{
 			// nn eh um value Kind ??
 			CBlocking::HBlock nobj = resolve_noum(nn, localsEntry);
-			if (HBlockKind nkind = asHBlockKind(nobj)) //mas na verdade o primeiro eh um kind ja definido
+			if (nobj != nullptr)
 			{
-				for (auto &v : values) 
+				return assert_it_valuesDefinitions_list(nobj, values, localsEntry);
+			}
+
+			//nn is plural of anything ?
+			HBlockNoum singular_form = get_singular_of(nn->named);
+			if (singular_form != nullptr)
+			{
+				return assert_it_valuesDefinitions_list(singular_form, values, localsEntry);
+			}
+
+		}
+
+		{
+			if (HBlockKind nkind = asHBlockKind(c_block)) //mas na verdade o primeiro eh um kind ja definido
+			{
+				for (auto &v : values)
 				{
 					assert_it_instance(v, nkind, localsEntry);
 				}
 				return true;
 			}
-
 		}
+
+
 	return false;
 
 }

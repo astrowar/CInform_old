@@ -353,9 +353,16 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsKindOf(CParser * p, std::vecto
 
 			HBlock value = parse_KindOf(p,res.matchs["KindDef"]);
 			if (value == nullptr) return nullptr;
-			HBlock noum = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
-			if (noum == nullptr) return nullptr;
-			return std::make_shared<CBlockAssertion_isDirectAssign>(noum, value);
+			HBlock target = Expression::parser_assertionTarger(p,res.matchs["Noum"]);
+
+			if (HBlockMatch m = DynamicCasting::asHBlockMatch(target))
+			{
+				// converte para uma lista de noums ?
+				 target = Expression::parser_noumList(p, res.matchs["Noum"]);
+			}
+
+			if (target == nullptr) return nullptr;
+			return std::make_shared<CBlockAssertion_isDirectAssign>(target, value);
 		}
 	}
 	return nullptr;

@@ -250,9 +250,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
                 HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
 
                 verbMatch = pList("VerbMatch", {});
-                CPredList *cpList = reinterpret_cast<CPredList *>(verbMatch.get());
+                auto cpList = reinterpret_cast<CPredList *>(verbMatch.get());
 
-                for (auto ip : plist->lst) {
+                for ( auto ip : plist->lst) {
                     clist->push_back(std::make_shared<CBlockNoumStr>(ip->repr()));
                     cpList->plist.push_back(pLiteral(ip->repr()));
                 }
@@ -453,7 +453,7 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
                     verbMatch = pLiteral(inList.front()->repr());
                 }
 
-                int nv = inList.size();
+                size_t nv = inList.size();
 
                 //std::cout << res.matchs["Verb"]->repr() << std::endl;
                 if (a_verb != nullptr) {

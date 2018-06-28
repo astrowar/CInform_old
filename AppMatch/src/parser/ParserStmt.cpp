@@ -20,11 +20,16 @@ HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm ter
 	HBlockKind p_comp =    NSParser::Expression::parse_CompositionOf( p, term);
 	if (p_comp != nullptr) return p_comp;
 
+    HBlockNoum rx  = ParseAssertion::parse_noum(p, term);
+    if (rx != nullptr)
+    {
+        return  std::make_shared<CBlockKindNamed>( rx->named ) ;
+    }
 
 	if (CList *vlist = asCList(term.get())) 
 	{
 		auto rvector = vlist->asVector();	 
-		HBlockNoum r  = ParseAssertion::parse_noum(p, rvector);
+		HBlockNoum r  = ParseAssertion::parse_noumVec(p, rvector);
 		if (r != nullptr)
 		{
 			return  std::make_shared<CBlockKindNamed>( r->named ) ;
@@ -32,13 +37,8 @@ HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm ter
         return nullptr;
 	}
 
-    std::vector<HTerm>  vterm = {term};
-    HBlockNoum rx  = ParseAssertion::parse_noum(p, vterm);
-    if (rx != nullptr)
-    {
-        return  std::make_shared<CBlockKindNamed>( rx->named ) ;
+    
 
-    }
  
 	return nullptr;
 }
@@ -50,6 +50,8 @@ HBlock NSParser::Expression::parser_kind(CParser *p, HTerm term)
  
 	return Expression::parser_expression(p,term);
 }
+
+ 
 
 
 HBlock NSParser::Expression::parser_kind_or_instance(CParser *p, HTerm term) { return Expression::parser_expression(p,term); }
@@ -89,6 +91,87 @@ HBlock   NSParser::ParseAssertion::parser_VerbAssign(CParser * p, std::vector<HT
 
 	return nullptr;
 }
+
+
+HBlock NSParser::Expression::parser_noumList(CParser *p, HTerm term)
+{
+	{
+		CPredSequence predList = pAny("N1") << pAny("N2") << pAny("N3") << pAny("N4");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == EqualResulting::Equals)
+		{
+			HBlockNoum  n1 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockNoum n2 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					HBlockNoum n3 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N3"]);
+					if (n3 != nullptr)
+					{
+						HBlockNoum n4 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N4"]);
+						if (n4 != nullptr)
+						{
+							return  std::make_shared<CBlockList>(std::list<HBlock >{n1,n2,n3,n4});
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+	{
+		CPredSequence predList = pAny("N1") << pAny("N2") << pAny("N3")  ;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == EqualResulting::Equals)
+		{
+			HBlockNoum  n1 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockNoum n2 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					HBlockNoum n3 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N3"]);
+					if (n3 != nullptr)
+					{ 
+							return  std::make_shared<CBlockList>(std::list<HBlock >{n1, n2, n3 });						 
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+
+	{
+		CPredSequence predList = pAny("N1") << pAny("N2");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == EqualResulting::Equals)
+		{
+			HBlockNoum  n1 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				HBlockNoum n2 = NSParser::ParseAssertion::parse_noum(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{ 
+					return  std::make_shared<CBlockList>(std::list<HBlock >{n1, n2});						 
+				}
+			}
+		}
+	}
+
+
+
+	return nullptr;
+
+}
+
+
 
 
 HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
@@ -183,11 +266,13 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
 		return noum_decide;
 	}
  
-
-    HBlock noum_Assign = ParseAssertion::parse_noum(p,lst);
+    HBlock noum_Assign = ParseAssertion::parse_noumVec(p,lst);
     if (noum_Assign != nullptr) {
         return noum_Assign;
     }
+
+ 
+
 
 	// fail back !
 	HBlock match_Assign = ExpressionMatch::parser_expression_match(p, lst);

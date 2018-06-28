@@ -429,10 +429,6 @@ HBlock  CBlockInterpreter::exec_eval_assertations(HBlock c_block ,  HRunLocalSco
 }
 
 
-
-
-
-
 HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockInstance c_obj, HRunLocalScope localsEntry, QueryStack *stk)
 {
 
@@ -463,11 +459,6 @@ HBlock CBlockInterpreter::get_default_property_value(HBlockNoum c_value, HBlockI
 
 	return nullptr;
 }
-
-
-
-
-
 
 HBlock CBlockInterpreter::exec_eval(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -503,60 +494,60 @@ HBlock CBlockInterpreter :: eval_boolean_AND(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(false);
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(false);
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state ==false) return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->state ==false) return std::make_shared<CBlockBooleanValue>(false);
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
 	{
-		if (ndecideValue->state == false) return std::make_shared<CBlockNoumStr>("false");
+		if (ndecideValue->state == false) return std::make_shared<CBlockBooleanValue>(false);
 	}
 
-	return std::make_shared<CBlockNoumStr>("true");
+	return std::make_shared<CBlockBooleanValue>(true);
 }
 
 HBlock CBlockInterpreter :: eval_boolean_OR(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("true"); 
+		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("true");		 
+		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c2))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockBooleanValue>(true);
 	}
 
-	return std::make_shared<CBlockNoumStr>("false");
+	return std::make_shared<CBlockBooleanValue>(false);
 }
 
 HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockNoumStr>("false");
-		if (ndecideValue->named == "false") return std::make_shared<CBlockNoumStr>("true");
+		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(false);
+		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(true);
 		if (ndecideValue->named == "nothing") return Nothing;
 	}
 
@@ -564,8 +555,8 @@ HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
 	{
-		if (ndecideValue->state == true) return std::make_shared<CBlockNoumStr>("false");
-		if (ndecideValue->state == false) return std::make_shared<CBlockNoumStr>("true");
+		if (ndecideValue->state == true) return std::make_shared<CBlockBooleanValue>(false);
+		if (ndecideValue->state == false) return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	 
@@ -597,7 +588,7 @@ HBlock CBlockInterpreter::exec_eval_internal_boolean_relation(HBlock c_block, HR
 	if (HBlockBooleanNOT nbool_not = asHBlockBooleanNOT(c_block))
 	{
 		auto b1 = exec_eval(nbool_not->input_A, localsEntry, stk);	 
-		return std::make_shared<CBlockNoumStr>("true");
+		return   std::make_shared<CBlockBooleanValue>(true);
 		return eval_boolean_NOT(b1);
 	}
 
@@ -1876,3 +1867,4 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	return PhaseResult(false);
 
 }
+

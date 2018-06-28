@@ -25,9 +25,9 @@ set(SOURCE_FILES_PARSER
         AppMatch/src/parser/Parser_ControlFlux.cpp
         AppMatch/src/parser/Parser_Decide.cpp
         AppMatch/src/parser/Parser_expression_match.cpp
-        AppMatch/src/parser/Parser_Plurals_En.cpp
+        AppMatch/src/parser_Eng/Parser_Plurals_En.cpp
         AppMatch/src/parser/Parser_RegisterVerb.cpp
-        AppMatch/src/parser/Parser_VerbTable_en.cpp
+        AppMatch/src/parser_Eng/Parser_VerbTable_en.cpp
         AppMatch/src/parser/ParseVerbs.cpp
         AppMatch/src/parser/Parse_PhraseDeclare.cpp
         AppMatch/src/parser/Parse_TokensGroup.cpp
@@ -73,8 +73,8 @@ set(SOURCE_FILES_COMPILER
 set(SOURCE_FILES_INTERPRETER
         AppMatch/src/interpreterMain/CInformInterpreter.cpp
         AppMatch/src/parser/ParserPlural_table.cpp
-        AppMatch/src/parser/Parser_Plurals_En.cpp
-        AppMatch/src/parser/Parser_VerbTable_en.cpp
+        AppMatch/src/parser_Eng/Parser_Plurals_En.cpp
+        AppMatch/src/parser_Eng/Parser_VerbTable_en.cpp
         )
 
 
@@ -84,6 +84,7 @@ set( SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/AssertationEngine.cpp
         AppMatch/src/interpreter/AssertationVerbRelation.cpp
         AppMatch/src/interpreter/AssertionValues.cpp
+        AppMatch/src/interpreter/CBlockInterpreterBase.cpp
         AppMatch/src/interpreter/CBlockInterpreterDecideBody.cpp
         AppMatch/src/interpreter/CBlockInterpreterRuntime.cpp
         AppMatch/src/interpreter/CBlockInterpreter_Verb_En.cpp
@@ -106,7 +107,7 @@ set( SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/RuntimeErrors.cpp
         AppMatch/src/interpreter/CResultMatch.cpp
 
-)
+        AppMatch/src/parser_Eng/LanguageEn.cpp)
 
 
 set(SOURCE_FILES

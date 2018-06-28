@@ -11,7 +11,7 @@
 
 
 #include <vector>
-#include "Parser\ParserPlural.hpp"
+#include "parser/ParserPlural.hpp"
 
 PLURALTABLE plura_table() {
 

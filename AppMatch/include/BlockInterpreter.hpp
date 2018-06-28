@@ -175,6 +175,19 @@ namespace CBlocking
 	using HBlockNoumStr = std::shared_ptr<CBlockNoumStr>;
 
 
+	class CBlockNoumStrDet : public CBlockNoum //retorna um valor generico
+	{
+	public:
+		string det; // singular, plural ...
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockNoumStrDet; }
+		CBlockNoumStrDet(string _det , string _named):CBlockNoum( _named ), det(_det){};
+
+	};
+	using HBlockNoumStrDet = std::shared_ptr<CBlockNoumStrDet>;
+
+
+
 	class CBlockNoumSupl : public CBlockNoum //retorna um valor generico
 	{
 	public:

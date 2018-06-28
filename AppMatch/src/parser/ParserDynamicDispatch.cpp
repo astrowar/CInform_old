@@ -275,9 +275,9 @@ std::pair<HBlockList, std::list<HTerm> >  pack_terms(std::list<HTerm> terms )
 	//vai adicionando ate achar o end list
 	
 	std::list<HTerm> remainder = terms;
-	while ( remainder.size() > 0 )
+	while (!remainder.empty())
 	{
-		auto item = remainder.front();
+		HTerm item = remainder.front();
 		remainder.pop_front();
 		if (item->is_openBracket())
 		{

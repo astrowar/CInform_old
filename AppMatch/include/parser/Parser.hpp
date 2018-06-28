@@ -238,6 +238,9 @@ namespace NSParser
 		CBlocking::HBlock  parser_expression(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock  parser_expression_lst(CParser *p, std::vector<NSTerm::HTerm>&   lst);
 
+		CBlocking::HBlock  parser_noumList(CParser *p, NSTerm::HTerm   lst);
+		
+		 
 		CBlocking::HBlock parser_kind(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockKind parser_kind_specification(CParser *p, NSTerm::HTerm term);
 
@@ -377,8 +380,10 @@ namespace NSParser
 
 		CBlocking::HBlockAssertion_is parse_Loop_AssertionVerb(CParser * p, NSTerm::HTerm&  term, CBlocking::NoumLocation nlocation);
 		CBlocking::HBlock  STMT_understand_Assertion(CParser * p, std::vector<NSTerm::HTerm>&  term);
-		CBlocking::HBlock parse_removeArticle(CParser * p, std::vector<NSTerm::HTerm>& term);
-		CBlocking::HBlockNoum  parse_noum(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlock parse_removeArticle(CParser * p, std::vector<NSTerm::HTerm>& term);		 
+		CBlocking::HBlockNoum  parse_noum_single(CParser * p, std::vector<NSTerm::HTerm>& term);
+		CBlocking::HBlockNoum  parse_noum(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlockNoum  parse_noumVec(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  STMT_Decide_Assertion(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock  parse_PropertyOf(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock   parse_RelationArgument(CParser * p, std::vector<NSTerm::HTerm>& term);

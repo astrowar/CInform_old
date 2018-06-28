@@ -181,6 +181,7 @@ void raiseError()
   int  save_CBlockNoum_base(HBlockNoum x, SaveContext *ctx);
   int  save_CBlockNoum(HBlockNoum x, SaveContext *ctx);
   int  save_CBlockNoumStr(HBlockNoumStr x, SaveContext *ctx);
+  int  save_CBlockNoumStrDet(HBlockNoumStrDet x, SaveContext *ctx);
   int  save_CBlockNoumSupl(HBlockNoumSupl x, SaveContext *ctx);
   int  save_CBlockKindNamed(HBlockKindNamed x, SaveContext *ctx);
   int  save_CBlockNothing(HBlockNothing x, SaveContext *ctx);
@@ -362,6 +363,7 @@ void raiseError()
 	  int cc = cached(x.get(), ctx); if (cc != -1) return  cc;
 	  const BlockType t = x->type();
 	  if (t == BlockType::BlockNoumStr) return save_CBlockNoumStr(std::static_pointer_cast < CBlockNoumStr > (x), ctx);
+	  if (t == BlockType::BlockNoumStrDet) return save_CBlockNoumStrDet(std::static_pointer_cast < CBlockNoumStrDet > (x), ctx);
 	  if (t == BlockType::BlockNoumSupl) return save_CBlockNoumSupl(std::static_pointer_cast < CBlockNoumSupl > (x), ctx);
 
 	  raiseError();
@@ -640,6 +642,7 @@ void raiseError()
 	  if (t == BlockType::BlockInstanceAnonymous) return save_CBlockInstanceAnonymous(std::static_pointer_cast < CBlockInstanceAnonymous > (x), ctx);
 	  if (t == BlockType::BlockList_AND) return save_CBlockList_AND(std::static_pointer_cast < CBlockList_AND > (x), ctx);
 	  if (t == BlockType::BlockNoumStr) return save_CBlockNoumStr(std::static_pointer_cast < CBlockNoumStr > (x), ctx);
+	  if (t == BlockType::BlockNoumStrDet) return save_CBlockNoumStrDet(std::static_pointer_cast < CBlockNoumStrDet > (x), ctx);
 	  if (t == BlockType::BlockMatchWhich) return save_CBlockMatchWhich(std::static_pointer_cast < CBlockMatchWhich > (x), ctx);
 	  if (t == BlockType::BlockKindAction) return save_CBlockKindAction(std::static_pointer_cast < CBlockKindAction > (x), ctx);
 
@@ -2507,6 +2510,22 @@ void raiseError()
 	  return  slot;
 
   }
+
+
+int  save_CBlockNoumStrDet(HBlockNoumStrDet x, SaveContext *ctx)
+{
+	if (x == nullptr) return 0;
+	lock_ptr(x.get(), ctx);
+
+	const int slot = alloc_slot(x.get(), ctx);
+	save_type(x->type(), ctx);
+	save_string(x->det, ctx);
+	save_string(x->named, ctx);
+	end_slot(x.get(), ctx);
+	return  slot;
+
+}
+
 
 
   int  save_CBlockActionNamed(HBlockActionNamed x, SaveContext *ctx)

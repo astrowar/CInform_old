@@ -246,7 +246,7 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
 				auto vtense =  expression_adapt_tense(p, res.matchs["TenseForm"]);
 				auto vp = expression_adapt_viewPoint(p, res.matchs["ViewPoint"]);
-				if (vp == "") return nullptr;
+				if (vp.empty()) return nullptr;
 
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, vtense , vp);
 				return vbase;
@@ -266,7 +266,7 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 				//auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
 				auto vtense = expression_adapt_tense(p, res.matchs["TenseForm"]);
-				if (vtense == "") return nullptr;
+				if (vtense.empty()) return nullptr;
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, vtense, "default");
 				return vbase;
 			}
@@ -283,7 +283,7 @@ string NSParser::ParseGrammar::expression_adapt_tense(CParser * p, HTerm& term)
 				//auto vrepr = CtoString(expandBract(res.matchs["verbNamed"]));
 				auto vrepr = parser_verb_noum(res.matchs["verbNamed"]);
 				auto vp = expression_adapt_viewPoint(p, res.matchs["ViewPoint"]);
-				if (vp == "") return nullptr;
+				if (vp.empty()) return nullptr;
 				auto vbase = std::make_shared<CBlockVerbAdapt>(vrepr, "VBP", vp);
 				return vbase;
 			}

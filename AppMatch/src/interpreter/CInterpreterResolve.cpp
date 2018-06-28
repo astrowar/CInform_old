@@ -21,17 +21,49 @@ using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
  
+#include "Parser\ParserPlural.hpp"
 
 HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 {
 	for(auto v : plural_assertations)
-	{
-		
+	{		
 		if (isSameString(v.first->named, s))
 		{
 			return v.second ;
 		}
 	}
+
+	static PLURALTABLE plural_tab = plura_table();
+	auto pPlural = plural_of(s, &plural_tab);
+	if (!pPlural.empty())
+	{
+		return std::make_shared<CBlockNoumStr>(pPlural);
+	}
+
+
+	return nullptr;
+}
+
+
+HBlockNoum  CBlockInterpreter::get_singular_of(string s)
+{
+	for (auto v : plural_assertations)
+	{
+		if (isSameString(v.first->named, s))
+		{
+			return v.second;
+		}
+	}
+
+	static PLURALTABLE plural_tab = plura_table();
+	auto pSingle = singular_of(s, &plural_tab);
+	if (!pSingle.empty())
+	{
+		return std::make_shared<CBlockNoumStr>(pSingle);
+	}
+
+
+
 	return nullptr;
 }
 
@@ -174,31 +206,9 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 
 HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
 {
-	{
-		if (isSameString( n , "text")) {
-			return  std::make_shared<CBlockKindValue>("text");
-		}
-	}
-	{
-		if (isSameString(n, "number")) {
-			return  std::make_shared<CBlockKindValue>("number");
-		}
 
-	} 
-	{
-		if (isSameString(n, "action"))
-		{
-			return  std::make_shared<CBlockKindEntity>("action");
-		}
+	return  language->metaKind(n);
 
-		if (isSameString(n, "relation"))
-		{
-			return  std::make_shared<CBlockKindEntity>("relation");
-		}
-
-
-		
-	}
 	return nullptr;
 }
 
@@ -207,7 +217,7 @@ HBlockKind CBlockInterpreter::resolve_user_kind(string n)
 	
 	for (auto s : symbols)
 	{
-		if (s.first == n)
+		if ( isSameString( s.first , n))
 		{
 			if (HBlockKind nn = asHBlockKind(s.second ))
 			{
@@ -394,6 +404,11 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry,
 
 HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
+    HBlockBooleanValue bv = language->asBoolean(n);
+    if(bv != nullptr) return bv;
+
+   if( language->is_nothing(n)) return Nothing;
+
 	return has_resolve_string_noum(n->named, localsEntry, noumsToResolve);
 }
 
@@ -422,11 +437,13 @@ HBlock CBlockInterpreter::resolve_string_noum(string named, HRunLocalScope local
 
 HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
-	if (isSameString(named , "true")) return std::make_shared<CBlockBooleanValue>(true);
-	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
-	if (isSameString(named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
-	if (isSameString(named , "no")) return std::make_shared<CBlockBooleanValue>(false);
-	if (isSameString(named, "nothing")) return Nothing;
+
+
+//	if (isSameString(named , "true")) return std::make_shared<CBlockBooleanValue>(true);
+//	if (isSameString(named , "false")) return std::make_shared<CBlockBooleanValue>(false);
+//	if (isSameString(named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
+//	if (isSameString(named , "no")) return std::make_shared<CBlockBooleanValue>(false);
+//	if (isSameString(named, "nothing")) return Nothing;
 
 	if (std::find(noumsToResolve.begin(), noumsToResolve.end(), named) != noumsToResolve.end())
 	{
@@ -449,7 +466,7 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 	for (auto s : symbols)
 	{
 		//printf("%s is %s ? \n",s.first.c_str(), named.c_str());
-		if (s.first == named)
+		if (isSameString(s.first, named))
 		{
 			return s.second;
 		}

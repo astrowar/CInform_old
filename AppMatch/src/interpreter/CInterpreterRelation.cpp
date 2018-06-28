@@ -20,11 +20,8 @@ using namespace QueryStacking;
 
 bool CBlockInterpreter::is_nothing(HBlockNoum noum)
 {
- 
-	if (noum->named == "nothing") return true;
-	if (noum->named == "none") return true;
-	if (noum->named == "nil") return true;
-	return false;
+    return language->is_nothing(noum);
+
 }
 
 bool CBlockInterpreter::is_nothing(HBlock  noum_)
@@ -32,9 +29,7 @@ bool CBlockInterpreter::is_nothing(HBlock  noum_)
 	if (asHBlockNothing(noum_) != nullptr) return true;
 	if (HBlockNoum noum = asHBlockNoum(noum_))
 	{
-		if (noum->named == "nothing") return true;
-		if (noum->named == "none") return true;
-		if (noum->named == "nil") return true;
+		return is_nothing(noum);
 	}
 	return false;
 }

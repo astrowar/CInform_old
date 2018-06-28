@@ -74,7 +74,7 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 				logError("mismatch brackes"); 
 			return nullptr;
 			}
-			if (s.empty() == false)
+			if (!s.empty())
 			{
 				blocos->contents.push_back(std::make_shared<CBlockText >( s ));
 				s = "";
@@ -84,13 +84,13 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 		}
 		if (text[i] == ']')
 		{
-			if (is_inner == false)
+			if (!is_inner)
 			{
 				logError("mismatch brackes"); 
 				return nullptr;
 			}
 			//is inner !
-			if (s.empty() == false)
+			if (!s.empty())
 			{
 				auto segments = Text_Sentence_bakret( p, s   );				
 				for(auto si : segments)  blocos->contents.push_back(si);
@@ -101,7 +101,7 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 			continue;
 		}
 
-		s = s + text[i];
+		s +=   text[i];
 
 	}
 
@@ -110,7 +110,7 @@ HBlock NSParser::Statement::Text_Sentence(CParser * p,  std::string text )
 		logError("mismatch brackes"); 
 		return nullptr;
 	}
-	if (s.empty() == false)blocos->contents.push_back(std::make_shared<CBlockText >(s));
+	if (!s.empty())blocos->contents.push_back(std::make_shared<CBlockText >(s));
 
 
 	return blocos;

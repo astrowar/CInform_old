@@ -128,6 +128,7 @@ enum BlockType {
 	BlockTextSentence,
 	BlockVerbNegate,
 	BlockNoumSupl,
+	BlockNoumStrDet,
 	BlockIsAdverbialComparasion,
 	BlockMatchIsAdverbialComparasion,
 	BlockUnitInit,

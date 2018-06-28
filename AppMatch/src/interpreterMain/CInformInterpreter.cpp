@@ -136,7 +136,14 @@ int main(int argc, char **argv)
         LoadContext lx= LoadContext(bytecodeContents);
         printf("begin Parse\n");
         auto h = load_file(&lx);
+		
         printf("end Parse\n");
+		if (h == nullptr)
+		{
+			printf("Error on load file\n");
+			return 2;
+		}
+		
         h->dump(" ");
 
         Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>();

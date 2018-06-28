@@ -97,9 +97,6 @@ HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope 
 HBlockNoumSupl CBlockInterpreter::resolve_number_gender(string  n, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	static PLURALTABLE plural_tab = plura_table();
-
-	 
-
 	auto pSingle = singular_of(n , &plural_tab);
 	if (!pSingle.empty())
 	{

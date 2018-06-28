@@ -158,9 +158,17 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 	 
 	if (HBlockNoum ndecideRet = asHBlockNoum(rdecided))
 	{
-		if (ndecideRet->named == "true") return QueryResultContext(QEquals);
-		if (ndecideRet->named == "false") return QueryResultContext(QNotEquals);
-		if (ndecideRet->named == "nothing") return QueryResultContext(QUndefined);
+        if (language->is_nothing(ndecideRet))return QueryResultContext(QUndefined);
+        HBlockBooleanValue  bv = language->asBoolean(ndecideRet);
+        if (bv != nullptr)
+        {
+            if (bv->state   ) return QueryResultContext(QEquals);
+            else { return QueryResultContext(QNotEquals);}
+        }
+
+//		if (ndecideRet->named == "true") return QueryResultContext(QEquals);
+//		if (ndecideRet->named == "false") return QueryResultContext(QNotEquals);
+//		if (ndecideRet->named == "nothing") return QueryResultContext(QUndefined);
 	}
 
 	if (rdecided == nullptr)
@@ -172,9 +180,17 @@ QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBo
 		//verifica se eh true ou false 
 		if (HBlockNoum ndecideValue = asHBlockNoum(ndecide->decideBody))
 		{
-			if (ndecideValue->named == "true") return QueryResultContext(QEquals);
-			if (ndecideValue->named == "false") return QueryResultContext(QNotEquals);
-			if (ndecideValue->named == "nothing") return QueryResultContext(QUndefined);
+            if (language->is_nothing(ndecideValue))return QueryResultContext(QUndefined);
+            HBlockBooleanValue  bv = language->asBoolean(ndecideValue);
+            if (bv != nullptr)
+            {
+                if (bv->state   ) return QueryResultContext(QEquals);
+                else { return QueryResultContext(QNotEquals);}
+            }
+
+			//if (ndecideValue->named == "true") return QueryResultContext(QEquals);
+			//if (ndecideValue->named == "false") return QueryResultContext(QNotEquals);
+			//if (ndecideValue->named == "nothing") return QueryResultContext(QUndefined);
 		}
 		if (ndecide->decideBody == nullptr)
 		{

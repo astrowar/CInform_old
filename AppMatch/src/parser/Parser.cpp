@@ -423,30 +423,22 @@ HBlock NSParser::ParseAssertion::parse_removeArticle(CParser * p, std::vector<HT
     return nullptr;
 }
 
-
-HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>& term)
-{
-
-	// anula se tiver uma palavra chave reservada
-	
-
-
-    CPredSequence predList= pAny("Noum");
-     
  
-    MatchResult res = CMatch(term, predList);
 
-    if (res.result == Equals) 
+HBlockNoum NSParser::ParseAssertion::parse_noum_single(CParser * p, std::vector<HTerm>& term)
+{
+	CPredSequence predList = pAny("Noum"); 
+	MatchResult res = CMatch(term, predList); 
+	if (res.result == Equals)
 	{
-        string nstr = CtoString(res.matchs["Noum"]->removeArticle() );
+		string nstr = CtoString(res.matchs["Noum"]->removeArticle()); 
 
-		 
 		if (nstr == "where")return nullptr;
 		if (nstr == "called")return nullptr;
 		if (nstr == "which")return nullptr;
 		if (nstr == "and")return nullptr;
 		if (nstr == "or")return nullptr;
-		if (nstr == ",")return nullptr; 
+		if (nstr == ",")return nullptr;
 		if (nstr == ".")return nullptr;
 
 		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
@@ -454,19 +446,49 @@ HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, std::vector<HTerm>&
 			return nullptr;
 		}
 
-		if ((nstr.find(",") != std::string::npos)  )
+		if ((nstr.find(',') != std::string::npos))
 		{
 			return nullptr;
 		}
 
-		if ((nstr.find("[") != std::string::npos))
+		if ((nstr.find('[') != std::string::npos))
 		{
 			return nullptr;
 		}
 
 		return std::make_shared<CBlockNoumStr>(nstr);
-    }
-    return nullptr;
+	}
+	return nullptr;
+}
+
+HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, HTerm  term)
+{ 
+	std::vector<HTerm> vterm = { term };
+	return parse_noumVec(p, vterm);
+}
+
+HBlockNoum NSParser::ParseAssertion::parse_noumVec(CParser * p, std::vector<HTerm>& term)
+{
+	// anula se tiver uma palavra chave reservada	
+	CPredSequence predList_det = mk_HPredLiteral_OR("det", {"A","a","An","An", "The","the" }) << pAny("Noum");
+	MatchResult res_det = CMatch(term, predList_det);
+	if (res_det.result == Equals)
+	{
+		HTerm rdet = res_det.matchs["det"];
+		HTerm rnoum = res_det.matchs["Noum"];
+
+		std::vector<HTerm> term_p = { rnoum };
+		return  parse_noum_single(p, term_p);
+		
+	}
+
+	{
+		HBlockNoum nn = parse_noum_single(p, term);
+		if (nn != nullptr) return nn;
+		
+	}
+
+	return nullptr;
 }
 
 HBlockAssertion_isInstanceOf NSParser::CParser::parseAssertion_isInstanceOf(std::vector<HTerm>& term) {
@@ -866,7 +888,7 @@ std::vector<string>  split_new_lines(const string &str)   {
     {
         if (*p2 =='\n')
         {
-            sentences.push_back( string(p1,p2));
+            sentences.emplace_back(p1,p2);
             printf("%s\n", sentences.back().c_str());
             p1 = p2;
             ++p1;
@@ -877,7 +899,7 @@ std::vector<string>  split_new_lines(const string &str)   {
     }
     if(p1 != p2 )
     {
-        sentences.push_back( string(p1,p2));
+        sentences.emplace_back(p1,p2);
         printf("%s\n", sentences.back().c_str());
     }
    return sentences;
@@ -899,7 +921,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 	vstr = decompose_bracket(vstr, ":");
 	std::vector<HTerm> lst = decompose(vstr);
 
-	if (lst.size() == 0)
+	if (lst.empty())
 	{
 		return p->blank_line;
 	}
@@ -939,7 +961,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 			HGroupLines _inner = nullptr;
 			if (inext == inner->lines.end()) _inner = inner->inner;
 			 
-		 
+			
 			blk = parser_GroupLine(p,rawLine, _inner, err);
 			if (blk == p->blank_line) continue;
 			if (blk == nullptr && err->hasError ==false )
@@ -984,7 +1006,7 @@ HBlock NSParser::ParseText::parser_text(CParser *p, string str , ErrorInfo *err)
 {
 	 
     // quebra o text  em linhas e processa as linhas separadamente
-    auto vlist = split_new_lines(str);
+    std::vector<string> vlist = split_new_lines(str);
 	HGroupLines pivot =  get_identation_groups(p,"__FILE__",vlist,err);
 	if (err->hasError)
 	{

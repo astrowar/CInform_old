@@ -66,6 +66,7 @@ namespace CBlocking
 		HBlockCompositionRelation asHBlockCompositionRelation(CBlocking::HBlock c);
 
 		HBlockNoum asHBlockNoum(CBlocking::HBlock c);
+
 		HBlockNoumSupl asHBlockNoumSupl(CBlocking::HBlock c);
 
 		HBlockKindNamed  asHBlockKindNamed(CBlocking::HBlock c);
@@ -325,6 +326,7 @@ namespace CBlocking
 		HBlockVerbNegate    asHBlockVerbNegate(CBlocking::HBlock  c);
 		HBlockNoumSupl    asHBlockNoumSupl(CBlocking::HBlock  c);
 		HBlockNoumStr    asHBlockNoumStr(CBlocking::HBlock  c);
+		HBlockNoumStrDet    asHBlockNoumStrDet(CBlocking::HBlock  c);
 		HBlockIsAdverbialComparasion    asHBlockIsAdverbialComparasion(CBlocking::HBlock  c);
 		HBlockMatchIsAdverbialComparasion    asHBlockMatchIsAdverbialComparasion(CBlocking::HBlock  c);
 		HBlockUnitInit    asHBlockUnitInit(CBlocking::HBlock  c);

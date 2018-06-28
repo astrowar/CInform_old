@@ -106,6 +106,10 @@ void CBlockNoumSupl::dump(string ident) {
 }
 
 
+void CBlockNoumStrDet::dump(string ident) {
+	printf("%s %d %s\n", ident.c_str(),this->det,  this->named.c_str());
+	CBlock::dump(ident);
+}
  
 
 

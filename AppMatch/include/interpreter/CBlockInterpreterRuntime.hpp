@@ -21,6 +21,7 @@
 
 #include <functional> 
 #include <map>
+#include <LanguageDepend.h>
 
 //class CBlockAssertionBase;
 //class CBlockAssertion_is;
@@ -104,7 +105,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 	class CBlockInterpreter {
 
 
- 
+
 
 		std::vector<HBlock> program; // main program .. to run IT
 
@@ -316,7 +317,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::list<HBlockRelationInstance > getRelations();
 
-		CBlockInterpreter();
+
+		CBlockInterpreter(LanguageDepend* language);
+
 
 		~CBlockInterpreter();
 
@@ -534,8 +537,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock evaluate_values(HBlock c_block);
 
 		HBlockNoum get_plural_of(string s);
+		HBlockNoum get_singular_of(string s);
 		bool isSameString(string s1, string s2);
-		 
+
+		LanguageDepend* language;
 	};
 
 	using  HBlockInterpreter = std::shared_ptr<CBlockInterpreter>;

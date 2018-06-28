@@ -2049,6 +2049,14 @@ namespace CBlocking
 		  return nullptr;
 	  }
 
+		HBlockNoumStrDet    asHBlockNoumStrDet(CBlocking::HBlock  c)
+		{
+			if (c == nullptr)   return nullptr;
+			auto   t = c->type();
+			if (t == BlockType::BlockNoumStrDet) return std::static_pointer_cast < CBlockNoumStrDet > (c);
+			return nullptr;
+		}
+
 
 
 	  HBlockIsAdverbialComparasion    asHBlockIsAdverbialComparasion(CBlocking::HBlock  c)

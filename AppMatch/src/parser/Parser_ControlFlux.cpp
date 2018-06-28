@@ -570,11 +570,16 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 				executeBlock = Statement::parser_stmt_inner(p, inner, err);
 				if (executeBlock == nullptr)
 				{
-					err->setError("missing unity init block ");
+					err->setError("error on unity init block ");
 					return nullptr;
 				}
 				HBlockUnitInit unit_init = std::make_shared<CBlockUnitInit>(executeBlock);
 				return unit_init;
+			}
+			if (inner == nullptr)
+			{
+				err->setError("missing unity init block ");
+				return nullptr;
 			}
 		}
 	}

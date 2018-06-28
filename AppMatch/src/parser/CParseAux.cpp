@@ -24,7 +24,7 @@ using namespace EqualResulting;
 
 bool is_empty_string(std::string s)
 {
-	if (s.size() == 0) return true;
+	if (s.empty()) return true;
 	if (s.find_first_not_of(' ') == std::string::npos)
 	{
 		return true;

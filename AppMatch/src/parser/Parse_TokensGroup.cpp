@@ -44,7 +44,7 @@ bool isToken(Token tk1 , std::vector<HBlock>::iterator  b)
 
 HBlock setCombinatoriaToken_2( std::vector<HBlock>  lst , std::function<HBlock(std::vector<HBlock> , std::vector<HBlock> )> func_2)
 {
-	unsigned int  n = lst.size();
+	size_t  n = lst.size();
 	if (n < 2) return nullptr;
 	for(unsigned int  i = 1; i< n ;++i )
 	{
@@ -264,7 +264,7 @@ std::list<HBlock> goupe_non_tokens(std::list<HBlock> lst)
 			}
 			retList.push_back(v);
 		}
-			else
+		else
 		{
 			current_block->lista.push_back(v);
 		}
@@ -326,7 +326,14 @@ NSParser::HGroupLines make_hierarchical_tree_it(std::list<NSParser::HGroupLines>
 std::list<NSParser::HGroupLines> make_hierarchical_tree(  std::list<NSParser::HGroupLines>  buffer, NSParser::ErrorInfo *err)
 {
 	 
-	  
+	int first_identation = 0;
+	if ((buffer.front())->identarion > 0)
+	{
+		err->setError("Identation Error at " + std::to_string((buffer.front())->lines.front().linenumber ) );
+		logMessage("Identation Error at " + std::to_string((buffer.front())->lines.front().linenumber));
+		return std::list<NSParser::HGroupLines>();
+	}
+
 	for (auto it = buffer.begin(); it != buffer.end(); ++it)
 	{
 		int identLevel = (*it)->identarion;
@@ -372,6 +379,7 @@ std::list<NSParser::HGroupLines> make_hierarchical_tree(  std::list<NSParser::HG
 
 
 	}
+	 
 	return buffer;
 	 
 		
@@ -412,7 +420,7 @@ NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, st
 		if (v.find_first_not_of(' ') != std::string::npos)
 		{
 			 
-			int ns = v.size();
+			size_t ns = v.size();
 			int i = 0;
 			bool has_contents = false;
 			for (i = 0; i < ns; ++i)
@@ -430,7 +438,7 @@ NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, st
 			if (has_contents == false) continue;
 			HGroupLines g = std::make_shared<GroupLines>();
 			g->identarion = i;
-			g->lines.push_back(SourceLine( filename, lineNumber, v));
+			g->lines.emplace_back(filename, lineNumber, v);
 			g->inner = nullptr;
 			g->next = nullptr;
 			printf("L:%s\n", v.c_str());

@@ -189,7 +189,7 @@ public:
 
 	std::string   load_item()
 	{
-        printf("item %.10s \n", data.c_str()+cursor);
+       printf("item %.10s \n", data.c_str()+cursor);
 		while (data[cursor] == ' ') cursor++;
 		for (int i = cursor; i < data.size(); ++i)
 		{
@@ -346,14 +346,39 @@ HBlock load_CBlock(int tp, LoadContext *ctx);
 
  
 
+    void ltrim(std::string &s) {
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+		return !std::isspace(ch);
+	}));
+}
+
+// trim from end (in place)
+    void rtrim(std::string &s) {
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+		return !std::isspace(ch);
+	}).base(), s.end());
+}
+
+// trim from both ends (in place)
+    void trim(std::string &s) {
+    ltrim(s);
+	rtrim(s);
+}
+
+
 
 HBlock load_line(LoadContext *ctx)
 {
+	HBlock _b = nullptr;
 	auto s = ctx->get_line(); 
+	trim(s);
 	printf("Line:|%s|\n", s.c_str());
-	const int slot_id = load_int(ctx);
-	const HBlock _b = load_CBlock(-1, ctx);
-	ctx->cache[slot_id] = _b;
+	if (s.empty() == false)
+	{
+		const int slot_id = load_int(ctx);
+		_b = load_CBlock(-1, ctx);
+		ctx->cache[slot_id] = _b;
+	}
 	ctx->new_line(); //le o new line do arquivo
 	while (ctx->is_empty_line())
 	{
@@ -432,6 +457,7 @@ HBlockValue  load_CBlockValue(int tp, LoadContext *ctx);
 HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx);
 HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
 HBlockNoumStr  load_CBlockNoumStr(int tp, LoadContext *ctx);
+HBlockNoumStrDet  load_CBlockNoumStrDet(int tp, LoadContext *ctx);
 HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx);
 HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx);
 HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx);
@@ -1101,6 +1127,7 @@ HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
 	if (tp == BlockType::BlockNoumStr) return load_CBlockNoumStr(tp, ctx);
+	if (tp == BlockType::BlockNoumStrDet) return load_CBlockNoumStrDet(tp, ctx);
 	if (tp == BlockType::BlockNoumSupl) return load_CBlockNoumSupl(tp, ctx);
 	return nullptr;
 }
@@ -2924,6 +2951,17 @@ HBlockNoumStr  load_CBlockNoumStr(int tp, LoadContext *ctx)
 	CBlockNoumStr* ret = new CBlockNoumStr(_named);
 	return  std::shared_ptr<CBlockNoumStr>(ret);
 
+}
+
+
+HBlockNoumStrDet  load_CBlockNoumStrDet(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNoumStrDet);
+	const string _det = load_string(ctx);
+	const string _named = load_string(ctx);
+	CBlockNoumStrDet* ret = new CBlockNoumStrDet(_det,_named);
+	return  std::shared_ptr<CBlockNoumStrDet>(ret);
 }
 
 
