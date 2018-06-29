@@ -65,7 +65,15 @@ CBlockInterpreter::create_derivadeKind(string called, string baseClasseName) {
 bool CBlockInterpreter::assert_assertation(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry)
 {
 
- 
+	if (HBlockList_AND nobjList = asHBlockList_AND(obj))
+	{
+		for (auto &e : nobjList->lista)
+		{
+			assert_assertation(e, value, localsEntry);
+		}
+		return true;
+	}
+
  
 		//Static Definition de uma instancia derivado
 	    if (assert_it_composition(obj, value, localsEntry)) return true;

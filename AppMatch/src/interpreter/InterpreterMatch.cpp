@@ -206,15 +206,15 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 	auto mObject = resolve_argument_match(mObject_in, localsEntry, stk);
 	auto mValue = resolve_argument_match(mValue_in, localsEntry, stk);
 
-	printf("==============================================\nMatched ? \n");
+	//printf("==============================================\nMatched ? \n");
 	
-	vr1->dump("");
-	mObject->dump("");
+	//vr1->dump("");
+	//mObject->dump("");
 
-	printf("\n");
-	vr2->dump("");
-	mValue->dump("");
-	printf("\n");
+	//printf("\n");
+	//vr2->dump("");
+	//mValue->dump("");
+	//printf("\n");
 
 
 
@@ -240,18 +240,18 @@ CResultMatch  CBlockInterpreter::Match_DirectIs(HBlockMatch mObject_in, HBlockMa
 		}
 		else
 		{
-		 printf("Fail ==========================================\n");
-			mValue->dump("");
-			vr2->dump("");
-			printf("............................................\n"); 
+		 //printf("Fail ==========================================\n");
+			//mValue->dump("");
+			//vr2->dump("");
+			//printf("............................................\n"); 
 		}
 	}
 	else
 	{
-		printf("Fail ==========================================\n");
+/*		printf("Fail ==========================================\n");
 		mObject->dump("");
 		vr1->dump(""); 
-		printf("............................................\n"); 
+		printf("............................................\n");*/ 
 	}
 
 	return CResultMatch(false); 
@@ -611,6 +611,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	//M->dump("   ");	
 	//printf("\n\n");
 
+
+	if (auto   vProp = asHBlockProperty(value))
+	{
+		auto propValue = this->exec_eval(vProp, localsEntry, stk);
+		return Match(M, propValue, localsEntry, stk);
+	}
+
 	if (auto vMatch = asHBlockMatch(value))
 	{
 		// Hummm ... um match contra outro match ...
@@ -644,7 +651,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}
  
 	 
-		if (auto inner_2 =  asHBlockNoum(mAtom->inner))
+		if (HBlockNoum inner_2 =  asHBlockNoum(mAtom->inner))
 		{
 			if (auto vNoumm =  asHBlockNoum(value))
 			{
@@ -655,6 +662,13 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			}
 			if (auto cnInstance = asHBlockInstanceNamed(value))
 			{
+				auto rQ = query_is(value, inner_2, localsEntry, stk);
+				if (rQ.result == QEquals)
+				{
+					return CResultMatch(true);
+				}
+				return CResultMatch(false);
+
 				if (cnInstance->named == inner_2->named) return CResultMatch(true);
 				//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
 				//	return CResultMatch(r.result == QEquals); 
@@ -944,7 +958,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 	if (HBlockMatchKind  mKind = asHBlockMatchKind(M))
 	{
-		if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
+		//if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
 		
 			QueryResultContext qkind = query_is(value, mKind->kind, localsEntry, stk);
 			return CResultMatch(qkind.result == QEquals);
@@ -953,14 +967,18 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 	if (HBlockMatchValue  mVal = asHBlockMatchValue(M))
 	{
-		if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
+		//if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
 		
 			QueryResultContext qkind = query_is(value, mVal->inner, localsEntry, stk);
 			return CResultMatch(qkind.result == QEquals);
 		
 	}
 
-
+	if (HBlockMatchBlock  mB = asHBlockMatchBlock (M))
+	{
+		QueryResultContext qkind = query_is(value, mB->inner, localsEntry, stk);
+		return CResultMatch(qkind.result == QEquals);
+	}
 
 	logError("Match not handled ");
 	return CResultMatch(false);

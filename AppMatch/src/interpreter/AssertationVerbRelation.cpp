@@ -666,7 +666,7 @@ QueryResultContext CBlockInterpreter::query_relation_instance(HBlockRelationInst
 	if (QEquals == qc1.result)
 	{
 
-		Esta aqui o problema , hall =?= matchNoum("B") e na stack esta B == hall
+		
 
 		QueryResultContext qc2 = query_is(rr->value2, value, localsEntry, stk);
 		if (QEquals == qc2.result)

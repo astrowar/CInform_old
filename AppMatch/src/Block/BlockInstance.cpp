@@ -21,7 +21,7 @@ using namespace CBlocking;
 CVariableSlotEnum::CVariableSlotEnum(HBlockEnums enums)
 {
 	this->valueDefinition = enums;
-	this->value = enums->values.front();
+	this->value = std::make_shared<CBlockNoumStr>("DEFAULT"); //default
 }
 
 CVariableSlotBool::CVariableSlotBool(CBlocking::HBlockNoum valueDef)
@@ -221,7 +221,12 @@ bool CBlockInstance::is_set(HBlockNoum  valueName, bool &value)
 		{
 			if (venum->valueDefinition->contains(valueName->named))
 			{
-				if (NNisSameString(venum->value->named, valueName->named))
+				string slot_value = venum->value->named;
+
+				if (slot_value == "DEFAULT")  slot_value = venum->valueDefinition->values.front()->named;
+				 
+
+				if (NNisSameString(slot_value, valueName->named))
 				{
 					value = true;
 					return true;

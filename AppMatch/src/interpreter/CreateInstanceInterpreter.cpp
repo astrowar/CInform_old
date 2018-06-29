@@ -64,16 +64,29 @@ void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_i
 	
 	for (auto &c : instancias)
 	{
-		if (HBlockKind dkind = asHBlockKind(kvar->get_obj())) {
-
-			if(is_derivadeOf(c->baseKind , dkind ) )
+		if (HBlockKind dkind = asHBlockKind(kvar->get_obj()))
+		{
+			if (is_derivadeOf(c->baseKind, dkind))
 			{
-				if (HBlockNoum noumSet = asHBlockNoum(kvar->get_definition())) 
-				{					 
-					//c->set(noumSet);
+				if (HBlockNoum noumSet = asHBlockNoum(kvar->get_definition()))
+				{
+					for (auto &va : c->anomimousSlots)
+					{
+						if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
+						{
+							if (venum->valueDefinition->contains(noumSet->named))
+							{
+								if (venum->value->named == "DEFAULT")
+								{
+									venum->value = noumSet;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
+
 		if (HBlockProperty  dproperty = asHBlockProperty(kvar->get_obj())) {
 
 			if (HBlockKind  dp_kind = asHBlockKind(dproperty->obj))

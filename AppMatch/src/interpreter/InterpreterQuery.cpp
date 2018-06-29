@@ -234,7 +234,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 				return QueryResultContext(QUndefined);
 			}
 
-			propObj->dump("");
+			//propObj->dump("");
 
 			if (HBlockInstance cinst = asHBlockInstance(propObj))
 			{
@@ -296,7 +296,11 @@ QueryResultContext CBlockInterpreter::query_is_propertyOf_value(HBlock c_propert
 		if (next_stack != nullptr)
 		{
 			auto resolved = resolve_noum(cnoum_1, localsEntry);
-			return query_is_propertyOf_value(c_property, resolved, localsEntry, next_stack.get());
+			if (resolved != nullptr)
+			{
+				return query_is_propertyOf_value(c_property, resolved, localsEntry, next_stack.get());
+			}
+			 
 		}
 	}
 
@@ -403,6 +407,39 @@ QueryResultContext CBlockInterpreter::query_is_Variable_value(HBlock c_block, HB
     return QUndefined;
 }
 
+ 
+
+QueryResultContext CBlockInterpreter::query_is_DecideIf(HBlockMatchDirectIs DctQueryDirectIS,   HBlock c_block, HBlock c_block1, HBlock decideBody,HRunLocalScope localsEntry, QueryStack *stk)
+{
+	 
+		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", DctQueryDirectIS, c_block, c_block1);
+		if (next_stack != nullptr)
+		{
+			auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
+			if (result.hasMatch == true)
+			{
+				//printf("Matched\n");
+				//c_block->dump("");
+				//DctQueryDirectIS->obj->dump("");
+				//printf("\n");
+				//c_block1->dump("");
+				//DctQueryDirectIS->value->dump("");
+				auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
+				localsNext->locals.push_back({ "it", c_block });
+				auto r = getDecidedValue( decideBody, localsNext, next_stack.get());
+				if (r.result == QEquals)
+				{
+					return r;
+				}
+				else
+				{
+					return QNotEquals; //Default Outcome for Decide  IF
+				}
+				return r;
+			}
+		}
+		return QUndefined;
+}
  
 
 
@@ -603,11 +640,16 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 		if (HBlockKindEntity kThing = asHBlockKindEntity(c_block1))
 		{
-			if (is_derivadeOf( cinst1, kThing, localsEntry)) return QEquals;
+			if (is_derivadeOf(cinst1, kThing, localsEntry))
+			{
+				return QEquals;
+			}
+			return QNotEquals;
 		}
 		if (HBlockKindValue kVal = asHBlockKindValue(c_block1))
 		{
 			if (is_derivadeOf(cinst1, kVal, localsEntry)) return QEquals;
+			return QNotEquals;
 		}
 
 		//if (HBlockNoum knn = asHBlockNoum(c_block1))
@@ -676,31 +718,13 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
     
 
-	for (auto dct : decides_what)
-	{
-		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
-		if (next_stack != nullptr)
-		{
-			//nao entendi o porque disso aqui ....
-			//auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, next_stack.get());
-			//if (dctValueWrap != nullptr)
-			//{
-			//	QueryResultContext rw = query_is(dctValueWrap, c_block1, localsEntry, next_stack.get()); //is not opnional
-			//	if (rw.result != QUndefined)
-			//	{
-			//		return rw;
-			//	}
-			//}
-		}
-	}
+
 
     for (auto dct : decides_what) 
     {
 		std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", dct, c_block, c_block1);
 		if (next_stack != nullptr)
 		{
-		 
-
 			auto dctValueWrap_1 = getDecidedValueOf(c_block1, dct, nullptr, next_stack.get());
 			if (dctValueWrap_1 != nullptr) {
 				QueryResultContext rw = query_is(c_block, dctValueWrap_1, localsEntry, next_stack.get());  //is not opnional
@@ -708,7 +732,6 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				{
 					return rw;
 				}
-				
 			}
 		}
     }
@@ -728,14 +751,28 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
         } 
     }
     
+	QueryResultContext qprop = query_is_propertyOf_value(c_block, c_block1, localsEntry, stk);
+		if (qprop.result != QUndefined)
+		{
+			return qprop;
+		}
 
 
+	
+		QueryResultContext rinst = (query_is_instance_valueSet(c_block, c_block1, stk));
+		if (rinst.result != QUndefined) {
+			return rinst;
+		}
+
+	
+	
 
 
 
 
     for (auto it = assertions_functional.begin(); it != assertions_functional.end(); ++it) {
-        if (HBlockToDecide tdef = asHBlockToDecide(*it)) {
+        if (HBlockToDecide tdef = asHBlockToDecide(*it)) 
+		{
 
         }
     }
@@ -748,18 +785,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
         }
     }
 
-    {
-		QueryResultContext rinst = (query_is_instance_valueSet(c_block, c_block1,stk));
-        if (rinst.result != QUndefined) {
-            return rinst;
-        }
-
-		QueryResultContext qprop = query_is_propertyOf_value(c_block, c_block1, localsEntry, stk);
-        if (qprop.result != QUndefined) 
-		{
-            return qprop;
-        }
-    }
+  
 
 	QueryResultContext r2 = query_is_same(c_block, c_block1,localsEntry, stk);
     if (r2.result == QEquals) {
@@ -796,36 +822,39 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (HBlockMatchDirectIs  DctQueryDirectIS = asHBlockMatchDirectIs(dctIF->queryToMatch))
 		{
-			std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", DctQueryDirectIS, c_block, c_block1);
-			if (next_stack != nullptr)
+
+			auto r = query_is_DecideIf(DctQueryDirectIS, c_block, c_block1, dctIF->decideBody, localsEntry, stk);
+			if (r.result != QUndefined)
 			{
-			 
-				
-				auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
-				if (result.hasMatch == true)
-				{
-					printf("Matched\n");
-					c_block->dump("");
-					DctQueryDirectIS->obj->dump("");
-
-					printf("\n");
-					c_block1->dump("");
-					DctQueryDirectIS->value->dump("");
-
-
-
-					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);
-					
-					localsNext->locals.push_back({ "it", c_block });
-
-					auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
-					if (r.result ==QEquals)
-					{
-						return r;
-					}
-					return r;
-				}
+				return r;
 			}
+
+			//std::unique_ptr<QueryStack>  next_stack = generateNextStack(stk, "is", DctQueryDirectIS, c_block, c_block1);
+			//if (next_stack != nullptr)
+			//{
+			//	auto result = Match_DirectIs(DctQueryDirectIS->obj, DctQueryDirectIS->value, c_block, c_block1, nullptr, next_stack.get());
+			//	if (result.hasMatch == true)
+			//	{
+			//		printf("Matched\n");
+			//		c_block->dump("");
+			//		DctQueryDirectIS->obj->dump("");
+			//		printf("\n");
+			//		c_block1->dump("");
+			//		DctQueryDirectIS->value->dump("");
+			//		auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result.maptch);					
+			//		localsNext->locals.push_back({ "it", c_block });
+			//		auto r = getDecidedValue(dctIF->decideBody, localsNext, next_stack.get());
+			//		if (r.result ==QEquals)
+			//		{
+			//			return r;
+			//		}
+			//		else
+			//		{
+			//			return QNotEquals; //Default Outcome for Decide  IF
+			//		}
+			//		return r;
+			//	}
+			//}
 		}
 	}
 
@@ -914,7 +943,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (CBlock::isSame(resolved_a.get(), c_block.get()) == false)
 		{
-			return query_is(resolved_b, c_block1, localsEntry, stk);
+			return query_is(resolved_a, c_block1, localsEntry, stk);
 		}
 	}
 

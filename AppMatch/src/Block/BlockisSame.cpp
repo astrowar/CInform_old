@@ -107,6 +107,21 @@ namespace CBlocking {
 		}
 
 
+		bool   isSame_BlockMatchNamed(CBlockMatchNamed* b1, CBlockMatchNamed* b2) 
+		{
+			if (b1->named != b2->named) return false;
+			if (CBlock::isSame(b1->matchInner.get(), b2->matchInner.get()) == false) return false;
+			return true;
+		}
+
+		bool isSame_BlockMatchDirectIs(CBlockMatchDirectIs* b1, CBlockMatchDirectIs* b2)
+		{
+			if (CBlock::isSame(b1->obj.get(), b2->obj.get()) == false) return false;
+			if (CBlock::isSame(b1->value.get(), b2->value.get()) == false) return false;
+			return true;
+		}
+
+
 		bool isSame_BlockRelationArguments(CBlockRelationArguments* b1, CBlockRelationArguments* b2)
 		{
 			if (b1->value1 == nullptr && b2->value1 != nullptr) return false;
@@ -233,7 +248,8 @@ namespace CBlocking {
 
 		bool isSame_BlockToDecideWhat(CBlockToDecideWhat * b1, CBlockToDecideWhat* b2)
 		{
-			return isSame(b1->decideBody, b2->decideBody) && isSame(b1->queryToMatch, b2->queryToMatch);
+			//return isSame(b1->decideBody, b2->decideBody) && isSame(b1->queryToMatch, b2->queryToMatch);
+			return  isSame(b1->queryToMatch, b2->queryToMatch);
 		}
 
 		bool isSame_BlockAssertion_isDirectAssign(CBlockAssertion_isDirectAssign * b1, CBlockAssertion_isDirectAssign* b2)
@@ -326,6 +342,8 @@ namespace CBlocking {
 	if (b1->type() == BlockPhraseDefine)   return Comparison::isSame_BlockPhraseDefine(static_cast<CBlockPhraseDefine*>(b1), static_cast<CBlockPhraseDefine*>(b2)); ;
 	if (b1->type() == BlockPhraseHeader)   return Comparison::isSame_BlockPhraseHeader(static_cast<CBlockPhraseHeader*>(b1), static_cast<CBlockPhraseHeader*>(b2)); ;
 	if (b1->type() == BlockRelationArguments)   return Comparison::isSame_BlockRelationArguments(static_cast<CBlockRelationArguments*>(b1), static_cast<CBlockRelationArguments*>(b2)); ;
+	if (b1->type() == BlockMatchDirectIs)   return Comparison::isSame_BlockMatchDirectIs(static_cast<CBlockMatchDirectIs*>(b1), static_cast<CBlockMatchDirectIs*>(b2)); ;
+	if (b1->type() == BlockMatchNamed)   return Comparison::isSame_BlockMatchNamed(static_cast<CBlockMatchNamed*>(b1), static_cast<CBlockMatchNamed*>(b2)); ;
 	b1->dump("");
 	b2->dump("");
 

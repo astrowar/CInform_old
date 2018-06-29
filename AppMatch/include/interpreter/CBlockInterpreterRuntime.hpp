@@ -199,6 +199,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		QueryResultContext query_is_propertyOf_value(HBlock c_property, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext query_is_Variable_value(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		QueryResultContext query_is_DecideIf(HBlockMatchDirectIs DctQueryDirectIS, HBlock c_block, HBlock c_block1, HBlock decideBody, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		//QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext query(HBlockAssertion_is q, HBlockAssertion_is base, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
@@ -489,6 +490,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlock get_PropertyOfKind_DefaultValue(HBlockProperty kprop, HBlock c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack * stk);
 		HBlock disptch_action_call(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		HBlock exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
+		HBlock exec_eval_forEach(HBlockControlForEach c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		HBlock exec_eval_if_then(HBlockControlIF c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
 		HBlock resolve_as_callCommand(HBlock c_block, HRunLocalScope shared_ptr);
 		HBlockExecution create_dispach_env(HBlockList p, HRunLocalScope localsEntry);
 

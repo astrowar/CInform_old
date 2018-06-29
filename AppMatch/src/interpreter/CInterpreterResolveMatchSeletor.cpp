@@ -198,6 +198,12 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_item(HBlockMatch sele
 {
 	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
 	{
+		auto lnoum = localsEntry->resolve(mNoum->inner->named);
+		if (lnoum != nullptr)
+		{
+			return make_shared<CBlockMatchBlock>(lnoum);
+		}
+
 		for (auto &ss : allKindsNames)
 		{
 			if (isSameString(ss, mNoum->inner->named))

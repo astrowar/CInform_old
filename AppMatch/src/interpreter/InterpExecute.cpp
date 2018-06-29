@@ -831,7 +831,84 @@ HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalS
 		return nullptr;
 	}
 }
+HBlock CBlockInterpreter::exec_eval_if_then(HBlockControlIF cIF, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HBlock ret = nullptr;
 
+	if (HBlockAssertion_isDirectAssign  adirect = asHBlockAssertion_isDirectAssign(cIF->block_if))
+	{
+
+		if (HBlockMatch  mm = asHBlockMatch(adirect->get_definition()))
+		{
+			auto mres = Match(mm, adirect->get_obj(), localsEntry, stk);
+			if (mres.hasMatch)
+			{
+				auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, mres.maptch);
+				auto r =  exec_eval(cIF->block_then, localstmp, stk);
+				return r;
+			}
+
+		}
+		
+
+	}
+
+
+	auto r = query(cIF->block_if, localsEntry, stk);
+	if (r.result == QEquals)
+	{
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, r.matchedResult);
+
+		auto result_then =  exec_eval(cIF->block_then, localsNext, stk);
+		return result_then;
+	}
+	else
+	{
+		if (cIF->block_else != nullptr)
+		{
+			auto result_else =  exec_eval(cIF->block_else, localsEntry, stk);
+			return result_else;
+		}
+		return nullptr;
+	}
+}
+
+ 
+HBlock CBlockInterpreter::exec_eval_forEach(HBlockControlForEach cForE, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HBlock ret = nullptr;
+	ListOfNamedValue  loopListEnummerator = getValuesFromMatch(cForE->block_variable, localsEntry, stk);
+	{
+		for (auto hii : loopListEnummerator)
+		{
+
+			const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
+			auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
+
+			auto rloop_result = exec_eval(cForE->block_body, localsNext, stk);
+
+			if (rloop_result == nullptr)
+			{
+				//printf("_______________________________________\n");
+				//localsNext->dump("");
+				//cForE->block_body->dump("");
+				continue;
+			}
+			ret = rloop_result;
+			if (HBlockToDecideOn ndecide = asHBlockToDecideOn(ret))
+			{
+				return ret;
+			}
+		}
+		if (ret == nullptr)
+		{
+			//c_block->dump("");
+			//cForE->block_variable->dump("");
+			//logError("What ?");
+		}
+		return ret;
+	}
+}
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 	 
@@ -878,62 +955,13 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 
 	if (HBlockControlIF cIF = asHBlockControlIF(c_block))
 	{
-		HBlock ret = nullptr;
- 
- 
-
-  		auto r = query(cIF->block_if, localsEntry, stk);
-		if (r.result == QEquals)
-		{
-			auto localsNext = std::make_shared< CRunLocalScope >(localsEntry , r.matchedResult );
-			 
-			return exec_eval(cIF->block_then, localsNext, stk);
-		}
-		else
-		{
-			if (cIF->block_else != nullptr)
-			{
-				return exec_eval(cIF->block_else, localsEntry, stk);
-			}
-			return nullptr;
-		}
+		return exec_eval_if_then(cIF, localsEntry, stk);
 	}
 
 
 	if (HBlockControlForEach cForE = asHBlockControlForEach(c_block))
 	{
-		HBlock ret = nullptr;
-		ListOfNamedValue  loopListEnummerator = getValuesFromMatch(cForE->block_variable, localsEntry, stk);
-		{
-			for (auto hii : loopListEnummerator)
-			{
-
-				const  std::map<string, CBlocking::HBlock> nextVarSet = { { hii.named , hii.value } };
-				auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, nextVarSet);
-
-				auto rloop_result = exec_eval(cForE->block_body, localsNext, stk);
-
-				if (rloop_result == nullptr)
-				{
-					//printf("_______________________________________\n");
-					//localsNext->dump("");
-					//cForE->block_body->dump("");
-					continue;
-				}
-				ret = rloop_result ;
-				if (HBlockToDecideOn ndecide = asHBlockToDecideOn(ret))
-				{
-					return ret;
-				}
-			}
-			if (ret == nullptr)
-			{
-				//c_block->dump("");
-				//cForE->block_variable->dump("");
-				//logError("What ?");
-			}
-			return ret ;
-		}
+		return exec_eval_forEach(cForE, localsEntry, stk);
 	}
 
 
@@ -1201,10 +1229,9 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return Nothing;
 	}
 
-	if (localsEntry!=nullptr)localsEntry->dump("");
-	 
+	//if (localsEntry!=nullptr)localsEntry->dump("");	 
 	// Bla ! 
-	c_block->dump("");
+	//c_block->dump("");
 	//throw "Unhandle CBlock";
 
 	if (auto nn = asHBlockNoum(c_block))

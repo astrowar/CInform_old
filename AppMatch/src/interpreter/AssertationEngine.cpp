@@ -102,6 +102,13 @@ bool CBlockInterpreter::assert_it_canBe(CBlocking::HBlock c_block, HBlockEnums v
 	else if (HBlockKind nkind = DynamicCasting::asHBlockKind(c_block)) 
 	{
 		kind_variables.push_back(make_shared<CBlockAssertion_canBe>(nkind, value));
+		//Acha todas as instancias derivadas desse tipo e assign o slot
+		
+		for (auto iObj : getInstancesFromKind(nkind, localsEntry) )
+		{			 
+			assign_variable_to_instance(make_shared<CBlockAssertion_canBe>(iObj, value));
+		}
+
 		add_modifier_keyword(value);
 		return true;
 	}

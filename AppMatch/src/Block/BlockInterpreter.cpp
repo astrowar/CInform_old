@@ -85,6 +85,12 @@ CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
 	{
 		_value[0] = 'a';
 	}
+	if (_value.find('\t') != std::string::npos)
+	{
+		assert(_value.find('\t') == std::string::npos);
+		assert(_value.find('\n') == std::string::npos);
+	}
+
 }
 
 

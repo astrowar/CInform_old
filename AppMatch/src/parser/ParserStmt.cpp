@@ -193,8 +193,18 @@ HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 		//auto ss = term->repr();
 		//printf("@35  %s \n", ss.c_str());
 	}
+	std::string hString = CtoString(term->removeArticle());
 
-	return std::make_shared<CBlockNoumStr>(CtoString( term->removeArticle()) );
+	while (hString.back() == '\t')
+	{
+		hString = hString.substr(0, hString.size() - 1);
+	}
+	while (hString.front() == '\t')
+	{
+		hString = hString.substr(1, hString.size() - 1);
+	}
+
+	return std::make_shared<CBlockNoumStr>(hString);
 }
 
 HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTerm>&   lst)
