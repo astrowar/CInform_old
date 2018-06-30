@@ -16,7 +16,6 @@ set(SOURCE_FILES_PARSER
         AppMatch/src/parser/ParserDynamicDispatch.cpp
         AppMatch/src/parser/ParseRelation.cpp
         AppMatch/src/parser/ParseRelationWhen.cpp
-
         AppMatch/src/parser/ParserSelectorFunctional.cpp
         AppMatch/src/parser/ParserStmt.cpp
         AppMatch/src/parser/ParserTextEntry.cpp
@@ -32,10 +31,9 @@ set(SOURCE_FILES_PARSER
         AppMatch/src/parser/Parse_PhraseDeclare.cpp
         AppMatch/src/parser/Parse_TokensGroup.cpp
         AppMatch/src/parser/Parse_verbArray_en.cpp
-        AppMatch/src/parser/StaticDispatchFunctions.cpp 
-        
+        AppMatch/src/parser/StaticDispatchFunctions.cpp
         AppMatch/src/parser_Eng/Predicates.cpp
-)
+        )
 
 
 set(SOURCE_FILES_BLOCK
@@ -63,7 +61,7 @@ set(SOURCE_FILES_BASE
         AppMatch/src/base/CMatch.cpp
         AppMatch/src/base/CMatchCombinatoria.cpp
         AppMatch/src/base/CMatchListValid.cpp
-)
+        )
 
 
 set(SOURCE_FILES_COMPILER

@@ -129,8 +129,8 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 		// and action applying to [one visible thing and requiring light]
 
 		//std::cout << get_repr(term) << std::endl;
-		CPredSequence predList =	pAny("ActionName") << verb_IS() << undefinedArticle() << pLiteral("action") << pLiteral("applying") << pLiteral("to")<< pAny("ApplyRemainder");
-
+		//CPredSequence predList =	pAny("ActionName") << verb_IS() << undefinedArticle() << pLiteral("action") << pLiteral("applying") << pLiteral("to")<< pAny("ApplyRemainder");
+		CPredSequence predList = LanguageModule->parse_AssertionAction();
 		
 
 		MatchResult res = CMatch(term, predList);
