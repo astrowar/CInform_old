@@ -13,6 +13,7 @@
 #include "CblockAssertion.hpp"
 #include "CBlockDumpValues.hpp"
 #include "CBlockDecideIf.hpp"
+#include "Predicates.hpp"
 
 
 namespace NSParser
@@ -156,10 +157,10 @@ namespace NSParser
 	{
 
 
-		 
-
 
 	public:
+        LanguageModule *lang;
+
 		std::vector<CBlocking::NoumDefinition> nregisters;
 		// Interpreter::HBlockInterpreter interpreter_inner;
 		std::map<string, CBlocking::HBlock > verbToRelation;		 
@@ -172,7 +173,7 @@ namespace NSParser
 
 		CBlocking::HBlock blank_line;
 
-		CParser(  );
+		CParser(  LanguageModule * _lang );
 		virtual ~CParser();
 
 
@@ -200,13 +201,14 @@ namespace NSParser
  
 		//DispatchArguments  parser_buildMatchBlock_actionInput(NSTerm::HTerm term);
 		//DispatchArguments  parser_buildMatchBlock_actionInput(std::vector<NSTerm::HTerm>&  term);
- 
- 
- 
-	 
- 
-	 
-	};
+
+
+
+
+
+
+
+    };
 	namespace ParseText
 	{
 		NSParser::HGroupLines  get_identation_groups(CParser *p, string filename, std::vector<string> vlines, ErrorInfo *err);

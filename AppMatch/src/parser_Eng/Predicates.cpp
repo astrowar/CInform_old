@@ -11,7 +11,7 @@
 
 
 #include <parser/PredicatesEn.hpp>
-
+#include <parser/Parser.hpp>
 
 
 CPredSequence LanguageEnglish::parse_AssertionAction_secondPart(tokenIdent ApplyRemainder) {
@@ -77,7 +77,7 @@ CPredSequence LanguageEnglish::parse_AssertionDefaultAssign_always(tokenIdent No
     return 	pAny(Noum) << verb_IS() << pLiteral("always") << pAny(Value);
 }
 
-CPredSequence LanguageEnglish::parse_AssertionVerb(tokenIdent N1, tokenIdent N2) {
+CPredSequence LanguageEnglish::parse_AssertionVerb(   tokenIdent N1, tokenIdent N2) {
     return pAny(N1) << p->verbList << pAny(N2);
 }
 

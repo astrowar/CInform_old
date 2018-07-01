@@ -2,8 +2,8 @@
 // Created by eraldo on 30/06/2018.
 //
 
-#ifndef CINFORM_PREDICATES_H
-#define CINFORM_PREDICATES_H
+#ifndef CINFORM_PREDICATES_EN_H
+#define CINFORM_PREDICATES_EN_H
 // CInform , opensource interactive fiction language
 // Copyright(C) 2018  Eraldo M R Jr
 // This program is free software : you can redistribute it and/or modify
@@ -16,15 +16,17 @@
 
 
 
-#include "Parser.hpp"
+
 #include <parser/Predicates.hpp>
+#include <parser/Parser.hpp>
 
 class LanguageEnglish : public  LanguageModule
 {
-public :
-    NSParser::CParser *p;
+
 public:
-    explicit LanguageEnglish(NSParser::CParser* p): p(p)
+
+    NSParser::CParser *p;
+      LanguageEnglish(NSParser::CParser *_p ): p(_p)
     {
     }
     CPredSequence parse_AssertionAction_secondPart(tokenIdent ApplyRemainder )  override ;

@@ -116,7 +116,7 @@ CompilerFlags process_options(std::vector<std::string> va)
 HBlockComandList  compile_files(std::vector<std::string> files)
 {
 	HBlockComandList ret = nullptr;
-	NSParser::CParser parse;
+	NSParser::CParser parse(nullptr);
 	for (auto f : files)
 	{
 		const std::string file_contents = load_file_c(f);

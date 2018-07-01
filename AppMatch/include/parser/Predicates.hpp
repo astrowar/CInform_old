@@ -14,8 +14,9 @@
 
 // Language terms to undestand Any Language  CInform
 
-#include <Parser/Parser.hpp>
+
 #include <match/CMatch.hpp>
+#include "BlockInterpreter.hpp"
 
 using namespace CBlocking;
 using namespace NSTerm;
@@ -28,6 +29,7 @@ using tokenIdent = string;
 class LanguageModule
 {
 public:
+
     virtual CPredSequence parse_AssertionAction_secondPart(tokenIdent ApplyRemainder );
     virtual CPredSequence parse_ActionCompositionName(tokenIdent ActionName, tokenIdent pred, tokenIdent pred_aux);
     virtual CPredSequence parse_AssertionAction(tokenIdent ActionName, tokenIdent ApplyRemainder);

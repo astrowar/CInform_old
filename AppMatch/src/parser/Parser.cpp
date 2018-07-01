@@ -34,8 +34,9 @@ using namespace EqualResulting;
 
 
 
-NSParser::CParser::CParser( ) {
+NSParser::CParser::CParser( LanguageModule *_lang ) {
     
+   this->lang = _lang;
 
 	blank_line = std::make_shared<CBlockNothing>("Blank Line");
     {
@@ -65,7 +66,8 @@ NSParser::CParser::CParser( ) {
 
  
 
-NSParser::CParser::~CParser() {
+NSParser::CParser::~CParser()
+{
 }
 
 
