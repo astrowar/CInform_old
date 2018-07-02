@@ -256,7 +256,7 @@ bool CBlockInterpreter::assert_it_ForbiddenValue(CBlocking::HBlock obj, CBlockin
 bool CBlockInterpreter::assert_it_defaultValue(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
     //default value so eh valudi para Kinds
 	 
-	obj->dump(" ");
+	//obj->dump(" ");
     if (HBlockNoum nbase = asHBlockNoum(obj)) {
         CBlocking::HBlock nobj = resolve_noum(nbase,localsEntry);
         if (nobj != nullptr) {

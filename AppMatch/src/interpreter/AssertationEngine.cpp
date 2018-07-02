@@ -75,6 +75,48 @@ void CBlockInterpreter::start()
 	}
 }
 
+
+
+
+
+
+
+
+bool CBlockInterpreter::is_runnig()
+{
+	return true;
+}
+
+
+
+string  CBlockInterpreter::prompt()
+{
+	for (auto v : this->global_variables)
+	{
+		if (v->name->named == "command prompt" )
+		{
+			std::string number = "singular";
+			std::string gender = "neutral";
+			std::string person = "3S";
+			auto nn =  textual_representation(v->value, person , number , gender ,nullptr, nullptr  );
+			return nn->named;
+		}
+	}
+	return ">";
+}
+
+void   CBlockInterpreter::feed(string user_input)
+{
+	//printf("\nenter:%s\n", user_input.c_str());
+	HRunLocalScope localsEntry = make_shared< CRunLocalScope >(nullptr);
+	HBlockActionNamed actionCall = std::make_shared<CBlockActionNamed>("Commanding");	 
+	HBlockText  argument = std::make_shared<CBlockText>(user_input) ;
+	execute_now(std::make_shared<CBlockActionCallNamed>(actionCall, argument, nullptr), localsEntry);
+
+}
+
+
+
 void   CBlockInterpreter::add_modifier_keyword(HBlockEnums _enums)
 {
 	for (auto e : _enums->values)

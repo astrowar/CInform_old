@@ -237,7 +237,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 	
 
 		{
-			// to doing somthig with another thing
+			// to doing somethig with another thing
 			CPredSequence predList  = pLiteral("to") <<pWord("Verb") <<pAny("Match_arg1")	<<pPreposition("pred") <<pAny("Match_arg2")	<<pLiteral(":");
 			MatchResult res = CMatch(term, predList);
 			if (res.result == Equals) 

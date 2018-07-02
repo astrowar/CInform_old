@@ -612,6 +612,8 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	//printf("\n\n");
 
 
+
+
 	if (auto   vProp = asHBlockProperty(value))
 	{
 		auto propValue = this->exec_eval(vProp, localsEntry, stk);
@@ -655,11 +657,18 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		{
 			if (auto vNoumm =  asHBlockNoum(value))
 			{
-				if (vNoumm->named == inner_2->named)
+				if (isSameString(vNoumm->named , inner_2->named))
 				{
 					return CResultMatch( true );
 				}
 			}
+
+			if (inner_2->named.size() == 1  )
+				if (isupper(inner_2->named[0]))
+				{
+					return CResultMatch(inner_2->named, value);
+				}
+
 			if (auto cnInstance = asHBlockInstanceNamed(value))
 			{
 				auto rQ = query_is(value, inner_2, localsEntry, stk);

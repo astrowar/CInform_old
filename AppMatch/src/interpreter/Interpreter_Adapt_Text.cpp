@@ -212,7 +212,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 	{
 		return std::make_shared<CBlockNoumSupl>(ntxt->contents, "singular", "neutral");
 	}
-	if (auto nstxt = asHBlockTextSentence(x))
+	if (HBlockTextSentence nstxt = asHBlockTextSentence(x))
 	{
 		HBlockText ntxt = adapt_text(nstxt, localsEntry, stk);
 		return std::make_shared<CBlockNoumSupl>(ntxt->contents, "singular", "neutral");

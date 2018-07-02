@@ -98,6 +98,8 @@ public :
 };
 
 
+	using	InternalActionHandle = std::function<PhaseResult(HRunLocalScope, QueryStack* )>;
+
 
 using ListOfNamedValue = std::list<NamedValue>;
 
@@ -162,6 +164,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		//Event handles
 		std::vector<HBlockEventHandle> event_handles;
+		std::vector< std::pair<HBlockEventHandle,InternalActionHandle> > system_event_handles;
+		 
 		int instancia_id;
 		HBlockNothing Nothing;
 		HBlockAnything Anything;
@@ -499,6 +503,16 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		PhaseResult execute_now(HBlock c_block);
 		PhaseResult execute_phase_any(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+
+	 
+		HRunLocalScope  match_phase_indirect_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		HRunLocalScope  match_phase_direct_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+
+		PhaseResult execute_phase_any_direct_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		PhaseResult execute_phase_any_indirect_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+
+	 
+		PhaseResult execute_phase_any_system(HBlockEventHandle  evh, InternalActionHandle func_call, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		PhaseResult execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		PhaseResult execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		PhaseResult execute_phase_before(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
@@ -530,6 +544,12 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockNoum get_plural_of(string s);
 		HBlockNoum get_singular_of(string s);
 		bool isSameString(const string& s1, const string& s2);
+
+
+		//user input handle
+		bool is_runnig();  // codio esta em execusao  ?
+		string prompt();
+		void feed(string user_input);
 
 
 	};

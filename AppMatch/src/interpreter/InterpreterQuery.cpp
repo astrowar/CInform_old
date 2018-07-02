@@ -576,7 +576,10 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (c_block1 == MetaKindRelation)   return QEquals;
 	}
-
+	if (HBlockText btext = asHBlockText(c_block))
+	{
+		if (c_block1 == MetaKindText)   return QEquals;
+	}
  
 
 

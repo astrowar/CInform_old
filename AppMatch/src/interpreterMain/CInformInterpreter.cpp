@@ -12,6 +12,7 @@
 #include <interpreter/CBlockInterpreterRuntime.hpp>
 #include "sharedCast.hpp"
 #include "save_ctx.hpp"
+#include "CInformInterpreter.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ std::string load_file_i(string filename)
     if (f == nullptr)
     {
         printf("Error , file not found \n");
-        return "";
+        return std::string("");
     }
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
@@ -46,7 +47,6 @@ class InterpreterFlags
 public:
     std::map<std::string,bool> flags;
     std::map<std::string, string> options;
-
     std::map<std::string, string> flags_desc;
     std::map<std::string, string> options_desc;
 
@@ -107,6 +107,22 @@ InterpreterFlags process_options(std::vector<std::string> va)
 }
 
 
+string get_user_input(string prompt)
+{
+
+	char c;
+
+	printf("%s", prompt.c_str());
+	char tmp[1024];
+	scanf("%[^\n]", tmp);
+	string str = tmp;
+    while ((c = fgetc(stdin)) != '\n' && c != EOF); /* Flush stdin */
+	return str;
+
+}
+
+ 
+
 
 int main(int argc, char **argv)
 {
@@ -144,13 +160,21 @@ int main(int argc, char **argv)
 			return 2;
 		}
 		
-        h->dump(" ");
+      //  h->dump(" ");
 
-		LanguageEn english_proxy ;
+		LanguageEn english_proxy ; //define basic interpreter functions to english language
         Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>(&english_proxy);
 
         interpreter->execute_init(h);
         interpreter->start();
+		while (true)
+		{
+			if (interpreter->is_runnig() ==false ) break;
+			string prompt = interpreter->prompt();
+
+			string user_typed = get_user_input(prompt);
+			interpreter->feed(user_typed);
+		}
     }
     return 0;
 }

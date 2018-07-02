@@ -320,7 +320,7 @@ CBlockMatchNoum::CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inne
 	//	assert(s != _inner->named);
 	//}
 
-	inner->dump("");
+	//inner->dump("");
 };
 
 

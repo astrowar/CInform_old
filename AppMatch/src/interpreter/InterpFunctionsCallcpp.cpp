@@ -32,10 +32,8 @@ using namespace QueryStacking;
 using namespace EqualResulting;
 
 
-PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+HRunLocalScope CBlockInterpreter::match_phase_direct_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
-
-
 	if (HBlockActionCallNamed call_named = asHBlockActionCallNamed(v_call))
 	{
 
@@ -46,17 +44,20 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 			QueryResul qarg1 = QEquals;
 			QueryResul qarg2 = QEquals;
 
-			if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) return PhaseResult(false); ;
-			if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) return PhaseResult(false);
-			if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) return PhaseResult(false); ;
-			if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) return PhaseResult(false); ;
+			if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) return nullptr;
+			if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) return nullptr;
+			if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) return nullptr;
+			if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) return nullptr;
 
 			HRunLocalScope next_vars = nullptr;
 			HRunLocalScope next_vars_2 = nullptr;
 			if (evh->eventToObserve->argument1 != nullptr)
 			{
 				auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
-				if (r1.hasMatch == false) return PhaseResult(false); ;
+				if (r1.hasMatch == false)
+				{
+					return   nullptr;
+				}
 				next_vars = std::make_shared< CRunLocalScope >(localsEntry, r1.maptch);
 				next_vars_2 = next_vars;
 			}
@@ -65,28 +66,225 @@ PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockAc
 			if (evh->eventToObserve->argument2 != nullptr)
 			{
 				auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
-				if (r2.hasMatch == false) return PhaseResult(false);
+				if (r2.hasMatch == false)
+				{
+					return   nullptr;
+				}
 				next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);
 
 			}
 
 			//next vars contem as variaveis 
+			return next_vars_2; 
+		}
+	}
+	return nullptr;
 
-			PhaseResult  rx = this->execute_now(evh->body, next_vars_2, stk);
+}
 
-			if (rx.hasExecuted)
+
+HRunLocalScope CBlockInterpreter::match_phase_indirect_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (HBlockActionCallNamed call_named = asHBlockActionCallNamed(v_call))
+	{
+
+		QueryResultContext qAction = query_is(call_named->action, evh->eventToObserve->action, localsEntry, stk);
+
+		if (qAction.result == QEquals)
+		{
+			QueryResul qarg1 = QEquals;
+			QueryResul qarg2 = QEquals;
+
+			if ((evh->eventToObserve->argument1 == nullptr) && (evh->eventToObserve->argument2 == nullptr))
 			{
-				return rx;
+			std:map<string, HBlock> arguments;
+				arguments["noum"] = v_call->noum1;
+				arguments["second noum"] = v_call->noum2;
+				HRunLocalScope next_vars = std::make_shared< CRunLocalScope >(localsEntry, arguments);
+
+				return next_vars;
+
+				 
 			}
 		}
 	}
+
+	return nullptr;
+
+}
+
+
+PhaseResult CBlockInterpreter::execute_phase_any_direct_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+
+	HRunLocalScope next_vars = match_phase_direct_args(evh, v_call, localsEntry, stk);
+	if (next_vars != nullptr)
+	{
+		PhaseResult  rx = this->execute_now(evh->body, next_vars, stk);
+		if (rx.hasExecuted)
+		{
+			return rx;
+		}
+	}
+	return PhaseResult(false);
+
+
+
+	//if (HBlockActionCallNamed call_named = asHBlockActionCallNamed(v_call))
+	//{
+
+	//	QueryResultContext qAction = query_is(call_named->action, evh->eventToObserve->action, localsEntry, stk);
+
+	//	if (qAction.result == QEquals)
+	//	{
+	//		QueryResul qarg1 = QEquals;
+	//		QueryResul qarg2 = QEquals;
+
+	//		if (evh->eventToObserve->argument1 == nullptr &&  v_call->noum1 != nullptr) return PhaseResult(false);
+	//		if (evh->eventToObserve->argument1 != nullptr &&  v_call->noum1 == nullptr) return PhaseResult(false);
+	//		if (evh->eventToObserve->argument2 == nullptr &&  v_call->noum2 != nullptr) return PhaseResult(false);
+	//		if (evh->eventToObserve->argument2 != nullptr &&  v_call->noum2 == nullptr) return PhaseResult(false);
+
+	//		HRunLocalScope next_vars = nullptr;
+	//		HRunLocalScope next_vars_2 = nullptr;
+	//		if (evh->eventToObserve->argument1 != nullptr)
+	//		{
+	//			auto r1 = Match(evh->eventToObserve->argument1, v_call->noum1, localsEntry, stk);
+	//			if (r1.hasMatch == false)
+	//			{
+	//				return PhaseResult(false); ;
+	//			}
+	//			next_vars = std::make_shared< CRunLocalScope >(localsEntry, r1.maptch);
+	//			next_vars_2 = next_vars;
+	//		}
+
+
+	//		if (evh->eventToObserve->argument2 != nullptr)
+	//		{
+	//			auto r2 = Match(evh->eventToObserve->argument2, v_call->noum2, next_vars, stk); //observe que os valores ja estao sendo usados
+	//			if (r2.hasMatch == false)
+	//			{
+	//				return PhaseResult(false);
+	//			}
+	//			next_vars_2 = std::make_shared< CRunLocalScope >(next_vars, r2.maptch);
+
+	//		}
+
+	//		//next vars contem as variaveis 
+
+	//		PhaseResult  rx = this->execute_now(evh->body, next_vars_2, stk);
+
+	//		if (rx.hasExecuted)
+	//		{
+	//			return rx;
+	//		}
+	//	}
+	//}
+
+	//return PhaseResult(false);
+}
+
+PhaseResult CBlockInterpreter::execute_phase_any_indirect_args(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HRunLocalScope next_vars = match_phase_indirect_args(evh, v_call, localsEntry, stk);
+	if (next_vars != nullptr)
+	{ 
+		PhaseResult  rx = this->execute_now(evh->body, next_vars, stk);
+		if (rx.hasExecuted)
+		{
+			return rx;
+		}
+	}
+	return PhaseResult(false);
+
+	//if (HBlockActionCallNamed call_named = asHBlockActionCallNamed(v_call))
+	//{
+
+	//	QueryResultContext qAction = query_is(call_named->action, evh->eventToObserve->action, localsEntry, stk);
+
+	//	if (qAction.result == QEquals)
+	//	{
+	//		QueryResul qarg1 = QEquals;
+	//		QueryResul qarg2 = QEquals;
+
+	//		if ((evh->eventToObserve->argument1 == nullptr) && (evh->eventToObserve->argument2 == nullptr))
+	//		{ 
+	//		    std:map<string, HBlock> arguments;
+	//			arguments["noum"] = v_call->noum1;
+	//			arguments["second noum"] = v_call->noum2;
+	//			HRunLocalScope next_vars = std::make_shared< CRunLocalScope >(localsEntry, arguments); 
+
+
+
+	//			PhaseResult  rx = this->execute_now(evh->body, next_vars, stk); 
+	//			if (rx.hasExecuted)
+	//			{
+	//				return rx;
+	//			}
+	//		}
+	//	}
+	//}
+
+	//return PhaseResult(false);
+
+}
+
+PhaseResult CBlockInterpreter::execute_phase_any(HBlockEventHandle evh, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	// Match com  argumentos definidos
+	PhaseResult r1 = execute_phase_any_direct_args(evh, v_call, localsEntry, stk);
+	if (r1.hasExecuted == true) return r1;
+
+	//Match sem argumentos .. repasse como Noum e second Noum
+	PhaseResult r2 =  execute_phase_any_indirect_args(evh, v_call, localsEntry, stk);
+	if (r2.hasExecuted == true) return r2; 
+
 	return PhaseResult(false); 
 }
 
-		 
+	
+PhaseResult CBlockInterpreter::execute_phase_any_system( HBlockEventHandle  evh, InternalActionHandle func_call, HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	HRunLocalScope next_vars = match_phase_direct_args(evh , v_call, localsEntry, stk);
+	if (next_vars != nullptr)
+	{
+		PhaseResult  rx = func_call(next_vars, stk);
+		if (rx.hasExecuted)
+		{
+			return rx;
+		}
+	}
+	return PhaseResult(false);
+
+ 
+}
+
+
+
  
 PhaseResult CBlockInterpreter::execute_phase_check(HBlockActionCall v_call, HRunLocalScope localsEntry, QueryStack *stk)
 {
+
+
+	for (auto evh : system_event_handles)
+	{
+		if (evh.first->stage == StageCheck)
+		{
+			auto rx = execute_phase_any_system(evh.first, evh.second, v_call, localsEntry, stk);
+			if (rx.result)
+			{
+				if (HBlockExecutionResultFlag  flag = asHBlockExecutionResultFlag(rx.result))
+				{
+					if (flag->flag == actionStop)
+					{
+						return rx;
+					}
+				}
+			}
+		}
+	}
 
 	for (auto evh : event_handles)
 	{
