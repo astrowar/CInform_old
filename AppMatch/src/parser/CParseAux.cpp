@@ -52,7 +52,51 @@ std::string  decompose_bracket(std::string phase, std::string dlm) {
 	return phase;
 }
 
-std::vector<HTerm> decompose(std::string phase) {
+
+size_t find_next_literal_tag(std::string phase, int start)
+{
+	size_t n = phase.size();
+	for (size_t i = start; i < n; ++i)
+	{
+		if (phase[i] == '"')
+		{
+			if (i > 0)
+			{
+				if (phase[i - 1] != '\\')
+				{
+					return i;
+				}
+			}
+			else
+			{
+				return i;
+			}
+		} 
+	}
+	return std::string::npos;
+}
+
+
+
+
+
+std::vector<HTerm> decompose(std::string phase) 
+{
+	if (phase.empty()) return std::vector<HTerm>();
+
+	phase.erase(std::remove(phase.begin(), phase.end(), '\r'), phase.end());
+	while (phase.empty() == false && phase.back() == ' ') phase.pop_back();
+	while (phase.empty() == false && phase.back() == '.') phase.pop_back();
+	auto vstr = decompose_bracket(phase, "(");
+	vstr = decompose_bracket(vstr, ")");
+	vstr = decompose_bracket(vstr, "\"");
+	vstr = decompose_bracket(vstr, ",");
+	vstr = decompose_bracket(vstr, ":");
+	phase = vstr;
+	if (phase.empty()) return std::vector<HTerm>();
+
+
+
 	std::stringstream test(phase);
 	std::string segment;
 	std::vector<HTerm> seglist;
@@ -61,8 +105,7 @@ std::vector<HTerm> decompose(std::string phase) {
 		if (segment.length() > 0) 
 		{
 			if (segment[0] != ' ' && segment[0] != '\t' && segment[0] != '\r')
-			{
-				 
+			{				 
 				seglist.push_back(make_string(segment));
 			}
 		}
@@ -70,6 +113,44 @@ std::vector<HTerm> decompose(std::string phase) {
 	
 	return seglist;
 }
+
+
+std::vector<HTerm> decompose_syntax(std::string phase)
+{
+	if (phase.empty()) return std::vector<HTerm>();
+
+	int pivot = 0;
+	size_t start_literal = find_next_literal_tag(phase, pivot);
+	if (start_literal != std::string::npos)
+	{
+		size_t end_literal = find_next_literal_tag(phase, start_literal+1);
+		if (end_literal == std::string::npos)
+		{ 
+			end_literal = phase.size(); // default is at ending od phrase
+		}
+		else
+		{
+			end_literal++; // to include the last "
+		}
+
+		std::string  seg_1 = phase.substr(0, start_literal);
+		std::string  seg_2 = phase.substr(start_literal, end_literal - start_literal);
+		std::string  seg_3 = phase.substr(end_literal, phase.size()- end_literal);
+
+		std::vector<HTerm> vseg1 = decompose_syntax(seg_1);
+		HTerm vseg2 = make_literal(seg_2);
+		std::vector<HTerm> vseg3 = decompose_syntax(seg_3);
+
+		vseg1.push_back(vseg2);
+		vseg1.insert(vseg1.end(), vseg3.begin(), vseg3.end());
+
+		return vseg1;
+	}
+	return decompose(phase);
+
+}
+
+
 
 HPred pLiteral(string str) 
 {

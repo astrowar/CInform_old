@@ -65,6 +65,12 @@ std::string CNumber::repr() {
     return std::to_string(this->val);
 }
 
+
+CLiteral::CLiteral(std::string _val) : val(_val){}
+
+std::string  CLiteral::repr() { return val; }
+
+
 CList::CList() {
 }
 
@@ -165,6 +171,11 @@ CString* NSTerm::asCString(CTerm* c)
 HTerm NSTerm::make_string(std::string x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CString>(x));
 }
+
+HTerm NSTerm::make_literal(std::string x) {
+	return std::static_pointer_cast<CTerm>(std::make_shared<CLiteral>(x));
+}
+ 
 
 
 

@@ -59,7 +59,7 @@ HBlockStaticDispatch NSParser::DynamicDispatch::getStaticDispatchResolve(CParser
 
 NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_actionInputList(CParser *p, std::vector<HTerm>&  term) {
 
-   // std::cout << "what:  " << get_repr(term) << std::endl;
+   
     {
 		  CPredSequence predList = 		pAny("verb")	<<pAny("kind1")	<<pAny("with_word") <<pAny("kind2");
 			
@@ -505,6 +505,29 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
  
 HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HTerm>&  term)
 {
+
+
+	{
+		CPredSequence predList = pLiteral("matches") << pAny("regex") << pLiteral("in") << pAny("Text");
+		 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock marg1 = Expression::parser_expression(p, res.matchs["regex"]);
+			if (marg1 != nullptr)
+			{
+				HBlock  marg2 = Expression::parser_expression(p, res.matchs["Text"]);
+				if (marg2 != nullptr)
+				{
+					//std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoumStr>("matches"), nullptr, std::make_shared<CBlockNoumStr>("in"), HBlockMatch _arg1, HBlockMatch _arg2);
+					//return   std::make_shared<CBlockPhraseInvoke>("matches", marg1, marg2);
+				}
+			}
+		}
+	}
+
+
+
 	for (auto ph : p->phrases)
 	{
 		if (ph->arg1 != nullptr && ph->pred1 == nullptr && ph->pred2 != nullptr && ph->arg1 != nullptr && ph->arg2 != nullptr)

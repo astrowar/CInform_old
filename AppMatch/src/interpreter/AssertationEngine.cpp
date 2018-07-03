@@ -343,7 +343,15 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 		}
 	}
 
-
+	if (HBlockText cText = asHBlockText(value))
+	{
+		if (HBlockKindValue kText = asHBlockKindValue(kind))
+		{
+			if (CBlock::isSame(kText.get(), MetaKindText.get())) return cText;
+			if (  isSameString(kText->named , MetaKindText->named )) return cText;
+			return nullptr;
+		}
+	}
 
 
 	if (HBlockNoum cnn = asHBlockNoum(value)) {

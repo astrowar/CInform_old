@@ -15,6 +15,22 @@ using namespace NSTerm::NSMatch;
 using namespace EqualResulting;
 
 
+HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument_kind_item(CParser *p , string sNoum)
+{
+	if (sNoum == "text")
+	{
+		return std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text"));
+	}
+
+	if (sNoum == "number")
+	{
+		return std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("number"));
+	}
+
+	HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(sNoum));
+	return c1;
+}
+
 HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm term)
 {
 
@@ -25,8 +41,8 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 		if (res.result == Equals) {
 
 			string sNoum = CtoString(expandBract(res.matchs["PropName"])->removeArticle());
-			std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(sNoum));
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(sNoum));
+			//std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(sNoum));
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(sNoum));			
 			HBlockMatch c2 = parser_MatchArgument(p, res.matchs["Object"]);
 			if (c2 != nullptr)
 			{
@@ -50,8 +66,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
 				for (auto &ci : clist->lst)
 				{
-					auto  str_i = ci->removeArticle()->repr();
-					HBlockMatch mi = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(str_i));
+					string  str_i = ci->removeArticle()->repr();
+					//HBlockMatch mi = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(str_i));
+					HBlockMatch mi = parser_MatchArgument_kind_item(p, str_i);
+
 					mmlist->matchList.push_back(mi);
 				}
 				//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(res.matchs["ListKind"]->removeArticle()->repr()));
@@ -67,8 +85,8 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 		if (res.result == Equals) {
 
 
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
-			
+			//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
 
 			auto noum_var_named =  parse_match_SigleNoum(p, res.matchs["var_named"]);
 			if (noum_var_named != nullptr)
@@ -84,8 +102,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm te
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
-				std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+			//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+
 			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
 			return n1;
 		}
@@ -225,8 +245,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, std::vec
 	 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
-				std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+			//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+
 			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
 			return n1;
 		}
@@ -237,8 +259,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, std::vec
 		 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
-			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(
-				std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+			//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(	std::make_shared<CBlockNoumStr>(res.matchs["kind"]->removeArticle()->repr()));
+
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+
 			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
 			return n1;
 		}

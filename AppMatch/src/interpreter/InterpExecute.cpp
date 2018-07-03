@@ -729,8 +729,29 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 
 HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk_in)
 {
+
 	std::unique_ptr<QueryStack> stk_ptr = generateNextStack(stk_in);
 	QueryStack* stk = stk_ptr.get();
+
+
+	for (auto sph : system_phrases)
+	{
+		HRunLocalScope execute_scope = PhraseHeader_matchs(sph, phr, localsEntry, stk);
+		if (execute_scope != nullptr)
+		{
+			return   Nothing;
+		}
+	}
+
+ 
+
+
+
+
+
+
+
+ 
 	{
 		//uma acao nao pode chamar ela mesma com os mesmo argumentos 
 		for (auto ph : phrases)
@@ -1650,6 +1671,113 @@ HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCal
 }
 
 
+HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader, HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk)
+{
+
+	if (CBlock::isSame(pheader->verb.get(), phr->header->verb.get()) == false) return nullptr;
+
+	if (pheader->pred1 == nullptr && phr->header->pred1 != nullptr) return nullptr;
+	if (pheader->pred1 != nullptr && phr->header->pred1 == nullptr) return nullptr;
+	if (pheader->pred1 != nullptr && phr->header->pred1 != nullptr)
+	{
+		if (pheader->pred1->named != phr->header->pred1->named) return nullptr;
+	}
+
+
+	if (pheader->pred2 == nullptr && phr->header->pred2 != nullptr) return nullptr;
+	if (pheader->pred2 != nullptr && phr->header->pred2 == nullptr) return nullptr;
+	if (pheader->pred2 != nullptr && phr->header->pred2 != nullptr)
+	{
+		if (pheader->pred2->named != phr->header->pred2->named) return nullptr;
+	}
+
+	{
+		auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+		CResultMatch result_1 = this->Match(pheader->arg1, arg1, localsEntry, stk);
+		if (result_1.hasMatch)
+		{
+			auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+			auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+
+			CResultMatch result_2 = this->Match(pheader->arg2, arg2, localsEntry, stk);
+			if (result_2.hasMatch)
+			{
+				HRunLocalScope localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+				localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
+
+				return localsNext;
+				 
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+ 
+
+PhaseResult CBlockInterpreter::execute_PhraseInvoke(HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	for (auto sph : system_phrases)
+	{
+		HRunLocalScope execute_scope = PhraseHeader_matchs(sph , phr, localsEntry, stk);
+		if (execute_scope != nullptr)
+		{
+			return   PhaseResult(true);
+		}
+	}
+
+	for (auto ph : phrases)
+	{
+		HRunLocalScope execute_scope = PhraseHeader_matchs(ph->header, phr, localsEntry, stk);
+		if (execute_scope != nullptr)
+		{
+			return  execute_now(ph->body, execute_scope, stk);
+		}
+
+
+	/*	if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
+
+		if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
+		if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
+		if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
+		{
+			if (ph->header->pred1->named != phr->header->pred1->named) continue;
+		}
+
+
+		if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
+		if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
+		if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
+		{
+			if (ph->header->pred2->named != phr->header->pred2->named) continue;
+		}
+
+		{
+			auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
+			CResultMatch result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
+			if (result_1.hasMatch)
+			{
+				auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
+				auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
+
+				CResultMatch result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
+				if (result_2.hasMatch)
+				{
+					auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
+					localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
+
+					return  execute_now(ph->body, localsNext, stk);
+				}
+			}
+		}*/
+
+	}
+	return PhaseResult(false);
+
+}
 
 PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry, QueryStack *stk ) //executa STMT
 {	 
@@ -1719,46 +1847,7 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 	if (auto phr = asHBlockPhraseInvoke(p))
 	{
-		for (auto ph : phrases)
-		{
-			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
-
-			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
-			{
-				if (ph->header->pred1->named != phr->header->pred1->named) continue;
-			}
-
-
-			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
-			{
-				if (ph->header->pred2->named != phr->header->pred2->named) continue;
-			}
-
-			{
-				auto arg1 = resolve_argument(phr->arg1, localsEntry, stk); 
-				CResultMatch result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-				if (result_1.hasMatch)
-				{
-					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-					auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
-
-					CResultMatch result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
-					if (result_2.hasMatch)
-					{
-						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
-						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
-					 
-						return  execute_now(ph->body, localsNext, stk);
-					}
-				}
-			}
-			
-		}
-		return PhaseResult(false);
+		return execute_PhraseInvoke(phr, localsEntry, stk);
 	}
 
 

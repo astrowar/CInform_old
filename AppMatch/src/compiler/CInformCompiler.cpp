@@ -19,6 +19,8 @@
 #include "Parser\Parser.hpp"
 #include "sharedCast.hpp"
 #include "save_ctx.hpp"
+#include <parser/PredicatesEn.hpp>
+
 
 using namespace std;
 
@@ -116,7 +118,7 @@ CompilerFlags process_options(std::vector<std::string> va)
 HBlockComandList  compile_files(std::vector<std::string> files)
 {
 	HBlockComandList ret = nullptr;
-	NSParser::CParser parse(nullptr);
+	NSParser::CParser parse(new LanguageEnglish(nullptr));
 	for (auto f : files)
 	{
 		const std::string file_contents = load_file_c(f);
@@ -170,6 +172,7 @@ int main(int argc, char **argv)
 
 
 
+	 
 	if (!comp.files.empty())
 	{
 		auto hcc = compile_files(comp.files);

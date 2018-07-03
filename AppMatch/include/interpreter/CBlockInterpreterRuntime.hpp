@@ -98,7 +98,7 @@ public :
 };
 
 
-	using	InternalActionHandle = std::function<PhaseResult(HRunLocalScope, QueryStack* )>;
+	using	InternalActionHandle = std::function<PhaseResult(HRunLocalScope, QueryStacking::QueryStack* )>;
 
 
 using ListOfNamedValue = std::list<NamedValue>;
@@ -120,6 +120,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		std::vector<HBlockAssertion_is> assertions;
 		//Phases
 		std::list<HBlockPhraseDefine> phrases;
+		std::list<HBlockPhraseHeader> system_phrases;
 		//Relations
 		std::map<string, HBlockRelationBase > staticRelation;
 		std::list<HBlockRelationInstance > relInstances;
@@ -177,7 +178,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockKind MetaKindBoolean;
 		HBlockKind MetaKindAction;
 		HBlockKind MetaKindList;
-		HBlockKind MetaKindText;
+		HBlockKindValue MetaKindText;
 
 		HBlockKind MetaKindAny;
 		std::function<bool(std::string)>  say_output;
@@ -276,7 +277,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 		
 		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
-
+		
+		QueryResultContext CBlockInterpreter::queryVerb_exactly_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		QueryResultContext CBlockInterpreter::queryVerb_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		bool is_nothing(HBlockNoum noum);
@@ -528,6 +531,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		ListOfNamedValue getValuesFromMatch(HBlock c_block, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		HBlockMatch  resolve_argument_match(HBlock  value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		HBlock resolve_argument(HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
+		 
+		HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader, HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		PhaseResult execute_PhraseInvoke(HBlockPhraseInvoke p, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+
 		HBlockActionCall ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
 		PhaseResult execute_now(HBlock p, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		bool queryIsVerbToRelation(HBlockMatch m);

@@ -15,6 +15,7 @@ namespace NSTerm
 		TermString,
 		TermNumber,
 		TermList,
+		TermLiteral,
 		Pred,
 		PredAtom,
 		PredList,
@@ -83,6 +84,16 @@ namespace NSTerm
 		virtual TermType type() override { return TermType::TermNumber; }
 	};
 
+	class CLiteral : public CAtom
+	{
+	public:
+		std::string val;
+		CLiteral(std::string _val);
+		virtual std::string repr() override;
+		virtual size_t nterms() override { return 1; }
+		virtual TermType type() override { return TermType::TermLiteral; }
+	};
+
 	//typedef TermList = std::list<CTerm*>;
 	class CList : public CAtom
 	{
@@ -105,6 +116,7 @@ namespace NSTerm
 	EqualResulting::EqualsResul equals(HTerm c1, HTerm c2);
 	HTerm make_number(int x);
 	HTerm make_string(std::string x);
+	HTerm make_literal(std::string x);	 
 	HTerm make_list(std::initializer_list<HTerm> x);
 
 

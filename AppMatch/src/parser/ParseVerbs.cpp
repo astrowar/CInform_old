@@ -113,7 +113,7 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionVerb(CParser *p, std
 	MatchResult res = CMatch(term, predList);
 	if (res.result == Equals) {
 
-		auto s1 = CtoString(res.matchs["N1"]);
+		//auto s1 = CtoString(res.matchs["N1"]);
 
 		HBlock n1 = Expression::parser_assertionTarger(p, res.matchs["N1"]);
 		if (n1 != nullptr)

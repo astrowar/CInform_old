@@ -282,7 +282,7 @@ namespace NSParser
 	    CBlocking::HBlockMatch parse_APreposition(CParser * p, std::vector<NSTerm::HTerm>& term);
 
 
-
+		CBlocking::HBlockMatch  parser_MatchArgument_kind_item(CParser *p, string term);
 		CBlocking::HBlockMatch  parser_MatchArgument(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_MatchArgument(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatchIs  parserMatchIsCondition(CParser *p, NSTerm::HTerm term);
@@ -471,6 +471,8 @@ namespace NSParser
 
 bool is_empty_string(std::string s);
 	std::vector<NSTerm::HTerm> decompose(string phase);
+	std::vector<NSTerm::HTerm> decompose_syntax(string phase);
+	 
 	string  decompose_bracket(string phase, string dlm);
 NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 

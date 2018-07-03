@@ -33,13 +33,13 @@ std::list<HBlock> NSParser::Statement::Text_Sentence_bakret(CParser * p, std::st
 {
 	std::list<HBlock> ret;
 
-	str = decompose_bracket(str, "(");
-	str = decompose_bracket(str, ")");
-	str = decompose_bracket(str, ",");
-	str = decompose_bracket(str, "\"");
-	str = decompose_bracket(str, ";");
+	//str = decompose_bracket(str, "(");
+	//str = decompose_bracket(str, ")");
+	//str = decompose_bracket(str, ",");
+	//str = decompose_bracket(str, "\"");
+	//str = decompose_bracket(str, ";");
 
-	std::vector<HTerm> lst = decompose(str);
+	std::vector<HTerm> lst = decompose_syntax(str);
 	auto term = convertToTerm(lst);
 
 

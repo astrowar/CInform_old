@@ -211,7 +211,13 @@ namespace CBlocking
 
         BlockType type() override { return BlockType::BlockKindNamed; }
 		string named;
-         CBlockKindNamed(string _named) : named(std::move(_named)) {};
+         CBlockKindNamed(string _named) : named(std::move(_named)) 
+		 {
+			 if (_named == "text")
+			 {
+				 printf(".");
+			 }
+		 };
     };
 
     using HBlockKindNamed = std::shared_ptr<CBlockKindNamed>;

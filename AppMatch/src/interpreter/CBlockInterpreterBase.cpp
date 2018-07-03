@@ -19,7 +19,7 @@ Interpreter::CBlockInterpreter::CBlockInterpreter(LanguageDepend* language )
 	MetaKindBoolean = std::make_shared<CBlockKindNamed>(language->getMetaKindBoolean());
 	MetaKindAction = std::make_shared<CBlockKindNamed>(language->getMetaKindAction());
 	MetaKindList = std::make_shared<CBlockKindNamed>(language->getMetaKindList());
-	MetaKindText = std::make_shared<CBlockKindNamed>(language->getMetaKindText());
+	MetaKindText = std::make_shared<CBlockKindValue>(language->getMetaKindText());
 	MetaKindAny = std::make_shared<CBlockKindNamed>(language->getMetaKindAny());
 
 
@@ -34,6 +34,15 @@ Interpreter::CBlockInterpreter::CBlockInterpreter(LanguageDepend* language )
 	symbols.emplace_back(language->getAnything(), Anything);
 	symbols.emplace_back(language->getNothing(), Nothing);
  
+
+	{
+		HBlockNoum nVerb = std::make_shared<CBlockNoumStr>("matches");
+		HBlockNoum nPred = std::make_shared<CBlockNoumStr>("in");
+		HBlockMatchNamed marg1 = std::make_shared<CBlockMatchNamed>("RGX", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+		HBlockMatchNamed marg2 = std::make_shared<CBlockMatchNamed>("TXT", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+		HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
+		this->system_phrases.push_back(nheader);
+	}
 
 }
 

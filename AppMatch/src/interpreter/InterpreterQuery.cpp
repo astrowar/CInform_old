@@ -578,7 +578,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
 	if (HBlockText btext = asHBlockText(c_block))
 	{
-		if (c_block1 == MetaKindText)   return QEquals;
+		if (CBlock::isSame(c_block1.get() , MetaKindText.get()))   return QEquals;
+		 
 	}
  
 
@@ -1062,23 +1063,29 @@ QueryResultContext CBlockInterpreter::get_system_verbs(string cs, HBlock n1, HBl
 
 	if (cs == "relates")
 	{
-		printf("System relates verb \n");
-
+		//printf("System relates verb \n");
 		if (HBlockRelationBase  r_rel = asHBlockRelationBase(n1))
 		{
 			if (HBlockRelationArguments  r_args = asHBlockRelationArguments(n2))
 			{
-				auto r_exist = query_relation(r_rel, r_args->value1, r_args->value2, localsEntry, stk);
-				 
-				
-				return r_exist;
-
+				auto r_exist = query_relation(r_rel, r_args->value1, r_args->value2, localsEntry, stk); 
+				return r_exist; 
 			}
 		}
 		return QueryResultContext(QUndefined);
 	}
 
+	if (cs == "exactly matches")
+	{
+		//printf("System exactly matches verb \n");
+		return queryVerb_exactly_matches(n1, n2, localsEntry, stk);
+	}
 
+	if (cs == "matches")
+	{
+		//printf("System matches verb \n");
+		return queryVerb_matches(n1, n2, localsEntry, stk);
+	}
 
 
 

@@ -295,6 +295,15 @@ HBlock   NSParser::ParseRelation::DynamicLookup_Seletor(CParser *p, std::vector<
 			}
 		}
 	}*/
+
+
+
+
+
+ 
+
+
+
 	{
 		  CPredSequence predList =  pLiteral("list")	<<pLiteral("of")	<<pAny("K1")	<<mk_What_Which()	<<pAny("Seletor");
  

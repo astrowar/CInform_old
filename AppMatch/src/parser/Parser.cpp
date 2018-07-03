@@ -53,8 +53,22 @@ NSParser::CParser::CParser( LanguageModule *_lang ) {
 
 	{
 		
+		verbList->blist.push_back(pList({ pLiteral("exactly"),  pLiteral("matches") }));
 		verbList->blist.push_back(pLiteral("relates"));
+		verbList->blist.push_back(pLiteral("matches"));
+		
+		
 	}
+
+	{
+		HBlockNoum nVerb = std::make_shared<CBlockNoumStr>("matches");
+		HBlockNoum nPred = std::make_shared<CBlockNoumStr>("in");
+		HBlockMatchNamed marg1 = std::make_shared<CBlockMatchNamed>("RGX", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+		HBlockMatchNamed marg2 = std::make_shared<CBlockMatchNamed>("TXT", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));		
+		HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
+		this->phrases.push_back(nheader);
+	}
+
 
 
     {
@@ -816,11 +830,11 @@ HBlock NSParser::Statement::parser_stmt(CParser * p, HTerm term, HGroupLines inn
 
 
 HBlock NSParser::Statement::parser_stmt_str(CParser * p, string str, HGroupLines inner, ErrorInfo *err) {
-    str = decompose_bracket(str, "(");
-    str = decompose_bracket(str, ")");
-    str = decompose_bracket(str, ",");
-	str = decompose_bracket(str, "\"");
-    std::vector<HTerm> lst = decompose(str);
+ //   str = decompose_bracket(str, "(");
+ //   str = decompose_bracket(str, ")");
+ //   str = decompose_bracket(str, ",");
+	//str = decompose_bracket(str, "\"");
+    std::vector<HTerm> lst = decompose_syntax(str);
     return Statement::parser_stmt_inner(p,lst,inner,err);
 }
 
@@ -837,13 +851,13 @@ HBlock NSParser::Statement::Parser_Stmt(CParser * p, string str, bool dump )
 HBlock NSParser::Expression::Parser_Expression(CParser * p, string str, bool dump)
 {
 	ErrorInfo err;
-	str = decompose_bracket(str, "(");
-	str = decompose_bracket(str, ")");
-	str = decompose_bracket(str, ",");
-	str = decompose_bracket(str, "\"");
-	str = decompose_bracket(str, ";");
+	//str = decompose_bracket(str, "(");
+	//str = decompose_bracket(str, ")");
+	//str = decompose_bracket(str, ",");
+	//str = decompose_bracket(str, "\"");
+	//str = decompose_bracket(str, ";");
 
-	std::vector<HTerm> lst = decompose(str);
+	std::vector<HTerm> lst = decompose_syntax(str);
 	auto term = convertToTerm(lst);
 	auto b = Expression::parser_expression(p,term);
 	if (dump)
@@ -860,10 +874,10 @@ HBlock NSParser::CParser::Parser_Condition(string str, bool dump)
 {
 	ErrorInfo err;
 	
-	str = decompose_bracket(str, "(");
-	str = decompose_bracket(str, ")");
-	str = decompose_bracket(str, ",");
-	std::vector<HTerm> lst = decompose(str);
+	//str = decompose_bracket(str, "(");
+	//str = decompose_bracket(str, ")");
+	//str = decompose_bracket(str, ",");
+	std::vector<HTerm> lst = decompose_syntax(str);
 	auto term = convertToTerm(lst);
 	auto b = ControlFlux::parser_if_condition(this,term);
 	if (dump)
@@ -935,6 +949,9 @@ std::vector<string>  split_new_lines(const string &str)   {
    return sentences;
 }
  
+
+
+
  HBlock  NSParser::Statement::parser_GroupLine(CParser * p, string v , HGroupLines inner, ErrorInfo *err)
 {
     v.erase(std::remove(v.begin(), v.end(), '\r'), v.end());
@@ -944,12 +961,12 @@ std::vector<string>  split_new_lines(const string &str)   {
 	
 	if (v.empty()) return p->blank_line; 
 
-	auto vstr = decompose_bracket(v, "(");
-	vstr = decompose_bracket(vstr, ")");
-	vstr = decompose_bracket(vstr, "\"");
-	vstr = decompose_bracket(vstr, ",");
-	vstr = decompose_bracket(vstr, ":");
-	std::vector<HTerm> lst = decompose(vstr);
+	//auto vstr = decompose_bracket(v, "(");
+	//vstr = decompose_bracket(vstr, ")");
+	//vstr = decompose_bracket(vstr, "\"");
+	//vstr = decompose_bracket(vstr, ",");
+	//vstr = decompose_bracket(vstr, ":");
+	std::vector<HTerm> lst = decompose_syntax(v);
 
 	if (lst.empty())
 	{
