@@ -758,6 +758,15 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 		return r;
 	}
 
+	if (CLiteral *vtext = asCLiteral(term.get()))
+	{
+		std::string LS = term->repr();
+		if (LS[0] == '"')  LS = LS.substr(1, LS.size() - 1);
+		if (LS.back() == '"')  LS = LS.substr(0, LS.size() - 1);		
+		return std::make_shared<CBlockMatchText>(std::make_shared<CBlockText>(LS));
+		
+	}
+
 	string sNoum = CtoString(term);
 	if (sNoum == "where")
 	{

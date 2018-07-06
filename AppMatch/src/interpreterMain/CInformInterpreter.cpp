@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 			return 2;
 		}
 		
-      //  h->dump(" ");
+       h->dump(" ");
 
 		LanguageEn english_proxy ; //define basic interpreter functions to english language
         Interpreter::HBlockInterpreter interpreter = std::make_shared<Interpreter::CBlockInterpreter>(&english_proxy);

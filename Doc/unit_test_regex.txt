@@ -1,0 +1,27 @@
+
+
+Commanding is an action applying to text  
+to matches (text called T) in (text called W) :
+   pass
+ 
+unit init:
+    The (empty square text) is text that varies
+	
+unit test:	
+   now (empty square text) is "get arc"
+assert : (matches "get\s+(\w+)"  in (empty square text)) is X
+
+unit test:
+    now (empty square text) is "get arc"
+assert : (empty square text) matches "(radius|arc|circle)" 	
+assert : (empty square text) matches "get\s+(\w+)" 	
+assert : (empty square text) exactly matches "get\s+(\w+)" 
+
+unit test:
+    now (empty square text) is (text wonder)
+assert : (empty square text) is (text wonder) 	
+
+
+ 
+
+	

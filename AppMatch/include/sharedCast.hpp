@@ -78,6 +78,7 @@ namespace CBlocking
 		//HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c);
 		HBlockIsNotVerb asHBlockIsNotVerb(CBlocking::HBlock c);
 		HBlockMatchAny asHBlockMatchAny(CBlocking::HBlock c);
+		HBlockMatchText asHBlockMatchText(CBlocking::HBlock c);		 
 
 		HBlockMatchNoum asHBlockMatchNoum(CBlocking::HBlock c);
 		HBlockMatchNamed asHBlockMatchNamed(CBlocking::HBlock c);
@@ -233,6 +234,8 @@ namespace CBlocking
 		HBlockIsVerb    asHBlockIsVerb(CBlocking::HBlock  c);
  
 		HBlockIsNotVerb    asHBlockIsNotVerb(CBlocking::HBlock  c);
+		
+		HBlockMatchText    asHBlockMatchText(CBlocking::HBlock  c);
 		HBlockMatchAny    asHBlockMatchAny(CBlocking::HBlock  c);
 		HBlockMatchNamed    asHBlockMatchNamed(CBlocking::HBlock  c);
 		HBlockMatchList    asHBlockMatchList(CBlocking::HBlock  c);

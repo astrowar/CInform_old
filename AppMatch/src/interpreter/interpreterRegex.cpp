@@ -26,7 +26,22 @@ using namespace Interpreter;
 using namespace QueryStacking;
 
 
-
+std::map<std::string, HBlock> CBlockInterpreter::get_matches_cases(std::vector<string> matches)
+{  
+	std::map<std::string, HBlock> matchs_cases;
+	int j = 0;
+	for (auto mi : matches )
+	{	
+		if (j == 10) break;
+		printf("%s \n", mi.c_str());
+		string sub_expression = this->language->text_matching_subexpression(j);
+		matchs_cases[sub_expression] = std::make_shared<CBlockText>(mi);
+		j++;
+		
+	}
+	for (int k = j ; k<= 9;++k) matchs_cases[this->language->text_matching_subexpression(k)] = Nothing; //Zera os demais
+	return matchs_cases;
+}
  
 QueryResultContext CBlockInterpreter::queryVerb_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -34,9 +49,17 @@ QueryResultContext CBlockInterpreter::queryVerb_matches(CBlocking::HBlock value,
 	{
 		if (HBlockText regex_text = DynamicCasting::asHBlockText(mregex))
 		{
-			if (std::regex_search(text->contents, std::regex(regex_text->contents)))				
+			std::smatch m;
+			if (std::regex_search(text->contents, m , std::regex(regex_text->contents)))				
 			{
-				return QEquals;
+				 
+				std::vector<string> matches;
+				for (auto mi : m) { matches.push_back(mi.str());}
+
+				//"text matching"
+				std::map<std::string, HBlock> matchs_cases = get_matches_cases(matches);
+
+				return QueryResultContext(QEquals,matchs_cases) ;
 			}
 			return QNotEquals;
 		}

@@ -34,6 +34,8 @@ public:
 
 	virtual HBlockNoum   get_plural_of(string s) = 0;
 	virtual HBlockNoum  get_singular_of(string s) = 0 ;
+
+	virtual string text_matching_subexpression(int i) = 0;
 };
 
 
@@ -62,6 +64,8 @@ class LanguageEn : public LanguageDepend
 
 	    HBlockNoum   get_plural_of(string s) override;
 	    HBlockNoum  get_singular_of(string s) override;
+
+		string text_matching_subexpression(int i) override;
 };
 
 #endif //CINFORM_LANGUAGEDEPEND_H

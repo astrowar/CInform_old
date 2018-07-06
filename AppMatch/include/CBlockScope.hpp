@@ -21,7 +21,14 @@ using  HRunLocalScope = std::shared_ptr<CRunLocalScope>;
 		std::list< std::pair<std::string, CBlocking::HBlock> > locals;
 		CRunLocalScope(HRunLocalScope _previous) : previous(_previous)
 		{
-
+			if (_previous != nullptr)
+			{
+				for (auto kv : _previous->locals)
+				{
+					locals.push_back(kv);
+				}
+				previous = nullptr;
+			}
 		}
 
 		CRunLocalScope(HRunLocalScope _previous, std::map<string, CBlocking::HBlock> varMap) : previous(_previous)

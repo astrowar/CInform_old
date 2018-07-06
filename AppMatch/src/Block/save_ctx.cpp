@@ -289,6 +289,7 @@ void raiseError()
   int  save_CBlockMatchAny(HBlockMatchAny x, SaveContext *ctx);
   int  save_CBlockMatchNamed(HBlockMatchNamed x, SaveContext *ctx);
   int  save_CBlockMatchNoum(HBlockMatchNoum x, SaveContext *ctx);
+  int  save_CBlockMatchText(HBlockMatchText x, SaveContext *ctx);
   int  save_CBlockMatchValue(HBlockMatchValue x, SaveContext *ctx);
   int  save_CBlockMatchKind(HBlockMatchKind x, SaveContext *ctx);
   int  save_CBlockMatchWith(HBlockMatchWith x, SaveContext *ctx);
@@ -488,6 +489,7 @@ void raiseError()
 	  if (t == BlockType::BlockMatchActionCall) return save_CBlockMatchActionCall(std::static_pointer_cast < CBlockMatchActionCall > (x), ctx);
 	  if (t == BlockType::BlockMatchIsAdverbialComparasion) return save_CBlockMatchIsAdverbialComparasion(std::static_pointer_cast < CBlockMatchIsAdverbialComparasion > (x), ctx);
 	  if (t == BlockType::BlockMatchValue) return save_CBlockMatchValue(std::static_pointer_cast < CBlockMatchValue > (x), ctx);
+	  if (t == BlockType::BlockMatchText) return save_CBlockMatchText(std::static_pointer_cast < CBlockMatchText > (x), ctx);
 	  if (t == BlockType::BlockMatchNoum) return save_CBlockMatchNoum(std::static_pointer_cast < CBlockMatchNoum > (x), ctx);
 	  if (t == BlockType::BlockMatchKind) return save_CBlockMatchKind(std::static_pointer_cast < CBlockMatchKind > (x), ctx);
 	  if (t == BlockType::BlockMatchIsVerb) return save_CBlockMatchIsVerb(std::static_pointer_cast < CBlockMatchIsVerb > (x), ctx);
@@ -601,6 +603,7 @@ void raiseError()
 	  if (t == BlockType::BlockAssertion_InstanceVariable) return save_CBlockAssertion_InstanceVariable(std::static_pointer_cast < CBlockAssertion_InstanceVariable > (x), ctx);
 	  if (t == BlockType::BlockASimetricRelation) return save_CBlockASimetricRelation(std::static_pointer_cast < CBlockASimetricRelation > (x), ctx);
 	  if (t == BlockType::BlockPhraseDefine) return save_CBlockPhraseDefine(std::static_pointer_cast < CBlockPhraseDefine > (x), ctx);
+	  if (t == BlockType::BlockMatchText) return save_CBlockMatchText(std::static_pointer_cast < CBlockMatchText > (x), ctx);
 	  if (t == BlockType::BlockMatchValue) return save_CBlockMatchValue(std::static_pointer_cast < CBlockMatchValue > (x), ctx);
 	  if (t == BlockType::BlockAssertion_canBe) return save_CBlockAssertion_canBe(std::static_pointer_cast < CBlockAssertion_canBe > (x), ctx);
 	  if (t == BlockType::BlockAssertion_isLocalVariable) return save_CBlockAssertion_isLocalVariable(std::static_pointer_cast < CBlockAssertion_isLocalVariable > (x), ctx);
@@ -1186,6 +1189,20 @@ void raiseError()
 	  save_type(x->type(), ctx);
 	  save_id(_header, ctx);
 	  save_id(_body, ctx);
+	  end_slot(x.get(), ctx);
+	  return  slot;
+
+  }
+
+ 
+  int  save_CBlockMatchText(HBlockMatchText x, SaveContext *ctx)
+  {
+	  if (x == nullptr) return 0;
+	  lock_ptr(x.get(), ctx);
+	  const int _inner = save_CBlockText(x->inner, ctx);
+	  const int slot = alloc_slot(x.get(), ctx);
+	  save_type(x->type(), ctx);
+	  save_id(_inner, ctx);
 	  end_slot(x.get(), ctx);
 	  return  slot;
 

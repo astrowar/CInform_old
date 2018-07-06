@@ -335,7 +335,7 @@ void cmp_type(int tp, BlockType t)
 {
 	if (tp != t)
 	{
-		printf("Error");
+		printf("ErrorCMP");
 	}
 
 }
@@ -555,6 +555,8 @@ HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
 HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx);
 HBlockMatchNamed  load_CBlockMatchNamed(int tp, LoadContext *ctx);
 HBlockMatchNoum  load_CBlockMatchNoum(int tp, LoadContext *ctx);
+HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx);
+HBlockMatchText  load_CBlockMatchText(int tp, LoadContext *ctx);
 HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx);
 HBlockMatchKind  load_CBlockMatchKind(int tp, LoadContext *ctx);
 HBlockMatchWith  load_CBlockMatchWith(int tp, LoadContext *ctx);
@@ -811,6 +813,7 @@ HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockMatchAny) return load_CBlockMatchAny(tp, ctx);
 	if (tp == BlockType::BlockMatchNamed) return load_CBlockMatchNamed(tp, ctx);
 	if (tp == BlockType::BlockMatchNoum) return load_CBlockMatchNoum(tp, ctx);
+	if (tp == BlockType::BlockMatchText) return load_CBlockMatchText(tp, ctx);
 	if (tp == BlockType::BlockMatchValue) return load_CBlockMatchValue(tp, ctx);
 	if (tp == BlockType::BlockMatchKind) return load_CBlockMatchKind(tp, ctx);
 	{ auto x = load_CBlockMatchWith(tp, ctx); if (x != nullptr) return x; };
@@ -2792,6 +2795,19 @@ HBlockMatchValue  load_CBlockMatchValue(int tp, LoadContext *ctx)
 	return  std::shared_ptr<CBlockMatchValue>(ret);
 
 }
+
+//  CBlockMatchText
+HBlockMatchText  load_CBlockMatchText(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchText);
+	int id = load_id(ctx);
+	const HBlockText _inner = load_CBlockText_slot(id, ctx);
+	CBlockMatchText* ret = new CBlockMatchText(_inner);
+	return  std::shared_ptr<CBlockMatchText>(ret);
+
+}
+
 
 
 HBlockText  load_CBlockText(int tp, LoadContext *ctx)

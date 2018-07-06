@@ -12,6 +12,7 @@
  
 #include "CblockAssertion.hpp"
 #include "CBlockMatch.hpp"
+#include "CBlockControlFlux.hpp"
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
@@ -135,7 +136,10 @@ void CBlockCollection::push_back(HBlock c_block_value)
  
 
  
-
+CBlockControlIF::CBlockControlIF(CBlocking::HBlock _block_if, CBlocking::HBlock _block_then, CBlocking::HBlock _block_else)	: block_if(_block_if), block_then(_block_then), block_else(_block_else)
+{
+	block_if = _block_if;
+}
 
  
 

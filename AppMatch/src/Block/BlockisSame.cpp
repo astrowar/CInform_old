@@ -280,6 +280,13 @@ namespace CBlocking {
 			return false;
 		}
 
+		
+		bool isSame_BlockMatchText(CBlockMatchText  * b1, CBlockMatchText* b2)
+		{
+			return CBlock::isSame(b1->inner.get(), b2->inner.get());
+		}
+
+
 		bool isSame_BlockMatchValue(CBlockMatchValue  * b1, CBlockMatchValue* b2)
 		{
 			return CBlock::isSame(b1->inner.get(), b2->inner.get());
@@ -327,6 +334,7 @@ namespace CBlocking {
 	if (b1->type() == BlockIsVerb) return Comparison::isSame_BlockIsVerb(static_cast<CBlockIsVerb*>(b1), static_cast<CBlockIsVerb*>(b2));
 	if (b1->type() == BlockProperty) return Comparison::isSame_BlockProperty(static_cast<CBlockProperty*>(b1), static_cast<CBlockProperty*>(b2));
 	if (b1->type() == BlockMatchList) return Comparison::isSame_BlockMatchList(static_cast<CBlockMatchList*>(b1), static_cast<CBlockMatchList*>(b2));
+	if (b1->type() == BlockMatchText) return Comparison::isSame_BlockMatchText(static_cast<CBlockMatchText*>(b1), static_cast<CBlockMatchText*>(b2));
 	if (b1->type() == BlockMatchValue) return Comparison::isSame_BlockMatchValue(static_cast<CBlockMatchValue*>(b1), static_cast<CBlockMatchValue*>(b2));
 
 	if (b1->type() == BlockAssertion_isInstanceOf) return Comparison::isSame_BlockAssertion_isInstanceOf(static_cast<CBlockAssertion_isInstanceOf*>(b1), static_cast<CBlockAssertion_isInstanceOf*>(b2));

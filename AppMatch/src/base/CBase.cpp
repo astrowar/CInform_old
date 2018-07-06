@@ -156,6 +156,12 @@ CList* NSTerm::asCList(CTerm* c)
     return nullptr;
 }
 
+CLiteral* NSTerm::asCLiteral(CTerm* c)
+{
+	if (c->type() == TermLiteral) return static_cast<CLiteral*>(c);
+	return nullptr;
+}
+
 CNumber* NSTerm::asCNumber(CTerm* c)
 {
     if (c->type() == TermNumber) return static_cast<CNumber*>(c);

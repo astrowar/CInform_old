@@ -125,6 +125,7 @@ namespace NSTerm
 	//ConversionTerms
 
 	CList* asCList(CTerm* c);
+	CLiteral* asCLiteral(CTerm* c);
 	CNumber* asCNumber(CTerm* c);
 	CString* asCString(CTerm* c);
 

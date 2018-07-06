@@ -27,8 +27,8 @@ namespace CBlocking
 	class CBlockControlIF  : public CBlock
 	{
 	public:
-		CBlockControlIF(CBlocking::HBlock _block_if, CBlocking::HBlock _block_then, CBlocking::HBlock _block_else)
-			: block_if(_block_if), block_then(_block_then), block_else(_block_else) {}
+		CBlockControlIF(CBlocking::HBlock _block_if, CBlocking::HBlock _block_then, CBlocking::HBlock _block_else);
+		 
 
 		CBlocking::HBlock block_if;
 		CBlocking::HBlock block_then;

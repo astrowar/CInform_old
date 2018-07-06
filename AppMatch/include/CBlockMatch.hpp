@@ -9,7 +9,8 @@
 
 namespace CBlocking
 {
-
+	class CBlockText;
+	using HBlockText = std::shared_ptr<CBlockText>;
 
 	class CBlockMatch : public CBlock // um bloco que serve para dar Match em um value , retorna true ou false se for Aplicavel
 	{
@@ -62,6 +63,17 @@ namespace CBlocking
 		CBlockMatchNoum(HBlockNoum _inner);
 	};
 	using HBlockMatchNoum = std::shared_ptr<CBlockMatchNoum>;
+
+	
+	class CBlockMatchText : public CBlockMatch
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockMatchText; }
+		HBlockText  inner;
+		CBlockMatchText(HBlockText _inner) : CBlockMatch(), inner(_inner) {};
+	};
+	using HBlockMatchText = std::shared_ptr<CBlockMatchText>;
 
 
 

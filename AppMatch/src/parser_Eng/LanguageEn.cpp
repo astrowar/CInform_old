@@ -104,3 +104,20 @@ HBlockNoum  LanguageEn::get_singular_of(string s)
 	return nullptr;
 }
 
+
+
+string LanguageEn::text_matching_subexpression(int i)
+{
+	string base = "matching subexpression";
+	if (i == 0) return "matching expression";
+	if (i == 1) return base+ " 1";
+	if (i == 2) return base + " 2";
+	if (i == 3) return base + " 3";
+	if (i == 4) return base + " 4";
+	if (i == 5) return base + " 5";
+	if (i == 6) return base + " 6";
+	if (i == 7) return base + " 7";
+	if (i == 8) return base + " 8";
+	if (i == 9) return base + " 9";
+	
+}

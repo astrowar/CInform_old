@@ -199,7 +199,6 @@ HBlock NSParser::Expression::parser_expression(CParser *p, HTerm  term)
 		std::string LS = term->repr();
 		if (LS[0] == '"')  LS = LS.substr(1, LS.size() - 1);
 		if (LS.back() == '"')  LS = LS.substr(0, LS.size() - 1);
-
 		return std::make_shared<CBlockText>(LS);
 	}
 	std::string hString = CtoString(term->removeArticle());

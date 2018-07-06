@@ -1602,6 +1602,11 @@ HBlock CBlockInterpreter::resolve_argument(HBlock  value, HRunLocalScope localsE
 	{
 		return resolve_argument_match(value_2, localsEntry, stk);
 	}
+
+	if (HBlockMatchText mvalue_2 = DynamicCasting::asHBlockMatchText(value_2))
+	{
+		return mvalue_2->inner;
+	}
 	
 	if (HBlockProperty nnoum_p = DynamicCasting::asHBlockProperty(value))
 	{
@@ -1789,11 +1794,12 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 	if (HBlockComandList  vCommandList= asHBlockComandList(p))
 	{
 		 
-		HRunLocalScope nextLocals = std::make_shared< CRunLocalScope >(localsEntry   );
+		//HRunLocalScope nextLocals = std::make_shared< CRunLocalScope >(localsEntry   );
 		 
 		PhaseResult rs_result(false);
 		for(const auto &cmd : vCommandList->lista)
 		{
+			HRunLocalScope nextLocals = std::make_shared< CRunLocalScope >(localsEntry);
 			auto pret = execute_now(cmd, nextLocals, stk);
 			if (pret.hasExecuted == false)
 			{ 
@@ -1899,7 +1905,8 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 
 		if (qResult.result == QEquals)
 		{
-			  return execute_now(vControlIf->block_then, localsEntry, stk);
+			auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, qResult.matchedResult);
+			return execute_now(vControlIf->block_then, localsNext, stk);
 		}
 		else
 		{

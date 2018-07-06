@@ -1311,6 +1311,15 @@ namespace CBlocking
 		  return nullptr;
 	  }
 
+
+	  HBlockMatchText    asHBlockMatchText(CBlocking::HBlock  c)
+	  {
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockMatchText) return std::static_pointer_cast < CBlockMatchText > (c);
+		  return nullptr;
+	  }
+
 	  HBlockMatchAny    asHBlockMatchAny(CBlocking::HBlock  c)
 	  {
 		  if (c == nullptr)   return nullptr;

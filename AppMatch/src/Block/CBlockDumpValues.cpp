@@ -292,6 +292,15 @@ void CBlockMatchNamed::dump(string ident) {
 	CBlock::dump(ident);
 }
  
+ 
+void CBlockMatchText::dump(string ident) {
+	printf("%s %s \n", ident.c_str(), "Match Text ");	 
+	{
+		this->inner->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+
 
 CBlockMatchNamed::CBlockMatchNamed(string _named, HBlockMatch _matchInner) : CBlockMatch(), named(_named),
 matchInner(_matchInner)
@@ -1202,6 +1211,8 @@ void CBlockControlToken::dump(string ident)
 	}
 	CBlock::dump(ident);
 }
+
+
 
 void CBlockControlIF::dump(string ident)
 {
