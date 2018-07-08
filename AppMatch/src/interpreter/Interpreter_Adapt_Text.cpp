@@ -13,7 +13,7 @@ using namespace QueryStacking;
 
 
 #include  "verb_en.hpp" 
-#include "Parser\ParserPlural.hpp"
+#include "parser/ParserPlural.hpp"
 
 namespace Auxiliar  {
 	//bool  BothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }

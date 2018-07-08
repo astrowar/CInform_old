@@ -277,10 +277,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		
 		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
-		std::map<std::string, HBlock> CBlockInterpreter::get_matches_cases(std::vector<string> matches);
+		std::map<std::string, HBlock>  get_matches_cases(std::vector<string> matches);
 
-		QueryResultContext CBlockInterpreter::queryVerb_exactly_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
-		QueryResultContext CBlockInterpreter::queryVerb_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		QueryResultContext  queryVerb_exactly_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		QueryResultContext  queryVerb_matches(CBlocking::HBlock value, CBlocking::HBlock mregex, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext queryVerb_ListedIn(HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		bool is_nothing(HBlockNoum noum);
@@ -533,7 +533,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 		HBlockMatch  resolve_argument_match(HBlock  value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		HBlock resolve_argument(HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
 		 
-		HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader, HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		HRunLocalScope  PhraseHeader_matchs(HBlockPhraseHeader pheader, HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		PhaseResult execute_PhraseInvoke(HBlockPhraseInvoke p, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		HBlockActionCall ActionResolveArguments(HBlockActionCall vCall, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);

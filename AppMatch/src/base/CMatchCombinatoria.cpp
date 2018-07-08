@@ -8,10 +8,10 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include "base\CBase.hpp"
+#include "base/CBase.hpp"
 
-#include "match\CMatch.hpp"
-#include "match\CMatchListValid.hpp"
+#include "match/CMatch.hpp"
+#include "match/CMatchListValid.hpp"
 
 #include <vector>
 #include <memory>

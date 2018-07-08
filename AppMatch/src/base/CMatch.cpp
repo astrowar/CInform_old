@@ -8,8 +8,9 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include "Match\CMatchCombinatoria.hpp"
-
+#include "match/CMatchCombinatoria.hpp"
+#include "base/EqualsResult.hpp"
+#include "base/CBase.hpp"
 #include <vector> 
 #include <memory>
 #include <functional>
@@ -27,6 +28,7 @@
 using namespace NSTerm;
 
 using namespace  NSMatch;
+
 using namespace EqualResulting;
 
  

@@ -1,5 +1,5 @@
 #include <memory>
-#include "Parser\Parser.hpp"
+#include "parser/Parser.hpp"
 #include "CBlockDecideIf.hpp"
 using namespace CBlocking;
 using namespace NSTerm;

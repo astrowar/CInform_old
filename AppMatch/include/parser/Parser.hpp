@@ -2,8 +2,8 @@
 #ifndef CPARSER_H
 #define CPARSER_H
 
-#include "base\CBase.hpp"
-#include "match\CMatch.hpp"
+#include "base/CBase.hpp"
+#include "match/CMatch.hpp"
 
 #include "BlockInterpreter.hpp"
 #include "CBlockMatch.hpp"

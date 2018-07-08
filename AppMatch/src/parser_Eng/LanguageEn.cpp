@@ -3,7 +3,7 @@
 //
 
 #include "LanguageDepend.h"
-#include "Parser\ParserPlural.hpp"
+#include "parser/ParserPlural.hpp"
 
 
 using namespace CBlocking;

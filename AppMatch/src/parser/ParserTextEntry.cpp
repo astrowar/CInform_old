@@ -9,7 +9,7 @@
 // copies or substantial portions of the Software.
 
  
-#include "Parser\Parser.hpp"
+#include "parser/Parser.hpp"
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;

@@ -2,7 +2,7 @@
 
 
 #include <string>
-#include "Parser\Parser.hpp"
+#include "parser/Parser.hpp"
 #include "interpreter/CBlockInterpreterRuntime.hpp"
 
 using namespace CBlocking;

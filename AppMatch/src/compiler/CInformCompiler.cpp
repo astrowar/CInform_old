@@ -16,7 +16,7 @@
 
 #include <string>
 #include <vector>
-#include "Parser\Parser.hpp"
+#include "parser/Parser.hpp"
 #include "sharedCast.hpp"
 #include "save_ctx.hpp"
 #include <parser/PredicatesEn.hpp>
