@@ -1,0 +1,42 @@
+
+A flotation rule for the cork: rule succeeds.
+A flotation rule for an inflated thing: rule succeeds
+A flotation rule: rule fails
+
+	
+Appraisal rules is a rulebook
+
+An appraisal rule: say "click,error, please call someone"
+
+An appraisal rule:
+    say "If anything is missing , find it"
+
+
+Instead of switching on the machine:
+   follow the appraisal rulebook
+
+
+Instead of opening or closing a damp door: 
+    say "[The noun] can no longer be opened or closed in any meaningful sense."
+
+A flotation rule for the cork: rule succeeds.
+A flotation rule for an inflated thing: rule succeeds
+A flotation rule: rule fails
+
+Gretting is a thing based rulebook
+Gretting (a door): say "unable to get a door." instead
+Gretting (a thing called T): say "Just get a thing [T]." instead
+
+
+Reaching inside rules have outcomes allow access (success) and deny access (failure)
+
+thing is an king of entity
+door is an king of entity
+door can be open or close
+
+To destroy (a thing called item):
+   let home be  the item
+
+To destroy (a door called item):
+   now door is open
+

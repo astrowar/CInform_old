@@ -1429,6 +1429,33 @@ AppMatch/src/interpreter/RuntimeErrors.cpp.s:
 	$(MAKE) -f CMakeFiles\interpreterRuntimeLibrary.dir\build.make CMakeFiles/interpreterRuntimeLibrary.dir/AppMatch/src/interpreter/RuntimeErrors.cpp.s
 .PHONY : AppMatch/src/interpreter/RuntimeErrors.cpp.s
 
+AppMatch/src/interpreter/interpreterRegex.obj: AppMatch/src/interpreter/interpreterRegex.cpp.obj
+
+.PHONY : AppMatch/src/interpreter/interpreterRegex.obj
+
+# target to build an object file
+AppMatch/src/interpreter/interpreterRegex.cpp.obj:
+	$(MAKE) -f CMakeFiles\interpreterRuntimeLibrary.dir\build.make CMakeFiles/interpreterRuntimeLibrary.dir/AppMatch/src/interpreter/interpreterRegex.cpp.obj
+.PHONY : AppMatch/src/interpreter/interpreterRegex.cpp.obj
+
+AppMatch/src/interpreter/interpreterRegex.i: AppMatch/src/interpreter/interpreterRegex.cpp.i
+
+.PHONY : AppMatch/src/interpreter/interpreterRegex.i
+
+# target to preprocess a source file
+AppMatch/src/interpreter/interpreterRegex.cpp.i:
+	$(MAKE) -f CMakeFiles\interpreterRuntimeLibrary.dir\build.make CMakeFiles/interpreterRuntimeLibrary.dir/AppMatch/src/interpreter/interpreterRegex.cpp.i
+.PHONY : AppMatch/src/interpreter/interpreterRegex.cpp.i
+
+AppMatch/src/interpreter/interpreterRegex.s: AppMatch/src/interpreter/interpreterRegex.cpp.s
+
+.PHONY : AppMatch/src/interpreter/interpreterRegex.s
+
+# target to generate assembly for a file
+AppMatch/src/interpreter/interpreterRegex.cpp.s:
+	$(MAKE) -f CMakeFiles\interpreterRuntimeLibrary.dir\build.make CMakeFiles/interpreterRuntimeLibrary.dir/AppMatch/src/interpreter/interpreterRegex.cpp.s
+.PHONY : AppMatch/src/interpreter/interpreterRegex.cpp.s
+
 AppMatch/src/interpreterMain/CInformInterpreter.obj: AppMatch/src/interpreterMain/CInformInterpreter.cpp.obj
 
 .PHONY : AppMatch/src/interpreterMain/CInformInterpreter.obj
@@ -2343,6 +2370,9 @@ help:
 	@echo ... AppMatch/src/interpreter/RuntimeErrors.obj
 	@echo ... AppMatch/src/interpreter/RuntimeErrors.i
 	@echo ... AppMatch/src/interpreter/RuntimeErrors.s
+	@echo ... AppMatch/src/interpreter/interpreterRegex.obj
+	@echo ... AppMatch/src/interpreter/interpreterRegex.i
+	@echo ... AppMatch/src/interpreter/interpreterRegex.s
 	@echo ... AppMatch/src/interpreterMain/CInformInterpreter.obj
 	@echo ... AppMatch/src/interpreterMain/CInformInterpreter.i
 	@echo ... AppMatch/src/interpreterMain/CInformInterpreter.s

@@ -185,4 +185,42 @@ namespace CBlocking
 
 	using HBlockPhraseInvoke = std::shared_ptr<CBlockPhraseInvoke>;
 
+
+
+	class CBlockRule : public CBlock  // bloco especifica uma regra
+	{
+	public:
+		CBlockRule(CBlocking::HBlockNoum _rulename, CBlocking::HBlockNoum _rulebook, CBlocking::HBlockMatch _target, CBlocking::HBlock  _body) : rulename(_rulename), rulebook(_rulebook), target(_target), body(_body) {		}
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockRule; }
+
+		CBlocking::HBlockNoum rulename;
+		CBlocking::HBlockNoum rulebook;
+		CBlocking::HBlockMatch target;
+		CBlocking::HBlock body;
+
+	};
+
+	using HBlockRule = std::shared_ptr<CBlockRule>;
+
+
+
+	class CBlockRuleCall : public CBlock  // bloco especifica uma chamada de regra
+	{
+	public:
+		CBlockRuleCall(CBlocking::HBlock _rulename,  CBlocking::HBlock  _argument) : rulename(_rulename), argument(_argument)  {		}
+
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockRuleCall; }
+
+		CBlocking::HBlock rulename;		
+		CBlocking::HBlock argument;
+
+	};
+
+	using HBlockRuleCall = std::shared_ptr<CBlockRuleCall>;
+
+
+
 }

@@ -555,6 +555,8 @@ HBlock NSParser::ParseAssertion::parser_Declaration_Assertion(CParser * p, std::
 		return assert_DefaultAssign;
 	}
 
+ 
+
 	HBlock assert_Assign = parse_AssertionDirectAssign(p,lst);
 	if (assert_Assign != nullptr) {
 		return assert_Assign;

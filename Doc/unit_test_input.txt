@@ -3,8 +3,8 @@ Commanding is an action applying to text
  
 Check Commanding T:
   if T matches "get\s+((the|a|an)\s+)?(\w+)" : 
-     say "unable to get " 
-	 say matching subexpression 3
+    say "unable to get " 
+    say matching subexpression 3
   stop the action
   
 Carry out Commanding :

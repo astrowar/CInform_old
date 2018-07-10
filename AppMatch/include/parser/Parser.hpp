@@ -273,8 +273,12 @@ namespace NSParser
 		CBlocking::HBlockMatch   parse_AssertionDirectAssign_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   parser_Verb_Match(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatch   DynamicDispatch_action_match(CParser *p, std::vector<NSTerm::HTerm>&  term);
-		CBlocking::HBlockMatchList  parse_match_comma_list(CParser * p, NSTerm::HTerm term);
 
+	 
+		CBlocking::HBlockMatchOR  parse_match_or_list(CParser * p, std::vector<HTerm>& term);
+		CBlocking::HBlockMatchOR  parse_match_or_list(CParser * p, NSTerm::HTerm term);
+
+		CBlocking::HBlockMatchList  parse_match_comma_list(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchList parse_match_comma_list(CParser * p, std::vector<NSTerm::HTerm>& term);
 		 
 		CBlocking::HBlockMatch    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
@@ -337,6 +341,12 @@ namespace NSParser
 		CBlocking::HBlock  TryDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock parser_PhraseInvoke(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  DynamicDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
+
+		
+		CBlocking::HBlock  rule_spec(CParser *p, NSTerm::HTerm  term);
+		CBlocking::HBlock  Follow_rule(CParser *p, std::vector<NSTerm::HTerm>&  term);
+
+	 
 
 	}
 
@@ -427,6 +437,10 @@ namespace NSParser
 		CBlocking::HBlock  sys_now_loop(CParser * p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock parse_decide_on(CParser* c_parser, std::vector<std::shared_ptr<NSTerm::CTerm>> lst);
 		CBlocking::HBlock STMT_Declare_Phrase(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo * err);
+
+
+		CBlocking::HBlock parser_rulePreamble(CParser *p, std::vector<HTerm>&  term);
+		CBlocking::HBlock STMT_Declare_rule(CParser * p, std::vector<NSTerm::HTerm>& lst, HGroupLines inner, ErrorInfo * err);
 	}
 
 	namespace ParseAssertionSecondary

@@ -1,0 +1,33 @@
+unit init:
+  direction is a kind of value
+  The direction are north, south , west and east
+  prevailing wind is a direction that varies
+  the prevailing wind is south
+  the prevailing wind is always west
+  the destination is always north
+  
+unit test:
+  pass
+assert: prevailing wind is west
+
+unit test:  
+   now prevailing wind is beta
+assert: prevailing wind is west   
+
+
+unit init:
+  thing is a kind of entity
+  ice cube is a thing
+  heat is a kind of value
+  The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
+  thing has a heat 
+  The heat of a thing is usually room temperature
+  apple is a thing
+  
+unit test:
+  pass
+assert: heat of ice cube is room temperature 
+
+unit test:
+  now heat of ice cube is frosty  
+assert : heat of ice cube is frosty

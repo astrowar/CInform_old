@@ -134,7 +134,11 @@ enum BlockType {
 	BlockMatchIsAdverbialComparasion,
 	BlockUnitInit,
 	BlockUnitTest,
-	BlockUnitAssert
+	BlockUnitAssert,
+
+    BlockRule,
+	BlockRuleCall
+
 		
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

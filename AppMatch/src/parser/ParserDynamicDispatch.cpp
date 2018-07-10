@@ -597,3 +597,91 @@ HBlock NSParser::DynamicDispatch::DynamicDispatch_action(CParser *p, std::vector
 	}
 	return nullptr;
 }
+
+
+HBlock NSParser::DynamicDispatch::rule_spec(CParser *p, HTerm  term)
+{
+	{
+		CPredSequence  predList = pAny("rulebookName") << mk_HPredLiteral_OR("_rule", { "rulebook", "rules" });
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock mrulebook = Expression::parser_noumList(p, res.matchs["rulebookName"]);
+			if (mrulebook != nullptr)
+			{
+				return  std::make_shared<CBlockList>(std::list<HBlock>{ mrulebook, std::make_shared<CBlockNoumStr>("rulebook") });
+			}
+			HBlockNoum  n1 = NSParser::ParseAssertion::parse_noum(p, res.matchs["rulebookName"]);
+			if (n1 != nullptr) 
+			{
+				return  std::make_shared<CBlockList>(std::list<HBlock>{ n1, std::make_shared<CBlockNoumStr>("rulebook") });
+			}
+			 
+		}
+	}
+
+	{
+		CPredSequence  predList = pAny("ruleName") << pLiteral("rule");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock mrule = Expression::parser_noumList(p, res.matchs["ruleName"]);
+			if (mrule != nullptr)
+			{
+				return  std::make_shared<CBlockList>(std::list<HBlock>{ mrule, std::make_shared<CBlockNoumStr>("rule") });
+			}
+			HBlockNoum  n1 = NSParser::ParseAssertion::parse_noum(p, res.matchs["ruleName"]);
+			if (n1 != nullptr)
+			{
+				return  std::make_shared<CBlockList>(std::list<HBlock>{ n1, std::make_shared<CBlockNoumStr>("rule") });
+			}
+
+		}
+	}
+
+	return nullptr;
+}
+
+
+HBlock NSParser::DynamicDispatch::Follow_rule(CParser *p, std::vector<HTerm>&  term)
+{
+
+	{
+		CPredSequence  predList = pLiteral("follow") << pAny("ruleSpec")   << pLiteral("for") << pAny("argument"); //com argumento 
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock mruleSpecifier =  rule_spec(p, res.matchs["ruleSpec"]);
+			if (mruleSpecifier != nullptr)
+			{
+				HBlock margument = Expression::parser_expression(p, res.matchs["argument"]);
+				return  std::make_shared<CBlockRuleCall>(mruleSpecifier, margument);
+			}
+		}
+	}
+
+
+	{
+		CPredSequence  predList = pLiteral("follow") << pAny("ruleSpec")  ; //sem argumento
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock mruleSpecifier = rule_spec(p, res.matchs["ruleSpec"]);
+			if (mruleSpecifier != nullptr)
+			{				 
+				return  std::make_shared<CBlockRuleCall>(mruleSpecifier, nullptr);
+			}
+		}
+	}
+
+
+
+ 
+
+
+
+	return nullptr;
+
+}
+ 
+

@@ -95,6 +95,8 @@ HBlock   NSParser::ParseAssertion::parser_VerbAssign(CParser * p, std::vector<HT
 
 HBlock NSParser::Expression::parser_noumList(CParser *p, HTerm term)
 {
+	 
+
 	{
 		CPredSequence predList = pAny("N1") << pAny("N2") << pAny("N3") << pAny("N4");
 		MatchResult res = CMatch(term, predList);
@@ -165,7 +167,7 @@ HBlock NSParser::Expression::parser_noumList(CParser *p, HTerm term)
 		}
 	}
 
-
+	 
 
 	return nullptr;
 
@@ -317,9 +319,13 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	if (err->hasError) return nullptr;
 	//Apenas os termos que iniciam uma sentenca completa
 
-	HBlock rblock_tryEntry_1 = (DynamicDispatch::TryDispatch_action(p,lst));
- 
+	HBlock rblock_tryEntry_1 = (DynamicDispatch::TryDispatch_action(p,lst)); 
 	if (rblock_tryEntry_1 != nullptr) return rblock_tryEntry_1;
+
+
+	HBlock rblock_followEntry_1 = (DynamicDispatch::Follow_rule(p, lst));
+	if (rblock_followEntry_1 != nullptr) return rblock_followEntry_1;
+
 
    /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
@@ -351,6 +357,11 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
 	HBlock rblock_phrase_1 = (ParseAssertion::STMT_Declare_Phrase(p, lst, inner, err));
 	if (err->hasError) return nullptr;
 	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
+
+	 
+	HBlock rblock_rule_1 = (ParseAssertion::STMT_Declare_rule(p, lst, inner, err));
+	if (err->hasError) return nullptr;
+	if (rblock_rule_1 != nullptr) return rblock_rule_1;
 
 
     HBlock rblock_verb_1n = (Verbal::STMT_verb_Assertion_N(p,lst,err ));

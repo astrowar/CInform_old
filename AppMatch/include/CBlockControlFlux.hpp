@@ -123,7 +123,8 @@ class CBlockControlForEach  : public CBlock
 		actionContinue,
 		actionStop,
 		ruleSucess,
-		ruleFail
+		ruleFail,
+		ruleNoDecision,
 
 	};
 

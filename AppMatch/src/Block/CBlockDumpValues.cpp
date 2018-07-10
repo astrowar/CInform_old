@@ -107,7 +107,7 @@ void CBlockNoumSupl::dump(string ident) {
 
 
 void CBlockNoumStrDet::dump(string ident) {
-	printf("%s %d %s\n", ident.c_str(),this->det.c_str(),  this->named.c_str());
+	printf("%s %s %s\n", ident.c_str(),this->det.c_str(),  this->named.c_str());
 	CBlock::dump(ident);
 }
  
@@ -1441,4 +1441,31 @@ void CBlockPhraseInvoke::dump(string ident)
 
 }
 
+
  
+void CBlockRule::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Rule ");
+	printf("%s %s\n", ident.c_str(), "RuleName:  ");
+	this->rulename->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "RuleBook:  ");
+	this->rulebook->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Target:  ");
+	if(target!=nullptr) this->target->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "Body:  "); 
+	this->body->dump(ident + "       ");
+	CBlock::dump(ident);
+
+}
+
+void CBlockRuleCall::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Rule Call ");
+	this->rulename->dump(ident + "       ");	 
+	printf("%s %s\n", ident.c_str(), "Arg:  ");
+	if (this->argument!=nullptr) this->argument->dump(ident + "       ");
+	CBlock::dump(ident);
+
+}
+ 
+

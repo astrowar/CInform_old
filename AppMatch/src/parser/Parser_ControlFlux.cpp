@@ -48,15 +48,74 @@ HBlock NSParser::ControlFlux::stmt_resultflag(CParser *p, std::vector<HTerm>&   
 	}
 
 	{
-		  CPredSequence predList = pLiteral("continue")	<<pLiteral("the")	<<pLiteral("action");
-	 
-
+		CPredSequence predList = pLiteral("continue")	<<pLiteral("the")	<<pLiteral("action");
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
 			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::actionContinue, nullptr);
 		}
 	}
+
+
+	{
+		CPredSequence predList = pLiteral("rule") << pLiteral("succeeds") << pLiteral("with") << pLiteral("result") << pAny("Value");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock value = Expression::parser_expression(p, res.matchs["Value"]);
+			if (value != nullptr)
+			{
+				return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::ruleSucess, value);
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pLiteral("rule") << pLiteral("fails") << pLiteral("with") << pLiteral("result") << pAny("Value");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlock value = Expression::parser_expression(p, res.matchs["Value"]);
+			if (value != nullptr)
+			{
+				return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::ruleFail, value);
+			}			 
+		}
+	}
+
+
+
+
+	{
+		CPredSequence predList = pLiteral("rule") << pLiteral("succeeds") ;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::ruleSucess, nullptr);
+		}
+	}
+
+
+	{
+		CPredSequence predList = pLiteral("rule") << pLiteral("fails");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::ruleFail, nullptr);
+		}
+	}
+
+ 
+	{
+		CPredSequence predList = pLiteral("make") << pLiteral("no") << pLiteral("decision");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			return std::make_shared<CBlockExecutionResultFlag>(PhaseResultFlag::ruleNoDecision, nullptr);
+		}
+	}
+
 	return nullptr;
 
 }

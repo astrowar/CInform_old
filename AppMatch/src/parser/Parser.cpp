@@ -513,6 +513,25 @@ HBlockNoum NSParser::ParseAssertion::parse_noum(CParser * p, HTerm  term)
 
 HBlockNoum NSParser::ParseAssertion::parse_noumVec(CParser * p, std::vector<HTerm>& term)
 {
+	if (term.size() == 1)
+	{
+		if (CList *vlist = asCList(term[0].get()))
+		{
+			std::vector<HTerm> v = vlist->asVector();
+			return parse_noumVec(p, v);
+		}
+
+	}
+
+	{
+		CPredSequence predList_det = mk_HPredLiteral_OR("det", { "A","a","An","an", "The","the" }) ;
+		MatchResult res_det = CMatch(term, predList_det);
+		if (res_det.result == Equals)
+		{
+			return nullptr;
+		}
+	}
+
 	// anula se tiver uma palavra chave reservada	
 	CPredSequence predList_det = mk_HPredLiteral_OR("det", {"A","a","An","an", "The","the" }) << pAny("Noum");
 	MatchResult res_det = CMatch(term, predList_det);
@@ -520,10 +539,9 @@ HBlockNoum NSParser::ParseAssertion::parse_noumVec(CParser * p, std::vector<HTer
 	{
 		HTerm rdet = res_det.matchs["det"];
 		HTerm rnoum = res_det.matchs["Noum"];
-
-		std::vector<HTerm> term_p = { rnoum };
-		return  parse_noum_single(p, term_p);
-		
+		std::vector<HTerm> term_p = { rnoum };		 
+		HBlockNoum noum_next=   parse_noum_single(p, term_p);
+		return  std::make_shared<CBlockNoumStrDet>(rdet->repr() , noum_next->named);
 	}
 
 	{
@@ -1023,6 +1041,7 @@ std::vector<string>  split_new_lines(const string &str)   {
 				logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));
 				return nullptr;
 			}
+			blk->dump("");
 			retBlocks.push_back(blk);
 
 		}

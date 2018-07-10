@@ -150,6 +150,15 @@ HTerm NSTerm::make_list(std::initializer_list<HTerm> x) {
     return std::static_pointer_cast<CTerm>(std::make_shared<CList>(x));
 }
 
+HTerm NSTerm::make_list(std::vector<HTerm> x) 
+{
+	auto r= (std::make_shared<CList>());
+	for (auto &v : x) r->lst.push_back(v);
+	return std::static_pointer_cast<CTerm>(r);
+
+}
+
+
 CList* NSTerm::asCList(CTerm* c)
 {
     if (c->type() == TermList) return static_cast<CList*>(c);

@@ -378,22 +378,49 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_muteVariable(CParser *p, std:
 
 HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<HTerm>&  term) {
 	
-	
-	CPredSequence predList = pAny("Noum");
-	MatchResult res = CMatch(term, predList);
-
-	if (res.result == Equals) 
 	{
-		string nstr = CtoString(res.matchs["Noum"]->removeArticle());
-		if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+
+		CPredSequence predList_det = mk_HPredLiteral_OR("det", { "A","a","An","an", "The","the" }) << pAny("Noum");
+		MatchResult res_det = CMatch(term, predList_det);
+		if (res_det.result == Equals)
 		{
-			return nullptr;
-		} 
-		/*if (nstr.find(" ") != std::string::npos)
+			HTerm rdet = res_det.matchs["det"];
+			HTerm rnoum = res_det.matchs["Noum"];
+
+			string nstr = CtoString(res_det.matchs["Noum"]->removeArticle());
+			if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+			{
+				return nullptr;
+			} 					 		 			
+			return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStrDet>(rdet->repr(), nstr));
+		}
+
+
+	}
+
+	{
+		CPredSequence predList = pAny("Noum");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
 		{
-			return nullptr;
-		}*/
-		return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(nstr));
+			string nstr = CtoString(res.matchs["Noum"]->removeArticle());
+
+			if (nstr.find(" or ") != std::string::npos) return nullptr;
+			if (nstr.find("or ") == 0) return nullptr;
+			if (nstr.find(" and ") != std::string::npos) return nullptr;
+			if (nstr.find("and ") == 0) return nullptr;
+
+
+			if ((nstr.find("where") != std::string::npos) || (nstr.find("called") != std::string::npos) || (nstr.find("which") != std::string::npos))
+			{
+				return nullptr;
+			}
+			/*if (nstr.find(" ") != std::string::npos)
+			{
+				return nullptr;
+			}*/
+			return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>(nstr));
+		}
 	}
 	return nullptr;
 }
@@ -776,6 +803,16 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm
 	{
 		return nullptr;
 	}
+
+	if (sNoum == "or")
+	{
+		return nullptr;
+	}
+	if (sNoum == "and")
+	{
+		return nullptr;
+	}
+
 	if (sNoum == "to")
 	{
 		return nullptr;
@@ -873,6 +910,58 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, HT
 	return nullptr;
 }
 
+ 
+HBlockMatchOR NSParser::ExpressionMatch::parse_match_or_list(CParser *p, std::vector<HTerm>&  term)
+{
+	CPredSequence predList = pAny("N1") << pLiteral("or") << pAny("N2");
+
+
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		HBlockMatchList n1s = parse_match_comma_list(p, res.matchs["N1"]);
+		if (n1s != nullptr)
+		{		 
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				auto mlist = n1s->matchList;
+				mlist.push_back(n2);
+				//n1s->matchList.push_back(n2);
+				return std::make_shared<CBlockMatchOR>(mlist);
+			}
+		}
+
+
+
+		HBlockMatch  n1 = parser_expression_match(p, res.matchs["N1"]);
+		if (n1 != nullptr)
+		{ 
+			HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+			if (n2 != nullptr)
+			{
+				return  std::make_shared<CBlockMatchOR>(std::list<HBlockMatch>{ n1, n2 });
+			}
+		}
+	}
+	return nullptr;
+
+}
+
+
+HBlockMatchOR NSParser::ExpressionMatch::parse_match_or_list(CParser *p, HTerm  term)
+{
+	if (CList *vlist = asCList(term.get()))
+	{
+		auto v = vlist->asVector();
+		auto r = parse_match_or_list(p, v);
+		return r;
+	}
+	return nullptr;
+}
+
+
+
 HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, std::vector<HTerm>&  term)
 {
 	  CPredSequence predList = pAny("N1")<<pLiteral(",")<<pAny("N2");		
@@ -935,13 +1024,30 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, st
 
 HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<HTerm>&     term)
 {
-	 
+	if (term.size() == 0)
+	{
+		if (CList* listterm = asCList(term[0].get()))
+		{
+			return parse_match_list(p, listterm->asVector());
+		}
+	}
+
 
 	{
+		CPredSequence predList_det = mk_HPredLiteral_OR("det", { "A","a","An","an", "The","the" }) << pAny("NS");
+		MatchResult res_det = CMatch(term, predList_det); 
+		if (res_det.result == Equals)
+		{
+			HBlockMatch m1 = parser_expression_match(p, res_det.matchs["NS"]);
+			if (m1 != nullptr)
+			{
+				return m1;
+			}
+		}
+	}
 
-		  CPredSequence predList = pAny("N1")	<<pAny("N2")	<<pAny("N3")	<<pAny("N4");
-	 
-
+	{ 
+		CPredSequence predList = pAny("N1")	<<pAny("N2")	<<pAny("N3")	<<pAny("N4"); 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -1072,7 +1178,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 		return arg_Assign;
 	}
 
-	 
+	HBlockMatch list_or_Assign = parse_match_or_list(p, lst);
+	if (list_or_Assign != nullptr) {
+		return list_or_Assign;
+	}
 
 	HBlockMatch list_c_Assign = parse_match_comma_list(p, lst);
 	if (list_c_Assign != nullptr) {

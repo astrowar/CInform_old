@@ -421,7 +421,7 @@ NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, st
 		{
 			 
 			size_t ns = v.size();
-			int i = 0;
+			size_t i = 0;
 			bool has_contents = false;
 			for (i = 0; i < ns; ++i)
 			{

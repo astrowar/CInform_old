@@ -1,0 +1,72 @@
+thing is a kind of entity
+
+chemical  is a kind of value
+material is a kind of value
+
+material are steel ,iron, plastic, glass and wood
+thing has a material
+
+chemical are water , acid and gas
+
+material can be isolant or conductor
+material is usually isolant
+
+iron and steel are conductor
+
+to decide if (thing called T ) is conductor:
+    if (material of T) is conductor :
+      decide on true
+
+To decide if  (chemical called M) is volable: 
+    if M is acid :
+       decide on true        
+    else:
+       decide on false
+	  
+To decide what material is  best for (chemical called C ): 
+   if C is water :
+       decide on plastic
+   if C is gas :
+       decide on steel	   
+   decide on glass 	  
+
+To decide what material is  allowed for (chemical called C ): 
+   if C is volable :
+       decide on glass     
+   decide on plastic 	  
+
+
+ 
+	   
+unit init:
+   pin is a thing
+   ball is a thing
+   material of pin is iron
+   material of ball is plastic
+   
+unit test:
+  pass
+  
+assert : acid is volable    
+assert : glass is allowed for acid  
+assert : plastic is allowed for water
+assert : steel is  (best for gas)
+assert : plastic is not  (best for acid)
+assert : plastic is the (best for water)
+assert : (best for acid) is glass
+assert : plastic is not  (best for acid) 
+assert : plastic is not conductor  
+assert : material of ball is plastic
+assert : material of ball is not  conductor
+assert : material of pin is not  isolant
+assert : material of ball is isolant
+assert : iron is conductor 
+assert : ball is not conductor  
+
+
+
+
+
+ 
+
+   
