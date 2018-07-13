@@ -208,7 +208,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"]);
 				if (a_match!=nullptr )
 				{
-					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+					HBlockComandList body =   Statement::parser_stmt_list(p, false, inner, err);
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
@@ -216,7 +216,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				if (vb_match != nullptr)
 				{
 
-					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
 					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 				}
 
@@ -225,7 +225,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				if (w_match != nullptr)
 				{
 					 
-					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
 					return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
 
@@ -249,7 +249,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 					if (marg2 != nullptr)
 					{
 
-						HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+						HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
 						if (body != nullptr)
 						{
 							HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
@@ -274,7 +274,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				HBlockMatch  marg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg1"]);
 				if (marg1 != nullptr)
 				{
-					HBlockComandList body = Statement::parser_stmt_inner(p, inner, err);
+					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
 					if (body != nullptr)
 					{
 						HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());

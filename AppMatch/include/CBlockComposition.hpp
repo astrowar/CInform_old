@@ -71,5 +71,24 @@ namespace CBlocking {
           BlockType type() override { return BlockType::BlockCompositionPhrase; }
     };
     using HBlockCompositionPhrase = std::shared_ptr<CBlockCompositionPhrase>;
+
+
+
+	// phrase K -> L
+	class CBlockCompositionRulebook : public CBlockComposition {
+
+	public:
+		HBlockKind fromKind;
+		HBlockKind toKind;
+		CBlockCompositionRulebook(HBlockKind _fromKind, HBlockKind _toKind) : toKind(_toKind), fromKind(_fromKind)
+		{
+
+		}
+		virtual void dump(string ident) override;
+		BlockType type() override { return BlockType::BlockCompositionRulebook; }
+	};
+	using HBlockCompositionRulebook = std::shared_ptr<CBlockCompositionRulebook>;
+
+
 }
 #endif //APPMATCH_CBLOCKKINDCOMPOSITION_H

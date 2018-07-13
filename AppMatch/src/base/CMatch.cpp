@@ -498,30 +498,28 @@ using namespace EqualResulting;
 
 		HPred NSTerm::pWord(std::string _named) { return std::make_shared<CPredWord>(_named); };
 
-		HPred NSTerm::pAnd(const std::string &_named, const HPred &c_pred,
-			const HPred &c_pred1) {
+		HPred NSTerm::pAnd(const std::string _named, const HPred c_pred,	const HPred c_pred1) {
 			return std::make_shared<CPredBooleanAnd>(_named, c_pred, c_pred1);
 		};
 
-		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred,
-			const HPred &c_pred1) {
+		HPred NSTerm::pOr(const std::string _named, const HPred c_pred,	const HPred c_pred1) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1);
 		};
 
-		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2) {
+		HPred NSTerm::pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2);
 		};
 
-		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,
-			const HPred &c_pred3) {
+		HPred NSTerm::pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2,
+			const HPred c_pred3) {
 			return std::make_shared<CPredBooleanOr>(_named, c_pred, c_pred1, c_pred2, c_pred3);
 		};
 
-		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3 , const HPred &c_pred4 ) {
+		HPred NSTerm::pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2, const HPred c_pred3 , const HPred c_pred4 ) {
 			return std::make_shared<CPredBooleanOr>(_named, std::list<HPred>({ c_pred, c_pred1, c_pred2, c_pred3, c_pred4 }));
 		};
 
-		HPred NSTerm::pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3, const HPred &c_pred4, const HPred &c_pred5) {
+		HPred NSTerm::pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2, const HPred c_pred3, const HPred c_pred4, const HPred c_pred5) {
 			return std::make_shared<CPredBooleanOr>(_named, std::list<HPred>({ c_pred, c_pred1, c_pred2, c_pred3, c_pred4, c_pred5 }));
 		};
 
@@ -669,7 +667,19 @@ using namespace EqualResulting;
 
  
 
-		MatchResult  NSMatch::CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) {
+		MatchResult  NSMatch::CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates) 
+		{
+			if (lst.size() == 1)
+			{
+				if (lst[0]->type() == TermList)
+				{
+					auto vs = asCList(lst[0].get())->asVector();
+					return CMatch__(vs, predicates);
+				}
+			}
+
+
+
 			int npred = predicates.size();
 			int a = lst.size();
 
@@ -687,6 +697,8 @@ using namespace EqualResulting;
 				std::cout << get_repr(lst) << std::endl;
 			}
 #endif
+
+		 
 
 			auto expandContents = remove_boundaryListMark_range(lst);
 			std::vector<HTerm>::iterator vbegin = expandContents.first;

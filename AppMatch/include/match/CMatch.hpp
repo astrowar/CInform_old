@@ -182,15 +182,15 @@ namespace NSTerm
 
 		HPred pWord(std::string _named);
 
-		HPred pAnd(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred pAnd(const std::string _named, const HPred c_pred, const HPred c_pred1);
 
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1);
+		HPred pOr(const std::string _named, const HPred c_pred, const HPred c_pred1);
 
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2);
+		HPred pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2);
 
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2,	const HPred &c_pred3);
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3, const HPred &c_pred4 );
-		HPred pOr(const std::string &_named, const HPred &c_pred, const HPred &c_pred1, const HPred &c_pred2, const HPred &c_pred3,const HPred &c_pred4, const HPred &c_pred5 );
+		HPred pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2, const HPred c_pred3);
+		HPred pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2, const HPred c_pred3, const HPred c_pred4 );
+		HPred pOr(const std::string _named, const HPred c_pred, const HPred c_pred1, const HPred c_pred2, const HPred c_pred3, const HPred c_pred4, const HPred c_pred5 );
 
 
 		HPred  pPreposition(const std::string &_named);

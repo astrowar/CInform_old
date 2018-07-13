@@ -34,8 +34,7 @@ HBlockKindAction NSParser::ParseAssertionSecondary::parse_AssertionAction_second
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p,res.matchs["ApplyRemainder"]);
-			//return  std::make_shared<CBlockActionApply>(std::make_shared<CBlockNoumStr>( res.matchs["Noum1"]->removeArticle()->repr() ),std::make_shared<CBlockNoumStr>(res.matchs["Noum2"]->removeArticle()->repr() ));
-			return std::make_shared<CBlockKindAction>( applyTO);
+		 	return std::make_shared<CBlockKindAction>( applyTO);
 
 		}
 	}
@@ -76,9 +75,8 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 			{
 				auto sActionName = CtoString(res.matchs["ActionName"]);
 				auto sPred = CtoString(res.matchs["pred"]);
-				auto sPredAux = CtoString(res.matchs["pred_aux"]);
-				
-				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName + s_it + sPred + " " + sPredAux);
+				auto sPredAux = CtoString(res.matchs["pred_aux"]);				
+				HBlock _naction = std::make_shared<CBlockNoumCompose>(std::vector<HBlockNoum>{std::make_shared<CBlockNoumStr>(sActionName), std::make_shared<CBlockNoumStr>(sPred), std::make_shared<CBlockNoumStr>(sPredAux)});
 				return _naction;
 			}
 		}
@@ -95,8 +93,9 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 			{
 				auto sActionName = CtoString(res.matchs["ActionName"]);
 				auto sPred = CtoString(res.matchs["pred"]);
-				 
-				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName + s_it + sPred  );
+				HBlock _naction = std::make_shared<CBlockNoumCompose>(std::vector<HBlockNoum>{ std::make_shared<CBlockNoumStr>(sActionName), std::make_shared<CBlockNoumStr>(sPred) });
+
+				//HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName + s_it + sPred  );
 				return _naction;
 			}
 		}
@@ -111,6 +110,7 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 			if (res.result == Equals)
 			{
 				auto sActionName = CtoString(res.matchs["ActionName"]); 
+				 
 				HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName );
 				return _naction;
 			}
@@ -122,6 +122,115 @@ HBlock NSParser::ParseAssertion::parse_ActionCompositionName(CParser * p, bool t
 	return nullptr;
 }
 
+ 
+HBlock NSParser::ParseAssertion::parse_AssertionRulebook(CParser * p, std::vector<HTerm> term)
+{
+
+	auto an_  =  pOr("article", pLiteral("a"), pLiteral("an"));
+	auto an_rulebook = pOr("ruleDefinition", pList("rulebookDefinition", { an_ , pLiteral("rulebook") }), pLiteral("rulebook"));
+
+
+	{
+		CPredSequence predList = pAny("ruleBookName") << verb_IS() << pAny("kind") << pLiteral("based") << an_rulebook << pLiteral("producing") << pAny("kind2");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockNoum rulebookName = Expression::parser_noum_expression(p, res.matchs["ruleBookName"]);
+			if (rulebookName != nullptr)
+			{
+				HBlockKind dkind = Expression::parser_kind_specification(p, res.matchs["kind"]);
+				if (dkind != nullptr)
+				{
+					HBlockKind dkind2 = Expression::parser_kind_specification(p, res.matchs["kind2"]);
+					if (dkind2 != nullptr)
+					{
+						auto ruleKind = std::make_shared<CBlockCompositionRulebook>(dkind, dkind2);
+						if (ruleKind != nullptr)
+						{
+							p->ruleList.push_back(res.matchs["ruleBookName"]);
+							return std::make_shared<CBlockAssertion_isDirectAssign>(rulebookName, ruleKind);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pAny("ruleBookName") << verb_IS() << an_rulebook << pLiteral("producing") << pAny("kind2");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockNoum rulebookName = Expression::parser_noum_expression(p, res.matchs["ruleBookName"]);
+			if (rulebookName != nullptr)
+			{
+				 
+				{
+					HBlockKind dkind2 = Expression::parser_kind_specification(p, res.matchs["kind2"]);
+					if (dkind2 != nullptr)
+					{
+						auto ruleKind = std::make_shared<CBlockCompositionRulebook>(nullptr, dkind2);
+						if (ruleKind != nullptr)
+						{
+							p->ruleList.push_back(res.matchs["ruleBookName"]);
+							return std::make_shared<CBlockAssertion_isDirectAssign>(rulebookName, ruleKind);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+	{
+		CPredSequence predList = pAny("ruleBookName") << verb_IS() << pAny("kind") << pLiteral("based") << an_rulebook;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockNoum rulebookName = Expression::parser_noum_expression(p, res.matchs["ruleBookName"]);
+			if (rulebookName != nullptr)
+			{				
+				HBlockKind dkind = Expression::parser_kind_specification(p, res.matchs["kind"]);
+				if (dkind != nullptr)
+				{
+					auto ruleKind = std::make_shared<CBlockCompositionRulebook>(dkind,nullptr);
+					if (ruleKind != nullptr)
+					{
+						p->ruleList.push_back(res.matchs["ruleBookName"]);
+						return std::make_shared<CBlockAssertion_isDirectAssign>(rulebookName, ruleKind);
+					}
+				}
+			}
+		}
+	}
+
+	{
+		CPredSequence predList = pAny("ruleBookName") << verb_IS()  << an_rulebook;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockNoum rulebookName = Expression::parser_noum_expression(p, res.matchs["ruleBookName"]);
+			if (rulebookName != nullptr)
+			{				 
+				{
+					auto ruleKind = std::make_shared<CBlockCompositionRulebook>(nullptr, nullptr);
+					if (ruleKind != nullptr)
+					{
+						p->ruleList.push_back(res.matchs["ruleBookName"]);
+						return std::make_shared<CBlockAssertion_isDirectAssign>(rulebookName, ruleKind);
+					}
+				}
+			}
+		}
+	}
+
+
+	return nullptr;
+}
+
 HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<HTerm> term) 
 {
 	 
@@ -129,40 +238,21 @@ HBlock NSParser::ParseAssertion::parse_AssertionAction(CParser * p, std::vector<
 		// and action applying to [one visible thing and requiring light]
 
 		//std::cout << get_repr(term) << std::endl;
-		//CPredSequence predList =	pAny("ActionName") << verb_IS() << undefinedArticle() << pLiteral("action") << pLiteral("applying") << pLiteral("to")<< pAny("ApplyRemainder");
-		CPredSequence predList = p->lang->parse_AssertionAction("ActionName" ,"ApplyRemainder"  );
 		
-
+		CPredSequence predList = p->lang->parse_AssertionAction("ActionName" ,"ApplyRemainder"  ); 
 		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-	 
-			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p, res.matchs["ApplyRemainder"]);
-
-			//HBlockKindAction applyTO = ParseAssertionSecondary::parse_AssertionAction_secondPart(p,res.matchs["ApplyRemainder"]);
+		if (res.result == Equals) 
+		{	 
+			HBlockActionApply applyTO = ParseAssertion::parse_AssertionAction_ApplyngTo(p, res.matchs["ApplyRemainder"]);			
 			if (applyTO != nullptr)
 			{
-				bool two_noums = (applyTO->noum2 != nullptr);
-			 
+				bool two_noums = (applyTO->noum2 != nullptr);			 
 				auto _naction = parse_ActionCompositionName(p, two_noums , res.matchs["ActionName"]);
 				if (_naction != nullptr)
 				{
 					return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
 				}
-			}
-
-			//HBlock noum = Expression::parser_assertionTarger(p,res.matchs["ActionName"]);
-			//if (noum != nullptr) 
-			//{
-			//	
-			//	HBlockKindAction action = applyTO;
-			//	auto sActionName = CtoString(res.matchs["ActionName"]); 
-			//	HBlock _naction = std::make_shared<CBlockNoumStr>(sActionName);
-			//	HPred actionMatch = pLiteral(sActionName); 
-			//	p->actionPredList->blist.push_back( actionMatch);
-			//	return std::make_shared<CBlockAssertion_isDirectAssign>(_naction, applyTO);
-
-			//}
-			//return nullptr;
+			} 
 		}
 	}
 
@@ -185,8 +275,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionIsLocalValue(CParser * p, std::v
 		auto varName = Expression::parser_expression(p, res.matchs["VarName"]);
 		if (HBlockNoum varNameNoum = DynamicCasting::asHBlockNoum(varName))
 		{
-			//auto varName = std::make_shared<CBlockNoumStr>(res.matchs["VarName"]->removeArticle()->repr());
-			auto varValue = Expression::parser_expression(p, res.matchs["VarValue"]);
+			 auto varValue = Expression::parser_expression(p, res.matchs["VarValue"]);
 			return std::make_shared<CBlockAssertion_isLocalVariable>(varNameNoum, varValue);
 		}
 	}
@@ -485,10 +574,11 @@ HBlockAssertion_is NSParser::ParseAssertion::parse_AssertionDirectAssign(CParser
 			HBlock value = Expression::parser_expression(p,res.matchs["Value"]);
 			if (value == nullptr) return nullptr;
 
-			if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) {
+			if (HBlockKindAction action = DynamicCasting::asHBlockKindAction(value)) 
+			{
 				auto sterm = expandBract(res.matchs["Noum"]);
 				//HBlock _naction = std::make_shared<CBlockActionNamed>( (sterm->repr()));
-				HBlock _naction = std::make_shared<CBlockNoumStr>((sterm->repr()));
+				HBlock _naction = Expression::parser_noum_expression(p,sterm);
 
 				HPred actionMatch = convert_to_predicate(sterm.get());
 				//	std::cout << "found " << actionMatch->repr()  << std::endl;
@@ -523,6 +613,11 @@ HBlock NSParser::ParseAssertion::parser_Declaration_Assertion(CParser * p, std::
 	HBlock action_Assign = parse_AssertionAction(p,lst);
 	if (action_Assign != nullptr) {
 		return action_Assign;
+	}
+
+	HBlock rulebook_Assign = parse_AssertionRulebook(p, lst);
+	if (rulebook_Assign != nullptr) {
+		return rulebook_Assign;
 	}
 
 	HBlock assert_variable = parse_AssertionIsVariable(p,lst);

@@ -45,7 +45,7 @@ int cached(CBlock *c, SaveContext *ctx)
 			{
 				CBlockNoum  *b = static_cast<CBlockNoumStr*>(kv.first);
 				CBlockNoum  *bn = static_cast<CBlockNoumStr*>(c);
-				if (b->named == bn->named) return kv.second;
+				if (b->named() == bn->named()) return kv.second;
 			}
 		}
 	}
@@ -182,6 +182,7 @@ void raiseError()
   int  save_CBlockNoum(HBlockNoum x, SaveContext *ctx);
   int  save_CBlockNoumStr(HBlockNoumStr x, SaveContext *ctx);
   int  save_CBlockNoumStrDet(HBlockNoumStrDet x, SaveContext *ctx);
+  int  save_CBlockNoumCompose(HBlockNoumCompose x, SaveContext *ctx); 
   int  save_CBlockNoumSupl(HBlockNoumSupl x, SaveContext *ctx);
   int  save_CBlockKindNamed(HBlockKindNamed x, SaveContext *ctx);
   int  save_CBlockNothing(HBlockNothing x, SaveContext *ctx);
@@ -646,6 +647,7 @@ void raiseError()
 	  if (t == BlockType::BlockList_AND) return save_CBlockList_AND(std::static_pointer_cast < CBlockList_AND > (x), ctx);
 	  if (t == BlockType::BlockNoumStr) return save_CBlockNoumStr(std::static_pointer_cast < CBlockNoumStr > (x), ctx);
 	  if (t == BlockType::BlockNoumStrDet) return save_CBlockNoumStrDet(std::static_pointer_cast < CBlockNoumStrDet > (x), ctx);
+	  if (t == BlockType::BlockNoumCompose) return save_CBlockNoumCompose(std::static_pointer_cast < CBlockNoumCompose > (x), ctx);
 	  if (t == BlockType::BlockMatchWhich) return save_CBlockMatchWhich(std::static_pointer_cast < CBlockMatchWhich > (x), ctx);
 	  if (t == BlockType::BlockKindAction) return save_CBlockKindAction(std::static_pointer_cast < CBlockKindAction > (x), ctx);
 
@@ -892,7 +894,7 @@ void raiseError()
 
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
-	  save_string(x->named, ctx);
+	  save_string(x->noum, ctx);
 	  save_string(x->number, ctx);
 	  save_string(x->gender, ctx);
 	  end_slot(x.get(), ctx);
@@ -2522,7 +2524,7 @@ void raiseError()
 
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
-	  save_string(x->named, ctx);
+	  save_string(x->noum, ctx);
 	  end_slot(x.get(), ctx);
 	  return  slot;
 
@@ -2537,12 +2539,25 @@ int  save_CBlockNoumStrDet(HBlockNoumStrDet x, SaveContext *ctx)
 	const int slot = alloc_slot(x.get(), ctx);
 	save_type(x->type(), ctx);
 	save_string(x->det, ctx);
-	save_string(x->named, ctx);
+	save_CBlockNoum(x->noum, ctx);
 	end_slot(x.get(), ctx);
 	return  slot;
 
 }
 
+
+ 
+int  save_CBlockNoumCompose(HBlockNoumCompose x, SaveContext *ctx)
+{
+	if (x == nullptr) return 0;
+	lock_ptr(x.get(), ctx);
+	const int slot = alloc_slot(x.get(), ctx);
+	save_type(x->type(), ctx);
+	save_vector(x->noums , ctx);	
+	end_slot(x.get(), ctx);
+	return  slot;
+
+}
 
 
   int  save_CBlockActionNamed(HBlockActionNamed x, SaveContext *ctx)

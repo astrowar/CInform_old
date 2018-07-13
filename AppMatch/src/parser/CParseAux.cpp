@@ -270,7 +270,7 @@ HPred mk_What_Which() {
 std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
 
     {
-		  CPredSequence predList = pAny("Verb") <<pAny("Aux");
+		  CPredSequence predList = pWord("Verb") <<pAny("Aux");
 		 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -287,7 +287,7 @@ std::pair<HBlock, HPred> getVerbAndAux(HTerm term) {
     }
 
     {
-        CPredSequence predList =pAny("Verb");
+        CPredSequence predList =pWord("Verb");
 
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {

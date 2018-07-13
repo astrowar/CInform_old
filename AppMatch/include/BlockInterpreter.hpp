@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <list>
+#include <numeric>
 
 
 #include "BlockTypeEnum.hpp"
@@ -151,14 +152,11 @@ namespace CBlocking
 
 	using HBlockBooleanResult = std::shared_ptr<CBlockBooleanResult>;
 
-	class CBlockNoum : public CBlock //retorna um valor generico
+	class CBlockNoum : public CBlock //retorna um valor generico.. classe asbtrada
 	{
 	public:
-		//void dump(string ident) override;
-		 
-		
-		CBlockNoum(string _named) ;
-		const string named; 
+		CBlockNoum( ) ;
+		virtual string named()=0; 
 	};
 	using HBlockNoum = std::shared_ptr<CBlockNoum>;
 
@@ -167,9 +165,11 @@ namespace CBlocking
 	class CBlockNoumStr : public CBlockNoum //retorna um valor generico
 	{
 	public:
+		const string noum;
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockNoumStr; }		 
 		CBlockNoumStr(string _named);
+		string named() override { return noum; }
 		
 	};
 	using HBlockNoumStr = std::shared_ptr<CBlockNoumStr>;
@@ -178,13 +178,39 @@ namespace CBlocking
 	class CBlockNoumStrDet : public CBlockNoum //retorna um valor generico
 	{
 	public:
-		string det; // singular, plural ...
+		HBlockNoum noum;
+		string det ="."; // a, an , the , some
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockNoumStrDet; }
-		CBlockNoumStrDet(string _det , string _named):CBlockNoum( _named ), det(_det){};
-
+		CBlockNoumStrDet(string _det, HBlockNoum _noum);
+		string named() override { return det+" "+ noum->named(); }
+		 
 	};
 	using HBlockNoumStrDet = std::shared_ptr<CBlockNoumStrDet>;
+
+
+	class CBlockNoumCompose : public CBlockNoum //retorna um valor generico
+	{
+	public:
+		const std::vector<HBlockNoum> noums;
+		void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockNoumCompose; }
+		CBlockNoumCompose(std::vector<HBlockNoum> _noums) :noums(_noums){};
+		string named() override 
+		{
+			bool ifirst = true;
+			std::string ret = "";
+			for (auto n : noums)
+			{
+				if (ifirst == false) ret += " ";
+				ret += n->named();
+				ifirst = false;
+			}			
+			return ret;
+		}
+	};
+	using HBlockNoumCompose = std::shared_ptr<CBlockNoumCompose>;
+
 
 
 
@@ -193,10 +219,11 @@ namespace CBlocking
 	public:
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockNoumSupl; }
+		string noum; 
 		string number; // singular, plural ...
 		string gender; // male, female, neutral
-		CBlockNoumSupl(string _named , string _number, string _gender  ) :CBlockNoum( _named ), number(_number), gender(_gender) { };
-		 
+		CBlockNoumSupl(string _named , string _number, string _gender  ) :noum( _named ), number(_number), gender(_gender) { };
+		string named() override { return noum; }
 	};
 	using HBlockNoumSupl = std::shared_ptr<CBlockNoumSupl>;
 
@@ -211,7 +238,7 @@ namespace CBlocking
 
         BlockType type() override { return BlockType::BlockKindNamed; }
 		string named;
-         CBlockKindNamed(string _named) : named(std::move(_named)) 
+         CBlockKindNamed(string _named) : named((_named)) 
 		 {
 			 if (_named == "text")
 			 {

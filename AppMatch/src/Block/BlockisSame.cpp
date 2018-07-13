@@ -33,7 +33,7 @@ namespace CBlocking {
 
 		bool isSame_BlockNoum(CBlockNoum* b1, CBlockNoum* b2)
 		{
-			return b1->named == b2->named;
+			return b1->named() == b2->named();
 		}
 
 

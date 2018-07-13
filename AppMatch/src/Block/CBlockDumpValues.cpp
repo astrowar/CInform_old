@@ -94,23 +94,32 @@ void CBlockKindReference::dump(string ident) {
 }
 
 void CBlockNoumStr::dump(string ident) {
-	printf("%s %s\n", ident.c_str(), this->named.c_str());
+	printf("%s %s\n", ident.c_str(), this->named().c_str());
 	CBlock::dump(ident);
 }
 
 
 
 void CBlockNoumSupl::dump(string ident) {
-	printf("%s %s  (%s, %s)\n", ident.c_str(), this->named.c_str(), this->number.c_str(), this->gender.c_str());
+	printf("%s %s  (%s, %s)\n", ident.c_str(), this->noum.c_str(), this->number.c_str(), this->gender.c_str());
 	CBlock::dump(ident);
 }
 
 
 void CBlockNoumStrDet::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(),this->det.c_str(),  this->named.c_str());
+	printf("%s %s \n", ident.c_str(),  this->named().c_str());
 	CBlock::dump(ident);
 }
  
+
+ 
+void CBlockNoumCompose::dump(string ident) 
+{
+	printf("%s ", ident.c_str());
+	for(const HBlockNoum &n : noums) printf("%s ",  n->named().c_str() );
+	printf("\n" );
+	CBlock::dump(ident);
+}
 
 
 void CBlockEnums::dump(string ident) {
@@ -315,18 +324,20 @@ matchInner(_matchInner)
 
 CBlockMatchNoum::CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inner) 
 {
-	assert(_inner->named != "not");
-	assert(_inner->named != "the");
-	assert(_inner->named != "a");
-	assert(_inner->named != "an");
-	assert(_inner->named != "is");
-	assert(_inner->named[0] != '[');
-	assert(_inner->named[0] != '(');
+	assert(_inner != nullptr);
+	assert(_inner->named() != "not");
+	assert(_inner->named() != "the");
+	assert(_inner->named() != "a");
+	assert(_inner->named() != "an");
+	assert(_inner->named() != "is");
+	assert(_inner->named()[0] != '[');
+	assert(_inner->named()[0] != '(');
+	
 	
 	//std::list<std::string> vlist = std::list<std::string>({ "above", "across", "after", "against", "along", "among", "around","at", "before", "behind", "below", "beneath", "beside", "between", "things", "by", "down", "for", "from", "originates", "in", "inside", "into", "near", "off", "on", "onto", "opposite", "out", "outside", "over", "past", "round", "through", "throughout", "to", "towards", "under", "underneath", "up" ,"until" });
 	//for (auto &s : vlist)
 	//{
-	//	assert(s != _inner->named);
+	//	assert(s != _inner->named());
 	//}
 
 	//inner->dump("");
@@ -695,6 +706,19 @@ void CBlockCompositionPhrase::dump(string ident)
 	this->toKind->dump(ident + "       ");
 	CBlock::dump(ident);
 }
+
+void CBlockCompositionRulebook::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Rulebook ");
+	printf("%s %s\n", ident.c_str(), "based");
+	if(this->fromKind!=nullptr)this->fromKind->dump(ident + "       ");
+	printf("%s %s\n", ident.c_str(), "producing");
+	if (this->toKind != nullptr)this->toKind->dump(ident + "       ");
+	CBlock::dump(ident);
+}
+
+ 
+
 void CBlockTryCall::dump(string ident) 
 {
 	printf("%s %s\n", ident.c_str(), "Try Call ");
@@ -760,7 +784,7 @@ HBlockVariableNamed CBlockActionInstance::get_property(string pnamed)
 	for (auto &va : this->namedSlots)
 	{
 
-		if (va->name->named == pnamed)
+		if (va->name->named() == pnamed)
 		{
 
 			return va;
@@ -775,7 +799,7 @@ void CBlockActionInstance::set_property(string pnamed, CBlocking::HBlock value)
 	for (auto &va : this->namedSlots)
 	{
 
-		if (va->name->named == pnamed)
+		if (va->name->named() == pnamed)
 		{
 
 			va->value = value;
@@ -946,7 +970,7 @@ void CBlockVerbReverseRelation::dump(string ident) {
 
 void CBlockVariableNamed::dump(string ident)
 {
-	printf("%s VAriable Named  %s\n",ident.c_str() ,   name->named.c_str());
+	printf("%s VAriable Named  %s\n",ident.c_str() ,   name->named().c_str());
 		this->kind->dump(ident + "       ");
 		printf("%s %s\n", ident.c_str(), "values ");
 		if (this->value != nullptr) { this->value->dump(ident + "       "); }
@@ -974,7 +998,7 @@ string  CBlocking::HtoStringList(HBlockList lst)
 string CBlocking::HtoString( HBlock value)
 {
 	if (HBlockNoum verbNoum = DynamicCasting::asHBlockNoum(value)) {
-		return verbNoum->named;
+		return verbNoum->named();
 	}
 	else if (HBlockList verbNoumList = DynamicCasting::asHBlockList(value))
 	{

@@ -2974,8 +2974,8 @@ HBlockNoumStrDet  load_CBlockNoumStrDet(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
 	cmp_type(tp, BlockType::BlockNoumStrDet);
-	const string _det = load_string(ctx);
-	const string _named = load_string(ctx);
+	const string _det = load_string(ctx);	 
+	const HBlockNoum _named = load_CBlockNoum_slot(load_id(ctx), ctx);
 	CBlockNoumStrDet* ret = new CBlockNoumStrDet(_det,_named);
 	return  std::shared_ptr<CBlockNoumStrDet>(ret);
 }

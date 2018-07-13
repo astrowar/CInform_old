@@ -1,57 +1,44 @@
- 
-
-
-    
-
-    
-carry out eating  bad (thing called X )   :
-    say (text bad eating)
-
- 
-
-unit init :
-    thing is an kind of entity
-    thing has a container called location
-    container is an kind of entity
-    apple is a thing 
-    apple can be bad or good
-    apple is bad
-    orange is a thing
-    box is an container
-    eating  is  an action  applying to ( an thing ) 
-    putting into is an action  applying to (  thing  and   container ) 
-    retreating is an action applying to nothing
-    understand : eat  ( a thing ) as eat_this
+unit init:
+  thing is an kind of entity
+  people is a thing
   
+  Diagnosing is an action applying to an thing  
+  understand : "diagnose ( a thing )" as diagnosing
+  apple is an thing
+  Fred is an person
+  
+Check diagnosing: 
+      if noum is not person :
+         say "Only people can have diagnoses."          
+         stop the action
+
+Carry out diagnosing: 
+      say "You're not a medical expert."
+
+Instead of diagnosing the player: 
+      say "You feel fine!"
+      
+    
+  
+unit test :    
+    try Diagnosing apple
+assert : said "Only people can have diagnoses." 
+  
+unit test :    
+    try Diagnosing Fred
+assert : said "You're not a medical expert."
+unit test :    
+    try silently Diagnosing Fred
+assert : said nothing
 
 
-unit test :
-   try eating (  apple ) 
-assert:      nothing
+unit init:
+     Diagnosing is an action applying to an thing
+     thing is an kind of entity
+     key, apple, box are thing
+unit test :    
+    try silently Diagnosing Fred            
+assert : said "You're not a medical expert."  
 
-unit test :
-   try eating (  apple ) 
-assert:      nothing
-
-
-unit test :
-   try putting  apple into box  
-assert:   nothing
-
-
-
-
-
-unit test :
-   try putting  apple box
-assert:      nothing
-   
-unit test :
-   try putting  apple inside box
-assert:       apple is inside box  
-   
-unit test :
-   putting is an action  applying to (  thing  and   container )
-assert:   true
-   
-   
+     
+     

@@ -326,7 +326,7 @@ HBlock   NSParser::ControlFlux::parser_control_else(CParser *p, std::vector<HTer
         if (res.result == Equals) {
            
 			 
-			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
+			HBlock executeBlock = Statement::parser_stmt_list(p, false,inner, err);
 			if (executeBlock == nullptr)  return nullptr;
 			auto token_else = std::make_shared<CBlockControlToken >("else",executeBlock);
 			return token_else;
@@ -370,7 +370,7 @@ HBlock  NSParser::ControlFlux::parser_control_for_loop(CParser *p, std::vector<H
 		if (res.result == Equals)
 		{
 			HBlockMatch ill_variable = ExpressionMatch::parser_MatchArgument(p, res.matchs["Condition"]);
-			HBlock executeBlock = Statement::parser_stmt_inner(p, inner, err);
+			HBlockComandList executeBlock = Statement::parser_stmt_list(p, false, inner, err);
 			if (executeBlock == nullptr)
 			{
 				err->setError("missing Body loop block ");
@@ -418,7 +418,7 @@ HBlock  NSParser::ControlFlux::parser_control_if(CParser *p, std::vector<HTerm>&
 		if (res.result == Equals)
         {
 			HBlock ACondition = parser_if_condition(p,res.matchs["Condition"]);
-			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
+			HBlock executeBlock = Statement::parser_stmt_list(p, false,inner, err);
 			if (executeBlock == nullptr)
 			{
 				err->setError("missing IF block ");
@@ -440,7 +440,7 @@ HBlock  NSParser::ControlFlux::parser_control_unless(CParser *p, std::vector<HTe
 		if (res.result == Equals)
 		{
 			HBlock ACondition = parser_if_condition(p,res.matchs["Condition"]);
-			HBlock executeBlock = Statement::parser_stmt_inner(p,inner, err);
+			HBlock executeBlock = Statement::parser_stmt_list(p, false,inner, err);
 			if (executeBlock == nullptr)
 			{
 				err->setError("missing Unless block ");
@@ -483,7 +483,7 @@ HBlockControlSelect  NSParser::ControlFlux::parser_control_select(CParser *p, st
 		{
 			HBlock ACondition = Expression::parser_expression(p,res.matchs["object"] );
 
-			HBlockComandList executeBlockRaw = Statement::parser_stmt_inner(p,inner, err);
+			HBlockComandList executeBlockRaw = Statement::parser_stmt_list(p, false,inner, err);
 
 			if (executeBlockRaw == nullptr)
 			{
@@ -540,7 +540,7 @@ HBlockControlSelectItem  NSParser::ControlFlux::parser_control_select_item(CPars
 		{
 			HBlock ASeletor = Expression::parser_expression(p,res.matchs["object"]);
 			
-			HBlockComandList ABody = Statement::parser_stmt_inner(p,inner, err);
+			HBlockComandList ABody = Statement::parser_stmt_list(p, false,inner, err);
 			 
 			if (ABody == nullptr)
 			{
@@ -626,7 +626,7 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 			if (inner != nullptr)
 			{
 				HBlock executeBlock = nullptr;
-				executeBlock = Statement::parser_stmt_inner(p, inner, err);
+				executeBlock = Statement::parser_stmt_list(p, true, inner, err);
 				if (executeBlock == nullptr)
 				{
 					err->setError("error on unity init block ");
@@ -652,7 +652,7 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 			if (inner != nullptr)
 			{
 				HBlock executeBlock = nullptr;
-				executeBlock = Statement::parser_stmt_inner(p, inner, err);
+				 executeBlock = Statement::parser_stmt_list(p, false, inner, err);
 				if (executeBlock == nullptr)
 				{
 					err->setError("missing unity test block ");

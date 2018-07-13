@@ -64,7 +64,7 @@ void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 	//verifica se ja nao existe algo assim
 	for(auto s : this->namedSlots)
 	{
-		if (s->name->named == called->named) return; //ja tem um slot com esse nome 
+		if (s->name->named() == called->named()) return; //ja tem um slot com esse nome 
 	}
 	this->namedSlots.push_back(make_shared< CBlockVariableNamed>(called, kind, nullptr));
 }
@@ -77,7 +77,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 	{
 		if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
-			if (venum->valueDefinition->contains( c_block->named ))
+			if (venum->valueDefinition->contains( c_block->named() ))
 			{
 				venum->value = c_block;
 				return;
@@ -85,7 +85,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 		}
 		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
-			if (vbool->valueDefinition->named == c_block->named )
+			if (vbool->valueDefinition->named() == c_block->named() )
 			{
 				vbool->value = true;
 				return;
@@ -102,7 +102,7 @@ void CBlockInstance::unset(HBlockNoum c_block)
 
 		if (HVariableSlotBool  vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
-			if (vbool->valueDefinition->named == c_block->named)
+			if (vbool->valueDefinition->named() == c_block->named())
 			{
 				vbool->value = false; 
 				printf("unset !");
@@ -113,11 +113,11 @@ void CBlockInstance::unset(HBlockNoum c_block)
 
 		if (HVariableSlotEnum  vEnn = DynamicCasting::asHVariableSlotEnum(va))
 		{
-			if (vEnn->valueDefinition->contains(c_block->named))
+			if (vEnn->valueDefinition->contains(c_block->named()))
 			{
 				if (vEnn->valueDefinition->values.size() == 2)
 				{
-					if (vEnn->valueDefinition->values[0]->named == c_block->named)
+					if (vEnn->valueDefinition->values[0]->named() == c_block->named())
 					{
 						vEnn->value = vEnn->valueDefinition->values[1];
 					}
@@ -144,14 +144,14 @@ bool CBlockInstance::has_slot(HBlockNoum value)
 	{
 		if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
-			if (venum->valueDefinition->contains(value->named))
+			if (venum->valueDefinition->contains(value->named()))
 			{
 				return true ;
 			}
 		}
 		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
-			if (vbool->valueDefinition->named == value->named)
+			if (vbool->valueDefinition->named() == value->named())
 			{
 				return true ;
 			}
@@ -164,9 +164,9 @@ HBlockVariableNamed  CBlockInstance::get_property( string  pnamed)
 {
 	for (auto &va : this->namedSlots)
 	{
-		if (va->name->named == pnamed)
+		if (va->name->named() == pnamed)
 		{
-			//logMessage(pnamed + " has? " + va->name->named);
+			//logMessage(pnamed + " has? " + va->name->named());
 			if (va->value == nullptr)
 			{
 				//retorna o valor como nothing ...
@@ -184,9 +184,9 @@ void CBlockInstance::set_property(string  pnamed, CBlocking::HBlock value)
 	for (auto &va : this->namedSlots)
 	{
 
-		if (va->name->named == pnamed)
+		if (va->name->named() == pnamed)
 		{
-			//logMessage(pnamed + " has? " + va->name->named);			 
+			//logMessage(pnamed + " has? " + va->name->named());			 
 			va->value = value;
 		}
 	}
@@ -219,14 +219,14 @@ bool CBlockInstance::is_set(HBlockNoum  valueName, bool &value)
 	{
 		if (HVariableSlotEnum  venum = DynamicCasting::asHVariableSlotEnum(va))
 		{
-			if (venum->valueDefinition->contains(valueName->named))
+			if (venum->valueDefinition->contains(valueName->named()))
 			{
-				string slot_value = venum->value->named;
+				string slot_value = venum->value->named();
 
-				if (slot_value == "DEFAULT")  slot_value = venum->valueDefinition->values.front()->named;
+				if (slot_value == "DEFAULT")  slot_value = venum->valueDefinition->values.front()->named();
 				 
 
-				if (NNisSameString(slot_value, valueName->named))
+				if (NNisSameString(slot_value, valueName->named()))
 				{
 					value = true;
 					return true;
@@ -237,7 +237,7 @@ bool CBlockInstance::is_set(HBlockNoum  valueName, bool &value)
 		}
 		if (const HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
 		{
-			if (vbool->valueDefinition->named == valueName->named)
+			if (vbool->valueDefinition->named() == valueName->named())
 			{
 				if (vbool->value == true)
 				{

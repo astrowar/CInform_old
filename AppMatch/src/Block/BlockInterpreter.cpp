@@ -63,12 +63,21 @@ CUnresolved::CUnresolved(string _contents) : contents(_contents)
 {
 }
 
-CBlockNoum::CBlockNoum(string _value) : named(_value)
+CBlockNoum::CBlockNoum( )  
 {
 	
 }
 
-CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
+CBlockNoumStrDet::CBlockNoumStrDet(string _det, HBlockNoum _noum) :noum(_noum), det(_det) 
+{ 
+	assert(det.size() > 0);
+	assert(det[0] != 'ý');
+	assert(_noum != nullptr); 
+};
+
+ 
+
+CBlockNoumStr::CBlockNoumStr(string _value) :noum(_value) {
     
 	assert(_value != "not");
 	assert(_value != "the");
@@ -79,10 +88,10 @@ CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
 	assert(strncmp(_value.c_str(), "the", 3) != 0);
 	assert(strncmp(_value.c_str(), "to ", 3) != 0);
 
-    assert(named[0] != '[');
-	assert(named[0] != '(');
+    assert(noum[0] != '[');
+	assert(noum[0] != '(');
 
-	if ((named[0] == 'A') && (named[1] == ' '))
+	if ((noum[0] == 'A') && (noum[1] == ' '))
 	{
 		_value[0] = 'a';
 	}
@@ -92,6 +101,7 @@ CBlockNoumStr::CBlockNoumStr(string _value) : CBlockNoum(_value) {
 		assert(_value.find('\n') == std::string::npos);
 	}
 
+	assert(_value.find(' ') == std::string::npos);
 }
 
 
@@ -102,7 +112,7 @@ CBlockEnums::CBlockEnums(vector<HBlockNoum> _values) : values(_values) {
 bool CBlockEnums::contains(string cs) {
     for (vector<shared_ptr<CBlockNoum>>::value_type& n : values)
 	{
-		if (n->named == cs) return true;
+		if (n->named() == cs) return true;
 	}
     return false;
 }

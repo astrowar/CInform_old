@@ -1,3 +1,22 @@
+putting into is an action  applying to (  thing  and   container ) 
+An appraisal rule:
+   let AX be putting is an action  applying to (  thing  and   container )
+
+
+Gretting is a thing based rulebook
+Gretting (a door) : say "unable to get a door." instead
+
+switching is an action applying to an thing  
+understand : switching on ( a thing ) as switching
+
+ 
+  
+Instead of switching on the machine:
+   follow the appraisal rulebook
+   
+   
+Appraisal rules is a rulebook
+	
 
 A flotation rule for the cork: rule succeeds.
 A flotation rule for an inflated thing: rule succeeds
@@ -19,9 +38,7 @@ Instead of switching on the machine:
 Instead of opening or closing a damp door: 
     say "[The noun] can no longer be opened or closed in any meaningful sense."
 
-A flotation rule for the cork: rule succeeds.
-A flotation rule for an inflated thing: rule succeeds
-A flotation rule: rule fails
+
 
 Gretting is a thing based rulebook
 Gretting (a door): say "unable to get a door." instead
@@ -40,3 +57,7 @@ To destroy (a thing called item):
 To destroy (a door called item):
    now door is open
 
+rule1 is rulebook
+rule2 is K based rulebook
+rule3 is rulebook producing L
+rule4 is K based rulebook producing L  
