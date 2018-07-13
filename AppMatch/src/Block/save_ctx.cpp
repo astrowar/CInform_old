@@ -367,6 +367,7 @@ void raiseError()
 	  if (t == BlockType::BlockNoumStr) return save_CBlockNoumStr(std::static_pointer_cast < CBlockNoumStr > (x), ctx);
 	  if (t == BlockType::BlockNoumStrDet) return save_CBlockNoumStrDet(std::static_pointer_cast < CBlockNoumStrDet > (x), ctx);
 	  if (t == BlockType::BlockNoumSupl) return save_CBlockNoumSupl(std::static_pointer_cast < CBlockNoumSupl > (x), ctx);
+	  if (t == BlockType::BlockNoumCompose) return save_CBlockNoumCompose(std::static_pointer_cast < CBlockNoumCompose > (x), ctx);
 
 	  raiseError();
 	  return -1;

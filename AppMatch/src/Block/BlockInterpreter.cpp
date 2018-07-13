@@ -71,7 +71,7 @@ CBlockNoum::CBlockNoum( )
 CBlockNoumStrDet::CBlockNoumStrDet(string _det, HBlockNoum _noum) :noum(_noum), det(_det) 
 { 
 	assert(det.size() > 0);
-	assert(det[0] != 'ı');
+
 	assert(_noum != nullptr); 
 };
 

@@ -360,5 +360,26 @@ namespace CBlocking
 	using HBlockMatchWhichNot = std::shared_ptr<CBlockMatchWhichNot>;
 
 
+
+
+
+
+
+
+
+
+	//User Parser Predicades for Syntax of user input
+
+	 
+
+	class CBlockUserParser : public CBlock  // um bloco que serve para dar Match no user input ... ???
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockUserParser; }		 
+		CBlockUserParser(  )  {};
+	};
+	using HBlockUserParser = std::shared_ptr<CBlockUserParser>;
+
 }
 #endif //CBLOCKMATCH_H

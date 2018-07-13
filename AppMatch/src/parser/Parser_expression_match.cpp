@@ -394,7 +394,11 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<
 
 	if (term.size() == 1)
 	{
-		return  User::parser_input_syntax(p, term[0]);
+		if (auto text = asCLiteral(term[0].get()))
+		{
+			return std::make_shared<CBlockMatchText>(std::make_shared<CBlockText>(text->val));
+		}
+
 	}
 
 	if(term.size() == 1) return parser_expression_match_noum(p, term[0]);

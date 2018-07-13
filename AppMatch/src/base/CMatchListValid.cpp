@@ -128,8 +128,8 @@ bool NSMatch::isListValid_count(MTermSetCombinatoria &listComb)
     for (auto it = listComb.begin(); it != listComb.end(); ++it) {
         int cc_open = 0;
         int cc_close = 0;
-        int ns = (it->size());
-        for (int j = 0; j < ns; ++j) {
+        size_t ns = (it->size());
+        for (size_t j = 0; j < ns; ++j) {
             // if ((*it).at(j)->repr() == ")") cc_open++;
             // if ((*it).at(j)->repr() == "(") cc_close++;
 

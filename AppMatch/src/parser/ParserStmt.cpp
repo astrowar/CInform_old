@@ -483,6 +483,12 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
     /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
 
+	HBlock assert_decide_on = ParseDecide::parseAssertion_DecideOn(p, lst, inner, err);
+	if (assert_decide_on != nullptr)
+	{
+		return assert_decide_on;
+	}
+
  
 
    // HBlock rblock_decide_1 = (STMT_Decide_Assertion(lst,inner, err));

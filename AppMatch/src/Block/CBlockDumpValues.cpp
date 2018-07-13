@@ -1493,3 +1493,10 @@ void CBlockRuleCall::dump(string ident)
 }
  
 
+void CBlockUserParser::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "User Parser ");	 
+	CBlock::dump(ident);
+}
+
+ 

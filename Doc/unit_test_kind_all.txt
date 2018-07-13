@@ -9,7 +9,7 @@ unit test :
     pass
 assert :  apple is a fruit
 assert :  apple is a thing
-assert :  fruit is a kind
+assert :  fruit is a kind 
 assert :  fruit is a kind of kind
 assert :  apple is not a kind
 
@@ -38,7 +38,7 @@ assert :  color of foreground is brown
 
 
 unit init :
-    thing is a kind  
+    thing is a kind of entity 
     ice cube is a thing
     Heat is a kind of value
     The heat are frosty, cold, cool, room temperature, warm, hot  and scalding

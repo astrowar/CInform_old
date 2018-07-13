@@ -139,8 +139,10 @@ enum BlockType {
 	BlockUnitAssert,
 
     BlockRule,
-	BlockRuleCall
+	BlockRuleCall,
 
+
+    BlockUserParser
 		
 };
 #endif // APPMATCH_BLOCKTYPEENUM_HPP

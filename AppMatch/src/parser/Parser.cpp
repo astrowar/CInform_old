@@ -574,11 +574,7 @@ HBlock NSParser::ParseAssertion::STMT_Decide_Assertion(CParser * p, std::vector<
         return assert_decide;
     }
 
-	HBlock assert_decide_on = ParseDecide::parseAssertion_DecideOn(p,lst, inner, err);
-	if (assert_decide_on != nullptr)
-	{
-		return assert_decide_on;
-	}
+ 
 
     return nullptr;
 

@@ -25,12 +25,11 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
         auto kv = parser_buildMatchBlock_actionInputList(p,vterm);
         return kv;
     }
-
     std::vector<HPred> replcList;
     replcList.push_back(pLiteral(term->repr()));
-
 	std::vector<HTerm> term_vec = { term };
-	return DispatchArguments(replcList, nullptr, ExpressionMatch::parse_match_noum(p, term_vec));
+	auto argument_parser_input  = ExpressionMatch::parse_match_noum(p, term_vec);
+	return DispatchArguments(replcList, nullptr, argument_parser_input);
 }
 
 

@@ -680,8 +680,8 @@ using namespace EqualResulting;
 
 
 
-			int npred = predicates.size();
-			int a = lst.size();
+			size_t npred = predicates.size();
+			size_t a = lst.size();
 
 			if (a == 0)
 			{
@@ -721,7 +721,7 @@ using namespace EqualResulting;
 
 
 			std::vector<CPred *> predicates_ptr(npred);
-			for (int k = 0; k < npred; ++k)predicates_ptr[k] = predicates[k].get();
+			for (size_t k = 0; k < npred; ++k)predicates_ptr[k] = predicates[k].get();
 			//for (auto it = predicates.begin(); it != predicates.end(); ++it) {     predicates_ptr.push_back(it->get());  }
 
 			MatchResult mmResultMatch;

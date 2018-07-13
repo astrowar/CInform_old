@@ -3,7 +3,7 @@ unit init:
   people is a thing
   
   Diagnosing is an action applying to an thing  
-  understand : "diagnose ( a thing ) as diagnosing
+  understand : "diagnose ( a thing )" as diagnosing
   apple is an thing
   Fred is an person
   
