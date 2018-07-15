@@ -111,7 +111,7 @@ string CBlockInterpreter::adapt_verb_inner(const  string &  verb, string   tense
 		auto nn = localsEntry->resolve("viewPoint");
 		if (auto nviewPoint = asHBlockNoum(nn))
 		{
-			person = nviewPoint->named; 
+			person = nviewPoint->named();
 		} 
 	}
 

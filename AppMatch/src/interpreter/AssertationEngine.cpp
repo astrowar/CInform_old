@@ -93,13 +93,13 @@ string  CBlockInterpreter::prompt()
 {
 	for (auto v : this->global_variables)
 	{
-		if (v->name->named == "command prompt" )
+		if (v->name->named() == "command prompt" )
 		{
 			std::string number = "singular";
 			std::string gender = "neutral";
 			std::string person = "3S";
 			auto nn =  textual_representation(v->value, person , number , gender ,nullptr, nullptr  );
-			return nn->named;
+			return nn->named();
 		}
 	}
 	return ">";
@@ -173,9 +173,9 @@ bool CBlockInterpreter::queryIsVerbToRelation(HBlockMatch m)
 		auto cfind = verbRelationAssoc.find(vv->verb);
 		if (cfind != verbRelationAssoc.end())
 		{
-			if (cfind->second->relationNoum->named != "dynamic")
+			if (cfind->second->relationNoum->named() != "dynamic")
 			{
-				logError("verb " + vv->verb + " belongs to relation " + cfind->second->relationNoum->named);
+				logError("verb " + vv->verb + " belongs to relation " + cfind->second->relationNoum->named());
 				return true;
 			}
 		}
@@ -247,7 +247,7 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
 		//name da variavel
 		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) {
-			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named());
 			nInst->newNamedVariable(variable_->property_name, nkindBase);
 			return true;
 		}
@@ -259,7 +259,7 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 		//name da variavel
 		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value))
 		{
-			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named);
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named());
 			nAction->newNamedVariable(variable_->property_name, nkindBase);
 			return true;
 		}
@@ -310,7 +310,7 @@ CBlocking::HBlock CBlockInterpreter::value_can_be_assign_to(CBlocking::HBlock va
 		{
 			for (auto &ee : enumarate->values)
 			{
-				if (ee->named == cnn->named) return ee;
+				if (ee->named() == cnn->named()) return ee;
 			}
 			return nullptr;
 		}
@@ -415,7 +415,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 	if (HBlockNoum property_noum = asHBlockNoum(propname))
 	{
 
-		if (isSameString(property_noum->named, "plural"))
+		if (isSameString(property_noum->named(), "plural"))
 		{
 			bool set_prop_plural = set_plural_property(obj, value, localsEntry);
 			if (set_prop_plural) return set_prop_plural;
@@ -424,7 +424,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 
 		if (HBlockInstance cinst = asHBlockInstance(obj))
 		{
-			HBlockVariableNamed vv = cinst->get_property(property_noum->named);
+			HBlockVariableNamed vv = cinst->get_property(property_noum->named());
 			if (vv != nullptr)
 			{
 				if (is_primitive_value(value, localsEntry, stk) == false)
@@ -436,14 +436,14 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 
 				CBlocking::HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
 				if (instanceValueRefered) {
-					cinst->set_property(property_noum->named, instanceValueRefered);
+					cinst->set_property(property_noum->named(), instanceValueRefered);
 					return true;
 				}
 			}
 			else
 			{
 
-				logMessage("Obje dont have " + property_noum->named + " property ");
+				logMessage("Obje dont have " + property_noum->named() + " property ");
 			}
 
 		}
@@ -451,7 +451,7 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 		if (HBlockActionInstance cAction = asHBlockActionInstance(obj))
 		{
 
-			HBlockVariableNamed vv = cAction->get_property(property_noum->named);
+			HBlockVariableNamed vv = cAction->get_property(property_noum->named());
 			if (vv != nullptr)
 			{
 				if (is_primitive_value(value, localsEntry, stk) == false)
@@ -460,15 +460,15 @@ bool CBlockInterpreter::assert_it_property(CBlocking::HBlock propname, CBlocking
 					return assert_it_property(propname, obj, next_value, localsEntry, stk);
 				}
 
-				CBlocking::HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
+				const CBlocking::HBlock instanceValueRefered = (value_can_be_assign_to(value, vv->kind, localsEntry));
 				if (instanceValueRefered) {
-					cAction->set_property(property_noum->named, instanceValueRefered);
+					cAction->set_property(property_noum->named(), instanceValueRefered);
 					return true;
 				}
 			}
 			else
 			{
-				logMessage("Obje dont have " + property_noum->named + "property ");
+				logMessage("Obje dont have " + property_noum->named() + "property ");
 			}
 		}
 

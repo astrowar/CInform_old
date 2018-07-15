@@ -26,7 +26,7 @@ bool CBlockInterpreter::kind_has_property_called_inner(HBlockKind kind, string p
 	{
 		if (kvar->kind.get() == kind.get())
 		{
-			if (kvar->variableNamed->property_name->named == propertyNamed)
+			if (kvar->variableNamed->property_name->named() == propertyNamed)
 			{
 				return true;
 			}
@@ -67,7 +67,7 @@ bool CBlockInterpreter::assert_property_ForbiddenValue(HBlockProperty prop, CBlo
 	{
 		if (HBlockNoum prop_name_noum = asHBlockNoum(prop->prop))
 		{
-			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
+			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named()))
 			{
 				auto kdef = make_shared<CBlockAssertion_isForbiddenAssign>(prop, value);
 				//assignments.push_back(kdef);
@@ -81,7 +81,7 @@ bool CBlockInterpreter::assert_property_ForbiddenValue(HBlockProperty prop, CBlo
 			else
 			{
 				//logError("Kind " + std::itos( uintptr_t(prop_obj_kind.get())) + " Dont have a property called " + prop_name_noum->named);
-				logError("Kind  Dont have a property called " + prop_name_noum->named);
+				logError("Kind  Dont have a property called " + prop_name_noum->named());
 			}
 		}
 	}
@@ -103,7 +103,7 @@ bool CBlockInterpreter::assert_property_ConstantValue(HBlockProperty prop, CBloc
 	{
 		if (HBlockNoum prop_name_noum = asHBlockNoum(prop->prop))
 		{
-			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
+			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named()))
 			{
 				auto kdef = make_shared<CBlockAssertion_isConstantAssign>(prop, value); 
 				constant_assignments.push_back(kdef);
@@ -112,7 +112,7 @@ bool CBlockInterpreter::assert_property_ConstantValue(HBlockProperty prop, CBloc
 			}
 			else
 			{
-				logError("Kind   Dont have a property called " + prop_name_noum->named);
+				logError("Kind   Dont have a property called " + prop_name_noum->named());
 			}
 		}
 	}
@@ -140,7 +140,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlock
 	{
 		if (HBlockNoum prop_name_noum = asHBlockNoum(prop->prop))
 		{		
-			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named))
+			if (kind_has_property_called(prop_obj_kind, prop_name_noum->named()))
 			{
 				auto kdef = make_shared<CBlockAssertion_isDefaultAssign>(prop, value);
 				default_assignments.push_back(kdef);
@@ -149,7 +149,7 @@ bool CBlockInterpreter::assert_property_defaultValue(HBlockProperty prop, CBlock
 			}
 			else
 			{
-				logError("Kind   Dont have a property called " + prop_name_noum->named);
+				logError("Kind   Dont have a property called " + prop_name_noum->named());
 			 
 			}
 		}

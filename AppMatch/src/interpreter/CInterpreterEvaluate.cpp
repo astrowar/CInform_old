@@ -24,15 +24,15 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_relation_property(CBlocking::HBlo
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
 	{
-		if (rr->relation->input_B->named == property_noum->named) //Ok, this is 
+		if (rr->relation->input_B->named == property_noum->named()) //Ok, this is 
 		{
-			QueryResultContext qcc = query_is(c_block, rr->value1, localsEntry, stk);
+			const QueryResultContext qcc = query_is(c_block, rr->value1, localsEntry, stk);
 			if (QEquals == qcc.result )
 			{
 				return isSuitable(rr->value2, localsEntry, stk);
 			}
 		}
-		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
+		if (rr->relation->input_A->named == property_noum->named()) //Ok, this is 
 		{
 			QueryResultContext qcc = query_is(c_block, rr->value2, localsEntry, stk);
 			if (QEquals == qcc.result)
@@ -60,7 +60,7 @@ CBlocking::HBlock  CBlockInterpreter::evaluate_propertyValue(  HBlockProperty cp
 				{
 					if (HBlockInstance cinst = asHBlockInstance(object))
 					{
-						HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
+						HBlockVariableNamed pvar = cinst->get_property(property_noum->named());
 						if (pvar != nullptr)
 						{
 							return evaluate_values(pvar->value, localsEntry, stk, isSuitable);

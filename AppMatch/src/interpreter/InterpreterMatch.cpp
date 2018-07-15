@@ -72,7 +72,7 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 HBlockList getCompoundNoumAsList(HBlockNoum noum)
 {
 	std::list<HBlock> noums;
-	auto str = noum->named;
+	auto str = noum->named();
 	const std::string delimiter = " ";
 	//std::vector<std::string> split_string(const std::string& str, const std::string& delimiter)
 	{
@@ -118,7 +118,7 @@ std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
 	{
 		if (auto mnoum = asHBlockMatchNoum(*init_ptr))
 		{
-			if (is_article(mnoum->inner->named))
+			if (is_article(mnoum->inner->named()))
 			{
 				++init_ptr;
 				if (init_ptr == lst.end()) break;
@@ -369,7 +369,7 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 		{
 			if (HBlockMatchNoum vn = asHBlockMatchNoum(mvec[i]))
 			{
-				if (isSameString(a[i], vn->inner->named ) ==false ) return CResultMatch(false);
+				if (isSameString(a[i], vn->inner->named()) ==false ) return CResultMatch(false);
 			}
 		}
 
@@ -394,7 +394,7 @@ CResultMatch  CBlockInterpreter::MatchListCombinaria(HBlockMatchList Ms, HBlockN
 		return acc_result;
 	};
 
-	return apply_string_combinatoria(n->named, Ms->matchList.size(), f_combinatoria);
+	return apply_string_combinatoria(n->named(), Ms->matchList.size(), f_combinatoria);
 
 
 	return CResultMatch(false);
@@ -409,7 +409,7 @@ bool CBlockInterpreter::is_kind_match(HBlockMatch M )
 	}
 	if (auto   mn = asHBlockMatchNoum(M))
 	{
-		const auto knamed = this->resolve_kind(mn->inner->named);
+		const auto knamed = this->resolve_kind(mn->inner->named());
 		if (knamed != nullptr) return true;
 	}
 	return false;
@@ -479,7 +479,7 @@ CResultMatch CBlockInterpreter::adjetive_match( std::list<HBlockMatch>  mlist , 
 
 HBlockMatchNoum concatenate_MatchNoum(HBlockMatchNoum a, HBlockMatchNoum b)
 {
-  return 	make_shared<CBlockMatchNoum>(make_shared<CBlockNoumStr>(a->inner->named + " "+b->inner->named));
+  return 	make_shared<CBlockMatchNoum>(make_shared<CBlockNoumStr>(a->inner->named() + " "+b->inner->named()));
 }
 
 
@@ -557,20 +557,20 @@ CResultMatch  CBlockInterpreter::Match_list_adjetivos(HBlockMatchList mList, HBl
 			for (auto m : mList->matchList)
 			{
 				HBlockMatchNoum cnoum = asHBlockMatchNoum(m);
-				if (is_article(cnoum->inner->named)) continue;
+				if (is_article(cnoum->inner->named())) continue;
 				if (nnoum.empty())
 				{
-					nnoum = cnoum->inner->named;
+					nnoum = cnoum->inner->named();
 				}
 				else
 				{
-					nnoum = nnoum + " " + cnoum->inner->named;
+					nnoum = nnoum + " " + cnoum->inner->named();
 				}
 			}
 
 			if (HBlockNoum   noumCompound = asHBlockNoum(value))
 			{
-				if (isSameString(nnoum, noumCompound->named))
+				if (isSameString(nnoum, noumCompound->named()))
 				{
 					return CResultMatch(true);
 				}
@@ -638,7 +638,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 			{
 				//Substitua essa igualdade Statica por uma Dynamica
 				 
-				if (isSameString( inner->named , cinner->named))
+				if (isSameString( inner->named(), cinner->named()))
 				{
 				  return 	CResultMatch(true );
 				}
@@ -657,16 +657,16 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 		{
 			if (auto vNoumm =  asHBlockNoum(value))
 			{
-				if (isSameString(vNoumm->named , inner_2->named))
+				if (isSameString(vNoumm->named(), inner_2->named()))
 				{
 					return CResultMatch( true );
 				}
 			}
 
-			if (inner_2->named.size() == 1  )
-				if (isupper(inner_2->named[0]))
+			if (inner_2->named().size() == 1  )
+				if (isupper(inner_2->named()[0]))
 				{
-					return CResultMatch(inner_2->named, value);
+					return CResultMatch(inner_2->named(), value);
 				}
 
 			if (auto cnInstance = asHBlockInstanceNamed(value))
@@ -678,7 +678,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 				}
 				return CResultMatch(false);
 
-				if (cnInstance->named == inner_2->named) return CResultMatch(true);
+				if (cnInstance->named == inner_2->named()) return CResultMatch(true);
 				//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
 				//	return CResultMatch(r.result == QEquals); 
 			}
@@ -705,7 +705,7 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 
 			if (auto cAction = asHBlockActionNamed (value))
 			{ 
-				if (cAction->named == inner_2->named) return CResultMatch( true );				 
+				if (cAction->named == inner_2->named()) return CResultMatch( true );
 			//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
 			//	return CResultMatch(r.result == QEquals); 
 			}

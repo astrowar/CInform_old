@@ -219,14 +219,14 @@ CBlocking::HBlock CBlockInterpreter::get_property_by_relation(HBlockNoum  propNa
 
 	for (auto &rr : relInstances)
 	{		
-		if (rr->relation->input_A->named == propNamed->named)
+		if (rr->relation->input_A->named == propNamed->named())
 		{
 			if (query_is(obj, rr->value2, localsEntry, stk).result == QEquals)
 			{
 				return rr->value1;
 			}
 		}
-		else if (rr->relation->input_B->named == propNamed->named)
+		else if (rr->relation->input_B->named == propNamed->named())
 		{
 			if (query_is(obj, rr->value1, localsEntry, stk).result == QEquals)
 			{
@@ -421,11 +421,10 @@ CBlocking::HBlock CBlockInterpreter::lookup_verb(HBlockVerbLookup vLookup, HRunL
 		{
 			//tem uma relacao com esse verbo
 
-			auto relation_name = rv.second->relationNoum->named;
+			const string relation_name = rv.second->relationNoum->named();
 			{
-
-
-				auto rel_find = this->staticRelation.find(relation_name);
+				const map<basic_string<char>, shared_ptr<CBlockRelationBase>>::iterator rel_find = this->staticRelation.
+				                                                                                   find(relation_name);
 				if (rel_find != this->staticRelation.end())
 				{
 					HBlockRelationBase rel = rel_find->second;
@@ -594,7 +593,7 @@ bool CBlockInterpreter::setVerbRelation(string vb, CBlocking::HBlock c_block, CB
                     {
                         //tem uma relacao com esse verbo
 
-                        auto relation_name = rv.second->relationNoum->named;
+                        auto relation_name = rv.second->relationNoum->named();
                         if (relation_name != "dynamic")
                         {
                             auto rel_find = this->staticRelation.find(relation_name);
@@ -726,13 +725,13 @@ QueryResultContext CBlockInterpreter::query_relation_property(HBlockNoum propert
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
 	{
-		if (rr->relation->input_B->named == property_noum->named ) //Ok, this is 
+		if (rr->relation->input_B->named == property_noum->named()) //Ok, this is 
 		{
 			QueryResultContext query_inst = query_relation_instance(rr, c_block, value, localsEntry, stk);
 			if (query_inst.result == QEquals) return query_inst;
 		}
 
-		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
+		if (rr->relation->input_A->named == property_noum->named()) //Ok, this is 
 		{
 			CBlocking::HBlock arg1 = c_block;
 			CBlocking::HBlock arg2 = value;
@@ -788,7 +787,7 @@ QueryResultContext CBlockInterpreter::query_user_verbs(string vb, CBlocking::HBl
 	{
 		if (isSameString(rv.first , vb))
 		{
-			auto relation_name = rv.second->relationNoum->named;
+			auto relation_name = rv.second->relationNoum->named();
 			if (relation_name != "dynamic")
 			{
 				auto rel_find = this->staticRelation.find(relation_name);

@@ -74,9 +74,9 @@ void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_i
 					{
 						if (HVariableSlotEnum   venum = DynamicCasting::asHVariableSlotEnum(va))
 						{
-							if (venum->valueDefinition->contains(noumSet->named))
+							if (venum->valueDefinition->contains(noumSet->named()))
 							{
-								if (venum->value->named == "DEFAULT")
+								if (venum->value->named() == "DEFAULT")
 								{
 									venum->value = noumSet;
 								}
@@ -96,11 +96,11 @@ void CBlockInterpreter::add_defaultValueVariableToAllinstances(HBlockAssertion_i
 				{
 					if (HBlockNoum   dp_propname = asHBlockNoum(dproperty->prop))
 					{
-						auto kproperty = c->get_property(dp_propname->named);
+						auto kproperty = c->get_property(dp_propname->named());
 						if (kproperty != nullptr) 
 							if (kproperty->value == nullptr)
 							{
-								c->set_property(dp_propname->named, kvar->get_definition());
+								c->set_property(dp_propname->named(), kvar->get_definition());
 							}
 					}
 				}
@@ -117,7 +117,7 @@ void CBlockInterpreter::add_namedVariableToAllinstances(HBlockKind_InstanceVaria
 		if (is_derivadeOf(c, kvar->kind, nullptr))
 		{
 			HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
-			HBlockKind nkindBase = resolve_kind(v->kind_name->named);
+			HBlockKind nkindBase = resolve_kind(v->kind_name->named());
 			c->newNamedVariable(v->property_name, nkindBase);
 		}		 
 	}
@@ -171,7 +171,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 			if (kvar->kind.get() == k.get())
 			{
 				HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
-				HBlockKind nkindBase = resolve_kind(v->kind_name->named);
+				HBlockKind nkindBase = resolve_kind(v->kind_name->named());
 				c->newNamedVariable(v->property_name, nkindBase);
 			}
 			 
@@ -201,7 +201,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 					{
 						if (HBlockNoum   dp_propname = asHBlockNoum(dproperty->prop ))
 						{
-							c->set_property(dp_propname->named, kvar->get_definition());
+							c->set_property(dp_propname->named(), kvar->get_definition());
 						}
 					}
 				}

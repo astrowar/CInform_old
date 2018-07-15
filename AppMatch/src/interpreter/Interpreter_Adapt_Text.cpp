@@ -76,7 +76,7 @@ HBlockNoum CBlockInterpreter:: get_verbal_regarding(string verb, HRunLocalScope 
 	auto r = localsEntry->resolve("viewPoint");
 	if (auto nr = asHBlockNoum(r))
 	{
-		string viewPoint = nr->named;
+		string viewPoint = nr->named();
 		string conjugadet = "None";
 		 
 		 
@@ -164,7 +164,7 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 		for(auto ni : n->lista)
 		{
 			HBlockNoumSupl nni = textual_representation(ni, person, number, gender, localsNext, stk);			
-			slist.push_back(nni->named);
+			slist.push_back(nni->named());
 			slist.push_back(", ");
 		}
 		//remove last comma
@@ -187,10 +187,10 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
     if (auto n = asHBlockNoum(y))
 		{
 		 
-		auto vreg = get_verbal_regarding(n->named, localsNext, stk);
-		if (vreg != nullptr) return std::make_shared<CBlockNoumSupl>(vreg->named, number, gender);
+		auto vreg = get_verbal_regarding(n->named(), localsNext, stk);
+		if (vreg != nullptr) return std::make_shared<CBlockNoumSupl>(vreg->named(), number, gender);
 
-		return resolve_number_gender(n->named , localsNext, stk);
+		return resolve_number_gender(n->named(), localsNext, stk);
 			 
 		} 
  
@@ -200,8 +200,8 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 	{
 		if (auto n = asHBlockNoum(x))
 		{
-			auto vreg = get_verbal_regarding(n->named, localsNext, stk);
-			if (vreg != nullptr) return std::make_shared<CBlockNoumSupl>(vreg->named, number, gender);
+			auto vreg = get_verbal_regarding(n->named(), localsNext, stk);
+			if (vreg != nullptr) return std::make_shared<CBlockNoumSupl>(vreg->named(), number, gender);
 
 			//return resolve_number_gender(n->named, localsNext, stk);
 		}
@@ -246,7 +246,7 @@ HBlockText CBlockInterpreter::adapt_text(HBlockTextSentence texts, HRunLocalScop
 
 			//nx->dump("+ ");
 			if (starting == false) s = s + " ";
-			s = s +  nx->named;
+			s = s +  nx->named();
 			if (nx->gender != "") gender = nx->gender;
 			if (nx->number != "") number = nx->number;
 

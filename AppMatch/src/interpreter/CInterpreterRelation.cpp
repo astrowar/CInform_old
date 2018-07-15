@@ -40,12 +40,12 @@ bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock 
 {
 	for(auto rr : this->staticRelation)
 	{
-	  if( rr.second->input_B->named == property_noum->named)
+	  if( rr.second->input_B->named == property_noum->named())
 	  {
 		  this->set_relation(rr.second, obj, value, localsEntry,stk );
 		  return true;
 	  }
-	  else if (rr.second->input_A->named == property_noum->named)
+	  else if (rr.second->input_A->named == property_noum->named())
 	  {
 		  this->set_relation(rr.second, value, obj, localsEntry, stk); //inverte o noums
 		  return true;
@@ -122,7 +122,7 @@ bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBl
 			auto value_2 = resolve_noum(noum_2, localsEntry , std::list<std::string>() );
 			if (value_2 == nullptr)
 			{
-				logMessage("unable to resolve :" + noum_2->named);
+				logMessage("unable to resolve :" + noum_2->named());
 			}
 			relInstances.push_back(std::make_shared<CBlockRelationInstance>(relation, n1, value_2));
 			 

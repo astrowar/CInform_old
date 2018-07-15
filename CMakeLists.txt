@@ -23,6 +23,7 @@ set(SOURCE_FILES_PARSER
         AppMatch/src/parser/Parser_ActionControl.cpp
         AppMatch/src/parser/Parser_ControlFlux.cpp
         AppMatch/src/parser/Parser_Decide.cpp
+        AppMatch/src/parser/ParseRules.cpp
         AppMatch/src/parser/Parser_expression_match.cpp
         AppMatch/src/parser_Eng/Parser_Plurals_En.cpp
         AppMatch/src/parser/Parser_RegisterVerb.cpp

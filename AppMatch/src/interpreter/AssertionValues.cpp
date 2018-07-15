@@ -239,9 +239,9 @@ bool CBlockInterpreter::assert_it_action(CBlocking::HBlock obj, CBlocking::HBloc
 				auto ainstance = make_shared<CBlockActionInstance>(instancia_id,make_shared<CBlockKindAction>(app ));
 				instancia_id++;
 
-				this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named, make_shared<CBlockKindAction>(app)));
+				this->actions_definitions.push_back(make_shared<CBlockActionNamed >(nbase->named(), make_shared<CBlockKindAction>(app)));
 
-				addSymbol(nbase->named, ainstance);
+				addSymbol(nbase->named(), ainstance);
 				return true;
 			}
 
@@ -260,7 +260,7 @@ void CBlockInterpreter::assert_batch_kinds(std::list<CBlocking::HBlock> &nList, 
 	for (auto nObj : nList)
 	{
 		if (HBlockNoum nbasei = asHBlockNoum(nObj)) {
-			auto b_up = create_derivadeKind(nbasei->named, k->baseClasseName);
+			auto b_up = create_derivadeKind(nbasei->named(), k->baseClasseName);
 			HBlockKind b = b_up.first;
 			if (b_up.second != nullptr)
 			{
@@ -282,7 +282,7 @@ bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock 
 	{
 		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-			auto b_up = create_derivadeKind(nbase->named, k->baseClasseName);
+			auto b_up = create_derivadeKind(nbase->named(), k->baseClasseName);
 			HBlockKind b = b_up.first;
 
 			if (b_up.second != nullptr) {
@@ -301,8 +301,8 @@ bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock 
 				assertions.push_back(newDefi);
 			}
 
-			symbols.emplace_back(nbase->named, b);
-			logMessage("new Kind add " + nbase->named);
+			symbols.emplace_back(nbase->named(), b);
+			logMessage("new Kind add " + nbase->named());
 			return true;
 		}
 
@@ -385,7 +385,7 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
 		}
         else
         {
-            logError("Kind not found " + nbaseKind->named);
+            logError("Kind not found " + nbaseKind->named());
             return false;
         }
     }
@@ -399,16 +399,16 @@ bool CBlockInterpreter::assert_it_instance(CBlocking::HBlock obj, CBlocking::HBl
             {
                 //HBlockInstance binstance = make_shared<CBlockInstance>(nobj->named);
 
-                HBlockInstance binstance = new_Instance(nobj->named, k);
+                HBlockInstance binstance = new_Instance(nobj->named(), k);
 
                 HBlockAssertion_isDirectAssign newDefi = make_shared<CBlockAssertion_isDirectAssign>(obj, binstance);
                 HBlockAssertion_isInstanceOf newInst = make_shared<CBlockAssertion_isInstanceOf>(binstance, k);
                 assertions.push_back(newDefi);
                 assertions.push_back(newInst);
                 instancias.push_back(binstance);
-                logMessage("new Instance add " + (nobj->named)    );
+                logMessage("new Instance add " + (nobj->named())    );
 
-				addSymbol(nobj->named, binstance);
+				addSymbol(nobj->named(), binstance);
 
                 return true;
             }
@@ -436,7 +436,7 @@ bool CBlockInterpreter::assert_it_valuesDefinitions_list(CBlocking::HBlock c_blo
 			}
 
 			//nn is plural of anything ?
-			HBlockNoum singular_form = get_singular_of(nn->named);
+			HBlockNoum singular_form = get_singular_of(nn->named());
 			if (singular_form != nullptr)
 			{
 				return assert_it_valuesDefinitions_list(singular_form, values, localsEntry);

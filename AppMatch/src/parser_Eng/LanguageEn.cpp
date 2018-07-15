@@ -10,17 +10,17 @@ using namespace CBlocking;
 bool LanguageEn::is_nothing(HBlockNoum noum)
 {
 
-    if (noum->named == "nothing") return true;
-    if (noum->named == "none") return true;
-    if (noum->named == "nil") return true;
+    if (noum->named() == "nothing") return true;
+    if (noum->named() == "none") return true;
+    if (noum->named() == "nil") return true;
     return false;
 }
 
 HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum) {
-    if (isSameString(noum->named , "true")) return std::make_shared<CBlockBooleanValue>(true);
-    if (isSameString(noum->named , "false")) return std::make_shared<CBlockBooleanValue>(false);
-    if (isSameString(noum->named, "yes")) return std::make_shared<CBlockBooleanValue>(true);
-    if (isSameString(noum->named , "no")) return std::make_shared<CBlockBooleanValue>(false);
+    if (isSameString(noum->named(), "true")) return std::make_shared<CBlockBooleanValue>(true);
+    if (isSameString(noum->named(), "false")) return std::make_shared<CBlockBooleanValue>(false);
+    if (isSameString(noum->named(), "yes")) return std::make_shared<CBlockBooleanValue>(true);
+    if (isSameString(noum->named(), "no")) return std::make_shared<CBlockBooleanValue>(false);
     return nullptr;
 }
 

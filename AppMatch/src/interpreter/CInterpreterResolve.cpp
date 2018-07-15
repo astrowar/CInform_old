@@ -27,7 +27,7 @@ HBlockNoum  CBlockInterpreter::get_plural_of( string s )
 {
 	for(auto v : plural_assertations)
 	{		
-		if (isSameString(v.first->named, s))
+		if (isSameString(v.first->named(), s))
 		{
 			return v.second ;
 		}
@@ -43,7 +43,7 @@ HBlockNoum  CBlockInterpreter::get_singular_of(string s)
 {
 	for (auto v : plural_assertations)
 	{
-		if (isSameString(v.first->named, s))
+		if (isSameString(v.first->named(), s))
 		{
 			return v.second;
 		}
@@ -151,11 +151,11 @@ string CBlockInterpreter::asBlockNoum(HBlock c_block)
  
 
 	if (HBlockNoum k5 = asHBlockNoum(c_block)) {
-		return k5->named;
+		return k5->named();
 	}
 
 	if (HBlockVerb k6 = asHBlockVerb(c_block)) {
-		return   k6->named ;
+		return   k6->named;
 	}
 
 	for (auto s : symbols)
@@ -319,7 +319,7 @@ std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HB
 
 
 	// recorda o j-1
-	std::vector<std::string> sw = splited_words(noum->named);
+	std::vector<std::string> sw = splited_words(noum->named());
 
 	//printf("%s :", noum->named.c_str());
 	//for (auto w : sw)
@@ -348,7 +348,7 @@ std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HB
 		{
 			if (HBlockKind k = asHBlockKind(s.second))
 			{
-				if (s.first == tail->named)
+				if (s.first == tail->named())
 				{
 					return std::pair<HBlockNoum, HBlockKind >(head, k);
 				}
@@ -375,7 +375,7 @@ HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEn
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
-	return resolve_string_noum(n->named, localsEntry, noumsToResolve);
+	return resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
 
 HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
@@ -385,7 +385,7 @@ HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEn
 
    if( language->is_nothing(n)) return Nothing;
 
-	return has_resolve_string_noum(n->named, localsEntry, noumsToResolve);
+	return has_resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
 
 bool  is_number(const std::string  s)
@@ -563,7 +563,7 @@ HBlock CBlockInterpreter::resolve_noum_as_variable(HBlockNoum n)
 	for (auto &defs : global_variables) {
 		if (HBlockVariableNamed nnvar = asHBlockVariableNamed(defs)) {
 			//std::cout << nn->named << std::endl;
-			if (isSameString(nnvar->name->named, n->named))
+			if (isSameString(nnvar->name->named(), n->named()))
 			{
 				return nnvar;
 			}
@@ -586,7 +586,7 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	for (auto &defs : assertions) {
 		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
 			//std::cout << nn->named << std::endl;
-			if (nn->named == n) {
+			if (nn->named() == n) {
 				return defs->get_definition();
 			}
 		}
@@ -599,7 +599,7 @@ std::list<string>  CBlockInterpreter::getAllRegistedEnums()
 {
 	std::list<string> ret;
 
-	for (auto n : registred_adjetives) ret.push_back(n->named);
+	for (auto n : registred_adjetives) ret.push_back(n->named());
  
 	return ret;
 }

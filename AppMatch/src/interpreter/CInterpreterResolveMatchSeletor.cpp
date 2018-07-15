@@ -47,7 +47,7 @@ std::vector<string> isHBlockMatchNoumList(const std::vector<HBlockMatch>  &mlist
 	{
 		if (HBlockMatchNoum  nn = DynamicCasting::asHBlockMatchNoum(*it))
 		{
-			ret.push_back(nn->inner->named);
+			ret.push_back(nn->inner->named());
 		}
 		else
 		{
@@ -198,7 +198,7 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_item(HBlockMatch sele
 {
 	if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(seletor))
 	{
-		auto lnoum = localsEntry->resolve(mNoum->inner->named);
+		auto lnoum = localsEntry->resolve(mNoum->inner->named());
 		if (lnoum != nullptr)
 		{
 			return make_shared<CBlockMatchBlock>(lnoum);
@@ -206,7 +206,7 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_item(HBlockMatch sele
 
 		for (auto &ss : allKindsNames)
 		{
-			if (isSameString(ss, mNoum->inner->named))
+			if (isSameString(ss, mNoum->inner->named()))
 			{
 				return make_shared<CBlockMatchKind>(make_shared<CBlockKindEntity>(ss));
 			}
@@ -318,7 +318,7 @@ CBlocking::HBlockMatch CBlockInterpreter::Resolve_Selector_List(HBlockMatchList 
 	{
 		if (HBlockMatchNoum mNoum = DynamicCasting::asHBlockMatchNoum(*pivot))
 		{
-			strList.push_back(mNoum->inner->named);
+			strList.push_back(mNoum->inner->named());
 		}
 		else		
 		{

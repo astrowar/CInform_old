@@ -76,7 +76,7 @@ PhaseResult CBlockInterpreter::execute_verb_set_inn(HBlockIsVerb vverb, HRunLoca
 	{
 		if (rv.first == vverb->verb)
 		{
-			auto relation_name = rv.second->relationNoum->named;
+			auto relation_name = rv.second->relationNoum->named();
 			if (relation_name == "dynamic")
 			{
 				logError(" dynamic relations is READ ONLY ");
@@ -138,7 +138,7 @@ PhaseResult CBlockInterpreter::execute_verb_unset(HBlockIsNotVerb vverb, HRunLoc
 	{
 		if (rv.first == vverb->verb)
 		{
-			auto relation_name = rv.second->relationNoum->named;
+			auto relation_name = rv.second->relationNoum->named();
 			if (relation_name == "dynamic")
 			{
 				logError(" dynamic relations is READ ONLY ");
@@ -228,7 +228,7 @@ PhaseResult CBlockInterpreter::execute_set_direct_valueInstance(HBlockInstance o
 
 				if (HBlockKindValue kindv = asHBlockKindValue(va->kind))
 				{
-					if (kindv->named == va->name->named)
+					if (kindv->named == va->name->named())
 					{
 						if (is_InstanceOf(value, va->kind))
 						{
@@ -360,7 +360,7 @@ HBlock CBlockInterpreter::exec_eval_property_value_imp(HBlock propname, HBlock p
 	{
 		if (HBlockNoum property_noum = asHBlockNoum( (propname)))
 		{
-			HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
+			HBlockVariableNamed pvar = cinst->get_property(property_noum->named());
 			if (pvar != nullptr) 
 			{ 
 				if (pvar->value != nullptr)
@@ -494,14 +494,14 @@ HBlock CBlockInterpreter :: eval_boolean_AND(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(false);
-		if (ndecideValue->named == "nothing") return Nothing;
+		if (ndecideValue->named() == "false") return std::make_shared<CBlockBooleanValue>(false);
+		if (ndecideValue->named() == "nothing") return Nothing;
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(false);
-		if (ndecideValue->named == "nothing") return Nothing;
+		if (ndecideValue->named() == "false") return std::make_shared<CBlockBooleanValue>(false);
+		if (ndecideValue->named() == "nothing") return Nothing;
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
@@ -521,12 +521,12 @@ HBlock CBlockInterpreter :: eval_boolean_OR(HBlock c1, HBlock c2)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(true);
+		if (ndecideValue->named() == "true") return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	if (HBlockNoum ndecideValue = asHBlockNoum(c2))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(true);
+		if (ndecideValue->named() == "true") return std::make_shared<CBlockBooleanValue>(true);
 	}
 
 	if (HBlockBooleanValue  ndecideValue = asHBlockBooleanValue(c1))
@@ -546,9 +546,9 @@ HBlock CBlockInterpreter::eval_boolean_NOT(HBlock c1)
 {
 	if (HBlockNoum ndecideValue = asHBlockNoum(c1))
 	{
-		if (ndecideValue->named == "true") return std::make_shared<CBlockBooleanValue>(false);
-		if (ndecideValue->named == "false") return std::make_shared<CBlockBooleanValue>(true);
-		if (ndecideValue->named == "nothing") return Nothing;
+		if (ndecideValue->named() == "true") return std::make_shared<CBlockBooleanValue>(false);
+		if (ndecideValue->named() == "false") return std::make_shared<CBlockBooleanValue>(true);
+		if (ndecideValue->named() == "nothing") return Nothing;
 	}
 
  
@@ -601,14 +601,14 @@ bool CBlockInterpreter::existe_relation_property(HBlockNoum property_noum, HBloc
 	for (auto r : staticRelation)
 	{
 		auto rbase = r.second;
-		if (rbase->input_A->named == property_noum->named)
+		if (rbase->input_A->named == property_noum->named())
 		{
 			if (is_InstanceOf(obj, rbase->input_B->kind ) )
 			{
 				return true;
 			}
 		}
-		if (rbase->input_B->named == property_noum->named)
+		if (rbase->input_B->named == property_noum->named())
 		{
 			if (is_InstanceOf(obj, rbase->input_A->kind ))
 			{
@@ -627,7 +627,7 @@ HBlock CBlockInterpreter::eval_relation_property(HBlockNoum property_noum, HBloc
 	// procupara pela relacao que tem um called que eh compativel com o property_noum
 	for (auto &rr : relInstances)
 	{
-		if (rr->relation->input_B->named == property_noum->named) //Ok, this is 
+		if (rr->relation->input_B->named == property_noum->named()) //Ok, this is 
 		{
 			auto res = query_is(obj, rr->value1, localsEntry, stk);
 			if (res.result == QEquals)
@@ -637,7 +637,7 @@ HBlock CBlockInterpreter::eval_relation_property(HBlockNoum property_noum, HBloc
 			}
 		}
 
-		if (rr->relation->input_A->named == property_noum->named) //Ok, this is 
+		if (rr->relation->input_A->named == property_noum->named()) //Ok, this is 
 		{
 			auto res = query_is(obj, rr->value2, localsEntry, stk);
 			
@@ -659,7 +659,7 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 			//check for plural
 			if (HBlockNoum propNoum = asHBlockNoum(kprop->prop))
 			{
-				if (isSameString(propNoum->named, "plural"))
+				if (isSameString(propNoum->named(), "plural"))
 				{
 					string c = asBlockNoum(kprop->obj);
 					if (!(c.empty()))
@@ -679,7 +679,7 @@ HBlock CBlockInterpreter::eval_property(HBlockProperty kprop, HRunLocalScope loc
 
 				//objInst->dump("P  ");
 
-				HBlockVariableNamed pvar = objInst->get_property(propNoum->named);
+				HBlockVariableNamed pvar = objInst->get_property(propNoum->named());
 
 				//pvar->dump("P  ");
 
@@ -762,7 +762,7 @@ HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalS
 			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
 			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
 			{
-				if (ph->header->pred1->named != phr->header->pred1->named) continue;
+				if (ph->header->pred1->named() != phr->header->pred1->named()) continue;
 			}
 
 
@@ -770,7 +770,7 @@ HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalS
 			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
 			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
 			{
-				if (ph->header->pred2->named != phr->header->pred2->named) continue;
+				if (ph->header->pred2->named() != phr->header->pred2->named()) continue;
 			}
 
  
@@ -1190,7 +1190,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		{
 			actual_value = Nothing;
 		}
-		std::pair<string, CBlocking::HBlock> local_entry = { local_var->variableName->named , actual_value };
+		std::pair<string, CBlocking::HBlock> local_entry = { local_var->variableName->named() , actual_value };
 		localsEntry->locals.push_back(local_entry);
 		return nullptr;
 	}
@@ -1214,7 +1214,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			 if (HBlockNoum pNoum = asHBlockNoum(kprop->prop))
 			 if (localsEntry != nullptr)
 			 {
-				 auto next_prop = localsEntry->resolve(pNoum->named);
+				 auto next_prop = localsEntry->resolve(pNoum->named());
 				 if (next_prop != nullptr)
 				 {
 					 b->prop = next_prop;
@@ -1258,7 +1258,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	if (auto nn = asHBlockNoum(c_block))
 	{
 		HBlock  lnoum = nullptr;
-		if (localsEntry != nullptr )  lnoum = localsEntry->resolve(nn->named);
+		if (localsEntry != nullptr )  lnoum = localsEntry->resolve(nn->named());
 		auto xs = resolve_noum(nn, localsEntry);
 		if (xs == nullptr)
 		{
@@ -1685,7 +1685,7 @@ HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader
 	if (pheader->pred1 != nullptr && phr->header->pred1 == nullptr) return nullptr;
 	if (pheader->pred1 != nullptr && phr->header->pred1 != nullptr)
 	{
-		if (pheader->pred1->named != phr->header->pred1->named) return nullptr;
+		if (pheader->pred1->named() != phr->header->pred1->named()) return nullptr;
 	}
 
 
@@ -1693,7 +1693,7 @@ HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader
 	if (pheader->pred2 != nullptr && phr->header->pred2 == nullptr) return nullptr;
 	if (pheader->pred2 != nullptr && phr->header->pred2 != nullptr)
 	{
-		if (pheader->pred2->named != phr->header->pred2->named) return nullptr;
+		if (pheader->pred2->named() != phr->header->pred2->named()) return nullptr;
 	}
 
 	{

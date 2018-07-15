@@ -36,7 +36,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 
 	if (HBlockNoum  kindname = asHBlockNoum(baseKind))
 	{
-		HBlockKind kindr = resolve_kind(kindname->named);
+		HBlockKind kindr = resolve_kind(kindname->named());
 		if (kindr != nullptr) 
 		{
 			return assert_it_variableGlobal(obj, kindr, defaultValue);
@@ -77,10 +77,10 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 		if (HBlockNoum nameVar = asHBlockNoum(obj)) {
 			HBlockVariableNamed newVar = make_shared<CBlockVariableNamed>(nameVar, kind, defaultValue);
 
-			logMessage("Add VAR " + newVar->name->named);
+			logMessage("Add VAR " + newVar->name->named());
 		 
 			global_variables.push_back(newVar);
-			addSymbol(newVar->name->named, newVar);
+			addSymbol(newVar->name->named(), newVar);
 
 			return true;
 		}

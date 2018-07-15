@@ -145,7 +145,7 @@ QueryResultContext CBlockInterpreter::query_is_instance_valueSet_valueInstance(H
 	{
 		if (HBlockKindValue kindv = DynamicCasting::asHBlockKindValue(va->kind))
 		{
-			if (kindv->named == va->name->named)
+			if (kindv->named == va->name->named())
 			{
 				if (is_InstanceOf(valueName, va->kind))
 				{
@@ -220,7 +220,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 		if (next_stack != nullptr)
 		{
 			//eh plural de algo ?
-			if (isSameString(property_noum->named, "plural"))
+			if (isSameString(property_noum->named(), "plural"))
 			{
 				string c = asBlockNoum(propObj);
 				if (c != "")
@@ -239,7 +239,7 @@ CBlockInterpreter::query_is_propertyOf_value_imp(HBlock propname, HBlock propObj
 			if (HBlockInstance cinst = asHBlockInstance(propObj))
 			{
 				{
-					HBlockVariableNamed pvar = cinst->get_property(property_noum->named);
+					HBlockVariableNamed pvar = cinst->get_property(property_noum->named());
 					if (pvar != nullptr)
 					{
 						auto next_var = pvar->value;
@@ -521,7 +521,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 		{			
 			return query_is(c_block, resolved, localsEntry, stk);
 		}
-		if (nnoum->named == "kind")
+		if (nnoum->named() == "kind")
 		{
 			if ( asHBlockKind(c_block) != nullptr) return QEquals;
 		} 
@@ -535,7 +535,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			return query_is(resolved, c_block1, localsEntry, stk);
         }
 		
-		if (nnoum2->named == "kind")
+		if (nnoum2->named() == "kind")
 		{
 			if (asHBlockKind(c_block1) != nullptr) return QEquals;
 		}
@@ -612,7 +612,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (HBlockNoum nnoum2 = asHBlockNoum(c_block1))
 		{			 
-			if ((cann->named == nnoum2->named))
+			if ((cann->named== nnoum2->named()))
 			{
 				return QEquals;
 			}
@@ -622,7 +622,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	{
 		if (HBlockNoum nnoum2 = asHBlockNoum(c_block))
 		{
-			if ((cann->named == nnoum2->named)) return QEquals;
+			if ((cann->named == nnoum2->named())) return QEquals;
 		}
 	}
 
