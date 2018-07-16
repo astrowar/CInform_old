@@ -1645,6 +1645,33 @@ AppMatch/src/parser/ParseRelationWhen.cpp.s:
 	$(MAKE) -f CMakeFiles\ParseLibrary.dir\build.make CMakeFiles/ParseLibrary.dir/AppMatch/src/parser/ParseRelationWhen.cpp.s
 .PHONY : AppMatch/src/parser/ParseRelationWhen.cpp.s
 
+AppMatch/src/parser/ParseRules.obj: AppMatch/src/parser/ParseRules.cpp.obj
+
+.PHONY : AppMatch/src/parser/ParseRules.obj
+
+# target to build an object file
+AppMatch/src/parser/ParseRules.cpp.obj:
+	$(MAKE) -f CMakeFiles\ParseLibrary.dir\build.make CMakeFiles/ParseLibrary.dir/AppMatch/src/parser/ParseRules.cpp.obj
+.PHONY : AppMatch/src/parser/ParseRules.cpp.obj
+
+AppMatch/src/parser/ParseRules.i: AppMatch/src/parser/ParseRules.cpp.i
+
+.PHONY : AppMatch/src/parser/ParseRules.i
+
+# target to preprocess a source file
+AppMatch/src/parser/ParseRules.cpp.i:
+	$(MAKE) -f CMakeFiles\ParseLibrary.dir\build.make CMakeFiles/ParseLibrary.dir/AppMatch/src/parser/ParseRules.cpp.i
+.PHONY : AppMatch/src/parser/ParseRules.cpp.i
+
+AppMatch/src/parser/ParseRules.s: AppMatch/src/parser/ParseRules.cpp.s
+
+.PHONY : AppMatch/src/parser/ParseRules.s
+
+# target to generate assembly for a file
+AppMatch/src/parser/ParseRules.cpp.s:
+	$(MAKE) -f CMakeFiles\ParseLibrary.dir\build.make CMakeFiles/ParseLibrary.dir/AppMatch/src/parser/ParseRules.cpp.s
+.PHONY : AppMatch/src/parser/ParseRules.cpp.s
+
 AppMatch/src/parser/ParseVerbs.obj: AppMatch/src/parser/ParseVerbs.cpp.obj
 
 .PHONY : AppMatch/src/parser/ParseVerbs.obj
@@ -2394,6 +2421,9 @@ help:
 	@echo ... AppMatch/src/parser/ParseRelationWhen.obj
 	@echo ... AppMatch/src/parser/ParseRelationWhen.i
 	@echo ... AppMatch/src/parser/ParseRelationWhen.s
+	@echo ... AppMatch/src/parser/ParseRules.obj
+	@echo ... AppMatch/src/parser/ParseRules.i
+	@echo ... AppMatch/src/parser/ParseRules.s
 	@echo ... AppMatch/src/parser/ParseVerbs.obj
 	@echo ... AppMatch/src/parser/ParseVerbs.i
 	@echo ... AppMatch/src/parser/ParseVerbs.s

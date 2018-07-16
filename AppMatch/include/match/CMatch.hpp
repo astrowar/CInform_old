@@ -93,7 +93,6 @@ namespace NSTerm
 		class CPredAny : public CPred {
 		public:
 			bool isSame(HTerm b) override;
-
 			std::string repr() override;
 			virtual TermType type() override { return TermType::PredAny; }
 
@@ -103,6 +102,21 @@ namespace NSTerm
 			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
 			virtual EqualResulting::EqualsResul match(HTerm h) override;
 		};
+
+		class CPredOptional : public CPred {
+		public:
+			HPred inner;
+			bool isSame(HTerm b) override;
+			std::string repr() override;
+			virtual TermType type() override { return TermType::PredOptional; }
+			CPredOptional(HPred term);
+			virtual EqualResulting::EqualsResul match(MTermSet &_h) override;
+			virtual EqualResulting::EqualsResul match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend) override;
+			virtual EqualResulting::EqualsResul match(HTerm h) override;
+		};
+
+
+
 
 		class CPredWord : public CPred {
 		public:
@@ -177,6 +191,9 @@ namespace NSTerm
 
 		HPred pList(std::string _named, std::initializer_list<HPred> plist);
 		HPred pList(std::initializer_list<HPred> plist);
+				 
+		HPred pOptional(HPred c_pred);
+		 
 
 		HPred pAny(std::string _named);
 
@@ -196,6 +213,7 @@ namespace NSTerm
 		HPred  pPreposition(const std::string &_named);
 
 		CPredAtom* asPredAtom(CTerm* c);
+		CPredOptional* asPredOptional(CTerm* c);
 		CPredList* asPredList(CTerm* c);
 		CPredAny* asPredAny(CTerm* c);
 		CPredWord * asPredWord(CTerm* c);
@@ -205,28 +223,42 @@ namespace NSTerm
 
 
 
+		 
 		//Classe que representa um conjunto de termos da Grmatica
 		class CPredSequence
 		{
 		public:
-			CPredSequence(std::vector<HPred> x) : data(std::move(x)) {}
-			CPredSequence(HPred x) : data({ x }) {}
-			std::vector<HPred> data;
+			bool optional =false;
+			CPredSequence(std::vector<HPred> x) :optional(false) 
+			{ 
+				
+				data_list.push_back(x); 
+			}
+			CPredSequence(HPred x) :optional(false)
+			{
+				
+				data_list.push_back({ x }); 
+			}
+
+
+			std::list<std::vector<HPred> > data_list; //diferentes para nao confundir
 		};
 
 		using HTermSequence = std::shared_ptr<CPredSequence>;
 
 		CPredSequence operator<<(HPred a, HPred b);		 
 		CPredSequence operator<<(CPredSequence a, HPred b);
-		CPredSequence operator<<(CPredSequence a, CPredSequence& b);
+		CPredSequence operator<<(CPredSequence a, CPredSequence b);
+		 
+		CPredSequence operator||(CPredSequence a, CPredSequence b);
 		 
 
+
+
+		
+		CPredSequence   pOptional(CPredSequence p);
 		 
-
-
-
-
-
+		
 
 		namespace NSMatch
 		{
@@ -251,11 +283,15 @@ namespace NSTerm
 			MatchResult CMatch__(std::vector<HTerm>&   lst, const std::vector<HPred> &predicates);
 			//MatchResult CMatch(std::vector<HTerm>& lst, std::vector<HPred> predicates);
 			MatchResult CMatch__(HTerm term, const std::vector<HPred>& predicates);
+			MatchResult CMatch_opt__(HTerm term, const std::vector<HPred>& predicates);
+			MatchResult CMatch_opt__(std::vector<HTerm>& termList, const  std::vector<HPred>& predicates);
+			 
 			MatchResult  CMatch(std::vector<HTerm>&  seq, const CPredSequence   &predicates);
 			MatchResult  CMatch(HTerm  seq, const CPredSequence   &predicates);
 			std::string get_repr(MatchResult r);
 
-
+			 
+			 
 
 
 		}

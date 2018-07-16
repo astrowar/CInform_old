@@ -942,6 +942,8 @@ namespace CBlocking
 		auto   t = c->type();
 		if (t == BlockType::BlockNoumSupl) return std::static_pointer_cast < CBlockNoum > (c);
 		if (t == BlockType::BlockNoumStr) return std::static_pointer_cast < CBlockNoum > (c);
+		if (t == BlockType::BlockNoumStrDet) return std::static_pointer_cast < CBlockNoum > (c);
+		if (t == BlockType::BlockNoumCompose) return std::static_pointer_cast < CBlockNoum > (c);
 		return nullptr;
 	}
 

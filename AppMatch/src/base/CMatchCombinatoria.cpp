@@ -114,7 +114,9 @@ namespace NSTerm {
 
 		bool applyCombinatoriasUnitary_range(MTermSetCombinatoria &partial_in, std::vector<HTerm>::iterator terms_begin, std::vector<HTerm>::iterator terms_end, FuncCombinatoria &func) {
 			MTermSetCombinatoria uniq(partial_in.begin(), partial_in.end());
-			for (auto it = terms_begin; it != terms_end; ++it) {
+			
+			for (auto it = terms_begin; it != terms_end; ++it) 
+			{
 				if (!isListValid(uniq)) return false;
 				uniq.push_back({ MTermSet({ *it }) });
 			}

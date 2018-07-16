@@ -412,13 +412,15 @@ HBlock NSParser::Statement::parser_stmt_top(CParser * p, std::vector<HTerm>& lst
 	HBlock rblock_relatesTo = (ParseRelation::STMT_relates_Assertion(p, lst));
 	if (rblock_relatesTo != nullptr) return rblock_relatesTo;
 
+	HBlock rblock_phrase_1 = (ParseAssertion::STMT_Declare_Phrase(p, lst, inner, err));
+	if (err->hasError) return nullptr;
+	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
+
 	HBlock rblock_decide_1 = (ParseAssertion::STMT_Decide_Assertion(p, lst, inner, err));
 	if (err->hasError) return nullptr;
 	if (rblock_decide_1 != nullptr) return rblock_decide_1;
 
-	HBlock rblock_phrase_1 = (ParseAssertion::STMT_Declare_Phrase(p, lst, inner, err));
-	if (err->hasError) return nullptr;
-	if (rblock_phrase_1 != nullptr) return rblock_phrase_1;
+
 
 
 	HBlock rblock_rule_1 = (ParseAssertion::STMT_Declare_rule(p, lst, inner, err));

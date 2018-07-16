@@ -20,6 +20,7 @@ namespace NSTerm
 		PredAtom,
 		PredList,
 		PredAny,
+		PredOptional,
 		PredBooleanAnd,
 		PredBooleanOr,
 		PredWord
@@ -128,6 +129,7 @@ namespace NSTerm
 	CLiteral* asCLiteral(CTerm* c);
 	CNumber* asCNumber(CTerm* c);
 	CString* asCString(CTerm* c);
+
 
 
  

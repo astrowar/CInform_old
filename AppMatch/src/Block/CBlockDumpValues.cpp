@@ -475,6 +475,18 @@ void CBlockMatchIsVerb::dump(string ident)
 	CBlock::dump(ident);
 }
 
+void CBlockMatchIsVerbComposition::dump(string ident)
+{
+	printf("%s Match verb Comp  \n", ident.c_str()   );
+	{
+		this->verbComp->dump(ident + "       ");
+		this->obj->dump(ident + "       ");
+		this->value->dump(ident + "       ");
+	}
+	CBlock::dump(ident);
+}
+
+
 void CBlockMatchIsNotVerb::dump(string ident)
 {
 	printf("%s Match Not verb: %s\n", ident.c_str(),  verb.c_str());

@@ -1,44 +1,117 @@
-unit init:
-  thing is an kind of entity
-  people is a thing
-  
-  Diagnosing is an action applying to an thing  
-  understand : "diagnose ( a thing )" as diagnosing
-  apple is an thing
-  Fred is an person
-  
-Check diagnosing: 
-      if noum is not person :
-         say "Only people can have diagnoses."          
-         stop the action
+To fail at saying a kind because of ( parseme - S):
+   say "[low-level runtime failure in]Printing according to Kind Names[with explanation]I was asked to say a kind, but was unable to find all of the entries in my kind name bookkeeping; it might be corrupted.  In case it's helpful, one offending parseme was [S converted to a parseme].[terminating the story]".
 
-Carry out diagnosing: 
-      say "You're not a medical expert."
-
-Instead of diagnosing the player: 
-      say "You feel fine!"
-      
+To decide what text is the kind name for (parseme - S) with plural flag (truth state - F):
+    let the result be some text
+    if F is true:
+       let PL be the first text value matching the key S in the plural kind name hash table
+       now the result is PL or ""       
+    otherwise:
+       now the result is ""
+    if the result is empty:
+        fail at saying a kind because of S
+    decide on the result
     
+    
+    
+    people can be blond , red head or  brown
+
+the verb (can see) implies a dynamic relation 
+to decide if (a thing called X) can see (a thing called R)  :
+   decide on true
+   
+   
+The cat behavior is a rulebook producing an object.
+Cat behavior when Austin can see the ball of wool: 
+    rule succeeds with result the ball of wool.  
+    
+thing is an kinf of entity
+
+to decide if (a thing called X) can see (a thing called R)  :
+   decide on true
+   
+to decide if (a thing called X) cannot K :
+   if T can K :  decide on false
+   
+to decide if (a thing called X) is visibe:
+   if player can see X :  decide on true
+
+ 
+
+
+carry out eating  bad (thing called X )   :
+    say (text bad eating)
+
+ 
+
+unit init :
+    thing is an kind of entity
+    texture is a kind of value
+    texture  are rough, stubbly and smooth
+    thing has a texture
+    apple is an thing
+    apple  is rough
   
-unit test :    
-    try Diagnosing apple
-assert : said "Only people can have diagnoses." 
+
+
+unit test :
+   now apple  is smooth
+assert:  apple  is smooth
+
+unit test :
+   now apple  is stubbly 
+assert:  apple  is stubbly 
+assert:  apple  is not  rough
+
+
+unit init :
+   people is a kind of entity 
+   people can be evasive or elusive
+   people can be male or female
+   people can be blond , red head or  brown
+   people is usually male    
+   people is usually evasive    
+   Thomas is elusive people
+   Bob is an people
+   Mary is an red head ,female, elusive people
+   
+unit test :
+   pass
+assert : Thomas is elusive   
+assert : Bob is evasive
+assert : Mary is female
+assert : Mary is red head
+ 
+unit init:
+  direction is a kind of value
+  The direction are north, south , west and east
+  prevailing wind is a direction that varies
+  the prevailing wind is south
+  the prevailing wind is always west
+  the destination is always north
   
-unit test :    
-    try Diagnosing Fred
-assert : said "You're not a medical expert."
-unit test :    
-    try silently Diagnosing Fred
-assert : said nothing
+unit test:
+  pass
+assert: prevailing wind is west
+
+unit test:  
+   now prevailing wind is beta
+assert: prevailing wind is west   
 
 
 unit init:
-     Diagnosing is an action applying to an thing
-     thing is an kind of entity
-     key, apple, box are thing
-unit test :    
-    try silently Diagnosing Fred            
-assert : said "You're not a medical expert."  
+  thing is a kind of entity
+  ice cube is a thing
+  heat is a kind of value
+  The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
+  thing has a heat 
+  The heat of a thing is usually room temperature
+  apple is a thing
+  
+unit test:
+  pass
+assert: heat of ice cube is room temperature 
 
-     
-     
+unit test:
+  now heat of ice cube is frosty  
+assert : heat of ice cube is frosty    

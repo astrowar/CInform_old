@@ -1006,8 +1006,15 @@ std::vector<string>  split_new_lines(const string &str)   {
 				logError(err->msg + " at line " + std::to_string(inner->lines.front().linenumber));
 				return nullptr;
 			}
-			blk->dump("");
-			retBlocks.push_back(blk);
+			if (toplevel == true)
+			{
+				blk->dump("");
+				retBlocks.push_back(blk);
+			}
+			else
+			{
+				retBlocks.push_back(blk);
+			}
 
 		}
 		inner = inner->next;

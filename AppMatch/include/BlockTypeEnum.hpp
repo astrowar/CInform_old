@@ -44,6 +44,7 @@ enum BlockType {
 	BlockMatchDirectIs,
 	BlockMatchIsVerb,
 	BlockMatchIsNotVerb,
+	BlockMatchIsVerbComposition,
 	BlockAssertion_isNotDirectAssign,
 	BlockMatchNoum,
 	BlockMatchText,

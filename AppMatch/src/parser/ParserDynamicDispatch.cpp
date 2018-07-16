@@ -79,7 +79,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2, c4}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1, c3, arg2}));
-            return NSParser::DispatchArguments(  replcList.data, mlist1, mlist2);
+            return NSParser::DispatchArguments(  replcList.data_list.front(), mlist1, mlist2);
 
         }
     }
@@ -100,7 +100,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2, c4}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1,   arg2}));
-            return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
+            return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
 
         }
     }
@@ -131,7 +131,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 			//return  DispatchArguments(replcList, std::make_shared<CBlockMatchList>({ c2 }), std::make_shared<CBlockMatchList>({ c1,c2 }));
 			auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2 }));
 			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1,  arg1 }));
-			return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
+			return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
 		}
 	}
 
@@ -155,7 +155,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
          
             auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2}));
             auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1 }));
-            return NSParser::DispatchArguments(replcList.data, mlist1, mlist2);
+            return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
         }
     }
 

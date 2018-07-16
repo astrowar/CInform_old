@@ -44,6 +44,9 @@ Gretting is a thing based rulebook
 Gretting (a door): say "unable to get a door." instead
 Gretting (a thing called T): say "Just get a thing [T]." instead
 
+Cat behavior when Austin can see the ball of wool: 
+    rule succeeds with result the ball of wool.
+
 
 Reaching inside rules have outcomes allow access (success) and deny access (failure)
 

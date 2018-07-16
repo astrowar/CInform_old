@@ -131,17 +131,115 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 			return std::make_shared<CBlockMatchDirectIs>(AValue, BValue);
 		}
 	}
-    {
-        CPredSequence predList = pLiteral("if") <<pAny("AValue");
 
+	{
+		CPredSequence predList = pLiteral("if") << pAny("AValue") << pWord("C1") << pWord("C2") << pWord("C3") << pWord("C4") << pAny("BValue");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+			if (AValue != nullptr)
+			{
+				HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+				if (BValue != nullptr)
+				{
+					HBlockMatch NC1 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C1"]);
+					HBlockMatch NC2 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C2"]);
+					HBlockMatch NC3 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C3"]);
+					HBlockMatch NC4 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C4"]);
+					if ((NC1 != nullptr) && (NC2 != nullptr) && (NC3 != nullptr) && (NC4 != nullptr))
+					{
+						std::list<HBlockMatch> _matchList = { NC1,NC2,NC3,NC4 };
+						HBlockMatchList mlist = std::make_shared<CBlockMatchList >(_matchList);
+						return std::make_shared<CBlockMatchIsVerbComposition >(mlist, AValue, BValue);
+					}
+				}
+			}
+		}
+	}
+
+
+
+	{
+		CPredSequence predList = pLiteral("if") << pAny("AValue") << pWord("C1")<< pWord("C2")<< pWord("C3") << pAny("BValue");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+			if (AValue != nullptr)
+			{
+				HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+				if (BValue != nullptr)
+				{
+					HBlockMatch NC1 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C1"]);
+					HBlockMatch NC2 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C2"]);
+					HBlockMatch NC3 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C3"]);
+					if ((NC1 != nullptr) && (NC2 != nullptr) && (NC3 != nullptr))
+					{
+						std::list<HBlockMatch> _matchList = {NC1,NC2,NC3};
+						HBlockMatchList mlist =  std::make_shared<CBlockMatchList >(_matchList);
+						return std::make_shared<CBlockMatchIsVerbComposition >(mlist, AValue, BValue);
+					}					
+				}
+			}
+		}
+	}
+
+	{
+		CPredSequence predList = pLiteral("if") << pAny("AValue") << pWord("C1") << pWord("C2")   << pAny("BValue");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+			if (AValue != nullptr)
+			{
+				HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+				if (BValue != nullptr)
+				{
+					HBlockMatch NC1 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C1"]);
+					HBlockMatch NC2 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C2"]);
+					if ((NC1 != nullptr) && (NC2 != nullptr) )
+					{
+						std::list<HBlockMatch> _matchList = { NC1,NC2  };
+						HBlockMatchList mlist = std::make_shared<CBlockMatchList >(_matchList);
+						return std::make_shared<CBlockMatchIsVerbComposition >(mlist, AValue, BValue);
+					}
+				}
+			}
+		}
+	}
+
+
+	{
+		CPredSequence predList = pLiteral("if") << pAny("AValue") << pWord("C1")   << pAny("BValue");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+			if (AValue != nullptr)
+			{
+				HBlockMatch BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+				if (BValue != nullptr)
+				{
+					HBlockMatch NC1 = ExpressionMatch::parse_match_SigleNoum(p, res.matchs["C1"]);	
+					if ((NC1 != nullptr)  )
+					{
+						std::list<HBlockMatch> _matchList = { NC1  };
+						HBlockMatchList mlist = std::make_shared<CBlockMatchList >(_matchList);
+						return std::make_shared<CBlockMatchIsVerbComposition >(mlist, AValue, BValue);
+					}
+				}
+			}
+		}
+	}
+
+
+    {
+        CPredSequence predList = pLiteral("if") << pAny("AValue")  ;
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
-            HBlock AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
+            HBlockMatch AValue = ExpressionMatch::parser_expression_match(p, res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
             auto r =  res.matchs["AValue"].get();
+			
+			//return std::make_shared<CBlockMatchIs>(AValue );
 			logError(r->repr());
-           // return std::make_shared<CBlockMatch>(AValue);
-
 			return nullptr;
         }
     }

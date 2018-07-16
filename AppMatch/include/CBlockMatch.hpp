@@ -294,6 +294,23 @@ namespace CBlocking
 	using HBlockMatchIsVerb = std::shared_ptr<CBlockMatchIsVerb>;
 
 
+	class CBlockMatchIsVerbComposition : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+	{
+	public:
+		virtual void dump(string ident) override;
+		virtual BlockType type() override { return BlockType::BlockMatchIsVerbComposition; }
+		HBlockMatchList verbComp;
+
+
+		CBlockMatchIsVerbComposition(HBlockMatchList _verbComp, HBlockMatch  _obj, HBlockMatch _value) : CBlockMatchIs(_obj, _value), verbComp(_verbComp) {
+			 
+
+		};
+	};
+	using HBlockMatchIsVerbComposition = std::shared_ptr<CBlockMatchIsVerbComposition>;
+
+
+
 	class CBlockMatchIsNotVerb : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
 	{
 	public :
@@ -307,7 +324,7 @@ namespace CBlocking
 
 
 	 
-	class CBlockMatchIsAdverbialComparasion : public CBlockMatchIs // um bloco que serve para dar Match em um Bloco ... ???
+	class CBlockMatchIsAdverbialComparasion : public CBlockMatchIs 
 	{
 	public:
 		virtual void dump(string ident) override;

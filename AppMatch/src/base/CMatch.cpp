@@ -8,14 +8,18 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
+ #include "match/CMatch.hpp"
 #include "match/CMatchCombinatoria.hpp"
 #include "base/EqualsResult.hpp"
 #include "base/CBase.hpp"
+
+
 #include <vector> 
 #include <memory>
 #include <functional>
 #include <iostream>
 
+#include <cassert>
 
 
 #undef CMLOG 
@@ -321,6 +325,41 @@ using namespace EqualResulting;
 			return Equals;
 		}
 
+
+		
+		CPredOptional::CPredOptional(HPred _inner) : inner(_inner), CPred("_") {}
+
+
+		bool CPredOptional::isSame(HTerm b)
+		{
+			if (CPredOptional *h  = asPredOptional(b.get())) {
+				return (inner->isSame(h->inner));
+			}
+			return false;
+		
+		}
+		std::string CPredOptional::repr() 
+		{
+			return "Optional(" + inner->repr()+ ")";
+		};
+
+
+		EqualsResul CPredOptional::match(MTermSet &_h) {
+			return Equals;
+		}
+
+		EqualsResul CPredOptional::match(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend)
+		{
+			return Equals;
+		}
+
+		EqualsResul CPredOptional::match(HTerm h) {
+			return Equals;
+		}
+
+
+
+
 		bool CPredWord::isSame(HTerm b) {
 			if (CPredWord *hlist = asPredWord(b.get())) {
 				return true;
@@ -493,6 +532,11 @@ using namespace EqualResulting;
 		HPred NSTerm::pList( std::initializer_list<HPred> plist) {
 			return std::make_shared<CPredList>( "_", std::move((plist)));
 		};
+
+		HPred NSTerm::pOptional(HPred p){ return std::make_shared<CPredOptional>(p); }		
+
+		
+	 
 
 		HPred NSTerm::pAny(std::string _named) { return std::make_shared<CPredAny>(_named); };
 
@@ -743,7 +787,61 @@ using namespace EqualResulting;
 			return mmResultMatch;
 		}
 
-		MatchResult NSMatch::CMatch__(HTerm term, const  std::vector<HPred>& predicates) {
+		 
+		MatchResult NSMatch::CMatch_opt__(HTerm term, const  std::vector<HPred>& predicates)
+		{
+			//expand os optionais... se tiver			
+			for (auto it = predicates.begin(); it != predicates.end();++it)
+			{
+				if ((*it)->type() == PredOptional)
+				{
+					std::vector<HPred> v1 = std::vector<HPred>(predicates.begin(), it);
+					
+					CPredOptional *c = asPredOptional((*it).get());
+					v1.push_back(c->inner);
+					auto it2 = std::next(it);
+					v1.insert(v1.end(), it2, predicates.end());
+					auto res1 =  CMatch_opt__(term, v1);
+					if (res1.result == EqualResulting::Equals) return res1;
+					std::vector<HPred> v2 = std::vector<HPred>(predicates.begin(), it);
+					v2.insert(v2.end(), it2, predicates.end());					
+					auto res2 = CMatch_opt__(term, v2);
+					if (res2.result == EqualResulting::Equals) return res2;
+				}
+			}			
+			return CMatch__(term, predicates);
+		}
+
+
+		MatchResult NSMatch::CMatch_opt__(std::vector<HTerm>& termList, const  std::vector<HPred>& predicates)
+		{
+			//expand os optionais... se tiver			
+			for (auto it = predicates.begin(); it != predicates.end(); ++it)
+			{
+				if ((*it)->type() == PredOptional)
+				{
+					std::vector<HPred> v1 = std::vector<HPred>(predicates.begin(), it);
+
+					CPredOptional *c = asPredOptional((*it).get());
+					v1.push_back(c->inner);
+					auto it2 = std::next(it);
+					v1.insert(v1.end(), it2, predicates.end());
+					auto res1 = CMatch_opt__(termList, v1);
+					if (res1.result == EqualResulting::Equals) return res1;
+					std::vector<HPred> v2 = std::vector<HPred>(predicates.begin(), it);
+					v2.insert(v2.end(), it2, predicates.end());
+					auto res2 = CMatch_opt__(termList, v2);
+					if (res2.result == EqualResulting::Equals) return res2;
+				}
+			}
+			return CMatch__(termList, predicates);
+		}
+
+
+
+		MatchResult NSMatch::CMatch__(HTerm term, const  std::vector<HPred>& predicates) 
+		{
+			
 			if (predicates.size() == 1) {
 				if (predicates.front()->match(term) == Equals) {
 					return makeMatch(predicates.front()->named, term);
@@ -760,12 +858,36 @@ using namespace EqualResulting;
 		}
 
 		MatchResult  NSMatch::CMatch(HTerm term, const CPredSequence  & predicates)		
-		{
-			return CMatch__(term , predicates.data);
+		{ 
+			assert(predicates.optional == false);
+
+			{
+				for (auto data_next : predicates.data_list)
+				{
+					auto sub_res = CMatch_opt__(term, data_next);
+					if (sub_res.result == EqualResulting::Equals)
+					{
+						return sub_res;
+					}
+				}
+			}
+			return MatchResult();; 
 		}
-		MatchResult  NSMatch::CMatch(std::vector<HTerm>&    term, const CPredSequence   &predicates)
-		{
-			return CMatch__(term, predicates.data);
+
+		MatchResult  NSMatch::CMatch(std::vector<HTerm>&    termList, const CPredSequence   &predicates)
+		{ 
+			assert(predicates.optional == false);
+			{
+				for (auto data_next : predicates.data_list)
+				{
+					auto sub_res = CMatch_opt__(termList, data_next);
+					if (sub_res.result == EqualResulting::Equals)
+					{
+						return sub_res;
+					}
+				}
+			}
+			return MatchResult();;
 		}
 
 
@@ -785,6 +907,14 @@ using namespace EqualResulting;
 			return nullptr;
 		}
 
+	 
+
+	 	CPredOptional* NSTerm::asPredOptional(CTerm* c)
+		{
+			if (c->type() == PredOptional) return static_cast<CPredOptional*>(c);
+			return nullptr;
+		};
+
 		CPredList* NSTerm::asPredList(CTerm* c)
 		{
 			if (c->type() == PredList) return static_cast<CPredList*>(c);
@@ -803,9 +933,15 @@ using namespace EqualResulting;
 			return nullptr;
 		};
 
+		CPredSequence  NSTerm::pOptional(CPredSequence p)
+		{
+			p.optional = true;
+			return p;
+		}
 
 		namespace NSTerm
 		{
+			 
 
 
 			//======================================
@@ -815,14 +951,65 @@ using namespace EqualResulting;
 				return CPredSequence({ a,b });
 			}
 			CPredSequence operator<<(CPredSequence a, HPred b)
+			{	
+				for (auto &lst : a.data_list) lst.push_back(b);
+
+				if (a.optional)
+				{
+					a.data_list.push_back({ b });
+				}
+				a.optional = false;
+				return a;
+			}
+
+			CPredSequence operator<<(CPredSequence a, CPredSequence b)
 			{
-				a.data.push_back(b);
+				std::list<std::vector<HPred>> v_comb;
+				std::list<std::vector<HPred>> a_data_lst = a.data_list;
+				std::list<std::vector<HPred>> b_data_lst = b.data_list;
+					
+				for (auto lst_a : a_data_lst)
+				{
+					for (auto &lst_b : b_data_lst)
+					{
+						std::vector<HPred> i_comb(lst_a);
+						i_comb.insert(i_comb.end(), lst_b.begin(), lst_b.end());
+						v_comb.push_back(i_comb);
+					}					
+				}	
+				if (a.optional)
+				{
+					for (auto &lst_b : b_data_lst)
+					{
+						v_comb.push_back(lst_b);
+					}
+				}
+
+				if (b.optional)
+				{
+					for (auto &lst_a : a_data_lst)
+					{
+						v_comb.push_back(lst_a);
+					}
+				}
+
+
+				a.data_list = v_comb;
+				
+				a.optional = a.optional && b.optional; //se a e b forem optionais entao essa sequencia eh opticional tambem
+
+				return a;
+			}
+			 
+			CPredSequence operator||(CPredSequence a, CPredSequence  b)
+			{
+				for (auto &lst_b : b.data_list)
+				{
+					a.data_list.push_back(lst_b);
+				}
+				a.optional = a.optional || b.optional;
+
 				return std::move(a);
 			}
 
-			CPredSequence operator<<(CPredSequence a, CPredSequence& b)
-			{
-				a.data.insert(a.data.end(), b.data.begin(), b.data.end());
-				return std::move(a);
-			}
 		}

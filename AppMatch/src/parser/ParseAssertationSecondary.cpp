@@ -131,7 +131,7 @@ HBlock NSParser::ParseAssertion::parse_AssertionRulebook(CParser * p, std::vecto
 
 
 	{
-		CPredSequence predList = pAny("ruleBookName") << verb_IS() << pAny("kind") << pLiteral("based") << an_rulebook << pLiteral("producing") << pAny("kind2");
+		CPredSequence predList =  pAny("ruleBookName") << verb_IS() << pAny("kind") << pLiteral("based") <<  pLiteral("rulebook") <<  pLiteral("producing") << pAny("kind2");
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
@@ -157,15 +157,16 @@ HBlock NSParser::ParseAssertion::parse_AssertionRulebook(CParser * p, std::vecto
 	}
 
 
-	{
-		CPredSequence predList = pAny("ruleBookName") << verb_IS() << an_rulebook << pLiteral("producing") << pAny("kind2");
+	{  
+  		 
+		CPredSequence predList = pOptional(mk_HPredLiteral_OR("det", { "The","the" })) <<  pAny("ruleBookName") << pOptional( pLiteral("rules")) << verb_IS() << an_rulebook <<   pLiteral("producing") << pAny("kind2") ;
+
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
 			HBlockNoum rulebookName = Expression::parser_noum_expression(p, res.matchs["ruleBookName"]);
 			if (rulebookName != nullptr)
-			{
-				 
+			{				 
 				{
 					HBlockKind dkind2 = Expression::parser_kind_specification(p, res.matchs["kind2"]);
 					if (dkind2 != nullptr)

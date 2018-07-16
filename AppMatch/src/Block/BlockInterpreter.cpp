@@ -91,6 +91,11 @@ CBlockNoumStr::CBlockNoumStr(string _value) :noum(_value) {
     assert(noum[0] != '[');
 	assert(noum[0] != '(');
 
+	if (_value.size() == 1)
+	{
+		assert(_value[0] != '!');
+	}
+
 	if ((noum[0] == 'A') && (noum[1] == ' '))
 	{
 		_value[0] = 'a';
