@@ -18,9 +18,21 @@
 #include <functional>
 #include <cstdlib>
 
+#undef CMLOG
+
+#ifdef CMLOG
+#include <iostream>
+#endif
+
+
+
+
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 using namespace EqualResulting;
+
+std::string get_repr_i(std::vector<HTerm> lst);
+
 
 namespace NSTerm {
 	namespace NSMatch {
@@ -191,9 +203,18 @@ namespace NSTerm {
 
 		bool
 			applyCombinatoriasGroupSmart(MTermSetCombinatoria &partial_in, std::vector<HTerm>& terms, std::vector<CPred *> &preds,
-				int pos, FuncCombinatoria &func) {
-			if (preds[pos]->match(terms) != EqualResulting::NotEquals) {
-				if (!isListValid(terms)) return false;
+				int pos, FuncCombinatoria &func)
+		{
+	 
+
+			if (preds[pos]->match(terms) != EqualResulting::NotEquals)
+			{
+		 
+				if (!isListValid(terms))
+				{
+			 
+					return false;
+				}
 				partial_in.push_back(terms);
 				bool hasFound = func(partial_in);
 				partial_in.pop_back();
@@ -267,7 +288,8 @@ namespace NSTerm {
 
 			for (size_t j = 1; j <= lsize - n + 1; ++j) {
 
-				if (preds[pos]->match(terms_begin, terms_begin + j) != EqualResulting::NotEquals) {
+				if (preds[pos]->match(terms_begin, terms_begin + j) != EqualResulting::NotEquals) 
+				{
 					if (isListValid_range(terms_begin, terms_begin + j))
 					{
 						std::vector<HTerm>::iterator tail_begin = terms_begin + j;
@@ -286,6 +308,11 @@ namespace NSTerm {
 						if (hasFound) {
 							return true;
 						}
+					}
+					else
+					{
+						auto vs = std::vector<HTerm>(terms_begin, terms_begin + j);
+	 
 					}
 				}
 			}
@@ -316,7 +343,7 @@ namespace NSTerm {
 
 		MatchResult CMatch_j(MTermSet &termo, CPred *predicate) {
 #ifdef CMLOG
-			std::cout << "Query|   " << predicate->repr() << " >> " << get_repr(termo);
+			std::cout << "Query|   " << predicate->repr() << " >> " << get_repr_i(termo);
 #endif
 			bool has_match = (predicate->match(termo) == EqualResulting::Equals);
 

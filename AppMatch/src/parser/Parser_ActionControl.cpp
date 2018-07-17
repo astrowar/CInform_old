@@ -9,6 +9,8 @@
 // copies or substantial portions of the Software.
 
 #include "parser/Parser.hpp"
+#include <array>
+
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
@@ -17,8 +19,7 @@ using namespace EqualResulting;
  
 
 std::list<std::pair<HTerm,HTerm> > getBiPartition(HTerm & term)
-{
-	 
+{	 
 	if (CList* cs = asCList(term.get()))
 	{
 		std::list<std::pair<HTerm, HTerm> > ret;
@@ -33,10 +34,44 @@ std::list<std::pair<HTerm,HTerm> > getBiPartition(HTerm & term)
 			ret.push_back(v1);
 		}
 		return ret;
-
 	}
 	return	std::list<std::pair<HTerm, HTerm> >();
 }
+
+
+std::list<std::vector<HTerm > > getTriPartition(std::vector<HTerm> & vs)
+{
+	std::list<std::vector<HTerm > > ret;
+	int n = vs.size();
+
+	for (int i1 = 1; i1 < n - 1; ++i1)
+		for (int i2 = i1 + 1; i2 < n; ++i2)
+		{
+			std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
+			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
+			std::vector<HTerm> p3(vs.begin() + i2, vs.end());
+
+			std::vector<HTerm > arr = { make_list(p1),make_list(p2),make_list(p3) };
+			ret.push_back(arr);
+		}
+	return ret;
+}
+
+std::list<std::vector<HTerm > > getTriPartition(HTerm & term)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::vector<HTerm >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		return getTriPartition(vs); 
+	}
+
+	return	std::list<std::vector<HTerm > >();
+}
+
+
+
+
 
 HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTerm & term)
 {

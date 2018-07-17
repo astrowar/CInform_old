@@ -32,6 +32,134 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument_kind_item(CParser *p
 	return c1;
 }
 
+//componente eh um noum OU uma variavel
+HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, HTerm term)
+{
+
+	{
+		CPredSequence predList = pAny("ListKind") << pLiteral("called") << pAny("var_named");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
+			//cterm eh uma lista ??
+			if (CList* clist = asCList(cterm))
+			{
+				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
+				for (auto &ci : clist->lst)
+				{
+					string  str_i = ci->removeArticle()->repr();
+					HBlockMatch mi = parser_MatchArgument_kind_item(p, str_i);
+					mmlist->matchList.push_back(mi);
+				}
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->removeArticle()->repr(), mmlist);
+				return n1;
+			}
+		}
+	}
+	{
+		CPredSequence predList = pAny("kind") << pLiteral("called") << pAny("var_named");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+			auto noum_var_named = parse_match_SigleNoum(p, res.matchs["var_named"]);
+			if (noum_var_named != nullptr)
+			{
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(noum_var_named->inner->named(), c1);
+				return n1;
+			}
+		}
+	}
+
+	{
+		CPredSequence predList = pAny("kind") << pLiteral("-") << pAny("var_named");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+
+	{
+		
+		HBlockMatch c1 = parser_expression_match_noum(p, term);
+		if (c1 != nullptr)
+		{
+			return c1;
+		}
+		
+	}
+
+
+	return nullptr;
+
+}
+
+
+
+HBlockMatch NSParser::ExpressionMatch::parser_MatchVariableDeclare(CParser *p, HTerm term)
+{
+
+	{
+		CPredSequence predList = pAny("ListKind") << pLiteral("called") << pAny("var_named");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
+			//cterm eh uma lista ??
+			if (CList* clist = asCList(cterm))
+			{
+				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
+				for (auto &ci : clist->lst)
+				{
+					string  str_i = ci->removeArticle()->repr();
+
+					HBlockMatch mi = parser_MatchArgument_kind_item(p, str_i);
+
+					mmlist->matchList.push_back(mi);
+				}
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->removeArticle()->repr(), mmlist);
+				return n1;
+			}
+		}
+	}
+	{
+		CPredSequence predList = pAny("kind") << pLiteral("called") << pAny("var_named");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+
+			auto noum_var_named = parse_match_SigleNoum(p, res.matchs["var_named"]);
+			if (noum_var_named != nullptr)
+			{
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(noum_var_named->inner->named(), c1);
+				return n1;
+			}
+		}
+	}
+
+	{
+		CPredSequence predList = pAny("kind") << pLiteral("-") << pAny("var_named");
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) {
+
+			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+
+			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
+			return n1;
+		}
+	}
+	return nullptr;
+
+}
+
 HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, HTerm term)
 {
 
@@ -881,13 +1009,19 @@ HBlockMatchNoum NSParser::ExpressionMatch::parser_expression_match_noum(CParser 
 	{
 		//string composta
 		std::vector<string> v_noums = noum_split(sNoum, ' ');
-		auto nn = Expression::parser_noum_expression(p, v_noums); 
-		if (nn == nullptr) return nullptr;
+		auto nn = Expression::parser_noum_expression(p, v_noums);
+		if (nn == nullptr)
+		{
+			return nullptr;
+		}
 		return std::make_shared<CBlockMatchNoum>(nn);
 	}
 
 	auto noum = Expression::parser_noum_expression(p, term);
-	if (noum == nullptr) return nullptr;
+	if (noum == nullptr)
+	{
+		return nullptr;
+	}
 	return std::make_shared<CBlockMatchNoum>(noum);
 }
 

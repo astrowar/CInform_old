@@ -37,7 +37,16 @@ using namespace EqualResulting;
 
  
 
-	
+std::string get_repr_i(std::vector<HTerm> lst) {
+	std::string q;
+	q += " [ ";
+	for (auto tr = lst.begin(); tr != lst.end(); ++tr) {
+		if (tr != lst.begin()) q += " , ";
+		q += tr->get()->repr();
+	}
+	q += " ] ";
+	return q;
+}
 		std::string get_repr(MTermSet lst) {
 			std::string q;
 			q += " [ ";
@@ -738,7 +747,7 @@ using namespace EqualResulting;
 			}
 #ifdef CMLOG
 			if (a == npred) {
-				std::cout << get_repr(lst) << std::endl;
+				std::cout << get_repr_i(lst) << std::endl;
 			}
 #endif
 
@@ -752,7 +761,7 @@ using namespace EqualResulting;
 #ifdef CMLOG
 			int b = vend - vbegin;
 			if (b == npred) {
-				std::cout << get_repr(lst) << std::endl;
+				std::cout << get_repr_i(lst) << std::endl;
 
 			}
 			if (a != b) {
@@ -891,7 +900,7 @@ using namespace EqualResulting;
 		}
 
 
-		std::string NSMatch:: get_repr(MatchResult r) {
+		std::string NSMatch::get_repr_result(MatchResult r) {
 			std::string s;
 			for (auto kv = r.matchs.begin(); kv != r.matchs.end(); ++kv) {
 				s += kv->first + ":";
@@ -900,6 +909,8 @@ using namespace EqualResulting;
 			}
 			return s;
 		}
+
+	 
 
 		CPredAtom* NSTerm::asPredAtom(CTerm* c)
 		{

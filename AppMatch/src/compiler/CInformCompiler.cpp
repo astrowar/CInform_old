@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 	 
 	if (!comp.files.empty())
 	{
-		for (auto k = 0; k < 100000; ++k)
+		//for (auto k = 0; k < 100000; ++k)
 		{
 			auto hcc = compile_files(comp.files);
 			if (hcc != nullptr)hcc->dump("");

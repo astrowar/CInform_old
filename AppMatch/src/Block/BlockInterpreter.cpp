@@ -79,14 +79,14 @@ CBlockNoumStrDet::CBlockNoumStrDet(string _det, HBlockNoum _noum) :noum(_noum), 
 
 CBlockNoumStr::CBlockNoumStr(string _value) :noum(_value) {
     
-	assert(_value != "not");
-	assert(_value != "the");
-	assert(_value != "which");
+	//assert(_value != "not");
+	//assert(_value != "the");
+	//assert(_value != "which");
 	
 	assert(strchr(_value.c_str(), ',') == 0);
-	assert(strncmp(_value.c_str(), "the", 3) != 0);
-	assert(strncmp(_value.c_str(), "the", 3) != 0);
-	assert(strncmp(_value.c_str(), "to ", 3) != 0);
+	//assert(strncmp(_value.c_str(), "the", 3) != 0);
+	//assert(strncmp(_value.c_str(), "the", 3) != 0);
+	//assert(strncmp(_value.c_str(), "to ", 3) != 0);
 
     assert(noum[0] != '[');
 	assert(noum[0] != '(');
@@ -96,10 +96,10 @@ CBlockNoumStr::CBlockNoumStr(string _value) :noum(_value) {
 		assert(_value[0] != '!');
 	}
 
-	if ((noum[0] == 'A') && (noum[1] == ' '))
-	{
-		_value[0] = 'a';
-	}
+	//if ((noum[0] == 'A') && (noum[1] == ' '))
+	//{
+	//	_value[0] = 'a';
+	//}
 	if (_value.find('\t') != std::string::npos)
 	{
 		assert(_value.find('\t') == std::string::npos);

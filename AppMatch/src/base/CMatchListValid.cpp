@@ -156,6 +156,8 @@ bool NSMatch::isListValid(MTermSet &Comb)
 
 bool  NSMatch::isListValid_range(std::vector<HTerm>::iterator vbegin, std::vector<HTerm>::iterator vend )
 {
+	 
+	
 	if (!isListValid_bounds_range(vbegin,vend)) return false;
 	return isListValid_count_range(vbegin, vend);
 }

@@ -1470,8 +1470,8 @@ void CBlockPhraseInvoke::dump(string ident)
 {
 	printf("%s %s \n", ident.c_str(), "BlockPhrase Invoke ");
 	this->header->dump(ident + "       ");
-	this->arg1->dump(ident + "       ");
-	this->arg2->dump(ident + "       ");
+	if (this->arg1 != nullptr ) this->arg1->dump(ident + "       ");
+	if (this->arg2 != nullptr ) this->arg2->dump(ident + "       ");
 
 	CBlock::dump(ident);
 

@@ -16,6 +16,8 @@
 #include "Predicates.hpp"
 
 
+
+
 namespace NSParser
 {
 	class SourceLine
@@ -300,6 +302,9 @@ namespace NSParser
 
 
 		CBlocking::HBlockMatch  parser_MatchArgument_kind_item(CParser *p, string term);
+		
+		HBlockMatch   parser_MatchComponentePhase(CParser *p, HTerm term);
+		HBlockMatch   parser_MatchVariableDeclare(CParser *p, HTerm term);
 		CBlocking::HBlockMatch  parser_MatchArgument(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_MatchArgument(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatchIs  parserMatchIsCondition(CParser *p, NSTerm::HTerm term);
@@ -353,6 +358,8 @@ namespace NSParser
 		CBlocking::HBlockStaticDispatch  getStaticDispatchResolve(CParser *p, NSTerm::HTerm term);
 		
 		                                                       
+		HBlockMatch  parser_user_parser(CParser *p, HTerm termLiteral);
+
 	    NSParser::DispatchArguments  parser_buildMatchBlock_actionInput(CParser *p, NSTerm::HTerm term);		
 		NSParser::DispatchArguments  parser_buildMatchBlock_actionInputList(CParser *p, std::vector<NSTerm::HTerm>&  term);
 
@@ -536,4 +543,9 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 	string CtoString(NSTerm::HTerm  value);
 	string CtoString(NSTerm::CList * lst);
 	string CtoString(NSTerm::CTerm  *value);
+
+	std::list<std::pair<HTerm, HTerm> > getBiPartition(HTerm & term);
+	std::list<std::vector<HTerm> > getTriPartition(HTerm & term);
+	std::list<std::vector<HTerm> > getTriPartition(std::vector<HTerm> & term);
+
 #endif

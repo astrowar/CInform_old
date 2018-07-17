@@ -19,8 +19,39 @@ using namespace EqualResulting;
 
 
 
+CPredSequence  convert_doSequence(HBlockNoum n)
+{ 
+	 
+	if (n->type() == BlockNoumCompose)
+	{
+		std::vector<HPred> seq;
+		CBlockNoumCompose* ncomp = (CBlockNoumCompose*)(n.get());
+		for (auto it = ncomp->noums.begin(); it != ncomp->noums.end();++it)
+		{
+			seq.push_back(pLiteral((*it)->named()));
+		}
+		return CPredSequence(seq);
+	}	
+	return CPredSequence(pLiteral(n->named()));
+}
+
+
+HBlockMatch NSParser::DynamicDispatch::parser_user_parser(CParser *p, HTerm termLiteral)
+{
+
+	return nullptr;
+}
+
 NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_actionInput(CParser *p, HTerm term) {
-    if (CList *cterm = asCList(term.get())) {
+    
+	if (CLiteral *clit = asCLiteral(term.get()))
+	{
+		std::vector<HPred> replcList;
+		replcList.push_back(pLiteral(term->repr()));
+		HBlockMatch u_argument_parser_input = parser_user_parser(p, term);
+		return DispatchArguments(replcList, nullptr, u_argument_parser_input);
+	}
+	if (CList *cterm = asCList(term.get())) {
         std::vector<HTerm> vterm(cterm->lst.begin(), cterm->lst.end());
         auto kv = parser_buildMatchBlock_actionInputList(p,vterm);
         return kv;
@@ -184,7 +215,7 @@ HBlock NSParser::DynamicDispatch::STMT_understand_generic_redirect(CParser *p, H
 HBlock NSParser::DynamicDispatch::STMT_understand_Action_Assertion_static(CParser *p, std::vector<HTerm>&  term) {
 
     {
-		  CPredSequence  predList = pLiteral("understand") << pLiteral(":") << pAny("What") << pLiteral("as") <<pAny("Subst") ;
+		  CPredSequence  predList = pLiteral("understand") << pOptional(pLiteral(":")) << pAny("What") << pLiteral("as") <<pAny("Subst") ;
 		   
         MatchResult res = CMatch(term, predList);
         if (res.result == Equals) {
@@ -551,6 +582,24 @@ HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HT
 		}
 	}
 
+	for (auto ph : p->phrases)
+	{
+		if (ph->arg1 != nullptr && ph->pred1 != nullptr )
+		{ 
+			CPredSequence seq = convert_doSequence(ph->pred1);
+
+			CPredSequence  predList = pLiteral(ph->verb->named()) << seq << pAny("Match_arg2");
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
+			{
+				HBlock  marg1 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
+				if (marg1 != nullptr)
+				{
+					return   std::make_shared<CBlockPhraseInvoke>(ph, marg1, nullptr);
+				}
+			} 
+		}
+	}
 
 
 	for (auto ph : p->phrases)

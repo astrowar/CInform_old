@@ -230,13 +230,11 @@ namespace NSTerm
 		public:
 			bool optional =false;
 			CPredSequence(std::vector<HPred> x) :optional(false) 
-			{ 
-				
+			{ 				
 				data_list.push_back(x); 
 			}
 			CPredSequence(HPred x) :optional(false)
-			{
-				
+			{				
 				data_list.push_back({ x }); 
 			}
 
@@ -288,8 +286,8 @@ namespace NSTerm
 			 
 			MatchResult  CMatch(std::vector<HTerm>&  seq, const CPredSequence   &predicates);
 			MatchResult  CMatch(HTerm  seq, const CPredSequence   &predicates);
-			std::string get_repr(MatchResult r);
-
+			std::string get_repr_result(MatchResult r);
+			 
 			 
 			 
 
