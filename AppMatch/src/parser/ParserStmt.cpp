@@ -240,8 +240,8 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 	if (sNoum == "]")return nullptr;
 
 
-	if (sNoum == "to")return nullptr;
-	if (sNoum == "from")return nullptr;
+	//if (sNoum == "to")return nullptr;
+	//if (sNoum == "from")return nullptr;
 	if (sNoum == "of")return nullptr;
 
 	if (sNoum == "the")return nullptr;

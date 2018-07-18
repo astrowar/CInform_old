@@ -8,9 +8,12 @@
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
 
-#include <vector>
+
 #include "parser/Parser.hpp"
 #include "CBlockUndestand.hpp"
+#include <vector>
+#include <algorithm>
+
 using namespace CBlocking;
 
 using namespace NSTerm;
@@ -36,10 +39,197 @@ CPredSequence  convert_doSequence(HBlockNoum n)
 }
 
 
-HBlockMatch NSParser::DynamicDispatch::parser_user_parser(CParser *p, HTerm termLiteral)
+NSParser::DispatchArguments NSParser::DynamicDispatch::parser_user_parser(CParser *p, HTerm termLiteral)
 {
+	// quando entra um cLiteral para entender como parser
+	// determina os brackets
 
-	return nullptr;
+	std::list<string>  termos;
+	CLiteral *clit = asCLiteral(termLiteral.get());
+	string lit = clit->val;
+	if (lit[0] == '"') lit = lit.substr(1, lit.size()-1);
+	if (lit.back() == '"') lit = lit.substr(0, lit.size()-1);
+	int n = lit.size();
+
+	int pivot = 0;
+	for (int i = 0; i < n; ++i)
+	{
+
+		if (lit[i] == '[')
+		{
+			termos.push_back(lit.substr(pivot, i - pivot));
+			pivot = i;
+		}
+		
+		if (lit[i] == ']')
+		{
+			termos.push_back(lit.substr(pivot, i - pivot+1));
+			pivot = i+1;
+			
+		}
+	}
+	if ( n>pivot)termos.push_back(lit.substr(pivot, n - pivot));
+
+	//remove os vazios
+	termos.erase(std::remove_if(termos.begin(), termos.end(), [](string x) {return x.empty(); }), termos.end());
+
+
+	//divide as palavras que nao estao dentro do []
+	for (auto it = termos.begin(); it != termos.end();++it)
+	{
+		string s = *it;
+		if (s[0] == '[') continue;
+
+		int  n = s.size();
+
+		for (int i = 0; i < n; ++i)
+		{
+			if (s[i] == ' ')
+			{
+				//divide
+				string s1 = s.substr(0, i);
+				string s2 = s.substr(i+1, n - i-1);
+				it = termos.erase(it);
+				if ((s1 != " ") && (s1.size() > 0))
+				{
+					termos.insert(it, s1);
+				}
+				if ((s2 != " ") && (s2.size()>0))
+				{
+					termos.insert(it, s2);
+				}
+				it = termos.begin();
+				break;
+			}			
+		}
+
+		//while (s.size()>0 && s.front() == ' ') s = s.substr(1, s.size() - 1);
+		//while (s.size()>0 && s.back() == ' ') s = s.substr(0, s.size() - 1);
+	}
+
+	//for (auto &s : termos)
+	//{
+	//	printf("|%s|\n", s.c_str());
+	//}
+
+
+	HBlockMatch arg1 = nullptr;
+	HBlockMatch arg2 = nullptr;
+	std::list<HBlockMatch> mfull_parseList = std::list<HBlockMatch>();
+	std::list<HBlockMatch> margs_parseList = std::list<HBlockMatch>();
+	CPredSequence replcList = CPredSequence(std::vector<HPred>()); //  = pLiteral(res.matchs["verb"]->repr()) << pAny("noum1") << pLiteral(res.matchs["with_word"]->repr()) << pAny("noum2");
+
+	for (auto &s : termos)
+	{
+		//printf("|%s|\n", s.c_str());
+		//while (s.size()>0 && s.front() == ' ') s = s.substr(1, s.size() - 1);
+		//while (s.size()>0 && s.back() == ' ') s = s.substr(0, s.size() - 1);
+	}
+	termos.erase(std::remove_if(termos.begin(), termos.end(),[](string x) {return x.empty(); }), termos.end());
+	 
+	for (auto &s : termos)
+	{
+		HBlockMatch term = nullptr;
+
+		if (s.front() == '[' && s.back() != ']')
+		{
+			logError("Undestand text Error\n");			
+			return NSParser::DispatchArguments({}, nullptr,nullptr);
+		}
+		bool is_arg = s.front() == '[';
+
+
+		if (s.front() == '[')
+		{
+			s = s.substr(1, s.size() - 1);
+		}
+		if (s.back() == ']')
+		{
+			s = s.substr(0, s.size() - 1);
+		}
+		 
+		while (s.size()>0 && s.front() == ' ') s = s.substr(1, s.size() - 1);
+		while (s.size()>0 && s.back() == ' ') s = s.substr(0, s.size() - 1);
+
+		if (is_arg)
+		{
+			//termo de argumento
+			//term = NSParser::ExpressionMatch::parser_MatchArgument(p, make_string(s));
+
+			HBlockNoum arg_noum = nullptr;  
+
+			// eh um argumento composto ou simples 
+			if (s.find(' ') != string::npos)
+			{
+			  std::vector<HBlockNoum> _noums;
+			  std::vector<string>  vargs  =	split_string(s, " ");
+			  for (auto sa : vargs)
+			  {
+				  _noums.push_back(std::make_shared<CBlockNoumStr>(sa));
+			  }			  
+			  arg_noum = std::make_shared<CBlockNoumCompose>(_noums);
+			}
+			else
+			{
+				arg_noum = std::make_shared<CBlockNoumStr>(s);
+			}
+
+			if (arg1 == nullptr)
+			{
+				term = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
+				arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchNoum>(arg_noum));
+				replcList = replcList << pAny("noum1");
+				margs_parseList.push_back(arg1);
+			}
+			else if (arg2 == nullptr)
+			{
+				term = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
+				arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchNoum>(arg_noum));
+				replcList = replcList << pAny("noum2");
+				margs_parseList.push_back(arg2);
+			}
+			else
+			{
+				logError("Only two terms for undestand\n");
+				return NSParser::DispatchArguments({}, nullptr, nullptr);
+			}
+			
+			
+		}
+		else
+		{
+			//termo normal
+			   //term = ExpressionMatch::parse_match_noum(p, { make_string(s) });
+			   term = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr >( s ));
+
+			  //term = NSParser::ExpressionMatch::parser_MatchArgument(p, make_string(s));
+			  replcList = replcList << pLiteral(s);
+		}
+
+		mfull_parseList.push_back(term);
+	}
+
+
+
+
+
+	//printf("%s \n", lit.c_str());
+
+	
+
+	for (auto s : termos)
+	{
+		//printf("|%s|\n", s.c_str());
+	}
+
+	auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>(margs_parseList ));
+	auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>(mfull_parseList));
+	NSParser::DispatchArguments r =  NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
+
+	
+	return r;
+ 
+	 
 }
 
 NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_actionInput(CParser *p, HTerm term) {
@@ -48,8 +238,7 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 	{
 		std::vector<HPred> replcList;
 		replcList.push_back(pLiteral(term->repr()));
-		HBlockMatch u_argument_parser_input = parser_user_parser(p, term);
-		return DispatchArguments(replcList, nullptr, u_argument_parser_input);
+		return parser_user_parser(p, term);		
 	}
 	if (CList *cterm = asCList(term.get())) {
         std::vector<HTerm> vterm(cterm->lst.begin(), cterm->lst.end());
@@ -89,15 +278,78 @@ HBlockStaticDispatch NSParser::DynamicDispatch::getStaticDispatchResolve(CParser
 
 NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_actionInputList(CParser *p, std::vector<HTerm>&  term) {
 
-   
-    {
-		  CPredSequence predList = 		pWord("verb")	<<pAny("kind1")	<<pAny("with_word") <<pAny("kind2");
-			
-		 
+	{
+		auto tphase = getQuadPartition(term);
+		for (auto t : tphase)
+		{
+			auto term1 = t[0];
+			auto var1 = t[1];
+			auto term2 = t[2];
+			auto var2 = t[3];
 
+			auto term1expr = Expression::parser_noum_expression(p, term1);
+			if (term1expr == nullptr) continue;
+			 
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(term1expr);
+			if (c1 == nullptr) continue;
+			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var1);
+			if (c2 == nullptr) continue;
+			if (c2->type() == BlockMatchList) continue;
+
+			HBlockMatch c3 = ExpressionMatch::parse_match_noum(p, { term2 });
+			if (c3 == nullptr) continue;
+			HBlockMatch c4 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var2);
+			if (c4 == nullptr) continue;
+			if (c4->type() == BlockMatchList) continue;
+
+			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
+			HBlockMatch arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
+
+			CPredSequence replcList = pLiteral(term1->repr()) << pAny("noum1") << pLiteral(term2->repr()) << pAny("noum2");
+
+			auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2, c4 }));
+			auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, arg1, c3, arg2 }));
+			return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
+		}
+	}
+
+	{
+		auto tphase = getBiPartition(term);
+		for (auto t : tphase)
+		{
+			auto term1 = t.first;			
+			auto term2 = t.second;
+			
+
+			//auto term1expr = Expression::parser_noum_expression(p, term1);
+			//if (term1expr == nullptr) continue;
+			//HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(term1expr);
+			//if (c1 == nullptr) continue;
+			//HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument(p, var1);
+			//if (c2 == nullptr) continue;
+			//HBlockMatch c3 = ExpressionMatch::parse_match_noum(p, { term2 });
+			//if (c3 == nullptr) continue;
+			//HBlockMatch c4 = NSParser::ExpressionMatch::parser_MatchArgument(p, var2);
+			//if (c4 == nullptr) continue;
+			//HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>());
+			//HBlockMatch arg2 = std::make_shared<CBlockMatchNamed>("noum2", std::make_shared<CBlockMatchAny>());
+			//CPredSequence replcList = pLiteral(term1->repr()) << pAny("noum1") << pLiteral(term2->repr()) << pAny("noum2");
+			//auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2, c4 }));
+			//auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, arg1, c3, arg2 }));
+			//return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
+		}
+	}
+
+
+
+	//auto tr = getTriPartition(term);
+    //for(auto t : tr)
+    if(false){
+		CPredSequence predList =  pWord("verb")	<<pAny("kind1")	<<pAny("with_word") <<pAny("kind2");
 
         MatchResult res = CMatch(term, predList);
-        if (res.result == Equals) {
+        if (res.result == Equals) 
+		{
             HBlockMatch c1 = std::make_shared<CBlockMatchNoum>( Expression::parser_noum_expression(p,res.matchs["verb"]));
             HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument(p, res.matchs["kind1"]);
 			HBlockMatch c3 = ExpressionMatch::parse_match_noum(p, { res.matchs["with_word"] });
@@ -176,17 +428,20 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_buildMatchBlock_ac
 		 
 			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(Expression::parser_noum_expression(p, res.matchs["verb"]));
 
+			if (c1 != nullptr)
+			{
+				HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument(p, res.matchs["kind1"]);
+				if (c2 != nullptr)
+				{
+					HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>()); //este eh o match estatico .. ie .. aquele usado pelo parser para identificar as chamadas estaticas
 
-            
-			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument(p,res.matchs["kind1"]);
-			HBlockMatch arg1 = std::make_shared<CBlockMatchNamed>("noum1", std::make_shared<CBlockMatchAny>()); //este eh o match estatico .. ie .. aquele usado pelo parser para identificar as chamadas estaticas
-						
+					CPredSequence replcList = pLiteral(res.matchs["verb"]->repr()) << pAny("noum1");
 
-            CPredSequence replcList =       pLiteral(res.matchs["verb"]->repr()) <<       pAny("noum1");
-         
-            auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c2}));
-            auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({c1, arg1 }));
-            return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
+					auto mlist1 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c2 }));
+					auto mlist2 = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, arg1 }));
+					return NSParser::DispatchArguments(replcList.data_list.front(), mlist1, mlist2);
+				}
+			}
         }
     }
 

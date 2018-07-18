@@ -305,6 +305,8 @@ namespace NSParser
 		
 		HBlockMatch   parser_MatchComponentePhase(CParser *p, HTerm term);
 		HBlockMatch   parser_MatchVariableDeclare(CParser *p, HTerm term);
+	 
+		CBlocking::HBlockMatch  parser_MatchArgument_only(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parser_MatchArgument(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_MatchArgument(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlockMatchIs  parserMatchIsCondition(CParser *p, NSTerm::HTerm term);
@@ -358,7 +360,7 @@ namespace NSParser
 		CBlocking::HBlockStaticDispatch  getStaticDispatchResolve(CParser *p, NSTerm::HTerm term);
 		
 		                                                       
-		HBlockMatch  parser_user_parser(CParser *p, HTerm termLiteral);
+		NSParser::DispatchArguments  parser_user_parser(CParser *p, HTerm termLiteral);
 
 	    NSParser::DispatchArguments  parser_buildMatchBlock_actionInput(CParser *p, NSTerm::HTerm term);		
 		NSParser::DispatchArguments  parser_buildMatchBlock_actionInputList(CParser *p, std::vector<NSTerm::HTerm>&  term);
@@ -405,7 +407,8 @@ namespace NSParser
 	}
 
 	namespace ParseDecide
-	{
+	{		 
+		CBlocking::HBlockMatchList  parser_match_body(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parser_What_Which_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_What_Which_Verb_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_Match_IF_Assertion(CParser * p, NSTerm::HTerm term);
@@ -544,8 +547,14 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 	string CtoString(NSTerm::CList * lst);
 	string CtoString(NSTerm::CTerm  *value);
 
+	std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs);
 	std::list<std::pair<HTerm, HTerm> > getBiPartition(HTerm & term);
 	std::list<std::vector<HTerm> > getTriPartition(HTerm & term);
 	std::list<std::vector<HTerm> > getTriPartition(std::vector<HTerm> & term);
+
+	std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs);
+	std::list<std::vector<HTerm > > getQuadPartition(HTerm & term);
+
+	std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
 
 #endif

@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 		{
 			auto hcc = compile_files(comp.files);
 			if (hcc != nullptr)hcc->dump("");
-			//write_bytecode(hcc, comp.options["output"]);
+			write_bytecode(hcc, comp.options["output"]);
 		}
 	}
     return 0;

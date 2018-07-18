@@ -44,6 +44,94 @@ HBlockNoum convert_to_noum(NSParser::CParser* p, HTerm term)
 	return std::make_shared<CBlockNoumStr>(term->repr());
 }
 
+
+
+
+
+HBlockMatchList NSParser::ParseDecide::parser_match_body(CParser * p, HTerm term)
+{
+	{
+		auto tphase = getQuadPartition(term);
+		for (auto t : tphase)
+		{
+			auto term1 = t[0];
+			auto var1 = t[1];
+			auto term2 = t[2];
+			auto var2 = t[3];
+
+			auto term1expr = Expression::parser_noum_expression(p, term1);
+			if (term1expr == nullptr) continue;
+
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(term1expr);
+			if (c1 == nullptr) continue;
+			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var1);
+			if (c2 == nullptr) continue;
+			if (c2->type() == BlockMatchList) continue;
+
+			HBlockMatch c3 = ExpressionMatch::parse_match_noum(p, { term2 });
+			if (c3 == nullptr) continue;
+			HBlockMatch c4 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var2);
+			if (c4 == nullptr) continue;
+			if (c4->type() == BlockMatchList) continue;
+
+			return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c2,c3,c4 }));
+		}
+	}
+
+	{
+		auto tphase = getTriPartition(term);
+		for (auto t : tphase)
+		{
+			auto term1 = t[0];
+			auto var1 = t[1];
+			auto term2 = t[2]; 
+			auto term1expr = Expression::parser_noum_expression(p, term1);
+			if (term1expr == nullptr) continue;
+
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(term1expr);
+			if (c1 == nullptr) continue;
+			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var1);
+			if (c2 == nullptr) continue;
+			if (c2->type() == BlockMatchList) continue;
+
+			HBlockMatch c3 = ExpressionMatch::parse_match_noum(p, { term2 });
+			if (c3 == nullptr) continue; 
+			return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c2,c3  }));
+		}
+	}
+
+
+	{
+		auto tphase = getBiPartition(term);
+		for (auto t : tphase)
+		{
+			auto term1 = t.first;
+			auto var1 = t.second;
+		  
+
+			printf("%s ", term1->repr().c_str());
+			printf(" -  %s \n", var1->repr().c_str());
+			auto term1expr = Expression::parser_noum_expression(p, term1);
+			if (term1expr == nullptr) continue;
+
+			HBlockMatch c1 = std::make_shared<CBlockMatchNoum>(term1expr);
+			if (c1 == nullptr) continue;
+			HBlockMatch c2 = NSParser::ExpressionMatch::parser_MatchArgument_only(p, var1);
+			if (c2 == nullptr) continue;
+			if (c2->type() == BlockMatchList) continue;
+			 
+			return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ c1, c2  }));
+		}
+	}
+
+
+
+	return nullptr;
+
+
+}
+
+
 HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
 {
 
@@ -69,11 +157,23 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["kindReturn"]);
-			HBlockNoum noum = convert_to_noum(p,res.matchs["RemainderQuery"]);
-			HBlockMatch  AdjetiveMatch =  std::make_shared<CBlockMatchNoum>(  noum);
-			if (AdjetiveMatch != nullptr)
-			{				
-				return AdjetiveMatch;				
+			if (c1 != nullptr)
+			{
+				HBlockMatch  arg2 = ExpressionMatch::parser_MatchArgument_only(p, res.matchs["argument"]);
+				if (arg2 != nullptr)
+				{
+					//HBlockNoum noum = convert_to_noum(p,res.matchs["RemainderQuery"]);
+
+					//HBlockMatch  AdjetiveMatch =  std::make_shared<CBlockMatchNoum>(  noum);
+					HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
+					if (AdjetiveMatch != nullptr)
+					{
+						auto mlist = AdjetiveMatch->matchList;
+						mlist.push_back(std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>("for")));
+						mlist.push_back(arg2);
+						return std::make_shared<CBlockMatchList>(mlist);
+					}
+				}
 			}
 		}
 	}
@@ -85,14 +185,13 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) {
 			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
-			HBlockMatch  AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
-			if (AdjetiveMatch != nullptr)
+			if (c1 != nullptr)
 			{
-				//auto adjBlockMatch = std::make_shared<CBlockMatchBlock >(AdjetiveMatch);
-				return AdjetiveMatch;
-				//return std::make_shared<CBlockMatchDirectIs>(c1, AdjetiveMatch);
-				//return std::make_shared<CBlockMatch>(body);
-				return nullptr;
+				HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
+				if (AdjetiveMatch != nullptr)
+				{
+					return AdjetiveMatch;					
+				}
 			}
 		}
 	}

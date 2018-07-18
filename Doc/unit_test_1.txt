@@ -1,14 +1,20 @@
-Understand restart (thing called X ) with (thing called Y) as rebooting
-Understand "restart [something] with [something]" as rebooting
+To decide what money is the best money from (thing called buyer ) for (price called price):
+    let the result be some text 
+	
+	
+Understand  restart (thing called X ) with  button (color called Z)   as rebooting
 
-Understand "pry [something] with [something preferably held]" as prying it with
+Understand "pry [something ] with from [something preferably held]" as prying it with
+Understand "restart [something] with [color]" as reseting
+Understand "restart [something] with [a tool]" as rebooting
+
+ 
 Prying it with is an action applying to one thing and one carried thing
 Check prying it with:
-	say "I don't think you're supposed to do that here[line break]" 
+    say "I don't think you're supposed to do that here[line break]" 
    
     
-To decide what money is the best money from (buyer - a thing) for (cost - a price):
-    let the result be some text 
+ 
 
 To decide whether (item - a thing) interests (character - a person):
     decide on false

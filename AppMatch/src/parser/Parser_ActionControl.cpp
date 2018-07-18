@@ -17,27 +17,81 @@ using namespace NSTerm::NSMatch;
 using namespace EqualResulting;
 
  
+std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs)
+{
+	std::list<std::pair<HTerm, HTerm> > ret;
+	int n = vs.size();
+	for (int halfPos = 0; halfPos < n; ++halfPos)
+	{
+		std::vector<HTerm> firstPart(vs.begin(), vs.begin() + halfPos);
+		std::vector<HTerm> lastPart(vs.begin() + halfPos, vs.end());
+		if (firstPart.empty() || lastPart.empty()) continue;
+		std::pair<HTerm, HTerm> v1 = std::pair<HTerm, HTerm>(make_list(firstPart), make_list(lastPart));
+		ret.push_back(v1);
+	}
+	return ret;
+
+}
+	 
 
 std::list<std::pair<HTerm,HTerm> > getBiPartition(HTerm & term)
 {	 
 	if (CList* cs = asCList(term.get()))
 	{
-		std::list<std::pair<HTerm, HTerm> > ret;
+		
 		std::vector<HTerm> vs = cs->asVector();
-		int n = vs.size();
-		for (int halfPos = 0; halfPos < n; ++halfPos)
-		{
-			std::vector<HTerm> firstPart(vs.begin(), vs.begin() + halfPos);
-			std::vector<HTerm> lastPart(vs.begin() + halfPos, vs.end());
-			if (firstPart.empty() || lastPart.empty()) continue;
-			std::pair<HTerm, HTerm> v1 = std::pair<HTerm, HTerm>( make_list(firstPart), make_list(lastPart));
-			ret.push_back(v1);
-		}
-		return ret;
+		return getBiPartition(vs);
+		 
 	}
 	return	std::list<std::pair<HTerm, HTerm> >();
 }
 
+
+std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs)
+{
+	std::list<std::vector<HTerm > > ret;
+	int n = vs.size();
+
+	for (int i1 = 1; i1 < n - 2; ++i1)
+		for (int i2 = i1 + 1; i2 < n; ++i2)
+			for (int i3 = i2 + 1; i3 < n; ++i3)
+		{
+			std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
+			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
+			std::vector<HTerm> p3(vs.begin() + i2, vs.begin() + i3);
+			std::vector<HTerm> p4(vs.begin() + i3, vs.end());
+			std::vector<HTerm > arr;
+			if (p1.size() > 1) arr.push_back(make_list(p1));
+			else arr.push_back(p1[0]);
+
+			if (p2.size() > 1) arr.push_back(make_list(p2));
+			else arr.push_back(p2[0]);
+
+			if (p3.size() > 1) arr.push_back(make_list(p3));
+			else arr.push_back(p3[0]);
+
+			if (p4.size() > 1) arr.push_back(make_list(p4));
+			else arr.push_back(p4[0]);
+
+
+			
+			ret.push_back(arr);
+
+		}
+	return ret;
+}
+
+std::list<std::vector<HTerm > > getQuadPartition(HTerm & term)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::vector<HTerm >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		return getQuadPartition(vs);
+	}
+
+	return	std::list<std::vector<HTerm > >();
+}
 
 std::list<std::vector<HTerm > > getTriPartition(std::vector<HTerm> & vs)
 {
@@ -222,6 +276,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch =  parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
+					
 					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
 					if (executeBlock != nullptr)
 					{
