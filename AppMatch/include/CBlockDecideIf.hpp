@@ -2,6 +2,7 @@
 #include "BlockInterpreter.hpp" 
 #include "CBlockMatch.hpp"
 
+#include <cassert>
 
 namespace CBlocking
 {
@@ -23,7 +24,9 @@ namespace CBlocking
 	public:
 		CBlockToDecideIf(HBlockMatchIs _queryToMatch, CBlocking::HBlock _decideBody)
 			: queryToMatch(_queryToMatch),
-			decideBody(_decideBody) {
+			decideBody(_decideBody) 
+		{
+			assert(_queryToMatch != nullptr);
 		}
 
 		HBlockMatchIs queryToMatch;

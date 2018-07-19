@@ -114,7 +114,7 @@ enum BlockType {
 	BlockRelationArguments,
 	BlockSelectorAND,
 	BlockAssert,
-	BlockComposition,
+	 
 	BlockCompositionList,
 	BlockCompositionPhrase,
 	BlockCompositionRelation,

@@ -17,7 +17,7 @@ namespace CBlocking {
         //void dump(string ident) override;
         virtual bool isValue() override { return true; }
         CBlockComposition( )   { }
-        virtual BlockType type() override { return BlockType::BlockComposition; }
+        //virtual BlockType type() override { return BlockType::BlockComposition; }
     };
     using HBlockComposition = std::shared_ptr<CBlockComposition>;
 

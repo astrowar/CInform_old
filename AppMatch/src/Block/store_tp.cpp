@@ -378,6 +378,7 @@ HBlock load_line(LoadContext *ctx)
 		const int slot_id = load_int(ctx);
 		_b = load_CBlock(-1, ctx);
 		ctx->cache[slot_id] = _b;
+		_b->dump("L   ");
 	}
 	ctx->new_line(); //le o new line do arquivo
 	while (ctx->is_empty_line())
@@ -458,6 +459,7 @@ HBlockKindReference  load_CBlockKindReference(int tp, LoadContext *ctx);
 HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx);
 HBlockNoumStr  load_CBlockNoumStr(int tp, LoadContext *ctx);
 HBlockNoumStrDet  load_CBlockNoumStrDet(int tp, LoadContext *ctx);
+HBlockNoumCompose  load_CBlockNoumCompose(int tp, LoadContext *ctx);
 HBlockNoumSupl  load_CBlockNoumSupl(int tp, LoadContext *ctx);
 HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx);
 HBlockNothing  load_CBlockNothing(int tp, LoadContext *ctx);
@@ -528,6 +530,7 @@ HBlockComandList  load_CBlockComandList(int tp, LoadContext *ctx);
 HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx);
 HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx);
 HBlockCompositionList  load_CBlockCompositionList(int tp, LoadContext *ctx);
+HBlockCompositionRulebook  load_CBlockCompositionRulebook(int tp, LoadContext *ctx);
 HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx);
 HBlockCompositionPhrase  load_CBlockCompositionPhrase(int tp, LoadContext *ctx);
 HBlockCompostionPhrase  load_CBlockCompostionPhrase(int tp, LoadContext *ctx);
@@ -570,6 +573,7 @@ HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx);
 HBlockMatchDirectIs  load_CBlockMatchDirectIs(int tp, LoadContext *ctx);
 HBlockMatchDirectIsNot  load_CBlockMatchDirectIsNot(int tp, LoadContext *ctx);
 HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx);
+HBlockMatchIsVerbComposition  load_CBlockMatchIsVerbComposition(int tp, LoadContext *ctx);
 HBlockMatchIsNotVerb  load_CBlockMatchIsNotVerb(int tp, LoadContext *ctx);
 HBlockMatchIsAdverbialComparasion  load_CBlockMatchIsAdverbialComparasion(int tp, LoadContext *ctx);
 HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx);
@@ -679,6 +683,7 @@ HBlockAssertion_isDirectAssign  load_CBlockAssertion_isDirectAssign_slot(int tp,
 HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign_slot(int tp, LoadContext *ctx);
 HBlockIsVerb  load_CBlockIsVerb_slot(int tp, LoadContext *ctx);
 HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int tp, LoadContext *ctx);
+HBlockMatchIsVerbComposition  load_CBlockMatchIsVerbComposition_slot(int tp, LoadContext *ctx); 
 HBlockIsAdverbialComparasion  load_CBlockIsAdverbialComparasion_slot(int tp, LoadContext *ctx);
 HBlockAssert  load_CBlockAssert_slot(int tp, LoadContext *ctx);
 HBlockAssertion_InstanceVariable  load_CBlockAssertion_InstanceVariable_slot(int tp, LoadContext *ctx);
@@ -911,6 +916,9 @@ HBlock  load_CBlock(int tp, LoadContext *ctx)
 	{ auto x = load_CBlockUnderstand(tp, ctx); if (x != nullptr) return x; };
 	if (tp == BlockType::BlockUnderstandStatic) return load_CBlockUnderstandStatic(tp, ctx);
 	if (tp == BlockType::BlockUnderstandDynamic) return load_CBlockUnderstandDynamic(tp, ctx);
+	{auto x = load_CBlockComposition(tp, ctx); if (x != nullptr) return x; }
+	 
+
 	return nullptr;
 }
 
@@ -945,7 +953,7 @@ HBlockAssertion_is  load_CBlockAssertion_is(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockAssertion_isDirectAssign) return load_CBlockAssertion_isDirectAssign(tp, ctx);
 	if (tp == BlockType::BlockAssertion_isNotDirectAssign) return load_CBlockAssertion_isNotDirectAssign(tp, ctx);
 	if (tp == BlockType::BlockIsVerb) return load_CBlockIsVerb(tp, ctx);
-	if (tp == BlockType::BlockIsNotVerb) return load_CBlockIsNotVerb(tp, ctx);
+	if (tp == BlockType::BlockIsNotVerb) return load_CBlockIsNotVerb(tp, ctx);	 
 	if (tp == BlockType::BlockIsAdverbialComparasion) return load_CBlockIsAdverbialComparasion(tp, ctx);
 	return nullptr;
 }
@@ -975,7 +983,7 @@ HBlockKind  load_CBlockKind(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockKindAction) return load_CBlockKindAction(tp, ctx);
 	if (tp == BlockType::BlockKindValue) return load_CBlockKindValue(tp, ctx);
 	if (tp == BlockType::BlockKindEntity) return load_CBlockKindEntity(tp, ctx);
-	if (tp == BlockType::BlockComposition) return load_CBlockComposition(tp, ctx);
+	{auto x = load_CBlockComposition(tp, ctx);  if (x != nullptr) return x; }
 	return nullptr;
 }
 
@@ -1100,6 +1108,7 @@ HBlockComposition  load_CBlockComposition(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockCompositionList) return load_CBlockCompositionList(tp, ctx);
 	if (tp == BlockType::BlockCompositionRelation) return load_CBlockCompositionRelation(tp, ctx);
 	if (tp == BlockType::BlockCompositionPhrase) return load_CBlockCompositionPhrase(tp, ctx);
+	if (tp == BlockType::BlockCompositionRulebook) return load_CBlockCompositionRulebook(tp, ctx);
 	return nullptr;
 }
 
@@ -1115,6 +1124,7 @@ HBlockMatchIs  load_CBlockMatchIs(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockMatchDirectIsNot) return load_CBlockMatchDirectIsNot(tp, ctx);
 	if (tp == BlockType::BlockMatchIsVerb) return load_CBlockMatchIsVerb(tp, ctx);
 	if (tp == BlockType::BlockMatchIsNotVerb) return load_CBlockMatchIsNotVerb(tp, ctx);
+	if (tp == BlockType::BlockMatchIsVerbComposition) return load_CBlockMatchIsVerbComposition(tp, ctx);
 	if (tp == BlockType::BlockMatchIsAdverbialComparasion) return load_CBlockMatchIsAdverbialComparasion(tp, ctx);
 	if (tp == BlockType::BlockMatchWhich) return load_CBlockMatchWhich(tp, ctx);
 	if (tp == BlockType::BlockMatchWhichNot) return load_CBlockMatchWhichNot(tp, ctx);
@@ -1132,6 +1142,8 @@ HBlockNoum  load_CBlockNoum(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockNoumStr) return load_CBlockNoumStr(tp, ctx);
 	if (tp == BlockType::BlockNoumStrDet) return load_CBlockNoumStrDet(tp, ctx);
 	if (tp == BlockType::BlockNoumSupl) return load_CBlockNoumSupl(tp, ctx);
+	if (tp == BlockType::BlockNoumCompose) return load_CBlockNoumCompose(tp, ctx);
+	 
 	return nullptr;
 }
 
@@ -1884,6 +1896,11 @@ HBlockIsNotVerb  load_CBlockIsNotVerb_slot(int slot, LoadContext *ctx)
 
 }
 
+HBlockMatchIsVerbComposition load_CBlockMatchIsVerbComposition_slot(int slot, LoadContext *ctx)
+{
+	return DynamicCasting::asHBlockMatchIsVerbComposition(load_CBlock_slot(slot, ctx));
+
+}
 
 HBlockToDecideWhether  load_CBlockToDecideWhether_slot(int slot, LoadContext *ctx)
 {
@@ -2336,6 +2353,18 @@ HBlockMatchIsVerb  load_CBlockMatchIsVerb(int tp, LoadContext *ctx)
 
 }
 
+ 
+HBlockMatchIsVerbComposition  load_CBlockMatchIsVerbComposition(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockMatchIsVerbComposition);	
+	const HBlockMatchList _verbComp = load_CBlockMatchList_slot(load_id(ctx), ctx);
+	const HBlockMatch _obj = load_CBlockMatch_slot(load_id(ctx), ctx);
+	const HBlockMatch _value = load_CBlockMatch_slot(load_id(ctx), ctx);
+	CBlockMatchIsVerbComposition* ret = new CBlockMatchIsVerbComposition(_verbComp, _obj, _value);
+	return  std::shared_ptr<CBlockMatchIsVerbComposition>(ret);
+
+}
 
 HBlockAssertion_isNotDirectAssign  load_CBlockAssertion_isNotDirectAssign(int tp, LoadContext *ctx)
 {
@@ -2969,6 +2998,17 @@ HBlockNoumStr  load_CBlockNoumStr(int tp, LoadContext *ctx)
 
 }
 
+ 
+
+HBlockNoumCompose  load_CBlockNoumCompose(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockNoumCompose);
+	const std::vector<HBlockNoum> _values = load_vector<CBlockNoum>(ctx);
+	CBlockNoumCompose* ret = new CBlockNoumCompose(_values);
+	return  std::shared_ptr<CBlockNoumCompose>(ret);
+}
+
 
 HBlockNoumStrDet  load_CBlockNoumStrDet(int tp, LoadContext *ctx)
 {
@@ -3098,6 +3138,19 @@ HBlockMatchProperty  load_CBlockMatchProperty(int tp, LoadContext *ctx)
 
 }
 
+ 
+HBlockCompositionRulebook  load_CBlockCompositionRulebook(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockCompositionRulebook);
+	const HBlockKind _fromKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	const HBlockKind _toKind = load_CBlockKind_slot(load_id(ctx), ctx);
+	CBlockCompositionRulebook* ret = new CBlockCompositionRulebook(_fromKind, _toKind);
+	return  std::shared_ptr<CBlockCompositionRulebook>(ret);
+
+}
+
+
 
 HBlockCompositionRelation  load_CBlockCompositionRelation(int tp, LoadContext *ctx)
 {
@@ -3201,7 +3254,8 @@ HBlockToDecideIf  load_CBlockToDecideIf(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
 	cmp_type(tp, BlockType::BlockToDecideIf);
-	const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(load_id(ctx), ctx);
+	int slot_id = load_id(ctx);
+	const HBlockMatchIs _queryToMatch = load_CBlockMatchIs_slot(slot_id, ctx);
 	const HBlock _decideBody = load_CBlock_slot(load_id(ctx), ctx);
 	CBlockToDecideIf* ret = new CBlockToDecideIf(_queryToMatch, _decideBody);
 	return  std::shared_ptr<CBlockToDecideIf>(ret);

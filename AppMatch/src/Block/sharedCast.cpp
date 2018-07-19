@@ -1087,10 +1087,10 @@ namespace CBlocking
 		  if (c == nullptr)   return nullptr;
 		  auto   t = c->type();
 		  if (t == BlockType::BlockKindAction) return std::static_pointer_cast < CBlockKind > (c);
-		  if (t == BlockType::BlockCompositionList) return std::static_pointer_cast < CBlockKind > (c);
-		  if (t == BlockType::BlockComposition) return std::static_pointer_cast < CBlockKind > (c);
+		  if (t == BlockType::BlockCompositionList) return std::static_pointer_cast < CBlockKind > (c);		  
 		  if (t == BlockType::BlockKindNamed) return std::static_pointer_cast < CBlockKind > (c);
 		  if (t == BlockType::BlockKindValue) return std::static_pointer_cast < CBlockKind > (c);
+		  if (t == BlockType::BlockCompositionRulebook) return std::static_pointer_cast < CBlockKind > (c);
 		  if (t == BlockType::BlockCompositionRelation) return std::static_pointer_cast < CBlockKind > (c);
 		  if (t == BlockType::BlockCompositionPhrase) return std::static_pointer_cast < CBlockKind > (c);
 		  if (t == BlockType::BlockKindEntity) return std::static_pointer_cast < CBlockKind > (c);
@@ -1135,6 +1135,7 @@ namespace CBlocking
 		  if (t == BlockType::BlockMatchDirectIs) return std::static_pointer_cast < CBlockMatchIs > (c);
 		  if (t == BlockType::BlockMatchDirectIsNot) return std::static_pointer_cast < CBlockMatchIs > (c);
 		  if (t == BlockType::BlockMatchIsVerb) return std::static_pointer_cast < CBlockMatchIs > (c);
+		  if (t == BlockType::BlockMatchIsVerbComposition) return std::static_pointer_cast < CBlockMatchIsVerbComposition > (c);
 		  if (t == BlockType::BlockMatchIsNotVerb) return std::static_pointer_cast < CBlockMatchIs > (c);
 		  if (t == BlockType::BlockMatchIsAdverbialComparasion) return std::static_pointer_cast < CBlockMatchIs > (c);
 		  if (t == BlockType::BlockMatchWhich) return std::static_pointer_cast < CBlockMatchIs > (c);
@@ -1310,6 +1311,16 @@ namespace CBlocking
 		  if (c == nullptr)   return nullptr;
 		  auto   t = c->type();
 		  if (t == BlockType::BlockIsNotVerb) return std::static_pointer_cast < CBlockIsNotVerb > (c);
+		  return nullptr;
+	  }
+
+
+	 
+	 HBlockMatchIsVerbComposition    asHBlockMatchIsVerbComposition(CBlocking::HBlock  c)
+	  {
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockMatchIsVerbComposition) return std::static_pointer_cast < CBlockMatchIsVerbComposition > (c);
 		  return nullptr;
 	  }
 

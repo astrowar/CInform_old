@@ -76,6 +76,7 @@ namespace CBlocking
 		HBlockAssertion_is asHBlockAssertion_is(CBlocking::HBlock c);
 		HBlockIsVerb asHBlockIsVerb(CBlocking::HBlock c);
 		//HBlockAssertion_isActionOf asHBlockAssertion_isActionOf(CBlocking::HBlock c);
+		HBlockMatchIsVerbComposition    asHBlockMatchIsVerbComposition(CBlocking::HBlock  c);
 		HBlockIsNotVerb asHBlockIsNotVerb(CBlocking::HBlock c);
 		HBlockMatchAny asHBlockMatchAny(CBlocking::HBlock c);
 		HBlockMatchText asHBlockMatchText(CBlocking::HBlock c);		 

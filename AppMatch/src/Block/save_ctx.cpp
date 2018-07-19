@@ -262,6 +262,7 @@ void raiseError()
   int  save_CBlockComposition(HBlockComposition x, SaveContext *ctx);
   int  save_CBlockCompositionList(HBlockCompositionList x, SaveContext *ctx);
   int  save_CBlockCompositionRelation(HBlockCompositionRelation x, SaveContext *ctx);
+  int  save_CBlockCompositionRulebook(HBlockCompositionRulebook x, SaveContext *ctx);
   int  save_CBlockCompositionPhrase(HBlockCompositionPhrase x, SaveContext *ctx);
   int  save_CBlockCompostionPhrase(HBlockCompostionPhrase x, SaveContext *ctx);
   int  save_CBlockControlToken(HBlockControlToken x, SaveContext *ctx);
@@ -309,6 +310,7 @@ void raiseError()
   int  save_CBlockMatchIsAdverbialComparasion(HBlockMatchIsAdverbialComparasion x, SaveContext *ctx);
   int  save_CBlockMatchProperty(HBlockMatchProperty x, SaveContext *ctx);
   int  save_CBlockMatchWhich(HBlockMatchWhich x, SaveContext *ctx);
+  int  save_CBlockMatchIsVerbComposition(HBlockMatchIsVerbComposition x, SaveContext *ctx);
   int  save_CBlockMatchWhichNot(HBlockMatchWhichNot x, SaveContext *ctx);
   int  save_CBlockVariableNamed(HBlockVariableNamed x, SaveContext *ctx);
   int  save_CBlockNumber_base(HBlockNumber x, SaveContext *ctx);
@@ -355,6 +357,7 @@ void raiseError()
 	  if (t == BlockType::BlockMatchWhich) return save_CBlockMatchWhich(std::static_pointer_cast < CBlockMatchWhich > (x), ctx);
 	  if (t == BlockType::BlockMatchWhichNot) return save_CBlockMatchWhichNot(std::static_pointer_cast < CBlockMatchWhichNot > (x), ctx);
 
+	  if (t == BlockType::BlockMatchIsVerbComposition) return save_CBlockMatchIsVerbComposition(std::static_pointer_cast < CBlockMatchIsVerbComposition > (x), ctx);
 	  raiseError();
 	  return -1;
   }
@@ -404,8 +407,7 @@ void raiseError()
 	  if (t == BlockType::BlockCompositionList) return save_CBlockCompositionList(std::static_pointer_cast < CBlockCompositionList > (x), ctx);
 	  if (t == BlockType::BlockCompositionRelation) return save_CBlockCompositionRelation(std::static_pointer_cast < CBlockCompositionRelation > (x), ctx);
 	  if (t == BlockType::BlockCompositionPhrase) return save_CBlockCompositionPhrase(std::static_pointer_cast < CBlockCompositionPhrase > (x), ctx);
-	  if (t == BlockType::BlockComposition) return save_CBlockComposition_base(std::static_pointer_cast < CBlockComposition > (x), ctx);
-
+	  if (t == BlockType::BlockCompositionRulebook) return save_CBlockCompositionRulebook(std::static_pointer_cast < CBlockCompositionRulebook > (x), ctx);
 	  raiseError();
 	  return -1;
   }
@@ -572,8 +574,7 @@ void raiseError()
 	  if (t == BlockType::BlockCompostionPhrase) return save_CBlockCompostionPhrase(std::static_pointer_cast < CBlockCompostionPhrase > (x), ctx);
 	  if (t == BlockType::BlockNamedValue) return save_CBlockNamedValue(std::static_pointer_cast < CBlockNamedValue > (x), ctx);
 	  if (t == BlockType::BlockList_OR) return save_CBlockList_OR(std::static_pointer_cast < CBlockList_OR > (x), ctx);
-	  if (t == BlockType::BlockMatchKind) return save_CBlockMatchKind(std::static_pointer_cast < CBlockMatchKind > (x), ctx);
-	  if (t == BlockType::BlockComposition) return save_CBlockComposition(std::static_pointer_cast < CBlockComposition > (x), ctx);
+	  if (t == BlockType::BlockMatchKind) return save_CBlockMatchKind(std::static_pointer_cast < CBlockMatchKind > (x), ctx);	  
 	  if (t == BlockType::BlockStaticDispatch) return save_CBlockStaticDispatch(std::static_pointer_cast < CBlockStaticDispatch > (x), ctx);
 	  if (t == BlockType::BlockMatchIsNotVerb) return save_CBlockMatchIsNotVerb(std::static_pointer_cast < CBlockMatchIsNotVerb > (x), ctx);
 	  if (t == BlockType::BlockMatchNOT) return save_CBlockMatchNOT(std::static_pointer_cast < CBlockMatchNOT > (x), ctx);
@@ -651,6 +652,7 @@ void raiseError()
 	  if (t == BlockType::BlockNoumCompose) return save_CBlockNoumCompose(std::static_pointer_cast < CBlockNoumCompose > (x), ctx);
 	  if (t == BlockType::BlockMatchWhich) return save_CBlockMatchWhich(std::static_pointer_cast < CBlockMatchWhich > (x), ctx);
 	  if (t == BlockType::BlockKindAction) return save_CBlockKindAction(std::static_pointer_cast < CBlockKindAction > (x), ctx);
+	  if (t == BlockType::BlockCompositionRulebook) return save_CBlockCompositionRulebook(std::static_pointer_cast < CBlockCompositionRulebook > (x), ctx);
 
 	  raiseError();
 	  return -1;
@@ -712,7 +714,7 @@ void raiseError()
 	  int cc = cached(x.get(), ctx); if (cc != -1) return  cc;
 	  const BlockType t = x->type();
 	  if (t == BlockType::BlockCompositionPhrase) return save_CBlockCompositionPhrase(std::static_pointer_cast < CBlockCompositionPhrase > (x), ctx);
-	  if (t == BlockType::BlockComposition) return save_CBlockComposition(std::static_pointer_cast < CBlockComposition > (x), ctx);
+	  if (t == BlockType::BlockCompositionRulebook) return save_CBlockCompositionRulebook(std::static_pointer_cast < CBlockCompositionRulebook > (x), ctx);
 	  if (t == BlockType::BlockKindEntity) return save_CBlockKindEntity(std::static_pointer_cast < CBlockKindEntity > (x), ctx);
 	  if (t == BlockType::BlockKindNamed) return save_CBlockKindNamed(std::static_pointer_cast < CBlockKindNamed > (x), ctx);
 	  if (t == BlockType::BlockKindValue) return save_CBlockKindValue(std::static_pointer_cast < CBlockKindValue > (x), ctx);
@@ -869,6 +871,22 @@ void raiseError()
 
   }
 
+ 
+
+	  int  save_CBlockCompositionRulebook(HBlockCompositionRulebook x, SaveContext *ctx)
+  {
+	  if (x == nullptr) return 0;
+	  lock_ptr(x.get(), ctx);
+	  const int _fromKind = save_CBlockKind(x->fromKind, ctx);
+	  const int _toKind = save_CBlockKind(x->toKind, ctx);
+	  const int slot = alloc_slot(x.get(), ctx);
+	  save_type(x->type(), ctx);
+	  save_id(_fromKind, ctx);
+	  save_id(_toKind, ctx);
+	  end_slot(x.get(), ctx);
+	  return  slot;
+
+  }
 
   int  save_CBlockCompositionRelation(HBlockCompositionRelation x, SaveContext *ctx)
   {
@@ -890,9 +908,6 @@ void raiseError()
   {
 	  if (x == nullptr) return 0;
 	  lock_ptr(x.get(), ctx);
-
-
-
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
 	  save_string(x->noum, ctx);
@@ -2357,6 +2372,25 @@ void raiseError()
 
   }
 
+  
+ int  save_CBlockMatchIsVerbComposition(HBlockMatchIsVerbComposition x, SaveContext *ctx)
+  {
+	  if (x == nullptr) return 0;
+	  lock_ptr(x.get(), ctx);
+	   
+	  const int _verbComp = save_CBlockMatchList(x->verbComp, ctx);
+	  const int _obj = save_CBlockMatch(x->obj, ctx);
+	  const int _value = save_CBlockMatch(x->value, ctx);
+	  const int slot = alloc_slot(x.get(), ctx);
+	  save_type(x->type(), ctx);
+	  save_id(_verbComp, ctx);
+	  save_id(_obj, ctx);
+	  save_id(_value, ctx);
+	  end_slot(x.get(), ctx);
+	  return  slot;
+
+  }
+
 
   int  save_CBlockMatchWhichNot(HBlockMatchWhichNot x, SaveContext *ctx)
   {
@@ -2535,26 +2569,28 @@ void raiseError()
 int  save_CBlockNoumStrDet(HBlockNoumStrDet x, SaveContext *ctx)
 {
 	if (x == nullptr) return 0;
-	lock_ptr(x.get(), ctx);
-
-	const int slot = alloc_slot(x.get(), ctx);
+	lock_ptr(x.get(), ctx);	
+	const int _noum = save_CBlockNoum(x->noum, ctx);
+    const int slot = alloc_slot(x.get(), ctx);
 	save_type(x->type(), ctx);
 	save_string(x->det, ctx);
-	save_CBlockNoum(x->noum, ctx);
+	save_id(_noum, ctx);
 	end_slot(x.get(), ctx);
 	return  slot;
 
 }
 
 
- 
+
+
 int  save_CBlockNoumCompose(HBlockNoumCompose x, SaveContext *ctx)
 {
 	if (x == nullptr) return 0;
 	lock_ptr(x.get(), ctx);
+	const std::list<int> _lista = save_vector(x->noums, ctx);
 	const int slot = alloc_slot(x.get(), ctx);
 	save_type(x->type(), ctx);
-	save_vector(x->noums , ctx);	
+	save_id_list(_lista, ctx);
 	end_slot(x.get(), ctx);
 	return  slot;
 
