@@ -36,6 +36,14 @@ namespace CBlocking {
 			return b1->named() == b2->named();
 		}
 
+		bool isSame_BlockNoumStrDet(CBlockNoumStrDet* b1, CBlockNoumStrDet* b2)
+		{
+			 
+			return b1->named() == b2->named();
+		}
+
+		
+
 
 		bool isSame_BlockNothing(CBlockNothing* b1, CBlockNothing* b2)
 		{
@@ -319,6 +327,7 @@ namespace CBlocking {
 
 
 	if (b1->type() == BlockNoumStr)  return Comparison::isSame_BlockNoum(static_cast<CBlockNoumStr*>(b1), static_cast<CBlockNoumStr*>(b2));
+	if (b1->type() == BlockNoumStrDet)  return Comparison::isSame_BlockNoumStrDet(static_cast<CBlockNoumStrDet*>(b1), static_cast<CBlockNoumStrDet*>(b2));
 	if (b1->type() == BlockInstanceAnonymous)  return Comparison::isSame_BlockInstance(static_cast<CBlockInstanceAnonymous*>(b1), static_cast<CBlockInstanceAnonymous*>(b2));
 	if (b1->type() == BlockInstanceNamed)  return Comparison::isSame_BlockInstanceNamed(static_cast<CBlockInstanceNamed*>(b1), static_cast<CBlockInstanceNamed*>(b2));
 	if (b1->type() == BlockActionNamed)  return Comparison::isSame_BlockActionNamed(static_cast<CBlockActionNamed*>(b1), static_cast<CBlockActionNamed*>(b2));

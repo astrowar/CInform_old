@@ -262,6 +262,10 @@ using ListOfNamedValue = std::list<NamedValue>;
 		bool insert_newEventHandle(HBlockEventHandle event_handle);
 		bool assert_it_variableGlobal(HBlock obj, HBlock baseKind, HBlock defaultValue);
 
+
+		CResultMatch combinatoria_list_match(std::list<HBlockMatch> M, std::vector<HBlock> value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		CResultMatch combinatoria_list(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+
 		CResultMatch MatchList(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
@@ -275,6 +279,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CResultMatch Match_list_adjetivos(HBlockMatchList mList, HBlock value, HRunLocalScope localsEntry,
 		                                  QueryStacking::QueryStack* stk);
 		
+		 
+		CResultMatch Match__(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		std::map<std::string, HBlock>  get_matches_cases(std::vector<string> matches);
@@ -551,6 +557,9 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		HBlockNoum get_plural_of(string s);
 		HBlockNoum get_singular_of(string s);
+
+		HBlock  discart_det(HBlock  value);
+
 		bool isSameString(const string& s1, const string& s2);
 
 

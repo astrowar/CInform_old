@@ -503,7 +503,10 @@ HBlockNoum NSParser::ParseAssertion::parse_noumVec(CParser * p, std::vector<HTer
 		HTerm rnoum = res_det.matchs["Noum"];
 		std::vector<HTerm> term_p = { rnoum };		 
 		HBlockNoum noum_next=   parse_noum_single(p, term_p);
-		return  std::make_shared<CBlockNoumStrDet>(rdet->repr() , noum_next);
+		if (noum_next != nullptr)
+		{ 
+			return  std::make_shared<CBlockNoumStrDet>(rdet->repr(), noum_next);
+		}
 	}
 
 	{

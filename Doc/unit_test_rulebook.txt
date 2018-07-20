@@ -64,3 +64,49 @@ rule1 is rulebook
 rule2 is K based rulebook
 rule3 is rulebook producing L
 rule4 is K based rulebook producing L  
+
+
+
+	
+Understand  restart (thing called X ) with  button (color called Z)   as rebooting
+
+Understand "pry [something ] with from [something preferably held]" as prying it with
+Understand "restart [something] with [color]" as reseting
+Understand "restart [something] with [a tool]" as rebooting
+
+ 
+Prying it with is an action applying to one thing and one carried thing
+Check prying it with:
+    say "I don't think you're supposed to do that here[line break]" 
+   
+    
+ 
+
+To decide whether (item - a thing) interests (character - a person):
+    decide on false
+   
+To decide what text is the kind name for (parseme - S) with plural flag (truth state - F):
+    let the result be some text
+
+
+To fail at saying a kind because of ( parseme - S):
+   say "[low-level runtime failure in]Printing according to Kind Names[with explanation]I was asked to say a kind, but was unable to find all of the entries in my kind name bookkeeping; it might be corrupted.  In case it's helpful, one offending parseme was [S converted to a parseme].[terminating the story]".
+
+to decide if (a thing called X) is visibe:
+   fail at saying a kind because of X
+   decide on true
+   
+   
+To decide what text is the kind name for (parseme - S) with plural flag (truth state - F):
+    let the result be some text
+    if F is true:
+       let PL be the first text value matching the key S in the plural kind name hash table
+       now the result is PL or ""       
+    otherwise:
+       now the result is ""
+    if the result is empty:
+        fail at saying a kind because of S
+    decide on the result
+    
+    
+    

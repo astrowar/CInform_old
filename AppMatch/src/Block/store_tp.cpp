@@ -378,7 +378,7 @@ HBlock load_line(LoadContext *ctx)
 		const int slot_id = load_int(ctx);
 		_b = load_CBlock(-1, ctx);
 		ctx->cache[slot_id] = _b;
-		_b->dump("L   ");
+		//_b->dump("L   ");
 	}
 	ctx->new_line(); //le o new line do arquivo
 	while (ctx->is_empty_line())

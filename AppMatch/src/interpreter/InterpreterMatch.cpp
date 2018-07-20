@@ -27,8 +27,121 @@ using namespace QueryStacking;
 
 //Match engine
 
+
+ 
+
+CResultMatch CBlockInterpreter::combinatoria_list_match(std::list<HBlockMatch> M , std::vector<HBlock> value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	
+	int n = value.size();
+	int m = M.size();
+	if (m== 0 && n ==0 ) return CResultMatch(true);
+	if (m>n) return CResultMatch(false);
+	if (m==0) return CResultMatch(false);
+
+	if (m == 1 && n== 1)
+	{
+	 
+		auto r =   Match(M.front(), value.front(), localsEntry, stk);
+		return r;
+	}
+
+	if (m == n)
+	{
+		auto p1 = M.front();
+		auto q1 = value.front();
+		auto r =   Match(M.front(), value.front(), localsEntry, stk);
+		if (r.hasMatch)
+		{
+			std::list<HBlockMatch> p_rem = std::list<HBlockMatch>(std::next(M.begin()),M.end());			
+			std::vector<HBlock> q_rem = std::vector<HBlock>(value.begin() + 1, value.end());
+			auto r2 =  combinatoria_list_match(p_rem, q_rem, localsEntry, stk);
+			if (r2.hasMatch)
+			{
+				r2.append(r);
+				return r2;
+			}
+			return CResultMatch(false);
+
+		}
+		return CResultMatch(false);
+	}
+
+	if (m == 1  )
+	{
+		auto header = std::make_shared<CBlockList>(std::list<HBlock>(value.begin(), value.end()));
+		auto r =   Match(M.front(), header, localsEntry, stk);
+		return r;
+	}
+
+	for (int i = 1; i < n ; ++i)
+	{
+
+		
+		CResultMatch r;
+		HBlock header;
+		if (i == 1)
+		{
+			  header = value[0];
+			
+		}
+		else
+		{
+			  header = std::make_shared<CBlockList>( std::list<HBlock>(value.begin(), value.begin() + i));
+			
+		}
+
+
+
+		r = Match(M.front(), header, localsEntry, stk);
+	
+ 
+
+		if (r.hasMatch)
+		{
+			auto tail = std::vector<HBlock>(value.begin()+i, value.end());
+			std::list<HBlockMatch> Mtail = std::list<HBlockMatch>(std::next(M.begin()), M.end());
+			auto rtail = combinatoria_list_match(Mtail, tail, localsEntry, stk);
+			if (rtail.hasMatch)
+			{
+				return rtail;
+			}
+		}
+	}
+	return CResultMatch(false);
+}
+
+
+//as listas tem tamanhos diferentes value > M .... vamos combinar os termos e testar um por um !
+CResultMatch  CBlockInterpreter::combinatoria_list(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	std::list<HBlockMatch> M_in = M->matchList;
+	std::vector<HBlock> value_in = std::vector<HBlock>(value->lista.begin(), value->lista.end());
+
+	auto rq =  combinatoria_list_match(M_in, value_in, localsEntry, stk);
+
+
+	//M_in.front()->dump(">    ");
+	//value->dump(">    ");
+	//if (rq.hasMatch) printf(" T\n");
+	//else printf(" F\n");
+
+
+	return rq;
+
+}
+
+
+
+
 CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,HRunLocalScope localsEntry, QueryStack *stk)
 {
+	if (M->matchList.size() <= value->lista.size())
+	{
+		auto rc =  combinatoria_list(M, value, localsEntry, stk);
+
+		return rc;
+	}
 	if (M->matchList.size() != value->lista.size())
 	{
 		 
@@ -71,6 +184,24 @@ CResultMatch  CBlockInterpreter::MatchList(HBlockMatchList M, HBlockList value,H
 
 HBlockList getCompoundNoumAsList(HBlockNoum noum)
 {
+	if (auto noumd = asHBlockNoumStrDet(noum))
+	{
+		return getCompoundNoumAsList(noumd->noum);
+	}
+
+	if (auto noumc = asHBlockNoumCompose(noum))
+	{
+		std::list<HBlock> noums_s;
+		for(auto n : noumc->noums)
+		{
+			noums_s.push_back(n);
+		}
+		return make_shared<CBlockList>(noums_s);
+		
+	}
+
+
+
 	std::list<HBlock> noums;
 	auto str = noum->named();
 	const std::string delimiter = " ";
@@ -116,6 +247,8 @@ std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
 	std::list<HBlockMatch>::iterator init_ptr = lst.begin();
 	while (init_ptr != lst.end())
 	{
+		
+
 		if (auto mnoum = asHBlockMatchNoum(*init_ptr))
 		{
 			if (is_article(mnoum->inner->named()))
@@ -601,18 +734,26 @@ CResultMatch  CBlockInterpreter::Match_list_adjetivos(HBlockMatchList mList, HBl
 	}
 
 
+CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	printf("Is Match ?\n");
+	value->dump("   ");
+	M->dump("   ");
+	printf("\n\n");
+	auto r = Match__(M, value, localsEntry, stk);
 
+	value->dump("   ");
+	M->dump("   ");
+	if(r.hasMatch)printf("T   \n\n");
+	else          printf("F   \n\n");
 
-CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
+	return r;
+}
+
+CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalScope localsEntry ,QueryStack *stk)
 {
  
-	//printf("Is Match ?\n");
-	//value->dump("   ");
-	//M->dump("   ");	
-	//printf("\n\n");
-
-
-
+ 
 
 	if (auto   vProp = asHBlockProperty(value))
 	{
@@ -631,89 +772,108 @@ CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalSco
 	 
 	// Pois pode ser que um deles seja uma lista de noum e o parser interpretou como um Match List
 
-	if (auto   mAtom = asHBlockMatchNoum(M))
+	if (auto   mNoum = asHBlockMatchNoum(M))
 	{
-		if (auto inner =  asHBlockNoum(mAtom->inner))
-			if (auto cinner =  asHBlockNoum(value))
-			{
-				//Substitua essa igualdade Statica por uma Dynamica
-				 
-				if (isSameString( inner->named(), cinner->named()))
-				{
-				  return 	CResultMatch(true );
-				}
-
-				//Elimino esta linha pois aqui nada deve entrar sem estar resolvido
-
-
-				//QueryResultContext rcc = query_is(cinner, inner, localsEntry, stk);
-				 
-				//return CResultMatch(rcc.result == QEquals);
-				return 	CResultMatch(false);
-			}
- 
-	 
-		if (HBlockNoum inner_2 =  asHBlockNoum(mAtom->inner))
 		{
-			if (auto vNoumm =  asHBlockNoum(value))
-			{
-				if (isSameString(vNoumm->named(), inner_2->named()))
+			if (auto m_noum = asHBlockNoum(mNoum->inner))
+				if (auto cinner = asHBlockNoum(value))
 				{
-					return CResultMatch( true );
-				}
-			}
+					//Substitua essa igualdade Statica por uma Dynamica				 
+					if (isSameString(m_noum->named(), cinner->named()))
+					{
+						return 	CResultMatch(true);
+					}
 
-			if (inner_2->named().size() == 1  )
-				if (isupper(inner_2->named()[0]))
+					auto resolved_noum  = resolve_noum(cinner, localsEntry);
+					if (resolved_noum != nullptr)
+					{
+						if (resolved_noum != cinner)
+						{
+							CResultMatch nn_res = Match(M, resolved_noum, localsEntry, stk);
+							return nn_res;
+						}
+					}
+
+					return 	CResultMatch(false);
+				}
+		}
+		{
+			if (HBlockNoum m_noum = asHBlockNoum(mNoum->inner))
+			{
+				if (auto vNoumm = asHBlockNoum(value))
 				{
-					return CResultMatch(inner_2->named(), value);
+					if (isSameString(vNoumm->named(), m_noum->named()))
+					{
+						return CResultMatch(true);
+					}
 				}
 
-			if (auto cnInstance = asHBlockInstanceNamed(value))
-			{
-				auto rQ = query_is(value, inner_2, localsEntry, stk);
-				if (rQ.result == QEquals)
+				if (m_noum->named().size() == 1)
+					if (isupper(m_noum->named()[0]))
+					{
+						return CResultMatch(m_noum->named(), value);
+					}
+
+				if (auto cnInstance = asHBlockInstanceNamed(value))
 				{
-					return CResultMatch(true);
+					auto rQ = query_is(value, m_noum, localsEntry, stk);
+					if (rQ.result == QEquals)
+					{
+						return CResultMatch(true);
+					}
+					return CResultMatch(false);
+
+					if (cnInstance->named == m_noum->named()) return CResultMatch(true);
+ 
 				}
+
+				if (auto cInst = asHBlockInstance(value))
+				{
+					//Substitua essa igualdade Statica por uma Dynamica
+					//return CResultMatch(inner->named == cinner->named);
+					// Never Recall Query again over a Noum
+
+					bool actual_value = false;
+					if (cInst->is_set(m_noum, actual_value))
+					{
+						return CResultMatch(actual_value);
+					}
+					return 	CResultMatch(false);
+
+					QueryResultContext r = query_is(cInst, m_noum, localsEntry, stk);
+					return CResultMatch(r.result == QEquals);
+				}
+
+
+				if (auto cAction = asHBlockActionNamed(value))
+				{
+					if (cAction->named == m_noum->named()) return CResultMatch(true); 
+				}
+
+				//Noum them um det ?				
+				if (auto cNoumStrDet = asHBlockNoumStrDet(m_noum))
+				{
+					auto new_value = discart_det(value);	
+					CResultMatch mres = Match( std::make_shared<CBlockMatchNoum>(cNoumStrDet->noum), new_value, localsEntry, stk);
+					return mres;
+				}
+
+				//Noum Compose vs List of Noums ?				
+				if (auto cNoumCompose = asHBlockNoumCompose(m_noum))
+				{
+					HBlockList n_list = std::make_shared<CBlockList>(std::list<HBlock>(cNoumCompose->noums.begin(), cNoumCompose->noums.end()));
+					std::list<HBlockMatch> mmlist;
+					
+					for (auto k : cNoumCompose->noums)mmlist.push_back(std::make_shared<CBlockMatchNoum>(k ));					
+					CResultMatch mres = Match(std::make_shared<CBlockMatchList>(mmlist), value, localsEntry, stk);
+					return mres;
+				}
+
 				return CResultMatch(false);
-
-				if (cnInstance->named == inner_2->named()) return CResultMatch(true);
-				//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
-				//	return CResultMatch(r.result == QEquals); 
+				//Never call query again over a Noum
+				QueryResultContext rcc = query_is(value, m_noum, localsEntry, stk);
+				return CResultMatch(rcc.result == QEquals);
 			}
-
-			if (auto cInst =  asHBlockInstance(value))
-			{
-				//Substitua essa igualdade Statica por uma Dynamica
-				//return CResultMatch(inner->named == cinner->named);
-
-
-				// Never Recall Query again over a Noum
-				bool actual_value = false;
-				
-				if (cInst->is_set(inner_2, actual_value))
-				{
-                  return CResultMatch(actual_value);					 
-				} 
-				return 	CResultMatch(false);
-
-				QueryResultContext r = query_is(cInst, inner_2, localsEntry, stk);
-				return CResultMatch(r.result == QEquals); 
-			}
-			 
-
-			if (auto cAction = asHBlockActionNamed (value))
-			{ 
-				if (cAction->named == inner_2->named()) return CResultMatch( true );
-			//	QueryResultContext r = query_is(cAction, inner_2, localsEntry, stk);
-			//	return CResultMatch(r.result == QEquals); 
-			}
-
-			return CResultMatch(false);
-			//Never call query again over a Noum
-			QueryResultContext rcc = query_is(value, inner_2, localsEntry, stk);
-			return CResultMatch(rcc.result == QEquals);
 		}
 		return CResultMatch(false);
 	}

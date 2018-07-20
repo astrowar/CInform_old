@@ -62,8 +62,49 @@ bool CBlockInterpreter::isSameString(const string& s1 , const string& s2)
 
 
 
+HBlock  CBlockInterpreter::discart_det(HBlock value) 
+{
+	if (HBlockNoumStr	ns = asHBlockNoumStr(value))
+	{
+		if (this->language->is_det( ns ))
+		{
+			return nullptr;
+		}
+	}
 
- 
+	if (HBlockNoumStrDet	nn = asHBlockNoumStrDet(value))
+	{
+		return discart_det(nn->noum);
+	}
+
+	if (HBlockNoumCompose ncomp = asHBlockNoumCompose(value))
+	{
+		std::vector<HBlockNoum> ns;
+		for (auto v : ncomp->noums)
+		{
+			auto nn = discart_det(v);
+			if (nn != nullptr) ns.push_back(asHBlockNoum(nn));
+		}
+		if (ns.empty()) return nullptr;
+		return std::make_shared<CBlockNoumCompose>(ns);
+	}
+
+	if (HBlockList clist  = asHBlockList(value))
+	{
+		std::list<HBlock > ns;
+		for (auto v : clist->lista)
+		{
+			auto nn = discart_det(v);
+			if (nn != nullptr) ns.push_back(nn);
+		}
+		if (ns.empty()) return nullptr;
+		return std::make_shared<CBlockList>(ns);
+	}
+
+
+
+	return value;
+}
 
 
 
@@ -375,6 +416,10 @@ HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEn
 
 HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve)
 {
+	if (HBlockNoumStrDet ndet= asHBlockNoumStrDet(n)) 
+	{
+		return resolve_noum(ndet->noum, localsEntry, noumsToResolve);
+	}
 	return resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
 

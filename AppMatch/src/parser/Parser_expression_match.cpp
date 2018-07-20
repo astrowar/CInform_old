@@ -587,7 +587,10 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_noum(CParser *p, std::vector<
 				return nullptr;
 			} 	*/				 	
 			auto p_noum = Expression::parser_noum_expression(p,res_det.matchs["Noum"]);
-			return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStrDet>(rdet->repr(), p_noum));
+			if (p_noum != nullptr)
+			{
+				return std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStrDet>(rdet->repr(), p_noum));
+			}
 		}
 
 

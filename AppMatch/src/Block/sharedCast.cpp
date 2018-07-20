@@ -936,6 +936,16 @@ namespace CBlocking
 
 
   
+		 
+		HBlockNoumCompose    asHBlockNoumCompose(CBlocking::HBlock  c)
+		{
+			if (c == nullptr)   return nullptr;
+			auto   t = c->type();
+			if (t == BlockType::BlockNoumCompose) return std::static_pointer_cast <CBlockNoumCompose> (c);
+			return nullptr;
+		}
+
+
 		HBlockNoum    asHBlockNoum(CBlocking::HBlock  c)
 	{
 		if (c == nullptr)   return nullptr;

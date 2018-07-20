@@ -16,6 +16,23 @@ bool LanguageEn::is_nothing(HBlockNoum noum)
     return false;
 }
 
+bool LanguageEn::is_det(HBlockNoum noum)
+{
+
+	if (noum->named() == "the") return true;
+	if (noum->named() == "The") return true;
+	if (noum->named() == "a") return true;
+	if (noum->named() == "A") return true;
+	if (noum->named() == "an") return true;
+	if (noum->named() == "An") return true;
+	if (noum->named() == "Some") return true;
+	if (noum->named() == "some") return true;	
+
+	return false;
+}
+ 
+
+
 HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum) {
     if (isSameString(noum->named(), "true")) return std::make_shared<CBlockBooleanValue>(true);
     if (isSameString(noum->named(), "false")) return std::make_shared<CBlockBooleanValue>(false);

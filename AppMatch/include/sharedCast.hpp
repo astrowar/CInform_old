@@ -204,6 +204,7 @@ namespace CBlocking
 		HBlockKind    asHBlockKind(CBlocking::HBlock  c);
 		HBlockInstance    asHBlockInstance(CBlocking::HBlock  c);
 		HBlockNoum    asHBlockNoum(CBlocking::HBlock  c);
+		HBlockNoumCompose    asHBlockNoumCompose(CBlocking::HBlock  c);
 		HBlockValue    asHBlockValue(CBlocking::HBlock  c);
 		HBlockSelector    asHBlockSelector(CBlocking::HBlock  c);
 		HBlockActionCall    asHBlockActionCall(CBlocking::HBlock  c);

@@ -1,147 +1,42 @@
-To decide what money is the best money from (thing called buyer ) for (price called price):
-    let the result be some text 
-	
-	
-Understand  restart (thing called X ) with  button (color called Z)   as rebooting
-
-Understand "pry [something ] with from [something preferably held]" as prying it with
-Understand "restart [something] with [color]" as reseting
-Understand "restart [something] with [a tool]" as rebooting
-
- 
-Prying it with is an action applying to one thing and one carried thing
-Check prying it with:
-    say "I don't think you're supposed to do that here[line break]" 
-   
-    
- 
-
-To decide whether (item - a thing) interests (character - a person):
-    decide on false
-   
-To decide what text is the kind name for (parseme - S) with plural flag (truth state - F):
-    let the result be some text
-
-
-To fail at saying a kind because of ( parseme - S):
-   say "[low-level runtime failure in]Printing according to Kind Names[with explanation]I was asked to say a kind, but was unable to find all of the entries in my kind name bookkeeping; it might be corrupted.  In case it's helpful, one offending parseme was [S converted to a parseme].[terminating the story]".
-
-to decide if (a thing called X) is visibe:
-   fail at saying a kind because of X
-   decide on true
-   
-   
-To decide what text is the kind name for (parseme - S) with plural flag (truth state - F):
-    let the result be some text
-    if F is true:
-       let PL be the first text value matching the key S in the plural kind name hash table
-       now the result is PL or ""       
-    otherwise:
-       now the result is ""
-    if the result is empty:
-        fail at saying a kind because of S
-    decide on the result
-    
-    
-    
-people can be blond , red head or  brown
-
-the verb (can see) implies a dynamic relation 
-to decide if (a thing called X) can see (a thing called R)  :
-   decide on true
-   
-   
-The cat behavior is a rulebook producing an object.
-Cat behavior when Austin can see the ball of wool: 
-    rule succeeds with result the ball of wool.  
-    
-thing is an kinf of entity
-
-to decide if (a thing called X) can see (a thing called R)  :
-   decide on true
-   
-to decide if (a thing called X) cannot K :
-   if T can K :  decide on false
-   
-to decide if (a thing called X) is visibe:
-   if player can see X :  decide on true
+money  is an kind of value 
+dollar,real and gold are money
+price  is an kind of value 
+low,high are price
 
  
 
+To decide what price   is the demand  for (money called M):
+   if M is real : decide on low
+   decide on high
+    
+    
 
-carry out eating  bad (thing called X )   :
-    say (text bad eating)
-
- 
-
-unit init :
-    thing is an kind of entity
-    texture is a kind of value
-    texture  are rough, stubbly and smooth
-    thing has a texture
-    apple is an thing
-    apple  is rough
-  
-
-
-unit test :
-   now apple  is smooth
-assert:  apple  is smooth
-
-unit test :
-   now apple  is stubbly 
-assert:  apple  is stubbly 
-assert:  apple  is not  rough
-
-
-unit init :
-   people is a kind of entity 
-   people can be evasive or elusive
-   people can be male or female
-   people can be blond , red head or  brown
-   people is usually male    
-   people is usually evasive    
-   Thomas is elusive people
-   Bob is an people
-   Mary is an red head ,female, elusive people
-   
-unit test :
-   pass
-assert : Thomas is elusive   
-assert : Bob is evasive
-assert : Mary is female
-assert : Mary is red head
- 
 unit init:
-  direction is a kind of value
-  The direction are north, south , west and east
-  prevailing wind is a direction that varies
-  the prevailing wind is south
-  the prevailing wind is always west
-  the destination is always north
+  person is a kind of entity
+  john is an person
+  joao is an person
+
+unit test:
+  pass
+assert: ( demand  for real ) is low   
+assert: (the best money from john for high) is dollar 
+assert: (the best money from joao for low ) is real 
+assert: (demand  for real ) is low 
+assert: demand  for real is low 
+
+unit test:
+  pass
+assert: high is  price
+
+unit test:
+  pass
+assert: john is not dollar
   
 unit test:
   pass
-assert: prevailing wind is west
+assert: dollar is  money
 
-unit test:  
-   now prevailing wind is beta
-assert: prevailing wind is west   
-
-
-unit init:
-  thing is a kind of entity
-  ice cube is a thing
-  heat is a kind of value
-  The heat are frosty, cold, cool, room temperature, warm, hot  and scalding
-  thing has a heat 
-  The heat of a thing is usually room temperature
-  apple is a thing
-  
-unit test:
-  pass
-assert: heat of ice cube is room temperature 
-
-unit test:
-  now heat of ice cube is frosty  
-assert : heat of ice cube is frosty    
+ To decide what money is the best money from (person called buyer ) for (price called price_value):
+    if buyer is john : decide on dollar
+    if buyer is joao : decide on real
+    decide on gold
