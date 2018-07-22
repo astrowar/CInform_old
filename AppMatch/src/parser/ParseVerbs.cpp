@@ -232,15 +232,11 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-            HPred verbMatch;
-            HBlock a_verb;
-           
-             
-            if (CList *plist = asCList(res.matchs["VerbList"].get())) {
+	        if (nullptr != asCList(res.matchs["VerbList"].get())) {
                 //eh uma lista
 
                 HTerm listExpand =  expandBract(res.matchs["VerbList"]);
-                plist = asCList(listExpand.get());
+                auto plist = asCList(listExpand.get());
 
                 /*if (  plist->lst.back()->repr() =="of" )
                 {
@@ -250,14 +246,14 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
 
                 HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
 
-                verbMatch = pList("VerbMatch", {});
+                HPred verbMatch = pList("VerbMatch", {});
                 auto cpList = reinterpret_cast<CPredList *>(verbMatch.get());
 
                 for ( auto ip : plist->lst) {
                     clist->push_back(std::make_shared<CBlockNoumStr>(ip->repr()));
                     cpList->plist.push_back(pLiteral(ip->repr()));
                 }
-                a_verb = clist;
+                HBlock a_verb = clist;
 
                 p->verbList->blist.push_back(verbMatch);
 

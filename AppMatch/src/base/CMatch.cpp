@@ -451,7 +451,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 			if (b->type() == TermType::PredBooleanOr)
 			{
 				if (CPredBooleanOr *v = static_cast<CPredBooleanOr *>(b.get())) {
-					int n = blist.size();
+					size_t n = blist.size();
 					if (v->blist.size() != n) return false;
 
 					for (int i = 0; i < n; ++i) {
@@ -520,7 +520,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 
 
 		bool NSTerm::isSamePred(std::vector<HPred> a, std::vector<HPred> b) {
-			int n = a.size();
+			size_t n = a.size();
 			if (n != b.size()) return false;
 			for (int i = 0; i < n; ++i) {
 				if (!a[i]->isSame(b[i])) return false;
@@ -628,7 +628,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 
 			bool isFullEnclose = true;
 
-			int slen = m.size();
+			size_t slen = m.size();
 
 			for (int i = 0; i < slen; ++i) {
 
@@ -646,7 +646,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 		MTermSet remove_boundaryListMark(MTermSet &m)
 		{
 			if (!isFullListBracket(m)) return m;
-			int n = m.size();
+			size_t n = m.size();
 			return MTermSet(m.begin() + 1, m.begin() + (n - 1));
 
 			MTermSet mnext;
@@ -659,7 +659,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 		std::pair<MTermSet::iterator, MTermSet::iterator> remove_boundaryListMark_range(MTermSet &m)
 		{
 			if (!isFullListBracket(m)) return std::make_pair(m.begin(), m.end());
-			int n = m.size();
+			size_t n = m.size();
 			return std::make_pair(m.begin() + 1, m.begin() + (n - 1));
 
 

@@ -9,6 +9,7 @@
 // copies or substantial portions of the Software.
 
 #include "parser/Parser.hpp"
+#include <sharedCast.hpp>
 using namespace CBlocking;
 using namespace NSTerm;
 using namespace NSTerm::NSMatch;
@@ -987,7 +988,7 @@ HBlockMatch   NSParser::ExpressionMatch::parser_Verb_Match(CParser *p, std::vect
 	return nullptr;
 }
 
-const std::vector<string> noum_split(const string& s, const char& c)
+std::vector<string> noum_split(const string& s, const char& c)
 {
 	string buff{ "" };
 	std::vector<string> v;
@@ -1312,6 +1313,7 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 	}
 
 	{ 
+		auto plist = std::list<HBlockMatch>();
 		CPredSequence predList = pAny("N1")	<<pAny("N2")	<<pAny("N3")	<<pAny("N4"); 
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
@@ -1319,15 +1321,54 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 			HBlockMatch n1 = parser_expression_match(p,res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
+				if (auto list1 = DynamicCasting::asHBlockMatchList(n1))
+				{
+					plist.insert(plist.end(), list1->matchList.begin(), list1->matchList.end());
+				}
+				else
+				{
+					plist.push_back(n1);
+				}
+
+
 				HBlockMatch n2 = parser_expression_match(p,res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
+					if (auto list2 = DynamicCasting::asHBlockMatchList(n2))
+					{
+						plist.insert(plist.end(), list2->matchList.begin(), list2->matchList.end());
+					}
+					else
+					{
+						plist.push_back(n2);
+					}
+
 					HBlockMatch n3 = parser_expression_match(p,res.matchs["N3"]);
 					if (n3 != nullptr)
 					{
+						if (auto list3 = DynamicCasting::asHBlockMatchList(n3))
+						{
+							plist.insert(plist.end(), list3->matchList.begin(), list3->matchList.end());
+						}
+						else
+						{
+							plist.push_back(n3);
+						}
+
 						HBlockMatch n4 = parser_expression_match(p,res.matchs["N4"]);
 						if (n4 != nullptr)
-						return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2, n3 , n4});
+						{
+							if (auto list4 = DynamicCasting::asHBlockMatchList(n4))
+							{
+								plist.insert(plist.end(), list4->matchList.begin(), list4->matchList.end());								
+							}
+							else
+							{
+								plist.push_back(n4);
+							}
+							//return  std::make_shared<CBlockMatchList>(std::list<HBlockMatch>{ n1, n2, n3, n4});
+							return  std::make_shared<CBlockMatchList>(plist);
+						}
 					}
 
 					
@@ -1337,8 +1378,70 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 		}
 	}
 
+	{
+		auto plist = std::list<HBlockMatch>();
+		CPredSequence predList = pAny("N1") << pAny("N2") << pAny("N3")  ;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				if (res.matchs["N1"]->type() == TermString)
+				{
+					if (auto list1 = DynamicCasting::asHBlockMatchList(n1))
+					{
+						plist.insert(plist.end(), list1->matchList.begin(), list1->matchList.end());
+					}
+				}
+				else
+				{
+					plist.push_back(n1);
+				}
+
+
+				HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					if (auto list2 = DynamicCasting::asHBlockMatchList(n2))
+					{
+						plist.insert(plist.end(), list2->matchList.begin(), list2->matchList.end());
+					}
+					else
+					{
+						plist.push_back(n2);
+					}
+
+					HBlockMatch n3 = parser_expression_match(p, res.matchs["N3"]);
+					if (n3 != nullptr)
+					{
+						if (auto list3 = DynamicCasting::asHBlockMatchList(n3))
+						{
+							plist.insert(plist.end(), list3->matchList.begin(), list3->matchList.end());
+						}
+						else
+						{
+							plist.push_back(n3);
+						}
+
+						 
+						{ 
+							return  std::make_shared<CBlockMatchList>(plist);
+						}
+					}
+
+
+				}
+			}
+
+		}
+	}
+
 
 	{
+
+		
+
 
 	    CPredSequence predList = pAny("N1")<<pAny("N2")<<pAny("N3");		 
 
@@ -1433,10 +1536,10 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 	}
 
  
-	HBlockMatch maprep = parse_APreposition(p, lst);
-	if (maprep != nullptr) {
-		return maprep;
-	}
+	//HBlockMatch maprep = parse_APreposition(p, lst);
+	//if (maprep != nullptr) {
+	//	return maprep;
+	//}
 
 	HBlockMatch arg_Assign = parser_MatchArgument(p,lst);
 	if (arg_Assign != nullptr) {

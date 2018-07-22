@@ -28,7 +28,7 @@ CPredSequence  convert_doSequence(HBlockNoum n)
 	if (n->type() == BlockNoumCompose)
 	{
 		std::vector<HPred> seq;
-		CBlockNoumCompose* ncomp = (CBlockNoumCompose*)(n.get());
+		CBlockNoumCompose* ncomp = static_cast<CBlockNoumCompose*>(n.get());
 		for (auto it = ncomp->noums.begin(); it != ncomp->noums.end();++it)
 		{
 			seq.push_back(pLiteral((*it)->named()));
@@ -43,16 +43,16 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_user_parser(CParse
 {
 	// quando entra um cLiteral para entender como parser
 	// determina os brackets
-
+	 
 	std::list<string>  termos;
 	CLiteral *clit = asCLiteral(termLiteral.get());
 	string lit = clit->val;
 	if (lit[0] == '"') lit = lit.substr(1, lit.size()-1);
 	if (lit.back() == '"') lit = lit.substr(0, lit.size()-1);
-	int n = lit.size();
+	const size_t n = lit.size();
 
-	int pivot = 0;
-	for (int i = 0; i < n; ++i)
+	size_t pivot = 0;
+	for (size_t i = 0; i < n; ++i)
 	{
 
 		if (lit[i] == '[')
@@ -80,9 +80,9 @@ NSParser::DispatchArguments NSParser::DynamicDispatch::parser_user_parser(CParse
 		string s = *it;
 		if (s[0] == '[') continue;
 
-		int  n = s.size();
+		size_t  nq = s.size();
 
-		for (int i = 0; i < n; ++i)
+		for (size_t i = 0; i < nq; ++i)
 		{
 			if (s[i] == ' ')
 			{

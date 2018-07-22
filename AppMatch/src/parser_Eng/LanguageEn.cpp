@@ -19,25 +19,33 @@ bool LanguageEn::is_nothing(HBlockNoum noum)
 bool LanguageEn::is_det(HBlockNoum noum)
 {
 
-	if (noum->named() == "the") return true;
-	if (noum->named() == "The") return true;
-	if (noum->named() == "a") return true;
-	if (noum->named() == "A") return true;
-	if (noum->named() == "an") return true;
-	if (noum->named() == "An") return true;
-	if (noum->named() == "Some") return true;
-	if (noum->named() == "some") return true;	
+	string s = noum->named();
+	if (s.empty()) return false;
+	s[0] = tolower(s[0]);
 
+	const string det_list[] = { "the", "a", "an", "some", "my", "your", "his", "her", "our", "their" };
+	if (std::find(std::begin(det_list), std::end(det_list), s) != std::end(det_list))
+		return true;
 	return false;
 }
  
 
 
-HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum) {
-    if (isSameString(noum->named(), "true")) return std::make_shared<CBlockBooleanValue>(true);
-    if (isSameString(noum->named(), "false")) return std::make_shared<CBlockBooleanValue>(false);
-    if (isSameString(noum->named(), "yes")) return std::make_shared<CBlockBooleanValue>(true);
-    if (isSameString(noum->named(), "no")) return std::make_shared<CBlockBooleanValue>(false);
+HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum) 
+{
+	string s = noum->named();
+	if (s.empty())   return nullptr;
+	s[0] = tolower(s[0]);
+
+	const string yes_list[] = { "true", "yes" } ;
+	if (std::find(std::begin(yes_list), std::end(yes_list), s) != std::end(yes_list))
+		return std::make_shared<CBlockBooleanValue>(true);;
+
+	const string no_list[] = { "false", "no" };
+	if (std::find(std::begin(yes_list), std::end(yes_list), s) != std::end(yes_list))
+		return std::make_shared<CBlockBooleanValue>(false);
+
+ 
     return nullptr;
 }
 

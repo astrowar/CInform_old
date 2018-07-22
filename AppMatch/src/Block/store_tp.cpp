@@ -191,7 +191,7 @@ public:
 	{
        printf("item %.10s \n", data.c_str()+cursor);
 		while (data[cursor] == ' ') cursor++;
-		for (int i = cursor; i < data.size(); ++i)
+		for (size_t i = cursor; i < data.size(); ++i)
 		{
 			//if ((data[i] == ' ')||(data[i] == '\n')||(data[i] == '\r')||(data[i] == '\t') )
 			if (data[i] == ' ') 
@@ -208,7 +208,7 @@ public:
 	{
 		while (data[cursor] != '\'') cursor++;
 		cursor++;
-		for (int i = cursor; i < data.size(); ++i)
+		for (size_t i = cursor; i < data.size(); ++i)
 		{
 			if (data[i] == '\'')
 			{

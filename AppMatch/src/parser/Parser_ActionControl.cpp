@@ -20,7 +20,7 @@ using namespace EqualResulting;
 std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs)
 {
 	std::list<std::pair<HTerm, HTerm> > ret;
-	int n = vs.size();
+	size_t n = vs.size();
 	for (int halfPos = 0; halfPos < n; ++halfPos)
 	{
 		std::vector<HTerm> firstPart(vs.begin(), vs.begin() + halfPos);
@@ -50,7 +50,7 @@ std::list<std::pair<HTerm,HTerm> > getBiPartition(HTerm & term)
 std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs)
 {
 	std::list<std::vector<HTerm > > ret;
-	int n = vs.size();
+	size_t n = vs.size();
 
 	for (int i1 = 1; i1 < n - 2; ++i1)
 		for (int i2 = i1 + 1; i2 < n; ++i2)
@@ -96,7 +96,7 @@ std::list<std::vector<HTerm > > getQuadPartition(HTerm & term)
 std::list<std::vector<HTerm > > getTriPartition(std::vector<HTerm> & vs)
 {
 	std::list<std::vector<HTerm > > ret;
-	int n = vs.size();
+	size_t n = vs.size();
 
 	for (int i1 = 1; i1 < n - 1; ++i1)
 		for (int i2 = i1 + 1; i2 < n; ++i2)

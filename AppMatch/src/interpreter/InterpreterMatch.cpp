@@ -239,32 +239,64 @@ bool is_article(std::string s)
 	return false;
 }
 
+std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst);
+HBlockMatchList remove_article(HBlockMatchList lst)
+{
+	std::list<HBlockMatch> h = remove_article(lst->matchList);
+	return std::make_shared<CBlockMatchList>(h);
+}
 
 std::list<HBlockMatch> remove_article(std::list<HBlockMatch> lst)
 {
-	 
+	std::list<HBlockMatch> saida;
 	if (lst.empty()) return lst;
 	std::list<HBlockMatch>::iterator init_ptr = lst.begin();
-	while (init_ptr != lst.end())
-	{
-		
 
-		if (auto mnoum = asHBlockMatchNoum(*init_ptr))
+	for(auto it : lst)
+	{
+		if (auto mnoum = asHBlockMatchNoum(it))
 		{
-			if (is_article(mnoum->inner->named()))
+			if (is_article(mnoum->inner->named()) == false )
 			{
-				++init_ptr;
-				if (init_ptr == lst.end()) break;
-			}
-			else
-			{
-				break;
+				saida.push_back(it);
 			}
 		}
+		else if (auto mlist = asHBlockMatchList(it))
+		{
+			auto lsi = remove_article(mlist);
+			saida.push_back(lsi);
+		}
+		else
+		{
+			saida.push_back(it);
+		}
 	}
-	return 	std::list<HBlockMatch>(init_ptr, lst.end());
+
+	return saida;
 }
 
+
+HBlock CBlockInterpreter::unMatching_values(  HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk)
+{
+	if (const auto mnoum = asHBlockMatchNoum(mValue))
+	{
+		return  mnoum->inner;
+	}
+	if (auto mlist = asHBlockMatchList(mValue))
+	{
+		std::list<HBlock> alist;
+		for (auto m : mlist->matchList)
+		{
+			alist.push_back(unMatching_values(m, localsEntry, stk));
+		}
+		return  std::make_shared< CBlockList >(alist);
+	}
+
+
+	return nullptr;
+
+
+}
 
 CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -733,7 +765,7 @@ CResultMatch  CBlockInterpreter::Match_list_adjetivos(HBlockMatchList mList, HBl
 		return CResultMatch(false);
 	}
 
-
+ 
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	printf("Is Match ?\n");
@@ -766,6 +798,10 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 		// Hummm ... um match contra outro match ...
 		CResultMatch mres = isEquivalenteMatch(M, vMatch, localsEntry, stk);
 		if (mres.hasMatch)		return 	mres;
+
+		auto raw_value = unMatching_values(vMatch, localsEntry, stk);
+		return Match(M, raw_value, localsEntry, stk);
+
 		return CResultMatch(false );
 		
 	}
@@ -1129,6 +1165,7 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 	{
 		//if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
 		
+		auto value_res = exec_eval(value, localsEntry, stk);
 			QueryResultContext qkind = query_is(value, mKind->kind, localsEntry, stk);
 			return CResultMatch(qkind.result == QEquals);
 		

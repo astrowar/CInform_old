@@ -267,6 +267,8 @@ using ListOfNamedValue = std::list<NamedValue>;
 		CResultMatch combinatoria_list(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 		CResultMatch MatchList(HBlockMatchList M, HBlockList value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		 
+		HBlock unMatching_values(HBlockMatch mValue, HRunLocalScope localsEntry, QueryStacking::QueryStack* stk);
 		CResultMatch isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch Match_DirectIs(HBlockMatch mObject, HBlockMatch mValue, HBlock object, HBlock value, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		CResultMatch MatchListCombinaria(HBlockMatchList Ms, HBlockNoum n, HRunLocalScope localsEntry, QueryStacking::QueryStack * stk);

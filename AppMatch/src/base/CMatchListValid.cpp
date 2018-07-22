@@ -85,7 +85,7 @@ bool NSMatch::isListValid_count_range(std::vector<HTerm>::iterator vbegin, std::
 		int cc_open = 0;
 		int cc_close = 0;
 		auto isize = vend - vbegin;
-		int ns = (isize);
+		size_t ns = (isize);
 		for (int j = 0; j < ns; ++j) {
 			// if ((*it).at(j)->repr() == ")") cc_open++;
 			// if ((*it).at(j)->repr() == "(") cc_close++;

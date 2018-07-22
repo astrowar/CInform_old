@@ -173,7 +173,7 @@ HBlock NSParser::Expression::parser_noumList(CParser *p, HTerm term)
 
 }
 
-const std::vector<string> noum_split(const string& s, const char& c);
+std::vector<string> noum_split(const string& s, const char& c);
 
 HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, std::vector<string> v_noums)
 {
@@ -198,10 +198,15 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, std::vector<
 }
 HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 {
+
+
 	auto sNoum_0 = term->repr();
 
 	auto sNoum = CtoString(expandBract(term));
-	
+		if (sNoum == "join") 
+	{
+			sNoum += "";
+	}
 	while (sNoum.back() == '\t')
 	{
 		sNoum = sNoum.substr(0, sNoum.size() - 1);

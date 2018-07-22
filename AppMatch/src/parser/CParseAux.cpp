@@ -53,7 +53,7 @@ std::string  decompose_bracket(std::string phase, std::string dlm) {
 }
 
 
-size_t find_next_literal_tag(std::string phase, int start)
+size_t find_next_literal_tag(std::string phase, size_t start)
 {
 	size_t n = phase.size();
 	for (size_t i = start; i < n; ++i)
@@ -119,7 +119,7 @@ std::vector<HTerm> decompose_syntax(std::string phase)
 {
 	if (phase.empty()) return std::vector<HTerm>();
 
-	int pivot = 0;
+	size_t pivot = 0;
 	size_t start_literal = find_next_literal_tag(phase, pivot);
 	if (start_literal != std::string::npos)
 	{

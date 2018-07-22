@@ -4,8 +4,12 @@ price  is an kind of value
 low,high are price
 
  
-
-To decide what price   is the demand  for (money called M):
+To decide what money is  best money from (person called buyer ) for (price called price_value):
+    if buyer is john : decide on dollar
+    if buyer is joao : decide on real
+    decide on gold
+    
+To decide what price   is  demand  for (money called M):
    if M is real : decide on low
    decide on high
     
@@ -18,7 +22,10 @@ unit init:
 
 unit test:
   pass
-assert: ( demand  for real ) is low   
+
+assert: ( best money from (join need) for high ) is low 
+assert: ( demand  for (best money from joao for high)) is low 
+assert: ( the demand  for real ) is low   
 assert: (the best money from john for high) is dollar 
 assert: (the best money from joao for low ) is real 
 assert: (demand  for real ) is low 
@@ -36,7 +43,4 @@ unit test:
   pass
 assert: dollar is  money
 
- To decide what money is the best money from (person called buyer ) for (price called price_value):
-    if buyer is john : decide on dollar
-    if buyer is joao : decide on real
-    decide on gold
+ 

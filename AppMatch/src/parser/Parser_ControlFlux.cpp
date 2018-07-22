@@ -619,14 +619,14 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 
 	//unity init ?
 	{
-		CPredSequence predList = pLiteral("unit") << pLiteral("init") << pLiteral(":");
-		MatchResult res = CMatch(term, predList);
+		const CPredSequence predList = pLiteral("unit") << pLiteral("init") << pLiteral(":");
+		const MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
 			if (inner != nullptr)
 			{
-				HBlock executeBlock = nullptr;
-				executeBlock = Statement::parser_stmt_list(p, true, inner, err);
+				 
+				HBlock executeBlock = Statement::parser_stmt_list(p, true, inner, err);
 				if (executeBlock == nullptr)
 				{
 					err->setError("error on unity init block ");
@@ -704,10 +704,9 @@ std::list<HBlock >   NSParser::ControlFlux::post_process_tokens(CParser *p,  std
 	 
 	// junta comandos que vem de varias linhas em um unico
 
-	bool is_first = true;
 	for(auto it = lst.begin() ; it != lst.end();++it)
-	{		
-		is_first = (it == lst.begin());
+	{
+		const bool is_first = (it == lst.begin());
 		{
 			if (HBlockControlToken tk = DynamicCasting::asHBlockControlToken(*it))
 			{

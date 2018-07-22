@@ -413,15 +413,14 @@ NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, st
 {
 	std::list<HGroupLines> buffer;
 	
-	int lineNumber = 0;
+	size_t lineNumber = 0;
 	for(auto &v : vlines)
 	{
 		lineNumber++;
 		if (v.find_first_not_of(' ') != std::string::npos)
 		{
-			 
-			size_t ns = v.size();
-			size_t i = 0;
+			const size_t ns = v.size();
+			size_t i;
 			bool has_contents = false;
 			for (i = 0; i < ns; ++i)
 			{
@@ -437,7 +436,7 @@ NSParser::HGroupLines  NSParser::ParseText::get_identation_groups(CParser *p, st
 
 			if (has_contents == false) continue;
 			HGroupLines g = std::make_shared<GroupLines>();
-			g->identarion = i;
+			g->identarion = static_cast<int>(i);
 			g->lines.emplace_back(filename, lineNumber, v);
 			g->inner = nullptr;
 			g->next = nullptr;
