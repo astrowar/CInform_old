@@ -16,6 +16,70 @@ using namespace NSTerm::NSMatch;
 using namespace EqualResulting;
 
 
+#include <algorithm>
+
+
+bool is_backet_balanced(std::vector<HTerm> terms)
+{
+	int k = 0;
+	for (auto x : terms)
+	{
+		if (x->is_openBracket())  k++;
+		if (x->is_closeBracket())  k--;
+		if (k < 0) return false;
+	}
+	return (k == 0);
+}
+
+
+bool is_full_bracket(std::vector<HTerm> term)
+{ 
+	 
+	{
+		HTerm h1 = term.front();
+		HTerm h2 = term.back();
+		if (h1->is_openBracket())
+			if (h2->is_closeBracket())
+			{
+				int m = 0;
+				for (auto x : term)
+				{
+					if (x->is_closeBracket() || x->is_openBracket()) m++;
+				}
+				//count open and close 
+
+				if ((m == 2)) return true;
+			}
+	}
+
+	return false;
+
+}
+
+bool is_full_bracket(HTerm term)
+{
+	auto clist = asCList(term.get());
+	if (clist != nullptr)
+	{
+		HTerm h1 = clist->lst.front();
+		HTerm h2 = clist->lst.back();
+		if(h1->is_openBracket())
+			if (h2->is_closeBracket())
+			{
+				int m = 0;
+				for (auto x : clist->lst)
+				{
+					if (x->is_closeBracket() || x->is_openBracket()) m ++;
+				}
+				//count open and close 
+				
+				if ((m == 2)) return true;
+			}
+	}
+
+	return false;
+}
+
 HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument_kind_item(CParser *p , string sNoum)
 {
 	if (sNoum == "text")
@@ -1097,13 +1161,30 @@ HBlockMatchNoum NSParser::ExpressionMatch::parser_expression_match_noum(CParser 
 }
 
 
+
+
 HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm  term)
 {
-	if (CList *vlist = asCList(term.get())) {
+
+	if (CList *vlist = asCList(term.get()))
+	{
+		if (is_full_bracket(term))
+		{
+			std::list<HTerm> nlist = vlist->lst;
+			nlist.pop_back();
+			nlist.pop_front();
+			auto hlist = make_list(std::vector<HTerm>( nlist.begin(),nlist.end()));
+			auto r = parser_expression_match(p, hlist);
+			auto plist = std::list<HBlockMatch>();
+			plist.push_back(r);
+			return std::make_shared<CBlockMatchList>(plist);
+		}
+	}
+
+	if (CList *vlist = asCList(term.get())) 
+	{
 		auto v = vlist->asVector();		
-		auto r = parser_expression_match(p,v);
-		/*if (r == nullptr)
-		logMessage( term->repr() << std::endl;*/
+		auto r = parser_expression_match(p,v);	
 		return r;
 	}
 
@@ -1288,15 +1369,156 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_comma_list(CParser *p, st
 
 }
 
-HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<HTerm>&     term)
+
+std::vector<HTerm>  group_terms(std::vector<HTerm>    vterm)
 {
-	if (term.size() == 0)
+	std::list<HTerm> term = std::list<HTerm>(vterm.begin(), vterm.end());
+
+	std::list<HTerm> ret  ;
+
+	int i = 0;
+	size_t n = term.size();
+
+
+	auto it = term.begin();
+
+	label_init :
+
+	auto start = it;
+ 
+	while (it != term.end())
 	{
-		if (CList* listterm = asCList(term[0].get()))
+		if ((*it)->is_openBracket())
+		{
+			start = it;
+		}
+		if ((*it)->is_closeBracket())
+		{
+			//compress
+			HTerm sub = make_list(std::vector<HTerm>(start, std::next(it)));
+			//remove o range
+			it = term.erase(start, std::next(it));
+			term.insert(it, sub);
+			it = term.begin();
+			goto label_init;
+		}
+		++it;
+		
+	}
+	return std::vector<HTerm>(term.begin(), term.end());
+
+}
+
+HBlockMatchList NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<HTerm>&     term_in)
+{
+	auto mlist = parse_match_list_inn(p, term_in);
+	return mlist;
+
+
+	if (mlist != nullptr)
+	{
+		// concatena  list of match noum as noumcomposte
+		if (mlist->matchList.size() == 1)
+		{
+			auto mfist = mlist->matchList.front();
+			if (HBlockMatchList mmlist = DynamicCasting::asHBlockMatchList(mfist))
+			{
+				return mmlist;
+			}
+		}
+	}
+
+
+	return mlist;
+
+}
+HBlockMatchList NSParser::ExpressionMatch::parse_match_list_inn(CParser *p, std::vector<HTerm>&     term_in)
+{
+
+
+	if (term_in.size() == 1)
+	{
+		auto plist = std::list<HBlockMatch>();
+		if (CList* listterm = asCList(term_in[0].get()))
 		{
 			return parse_match_list(p, listterm->asVector());
 		}
 	}
+
+
+	if ( term_in.front()->is_openBracket() )
+		if (term_in.back()->is_closeBracket())
+		{
+			if (is_backet_balanced(term_in))
+			{
+				auto res = std::vector<HTerm>(std::next(term_in.begin()), std::prev(term_in.end()));
+				auto mlist = parse_match_list(p, res);
+				if (mlist != nullptr)
+				{
+					auto plist = std::list<HBlockMatch>();
+					plist.push_back(mlist);
+					return  std::make_shared<CBlockMatchList>(plist);
+				}
+			}
+		}
+
+	/*auto term = group_terms(term_in);
+	if (is_full_bracket(term))
+	{
+		auto mlist = parse_match_list(p, term);
+		if (mlist != nullptr)
+		{
+			auto plist = std::list<HBlockMatch>();
+			plist.push_back(mlist);
+			return  std::make_shared<CBlockMatchList>(plist);
+		}
+		return nullptr;
+	}*/
+
+
+	//if (term_in.size() == 0)
+	//{
+	//	auto plist = std::list<HBlockMatch>();
+	//	if (CList* listterm = asCList(term_in[0].get()))
+	//	{
+	//		return parse_match_list(p, listterm->asVector());
+	//	}
+	//}
+
+
+	 //auto term = group_terms(term_in);
+	 auto  term = term_in;
+
+	//if (term.size() == 0)
+	//{
+	//	auto plist = std::list<HBlockMatch>();
+	//	if (CList* listterm = asCList(term[0].get()))
+	//	{
+	//		auto mlist = parse_match_list(p, listterm->asVector());
+	//		plist.push_back(mlist);
+	//		return  std::make_shared<CBlockMatchList>(plist); 
+	//	}
+	//	else
+	//	{
+	//		auto mlist = parser_expression_match(p, term[0] );
+	//		plist.push_back(mlist);
+	//		return  std::make_shared<CBlockMatchList>(plist);
+	//	} 
+	//}
+
+
+	
+	// if (is_full_bracket(term))
+	// {
+	//	 auto mlist = parse_match_list(p, term);
+	//	 if (mlist != nullptr)
+	//	 {
+	//		 auto plist = std::list<HBlockMatch>();
+	//		 plist.push_back(mlist);
+	//		 return  std::make_shared<CBlockMatchList>(plist);
+	//	 }
+	//	 return nullptr;
+	//}
 
 
 	{
@@ -1312,7 +1534,127 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 		}
 	}
 
-	{ 
+
+	 
+
+	{
+		auto plist = std::list<HBlockMatch>();
+		CPredSequence predList = pWord("N1") << pWord("N2") << pWord("N3") << pWord("N4") << pAny("N5");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				plist.push_back(n1);
+				HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					plist.push_back(n2);
+					HBlockMatch n3 = parser_expression_match(p, res.matchs["N3"]);
+					if (n3 != nullptr)
+					{
+						plist.push_back(n3);
+
+						HBlockMatch n4 = parser_expression_match(p, res.matchs["N4"]);
+						if (n4 != nullptr)
+						{
+							plist.push_back(n4);
+
+							std::vector<HTerm> vlist = { res.matchs["N5"] };
+							HBlockMatchList n5 = parse_match_list(p, vlist);
+							if (n5 != nullptr)
+							{
+								plist.insert(plist.end(), n5->matchList.begin(), n5->matchList.end());
+								return  std::make_shared<CBlockMatchList>(plist);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	
+
+
+	{		 
+		auto plist = std::list<HBlockMatch>();
+		CPredSequence predList = pWord("N1") << pWord("N2") << pAny("N3") ;
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				plist.push_back(n1);
+				HBlockMatch n2 = parser_expression_match(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					plist.push_back(n2);
+					std::vector<HTerm> vlist = { res.matchs["N3"] };
+					HBlockMatchList n3 = parse_match_list(p, vlist);
+					if (n3 != nullptr)
+					{
+						plist.insert(plist.end(), n3->matchList.begin(), n3->matchList.end() );
+						return  std::make_shared<CBlockMatchList>(plist);
+					}
+				}
+			}
+		}
+	}
+
+
+
+	{
+		auto plist = std::list<HBlockMatch>();
+		CPredSequence predList = pWord("N1") <<    pAny("N2");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+				if (n1 != nullptr)
+				{
+					plist.push_back(n1);
+					std::vector<HTerm> vlist = { res.matchs["N2"] };
+					HBlockMatchList n2 = parse_match_list(p, vlist);
+					if (n2 != nullptr)
+					{
+						plist.insert(plist.end(), n2->matchList.begin(), n2->matchList.end());
+						return  std::make_shared<CBlockMatchList>(plist);
+					}
+				}
+		}
+	}
+
+	{
+		auto plist = std::list<HBlockMatch>();
+		CPredSequence predList = pAny("N2") << pWord("N1");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch n1 = parser_expression_match(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				plist.push_back(n1);
+				std::vector<HTerm> vlist = { res.matchs["N2"] };
+				HBlockMatchList n2 = parse_match_list(p, vlist);
+				if (n2 != nullptr)
+				{
+					plist.insert(plist.end(), n2->matchList.begin(), n2->matchList.end());
+					return  std::make_shared<CBlockMatchList>(plist);
+				}
+			}
+		}
+	}
+
+
+
+	//=================================================
+
+
+	if (false) {
 		auto plist = std::list<HBlockMatch>();
 		CPredSequence predList = pAny("N1")	<<pAny("N2")	<<pAny("N3")	<<pAny("N4"); 
 		MatchResult res = CMatch(term, predList);
@@ -1378,7 +1720,7 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 		}
 	}
 
-	{
+	if(false){
 		auto plist = std::list<HBlockMatch>();
 		CPredSequence predList = pAny("N1") << pAny("N2") << pAny("N3")  ;
 		MatchResult res = CMatch(term, predList);
@@ -1422,15 +1764,9 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 						else
 						{
 							plist.push_back(n3);
-						}
-
-						 
-						{ 
-							return  std::make_shared<CBlockMatchList>(plist);
-						}
-					}
-
-
+						} 
+						return  std::make_shared<CBlockMatchList>(plist);						 
+					} 
 				}
 			}
 
@@ -1438,13 +1774,8 @@ HBlockMatch NSParser::ExpressionMatch::parse_match_list(CParser *p, std::vector<
 	}
 
 
-	{
-
-		
-
-
-	    CPredSequence predList = pAny("N1")<<pAny("N2")<<pAny("N3");		 
-
+	{ 
+	    CPredSequence predList = pAny("N1")<<pAny("N2")<<pAny("N3");
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{

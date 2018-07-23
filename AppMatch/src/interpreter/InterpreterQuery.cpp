@@ -720,7 +720,15 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
 
-    
+	if (HBlockMatch  m1 = asHBlockMatch(c_block1))
+	{
+		auto res_x = Match(m1, c_block, localsEntry, stk);
+		if (res_x.hasMatch)
+		{
+			return QueryResultContext(QEquals, res_x.maptch);
+		}
+		return QueryResultContext(QNotEquals);
+	}
 
 
 

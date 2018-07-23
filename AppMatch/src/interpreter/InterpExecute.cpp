@@ -1090,15 +1090,7 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 		return nvalue;
 	}
 
-	if (auto  kList = asHBlockList(c_block))
-	{
-		auto rList = std::make_shared<CBlockList>(std::list<HBlock>());
-		for (auto &e : kList->lista)
-		{
-			rList->lista.push_back(exec_eval(e, localsEntry, stk));
-		}
-		return rList;
-	}
+
 
 	//resolve To decides
 	for (const auto &dct : decides_what)
@@ -1136,6 +1128,17 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			auto auto_value2 = exec_eval(nvlookup_and->value2, localsEntry, stk);
 			return lookup_intersection(auto_value1, auto_value2, localsEntry, stk);
 		} 
+	}
+
+
+	if (auto  kList = asHBlockList(c_block))
+	{
+		auto rList = std::make_shared<CBlockList>(std::list<HBlock>());
+		for (auto &e : kList->lista)
+		{
+			rList->lista.push_back(exec_eval(e, localsEntry, stk));
+		}
+		return rList;
 	}
 
 

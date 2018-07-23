@@ -768,16 +768,16 @@ CResultMatch  CBlockInterpreter::Match_list_adjetivos(HBlockMatchList mList, HBl
  
 CResultMatch  CBlockInterpreter::Match(HBlockMatch M, HBlock value, HRunLocalScope localsEntry, QueryStack *stk)
 {
-	printf("Is Match ?\n");
-	value->dump("   ");
-	M->dump("   ");
-	printf("\n\n");
+	//printf("Is Match ?\n");
+	//value->dump("   ");
+	//M->dump("   ");
+	//printf("\n\n");
 	auto r = Match__(M, value, localsEntry, stk);
 
-	value->dump("   ");
-	M->dump("   ");
-	if(r.hasMatch)printf("T   \n\n");
-	else          printf("F   \n\n");
+	//value->dump("   ");
+	//M->dump("   ");
+	//if(r.hasMatch)printf("T   \n\n");
+	//else          printf("F   \n\n");
 
 	return r;
 }
@@ -918,15 +918,17 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 	{
 		auto m_inner = resolve_argument_match(mVNamed->matchInner, localsEntry, stk);
 
-		
-		//if (HBlockMatchKind   mkind = asHBlockMatchKind (m_inner))
-		//{
-		//	if (asHBlockKind(value) !=nullptr)
-		//	{
-		//		return CResultMatch(false);
-		//	} 
-		//}
 
+		//tenta resolvendo o argumento 
+		auto value_res = exec_eval(value, localsEntry, stk);
+		CResultMatch mres_val = Match(m_inner, value_res, localsEntry, stk);
+		if (mres_val.hasMatch)
+		{
+			return CResultMatch(mVNamed->named, value_res);
+		}
+
+
+       
 		CResultMatch mres = Match(m_inner, value, localsEntry,stk);
 		if (mres.hasMatch)
 		{			 
@@ -941,6 +943,13 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 	{
 		if (HBlockList   vList = asHBlockList(value))
 		{
+			if (vList->lista.size() == 1)
+			{
+				if (HBlockList   vList0 = asHBlockList(vList->lista.front()))
+				{
+					return MatchList(mList, vList0, localsEntry, stk);
+				}
+			}
 			return MatchList(mList, vList,localsEntry ,stk);
 		}
 		if (HBlockNoum   noumCompound = asHBlockNoum(value))
@@ -1163,9 +1172,8 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 
 	if (HBlockMatchKind  mKind = asHBlockMatchKind(M))
 	{
-		//if (asHBlockNoum(value) != nullptr) return CResultMatch(false);
-		
-		auto value_res = exec_eval(value, localsEntry, stk);
+		   //if (asHBlockNoum(value) != nullptr) return CResultMatch(false);		
+		   // auto value_res = exec_eval(value, localsEntry, stk);
 			QueryResultContext qkind = query_is(value, mKind->kind, localsEntry, stk);
 			return CResultMatch(qkind.result == QEquals);
 		

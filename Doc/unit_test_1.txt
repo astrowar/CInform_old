@@ -23,13 +23,18 @@ unit init:
 unit test:
   pass
 
-assert: ( best money from (join need) for high ) is low 
-assert: ( demand  for (best money from joao for high)) is low 
-assert: ( the demand  for real ) is low   
+
+  
+assert: ( demand  for (best money from joao for high)) is   demand  for (best money from joao for low)   
+
+
+assert: ( the demand  for real ) is low    
+assert: (the best money from joao for low ) is real
+assert: (the best money from joao for low ) is real
 assert: (the best money from john for high) is dollar 
 assert: (the best money from joao for low ) is real 
 assert: (demand  for real ) is low 
-assert: demand  for real is low 
+assert: demand  for joao is low 
 
 unit test:
   pass

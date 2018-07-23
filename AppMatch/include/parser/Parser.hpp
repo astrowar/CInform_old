@@ -296,7 +296,9 @@ namespace NSParser
 		CBlocking::HBlockMatchList  parse_match_comma_list(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchList parse_match_comma_list(CParser * p, std::vector<NSTerm::HTerm>& term);
 		 
-		CBlocking::HBlockMatch    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
+	 
+		CBlocking::HBlockMatchList    parse_match_list(CParser *p, std::vector<NSTerm::HTerm>&     term);
+		CBlocking::HBlockMatchList    parse_match_list_inn(CParser *p, std::vector<NSTerm::HTerm>&     term);
 
 	    CBlocking::HBlockMatch parse_APreposition(CParser * p, std::vector<NSTerm::HTerm>& term);
 
