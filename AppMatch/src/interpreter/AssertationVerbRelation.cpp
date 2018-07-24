@@ -1018,15 +1018,16 @@ bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
  
 	verbs.push_back(verb_dec);
 
-	symbols.emplace_back(verb_dec->named, verb_dec);
+	symbols.add(verb_dec , verb_dec);
 
 	return true;
 }
 
 bool Interpreter::CBlockInterpreter::existSymbol(string cs)
 {
-	for (auto s : symbols) if (s.first == cs) return true;
-	return false;
+	return symbols.exist(this->language ,cs);
+	//for (auto s : symbols) if (s.first == cs) return true;
+	//return false;
 }
 
 void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
@@ -1039,7 +1040,7 @@ void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
 	}
 	printf("new Symbol %s\n", cs.c_str());
 	//value->dump("");
-	symbols.emplace_back(cs, value);
+	symbols.add(cs, value);
 }
 
 

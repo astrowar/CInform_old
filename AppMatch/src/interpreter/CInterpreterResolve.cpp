@@ -53,7 +53,7 @@ HBlockNoum  CBlockInterpreter::get_singular_of(string s)
  
 }
 
-
+ 
 
 bool CBlockInterpreter::isSameString(const string& s1 , const string& s2)
 {
@@ -199,7 +199,7 @@ string CBlockInterpreter::asBlockNoum(HBlock c_block)
 		return   k6->named;
 	}
 
-	for (auto s : symbols)
+	for (auto s : symbols.list())
 	{
 		if (s.second.get() == c_block.get())
 		{
@@ -232,7 +232,7 @@ HBlockKind CBlockInterpreter::resolve_system_kind(string n)
 HBlockKind CBlockInterpreter::resolve_user_kind(string n)
 {
 	
-	for (auto s : symbols)
+	for (auto s : symbols.list())
 	{
 		if ( isSameString( s.first , n))
 		{
@@ -385,11 +385,11 @@ std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HB
 		//printf("--------------------------------------------------------\n");
 
 
-		for (auto s : this->symbols)
+		for (auto s : this->symbols.list())
 		{
 			if (HBlockKind k = asHBlockKind(s.second))
 			{
-				if (s.first == tail->named())
+				if  (isSameString(s.first , tail->named()))
 				{
 					return std::pair<HBlockNoum, HBlockKind >(head, k);
 				}
@@ -484,8 +484,10 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 	}
 
 
-	for (auto s : symbols)
+	for (auto s : symbols.list())
 	{
+		
+
 		//printf("%s is %s ? \n",s.first.c_str(), named.c_str());
 		if (isSameString(s.first, named))
 		{
@@ -629,9 +631,19 @@ HBlock CBlockInterpreter::resolve_string(string n, HRunLocalScope localsEntry)
 	}
 
 	for (auto &defs : assertions) {
-		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) {
-			//std::cout << nn->named << std::endl;
-			if (nn->named() == n) {
+		if (HBlockNoum nn = asHBlockNoum(defs->get_obj())) 
+		{
+			
+			if (HBlockNoumStrDet nq = asHBlockNoumStrDet(nn))
+			{
+				if (isSameString(nq->noum->named(), n))
+				{
+					return defs->get_definition();
+				}
+			}
+
+			if (isSameString(nn->named() , n) )
+			{
 				return defs->get_definition();
 			}
 		}
@@ -658,7 +670,7 @@ std::list<string>  CBlockInterpreter::getAllRegistedKinds()
 	ret.push_back("verb");
 	ret.push_back("relation");
 
-	for (auto &s : symbols)
+	for (auto &s : symbols.list())
 	{
 		if (HBlockKind nn = asHBlockKind(s.second)) 
 		{

@@ -4,7 +4,7 @@
 
 #include "LanguageDepend.h"
 #include "parser/ParserPlural.hpp"
-
+#include "sharedCast.hpp"
 
 using namespace CBlocking;
 bool LanguageEn::is_nothing(HBlockNoum noum)
@@ -48,6 +48,28 @@ HBlockBooleanValue LanguageEn::asBoolean(HBlockNoum noum)
  
     return nullptr;
 }
+
+bool LanguageEn::isSameNoum(  HBlockNoum n1, HBlockNoum n2)
+{
+	if (n1 == n2) return true;
+
+
+	if (HBlockNoumStrDet d1 = DynamicCasting::asHBlockNoumStrDet(n1))
+	{
+		return isSameNoum(d1, n1);
+	}
+
+	if (HBlockNoumStrDet d2 = DynamicCasting::asHBlockNoumStrDet(n2))
+	{
+		return isSameNoum(n1, d2);
+	}
+
+	string s1 = n1->named();
+	string s2 = n2->named();
+
+	return isSameString(s1, s2);
+}
+
 
 bool LanguageEn::isSameString(const string &s1, const string& s2)
 {

@@ -1,51 +1,29 @@
-money  is an kind of value 
-dollar,real and gold are money
-price  is an kind of value 
-low,high are price
+A thing is a kind of entity
+A person is a kind of thing
 
- 
-To decide what money is  best money from (person called buyer ) for (price called price_value):
-    if buyer is john : decide on dollar
-    if buyer is joao : decide on real
-    decide on gold
-    
-To decide what price   is  demand  for (money called M):
-   if M is real : decide on low
-   decide on high
-    
-    
+The verb to carry   implies the carrying relation
+The verb to hold   implies the holding relation
+The verb to wear   implies the wearing relation
+
+Definition: a thing is worn if the player is wearing it
+Definition: a thing is carried if the player is carrying it
+Definition: a thing is held if the player is holding it
+
+A thing can be fixed in place or portable
+A thing is usually portable
+A thing can be scenery
+A thing can be wearable
+
+
 
 unit init:
-  person is a kind of entity
-  john is an person
-  joao is an person
+   the apple is a thing
+   Poe is a person
+
 
 unit test:
-  pass
-
-
-  
-assert: ( demand  for (best money from joao for high)) is   demand  for (best money from joao for low)   
-
-
-assert: ( the demand  for real ) is low    
-assert: (the best money from joao for low ) is real
-assert: (the best money from joao for low ) is real
-assert: (the best money from john for high) is dollar 
-assert: (the best money from joao for low ) is real 
-assert: (demand  for real ) is low 
-assert: demand  for joao is low 
-
-unit test:
-  pass
-assert: high is  price
-
-unit test:
-  pass
-assert: john is not dollar
-  
-unit test:
-  pass
-assert: dollar is  money
+  now apple is    carried by Poe
+assert: Poe carry apple  
+ 
 
  

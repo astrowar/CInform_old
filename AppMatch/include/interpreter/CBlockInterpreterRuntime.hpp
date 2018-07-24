@@ -104,6 +104,19 @@ public :
 using ListOfNamedValue = std::list<NamedValue>;
 
 
+class SymbolPool
+{
+
+	std::list< std::pair<HBlockNoum, HBlock> > _symbols;
+public: 
+	SymbolPool() {};
+	void add(HBlockNoum, HBlock);
+	
+	std::list< std::pair<HBlockNoum, HBlock> > list();
+	bool  exist(LanguageDepend *p, HBlockNoum s);
+};
+
+
 	class CBlockInterpreter {
 
 
@@ -111,7 +124,7 @@ using ListOfNamedValue = std::list<NamedValue>;
 
 		std::vector<HBlock> program; // main program .. to run IT
 
-		std::list< std::pair<string, HBlock> > symbols;
+		SymbolPool symbols;
 		std::list<HBlockActionNamed>  system_actions;
 		std::vector<HBlockInstance> instancias;
 		std::vector<HBlockInstanceVariable> instancias_vars;

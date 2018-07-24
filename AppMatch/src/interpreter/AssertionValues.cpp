@@ -301,7 +301,7 @@ bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock 
 				assertions.push_back(newDefi);
 			}
 
-			symbols.emplace_back(nbase->named(), b);
+			symbols.add(nbase->named(), b);
 			logMessage("new Kind add " + nbase->named());
 			return true;
 		}

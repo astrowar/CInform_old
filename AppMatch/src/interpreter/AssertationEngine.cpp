@@ -543,6 +543,8 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 		return;
 	}
 
+	p->dump("E   ");
+
 	HRunLocalScope localsEntry = nullptr;
 
 	if (HBlockComandList cmdList = asHBlockComandList(p))
@@ -583,6 +585,7 @@ void CBlockInterpreter::execute_init(CBlocking::HBlock p) {
 		CBlocking::HBlock obj = vee->get_obj();
 		HBlockEnums evalue = vee->definition;
 		if (assert_it_canBe(obj, evalue, localsEntry)) return;
+		logError("Can Be undefined");
 	}
 	else if (HBlockIsVerb  vRelation = asHBlockIsVerb(p)) {
 

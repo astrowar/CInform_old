@@ -24,15 +24,15 @@ Interpreter::CBlockInterpreter::CBlockInterpreter(LanguageDepend* language )
 
 
 
-	symbols.emplace_back(language->getMetaKind(), MetaKind);
-	symbols.emplace_back(language->getMetaKindRelation(), MetaKindRelation );
-	symbols.emplace_back(language->getMetaKindPhrase(), MetaKindPhrase );
-	symbols.emplace_back(language->getMetaKindEntity(), MetaKindEntity);
-	symbols.emplace_back(language->getMetaKindText(), MetaKindText);
+	symbols.add(language->getMetaKind(), MetaKind);
+	symbols.add(language->getMetaKindRelation(), MetaKindRelation );
+	symbols.add(language->getMetaKindPhrase(), MetaKindPhrase );
+	symbols.add(language->getMetaKindEntity(), MetaKindEntity);
+	symbols.add(language->getMetaKindText(), MetaKindText);
  
 
-	symbols.emplace_back(language->getAnything(), Anything);
-	symbols.emplace_back(language->getNothing(), Nothing);
+	symbols.add(language->getAnything(), Anything);
+	symbols.add(language->getNothing(), Nothing);
  
 
 	{
@@ -53,4 +53,25 @@ Interpreter::CBlockInterpreter::~CBlockInterpreter() {
 Interpreter::CBlockInterpreter   Interpreter::CBlockInterpreter::clone()
 {
 	return Interpreter::CBlockInterpreter(this->language);
+}
+
+
+
+void Interpreter::SymbolPool::add(string s , HBlock b)
+{
+	this->_symbols.push_back(std::pair<string, HBlock>(s, b));
+}
+std::list< std::pair<string, HBlock> > Interpreter::SymbolPool::list()
+{
+	return this->_symbols;
+}
+
+bool Interpreter::SymbolPool::exist( LanguageDepend *p, string s)
+{
+	for (auto q : this->_symbols)
+	{
+		if (p->isSameString(q.first, s)) return true;
+		
+	}
+	return false;
 }

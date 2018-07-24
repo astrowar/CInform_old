@@ -18,8 +18,8 @@ public:
     virtual bool is_nothing(HBlockNoum noum) = 0 ;
 	virtual bool is_det(HBlockNoum noum) = 0;
     virtual HBlockKind metaKind(string kind) = 0;
-    virtual bool isSameString(const string &a, const string &b) = 0;
-
+    //virtual bool isSameString(const string &a, const string &b) = 0;
+	virtual bool isSameNoum(const HBlockNoum a, const HBlockNoum b) = 0;
     virtual  string   getNothing () = 0;
     virtual  string   getAnything()= 0;
     virtual  string   getMetaKind ()= 0;
@@ -50,7 +50,8 @@ class LanguageEn : public LanguageDepend
 	bool is_det(HBlockNoum noum) override;
 	 
       HBlockKind metaKind(string kind) override ;
-	  bool isSameString(const string &a, const string &b) override;
+	   bool isSameString(const string &a, const string &b)  ;
+	    bool isSameNoum(const HBlockNoum a, const HBlockNoum b) override;
 
        string   getNothing () override;
        string   getAnything()override;
