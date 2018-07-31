@@ -91,7 +91,7 @@ CompilerFlags process_options(std::vector<std::string> va)
 	std::vector<std::string> ret;
 	size_t n = va.size();
 
-	for(int i =0 ; i< n;++i)
+	for(size_t i =0 ; i< n;++i)
 	{
 		if( va[i][0] != '-')
 		{

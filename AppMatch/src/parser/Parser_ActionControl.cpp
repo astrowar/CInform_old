@@ -21,7 +21,7 @@ std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs)
 {
 	std::list<std::pair<HTerm, HTerm> > ret;
 	size_t n = vs.size();
-	for (int halfPos = 0; halfPos < n; ++halfPos)
+	for (size_t halfPos = 0; halfPos < n; ++halfPos)
 	{
 		std::vector<HTerm> firstPart(vs.begin(), vs.begin() + halfPos);
 		std::vector<HTerm> lastPart(vs.begin() + halfPos, vs.end());
@@ -52,9 +52,9 @@ std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs)
 	std::list<std::vector<HTerm > > ret;
 	size_t n = vs.size();
 
-	for (int i1 = 1; i1 < n - 2; ++i1)
-		for (int i2 = i1 + 1; i2 < n; ++i2)
-			for (int i3 = i2 + 1; i3 < n; ++i3)
+	for (size_t i1 = 1; i1 < n - 2; ++i1)
+		for (size_t i2 = i1 + 1; i2 < n; ++i2)
+			for (size_t i3 = i2 + 1; i3 < n; ++i3)
 		{
 			std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
 			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
@@ -98,8 +98,8 @@ std::list<std::vector<HTerm > > getTriPartition(std::vector<HTerm> & vs)
 	std::list<std::vector<HTerm > > ret;
 	size_t n = vs.size();
 
-	for (int i1 = 1; i1 < n - 1; ++i1)
-		for (int i2 = i1 + 1; i2 < n; ++i2)
+	for (size_t i1 = 1; i1 < n - 1; ++i1)
+		for (size_t i2 = i1 + 1; i2 < n; ++i2)
 		{
 			std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
 			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);

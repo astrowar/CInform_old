@@ -249,16 +249,28 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
                     return nullptr;
                 }*/
 
-                HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
+                //HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
 
                 HPred verbMatch = pList("VerbMatch", {});
                 auto cpList = reinterpret_cast<CPredList *>(verbMatch.get());
 
+				std::vector<HBlockNoum> verbList_noums;
+
                 for ( auto ip : plist->lst) {
-                    clist->push_back(std::make_shared<CBlockNoumStr>(ip->repr()));
+                    //clist->push_back(std::make_shared<CBlockNoumStr>(ip->repr()));
+					verbList_noums.push_back(std::make_shared<CBlockNoumStr>(ip->repr()));
                     cpList->plist.push_back(pLiteral(ip->repr()));
                 }
-                HBlock a_verb = clist;
+				
+				HBlock a_verb;
+				if (verbList_noums.size() == 1)
+				{
+					a_verb = verbList_noums.front();
+				}
+				else
+				{
+					a_verb = std::make_shared<CBlockNoumCompose>(verbList_noums);
+				}
 
                 p->verbList->blist.push_back(verbMatch);
 

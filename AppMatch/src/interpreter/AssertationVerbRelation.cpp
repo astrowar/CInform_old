@@ -1076,13 +1076,21 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 		while (v_list->lista.empty() == false && (HtoString(v_list->lista.front()) == "be")) v_list->lista.pop_front();
 		
 		verb = v_list ;
-	}
-	 
 
-	std::string vstr = HtoString(verb);
+	}
+
+	HBlockNoum   verbNoum = DynamicCasting::asHBlockNoum(verb);
+	if (verbNoum == nullptr)
+	{
+		std::string vstr = HtoString(verb);
+		verbNoum = std::make_shared<CBlockNoumStr>(vstr);
+	}
+
+
+	//std::string vstr = HtoString(verb);
 	//verifica se ja existe esse verbo
 
-	auto vfind = verbAssertation.find(vstr);
+	auto vfind = verbAssertation.find(verbNoum->named());
 	if  (vfind != verbAssertation.end() )
 	{
 		//throw  "Verb is Assigned";
@@ -1092,12 +1100,12 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 
 	
 	//cout << " new Verb |" <<vstr  <<"|"<< endl;
-	verbAssertation[ vstr ] = std::list<HBlockAssertion_is>();
+	verbAssertation[verbNoum->named()] = std::list<HBlockAssertion_is>();
 
     // Existe essa relacao ??
-	verbRelationAssoc[ vstr ] = value ;
+	verbRelationAssoc[verbNoum->named()] = value ;
  
-	addSymbol(vstr, value);
+	addSymbol(verbNoum, value);
 
 	return true;
 }

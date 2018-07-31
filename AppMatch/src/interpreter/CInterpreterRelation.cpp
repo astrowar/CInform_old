@@ -58,6 +58,22 @@ bool CBlockInterpreter::set_relation_property(HBlockNoum property_noum , HBlock 
 bool CBlockInterpreter::set_relation(HBlockRelationBase relation, HBlock n1, HBlock n2, HRunLocalScope localsEntry, QueryStack *stk)
 {
  
+	//verifica os tipos
+
+	QueryResultContext qk1 = query_is(n1,relation->input_A->kind ,   localsEntry, stk);
+	if (qk1.result != QEquals)
+	{
+		raise_runtime_error("Incompatible type on first argumento of relation");
+		  return false;
+	}
+
+	QueryResultContext qk2 = query_is(n2,relation->input_B->kind,   localsEntry, stk);
+	if (qk2.result != QEquals)
+	{
+		raise_runtime_error("Incompatible type on second argumento of relation");
+		return false;
+	}
+
 
 	if (relation->is_various_noum2() == false )
 	{
