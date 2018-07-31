@@ -17,6 +17,7 @@ public:
     virtual HBlockBooleanValue asBoolean(HBlockNoum noum) = 0;
     virtual bool is_nothing(HBlockNoum noum) = 0 ;
 	virtual bool is_det(HBlockNoum noum) = 0;
+	virtual string  toSystemName(HBlockNoum n) = 0;
     virtual HBlockKind metaKind(string kind) = 0;
     //virtual bool isSameString(const string &a, const string &b) = 0;
 	virtual bool isSameNoum(const HBlockNoum a, const HBlockNoum b) = 0;
@@ -48,7 +49,8 @@ class LanguageEn : public LanguageDepend
     HBlockBooleanValue asBoolean(HBlockNoum noum) override ;
     bool is_nothing(HBlockNoum noum) override ;
 	bool is_det(HBlockNoum noum) override;
-	 
+	string  toSystemName(HBlockNoum n);
+
       HBlockKind metaKind(string kind) override ;
 	   bool isSameString(const string &a, const string &b)  ;
 	    bool isSameNoum(const HBlockNoum a, const HBlockNoum b) override;

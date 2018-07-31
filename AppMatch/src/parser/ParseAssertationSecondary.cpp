@@ -325,7 +325,9 @@ HBlockKindOfName NSParser::ParseAssertion::parse_KindOf(CParser * p, HTerm  term
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals) 
 		{	 
-			auto nn =   CtoString(res.matchs["kindBase"]->removeArticle());			 
+			//auto nn =   CtoString(res.matchs["kindBase"]->removeArticle());	
+
+			auto nn  =Expression::parser_noum_expression(p,res.matchs["kindBase"] );
 			return std::make_shared<CBlockKindOfName>(nn);
 		}
 	}

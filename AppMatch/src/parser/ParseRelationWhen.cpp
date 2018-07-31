@@ -46,7 +46,10 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			//auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+
+			auto kindStr = Expression::parser_noum_expression(p, res.matchs["kind"]);
+
 			HBlockKindNamed argumentKindItem = std::make_shared<CBlockKindNamed >(kindStr);
 			HBlockKind argumentKind = std::make_shared<CBlockCompositionList>(argumentKindItem);
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
@@ -61,7 +64,9 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			//auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			auto kindStr = Expression::parser_noum_expression(p, res.matchs["kind"]);
+
 			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(kindStr);
 			string argumentName = (res.matchs["var_named"]->removeArticle()->repr());
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, argumentName);
@@ -75,7 +80,8 @@ HBlockArgumentInput NSParser::ParseRelation::parser_KindCalled(CParser *p, HTerm
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
-			auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			//auto kindStr = CtoString(expandBract(res.matchs["kind"])->removeArticle());
+			auto kindStr = Expression::parser_noum_expression(p, res.matchs["kind"]);
 			auto rp = kindStr;
 			HBlockKind argumentKind = std::make_shared<CBlockKindNamed>(rp);
 			HBlockArgumentInput argumentEntry = std::make_shared<CBlockArgumentInput>(argumentKind, "");
@@ -117,7 +123,7 @@ HBlock NSParser::ParseRelation::STMT_relates_AssertionWhen(CParser *p, std::vect
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other")  arg2->kind = arg1->kind;
+						if (kind_n->named->named() == "other")  arg2->kind = arg1->kind;
 					}
 					return  std::make_shared<CBlockSimetricRelation>(rname, arg1, arg2,false,false);
 				}

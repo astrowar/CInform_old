@@ -977,7 +977,10 @@ bool CBlockInterpreter::isReservedWord(string cs)
 	}
 	return false;
 }
-
+bool CBlockInterpreter::isReservedWord(HBlockNoum cs)
+{
+	return isReservedWord(cs->named());
+}
 
 bool CBlockInterpreter::assert_it_verbRelation( std::string verbNamed ,CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry, QueryStack *stk) {
 	if (HBlockNoum nbase = DynamicCasting::asHBlockNoum(obj)) {
@@ -1018,30 +1021,43 @@ bool CBlockInterpreter::insert_newVerb(HBlockVerb verb_dec)
  
 	verbs.push_back(verb_dec);
 
-	symbols.add(verb_dec , verb_dec);
+	symbols.add(std::make_shared<CBlockNoumStr>(verb_dec->named) , verb_dec);
 
 	return true;
 }
 
-bool Interpreter::CBlockInterpreter::existSymbol(string cs)
+bool Interpreter::CBlockInterpreter::existSymbol(HBlockNoum cs)
 {
 	return symbols.exist(this->language ,cs);
-	//for (auto s : symbols) if (s.first == cs) return true;
-	//return false;
+	 
+}
+
+
+bool Interpreter::CBlockInterpreter::existSymbol(string cs)
+{
+	return symbols.exist(this->language, std::make_shared<CBlockNoumStr>(cs));
+
+}
+
+void Interpreter::CBlockInterpreter::addSymbol(HBlockNoum cs, HBlock value)
+{
+	if (isReservedWord(cs))
+	{
+		printf("invalid Word %s \n", cs->named().c_str());
+		logError("Invalid Word\n");
+		return;
+	}
+	printf("new Symbol %s\n", cs->named().c_str());
+	//value->dump("");
+	symbols.add(cs, value);
 }
 
 void Interpreter::CBlockInterpreter::addSymbol(string cs, HBlock value)
 {
-	if (isReservedWord(cs))
-	{
-		printf("invalid Word %s \n", cs.c_str());
-		logError("Invalid Word\n");
-		return;
-	}
-	printf("new Symbol %s\n", cs.c_str());
-	//value->dump("");
-	symbols.add(cs, value);
+	this->addSymbol(std::make_shared<CBlockNoumStr>(cs), value);
 }
+
+
 
 
 

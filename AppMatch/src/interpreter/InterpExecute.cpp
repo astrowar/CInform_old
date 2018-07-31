@@ -270,8 +270,8 @@ PhaseResult CBlockInterpreter::execute_set_inn(HBlock obj, HBlock value, HRunLoc
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
 		if (HBlockNoum nvalue = asHBlockNoum(value)) 
 		{
-		        nInst->set(nvalue);
-				return true; 
+		       return  nInst->set(nvalue);
+			 
 		}
 		if (HBlockInstanceNamed ivalue = asHBlockInstanceNamed(value))
 		{

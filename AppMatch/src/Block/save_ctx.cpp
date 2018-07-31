@@ -827,9 +827,11 @@ void raiseError()
 	  if (x == nullptr) return 0;
 	  lock_ptr(x.get(), ctx);
 
+	  const int _baseClasseName = save_CBlockNoum(x->baseClasseName, ctx);
+
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
-	  save_string(x->baseClasseName, ctx);
+	  save_id(_baseClasseName, ctx);
 	  end_slot(x.get(), ctx);
 	  return  slot;
 
@@ -2447,10 +2449,11 @@ void raiseError()
   {
 	  if (x == nullptr) return 0;
 	  lock_ptr(x.get(), ctx);
+	  const int _named = save_CBlockNoum(x->named, ctx);
 
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
-	  save_string(x->named, ctx);
+	  save_id(_named, ctx);
 	  end_slot(x.get(), ctx);
 	  return  slot;
 

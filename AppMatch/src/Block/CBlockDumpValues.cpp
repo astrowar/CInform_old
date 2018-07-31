@@ -147,12 +147,15 @@ void CBlockAnything::dump(string ident) {
 
 void CBlockKindNamed::dump(string ident)
 {
-    printf("%s %s %s\n", ident.c_str(), "Kind unknoun Named :  ", named.c_str());
+    printf("%s %s \n", ident.c_str(), "Kind unknoun Named :  "  );
+	named->dump(ident + "   ");
+
     CBlock::dump(ident);
 }
 
 void CBlockKindOfName::dump(string ident) {
-	printf("%s %s %s\n", ident.c_str(), "Kind of Named :  ", baseClasseName.c_str());
+	printf("%s   \n", ident.c_str(), "Kind of Named :  " );
+	baseClasseName->dump(ident + "   ");
 	CBlock::dump(ident);
 }
 

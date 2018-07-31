@@ -70,8 +70,9 @@ void CBlockInstance::newNamedVariable(HBlockNoum called, HBlockKind kind)
 }
 
 
-void CBlockInstance::set(HBlockNoum c_block)
+bool CBlockInstance::set(HBlockNoum c_block)
 {
+	//retorna true se p cpmando foi aceito
 	//Anonymous SET
 	for(auto &va :	this->anomimousSlots)
 	{
@@ -80,7 +81,7 @@ void CBlockInstance::set(HBlockNoum c_block)
 			if (venum->valueDefinition->contains( c_block->named() ))
 			{
 				venum->value = c_block;
-				return;
+				return true;
 			}
 		}
 		if (HVariableSlotBool   vbool = DynamicCasting::asHVariableSlotBool(va))
@@ -88,13 +89,14 @@ void CBlockInstance::set(HBlockNoum c_block)
 			if (vbool->valueDefinition->named() == c_block->named() )
 			{
 				vbool->value = true;
-				return;
+				return true;
 			}
 		}
 	}
+	return false;
 }
 
-void CBlockInstance::unset(HBlockNoum c_block)
+bool CBlockInstance::unset(HBlockNoum c_block)
 {
 	//Anonymous SET
 	for (auto &va : this->anomimousSlots)
@@ -107,7 +109,7 @@ void CBlockInstance::unset(HBlockNoum c_block)
 				vbool->value = false; 
 				printf("unset !");
 				this->dump(""); 
-				return;
+				return true;
 			}
 		}
 
@@ -125,16 +127,18 @@ void CBlockInstance::unset(HBlockNoum c_block)
 					{
 						vEnn->value = vEnn->valueDefinition->values[0];
 					}
+					return true;
 				}
 				else
 				{
 					logError("Value Slot is not a binary Set \n");
-					return;
+					return false ;
 				}
 
 			}
 		}
 	}
+	return false;
 }
 
 bool CBlockInstance::has_slot(HBlockNoum value)

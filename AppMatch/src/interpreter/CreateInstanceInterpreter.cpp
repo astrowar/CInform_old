@@ -117,7 +117,7 @@ void CBlockInterpreter::add_namedVariableToAllinstances(HBlockKind_InstanceVaria
 		if (is_derivadeOf(c, kvar->kind, nullptr))
 		{
 			HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
-			HBlockKind nkindBase = resolve_kind(v->kind_name->named());
+			HBlockKind nkindBase = resolve_kind(v->kind_name);
 			c->newNamedVariable(v->property_name, nkindBase);
 		}		 
 	}
@@ -171,7 +171,7 @@ HBlockInstance CBlockInterpreter::new_Instance(string named, HBlockKind kind) {
 			if (kvar->kind.get() == k.get())
 			{
 				HBlockInstanceVariable v = asHBlockInstanceVariable(kvar->variableNamed);
-				HBlockKind nkindBase = resolve_kind(v->kind_name->named());
+				HBlockKind nkindBase = resolve_kind(v->kind_name);
 				c->newNamedVariable(v->property_name, nkindBase);
 			}
 			 

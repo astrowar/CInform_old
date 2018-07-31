@@ -676,7 +676,7 @@ HBlock  NSParser::ControlFlux::STMT_unit_test(CParser *p, std::vector<HTerm>& te
 			{
 				 
 
-				HBlock executeBlock =  Expression::parser_expression(p, res.matchs["result"]  );
+				HBlock executeBlock = ControlFlux::parser_if_condition(p, res.matchs["result"]  );
 				if (executeBlock == nullptr)
 				{
 					err->setError("missing unity expect value ");

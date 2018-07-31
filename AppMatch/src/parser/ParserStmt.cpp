@@ -23,7 +23,7 @@ HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm ter
     HBlockNoum rx  = ParseAssertion::parse_noum(p, term);
     if (rx != nullptr)
     {
-        return  std::make_shared<CBlockKindNamed>( rx->named() ) ;
+        return  std::make_shared<CBlockKindNamed>( rx  ) ;
     }
 
 	if (CList *vlist = asCList(term.get())) 
@@ -32,7 +32,7 @@ HBlockKind NSParser::Expression::parser_kind_specification(CParser *p, HTerm ter
 		HBlockNoum r  = ParseAssertion::parse_noumVec(p, rvector);
 		if (r != nullptr)
 		{
-			return  std::make_shared<CBlockKindNamed>( r->named() ) ;
+			return  std::make_shared<CBlockKindNamed>( r  ) ;
 		}
         return nullptr;
 	}

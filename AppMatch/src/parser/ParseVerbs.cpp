@@ -224,15 +224,20 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
          
             auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
             auto L_verb = pLiteral("verb");
+
             auto L_the_verb_1 = pList("implies_a", { pLiteral("implies"),
                                                           pOr("article", pLiteral("a"),
                                                                            pLiteral("an"), pLiteral("the")) });
-            CPredSequence predList = (pOr("kindpart", L_the_verb, L_verb))	<<pAny("VerbList")	<<L_the_verb_1	<<pAny("Relation")	<<pLiteral("relation");
-         
+            //CPredSequence predList = (pOr("kindpart", L_the_verb, L_verb))   <<pAny("VerbList")	<<L_the_verb_1	<<pAny("Relation")	<<pLiteral("relation");
+			
+			CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) << pAny("VerbList") << pLiteral("implies")<< pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation") << pLiteral("relation");
+
+
         MatchResult res = CMatch(term, predList);
 
         if (res.result == Equals) {
-	        if (nullptr != asCList(res.matchs["VerbList"].get())) {
+	        if (nullptr != asCList(res.matchs["VerbList"].get())) 
+			{
                 //eh uma lista
 
                 HTerm listExpand =  expandBract(res.matchs["VerbList"]);
@@ -262,8 +267,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion_N(CParser * p, std::vect
                 return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
 
             } else {
-                //nao eh uma lista :-(
-                return nullptr;
+				HBlock a_verb = std::make_shared<CBlockNoumStr>(res.matchs["VerbList"]->repr());				 
+				p->verbList->blist.push_back(pLiteral(res.matchs["VerbList"]->repr()));				 
+				return STMT_verb_relation(p, a_verb, res.matchs["Relation"], err);
             }
         }
 
@@ -277,45 +283,38 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
  
     {
  
-            auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-            auto L_verb = pLiteral("verb");
-            auto L_the_verb_1 = pList("implies_a", { pLiteral("implies"),
-                                                          pOr("article", pLiteral("a"),pLiteral("an"), pLiteral("the")) });
-            CPredSequence predList = (pOr("kindpart", L_the_verb, L_verb))	<<pAny("Verb")	<<pAny("Aux")	<<L_the_verb_1	<<pAny("Relation")	<<pLiteral("relation");
+
+       
+      CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")	<<pWord("Aux")	<< pLiteral("implies") << pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation")	<<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 
-        if (res.result == Equals) {
+		if (res.result == Equals) 
+		{
 
-            /*if (res.matchs["Aux"]->repr() =="of")
-            {
-                logError("verb of a relation cannot end with OF ");
-                return nullptr;
-            }*/
-            HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
-            clist->push_back(std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr()));
-            clist->push_back(std::make_shared<CBlockNoumStr>(res.matchs["Aux"]->repr()));
+			if (res.matchs["Verb"]->repr() != "of")
+			{
 
-            HBlock a_verb = clist;
-            
+				HBlockList clist = std::make_shared<CBlockList>(std::list<HBlock>());
+				clist->push_back(std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr()));
+				clist->push_back(std::make_shared<CBlockNoumStr>(res.matchs["Aux"]->repr()));
+				HBlock a_verb = clist;
+				auto verbMatch = (pList("VerbMatch", {
+						pLiteral(res.matchs["Verb"]->repr()),
+						pLiteral(res.matchs["Aux"]->repr()),
+				}));
 
-            auto verbMatch = (pList("VerbMatch", {
-                    pLiteral(res.matchs["Verb"]->repr()),
-                    pLiteral(res.matchs["Aux"]->repr()),
-            }));
-
-            p->verbList->blist.push_back(verbMatch);
-            //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
-            return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
-        }
+				p->verbList->blist.push_back(verbMatch);				
+				return STMT_verb_relation(p, a_verb, res.matchs["Relation"], err);
+			}
+		}
 
     }
 
     {
-        auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-        auto L_verb = pLiteral("verb");
+
         
-        CPredSequence predList = (pOr("kindpart", L_the_verb, L_verb))	<<pAny("Verb")	<<pAny("Aux")<<pLiteral("implies")	<<pAny("Relation")	<<pLiteral("relation");
+        CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")	<<pWord("Aux")<<pLiteral("implies")	<< pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation")	<<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 
@@ -350,14 +349,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
         //Teste de carga
 
         
-         
-        auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-        auto L_verb = pLiteral("verb");
-        auto L_the_verb_1 = pList("implies_a", { pLiteral("implies"),
-                                                          pOr("article", pLiteral("a"),
-                                                                           pLiteral("an"), pLiteral("the")) });
+ 
 
-        CPredSequence predList = pOr("kindpart", L_the_verb, L_verb)<<pAny("Verb")	<<L_the_verb_1	<<pAny("Relation")	<<pLiteral("relation");
+        CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")	<< pLiteral("implies")<< pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation")	<<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 
@@ -365,18 +359,8 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
 
             auto vaux = getVerbAndAux(res.matchs["Verb"]);
             HBlock a_verb = vaux.first;
-            HPred verbMatch = vaux.second;
-
-            /*if (vaux.second->repr() == "of")
-            {
-                logError("verb of a relation cannot end with OF ");
-                return nullptr;
-            }*/
-
-
-        
-            p->verbList->blist.push_back(verbMatch);
-            //return std::make_shared<CBlockVerbRelation>(a_verb, a_relation);
+            HPred verbMatch = vaux.second; 
+            p->verbList->blist.push_back(verbMatch);            
             return STMT_verb_relation(p,a_verb, res.matchs["Relation"],err);
 
         }
@@ -385,10 +369,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
 
     {
         //Teste de carga
-            auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-            auto L_verb = pLiteral("verb");
 
-        CPredSequence predList = pOr("kindpart", L_the_verb, L_verb)<<pAny("Verb")	<<pLiteral("implies")<<pAny("Relation") <<pLiteral("relation");
+
+        CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")	<<pLiteral("implies")<< pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation") <<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 
@@ -416,14 +399,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
 
     {
         
-         
-        auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-        auto L_verb = pLiteral("verb");
-        auto L_the_verb_1 = pList("implies_a", { pLiteral("implies"),
-                                                          pOr("article", pLiteral("a"),
-                                                                           pLiteral("an"), pLiteral("the")) });
 
-        CPredSequence predList = pOr("kindpart", L_the_verb, L_verb)<<pAny("Verb")<<L_the_verb_1<<pAny("Relation")	<<pLiteral("relation");
+
+        CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")<< pLiteral("implies") << pOptional(pOr("_a",pLiteral("the"), pLiteral("a"))) << pAny("Relation")	<<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 
@@ -475,11 +453,9 @@ HBlock NSParser::Statement::Verbal::STMT_verb_Assertion(CParser * p, std::vector
     {
     
          
-       auto L_the_verb = pList("vinitial", { pLiteral("the"), pLiteral("verb") });
-       auto L_verb = pLiteral("verb");
-       auto L_the_verb_4 = pLiteral("implies");
 
-       CPredSequence predList = pOr("kindpart", L_the_verb, L_verb)<<pAny("Verb")<<L_the_verb_4<<pAny("Relation")	<<pLiteral("relation");
+
+       CPredSequence predList = pOptional(pLiteral("the")) << pLiteral("verb") << pOptional(pLiteral("to")) <<pAny("Verb")<< pLiteral("implies") << pOptional(pOr("_a", pLiteral("the"), pLiteral("a"))) << pAny("Relation")	<<pLiteral("relation");
          
         MatchResult res = CMatch(term, predList);
 

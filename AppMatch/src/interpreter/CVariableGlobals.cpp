@@ -21,7 +21,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 {
 	if (HBlockKindNamed  kindname = asHBlockKindNamed(baseKind))
 	{
-		HBlockKind kindr = resolve_kind(kindname->named);
+		HBlockKind kindr = resolve_kind(kindname);
 		if (kindr != nullptr)
 		{
 			return assert_it_variableGlobal(obj, kindr, defaultValue);
@@ -36,7 +36,7 @@ bool CBlockInterpreter::assert_it_variableGlobal(HBlock obj, HBlock baseKind , H
 
 	if (HBlockNoum  kindname = asHBlockNoum(baseKind))
 	{
-		HBlockKind kindr = resolve_kind(kindname->named());
+		HBlockKind kindr = resolve_kind(kindname);
 		if (kindr != nullptr) 
 		{
 			return assert_it_variableGlobal(obj, kindr, defaultValue);

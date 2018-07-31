@@ -57,7 +57,8 @@ HBlockNoum  CBlockInterpreter::get_singular_of(string s)
 
 bool CBlockInterpreter::isSameString(const string& s1 , const string& s2)
 {
-	return language->isSameString(s1, s2);
+	//return language->isSameString(s1, s2);
+	return s1 == s2;
 }
 
 
@@ -203,7 +204,7 @@ string CBlockInterpreter::asBlockNoum(HBlock c_block)
 	{
 		if (s.second.get() == c_block.get())
 		{
-			return s.first;
+			return s.first->named();
 		}
 	}
 
@@ -221,20 +222,21 @@ HBlock CBlockInterpreter::resolve_of(HBlock b, HBlock a) {
 	return nullptr;
 }
 
-HBlockKind CBlockInterpreter::resolve_system_kind(string n) 
+HBlockKind CBlockInterpreter::resolve_system_kind(HBlockNoum n)
 {
+	string s = language->toSystemName(n);
 
-	return  language->metaKind(n);
+	return  language->metaKind(s);
 
 	return nullptr;
 }
 
-HBlockKind CBlockInterpreter::resolve_user_kind(string n)
+HBlockKind CBlockInterpreter::resolve_user_kind(HBlockNoum n)
 {
 	
 	for (auto s : symbols.list())
 	{
-		if ( isSameString( s.first , n))
+		if ( language->isSameNoum( s.first , n))
 		{
 			if (HBlockKind nn = asHBlockKind(s.second ))
 			{
@@ -243,21 +245,11 @@ HBlockKind CBlockInterpreter::resolve_user_kind(string n)
 		}
 	}
 
-	//for (auto &defs : assertions)
-	//{ 
-	//	if (HBlockKind nn = asHBlockKind(defs->get_definition())) {
-	//		if ( isSameString( nn->named , n)) 
-	//		{
-	//			return nn;
-	//		}
-	//	}
-	//}
-
 	return nullptr;
 }
 
 
-HBlockKind CBlockInterpreter::resolve_kind(string n) 
+HBlockKind CBlockInterpreter::resolve_kind(HBlock  _n) 
 {
 
 
@@ -279,17 +271,40 @@ HBlockKind CBlockInterpreter::resolve_kind(string n)
 	//	}
 	//}
 
-
-
-	if (auto kcustom = resolve_system_kind(n))
+	if (auto knamed = asHBlockKindNamed(_n))
 	{
-		return kcustom;
-	}
 	 
-	if (auto k = resolve_user_kind(n))
-	{
-		return k;
+		return resolve_kind(knamed->named);
 	}
+
+
+	if (auto n = asHBlockNoum(_n))
+	{
+		if (auto kcustom = resolve_system_kind(n))
+		{
+			return kcustom;
+		}
+
+		if (auto k = resolve_user_kind(n))
+		{
+			return k;
+		}
+
+	}
+	if (auto n = asHBlockNoum(_n))
+	{
+		for (auto s : symbols.list())
+		{
+			if (auto nk = asHBlockKind(s.second))
+			{
+				if (language->isSameNoum(s.first, n))
+				{
+					return nk;
+				}
+			}
+		}
+	}
+
 
 	return nullptr;
 
@@ -389,7 +404,7 @@ std::pair<HBlockNoum, HBlockKind > CBlockInterpreter::resolve_descritive_kind(HB
 		{
 			if (HBlockKind k = asHBlockKind(s.second))
 			{
-				if  (isSameString(s.first , tail->named()))
+				if  (language->isSameNoum(s.first , tail ))
 				{
 					return std::pair<HBlockNoum, HBlockKind >(head, k);
 				}
@@ -420,6 +435,17 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry,
 	{
 		return resolve_noum(ndet->noum, localsEntry, noumsToResolve);
 	}
+
+	for (auto s : symbols.list())
+	{
+		if (language->isSameNoum(s.first, n))
+		{
+			return s.second;
+			
+		}
+	}
+
+
 	return resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
 
@@ -429,6 +455,16 @@ HBlock CBlockInterpreter::has_resolve_noum(HBlockNoum n, HRunLocalScope localsEn
     if(bv != nullptr) return bv;
 
    if( language->is_nothing(n)) return Nothing;
+
+   for (auto s : symbols.list())
+   {	
+	   if (language->isSameNoum(s.first, n))
+	   {
+		   return s.second;
+	   }
+   }
+
+
 
 	return has_resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
@@ -482,27 +518,8 @@ HBlock CBlockInterpreter::has_resolve_string_noum(string named, HRunLocalScope l
 			return resolve_if_noum(lnoum, localsEntry, noumsToResolve);
 		}
 	}
-
-
-	for (auto s : symbols.list())
-	{
-		
-
-		//printf("%s is %s ? \n",s.first.c_str(), named.c_str());
-		if (isSameString(s.first, named))
-		{
-			return s.second;
-		}
-	}  
 	
 	return nullptr;
-
-
-
-
-
-
-
 
 	////eh uma instancia de alguem ??
 	//for (auto &a_inst : instancias)
@@ -674,7 +691,7 @@ std::list<string>  CBlockInterpreter::getAllRegistedKinds()
 	{
 		if (HBlockKind nn = asHBlockKind(s.second)) 
 		{
-			ret.push_back(s.first);
+			ret.push_back(s.first->named());
 		}
 	} 
 	return ret;

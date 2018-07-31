@@ -161,7 +161,7 @@ bool CBlockInterpreter::is_InstanceOf(HBlock  a, HBlockKind b )
 
 	if (HBlockKindNamed kNamed = asHBlockKindNamed(b))
 	{
-		auto bnext = resolve_kind(kNamed->named);
+		auto bnext = resolve_kind(kNamed);
 		if (CBlock::isSame(bnext.get(),b.get()) ==false )
 		{
 			return is_InstanceOf(a, bnext);

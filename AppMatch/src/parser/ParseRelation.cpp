@@ -112,7 +112,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other" || kind_n->named == "another" )  arg2->kind = arg1->kind;
+						if (kind_n->named->named() == "other" || kind_n->named->named() == "another" )  arg2->kind = arg1->kind;
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2, true,true);
 				}
@@ -137,7 +137,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other" || kind_n->named == "another" )  arg2->kind = arg1->kind;
+						if (kind_n->named->named() == "other" || kind_n->named->named() == "another" )  arg2->kind = arg1->kind;
 					 
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,true,false);
@@ -163,7 +163,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
+						if (kind_n->named->named() == "other" || kind_n->named->named() == "another")  arg2->kind = arg1->kind;
 					 
 					}
 					return  std::make_shared<CBlockASimetricRelation>(rname, arg1, arg2,false,true);
@@ -192,7 +192,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-					if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
+					if (kind_n->named->named() == "other" || kind_n->named->named() == "another")  arg2->kind = arg1->kind;
 					 
 					}
 
@@ -225,7 +225,7 @@ HBlock NSParser::ParseRelation::STMT_relates_Assertion(CParser *p, std::vector<H
 				{
 					if (auto kind_n = DynamicCasting::asHBlockKindNamed(arg2->kind))
 					{
-						if (kind_n->named == "other" || kind_n->named == "another")  arg2->kind = arg1->kind;
+						if (kind_n->named->named() == "other" || kind_n->named->named() == "another")  arg2->kind = arg1->kind;
 					}
 
 				 

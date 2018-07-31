@@ -2407,8 +2407,8 @@ HBlockSelector_Any  load_CBlockSelector_Any(int tp, LoadContext *ctx)
 HBlockKindOfName  load_CBlockKindOfName(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
-	cmp_type(tp, BlockType::BlockKindOfName);
-	const string _baseClasseName = load_string(ctx);
+	cmp_type(tp, BlockType::BlockKindOfName);	 
+	const HBlockNoum _baseClasseName = load_CBlockNoum_slot(load_id(ctx), ctx);
 	CBlockKindOfName* ret = new CBlockKindOfName(_baseClasseName);
 	return  std::shared_ptr<CBlockKindOfName>(ret);
 
@@ -3497,8 +3497,8 @@ HBlockActionCallNamed  load_CBlockActionCallNamed(int tp, LoadContext *ctx)
 HBlockKindNamed  load_CBlockKindNamed(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
-	cmp_type(tp, BlockType::BlockKindNamed);
-	const string _named = load_string(ctx);
+	cmp_type(tp, BlockType::BlockKindNamed);	
+	const HBlockNoum _named = load_CBlockNoum_slot(load_id(ctx), ctx);
 	CBlockKindNamed* ret = new CBlockKindNamed(_named);
 	return  std::shared_ptr<CBlockKindNamed>(ret);
 

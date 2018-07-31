@@ -22,7 +22,7 @@ unit init:
 
 
 unit test:
-  now apple is    carried by Poe
+  now apple is carried by Poe
 assert: Poe carry apple  
  
 

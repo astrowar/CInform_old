@@ -56,18 +56,19 @@ bool LanguageEn::isSameNoum(  HBlockNoum n1, HBlockNoum n2)
 
 	if (HBlockNoumStrDet d1 = DynamicCasting::asHBlockNoumStrDet(n1))
 	{
-		return isSameNoum(d1, n1);
+		return isSameNoum(d1->noum, n1);
 	}
 
 	if (HBlockNoumStrDet d2 = DynamicCasting::asHBlockNoumStrDet(n2))
 	{
-		return isSameNoum(n1, d2);
+		return isSameNoum(n1, d2->noum);
 	}
 
 	string s1 = n1->named();
 	string s2 = n2->named();
 
-	return isSameString(s1, s2);
+	auto rs =  isSameString(s1, s2);
+	return rs;
 }
 
 
@@ -84,6 +85,33 @@ bool LanguageEn::isSameString(const string &s1, const string& s2)
 		return true;
 	}
 	return false;
+}
+
+ 
+
+string LanguageEn::toSystemName(HBlockNoum n)
+{
+	if (auto ncomp = DynamicCasting::asHBlockNoumCompose(n))
+	{
+		string snext;
+		bool first = true;
+		for (auto h : ncomp->noums)
+		{
+			if (is_det(h) == false)
+			{
+				if (first == false) snext += " ";
+				snext +=  toSystemName(h);
+				first = false;
+			}
+		}
+		return snext;
+	}
+	if (auto ndet = DynamicCasting::asHBlockNoumStrDet(n))
+	{
+		return toSystemName(ndet->noum);
+	}
+
+	return n->named();
 }
 
 HBlockKind LanguageEn::metaKind(string n)
@@ -166,5 +194,6 @@ string LanguageEn::text_matching_subexpression(int i)
 	if (i == 7) return base + " 7";
 	if (i == 8) return base + " 8";
 	if (i == 9) return base + " 9";
-	
+
+	return "nothing";
 }

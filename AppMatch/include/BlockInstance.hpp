@@ -28,8 +28,8 @@ namespace CBlocking
 		void newEnumVariableSlot(HBlockEnums definition);
 		void newBoolVariableSlot(HBlockNoum value);
 		void newNamedVariable(HBlockNoum called, HBlockKind kind);
-		void set(HBlockNoum c_block);
-		void unset(HBlockNoum c_block);
+		bool set(HBlockNoum c_block);
+		bool unset(HBlockNoum c_block);
 		bool has_slot(HBlockNoum value);
 		HBlockVariableNamed get_property(string named); 
 		void set_property(string cs, CBlocking::HBlock value);

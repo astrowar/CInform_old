@@ -12,17 +12,18 @@ Interpreter::CBlockInterpreter::CBlockInterpreter(LanguageDepend* language )
 	instancia_id = 0;
 	Nothing = std::make_shared<CBlockNothing>(language->getNothing());
 	Anything = std::make_shared<CBlockAnything>(language->getAnything());
-	MetaKind = std::make_shared<CBlockKindNamed>(language->getMetaKind());
-	MetaKindRelation = std::make_shared<CBlockKindNamed>(language->getMetaKindRelation());
-	MetaKindPhrase = std::make_shared<CBlockKindNamed>(language->getMetaKindPhrase());
-	MetaKindEntity = std::make_shared<CBlockKindNamed>(language->getMetaKindEntity());
-	MetaKindBoolean = std::make_shared<CBlockKindNamed>(language->getMetaKindBoolean());
-	MetaKindAction = std::make_shared<CBlockKindNamed>(language->getMetaKindAction());
-	MetaKindList = std::make_shared<CBlockKindNamed>(language->getMetaKindList());
-	MetaKindText = std::make_shared<CBlockKindValue>(language->getMetaKindText());
-	MetaKindAny = std::make_shared<CBlockKindNamed>(language->getMetaKindAny());
 
 
+	MetaKind = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKind()));
+	MetaKindRelation = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindRelation()));
+	MetaKindPhrase = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindPhrase()));
+	MetaKindEntity = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindEntity()));
+	MetaKindBoolean = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindBoolean()));
+	MetaKindAction = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindAction()));
+	MetaKindList = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindList()));
+	MetaKindAny = std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>(language->getMetaKindAny()));
+
+   MetaKindText = std::make_shared<CBlockKindValue>(language->getMetaKindText());
 
 	symbols.add(language->getMetaKind(), MetaKind);
 	symbols.add(language->getMetaKindRelation(), MetaKindRelation );
@@ -57,20 +58,27 @@ Interpreter::CBlockInterpreter   Interpreter::CBlockInterpreter::clone()
 
 
 
-void Interpreter::SymbolPool::add(string s , HBlock b)
+void Interpreter::SymbolPool::add(HBlockNoum s , HBlock b)
 {
-	this->_symbols.push_back(std::pair<string, HBlock>(s, b));
+	this->_symbols.push_back(std::pair<HBlockNoum, HBlock>(s, b));
 }
-std::list< std::pair<string, HBlock> > Interpreter::SymbolPool::list()
+
+void Interpreter::SymbolPool::add(string s, HBlock b)
+{
+	this->_symbols.push_back(std::pair<HBlockNoum, HBlock>(std::make_shared<CBlockNoumStr>(s), b));
+}
+
+
+std::list< std::pair<HBlockNoum, HBlock> > Interpreter::SymbolPool::list()
 {
 	return this->_symbols;
 }
 
-bool Interpreter::SymbolPool::exist( LanguageDepend *p, string s)
+bool Interpreter::SymbolPool::exist( LanguageDepend *p, HBlockNoum s)
 {
 	for (auto q : this->_symbols)
 	{
-		if (p->isSameString(q.first, s)) return true;
+		if (p->isSameNoum(q.first, s)) return true;
 		
 	}
 	return false;

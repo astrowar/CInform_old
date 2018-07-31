@@ -247,7 +247,7 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 	if (HBlockInstance nInst = asHBlockInstance(obj)) {
 		//name da variavel
 		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value)) {
-			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named());
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name);
 			nInst->newNamedVariable(variable_->property_name, nkindBase);
 			return true;
 		}
@@ -259,7 +259,7 @@ bool CBlockInterpreter::assert_has_variable(CBlocking::HBlock obj, CBlocking::HB
 		//name da variavel
 		if (HBlockInstanceVariable variable_ = asHBlockInstanceVariable(value))
 		{
-			HBlockKind nkindBase = resolve_kind(variable_->kind_name->named());
+			HBlockKind nkindBase = resolve_kind(variable_->kind_name);
 			nAction->newNamedVariable(variable_->property_name, nkindBase);
 			return true;
 		}

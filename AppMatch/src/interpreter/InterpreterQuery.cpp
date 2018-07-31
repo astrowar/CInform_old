@@ -489,7 +489,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
 	{
-		HBlock resolved = resolve_string(nkind->named, localsEntry);
+		HBlock resolved = resolve_kind(nkind  );
 		if (resolved != nullptr)
 		{
 			return query_is(c_block, resolved, localsEntry, stk);
@@ -498,7 +498,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block))
 	{
-		HBlock resolved = resolve_string(nkind->named, localsEntry);
+		HBlock resolved = resolve_kind(nkind  );
 		if (resolved != nullptr)
 		{
 			return query_is(resolved, c_block1, localsEntry, stk);

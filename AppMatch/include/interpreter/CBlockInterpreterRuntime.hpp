@@ -111,6 +111,7 @@ class SymbolPool
 public: 
 	SymbolPool() {};
 	void add(HBlockNoum, HBlock);
+	void add(string, HBlock);
 	
 	std::list< std::pair<HBlockNoum, HBlock> > list();
 	bool  exist(LanguageDepend *p, HBlockNoum s);
@@ -269,7 +270,10 @@ public:
 
 
 		bool isReservedWord(string cs);
+		bool isReservedWord(HBlockNoum cs);
+		bool existSymbol(HBlockNoum cs);
 		bool existSymbol(string cs);
+		void addSymbol(HBlockNoum cs, HBlock  value);
 		void addSymbol(string cs, HBlock  value);
 		bool assert_newVerb(HBlockVerbRelation value);
 		bool insert_newEventHandle(HBlockEventHandle event_handle);
@@ -454,15 +458,15 @@ public:
 
 
 		HBlock resolve_of(HBlock b, HBlock a);
-		HBlockKind resolve_system_kind(string n);
-		HBlockKind resolve_user_kind(string n);
+		HBlockKind resolve_system_kind(HBlockNoum n);
+		HBlockKind resolve_user_kind(HBlockNoum n);
 
 
 		bool is_derivadeOf(HBlockKind a, HBlockKind b);
 
 
 
-		HBlockKind resolve_kind(string n);
+		HBlockKind resolve_kind(HBlock n);
 		HBlock resolve_if_noum(HBlock n, HRunLocalScope localsEntry, std::list<std::string>  noumsToResolve);
 		std::pair<HBlockNoum, HBlockKind > resolve_descritive_kind(HBlockNoum n, HRunLocalScope localsEntry);
 		HBlock resolve_noum(HBlockNoum n, HRunLocalScope localsEntry);

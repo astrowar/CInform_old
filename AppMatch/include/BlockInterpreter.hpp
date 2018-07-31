@@ -237,13 +237,10 @@ namespace CBlocking
       virtual bool isValue() override { return false; }
 
         BlockType type() override { return BlockType::BlockKindNamed; }
-		string named;
-         CBlockKindNamed(string _named) : named((_named)) 
+		HBlockNoum named;
+         CBlockKindNamed(HBlockNoum _named) : named((_named)) 
 		 {
-			 if (_named == "text")
-			 {
-				 printf(".");
-			 }
+			 
 		 };
     };
 
@@ -281,8 +278,8 @@ namespace CBlocking
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockKindOfName; }
 
-		CBlockKindOfName(string _baseClasseName) : baseClasseName(_baseClasseName) {};
-		string baseClasseName;
+		CBlockKindOfName(HBlockNoum _baseClasseName) : baseClasseName(_baseClasseName) {};
+		HBlockNoum baseClasseName;
 	};
 
 	using HBlockKindOfName = std::shared_ptr<CBlockKindOfName>;

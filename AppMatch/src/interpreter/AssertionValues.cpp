@@ -118,7 +118,7 @@ HBlockKind CBlockInterpreter::resolve_comp_kind(CBlocking::HBlockKind obj, HRunL
 
 	if (HBlockKindNamed c = asHBlockKindNamed(obj))
 	{
-		return resolve_kind(c->named);
+		return resolve_kind(c);
 	}
 
 	return obj;
@@ -260,7 +260,7 @@ void CBlockInterpreter::assert_batch_kinds(std::list<CBlocking::HBlock> &nList, 
 	for (auto nObj : nList)
 	{
 		if (HBlockNoum nbasei = asHBlockNoum(nObj)) {
-			auto b_up = create_derivadeKind(nbasei->named(), k->baseClasseName);
+			auto b_up = create_derivadeKind(nbasei->named(), language->toSystemName( k->baseClasseName ));
 			HBlockKind b = b_up.first;
 			if (b_up.second != nullptr)
 			{
@@ -280,9 +280,16 @@ void CBlockInterpreter::assert_batch_kinds(std::list<CBlocking::HBlock> &nList, 
 bool CBlockInterpreter::assert_it_kind(CBlocking::HBlock obj, CBlocking::HBlock value, HRunLocalScope localsEntry) {
 	if (HBlockKindOfName k = asHBlockKindOfName(value)) 
 	{
-		if (HBlockNoum nbase = asHBlockNoum(obj)) {
 
-			auto b_up = create_derivadeKind(nbase->named(), k->baseClasseName);
+		if (HBlockNoumStrDet ndet = asHBlockNoumStrDet(obj))
+		{
+			return assert_it_kind(ndet->noum, value, localsEntry);
+		}
+
+		if (HBlockNoum nbase = asHBlockNoum(obj)) 
+		{
+
+			auto b_up = create_derivadeKind(language->toSystemName(nbase), language->toSystemName( k->baseClasseName));
 			HBlockKind b = b_up.first;
 
 			if (b_up.second != nullptr) {

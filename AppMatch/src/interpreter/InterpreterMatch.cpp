@@ -574,7 +574,7 @@ bool CBlockInterpreter::is_kind_match(HBlockMatch M )
 	}
 	if (auto   mn = asHBlockMatchNoum(M))
 	{
-		const auto knamed = this->resolve_kind(mn->inner->named());
+		const auto knamed = this->resolve_kind(mn->inner);
 		if (knamed != nullptr) return true;
 	}
 	return false;
