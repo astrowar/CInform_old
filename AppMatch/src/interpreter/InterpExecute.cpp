@@ -1101,6 +1101,17 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			return dctValueWrap;
 		}
 	}
+	for (const auto &dct : decides_noum1)
+	{
+		auto dctValueWrap = getDecidedValueOf(c_block, dct, nullptr, stk);
+		if (dctValueWrap != nullptr)
+		{
+			return dctValueWrap;
+		}
+	}
+
+
+ 
 
 	if (HBlockRelationLookup nrlookup = asHBlockRelationLookup(c_block))
 	{

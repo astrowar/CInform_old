@@ -1,42 +1,18 @@
 A thing is a kind of entity
 A person is a kind of thing
-player is an person that varies
+  
+John is an person
+Marsha is an person
 
-carrying relates person to (a thing )  
-
-The verb to carry   implies the carrying relation
-The verb to hold   implies the holding relation
-The verb to wear   implies the wearing relation
-the verb ( carried by ) implies a reverse carrying relation 
- 
- 
-Definition: a thing is worn if the player is wearing it
-Definition: a thing is carried if  it is carried by player
-Definition: a thing is held if the player is holding it
-
-A thing can be fixed in place or portable
-A thing is usually portable
-A thing can be scenery
-A thing can be wearable
-
-
+to decide which K is (  K ) who relates to (L called Y) by (relation  called R ) :
+   decide on Marsha
 
 unit init:
-   the apple is a thing
-   Poe is a person
-   Poe carry apple
+    marriage relates   person to another
+    The verb to  be married to implies the marriage relation
+    John is married to Marsha
 
 unit test:
-   now player is Poe
-assert: apple is carried   
-assert: apple is carried by Poe
-assert: Poe carry apple   
-
-   
-unit test:
-
-  now apple is carried by Poe
-assert: Poe carry apple  
- 
-
+  pass
+assert:  ( person who relates to John by  marriage   ) is  Marsha
  

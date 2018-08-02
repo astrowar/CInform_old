@@ -304,9 +304,11 @@ namespace NSParser
 
 
 		CBlocking::HBlockMatch  parser_MatchArgument_kind_item(CParser *p, string term);
-		
-		HBlockMatch   parser_MatchComponentePhase(CParser *p, HTerm term);
-		HBlockMatch   parser_MatchVariableDeclare(CParser *p, HTerm term);
+		CBlocking::HBlockMatchKind   parser_MatchKind(CParser *p, NSTerm::HTerm sNoum);
+
+
+		CBlocking::HBlockMatch   parser_MatchComponentePhase(CParser *p, NSTerm::HTerm term);
+		CBlocking::HBlockMatch   parser_MatchVariableDeclare(CParser *p, NSTerm::HTerm term);
 	 
 		CBlocking::HBlockMatch  parser_MatchArgument_only(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parser_MatchArgument(CParser *p, NSTerm::HTerm term);
@@ -410,6 +412,12 @@ namespace NSParser
 
 	namespace ParseDecide
 	{		 
+		 
+
+		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, std::list<std::vector<NSTerm::HTerm > > terms);
+		
+
 		CBlocking::HBlockMatchList  parser_match_body(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parser_What_Which_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_What_Which_Verb_Assertion(CParser * p, NSTerm::HTerm term);
@@ -551,11 +559,17 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 
 	std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs);
 	std::list<std::pair<HTerm, HTerm> > getBiPartition(HTerm & term);
+	std::list<std::vector<HTerm > > getBiPartition_v(HTerm & term);
 	std::list<std::vector<HTerm> > getTriPartition(HTerm & term);
 	std::list<std::vector<HTerm> > getTriPartition(std::vector<HTerm> & term);
 
 	std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs);
 	std::list<std::vector<HTerm > > getQuadPartition(HTerm & term);
+
+
+	std::list<std::vector<HTerm > > getQuiPartition(std::vector<HTerm> & vs);
+	std::list<std::vector<HTerm > > getQuiPartition(HTerm & term);
+
 
 	std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
 

@@ -855,7 +855,7 @@ std::string get_repr_i(std::vector<HTerm> lst) {
 				if (predicates.front()->match(term) == Equals) {
 					return makeMatch(predicates.front()->named, term);
 				}
-				return MatchResult();
+				//return MatchResult();
 			}
 
 			CList *lst = asCList(term.get());

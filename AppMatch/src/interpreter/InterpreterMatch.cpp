@@ -298,12 +298,52 @@ HBlock CBlockInterpreter::unMatching_values(  HBlockMatch mValue, HRunLocalScope
 
 }
 
+HBlockList convert_to_NoumList(HBlockMatchList mlist)
+{
+	std::list<HBlock> alist;
+	 
+	for (auto m : mlist->matchList)
+	{
+		if (auto mn = asHBlockMatchNoum(m))
+		{
+			alist.push_back(mn->inner);
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
+	return std::make_shared< CBlockList >(alist);
+}
+
 CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch mValue, HRunLocalScope localsEntry, QueryStack *stk)
 {
 	
 	if (auto mnoum = asHBlockMatchNoum(mValue))
 	{
 		return  Match(M, mnoum->inner, localsEntry, stk);
+	}
+
+	if (auto mlist = asHBlockMatchList(mValue))
+	{
+		if (mlist->matchList.size() == 1) return isEquivalenteMatch(M, mlist->matchList.front(), localsEntry, stk);
+		//is full matchnoums ?
+		auto mlist_v = convert_to_NoumList(mlist);
+		if (mlist_v != nullptr)
+		{
+
+			auto value = exec_eval(mlist_v, localsEntry, stk);
+			if (value != nullptr)
+			{
+				auto q = query_is(M, value, localsEntry, stk);
+				if (q.result)
+				{
+					return CResultMatch(true);
+				}
+			}
+			 
+		}
 	}
 
 	if (auto mlist = asHBlockMatchList(mValue))
@@ -343,6 +383,9 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 		}
 		else
 		{
+
+
+
 			// uma lista contra uma nao lista ? o que pode ser
 			logError("Something unespected");		
 

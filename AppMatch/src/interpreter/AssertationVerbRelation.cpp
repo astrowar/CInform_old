@@ -1098,9 +1098,23 @@ bool CBlockInterpreter::assert_newVerb(HBlockVerbRelation value)
 		return false;
 	}
 
+
+	auto relation_res = resolve_noum(value->relationNoum, nullptr);
+	if (relation_res == nullptr)
+	{
+		logError("Relation "+ value->relationNoum->named() +" is undefined");
+		return false;
+	}
+	if (DynamicCasting::asHBlockRelationBase(relation_res) == nullptr)
+	{
+		logError( value->relationNoum->named() + " is not a relation");
+		return false;
+	}
+
 	
 	//cout << " new Verb |" <<vstr  <<"|"<< endl;
 	verbAssertation[verbNoum->named()] = std::list<HBlockAssertion_is>();
+	
 
     // Existe essa relacao ??
 	verbRelationAssoc[verbNoum->named()] = value ;

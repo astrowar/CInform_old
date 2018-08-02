@@ -97,6 +97,22 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument_kind_item(CParser *p
 	return c1;
 }
 
+
+HBlockMatchKind NSParser::ExpressionMatch::parser_MatchKind(CParser *p, HTerm term)
+{
+	//compose kind ?
+
+	CPredSequence predList = pLiteral("relation") << pLiteral("of") << pAny("var_named1") << pLiteral("by") << pAny("var_named2");
+	MatchResult res = CMatch(term, predList);
+	if (res.result == Equals)
+	{
+		return std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindNamed>(std::make_shared<CBlockNoumStr>("relation")));
+	}
+	return nullptr;
+}
+
+
+
 //componente eh um noum OU uma variavel
 HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, HTerm term)
 {
@@ -106,6 +122,11 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, H
 		MatchResult res = CMatch(term, predList);
 		if (res.result == Equals)
 		{
+
+			//is compose type ?
+			HBlockMatch mcompose = parser_MatchKind(p, res.matchs["var_named"] );
+			if (mcompose != nullptr) return mcompose;
+
 			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
 			//cterm eh uma lista ??
 			if (CList* clist = asCList(cterm))
@@ -146,6 +167,35 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, H
 			return n1;
 		}
 	}
+
+	{
+		CPredSequence predList = pWord("var_named");
+
+		auto tList = asCList(term.get());
+		if (tList == nullptr)
+		{
+			
+		}
+
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+			 
+			string a = res.matchs["var_named"]->removeArticle()->repr();
+			if (a.size() == 1)
+			{
+				if (isalpha(a[0]))
+				{
+					if (toupper(a[0]) == a[0])
+					{
+						return  std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), std::make_shared<CBlockMatchAny>());
+					}
+				}
+			}
+		}
+	}
+
+
 
 	{
 		
@@ -218,8 +268,11 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchVariableDeclare(CParser *p, H
 			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
 
 			HBlockNoum var_noum = Expression::parser_noum_expression(p, res.matchs["var_named"]);
-			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(var_noum->named(), c1);
-			return n1;
+			if (var_noum != nullptr)
+			{
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(var_noum->named(), c1);
+				return n1;
+			}
 		}
 	}
 	return nullptr;

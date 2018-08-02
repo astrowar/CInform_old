@@ -150,6 +150,65 @@ CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block
 	return nullptr;
 }
 
+
+CBlocking::HBlock CBlockInterpreter::getDecidedValueOf(CBlocking::HBlock c_block, CBlocking::HBlockToDecideWhat_FirstNoum dct, HRunLocalScope localsEntry, QueryStack *stk_in) {
+
+
+	HBlockMatch match = (dct->queryToMatch->value);
+
+	std::unique_ptr<QueryStack> stk_unique = nullptr;
+	if (stk_in != nullptr)
+	{
+		if (stk_in->isQuery("is", c_block, dct)) return nullptr;
+		stk_unique = std::make_unique<QueryStack>(*stk_in);
+	}
+	else
+	{
+		stk_unique = std::make_unique<QueryStack>();
+	}
+
+
+	QueryStack *stk = stk_unique.get();
+	stk->addQuery("is", c_block, dct);
+
+
+	if (stk->size() > 30)
+	{
+		stk->dump();
+		printf("huge");
+	}
+
+
+	CResultMatch result = this->Match(match, c_block, localsEntry, stk);
+
+	if (result.hasMatch)
+	{
+
+		auto localsNext = std::make_shared< CRunLocalScope >(localsEntry, result.maptch);
+
+
+
+		//Execute body		 
+
+		if (HBlockNoum anoum = asHBlockNoum(dct->decideBody))
+		{
+			auto qresolved = resolve_noum(anoum, localsNext);
+			if (qresolved != nullptr)  return qresolved;
+		}
+
+		auto r = exec_eval(dct->decideBody, localsNext, stk);
+		if (HBlockToDecideOn adecided = asHBlockToDecideOn(r))
+		{
+			return adecided->decideBody;
+		}
+		return r;
+	}
+
+	return nullptr;
+}
+
+
+
 QueryResultContext CBlockInterpreter::getDecidedValue(CBlocking::HBlock decideBody,   HRunLocalScope localsEntry, QueryStack *stk)
 {
  

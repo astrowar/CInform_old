@@ -418,6 +418,8 @@ public:
 		// bool MatchOld(HBlock c_block, HBlockMatch m);
 		HBlock getDecidedWhether(HBlock c_block, HBlock c_block1, HBlockToDecideWhether dct);
 		HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat dct, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		HBlock getDecidedValueOf(HBlock c_block, HBlockToDecideWhat_FirstNoum dct, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
+		 
 		QueryResultContext getDecidedValue(HBlock decideBody, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);		
 		QueryResultContext getDecidedValue(HBlock decideBody, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext getDecidedIf(HBlock c_block, HBlockToDecideIf dct, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);

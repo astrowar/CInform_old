@@ -47,6 +47,29 @@ std::list<std::pair<HTerm,HTerm> > getBiPartition(HTerm & term)
 }
 
 
+std::list<std::vector<HTerm > > getBiPartition_v(HTerm & term)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+
+		std::vector<HTerm> vs = cs->asVector();
+		std::list<std::vector<HTerm > > ret ;
+		{
+			auto rb = getBiPartition(vs);
+			for (auto r : rb)
+			{
+				ret.push_back({ r.first, r.second });
+			}
+			return ret;
+		}
+
+	}
+	return	std::list<std::vector<HTerm > >();
+}
+
+
+
+
 std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs)
 {
 	std::list<std::vector<HTerm > > ret;
@@ -72,13 +95,59 @@ std::list<std::vector<HTerm > > getQuadPartition(std::vector<HTerm> & vs)
 
 			if (p4.size() > 1) arr.push_back(make_list(p4));
 			else arr.push_back(p4[0]);
-
-
-			
 			ret.push_back(arr);
-
 		}
 	return ret;
+}
+
+std::list<std::vector<HTerm > > getQuiPartition(std::vector<HTerm> & vs)
+{
+	std::list<std::vector<HTerm > > ret;
+	size_t n = vs.size();
+
+	for (size_t i1 = 1; i1 < n - 2; ++i1)
+		for (size_t i2 = i1 + 1; i2 < n; ++i2)
+			for (size_t i3 = i2 + 1; i3 < n; ++i3)
+				for (size_t i4 = i3 + 1; i4 < n; ++i4)
+			{
+				std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
+				std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
+				std::vector<HTerm> p3(vs.begin() + i2, vs.begin() + i3);
+				std::vector<HTerm> p4(vs.begin() + i3, vs.begin()+i4);
+				std::vector<HTerm> p5(vs.begin() + i4, vs.end());
+
+				std::vector<HTerm > arr;
+				if (p1.size() > 1) arr.push_back(make_list(p1));
+				else arr.push_back(p1[0]);
+
+				if (p2.size() > 1) arr.push_back(make_list(p2));
+				else arr.push_back(p2[0]);
+
+				if (p3.size() > 1) arr.push_back(make_list(p3));
+				else arr.push_back(p3[0]);
+
+				if (p4.size() > 1) arr.push_back(make_list(p4));
+				else arr.push_back(p4[0]);
+
+				if (p5.size() > 1) arr.push_back(make_list(p5));
+				else arr.push_back(p5[0]);
+
+				ret.push_back(arr);
+			}
+	return ret;
+}
+
+
+std::list<std::vector<HTerm > > getQuiPartition(HTerm & term)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::vector<HTerm >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size()>4)	return getQuiPartition(vs);
+	}
+
+	return	std::list<std::vector<HTerm > >();
 }
 
 std::list<std::vector<HTerm > > getQuadPartition(HTerm & term)
@@ -87,7 +156,7 @@ std::list<std::vector<HTerm > > getQuadPartition(HTerm & term)
 	{
 		std::list<std::vector<HTerm >> ret;
 		std::vector<HTerm> vs = cs->asVector();
-		return getQuadPartition(vs);
+		if (vs.size()>3) return getQuadPartition(vs);
 	}
 
 	return	std::list<std::vector<HTerm > >();

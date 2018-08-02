@@ -42,19 +42,19 @@ NSParser::CParser::CParser( LanguageModule *_lang ) {
     {
         std::list<HPred> alist;
         verbList = std::make_shared<CPredBooleanOr>("verbList", alist);
-        verbList->blist.push_back(pLiteral("contains"));
+        //verbList->blist.push_back(pLiteral("contains"));
     }
 
     {
         std::list<HPred> alist;
         actionPredList = std::make_shared<CPredBooleanOr>("actionList", alist);
-        actionPredList->blist.push_back(pLiteral("getting"));
+       // actionPredList->blist.push_back(pLiteral("getting"));
     }
 
 	{
 		
 		verbList->blist.push_back(pList({ pLiteral("exactly"),  pLiteral("matches") }));
-		verbList->blist.push_back(pLiteral("relates"));
+		//verbList->blist.push_back(pLiteral("relates"));
 		verbList->blist.push_back(pLiteral("matches"));
 		
 		
@@ -607,6 +607,7 @@ HBlock NSParser::ParseAssertion::parse_CompositionKindArgument(CParser * p, std:
  
 HBlock NSParser::ParseAssertion::parse_RelationArgument(CParser * p, std::vector<HTerm>& term)
 {
+	return nullptr;
 	{
 		CPredSequence predList = pAny("obj_s")<<pLiteral("to")	<<pAny("obj_d");
 		MatchResult res = CMatch(term, predList);

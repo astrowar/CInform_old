@@ -198,8 +198,82 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 	return nullptr;
 }
 
+HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, std::list<std::vector<HTerm > > terms)
+{
+	for (auto t : terms)
+	{
+		std::list<HBlockMatch> mtermos;
+		bool has_err = false;
+		for (auto ts : t)
+		{
+			HBlockMatch  componente = ExpressionMatch::parser_MatchComponentePhase(p, ts);
+			//printf("%s %x\n", ts->repr().c_str(), componente);
+			 
+			if (componente == nullptr)
+			{
+				has_err = true;
+				break;
+			}
+			else
+			{
+				mtermos.push_back(componente);
+			}
+		}
+		if (has_err == false) return std::make_shared<CBlockMatchList >(mtermos);
+	}
+	return nullptr;
+
+}
+HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, HTerm term)
+{
+
+ 
+	auto mphase5 =  parseDecidePhaseMatchEntry(p, getQuiPartition(term));
+	if (mphase5 != nullptr) return mphase5;
+
+	auto  mphase4 = parseDecidePhaseMatchEntry(p, getQuadPartition(term));
+	if (mphase4 != nullptr) return mphase4;
+
+
+	auto mphase3 = parseDecidePhaseMatchEntry(p, getTriPartition(term));
+	if (mphase3 != nullptr) return mphase3;
+
+	auto bip = getBiPartition_v(term);
+
+	auto mphase2 = parseDecidePhaseMatchEntry(p, bip);
+	if (mphase2 != nullptr) return mphase2;
+
+	return nullptr;
+}
+
+
 HBlockMatchIs NSParser::ParseDecide::parser_What_Which_Verb_Assertion(CParser * p, HTerm term)
 {
+
+	{// which (Person) is (the targert) -> Enforce (Return Value) as Person
+		CPredSequence predList = mk_What_Which() << pWord("kindReturn") <<  pLiteral("is") << pAny("RemainderQuery");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals) 
+		{
+
+
+
+
+			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["kindReturn"]);
+			HBlockMatch  AdjetiveMatch = parseDecidePhaseMatchEntry(p, res.matchs["RemainderQuery"]);
+
+			if (AdjetiveMatch != nullptr)
+			{
+				return std::make_shared<CBlockMatchDirectIs>( c1, AdjetiveMatch);
+			}
+
+
+			return nullptr;		
+		}
+	}
+
+
+
 	{// which (Person) is (the targert) -> Enforce (Return Value) as Person
 		CPredSequence predList = mk_What_Which() <<pAny("kindReturn")	<<p->verbList	<<pAny("RemainderQuery");
 
@@ -213,14 +287,8 @@ HBlockMatchIs NSParser::ParseDecide::parser_What_Which_Verb_Assertion(CParser * 
 			HBlockMatch  AdjetiveMatch = ExpressionMatch::parser_expression_match(p,res.matchs["RemainderQuery"]);
 
 			if (AdjetiveMatch != nullptr)
-			{
-				//auto adjBlockMatch = std::make_shared<CBlockMatchBlock >(AdjetiveMatch);
-				//return AdjetiveMatch;
-				return std::make_shared<CBlockMatchIsVerb>(vrepr, c1, AdjetiveMatch);
-				//return std::make_shared<CBlockMatch>(body);
-
-
-				return nullptr;
+			{ 
+				return std::make_shared<CBlockMatchIsVerb>(vrepr, c1, AdjetiveMatch); 
 			}
 		}
 	}
@@ -417,7 +485,8 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 			  CPredSequence predList = pLiteral("to") <<pLiteral("decide")<<pAny("Match")	<<pLiteral(":")	<<pAny("RemainBody");
 		 
 			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals) {
+			if (res.result == Equals) 
+			{
 				HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"] );
 				if (a_match)
 				{
@@ -445,7 +514,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 
 
 				 
-
+				return nullptr;
 
 			}
 		}
@@ -482,6 +551,9 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
 					return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
+
+				logError("Decide mal formado");
+				return nullptr;
 			}
 		}
 

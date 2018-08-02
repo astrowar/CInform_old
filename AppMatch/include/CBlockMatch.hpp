@@ -107,6 +107,13 @@ namespace CBlocking
 	using HBlockMatchKind = std::shared_ptr<CBlockMatchKind>;
 
 
+
+
+ 
+
+
+
+
 	class CBlockMatchWith : public CBlockMatch // um bloco que serve para dar Match  no match anterior
 	{
 		CBlockMatchWith(const CBlocking::HBlock& _matchInner, const HBlockMatch& previous_match)

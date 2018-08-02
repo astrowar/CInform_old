@@ -60,12 +60,20 @@ Interpreter::CBlockInterpreter   Interpreter::CBlockInterpreter::clone()
 
 void Interpreter::SymbolPool::add(HBlockNoum s , HBlock b)
 {
+	//verifica se ja existe
+	for (auto j : this->_symbols)
+	{
+		if (j.first->named() == s->named())
+		{
+			printf("Duplicate !\n");
+		}
+	}
 	this->_symbols.push_back(std::pair<HBlockNoum, HBlock>(s, b));
 }
 
 void Interpreter::SymbolPool::add(string s, HBlock b)
 {
-	this->_symbols.push_back(std::pair<HBlockNoum, HBlock>(std::make_shared<CBlockNoumStr>(s), b));
+	this->add(std::make_shared<CBlockNoumStr>(s), b);
 }
 
 
