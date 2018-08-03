@@ -208,6 +208,17 @@ namespace CBlocking
 			}			
 			return ret;
 		}
+		HBlockNoum  pop_back()
+		{
+			std::vector<HBlockNoum> noums_b = this->noums;
+			noums_b.pop_back();
+			return std::make_shared<CBlockNoumCompose>(noums_b);
+		}
+		HBlockNoum  pop_front()
+		{
+			std::vector<HBlockNoum> noums_b = std::vector<HBlockNoum>(this->noums.begin()+1, this->noums.end());
+			return std::make_shared<CBlockNoumCompose>(noums_b);
+		}
 	};
 	using HBlockNoumCompose = std::shared_ptr<CBlockNoumCompose>;
 
@@ -351,7 +362,12 @@ namespace CBlocking
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockKindEntity; }
 		string named;
-		CBlockKindEntity(string _named) : named(_named) {}
+		CBlockKindEntity(string _named) : named(_named) 
+		{
+			if (named == "relation")
+				named = "relation";
+			
+		}
 	 
 	};
 	using HBlockKindEntity = std::shared_ptr<CBlockKindEntity>;

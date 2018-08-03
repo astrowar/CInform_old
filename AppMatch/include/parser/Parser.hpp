@@ -377,6 +377,8 @@ namespace NSParser
 	 
 		CBlocking::HBlock  Instead_phase(CParser *p, std::vector<NSTerm::HTerm>&  term);
 		CBlocking::HBlock  TryDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
+		 
+		CBlocking::HBlock parser_PhraseRelationInvoke(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock parser_PhraseInvoke(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlock  DynamicDispatch_action(CParser *p, std::vector<NSTerm::HTerm>&  term);
 
@@ -570,6 +572,12 @@ NSTerm::MTermSet remove_boundaryListMark(NSTerm::MTermSet& m);
 	std::list<std::vector<HTerm > > getQuiPartition(std::vector<HTerm> & vs);
 	std::list<std::vector<HTerm > > getQuiPartition(HTerm & term);
 
+	std::list<std::list<HBlock > > getBiPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func);
+	std::list<std::list<HBlock > > getTriPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func);
+	std::list<std::list<HBlock > > getQuadPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func);
+	std::list<std::list<HBlock > > getQuiPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func);
+	std::list<std::list<HBlock > > getHexPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func);
+ 
 
 	std::vector<std::string> split_string(const std::string& str, const std::string& delimiter);
 

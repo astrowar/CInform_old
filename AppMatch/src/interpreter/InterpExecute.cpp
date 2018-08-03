@@ -930,6 +930,27 @@ HBlock CBlockInterpreter::exec_eval_forEach(HBlockControlForEach cForE, HRunLoca
 		return ret;
 	}
 }
+
+HBlockNoumCompose asNoumCompose(HBlockList nlist)
+{
+	std::vector<HBlockNoum> _noums;
+	for (auto n : nlist->lista)
+	{
+		if (auto nn = asHBlockNoum(n))
+		{
+			_noums.push_back(nn);
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
+	return std::make_shared<CBlockNoumCompose>(_noums);
+}
+
+
+
 HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope localsEntry, QueryStack *stk )
 {
 	 
@@ -1089,6 +1110,18 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 	{
 		return nvalue;
 	}
+
+	//Compound type or adjetived type
+	if (auto  kList = asHBlockList(c_block))
+	{
+		auto hcompose = asNoumCompose(kList);
+		if (hcompose != nullptr)
+		{
+			auto r = resolve_noum(hcompose, localsEntry);
+			if (r != nullptr) return r;
+		}
+	}
+
 
 
 

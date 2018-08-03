@@ -384,14 +384,14 @@ CResultMatch  CBlockInterpreter::isEquivalenteMatch(HBlockMatch M, HBlockMatch m
 		else
 		{
 
-
+	        printf("==============================\n");
+			mlist->dump("");
+			M->dump("");
 
 			// uma lista contra uma nao lista ? o que pode ser
 			logError("Something unespected");		
 
-			printf("==============================\n");
-			mlist->dump("");
-			M->dump("");
+		
 
 			return CResultMatch(false);
 
@@ -1027,6 +1027,23 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 	}
 
 
+	if (HBlockMatchOR   mor = asHBlockMatchOR(M))
+	{
+		
+		for (auto& mItem : mor->matchList)
+		{
+			auto mit = Match(mItem, value, localsEntry, stk);
+			if (mit.hasMatch == true)
+			{
+				return mit;
+			}
+			 
+		}
+		return CResultMatch(false);
+	}
+
+
+
 
 	if (HBlockMatchProperty   mProp = asHBlockMatchProperty(M))
 	{
@@ -1217,7 +1234,7 @@ CResultMatch  CBlockInterpreter::Match__(HBlockMatch M, HBlock value, HRunLocalS
 	{
 		   //if (asHBlockNoum(value) != nullptr) return CResultMatch(false);		
 		   // auto value_res = exec_eval(value, localsEntry, stk);
-			QueryResultContext qkind = query_is(value, mKind->kind, localsEntry, stk);
+			QueryResultContext qkind = query_is_kindOf(value, mKind->kind, localsEntry, stk);
 			return CResultMatch(qkind.result == QEquals);
 		
 	}

@@ -199,9 +199,25 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, H
 
 	{
 		
-		HBlockMatch c1 = parser_expression_match_noum(p, term);
+		HBlockMatchNoum c1 = parser_expression_match_noum(p, term);
 		if (c1 != nullptr)
 		{
+
+			if (c1->inner->named().find('/') != string::npos)
+			{
+				//matchs OR
+
+				auto vstr = split_string(c1->inner->named(), "/");
+				std::list<HBlockMatch> or_list;
+				for (auto v : vstr)
+				{
+					HBlockMatchNoum ci = parser_expression_match_noum(p, make_string(v));
+					if (ci == nullptr) return nullptr;
+					or_list.push_back(ci);
+				}
+				return std::make_shared<CBlockMatchOR>(or_list);
+			}
+
 			return c1;
 		}
 		

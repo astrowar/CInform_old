@@ -442,6 +442,7 @@ public:
 		QueryResultContext query(HBlock q, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext query(HBlock  vquery);
 		QueryResultContext query_direct_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack * stk_in);
+		QueryResultContext query_is_kindOf(HBlock c_block, HBlockKind c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 		QueryResultContext query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStacking::QueryStack *stk);
 
 

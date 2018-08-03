@@ -153,7 +153,7 @@ string  NSParser::ParseRelation::parser_RelationNameID(NSParser::CParser* c_pars
 
 HBlock   NSParser::ParseRelation::parser_SeletorRelation(CParser *p, HTerm   term , HBlockMatch muteVariable  )
 {
-
+	return nullptr;
 	//relation 
 	{
 		  CPredSequence predList =  pAny("K2")	<<pLiteral("relates")	<<pLiteral("to")	<<pLiteral("by") <<pAny("RelationName");

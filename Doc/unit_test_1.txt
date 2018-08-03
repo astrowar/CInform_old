@@ -3,9 +3,12 @@ A person is a kind of thing
   
 John is an person
 Marsha is an person
+Ninguem is an person
 
-to decide which K is (  K ) who relates to (L called Y) by (relation  called R ) :
-   decide on Marsha
+To decide which K is ( K) that/which/who relates to (L) by (relation - R):   
+   decide on rel_lookup_Y R K
+   
+   
 
 unit init:
     marriage relates   person to another
@@ -14,5 +17,5 @@ unit init:
 
 unit test:
   pass
-assert:  ( person who relates to John by  marriage   ) is  Marsha
- 
+
+assert:  ( person that   relates to John by marriage  relation ) is  Marsha

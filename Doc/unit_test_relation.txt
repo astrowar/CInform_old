@@ -1,4 +1,8 @@
 
+unit init:
+
+    thing is an kind of entity
+
 
 unit init :
     

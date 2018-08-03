@@ -812,7 +812,33 @@ HBlock NSParser::DynamicDispatch::TryDispatch_action(CParser *p, std::vector<HTe
 	return nullptr;
 }
 
+HBlock NSParser::DynamicDispatch::parser_PhraseRelationInvoke(CParser *p, std::vector<HTerm>&  term)
+{
+	//todas as phrases de relations 
 
+
+/*	    
+
+        To show relation(R - relation)		 
+		To decide which object is next step via(R - relation of values to values) 		from(O1 - object) to(O2 - object)			
+		To decide which number is number of steps via(R - relation of values to values)		from(O1 - object) to(O2 - object)		
+		To decide which list of Ks is list of(name of kind of value K) 		that/which/whom(R - relation of Ks to values of kind L) relates	
+		To decide which list of Ls is list of(name of kind of value L)		to which/whom(R - relation of values of kind K to Ls) relates		 
+		To decide which list of Ls is list of(name of kind of value L)		that/which/whom(R - relation of values of kind K to Ls) relates to		 
+		To decide which list of Ks is list of(name of kind of value K)      that/which/who		relate to(Y - L) by(R - relation of Ks to values of kind L)		 
+		To decide which list of Ls is list of(name of kind of value L)      to which/whom(X - K)		relates by(R - relation of values of kind K to Ls)		 
+		To decide which list of Ls is list of(name of kind of value L)		that/which/whom(X - K) relates to by(R - relation of values of kind K to Ls)		 
+		To decide whether(name of kind of value K) relates to(Y - L) by		(R - relation of Ks to values of kind L)		 
+		To decide whether(X - K) relates to(name of kind of value L) by		(R - relation of values of kind K to Ls)		 
+		To decide which K is(name of kind of value K) that/which/who relates to		(Y - L) by(R - relation of Ks to values of kind L)		 
+		To decide which L is(name of kind of value L) to which/whom (X - K)		relates by(R - relation of values of kind K to Ls)		 
+		To decide which L is(name of kind of value L) that/which/whom (X - K)		relates to by(R - relation of values of kind K to Ls)
+		*/ 
+
+	return nullptr;
+
+
+}
  
 HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HTerm>&  term)
 {
@@ -836,6 +862,12 @@ HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HT
 			}
 		}
 	}
+
+
+	//relation Phases
+	auto r = parser_PhraseRelationInvoke(p, term);
+	if (r != nullptr) return r;
+
 
 	for (auto ph : p->phrases)
 	{

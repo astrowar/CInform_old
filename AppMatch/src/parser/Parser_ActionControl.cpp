@@ -106,36 +106,57 @@ std::list<std::vector<HTerm > > getQuiPartition(std::vector<HTerm> & vs)
 	size_t n = vs.size();
 
 	for (size_t i1 = 1; i1 < n - 2; ++i1)
+	{
+		std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
+		HTerm item1;
+		if (p1.size() > 1) item1=make_list(p1);
+		else item1=p1[0];
+
 		for (size_t i2 = i1 + 1; i2 < n; ++i2)
+		{
+			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
+			HTerm item2;
+			if (p2.size() > 1) item2 = make_list(p2);
+			else item2 = p2[0];
+
+
 			for (size_t i3 = i2 + 1; i3 < n; ++i3)
-				for (size_t i4 = i3 + 1; i4 < n; ++i4)
 			{
-				std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
-				std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
 				std::vector<HTerm> p3(vs.begin() + i2, vs.begin() + i3);
-				std::vector<HTerm> p4(vs.begin() + i3, vs.begin()+i4);
-				std::vector<HTerm> p5(vs.begin() + i4, vs.end());
+				HTerm item3;
+				if (p3.size() > 1) item3 = make_list(p3);
+				else item3 = p3[0];
 
-				std::vector<HTerm > arr;
-				if (p1.size() > 1) arr.push_back(make_list(p1));
-				else arr.push_back(p1[0]);
+				for (size_t i4 = i3 + 1; i4 < n; ++i4)
+				{
+					
+					std::vector<HTerm> p4(vs.begin() + i3, vs.begin() + i4);
+					std::vector<HTerm> p5(vs.begin() + i4, vs.end());
 
-				if (p2.size() > 1) arr.push_back(make_list(p2));
-				else arr.push_back(p2[0]);
+					HTerm item4;
+					if (p4.size() > 1) item4 = make_list(p4);
+					else item4 = p4[0];
 
-				if (p3.size() > 1) arr.push_back(make_list(p3));
-				else arr.push_back(p3[0]);
 
-				if (p4.size() > 1) arr.push_back(make_list(p4));
-				else arr.push_back(p4[0]);
-
-				if (p5.size() > 1) arr.push_back(make_list(p5));
-				else arr.push_back(p5[0]);
-
-				ret.push_back(arr);
+					HTerm item5;
+					if (p5.size() > 1) item5 = make_list(p5);
+					else item5 = p5[0];
+					 
+					std::vector<HTerm > arr; 
+					
+					ret.push_back({item1,item2,item3,item4,item5});
+				}
 			}
+		}
+	}
 	return ret;
 }
+
+
+ 
+
+
+
 
 
 std::list<std::vector<HTerm > > getQuiPartition(HTerm & term)
@@ -191,6 +212,159 @@ std::list<std::vector<HTerm > > getTriPartition(HTerm & term)
 
 	return	std::list<std::vector<HTerm > >();
 }
+
+
+
+
+std::list<std::list<HBlock > > getPartition_fn_n(int order,std::vector<HTerm>& vs, int ia, std::function<HBlock(HTerm)> func)
+{
+	std::list<std::list<HBlock > > ret;
+	size_t n = vs.size();
+	if (order == 1)
+	{
+		std::vector<HTerm> p1(vs.begin() + ia, vs.end());
+		HTerm item1;
+		if (p1.size() > 1) item1 = make_list(p1);
+		else item1 = p1[0];
+		HBlock ritem1 = func(item1);
+		if (ritem1 == nullptr) return std::list<std::list<HBlock > >();
+		
+	 
+		printf("%d %x  %s \n",order, ritem1.get(), item1->repr().c_str());
+
+		std::list<std::list<HBlock > > iret;
+		iret.push_back({ ritem1 });
+		return iret;
+	}
+
+	 
+	
+
+	for (size_t i1 = ia; i1 < n -(order-1) ; ++i1)
+	{
+		std::vector<HTerm> p1(vs.begin()+ia, vs.begin() + i1);
+		if (p1.empty()) continue;
+
+		HTerm item1;
+		if (p1.size() > 1) item1 = make_list(p1);
+		else item1 = p1[0];
+
+		HBlock ritem1 = func(item1);
+		if (ritem1 == nullptr)
+		{
+			 
+			continue;
+
+		}
+
+		printf("%d %x  %s \n", order, ritem1.get(), item1->repr().c_str());
+		std::list<std::list<HBlock > > next_results = getPartition_fn_n(order-1,vs, i1, func); //i1 > ia
+		for (auto n : next_results)
+		{
+			std::list<HBlock > ret_i;
+			ret_i.push_back(ritem1);
+			ret_i.insert(ret_i.end(), n.begin(), n.end());
+			ret.push_back(ret_i);
+		}		 
+	}
+	 
+
+	return ret;
+}
+
+ 
+
+
+
+std::list<std::list<HBlock > > getBiPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::list<HBlock >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size() > 4)
+		{
+			return getPartition_fn_n(2, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+
+
+std::list<std::list<HBlock > > getTriPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::list<HBlock >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size() > 4)
+		{
+			return getPartition_fn_n(3, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+std::list<std::list<HBlock > > getQuadPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::list<HBlock >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size() > 4)
+		{
+			return getPartition_fn_n(4, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+
+
+std::list<std::list<HBlock > > getQuiPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::list<HBlock >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size() > 4) 
+		{
+			return getPartition_fn_n(5, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+std::list<std::list<HBlock > > getHexPartition_fn(HTerm & term, std::function<HBlock(HTerm)> func)
+{
+	if (CList* cs = asCList(term.get()))
+	{
+		std::list<std::list<HBlock >> ret;
+		std::vector<HTerm> vs = cs->asVector();
+		if (vs.size() > 5) 
+		{
+		  return 	getPartition_fn_n(6, vs, 0, func);		
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

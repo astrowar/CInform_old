@@ -442,8 +442,156 @@ QueryResultContext CBlockInterpreter::query_is_DecideIf(HBlockMatchDirectIs DctQ
 }
  
 
+QueryResultContext CBlockInterpreter::query_is_kindOf(HBlock c_block, HBlockKind c_block1, HRunLocalScope localsEntry, QueryStack *stk)
+{
 
-QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in) {
+    //Kind vs Kind
+	 
+
+	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block))
+	{
+		HBlock resolved = resolve_kind(nkind);
+		if (resolved != nullptr)
+		{
+			return query_is_kindOf( resolved, c_block1,  localsEntry, stk);
+		}
+	}
+
+	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
+	{
+		HBlockKind resolved1 = resolve_kind(nkind);
+		if (resolved1 != nullptr)
+		{
+			return query_is_kindOf(  c_block , resolved1, localsEntry, stk);
+		}
+	}
+
+
+	 
+	 
+	if (auto avar = asHBlockVariableNamed(c_block))
+		{
+			c_block->dump("");
+			c_block1->dump("");
+			auto qr = query_is_kindOf(avar->kind, c_block1, localsEntry, stk);
+			return qr;
+		}
+	  
+
+	if (auto avar = asHBlockVariableNamed(c_block))
+	{
+		c_block->dump("");
+		c_block1->dump("");
+		auto qr = query_is_kindOf(avar->kind, c_block1, localsEntry, stk);
+		return qr;
+	}
+
+
+
+
+
+
+	if (HBlockKindNamed bkind = asHBlockKindNamed(c_block))
+	{
+
+		if (isSameString(bkind->named->named(), language->getMetaKindRelation()))
+		{
+			if (auto arel = asHBlockRelationBase(c_block1)) return QEquals;
+			return QNotEquals;
+		}
+	}
+
+	if (HBlockKindNamed bkind = asHBlockKindNamed(c_block1))
+	{
+
+		if (isSameString(bkind->named->named(), language->getMetaKindRelation()))
+		{
+			if (auto arel = asHBlockRelationBase(c_block)) return QEquals;
+			return QNotEquals;
+		}
+
+
+		if (auto avar = asHBlockVariableNamed(c_block))
+		{
+			c_block->dump("");
+			c_block1->dump("");
+			auto qr = query_is(avar->kind, bkind, localsEntry, stk);
+			return qr;
+		}
+	}
+
+
+
+
+	//Metakinds
+	if (HBlockKind bkind = asHBlockKind(c_block))
+	{
+		if (c_block1 == MetaKind)   return QEquals;
+	}
+	if (HBlockKindEntity bkind = asHBlockKindEntity(c_block))
+	{
+		if (c_block1 == MetaKindEntity)   return QEquals;
+	}
+	if (HBlockCompositionPhrase bkind = asHBlockCompositionPhrase(c_block))
+	{
+		if (c_block1 == MetaKindPhrase)   return QEquals;
+	}
+
+	if (HBlockRelationBase bkind = asHBlockRelationBase(c_block))
+	{
+		if (c_block1 == MetaKindRelation)   return QEquals;
+
+		if (HBlockKindEntity bkindE = asHBlockKindEntity(c_block1))
+		{
+			return QEquals;
+		}
+	}
+
+
+	if (HBlockCompositionRelation bkind = asHBlockCompositionRelation(c_block))
+	{
+		if (c_block1 == MetaKindRelation)   return QEquals;
+	}
+	if (HBlockText btext = asHBlockText(c_block))
+	{
+		if (CBlock::isSame(c_block1.get(), MetaKindText.get()))   return QEquals;
+
+	}
+
+
+	//is scond a kind of anything ??
+ 
+	 
+		if (HBlockKind akind = asHBlockKind(c_block))
+		{
+			bool b = is_derivadeOf(akind, c_block1);
+			if (b) return QEquals;
+		}
+		else if (HBlockInstance aInstance = asHBlockInstance(c_block)) {
+			bool b = is_derivadeOf(aInstance, c_block1, localsEntry);
+			if (b) return QEquals;
+		}
+	 
+
+
+
+		if (HBlockAction act = asHBlockAction(c_block))
+			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
+			{
+				if (isSameString(kval->named, "action"))
+				{
+					return QEquals;
+				}
+			}
+	
+
+	return QUndefined;
+}
+
+
+QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, HRunLocalScope localsEntry, QueryStack *stk_in)
+
+{
 
 	 
  
@@ -486,24 +634,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
     //resolve It
-
-	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block1))
-	{
-		HBlock resolved = resolve_kind(nkind  );
-		if (resolved != nullptr)
-		{
-			return query_is(c_block, resolved, localsEntry, stk);
-		}
-	}
-
-	if (HBlockKindNamed nkind = asHBlockKindNamed(c_block))
-	{
-		HBlock resolved = resolve_kind(nkind  );
-		if (resolved != nullptr)
-		{
-			return query_is(resolved, c_block1, localsEntry, stk);
-		}
-	}
+ 
 
 	if (CBlock::isSame(c_block1.get(), Anything.get()))
 	{
@@ -547,41 +678,27 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	//printf("\n");
 
 
-	if (HBlockKind bkind = asHBlockKind(c_block1))
+ 
+
+	if (HBlockKind ckind = asHBlockKind(c_block1))
 	{
-		if (auto avar = asHBlockVariableNamed(c_block))
+		return query_is_kindOf(c_block, ckind, localsEntry, stk);
+	}
+	else
+	{
+		if (HBlockKind ckind0 = asHBlockKind(c_block))
 		{
-			c_block->dump("");
-			c_block1->dump("");
-			auto qr =  query_is(avar->kind, bkind, localsEntry, stk);
-			return qr;
-		}		
-	}
-
-
-	//Metakinds
-	if (HBlockKind bkind = asHBlockKind(c_block))
-	{
-		if (c_block1 == MetaKind )   return QEquals;
-	}
-	if (HBlockKindEntity bkind = asHBlockKindEntity(c_block))
-	{		
-		if (c_block1 == MetaKindEntity)   return QEquals;
-	}
-	if (HBlockCompositionPhrase bkind = asHBlockCompositionPhrase(c_block))
-	{
-		if (c_block1 == MetaKindPhrase)   return QEquals;
-	}
-	if (HBlockCompositionRelation bkind = asHBlockCompositionRelation(c_block))
-	{
-		if (c_block1 == MetaKindRelation)   return QEquals;
-	}
-	if (HBlockText btext = asHBlockText(c_block))
-	{
-		if (CBlock::isSame(c_block1.get() , MetaKindText.get()))   return QEquals;
-		 
+			return query_is_kindOf(c_block1, ckind0, localsEntry, stk);
+		}
 	}
  
+
+
+ 
+ 
+
+
+
 
 
 	if (auto vvar = asCBlockVariableNamed(c_block1.get()))
@@ -642,6 +759,8 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 			return QNotEquals;
 		}
 
+
+
 		if (HBlockKindEntity kThing = asHBlockKindEntity(c_block1))
 		{
 			if (is_derivadeOf(cinst1, kThing, localsEntry))
@@ -664,17 +783,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 	}
 
 	
-	
-
 	 
-		if (HBlockAction act = asHBlockAction(c_block))
-			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
-			{
-				if (isSameString(kval->named, "action"))
-				{
-					return QEquals;
-				}
-			}
 	   
     
     //Resolve List OR
@@ -784,18 +893,7 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 
 
 
-    //is scond a kind of anything ??
-    if (HBlockKind bkind = asHBlockKind(c_block1)) 
-	{
-        if (HBlockKind akind = asHBlockKind(c_block)) 
-		{
-            bool b = is_derivadeOf(akind, bkind);
-            if (b) return QEquals;
-        } else if (HBlockInstance aInstance = asHBlockInstance(c_block)) {
-            bool b = is_derivadeOf(aInstance, bkind,localsEntry);
-            if (b) return QEquals;
-        } 
-    }
+ 
     
 	QueryResultContext qprop = query_is_propertyOf_value(c_block, c_block1, localsEntry, stk);
 		if (qprop.result != QUndefined)
@@ -846,23 +944,12 @@ QueryResultContext CBlockInterpreter::query_is(HBlock c_block, HBlock c_block1, 
 				{
 					return QEquals;
 				}
-				/*if (ninst_1->baseKind != nullptr && ninst_1->baseKind != ninst_1->baseKind) {
-					if (ninst_1 == ninst_2) return QEquals;
-				}*/
+				 
 
 			}
 	}
 
-	{
-		if (HBlockAction act = asHBlockAction(c_block))
-			if (HBlockKindValue kval = asHBlockKindValue(c_block1))
-			{
-				if (isSameString(kval->named ,  "action"))
-				{
-					return QEquals;
-				} 
-			}
-	}
+ 
 
 	for (auto dctIF : decides_if)
 	{

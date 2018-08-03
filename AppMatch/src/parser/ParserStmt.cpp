@@ -231,9 +231,9 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 
 
 
-	if (sNoum == "where")return nullptr;
+	//if (sNoum == "where")return nullptr;
 	if (sNoum == "called")return nullptr;
-	if (sNoum == "which")return nullptr;
+	//if (sNoum == "which")return nullptr;
 	if (sNoum == "and")return nullptr;
 	if (sNoum == "or")return nullptr;
 	if (sNoum == ",")return nullptr;
@@ -247,7 +247,7 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 
 	//if (sNoum == "to")return nullptr;
 	//if (sNoum == "from")return nullptr;
-	if (sNoum == "of")return nullptr;
+	//if (sNoum == "of")return nullptr;
 
 	if (sNoum == "the")return nullptr;
 	if (sNoum == "The")return nullptr;

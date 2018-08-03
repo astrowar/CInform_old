@@ -207,7 +207,7 @@ HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, std:
 		for (auto ts : t)
 		{
 			HBlockMatch  componente = ExpressionMatch::parser_MatchComponentePhase(p, ts);
-			//printf("%s %x\n", ts->repr().c_str(), componente);
+			printf("%s %x\n", ts->repr().c_str(), componente);
 			 
 			if (componente == nullptr)
 			{
@@ -222,26 +222,89 @@ HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, std:
 		if (has_err == false) return std::make_shared<CBlockMatchList >(mtermos);
 	}
 	return nullptr;
-
 }
+
+
 HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, HTerm term)
 {
 
- 
-	auto mphase5 =  parseDecidePhaseMatchEntry(p, getQuiPartition(term));
-	if (mphase5 != nullptr) return mphase5;
+	std::function<HBlock(HTerm)> func_MatchComponentePhase = [&](HTerm ts) { return ExpressionMatch::parser_MatchComponentePhase(p, ts); };
+	
+	auto r6 =  getHexPartition_fn(term, func_MatchComponentePhase);
+	if (r6.empty() == false)
+	{
+		std::list<HBlockMatch> mtermos;
+		for (auto bb : r6.front())
+		{
+			mtermos.push_back(std::static_pointer_cast<CBlockMatch>(bb));
+		}
+		return std::make_shared<CBlockMatchList >(mtermos);
+	}
 
-	auto  mphase4 = parseDecidePhaseMatchEntry(p, getQuadPartition(term));
-	if (mphase4 != nullptr) return mphase4;
+
+	auto r5 = getQuiPartition_fn(term, func_MatchComponentePhase);
+	if (r5.empty() == false)
+	{
+		std::list<HBlockMatch> mtermos;
+		for (auto bb : r5.front())
+		{
+			mtermos.push_back(std::static_pointer_cast<CBlockMatch>(bb));
+		}
+		return std::make_shared<CBlockMatchList >(mtermos);
+	}
 
 
-	auto mphase3 = parseDecidePhaseMatchEntry(p, getTriPartition(term));
-	if (mphase3 != nullptr) return mphase3;
+	auto r4 = getQuadPartition_fn(term, func_MatchComponentePhase);
+	if (r4.empty() == false)
+	{
+		std::list<HBlockMatch> mtermos;
+		for (auto bb : r4.front())
+		{
+			mtermos.push_back(std::static_pointer_cast<CBlockMatch>(bb));
+		}
+		return std::make_shared<CBlockMatchList >(mtermos);
+	}
 
-	auto bip = getBiPartition_v(term);
+	auto r3 = getTriPartition_fn(term, func_MatchComponentePhase);
+	if (r3.empty() == false)
+	{
+		std::list<HBlockMatch> mtermos;
+		for (auto bb : r3.front())
+		{
+			mtermos.push_back(std::static_pointer_cast<CBlockMatch>(bb));
+		}
+		return std::make_shared<CBlockMatchList >(mtermos);
+	}
 
-	auto mphase2 = parseDecidePhaseMatchEntry(p, bip);
-	if (mphase2 != nullptr) return mphase2;
+
+	auto r2 = getBiPartition_fn(term, func_MatchComponentePhase);
+	if (r2.empty() == false)
+	{
+		std::list<HBlockMatch> mtermos;
+		for (auto bb : r2.front())
+		{
+			mtermos.push_back(std::static_pointer_cast<CBlockMatch>(bb));
+		}
+		return std::make_shared<CBlockMatchList >(mtermos);
+	}
+
+
+
+
+	//auto mphase5 =  parseDecidePhaseMatchEntry(p, getQuiPartition(term));
+	//if (mphase5 != nullptr) return mphase5;
+
+	//auto  mphase4 = parseDecidePhaseMatchEntry(p, getQuadPartition(term));
+	//if (mphase4 != nullptr) return mphase4;
+
+
+	//auto mphase3 = parseDecidePhaseMatchEntry(p, getTriPartition(term));
+	//if (mphase3 != nullptr) return mphase3;
+
+	//auto bip = getBiPartition_v(term);
+
+	//auto mphase2 = parseDecidePhaseMatchEntry(p, bip);
+	//if (mphase2 != nullptr) return mphase2;
 
 	return nullptr;
 }

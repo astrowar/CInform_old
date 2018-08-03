@@ -277,6 +277,13 @@ HBlockKind CBlockInterpreter::resolve_kind(HBlock  _n)
 		return resolve_kind(knamed->named);
 	}
 
+	if (auto n = asHBlockNoum(_n))
+	{
+		if (n->named() == "marriage relation")
+		{
+			return nullptr;
+		}
+	}
 
 	if (auto n = asHBlockNoum(_n))
 	{
@@ -291,6 +298,7 @@ HBlockKind CBlockInterpreter::resolve_kind(HBlock  _n)
 		}
 
 	}
+
 	if (auto n = asHBlockNoum(_n))
 	{
 		for (auto s : symbols.list())
@@ -445,6 +453,29 @@ HBlock CBlockInterpreter::resolve_noum(HBlockNoum n, HRunLocalScope localsEntry,
 		}
 	}
 
+	if (auto ncompose = asHBlockNoumCompose(n))
+	{
+		if (ncompose->noums.back()->named() == "relation")
+		{
+			auto new_compose = ncompose->pop_back();
+			auto resolved = resolve_noum(new_compose, localsEntry, noumsToResolve);
+			if (auto rel = asHBlockRelationBase(resolved))
+			{
+				return rel;
+			}
+		}
+
+		if (ncompose->noums.back()->named() == "verb")
+		{
+			auto new_compose = ncompose->pop_back();
+			auto resolved = resolve_noum(new_compose, localsEntry, noumsToResolve);
+			if (auto vb = asHBlockVerb(resolved))
+			{
+				return vb;
+			}
+		}
+
+	}
 
 	return resolve_string_noum(n->named(), localsEntry, noumsToResolve);
 }
