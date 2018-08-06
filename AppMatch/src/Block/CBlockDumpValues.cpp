@@ -322,6 +322,7 @@ matchInner(_matchInner)
 	assert(strncmp(_named.c_str(), "the", 3) != 0);
 	assert(_named[0] != '[');
 	assert(_named[0] != '(');
+	assert(_matchInner != nullptr);
 
 }
 
@@ -330,8 +331,8 @@ CBlockMatchNoum::CBlockMatchNoum(HBlockNoum _inner) : CBlockMatch(), inner(_inne
 	assert(_inner != nullptr);
 	assert(_inner->named() != "not");
 	assert(_inner->named() != "the");
-	assert(_inner->named() != "a");
-	assert(_inner->named() != "an");
+	//assert(_inner->named() != "a");
+	//assert(_inner->named() != "an");
 	assert(_inner->named() != "is");
 	assert(_inner->named()[0] != '[');
 	assert(_inner->named()[0] != '(');

@@ -229,6 +229,8 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, H
 }
 
 
+ 
+
 
 HBlockMatch NSParser::ExpressionMatch::parser_MatchVariableDeclare(CParser *p, HTerm term)
 {
@@ -590,12 +592,14 @@ HBlockMatch NSParser::ExpressionMatch::parser_MatchArgument(CParser *p, std::vec
 		if (res.result == Equals) {
 			 
 			HBlockMatch c1 = parser_MatchArgument_kind_item(p, CtoString(expandBract(res.matchs["kind"])));
+			if (c1 != nullptr)
+			{
+				auto sNoum = CtoString(expandBract(res.matchs["var_named"]));
+				//auto snoum = Expression::parser_noum_expression(p, res.matchs["var_named"]);
 
-			auto sNoum = CtoString(expandBract(res.matchs["var_named"]));
-			//auto snoum = Expression::parser_noum_expression(p, res.matchs["var_named"]);
-
-			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(sNoum, c1);
-			return n1;
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(sNoum, c1);
+				return n1;
+			}
 		}
 	}
 
@@ -1974,3 +1978,370 @@ HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, std::
 	return nullptr;
 
 }
+
+
+
+
+
+
+
+//=====================================================================================================================
+
+
+std::list<std::list<HBlock > > getPartition_fn_n(int order, std::vector<HTerm>& vs, int ia, std::function<HBlock(HTerm)> func);
+ 
+
+
+
+std::list<std::list<HBlock > > getBiPartition_fn(std::vector<HTerm> & vs, std::function<HBlock(HTerm)> func)
+{
+	 
+	{
+	 
+		if (vs.size() > 1)
+		{
+			return getPartition_fn_n(2, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+
+
+std::list<std::list<HBlock > > getTriPartition_fn(std::vector<HTerm> & vs, std::function<HBlock(HTerm)> func)
+{ 
+	{
+ 
+		if (vs.size() > 2)
+		{
+			return getPartition_fn_n(3, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+std::list<std::list<HBlock > > getQuadPartition_fn(std::vector<HTerm> & vs, std::function<HBlock(HTerm)> func)
+{
+ 
+	{
+ 
+		if (vs.size() > 3)
+		{
+			return getPartition_fn_n(4, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+
+
+std::list<std::list<HBlock > > getQuiPartition_fn(std::vector<HTerm> & vs, std::function<HBlock(HTerm)> func)
+{
+	 
+	{
+ 
+		if (vs.size() > 4)
+		{
+			return getPartition_fn_n(5, vs, 0, func);
+		}
+	}
+
+	return	std::list<std::list<HBlock > >();
+}
+
+std::list<std::list<HBlock > > getHexPartition_fn(std::vector<HTerm> & vs, std::function<HBlock(HTerm)> func)
+{
+	 
+		if (vs.size() > 5)
+		{
+			return 	getPartition_fn_n(6, vs, 0, func);
+		}
+ 
+		return	std::list<std::list<HBlock > >();
+	 
+}
+
+
+
+
+
+
+
+
+HBlock  NSParser::Expression::parser_ComponentePhase(CParser *p, HTerm    term_in)
+{
+	if (CList* listterm = asCList(term_in.get()))
+	{
+		auto r =  parser_phrase_literal(p, listterm->asVector());
+		if (r == nullptr)
+		{
+			return nullptr;
+		}
+		return r;
+	}
+	 
+
+	auto ri =  Expression::parser_noum_expression(p, term_in);
+	if (ri == nullptr)
+	{
+		return nullptr;
+	}
+	return ri;
+}
+
+
+void add_item(std::list<HBlock > &plist, HBlock h)
+{
+	if (auto nn = DynamicCasting::asHBlockList(h))
+	{
+		plist.insert(plist.end(), nn->lista.begin(), nn->lista.end());
+
+	}
+	else
+	{
+		plist.push_back(h);
+	}
+}
+
+
+std::vector<CBlocking::HBlock  >   NSParser::Expression::getTriPartition_phase_item(CParser *p, std::vector<HTerm> & vs    )
+{
+	//if (vs.front()->is_openBracket() || (vs.back()->is_closeBracket()))
+	{
+
+		if (is_backet_balanced(vs) == false)
+		{
+			return  std::vector<CBlocking::HBlock  >();
+		}
+	}
+
+
+	std::list<std::vector<HBlock  > > ret;
+	size_t n = vs.size();
+
+	for (size_t i1 = 1; i1 < n - 1; ++i1)
+	{
+		std::vector<HTerm> p1(vs.begin(), vs.begin() + i1);
+		
+		HBlock b1 =  parser_phrase_literal(p, p1);
+		if (b1 == nullptr) continue;
+
+		for (size_t i2 = i1 + 1; i2 < n; ++i2)
+		{
+
+			std::vector<HTerm> p2(vs.begin() + i1, vs.begin() + i2);
+			std::vector<HTerm> p3(vs.begin() + i2, vs.end());
+			HBlock b2 = parser_phrase_literal(p, p2);
+			if (b2 == nullptr) continue;
+
+			HBlock b3 = parser_phrase_literal(p, p3);
+			if (b3 == nullptr) continue;
+
+
+			std::vector<HBlock >  arr  = { b1 , b2 , b3 };
+			return arr;
+		}
+	}
+	
+	return std::vector<HBlock >();
+}
+
+
+HBlockList  NSParser::Expression::parser_phrase_literal_entry(CParser *p, std::vector<HTerm>&    term_in)
+{
+	HBlockList r = parser_phrase_literal(p, term_in);
+	if (r == nullptr)
+	{
+		return nullptr;
+	}
+
+	if (r->lista.size() == 1)
+	{
+		if (auto nlist = DynamicCasting::asHBlockList(r->lista.front()))
+		{
+			return nlist;
+		}
+	}
+
+	if (r != nullptr) return r;
+	return nullptr;
+}
+
+HBlockList  NSParser::Expression::parser_phrase_literal(CParser *p, std::vector<HTerm>&    term_in)
+{
+
+
+
+	if (term_in.size() == 1)
+	{
+		HBlock r =  parser_noum_expression(p, term_in.front());
+		if (r == nullptr) return nullptr;
+
+		auto plist = std::list<HBlock >();
+		plist.push_back( r);
+		return  std::make_shared<CBlockList>(plist);
+	}
+
+
+
+	if (is_backet_balanced(term_in) == false) return nullptr;
+
+	if (term_in.front()->is_openBracket() && (term_in.back()->is_closeBracket()))
+	{	
+		bool tem_par_intern = false;
+		for (auto h = std::next(term_in.begin()); h != std::prev(term_in.end()); ++h)
+		{
+			if ((*h)->is_closeBracket() || (*h)->is_openBracket())
+			{
+				tem_par_intern = true;
+				break;
+			}
+		} 
+		 
+			 if (tem_par_intern ==false)
+			{
+				auto res = std::vector<HTerm>(std::next(term_in.begin()), std::prev(term_in.end()));
+				auto mlist = parser_phrase_literal(p, res);
+				if (mlist != nullptr)
+				{
+					//return mlist;
+					auto plist = std::list<HBlock >();
+					plist.push_back(mlist);
+					return  std::make_shared<CBlockList>(plist);
+				}
+			}
+			
+	}
+
+
+
+	//{				
+	//	auto tlist = getTriPartition_phase_item(p,term_in);
+	//	if (tlist.empty() == false)
+	//	{
+	//		auto plist = std::list<HBlock >();
+	//		add_item(plist, tlist[0]);
+	//		add_item(plist, tlist[1]);
+	//		add_item(plist, tlist[2]); 
+	//		auto r =   std::make_shared<CBlockList>(plist);
+	//		r->dump("");
+	//		return r;
+	//	}	 
+	//}
+
+
+	{
+		auto plist = std::list<HBlock >();
+		CPredSequence predList = pWord("N1") << pWord("N2");
+		MatchResult res = CMatch(term_in, predList);
+		if (res.result == Equals)
+		{
+			HBlock  n1 = parser_ComponentePhase(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				add_item(plist, n1);
+				 
+				HBlock  n2 = parser_ComponentePhase(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					add_item(plist, n2);
+					return  std::make_shared<CBlockList>(plist);
+				}
+			}
+		}
+	}
+
+ 
+
+
+
+
+
+
+
+	{
+		auto plist = std::list<HBlock >();
+		CPredSequence predList = pWord("N1") << pAny("N2");
+		MatchResult res = CMatch(term_in, predList);
+		if (res.result == Equals)
+		{
+			HBlock  n1 = parser_ComponentePhase(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+				add_item(plist, n1);
+			 
+				HBlock  n2 = parser_ComponentePhase(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					add_item(plist, n2);
+					return  std::make_shared<CBlockList>(plist);
+				}
+			}
+		}
+	}
+
+
+
+	{
+		auto plist = std::list<HBlock >();
+		CPredSequence predList = pAny("N1") << pWord("N2");
+		MatchResult res = CMatch(term_in, predList);
+		if (res.result == Equals)
+		{
+			HBlock  n1 = parser_ComponentePhase(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+			
+				add_item(plist, n1); 
+
+				HBlock  n2 = parser_ComponentePhase(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{	
+					add_item(plist, n2);
+					return  std::make_shared<CBlockList>(plist);
+				}
+			}
+		}
+	}
+
+
+	{
+		auto plist = std::list<HBlock >();
+		CPredSequence predList = pAny("N1") << pAny("N2");
+		MatchResult res = CMatch(term_in, predList);
+		if (res.result == Equals)
+		{
+			HBlock  n1 = parser_ComponentePhase(p, res.matchs["N1"]);
+			if (n1 != nullptr)
+			{
+
+				add_item(plist, n1);
+
+				HBlock  n2 = parser_ComponentePhase(p, res.matchs["N2"]);
+				if (n2 != nullptr)
+				{
+					add_item(plist, n2);
+					return  std::make_shared<CBlockList>(plist);
+				}
+			}
+		}
+	}
+
+	{
+		HTerm  term_i =  make_list({ term_in });
+		HBlock  n1 = parser_ComponentePhase(p, term_i);
+		if (n1 != nullptr)
+		{
+			auto plist = std::list<HBlock >(); 
+			add_item(plist, n1);
+			return  std::make_shared<CBlockList>(plist);
+		}
+	}
+	 
+
+	return nullptr;
+}
+ 

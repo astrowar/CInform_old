@@ -261,6 +261,14 @@ namespace NSParser
 		CBlocking::HBlock parser_assertionTarger(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlock  Parser_Expression(CParser * p, string str, bool dump);
 
+		
+		CBlocking::HBlock   parser_ComponentePhase(CParser *p, NSTerm::HTerm    lst);
+		 std::vector<CBlocking::HBlock  >   getTriPartition_phase_item(CParser *p, std::vector< NSTerm::HTerm> & vs);
+		//std::list<std::vector<HTerm   > >  NSParser::Expression::getTriPartition_phase_item(std::vector<HTerm> & vs)
+
+	 
+	  CBlocking::HBlockList   parser_phrase_literal_entry(CParser *p, std::vector<NSTerm::HTerm>&    lst);
+		CBlocking::HBlockList   parser_phrase_literal(CParser *p, std::vector<NSTerm::HTerm>&    lst);
 	}
 
 	namespace User
@@ -274,6 +282,7 @@ namespace NSParser
 		CBlocking::HBlockMatchNoum parser_expression_match_noum(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_expression_match(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_expression_match(CParser *p, std::vector<NSTerm::HTerm>& term);
+
 
 	    CBlocking::HBlockMatchProperty parse_PropertyOf_Match(CParser * p, std::vector<NSTerm::HTerm>& term);
 		CBlocking::HBlockMatchNoum parse_match_SigleNoum(CParser * p, NSTerm::HTerm term);
@@ -415,7 +424,10 @@ namespace NSParser
 	namespace ParseDecide
 	{		 
 		 
+ 
+		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry_i(CParser * p, NSTerm::HTerm  term_in);
 
+		CBlocking::HBlockMatchList  parseDecidePhaseMatchEntry(CParser * p, std::vector<HTerm> term_lst);
 		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, std::list<std::vector<NSTerm::HTerm > > terms);
 		

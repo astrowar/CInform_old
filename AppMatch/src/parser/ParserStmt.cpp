@@ -233,6 +233,7 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 
 	//if (sNoum == "where")return nullptr;
 	if (sNoum == "called")return nullptr;
+	if (sNoum == "-")return nullptr;
 	//if (sNoum == "which")return nullptr;
 	if (sNoum == "and")return nullptr;
 	if (sNoum == "or")return nullptr;
@@ -249,10 +250,10 @@ HBlockNoum NSParser::Expression::parser_noum_expression(CParser *p, HTerm  term)
 	//if (sNoum == "from")return nullptr;
 	//if (sNoum == "of")return nullptr;
 
-	if (sNoum == "the")return nullptr;
-	if (sNoum == "The")return nullptr;
-	if (sNoum == "a")return nullptr;
-	if (sNoum == "an")return nullptr;
+	///if (sNoum == "the")return nullptr;
+	//if (sNoum == "The")return nullptr;
+	//if (sNoum == "a")return nullptr;
+	//if (sNoum == "an")return nullptr;
 
 	
 	  
@@ -360,7 +361,10 @@ HBlock  NSParser::Expression::parser_expression_lst(CParser *p, std::vector<HTer
         return noum_Assign;
     }
 
- 
+	HBlock match_PhaseTerms = Expression::parser_phrase_literal_entry(p, lst);
+	if (match_PhaseTerms != nullptr) {
+		return match_PhaseTerms;
+	}
 
 
 	// fail back !

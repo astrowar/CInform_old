@@ -1,12 +1,22 @@
 A thing is a kind of entity
 A person is a kind of thing
+key  is a kind of thing
+door is a kind of thing
+  
+opening relates   thing to another  
+The verb to be open from implies the opening relation  
   
 John is an person
 Marsha is an person
 Ninguem is an person
 
+
+To decide which K open by L :   
+   decide on  K that relates to L by opening   
+   
+   
 To decide which K is ( K) that/which/who relates to (L) by (relation - R):   
-   decide on rel_lookup_Y R K
+   decide on rel_lookup_Y R L
    
    
 
@@ -18,4 +28,6 @@ unit init:
 unit test:
   pass
 
-assert:  ( person that   relates to John by marriage  relation ) is  Marsha
+assert:  (person that   relates to (John) by (  an assimetric only relation) ) is  Marsha
+assert:  door open by  key
+assert:  door open from   key

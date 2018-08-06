@@ -16,6 +16,7 @@ using namespace NSTerm;
 using namespace NSTerm::NSMatch;
 using namespace EqualResulting;
 
+bool is_backet_balanced(std::vector<HTerm> terms);
  
 std::list<std::pair<HTerm, HTerm> > getBiPartition(std::vector<HTerm> & vs)
 {
@@ -183,8 +184,19 @@ std::list<std::vector<HTerm > > getQuadPartition(HTerm & term)
 	return	std::list<std::vector<HTerm > >();
 }
 
+
 std::list<std::vector<HTerm > > getTriPartition(std::vector<HTerm> & vs)
 {
+	if (vs.front()->is_openBracket() || (vs.back()->is_closeBracket()))
+	{
+
+		if (is_backet_balanced(vs) ==false )
+		{
+			return std::list<std::vector<HTerm > >();
+		}
+	}
+
+
 	std::list<std::vector<HTerm > > ret;
 	size_t n = vs.size();
 
@@ -218,6 +230,11 @@ std::list<std::vector<HTerm > > getTriPartition(HTerm & term)
 
 std::list<std::list<HBlock > > getPartition_fn_n(int order,std::vector<HTerm>& vs, int ia, std::function<HBlock(HTerm)> func)
 {
+
+	//printf("PE %d: ",order);
+	//for(auto v:vs)printf("|%s", v->repr().c_str());
+	//printf("\n");
+
 	std::list<std::list<HBlock > > ret;
 	size_t n = vs.size();
 	if (order == 1)
@@ -230,7 +247,7 @@ std::list<std::list<HBlock > > getPartition_fn_n(int order,std::vector<HTerm>& v
 		if (ritem1 == nullptr) return std::list<std::list<HBlock > >();
 		
 	 
-		printf("%d %x  %s \n",order, ritem1.get(), item1->repr().c_str());
+		//printf("%d %x  %s \n",order, ritem1.get(), item1->repr().c_str());
 
 		std::list<std::list<HBlock > > iret;
 		iret.push_back({ ritem1 });
@@ -240,10 +257,19 @@ std::list<std::list<HBlock > > getPartition_fn_n(int order,std::vector<HTerm>& v
 	 
 	
 
-	for (size_t i1 = ia; i1 < n -(order-1) ; ++i1)
+	for (size_t i1 = ia+1; i1 < n -(order) ; ++i1)
 	{
+		if (i1 >= n)continue;
 		std::vector<HTerm> p1(vs.begin()+ia, vs.begin() + i1);
 		if (p1.empty()) continue;
+
+
+		//printf("H: ");
+		//for (auto v : p1)printf("|%s", v->repr().c_str());
+		//printf("   <=>   ");
+		std::vector<HTerm> p_rem(vs.begin() + i1, vs.end());
+		//for (auto v : p_rem)printf("|%s", v->repr().c_str());
+		//printf("\n");
 
 		HTerm item1;
 		if (p1.size() > 1) item1 = make_list(p1);
@@ -257,7 +283,7 @@ std::list<std::list<HBlock > > getPartition_fn_n(int order,std::vector<HTerm>& v
 
 		}
 
-		printf("%d %x  %s \n", order, ritem1.get(), item1->repr().c_str());
+		//printf("%d %x  %s \n", order, ritem1.get(), item1->repr().c_str());
 		std::list<std::list<HBlock > > next_results = getPartition_fn_n(order-1,vs, i1, func); //i1 > ia
 		for (auto n : next_results)
 		{
@@ -282,7 +308,7 @@ std::list<std::list<HBlock > > getBiPartition_fn(HTerm & term, std::function<HBl
 	{
 		std::list<std::list<HBlock >> ret;
 		std::vector<HTerm> vs = cs->asVector();
-		if (vs.size() > 4)
+		if (vs.size() > 1)
 		{
 			return getPartition_fn_n(2, vs, 0, func);
 		}
@@ -299,7 +325,7 @@ std::list<std::list<HBlock > > getTriPartition_fn(HTerm & term, std::function<HB
 	{
 		std::list<std::list<HBlock >> ret;
 		std::vector<HTerm> vs = cs->asVector();
-		if (vs.size() > 4)
+		if (vs.size() > 2)
 		{
 			return getPartition_fn_n(3, vs, 0, func);
 		}
@@ -314,7 +340,7 @@ std::list<std::list<HBlock > > getQuadPartition_fn(HTerm & term, std::function<H
 	{
 		std::list<std::list<HBlock >> ret;
 		std::vector<HTerm> vs = cs->asVector();
-		if (vs.size() > 4)
+		if (vs.size() > 3)
 		{
 			return getPartition_fn_n(4, vs, 0, func);
 		}
