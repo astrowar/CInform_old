@@ -120,6 +120,7 @@ namespace NSTerm
 	HTerm make_literal(std::string x);	 
 	HTerm make_list(std::initializer_list<HTerm> x);
 	HTerm make_list(std::vector<HTerm> x);
+	HTerm make_list(std::list<HTerm> x);
 
 
 

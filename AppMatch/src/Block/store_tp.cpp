@@ -2243,10 +2243,9 @@ HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
 	cmp_type(tp, BlockType::BlockPhraseInvoke);
-	const HBlockPhraseHeader _header = load_CBlockPhraseHeader_slot(load_id(ctx), ctx);
-	const HBlock _arg1 = load_CBlock_slot(load_id(ctx), ctx);
-	const HBlock _arg2 = load_CBlock_slot(load_id(ctx), ctx);
-	CBlockPhraseInvoke* ret = new CBlockPhraseInvoke(_header, _arg1, _arg2);
+	const HBlockNoum _name = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockList _args = load_CBlockList_slot(load_id(ctx), ctx); 
+	CBlockPhraseInvoke* ret = new CBlockPhraseInvoke(_name, _args);
 	return  std::shared_ptr<CBlockPhraseInvoke>(ret);
 
 }
@@ -3036,12 +3035,10 @@ HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
 	cmp_type(tp, BlockType::BlockPhraseHeader);
-	const HBlockNoum _verb = load_CBlockNoum_slot(load_id(ctx), ctx);
-	const HBlockNoum _pred1 = load_CBlockNoum_slot(load_id(ctx), ctx);
-	const HBlockNoum _pred2 = load_CBlockNoum_slot(load_id(ctx), ctx);
-	const HBlockMatch _arg1 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	const HBlockMatch _arg2 = load_CBlockMatch_slot(load_id(ctx), ctx);
-	CBlockPhraseHeader* ret = new CBlockPhraseHeader(_verb, _pred1, _pred2, _arg1, _arg2);
+	const HBlockNoum _name = load_CBlockNoum_slot(load_id(ctx), ctx);
+	const HBlockMatchList _matchPhrase = load_CBlockMatchList_slot(load_id(ctx), ctx);
+	const HBlockMatchList _matchArgs = load_CBlockMatchList_slot(load_id(ctx), ctx);
+	CBlockPhraseHeader* ret = new CBlockPhraseHeader(_name, _matchPhrase , _matchArgs );
 	return  std::shared_ptr<CBlockPhraseHeader>(ret);
 
 }

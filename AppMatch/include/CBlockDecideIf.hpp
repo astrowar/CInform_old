@@ -132,21 +132,19 @@ namespace CBlocking
 	//Pharses
 
 
-	class CBlockPhraseHeader : public CBlock  // bloco que equivale a um return no decide
+	class CBlockPhraseHeader : public CBlock  // bloco que define o header de uma funcao .. nome e match dos argumentos
 	{
 	public:
-		CBlockPhraseHeader(CBlocking::HBlockNoum _verb , CBlocking::HBlockNoum _pred1, CBlocking::HBlockNoum _pred2, HBlockMatch _arg1, HBlockMatch _arg2) : verb(_verb), pred1(_pred1), pred2(_pred2), arg1(_arg1), arg2(_arg2)
+		CBlockPhraseHeader(CBlocking::HBlockNoum _name , CBlocking::HBlockMatchList _matchPhase, CBlocking::HBlockMatchList _matchArguments) : name(_name), matchPhase(_matchPhase), matchArguments(_matchArguments)
 		{
 		}
 		 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockPhraseHeader; }
 
-		CBlocking::HBlockNoum verb;
-		CBlocking::HBlockNoum pred1;
-		CBlocking::HBlockNoum pred2;
-		HBlockMatch arg1;
-		HBlockMatch arg2;
+		CBlocking::HBlockNoum name;
+		CBlocking::HBlockMatchList matchPhase;
+		CBlocking::HBlockMatchList matchArguments;
 
 	};
 
@@ -154,15 +152,16 @@ namespace CBlocking
 
 
 
-	class CBlockPhraseDefine : public CBlock  // bloco que equivale a um return no decide
+	class CBlockPhraseDefine : public CBlock  // bloco que declara ao interpreter uma phase
 	{
 	public:
-		CBlockPhraseDefine(CBlocking::HBlockPhraseHeader _header, CBlocking::HBlock  _body) : header(_header)  , body(_body){		}
+		CBlockPhraseDefine(CBlocking::HBlockPhraseHeader _header,   CBlocking::HBlock  _body) :  header(_header), body(_body){		}
 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockPhraseDefine; }
 
-		CBlocking::HBlockPhraseHeader header;
+		 
+		CBlocking::HBlockPhraseHeader  header;
 		CBlocking::HBlock  body;
 
 	};
@@ -172,17 +171,16 @@ namespace CBlocking
 
  
 
-	class CBlockPhraseInvoke : public CBlock  // bloco que equivale a um return no decide
+	class CBlockPhraseInvoke : public CBlock  // bloco que equivae a um routine call .. observe que name pode ser compount name para uma listagem de possiveis predicados
 	{
 	public:
-		CBlockPhraseInvoke(CBlocking::HBlockPhraseHeader _header, CBlocking::HBlock  _arg1, CBlocking::HBlock  _arg2 ) : header(_header), arg1(_arg1), arg2(_arg2) {		}
+		CBlockPhraseInvoke(CBlocking::HBlockNoum _name, CBlocking::HBlockList  _arguments ) : name(_name), arguments(_arguments)  {		}
 
 		void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockPhraseInvoke; }
 
-		CBlocking::HBlockPhraseHeader header;
-		CBlocking::HBlock arg1;
-		CBlocking::HBlock arg2;
+		CBlocking::HBlockNoum name;
+		CBlocking::HBlockList arguments;
 
 	};
 

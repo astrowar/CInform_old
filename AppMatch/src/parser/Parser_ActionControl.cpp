@@ -421,6 +421,26 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 
 
 	{
+		CPredSequence predList_b = pWord("Action") << pPreposition("pred") << pAny("noum1") << pLiteral("when") << pAny("Condition") ;
+		MatchResult res = CMatch(term, predList_b);
+		if (res.result == Equals)
+		{
+			std::vector<HBlockNoum> anamed = { std::make_shared<CBlockNoumStr>(res.matchs["Action"]->repr()) , std::make_shared<CBlockNoumStr>(res.matchs["pred"]->repr()) };
+			HBlockMatch m_action = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumCompose>(anamed));
+			auto nn1 = ExpressionMatch::parser_expression_match(p, res.matchs["noum1"]);
+			if (nn1 != nullptr)
+			{
+				HBlockMatchActionCall actionCall = std::make_shared<CBlockMatchActionCall>(m_action, nn1, nullptr); //An Action !!!
+				return actionCall;
+			}
+		}
+	}
+
+
+
+
+
+	{
 		CPredSequence predList_b = pWord("Action") << pPreposition("pred") << pAny("noum1");
 		MatchResult res = CMatch(term, predList_b);
 		if (res.result == Equals)
@@ -430,11 +450,8 @@ HBlockMatchActionCall NSParser::ParseAction::parser_actionMatch(CParser * p, HTe
 			auto nn1 = ExpressionMatch::parser_expression_match(p, res.matchs["noum1"]);
 			if (nn1 != nullptr)
 			{
-				 
-				 
 					HBlockMatchActionCall actionCall = std::make_shared<CBlockMatchActionCall>(m_action, nn1, nullptr); //An Action !!!
 					return actionCall;
-				 
 			}
 		}
 	}

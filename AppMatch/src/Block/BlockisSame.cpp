@@ -153,30 +153,11 @@ namespace CBlocking {
 		bool isSame_BlockPhraseHeader(CBlockPhraseHeader* b1, CBlockPhraseHeader* b2)
 		{
 
-			if (CBlock::isSame(b1->verb.get(), b2->verb.get()) == false) return false;
+			if (CBlock::isSame(b1->name.get(), b2->name.get()) == false) return false;
+			if (CBlock::isSame(b1->matchPhase.get(), b2->matchPhase.get()) == false) return false;
+			if (CBlock::isSame(b1->matchArguments.get(), b2->matchArguments.get()) == false) return false;
 
-			if (b1->arg1.get() != nullptr && b2->arg1.get() != nullptr)
-			{
-				if (CBlock::isSame(b1->arg1.get(), b2->arg1.get()) == false) return false;
-			}
-			if (b1->arg2.get() != nullptr && b2->arg2.get() != nullptr)
-			{
-				if (CBlock::isSame(b1->arg2.get(), b2->arg2.get()) == false) return false;
-			}
-
-			if (b1->arg1.get() == nullptr && b2->arg1.get() != nullptr) return false;
-			if (b1->arg1.get() != nullptr && b2->arg1.get() == nullptr) return false;
-			if (b1->arg2.get() == nullptr && b2->arg2.get() != nullptr) return false;
-			if (b1->arg2.get() != nullptr && b2->arg2.get() == nullptr) return false;
-
-			if (b1->pred1.get() == nullptr && b2->pred1.get() != nullptr) return false;
-			if (b1->pred1.get() != nullptr && b2->pred1.get() == nullptr) return false;
-			if (b1->pred2.get() == nullptr && b2->pred2.get() != nullptr) return false;
-			if (b1->pred2.get() != nullptr && b2->pred2.get() == nullptr) return false;
-
-
-			if (CBlock::isSame(b1->pred1.get(), b2->pred1.get()) == false) return false;
-			if (CBlock::isSame(b1->pred2.get(), b2->pred2.get()) == false) return false;
+		 
 
 			return true;
 		}

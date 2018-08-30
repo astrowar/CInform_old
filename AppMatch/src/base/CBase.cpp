@@ -157,7 +157,13 @@ HTerm NSTerm::make_list(std::vector<HTerm> x)
 	return std::static_pointer_cast<CTerm>(r);
 
 }
+HTerm NSTerm::make_list(std::list<HTerm> x)
+{
+	auto r = (std::make_shared<CList>());
+	for (auto &v : x) r->lst.push_back(v);
+	return std::static_pointer_cast<CTerm>(r);
 
+}
 
 CList* NSTerm::asCList(CTerm* c)
 {

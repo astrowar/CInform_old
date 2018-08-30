@@ -2309,7 +2309,7 @@ HBlockList  NSParser::Expression::parser_phrase_literal(CParser *p, std::vector<
 
 
 	{
-		auto plist = std::list<HBlock >();
+		 
 		CPredSequence predList = pAny("N1") << pAny("N2");
 		MatchResult res = CMatch(term_in, predList);
 		if (res.result == Equals)
@@ -2317,18 +2317,21 @@ HBlockList  NSParser::Expression::parser_phrase_literal(CParser *p, std::vector<
 			HBlock  n1 = parser_ComponentePhase(p, res.matchs["N1"]);
 			if (n1 != nullptr)
 			{
-
-				add_item(plist, n1);
+				 
 
 				HBlock  n2 = parser_ComponentePhase(p, res.matchs["N2"]);
 				if (n2 != nullptr)
 				{
+					auto plist = std::list<HBlock >();
+					add_item(plist, n1);
 					add_item(plist, n2);
 					return  std::make_shared<CBlockList>(plist);
 				}
 			}
 		}
 	}
+
+	return nullptr;
 
 	{
 		HTerm  term_i =  make_list({ term_in });

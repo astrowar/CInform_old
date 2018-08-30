@@ -11,7 +11,7 @@
 // PVQ
 
 
-#include <list>
+ 
 
 #include <algorithm>
 
@@ -23,7 +23,7 @@
 #include "CBlockCommand.hpp"
 #include "sharedCast.hpp"
 #include "CBlockComposition.hpp"
-
+#include <list>
 
 using namespace CBlocking;
 using namespace NSTerm;
@@ -37,6 +37,7 @@ using namespace EqualResulting;
 NSParser::CParser::CParser( LanguageModule *_lang ) {
     
    this->lang = _lang;
+   this->phase_id = 0;
 
 	blank_line = std::make_shared<CBlockNothing>("Blank Line");
     {
@@ -63,9 +64,23 @@ NSParser::CParser::CParser( LanguageModule *_lang ) {
 	{
 		HBlockNoum nVerb = std::make_shared<CBlockNoumStr>("matches");
 		HBlockNoum nPred = std::make_shared<CBlockNoumStr>("in");
-		HBlockMatchNamed marg1 = std::make_shared<CBlockMatchNamed>("RGX", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
-		HBlockMatchNamed marg2 = std::make_shared<CBlockMatchNamed>("TXT", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));		
-		HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
+		//HBlockMatchNamed marg1 = std::make_shared<CBlockMatchNamed>("RGX", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+		//HBlockMatchNamed marg2 = std::make_shared<CBlockMatchNamed>("TXT", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));		
+
+
+		HBlockMatch marg1 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>("matches"));
+		HBlockMatch marg2 = std::make_shared<CBlockMatchNamed>("A1", std::make_shared<CBlockMatchAny>());
+		HBlockMatch marg3 = std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>("in"));
+		HBlockMatch marg4 = std::make_shared<CBlockMatchNamed>("A2", std::make_shared<CBlockMatchAny>());		
+
+		HBlockMatchList mPhaseEntry = std::make_shared<CBlockMatchList>( std::list<HBlockMatch>({ marg1 ,marg2 ,marg3 ,marg4 }));
+		
+		HBlockMatchNamed xarg1 = std::make_shared<CBlockMatchNamed>("RGX", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+		HBlockMatchNamed xarg2 = std::make_shared<CBlockMatchNamed>("TXT", std::make_shared<CBlockMatchKind>(std::make_shared<CBlockKindValue>("text")));
+
+		HBlockMatchList mPhaseArguments = std::make_shared<CBlockMatchList>(std::list<HBlockMatch>({ xarg1 ,xarg2   }));
+
+		HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoumStr>("matches_in") , mPhaseEntry, mPhaseArguments);
 		this->phrases.push_back(nheader);
 	}
 

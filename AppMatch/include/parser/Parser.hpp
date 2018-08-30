@@ -186,9 +186,10 @@ namespace NSParser
 		void set_Noum(CBlocking::NoumDefinitions ndef);
 
 
+		int phase_id;
 
 		//Matchs 
-		
+ 
 	 
 
 	 
@@ -198,7 +199,7 @@ namespace NSParser
 	 
 		CBlocking::HBlock Parser_Condition(string str, bool dump); // Apenas para testes
  
-	 
+		HBlockNoum get_next_headerName();
  
  
 		//CBlocking::HBlockMatch parser_MatchArgument(std::vector<NSTerm::HTerm>&  term);
@@ -428,15 +429,16 @@ namespace NSParser
 		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry_i(CParser * p, NSTerm::HTerm  term_in);
 
 		CBlocking::HBlockMatchList  parseDecidePhaseMatchEntry(CParser * p, std::vector<HTerm> term_lst);
-		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlockMatchList  parseDecidePhaseMatchEntry(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch  parseDecidePhaseMatchEntry(CParser * p, std::list<std::vector<NSTerm::HTerm > > terms);
 		
 
 		CBlocking::HBlockMatchList  parser_match_body(CParser * p, NSTerm::HTerm term);
-		CBlocking::HBlockMatch  parser_What_Which_Assertion(CParser * p, NSTerm::HTerm term);
+		CBlocking::HBlockPhraseHeader  parser_What_Which_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_What_Which_Verb_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_Match_IF_Assertion(CParser * p, NSTerm::HTerm term);
-		CBlocking::HBlock  parseAssertion_isDecide_inLine(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlockToDecide  parseAssertion_isDecide_inLine(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		std::pair<HBlockMatchList, HBlockMatchList>   parser_match_phraseHeader(CParser * p, NSTerm::HTerm  term, int args_i_item);
 		CBlocking::HBlock parseAssertion_isDecide(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock parseAssertion_DecideOn(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock STMT_Definition_Assertion(CParser * p, std::vector<NSTerm::HTerm>&  term);

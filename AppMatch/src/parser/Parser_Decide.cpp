@@ -51,6 +51,17 @@ HBlockNoum convert_to_noum(NSParser::CParser* p, HTerm term)
 
 HBlockMatchList NSParser::ParseDecide::parser_match_body(CParser * p, HTerm term)
 {
+
+
+	//particiona e so aceita noums ou arguments inputs
+
+	return parseDecidePhaseMatchEntry(p, term);
+
+
+
+
+
+
 	{
 		auto tphase = getQuadPartition(term);
 		for (auto t : tphase)
@@ -133,7 +144,7 @@ HBlockMatchList NSParser::ParseDecide::parser_match_body(CParser * p, HTerm term
 }
 
 
-HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
+HBlockPhraseHeader  NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTerm term)
 {
 
 	{
@@ -146,7 +157,9 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 			HBlockMatch  AdjetiveMatch = std::make_shared<CBlockMatchNoum>(noum);
 			if (AdjetiveMatch != nullptr)
 			{
-				return AdjetiveMatch;
+				logError("nao implementado");
+				return std::make_shared<CBlockPhraseHeader>(nullptr, nullptr);
+				//return AdjetiveMatch;
 			}
 		}
 	}
@@ -160,21 +173,33 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["kindReturn"]);
 			if (c1 != nullptr)
 			{
-				HBlockMatch  arg2 = ExpressionMatch::parser_MatchArgument_only(p, res.matchs["argument"]);
-				if (arg2 != nullptr)
-				{
-					//HBlockNoum noum = convert_to_noum(p,res.matchs["RemainderQuery"]);
 
-					//HBlockMatch  AdjetiveMatch =  std::make_shared<CBlockMatchNoum>(  noum);
-					HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
-					if (AdjetiveMatch != nullptr)
-					{
-						auto mlist = AdjetiveMatch->matchList;
-						mlist.push_back(std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>("for")));
-						mlist.push_back(arg2);
-						return std::make_shared<CBlockMatchList>(mlist);
-					}
-				}
+				HTerm tem_part1 = res.matchs["RemainderQuery"];
+				std::list<HTerm>  t1 = (asCList(tem_part1.get()))->lst ; 
+				t1.push_back(make_string("for"));
+				t1.push_back(res.matchs["argument"]);
+
+				HTerm next_term = make_list(t1);
+
+				std::pair<HBlockMatchList, HBlockMatchList>  AdjetiveMatch_p = parser_match_phraseHeader(p, next_term, 1);
+				return std::make_shared<CBlockPhraseHeader>(p->get_next_headerName() ,AdjetiveMatch_p.first, AdjetiveMatch_p.second);
+				  
+
+				//HBlockMatch  arg2 = ExpressionMatch::parser_MatchArgument_only(p, res.matchs["argument"]);
+				//if (arg2 != nullptr)
+				//{
+				//	//HBlockNoum noum = convert_to_noum(p,res.matchs["RemainderQuery"]);
+
+				//	//HBlockMatch  AdjetiveMatch =  std::make_shared<CBlockMatchNoum>(  noum);
+				//	HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
+				//	if (AdjetiveMatch != nullptr)
+				//	{
+				//		auto mlist = AdjetiveMatch->matchList;
+				//		mlist.push_back(std::make_shared<CBlockMatchNoum>(std::make_shared<CBlockNoumStr>("for")));
+				//		mlist.push_back(arg2);
+				//		return std::make_shared<CBlockMatchList>(mlist);
+				//	}
+				//}
 			}
 		}
 	}
@@ -188,11 +213,15 @@ HBlockMatch NSParser::ParseDecide::parser_What_Which_Assertion(CParser * p, HTer
 			HBlockMatch  c1 = ExpressionMatch::parser_MatchArgument(p,res.matchs["kindReturn"]);
 			if (c1 != nullptr)
 			{
-				HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
-				if (AdjetiveMatch != nullptr)
-				{
-					return AdjetiveMatch;					
-				}
+				std::pair<HBlockMatchList, HBlockMatchList>  AdjetiveMatch_p = parser_match_phraseHeader(p, res.matchs["RemainderQuery"], 1);
+
+				return std::make_shared<CBlockPhraseHeader>(p->get_next_headerName(), AdjetiveMatch_p.first, AdjetiveMatch_p.second);
+
+				//HBlockMatchList  AdjetiveMatch = parser_match_body(p, res.matchs["RemainderQuery"]);
+				//if (AdjetiveMatch != nullptr)
+				//{
+				//	return AdjetiveMatch;					
+				//}
 			}
 		}
 	}
@@ -208,7 +237,7 @@ HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, std:
 		for (auto ts : t)
 		{
 			HBlockMatch  componente = ExpressionMatch::parser_MatchComponentePhase(p, ts);
-			printf("%s %x\n", ts->repr().c_str(), componente);
+			//printf("%s %x\n", ts->repr().c_str(), componente);
 			 
 			if (componente == nullptr)
 			{
@@ -226,7 +255,7 @@ HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, std:
 }
 
 
-HBlockMatch  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, HTerm term)
+HBlockMatchList  NSParser::ParseDecide::parseDecidePhaseMatchEntry(CParser * p, HTerm term)
 {
 	{
 		std::vector<HTerm> term_in = { term };
@@ -738,7 +767,7 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 
 
 
-HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlockToDecide NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 
 	 
@@ -780,7 +809,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				}
 
 
-				 
+				logError("Decide mal formado");
 				return nullptr;
 
 			}
@@ -804,6 +833,15 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
+	            HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
+				if (w_match != nullptr)
+				{
+					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+					auto h =  std::make_shared<CBlockToDecideWhat>(w_match, body);
+					return h;
+				}
+
+
 				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
 				if (vb_match != nullptr)
 				{
@@ -812,12 +850,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 				}
 
 
-				HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
-				if (w_match != nullptr)
-				{
-					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-					return std::make_shared<CBlockToDecideWhat>(w_match, body);
-				}
+			
 
 				logError("Decide mal formado");
 				return nullptr;
@@ -827,99 +860,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 
 
 
-		{
-			// to doing somethig with another thing
-			CPredSequence predList = pLiteral("to") << pWord("Verb") << pAny("Match_arg1") << pPreposition("pred") << pAny("Match_arg2") << pLiteral(":");
-			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
-			{
-				HBlockMatch  marg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg1"]);
-				if (marg1 != nullptr)
-				{
-					HBlockMatch  marg2 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg2"]);
-					if (marg2 != nullptr)
-					{
-
-						HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-						if (body != nullptr)
-						{
-							HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
-							HBlockNoum nPred = std::make_shared<CBlockNoumStr>(res.matchs["pred"]->repr());
-							HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
-							p->phrases.push_back(nheader);
-							return std::make_shared<CBlockPhraseDefine>(nheader, body);
-						}
-					}
-				}
-			}
-		}
-
-
-		//isso aqui é phase definition
-		{
-			CPredSequence predList = pLiteral("to") << pWord("Verb") <<  pAny("terms") << pLiteral(":");
-			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
-			{
-				HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
-				auto term_q = res.matchs["terms"];
-				HBlockPhraseHeader nheader = nullptr;
-				for (auto term12 : getBiPartition(term_q))
-				{
-					HBlockMatch  marg2 = ExpressionMatch::parser_MatchVariableDeclare(p, term12.second);
-					if (marg2 != nullptr)
-					{
-						//processa o inico  N VAR N
-						for (auto mterm123 : getTriPartition(term12.first))
-						{						 
-							HBlockMatchNoum  mnoum1 = ExpressionMatch::parser_expression_match_noum(p, mterm123[0]);
-							if (mnoum1 == nullptr) continue;
-							HBlockMatch  marg1 = ExpressionMatch::parser_MatchVariableDeclare(p, mterm123[1]);
-							if (marg1 == nullptr) continue;
-							HBlockMatchNoum  mnoum3 = ExpressionMatch::parser_expression_match_noum(p, mterm123[2]);
-							if (mnoum3 == nullptr) continue;
-							nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum1->inner, mnoum3->inner, marg1, marg2);
-							break;
-						}
-
-						if (nheader == nullptr)
-						{
-							for (auto mterm12 : getBiPartition(term12.first))
-							{
-
-								HBlockMatch  marg1 = ExpressionMatch::parser_MatchVariableDeclare(p, mterm12.first);
-								if (marg1 == nullptr) continue;
-
-
-								HBlockNoum  mnoum3 = convert_to_noum(p,mterm12.second);
-								if (mnoum3 == nullptr) continue;
-								nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum3, nullptr, marg1, marg2);
-								break;
-							}
-						}
-						if (nheader == nullptr)
-						{
-							HBlockNoum  mnoum_pred = convert_to_noum(p,term12.first);
-							if (mnoum_pred != nullptr)
-							{
-								nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum_pred, nullptr, marg2, nullptr);								 
-							}
-						}
-
-						if (nheader != nullptr)
-						{
-							HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-							if (body != nullptr)
-							{
-								//HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nullptr, marg2, nullptr);
-								p->phrases.push_back(nheader);
-								return std::make_shared<CBlockPhraseDefine>(nheader, body);
-							}
-						}
-					}
-				}
-			}
-		}
+ 
 	}
 
 
@@ -927,9 +868,258 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::v
 }
 
 
-HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+
+std::pair<HBlockMatchList, HBlockMatchList>  NSParser::ParseDecide::parser_match_phraseHeader(CParser * p, HTerm  term, int args_i_item)
 {
-	return parseAssertion_isDecide_inLine(p, term, inner, err);
+	std::list<HBlockMatch> phase_i;
+	std::list<HBlockMatch> args_i;
+
+
+ 
+
+
+	{// uma palavra apenas
+		CPredSequence predList = pWord("H");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{   
+			
+			//HBlockNoum n = NSParser::ParseAssertion::parse_noum(p, res.matchs["H"]);
+
+			HBlockMatch tem_h = NSParser::ExpressionMatch::parser_MatchComponentePhase(p, res.matchs["H"]);			
+			if (HBlockMatchNamed arg = DynamicCasting::asHBlockMatchNamed(tem_h))
+			{
+				args_i.push_back(arg);
+				phase_i.push_back(std::make_shared<CBlockMatchNamed>("A" + std::to_string(args_i_item), std::make_shared<CBlockMatchAny>()));
+			}
+			else
+			{
+				phase_i.push_back(tem_h);
+			}
+			return std::pair<HBlockMatchList, HBlockMatchList>(std::make_shared<CBlockMatchList >(phase_i), std::make_shared<CBlockMatchList >(args_i));
+		}
+	}
+
+
+	{// uma palavra e o resto
+		CPredSequence predList = pWord("H") << pAny("Rem");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch tem_h = NSParser::ExpressionMatch::parser_MatchComponentePhase(p, res.matchs["H"]);
+			if (tem_h != nullptr)
+			{
+				if (HBlockMatchNamed arg = DynamicCasting::asHBlockMatchNamed(tem_h))
+				{
+					args_i.push_back(arg);
+					phase_i.push_back(std::make_shared<CBlockMatchNamed>("A" + std::to_string(args_i_item), std::make_shared<CBlockMatchAny>()));
+					args_i_item++;
+				}
+				else
+				{
+					phase_i.push_back(tem_h);
+				}
+
+				std::pair<HBlockMatchList, HBlockMatchList> p12 = parser_match_phraseHeader(p, res.matchs["Rem"], args_i_item);
+				phase_i.insert(phase_i.end(), p12.first->matchList.begin(), p12.first->matchList.end());
+				args_i.insert(args_i.end(), p12.second->matchList.begin(), p12.second->matchList.end());
+				return std::pair<HBlockMatchList, HBlockMatchList>(std::make_shared<CBlockMatchList >(phase_i), std::make_shared<CBlockMatchList >(args_i));
+			}
+			 
+		}
+	}
+
+
+
+	 
+
+	{// uma palavra e o resto
+		CPredSequence predList = pAny("arg") << pAny("Rem");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch tem_h =  NSParser::ExpressionMatch::parser_MatchComponentePhase(p, res.matchs["arg"]);
+
+			if (tem_h != nullptr)
+			{
+				if (HBlockMatchNamed arg = DynamicCasting::asHBlockMatchNamed(tem_h))
+				{
+					args_i.push_back(arg);
+					phase_i.push_back(std::make_shared<CBlockMatchNamed>("A" + std::to_string(args_i_item), std::make_shared<CBlockMatchAny>()));
+					args_i_item++;
+				}
+				else
+				{
+					phase_i.push_back(tem_h);
+				}
+
+				std::pair<HBlockMatchList, HBlockMatchList> p12 = parser_match_phraseHeader(p, res.matchs["Rem"], args_i_item);
+				phase_i.insert(phase_i.end(), p12.first->matchList.begin(), p12.first->matchList.end());
+				args_i.insert(args_i.end(), p12.second->matchList.begin(), p12.second->matchList.end());
+				return std::pair<HBlockMatchList, HBlockMatchList>(std::make_shared<CBlockMatchList >(phase_i), std::make_shared<CBlockMatchList >(args_i));
+			}
+		}
+	}
+
+
+	{// uma variavel apenas
+		CPredSequence predList = pAny("arg");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			HBlockMatch arg = NSParser::ExpressionMatch::parser_MatchComponentePhase(p, res.matchs["arg"]);
+
+			if (arg != nullptr)
+			{
+				args_i.push_back(arg);
+				phase_i.push_back(std::make_shared<CBlockMatchNamed>("A" + std::to_string(args_i_item), std::make_shared<CBlockMatchAny>()));
+				args_i_item++;
+				return std::pair<HBlockMatchList, HBlockMatchList>(std::make_shared<CBlockMatchList >(phase_i), std::make_shared<CBlockMatchList >(args_i));
+			}
+		}
+	}
+
+
+
+	HBlockMatchList mphase_i = std::make_shared<CBlockMatchList >(phase_i);
+	HBlockMatchList margs_i = std::make_shared<CBlockMatchList >(args_i);
+	return std::pair<HBlockMatchList, HBlockMatchList>(mphase_i, margs_i);
+}
+
+
+HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+{ 
+
+	{
+		CPredSequence predList = pLiteral("to") << pLiteral("decide") << pAny("KindReturn") << mk_What_Which() << verb_IS() << pAny("PhaseHeader") << pLiteral(":");
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
+		{
+			std::pair<HBlockMatchList, HBlockMatchList>  AdjetiveMatch = parser_match_phraseHeader(p, res.matchs["PhaseHeader"],1);
+			if (AdjetiveMatch.first != nullptr)
+			{
+				HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+				if (body != nullptr)
+				{
+					HBlockNoum name = p->get_next_headerName();
+					auto header = std::make_shared<CBlockPhraseHeader>(name, AdjetiveMatch.first , AdjetiveMatch.second);
+					return std::make_shared<CBlockPhraseDefine>(header, body);
+				}
+			}
+
+			logError("Decide mal formado");
+		}
+	}
+
+
+	auto hdecide =  parseAssertion_isDecide_inLine(p, term, inner, err);
+	if (hdecide != nullptr)
+	{
+		return hdecide;
+		//return std::make_shared<CBlockPhraseDefine>(name, hdecide->, body);
+	}
+
+
+
+
+
+
+	//{
+	//	// to doing somethig with another thing
+	//	CPredSequence predList = pLiteral("to") << pWord("Verb") << pAny("Match_arg1") << pPreposition("pred") << pAny("Match_arg2") << pLiteral(":");
+	//	MatchResult res = CMatch(term, predList);
+	//	if (res.result == Equals)
+	//	{
+	//		HBlockMatch  marg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg1"]);
+	//		if (marg1 != nullptr)
+	//		{
+	//			HBlockMatch  marg2 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg2"]);
+	//			if (marg2 != nullptr)
+	//			{
+
+	//				HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+	//				if (body != nullptr)
+	//				{
+	//					HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
+	//					HBlockNoum nPred = std::make_shared<CBlockNoumStr>(res.matchs["pred"]->repr());
+	//					HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
+	//					p->phrases.push_back(nheader);
+	//					return std::make_shared<CBlockPhraseDefine>(nheader, body);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
+
+	////isso aqui é phase definition
+	//{
+	//	CPredSequence predList = pLiteral("to") << pWord("Verb") << pAny("terms") << pLiteral(":");
+	//	MatchResult res = CMatch(term, predList);
+	//	if (res.result == Equals)
+	//	{
+	//		HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
+	//		auto term_q = res.matchs["terms"];
+	//		HBlockPhraseHeader nheader = nullptr;
+	//		for (auto term12 : getBiPartition(term_q))
+	//		{
+	//			HBlockMatch  marg2 = ExpressionMatch::parser_MatchVariableDeclare(p, term12.second);
+	//			if (marg2 != nullptr)
+	//			{
+	//				//processa o inico  N VAR N
+	//				for (auto mterm123 : getTriPartition(term12.first))
+	//				{
+	//					HBlockMatchNoum  mnoum1 = ExpressionMatch::parser_expression_match_noum(p, mterm123[0]);
+	//					if (mnoum1 == nullptr) continue;
+	//					HBlockMatch  marg1 = ExpressionMatch::parser_MatchVariableDeclare(p, mterm123[1]);
+	//					if (marg1 == nullptr) continue;
+	//					HBlockMatchNoum  mnoum3 = ExpressionMatch::parser_expression_match_noum(p, mterm123[2]);
+	//					if (mnoum3 == nullptr) continue;
+	//					nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum1->inner, mnoum3->inner, marg1, marg2);
+	//					break;
+	//				}
+
+	//				if (nheader == nullptr)
+	//				{
+	//					for (auto mterm12 : getBiPartition(term12.first))
+	//					{
+
+	//						HBlockMatch  marg1 = ExpressionMatch::parser_MatchVariableDeclare(p, mterm12.first);
+	//						if (marg1 == nullptr) continue;
+
+
+	//						HBlockNoum  mnoum3 = convert_to_noum(p, mterm12.second);
+	//						if (mnoum3 == nullptr) continue;
+	//						nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum3, nullptr, marg1, marg2);
+	//						break;
+	//					}
+	//				}
+	//				if (nheader == nullptr)
+	//				{
+	//					HBlockNoum  mnoum_pred = convert_to_noum(p, term12.first);
+	//					if (mnoum_pred != nullptr)
+	//					{
+	//						nheader = std::make_shared<CBlockPhraseHeader>(nVerb, mnoum_pred, nullptr, marg2, nullptr);
+	//					}
+	//				}
+
+	//				if (nheader != nullptr)
+	//				{
+	//					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+	//					if (body != nullptr)
+	//					{
+	//						//HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nullptr, marg2, nullptr);
+	//						p->phrases.push_back(nheader);
+	//						return std::make_shared<CBlockPhraseDefine>(nheader, body);
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
+
+return nullptr;
 }
 
 

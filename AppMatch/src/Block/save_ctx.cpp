@@ -1703,14 +1703,12 @@ void raiseError()
   {
 	  if (x == nullptr) return 0;
 	  lock_ptr(x.get(), ctx);
-	  const int _header = save_CBlockPhraseHeader(x->header, ctx);
-	  const int _arg1 = save_CBlock(x->arg1, ctx);
-	  const int _arg2 = save_CBlock(x->arg2, ctx);
+	  const int _header = save_CBlockNoum(x->name, ctx);
+	  const int _arg1 = save_CBlockList(x->arguments, ctx);	  
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
 	  save_id(_header, ctx);
-	  save_id(_arg1, ctx);
-	  save_id(_arg2, ctx);
+	  save_id(_arg1, ctx);	  
 	  end_slot(x.get(), ctx);
 	  return  slot;
 
@@ -2139,18 +2137,16 @@ void raiseError()
   {
 	  if (x == nullptr) return 0;
 	  lock_ptr(x.get(), ctx);
-	  const int _verb = save_CBlockNoum(x->verb, ctx);
-	  const int _pred1 = save_CBlockNoum(x->pred1, ctx);
-	  const int _pred2 = save_CBlockNoum(x->pred2, ctx);
-	  const int _arg1 = save_CBlockMatch(x->arg1, ctx);
-	  const int _arg2 = save_CBlockMatch(x->arg2, ctx);
+	  const int _name = save_CBlockNoum(x->name, ctx);
+	  const int _matchPhase = save_CBlockMatch(x->matchPhase, ctx);
+	  const int _matchArguments = save_CBlockMatch(x->matchArguments, ctx);
+ 
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
-	  save_id(_verb, ctx);
-	  save_id(_pred1, ctx);
-	  save_id(_pred2, ctx);
-	  save_id(_arg1, ctx);
-	  save_id(_arg2, ctx);
+	  save_id(_name, ctx);
+	  save_id(_matchPhase, ctx);
+	  save_id(_matchArguments, ctx);
+ 
 	  end_slot(x.get(), ctx);
 	  return  slot;
 

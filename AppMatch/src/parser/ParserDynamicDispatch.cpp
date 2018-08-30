@@ -13,6 +13,7 @@
 #include "CBlockUndestand.hpp"
 #include <vector>
 #include <algorithm>
+#include "sharedCast.hpp"
 
 using namespace CBlocking;
 
@@ -37,6 +38,57 @@ CPredSequence  convert_doSequence(HBlockNoum n)
 	}	
 	return CPredSequence(pLiteral(n->named()));
 }
+
+HPred convert_to_HPred(HBlockMatch m )
+{
+	if (HBlockMatchNoum nn = DynamicCasting::asHBlockMatchNoum(m))
+	{
+		return pLiteral(nn->inner->named());
+	}
+
+	if (HBlockMatchList nlist = DynamicCasting::asHBlockMatchList(m))
+	{
+		return pAny("arg");
+	}
+
+	if (HBlockMatchOR nOr = DynamicCasting::asHBlockMatchOR(m))
+	{
+		std::list<HPred> por;
+		for (auto mi : nOr->matchList)
+		{
+			auto p = convert_to_HPred(mi);
+			por.push_back(p);
+		}
+		return std::make_shared<CPredBooleanOr>("_", por);
+	}
+
+	if (HBlockMatchNamed nn = DynamicCasting::asHBlockMatchNamed(m))
+	{
+		return pAny(nn->named);
+	}
+
+
+	return nullptr;
+}
+
+CPredSequence   convert_matchFront_to_CPredSequence(HBlockMatchList match)
+{
+	std::vector<HPred> seq;
+	for (auto m : match->matchList)
+	{
+		seq.push_back(convert_to_HPred(m));
+
+	}
+	return CPredSequence(seq);
+	 
+}
+
+
+
+
+
+
+
 
 
 NSParser::DispatchArguments NSParser::DynamicDispatch::parser_user_parser(CParser *p, HTerm termLiteral)
@@ -871,55 +923,27 @@ HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HT
 
 	for (auto ph : p->phrases)
 	{
-		if (ph->arg1 != nullptr && ph->pred1 != nullptr )
-		{ 
-			CPredSequence seq = convert_doSequence(ph->pred1);
+		//verifica quais phases se encaixam com os templates das phases ja registradas
 
-			CPredSequence  predList = pLiteral(ph->verb->named()) << seq << pAny("Match_arg2");
-			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
-			{
-				HBlock  marg1 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
-				if (marg1 != nullptr)
-				{
-					return   std::make_shared<CBlockPhraseInvoke>(ph, marg1, nullptr);
-				}
-			} 
-		}
-	}
-
-
-	for (auto ph : p->phrases)
-	{
-		if (ph->arg1 != nullptr && ph->pred1 == nullptr && ph->pred2 != nullptr && ph->arg1 != nullptr && ph->arg2 != nullptr)
+		CPredSequence  predList = convert_matchFront_to_CPredSequence(ph->matchPhase);
+		MatchResult res = CMatch(term, predList);
+		if (res.result == Equals)
 		{
-			//CPredSequence predList = {};
-			//if (predList.empty())
-			//{
-			//	<<pLiteral(ph->verb->named());
-			//	<<pAny("Match_arg1");
-			//	<<(pLiteral(ph->pred2->named() ));
-			//	<<pAny("Match_arg2");
-			//}
 
-			CPredSequence  predList = pLiteral(ph->verb->named()) << pAny("Match_arg1") << pLiteral(ph->pred2->named()) << pAny("Match_arg2");
+			auto mArgList = std::make_shared<CBlockList>(std::list<HBlock>()); //argumentos a serem inseridos na chamada 
+			//HBlock  marg1 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
 
-
-			MatchResult res = CMatch(term, predList);
-			if (res.result == Equals)
+			//if (marg1 != nullptr)
 			{				
-				HBlock marg1 = Expression::parser_expression(p, res.matchs["Match_arg1"]);			
-				if (marg1 != nullptr)
-				{
-					HBlock  marg2 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
-					if (marg2 != nullptr)
-					{
-						return   std::make_shared<CBlockPhraseInvoke>(ph, marg1, marg2);
-					}
-				}
+				return   std::make_shared<CBlockPhraseInvoke>(ph->name, mArgList );
+			 
 			}
 		}
+
 	}
+
+
+	 
 	return nullptr;
 
 }

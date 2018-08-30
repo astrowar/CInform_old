@@ -2,21 +2,32 @@ A thing is a kind of entity
 A person is a kind of thing
 key  is a kind of thing
 door is a kind of thing
+
+akey is an key
+adoor is an door
+bkey is an key
+bdoor is an door
   
 opening relates   thing to another  
 The verb to be open from implies the opening relation  
+
+
+
+
+
   
 John is an person
 Marsha is an person
 Ninguem is an person
 
+to decide which K is ( K ) that/which/who relates to (L) by (relation - R):   
+   decide on relation_query_x  R L
 
-To decide which K open by L :   
-   decide on  K that relates to L by opening   
+to decide which door is open by (L) :   
+   decide on  door that relates to L by opening   
    
    
-To decide which K is ( K) that/which/who relates to (L) by (relation - R):   
-   decide on rel_lookup_Y R L
+
    
    
 
