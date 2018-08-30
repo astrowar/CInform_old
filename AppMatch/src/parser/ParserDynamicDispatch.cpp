@@ -930,7 +930,22 @@ HBlock NSParser::DynamicDispatch::parser_PhraseInvoke(CParser *p, std::vector<HT
 		if (res.result == Equals)
 		{
 
-			auto mArgList = std::make_shared<CBlockList>(std::list<HBlock>()); //argumentos a serem inseridos na chamada 
+			 
+			auto alist = std::list<HBlock>();
+			for (auto r : res.matchs)
+			{
+				if (r.first[0]=='A')
+					if (isdigit(r.first[1]))
+					{
+						auto xarg1 = Expression::parser_expression(p,  r.second);
+						alist.push_back(xarg1);
+					}
+
+			}
+
+			auto mArgList = std::make_shared<CBlockList>(alist); //argumentos a serem inseridos na chamada 
+
+
 			//HBlock  marg1 = Expression::parser_expression(p, res.matchs["Match_arg2"]);
 
 			//if (marg1 != nullptr)

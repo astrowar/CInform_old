@@ -472,7 +472,11 @@ HBlock NSParser::Statement::parser_stmt_top(CParser * p, std::vector<HTerm>& lst
 HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& lst, HGroupLines inner, ErrorInfo *err)
 {
 
-
+	HBlock assert_decide_on = ParseDecide::parseAssertion_DecideOn(p, lst, inner, err);
+	if (assert_decide_on != nullptr)
+	{
+		return assert_decide_on;
+	}
 
 
 	HBlock rblock_system_control = (ControlFlux::STMT_control_flux(p,lst,inner , err));
@@ -494,11 +498,7 @@ HBlock NSParser::Statement::parser_stmt_inner(CParser * p, std::vector<HTerm>& l
     /* HBlock rblock_decide_blc = (parser_decides_Assertion(lst));
     if (rblock_decide_blc != nullptr) return rblock_decide_blc;*/
 
-	HBlock assert_decide_on = ParseDecide::parseAssertion_DecideOn(p, lst, inner, err);
-	if (assert_decide_on != nullptr)
-	{
-		return assert_decide_on;
-	}
+
 
  
 

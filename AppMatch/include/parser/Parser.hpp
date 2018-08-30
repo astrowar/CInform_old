@@ -281,6 +281,10 @@ namespace NSParser
 	{
 		CBlocking::HBlockMatchNoum parser_expression_match_noum(CParser *p, string);
 		CBlocking::HBlockMatchNoum parser_expression_match_noum(CParser *p, NSTerm::HTerm term);
+
+	 
+		CBlocking::HBlock  parser_expression_or_match(CParser *p, NSTerm::HTerm term);
+
 		CBlocking::HBlockMatch parser_expression_match(CParser *p, NSTerm::HTerm term);
 		CBlocking::HBlockMatch parser_expression_match(CParser *p, std::vector<NSTerm::HTerm>& term);
 
@@ -437,7 +441,7 @@ namespace NSParser
 		CBlocking::HBlockPhraseHeader  parser_What_Which_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_What_Which_Verb_Assertion(CParser * p, NSTerm::HTerm term);
 		CBlocking::HBlockMatchIs  parser_Match_IF_Assertion(CParser * p, NSTerm::HTerm term);
-		CBlocking::HBlockToDecide  parseAssertion_isDecide_inLine(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
+		CBlocking::HBlock   parseAssertion_isDecide_inLine(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 		std::pair<HBlockMatchList, HBlockMatchList>   parser_match_phraseHeader(CParser * p, NSTerm::HTerm  term, int args_i_item);
 		CBlocking::HBlock parseAssertion_isDecide(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);
 		CBlocking::HBlock parseAssertion_DecideOn(CParser * p, std::vector<NSTerm::HTerm>&  term, HGroupLines inner, ErrorInfo *err);

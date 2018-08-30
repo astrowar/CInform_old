@@ -158,7 +158,7 @@ HBlockPhraseHeader  NSParser::ParseDecide::parser_What_Which_Assertion(CParser *
 			if (AdjetiveMatch != nullptr)
 			{
 				logError("nao implementado");
-				return std::make_shared<CBlockPhraseHeader>(nullptr, nullptr);
+				return std::make_shared<CBlockPhraseHeader>(p->get_next_headerName(),nullptr, nullptr);
 				//return AdjetiveMatch;
 			}
 		}
@@ -767,7 +767,7 @@ HBlockMatchIs NSParser::ParseDecide::parser_Match_IF_Assertion(CParser * p, HTer
 
 
 
-HBlockToDecide NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
+HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::vector<HTerm>&  term, HGroupLines inner, ErrorInfo *err)
 {
 
 	 
@@ -800,12 +800,14 @@ HBlockToDecide NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p
 				}
 
 
-				HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
+				HBlockPhraseHeader w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match)
 				{
 
 					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
-					return std::make_shared<CBlockToDecideWhat>(w_match, body);
+					return std::make_shared<CBlockPhraseDefine>(w_match, body);
+
+					//return std::make_shared<CBlockToDecideWhat>(w_match, body);
 				}
 
 
@@ -833,11 +835,11 @@ HBlockToDecide NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
-	            HBlockMatch w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
+	            HBlockPhraseHeader w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match != nullptr)
 				{
 					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-					auto h =  std::make_shared<CBlockToDecideWhat>(w_match, body);
+					auto h =  std::make_shared<CBlockPhraseDefine >(w_match, body);
 					return h;
 				}
 
@@ -874,8 +876,17 @@ std::pair<HBlockMatchList, HBlockMatchList>  NSParser::ParseDecide::parser_match
 	std::list<HBlockMatch> phase_i;
 	std::list<HBlockMatch> args_i;
 
+	{
+		auto arg_only = NSParser::ExpressionMatch::parser_MatchArgument_only(p, term);
+		if (arg_only != nullptr)
+		{
+			args_i.push_back(arg_only);
+			phase_i.push_back(std::make_shared<CBlockMatchNamed>("A" + std::to_string(args_i_item), std::make_shared<CBlockMatchAny>()));
+			args_i_item++;
+			return std::pair<HBlockMatchList, HBlockMatchList>(std::make_shared<CBlockMatchList >(phase_i), std::make_shared<CBlockMatchList >(args_i));
 
- 
+		}
+	}
 
 
 	{// uma palavra apenas
@@ -968,7 +979,6 @@ std::pair<HBlockMatchList, HBlockMatchList>  NSParser::ParseDecide::parser_match
 		if (res.result == Equals)
 		{
 			HBlockMatch arg = NSParser::ExpressionMatch::parser_MatchComponentePhase(p, res.matchs["arg"]);
-
 			if (arg != nullptr)
 			{
 				args_i.push_back(arg);

@@ -117,57 +117,65 @@ HBlockMatchKind NSParser::ExpressionMatch::parser_MatchKind(CParser *p, HTerm te
 HBlockMatch NSParser::ExpressionMatch::parser_MatchComponentePhase(CParser *p, HTerm term)
 {
 
+	auto arg_only = parser_MatchArgument_only(p, term);
+
+	if (arg_only != nullptr) return arg_only;
+
+
+	if (false)
 	{
-		CPredSequence predList = pAny("ListKind") << pLiteral("called") << pAny("var_named");
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals)
+
 		{
-
-			//is compose type ?
-			HBlockMatch mcompose = parser_MatchKind(p, res.matchs["var_named"] );
-			if (mcompose != nullptr) return mcompose;
-
-			CTerm* cterm = res.matchs["ListKind"]->removeArticle();
-			//cterm eh uma lista ??
-			if (CList* clist = asCList(cterm))
+			CPredSequence predList = pAny("ListKind") << pLiteral("called") << pAny("var_named");
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
 			{
-				HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
-				for (auto &ci : clist->lst)
+
+				//is compose type ?
+				HBlockMatch mcompose = parser_MatchKind(p, res.matchs["var_named"]);
+				if (mcompose != nullptr) return mcompose;
+
+				CTerm* cterm = res.matchs["ListKind"]->removeArticle();
+				//cterm eh uma lista ??
+				if (CList* clist = asCList(cterm))
 				{
-					string  str_i = ci->removeArticle()->repr();
-					HBlockMatch mi = parser_MatchArgument_kind_item(p, str_i);
-					mmlist->matchList.push_back(mi);
+					HBlockMatchAND mmlist = std::make_shared<CBlockMatchAND>(std::list<HBlockMatch>());
+					for (auto &ci : clist->lst)
+					{
+						string  str_i = ci->removeArticle()->repr();
+						HBlockMatch mi = parser_MatchArgument_kind_item(p, str_i);
+						mmlist->matchList.push_back(mi);
+					}
+					HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->removeArticle()->repr(), mmlist);
+					return n1;
 				}
-				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->removeArticle()->repr(), mmlist);
-				return n1;
 			}
 		}
-	}
-	{
-		CPredSequence predList = pAny("kind") << pLiteral("called") << pAny("var_named");
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) 
 		{
-			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
-			auto noum_var_named = parse_match_SigleNoum(p, res.matchs["var_named"]);
-			if (noum_var_named != nullptr)
+			CPredSequence predList = pAny("kind") << pLiteral("called") << pAny("var_named");
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals)
 			{
-				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(noum_var_named->inner->named(), c1);
+				HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+				auto noum_var_named = parse_match_SigleNoum(p, res.matchs["var_named"]);
+				if (noum_var_named != nullptr)
+				{
+					HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(noum_var_named->inner->named(), c1);
+					return n1;
+				}
+			}
+		}
+
+		{
+			CPredSequence predList = pAny("kind") << pLiteral("-") << pAny("var_named");
+			MatchResult res = CMatch(term, predList);
+			if (res.result == Equals) {
+				HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
+				HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
 				return n1;
 			}
 		}
 	}
-
-	{
-		CPredSequence predList = pAny("kind") << pLiteral("-") << pAny("var_named");
-		MatchResult res = CMatch(term, predList);
-		if (res.result == Equals) {
-			HBlockMatch c1 = parser_MatchArgument_kind_item(p, res.matchs["kind"]->removeArticle()->repr());
-			HBlockMatchNamed n1 = std::make_shared<CBlockMatchNamed>(res.matchs["var_named"]->repr(), c1);
-			return n1;
-		}
-	}
-
 	{
 		CPredSequence predList = pWord("var_named");
 
@@ -1235,7 +1243,14 @@ HBlockMatchNoum NSParser::ExpressionMatch::parser_expression_match_noum(CParser 
 
 
 
+HBlock  NSParser::ExpressionMatch::parser_expression_or_match(CParser *p, HTerm  term)
+{
+	auto ex = NSParser::Expression::parser_expression(p, term);
+	if (ex != nullptr) return ex;
 
+	return NSParser::ExpressionMatch::parser_expression_match(p, term);
+	 
+}
 HBlockMatch NSParser::ExpressionMatch::parser_expression_match(CParser *p, HTerm  term)
 {
 

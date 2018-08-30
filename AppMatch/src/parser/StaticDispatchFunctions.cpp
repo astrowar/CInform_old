@@ -31,7 +31,7 @@ using namespace NSTerm::NSMatch;
 HBlockNoum NSParser::CParser::get_next_headerName()
 {
 	this->phase_id++;
-	return std::make_shared<CBlockNoumStr>(std::to_string(this->phase_id));
+	return std::make_shared<CBlockNoumStr>("Phase"+std::to_string(this->phase_id));
 }
 
 NSParser::staticDispatchEntry::staticDispatchEntry(HBlockMatchList _argumentsMatch, HBlock _action) : entryArguments(

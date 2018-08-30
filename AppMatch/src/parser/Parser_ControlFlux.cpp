@@ -170,7 +170,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 			HBlock AValue = Expression::parser_expression(p, res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock  BValue = ExpressionMatch::parser_expression_match(p, res.matchs["BValue"]);
+			HBlock  BValue = ExpressionMatch::parser_expression_or_match(p, res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 			return std::make_shared<CBlockIsAdverbialComparasion >(vrepr, AValue, BValue);		 
 
@@ -188,7 +188,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 			HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+			HBlock  BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
 			return std::make_shared<CBlockBooleanNOT>(vbool);
@@ -206,7 +206,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
 			HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
 			if (AValue == nullptr) return nullptr;
 
-			HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+			HBlock  BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
 			if (BValue == nullptr) return nullptr;
 
 			return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
@@ -227,7 +227,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
             HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+            HBlock  BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 			auto vbool = std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
 			return std::make_shared<CBlockBooleanNOT>(vbool);
@@ -245,7 +245,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
             HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock  BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+            HBlock  BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockIsVerb >(vrepr, AValue, BValue);
@@ -262,7 +262,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
             HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+            HBlock BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             auto vbool =  std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);
@@ -281,7 +281,7 @@ HBlock   NSParser::ControlFlux::parser_if_condition(CParser *p, HTerm term  )
             HBlock AValue = Expression::parser_expression(p,res.matchs["AValue"]);
             if (AValue == nullptr) return nullptr;
 
-            HBlock BValue = ExpressionMatch::parser_expression_match(p,res.matchs["BValue"]);
+            HBlock BValue = ExpressionMatch::parser_expression_or_match(p,res.matchs["BValue"]);
             if (BValue == nullptr) return nullptr;
 
             return std::make_shared<CBlockAssertion_isDirectAssign>(AValue, BValue);

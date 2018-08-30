@@ -970,6 +970,11 @@ std::vector<string>  split_new_lines(const string &str)   {
 			return nullptr;
 
 		}
+		if (HBlockPhraseDefine pdef =  DynamicCasting::asHBlockPhraseDefine(rblock_stmt))
+		{
+			p->phrases.push_back(pdef->header);
+		}
+
 		return rblock_stmt;
 	}
 	else

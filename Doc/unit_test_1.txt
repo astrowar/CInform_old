@@ -5,8 +5,7 @@ door is a kind of thing
 
 akey is an key
 adoor is an door
-bkey is an key
-bdoor is an door
+ 
   
 opening relates   thing to another  
 The verb to be open from implies the opening relation  
@@ -20,7 +19,7 @@ John is an person
 Marsha is an person
 Ninguem is an person
 
-to decide which K is ( K ) that/which/who relates to (L) by (relation - R):   
+to decide which K is ( K ) that/which/who relates to (L) by (relation called R):   
    decide on relation_query_x  R L
 
 to decide which door is open by (L) :   
@@ -39,6 +38,6 @@ unit init:
 unit test:
   pass
 
-assert:  (person that   relates to (John) by (  an assimetric only relation) ) is  Marsha
-assert:  door open by  key
-assert:  door open from   key
+assert:  (person that   relates to (John) by (an assimetric only relation) ) is  Marsha
+assert:  adoor is open by  akey
+assert:  adoor open from akey
