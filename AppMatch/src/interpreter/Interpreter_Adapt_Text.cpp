@@ -125,12 +125,20 @@ HBlockNoumSupl CBlockInterpreter::textual_representation(HBlock  x, string perso
 
 
 	{
+
+		 
+
 		// Existe algum "To Say" associado com esse X
-		HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoumStr>("say"), nullptr, nullptr, nullptr, nullptr);
+		//HBlockPhraseHeader say_callheader = std::make_shared<CBlockPhraseHeader>(std::make_shared<CBlockNoumStr>("say"),   nullptr, nullptr);
 		
 		auto ax = resolve_argument(x, localsEntry, stk);
 		if (ax != nullptr) x = ax;
-		HBlockPhraseInvoke to_say = std::make_shared<CBlockPhraseInvoke>(say_callheader, x, nullptr);
+		//HBlockPhraseInvoke to_say = std::make_shared<CBlockPhraseInvoke>(say_callheader, x, nullptr);
+
+		std::list<HBlock> xlist;
+		xlist.push_back(x);
+		HBlockPhraseInvoke to_say = std::make_shared<CBlockPhraseInvoke>(std::make_shared<CBlockNoumStr>("say"), std::make_shared< CBlockList >(xlist));
+
 		string xs = "";
 		bool has_call = false;
 		auto prev_hook = this->say_output;

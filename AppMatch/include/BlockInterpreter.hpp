@@ -751,6 +751,32 @@ namespace CBlocking
 	using HBlockSelector_Where = std::shared_ptr<CBlockSelector_Where>;
 
 
+
+
+
+
+
+	//Body executiom block ... serve para usar o late binding
+
+
+	class CBlockBody : public CBlock  //retorna uma  block que é um bloco para ser executado
+	{
+		HBlock _inner;
+	public:
+		void dump(string ident) override ;
+		CBlockBody(HBlock  __inner ) :CBlock ( ) , _inner(__inner){}
+		void replace(HBlock  replace) { _inner = replace; }
+		HBlock inner() { return _inner; }
+
+		virtual BlockType type() override { return BlockType::BlockBody; }
+
+	};
+	using HBlockBody = std::shared_ptr<CBlockBody>;
+
+
+ 
+
+
 }
 
 #endif

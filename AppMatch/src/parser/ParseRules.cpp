@@ -124,7 +124,7 @@ HBlock NSParser::ParseAssertion::STMT_Declare_rule(CParser * p, std::vector<HTer
 					HBlockMatch  ntarget = ExpressionMatch::parser_expression_match(p, res.matchs["target"]);
 					if (ntarget != nullptr)
 					{
-						HBlock executeBlock = Statement::parser_stmt_list(p,false, inner, err); // aqui tem erro					 
+						HBlock executeBlock = Statement::parser_stmt_list_later(p,inner); // aqui tem erro					 
 						if (executeBlock != nullptr)
 						{
 							return std::make_shared<CBlockRule>(std::make_shared<CBlockNoumStr>(""), noum_rulebook, ntarget, executeBlock);
@@ -144,7 +144,7 @@ HBlock NSParser::ParseAssertion::STMT_Declare_rule(CParser * p, std::vector<HTer
 				HBlockNoum noum_rulebook = ParseAssertion::parse_noum(p, res.matchs["rulePreamble"]);
 				if (noum_rulebook != nullptr)
 				{
-					HBlock executeBlock = Statement::parser_stmt_list(p, false, inner, err); // aqui tem erro					 
+					HBlock executeBlock = Statement::parser_stmt_list_later(p,   inner ); // aqui tem erro					 
 					if (executeBlock != nullptr)
 					{
 						return std::make_shared<CBlockRule>(std::make_shared<CBlockNoumStr>(""), noum_rulebook, nullptr, executeBlock);

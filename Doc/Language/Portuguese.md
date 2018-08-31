@@ -1,4 +1,4 @@
- # Modulo para lingua Portuguesa
+# Modulo para lingua Portuguesa
 
 Portugues é um idioma bem complexo e precisa ser tratado com cuidado. uma vez estabelecido as bases, fica mais facil portar os mesmos conceitos para as demais linguas latinas.
 
@@ -142,6 +142,15 @@ Aplicando o sou/estou
     "a caneca estava carregando muita carga estatica."    
 
 
+    "Every possession is a worry. I wonder if [regarding things carried by the player][they] still [look] okay in your pocket?"
+
+    "Cada posse é uma preocupação. Eu me pergunto se [concorda com coisas carregadas pelo player][ele] ainda [parece] ok em meu bolso."
+
+nesse exemplo. Coisas carregadas pelo player é uma variavel computada
+    
+    Para decidir quais são (coisas carregadas pelo (person called P )) :
+        seja L as (coisas relacionadas a P pela relação de carregamento)
+        decida por L
 
 
 # Runtime Parser

@@ -1088,6 +1088,45 @@ HBlock NSParser::ParseText::parser_text(CParser *p, string str , ErrorInfo *err)
 }
 
 
+bool  NSParser::ParseText::process_later_binds(CParser *p)
+{
+	bool b = false;
+	ErrorInfo err;
+	
+	while  ( p->lateEvaluations.empty() ==false )
+	{
+		auto h = p->lateEvaluations.front();
+		p->lateEvaluations.pop_front();
+
+
+		auto hinner = h->inner();
+		if (hinner->type() == BlockLateTerm)
+		{
+			CBlockLateTerm*   hterm_inner = (CBlockLateTerm*)hinner.get();
+			HTerm t = hterm_inner->inner;
+
+			HBlock body = Expression::parser_expression(p, t);
+			h->replace(body);
+			b = true;
+		}
+		else if (hinner->type() == BlockLateInner)
+		{
+			CBlockLateInner*   hcmd_inner = (CBlockLateInner*)hinner.get();
+			auto  inner_group = hcmd_inner->inner;
+			HBlockComandList executeBlock = Statement::parser_stmt_list(p, false, inner_group, &err);
+			h->replace(executeBlock);
+			b = true;
+		}
+		else
+		{
+			err.setError("ndefined Later");
+		}
+
+	 }
+	return b;
+
+}
+
 //interprete varias linhas de texto
 HBlock NSParser::ParseText::parser_text(CParser *p, string str, bool dump )
 {
@@ -1105,4 +1144,31 @@ HBlock NSParser::ParseText::parser_text(CParser *p, string str, bool dump )
 
     }
     return b;
+}
+
+
+
+
+
+
+
+
+CBlocking::HBlock NSParser::Statement::parser_stmt_list_later(CParser * p,  HGroupLines inner)
+{	
+	 
+	HBlockLateInner binner = std::make_shared<CBlockLateInner>(inner);
+	HBlockBody b = std::make_shared<CBlockBody>(binner);
+
+	p->lateEvaluations.push_back(b);
+	return b;
+}
+
+
+
+CBlocking::HBlock NSParser::Expression::parser_expression_later(CParser * p, NSTerm::HTerm term)
+{
+	HBlockLateTerm binner = std::make_shared<CBlockLateTerm>(term);
+	HBlockBody b = std::make_shared<CBlockBody>(binner);
+	p->lateEvaluations.push_back(b);
+	return b;
 }

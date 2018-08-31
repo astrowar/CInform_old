@@ -747,110 +747,42 @@ HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalS
 
 
 
-
-
-
-
- 
+	for (auto ph : phrases)
 	{
-		//uma acao nao pode chamar ela mesma com os mesmo argumentos 
-		for (auto ph : phrases)
+
+		if (ph->header->name == phr->name)
 		{
-			if (CBlock::isSame(ph->header->verb.get(), phr->header->verb.get()) == false) continue;
+			std::vector<HBlockMatch>  mheader = std::vector<HBlockMatch>(ph->header->matchArguments->matchList.begin() , ph->header->matchArguments->matchList.begin());
+			std::vector<HBlock>  minput = std::vector<HBlock>(phr->arguments->lista.begin(), phr->arguments->lista.end());
 
-			if (ph->header->pred1 == nullptr && phr->header->pred1 != nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 == nullptr) continue;
-			if (ph->header->pred1 != nullptr && phr->header->pred1 != nullptr)
+			if (mheader.size() != minput.size()) return Nothing;;
+
+			HRunLocalScope localstmp = std::make_shared< CRunLocalScope >(localsEntry );
+
+			int n = mheader.size();
+			for (int i = 0; i < n; ++i)
 			{
-				if (ph->header->pred1->named() != phr->header->pred1->named()) continue;
-			}
 
+				CResultMatch result_i = this->Match(mheader[i], minput[i], localstmp, stk);
+				if (result_i.hasMatch == false)
+				{
+					return Nothing;;
+				}
+				else
+				{
+					 localstmp = std::make_shared< CRunLocalScope >(localstmp, result_i.maptch);
+				}
+			} 
 
-			if (ph->header->pred2 == nullptr && phr->header->pred2 != nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 == nullptr) continue;
-			if (ph->header->pred2 != nullptr && phr->header->pred2 != nullptr)
+			auto q = execute_now(ph->body, localstmp, stk);
+			if (q.hasExecuted)
 			{
-				if (ph->header->pred2->named() != phr->header->pred2->named()) continue;
+				return q.result;				
 			}
-
- 
-
- 
-
-			//dois argumentos
-			if (ph->header->arg1 != nullptr && ph->header->arg2 != nullptr)
-			{
-				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
-				if (result_1.hasMatch == false)
-				{
-					auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-				}
-				if (result_1.hasMatch)
-				{
-					auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-					CResultMatch result_2 = this->Match(ph->header->arg2, phr->arg2, localsEntry, stk);
-
-					if (result_2.hasMatch == false)
-					{
-						auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
-						result_2 = this->Match(ph->header->arg2, arg2, localsEntry, stk);
-					}
-
-					if (result_2.hasMatch)
-					{
-						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
-						localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
-						localsNext->dump("");
-						return  exec_eval(ph->body, localsNext, stk);
-					}
-				}
-			}
-			//um argumento
-			if (ph->header->arg1 != nullptr && ph->header->arg2 == nullptr)
-			{
-				HBlock arg1 = phr->arg1;
-				HBlock arg2 = nullptr;
-				CResultMatch result_1 = this->Match(ph->header->arg1, phr->arg1, localsEntry, stk);
-				if (result_1.hasMatch == false)
-				{
-					arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-					result_1 = this->Match(ph->header->arg1, arg1, localsEntry, stk);
-				}
-				  
-
-				if (result_1.hasMatch)
-				{
-					if (stk->contains_phase_execution(ph, arg1, arg2) == false)
-					{
-						stk->add_phase_execution(ph,  arg1,  arg2);
-						printf("-------------------------------\n");
-						ph->dump("");
-						if ( arg1 != nullptr)  arg1->dump("");
-				 
-						printf("\n");
-
-
-
-						auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-						auto localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
-						//localsNext->dump("");
-						//ph->body->dump("B ");
-						//return  exec_eval(ph->body, localsNext, stk);
-						auto q = execute_now(ph->body, localsNext, stk);
-						if (q.hasExecuted)
-						{
-							return Nothing;
-						}
-					}
-
-				}
-
-			}
-
 		}
-		return nullptr;
 	}
+	return Nothing;
+ 
 }
 HBlock CBlockInterpreter::exec_eval_if_then(HBlockControlIF cIF, HRunLocalScope localsEntry, QueryStack *stk)
 {
@@ -1725,45 +1657,9 @@ HBlockActionCall CBlockInterpreter::ActionResolveArguments(HBlockActionCall vCal
 
 HRunLocalScope CBlockInterpreter::PhraseHeader_matchs(HBlockPhraseHeader pheader, HBlockPhraseInvoke phr, HRunLocalScope localsEntry, QueryStack *stk)
 {
-
-	if (CBlock::isSame(pheader->verb.get(), phr->header->verb.get()) == false) return nullptr;
-
-	if (pheader->pred1 == nullptr && phr->header->pred1 != nullptr) return nullptr;
-	if (pheader->pred1 != nullptr && phr->header->pred1 == nullptr) return nullptr;
-	if (pheader->pred1 != nullptr && phr->header->pred1 != nullptr)
-	{
-		if (pheader->pred1->named() != phr->header->pred1->named()) return nullptr;
-	}
-
-
-	if (pheader->pred2 == nullptr && phr->header->pred2 != nullptr) return nullptr;
-	if (pheader->pred2 != nullptr && phr->header->pred2 == nullptr) return nullptr;
-	if (pheader->pred2 != nullptr && phr->header->pred2 != nullptr)
-	{
-		if (pheader->pred2->named() != phr->header->pred2->named()) return nullptr;
-	}
-
-	{
-		auto arg1 = resolve_argument(phr->arg1, localsEntry, stk);
-		CResultMatch result_1 = this->Match(pheader->arg1, arg1, localsEntry, stk);
-		if (result_1.hasMatch)
-		{
-			auto localstmp = std::make_shared< CRunLocalScope >(localsEntry, result_1.maptch);
-			auto arg2 = resolve_argument(phr->arg2, localstmp, stk);
-
-			CResultMatch result_2 = this->Match(pheader->arg2, arg2, localsEntry, stk);
-			if (result_2.hasMatch)
-			{
-				HRunLocalScope localsNext = std::make_shared< CRunLocalScope >(nullptr, result_1.maptch);
-				localsNext = std::make_shared< CRunLocalScope >(localsNext, result_2.maptch);
-
-				return localsNext;
-				 
-			}
-		}
-	}
-
 	return nullptr;
+
+	 
 }
 
 

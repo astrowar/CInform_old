@@ -141,7 +141,9 @@ enum BlockType {
 
     BlockRule,
 	BlockRuleCall,
-
+	BlockBody,
+	BlockLateInner,
+	BlockLateTerm,
 
     BlockUserParser
 		

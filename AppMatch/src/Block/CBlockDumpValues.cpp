@@ -154,7 +154,7 @@ void CBlockKindNamed::dump(string ident)
 }
 
 void CBlockKindOfName::dump(string ident) {
-	printf("%s   \n", ident.c_str(), "Kind of Named :  " );
+	printf("%s  %s  \n", ident.c_str(), "Kind of Named :  " );
 	baseClasseName->dump(ident + "   ");
 	CBlock::dump(ident);
 }
@@ -1514,4 +1514,11 @@ void CBlockUserParser::dump(string ident)
 	CBlock::dump(ident);
 }
 
+ 
+void CBlockBody::dump(string ident)
+{
+	printf("%s %s\n", ident.c_str(), "Body ");
+	this->inner()->dump(ident + "       ");
+	CBlock::dump(ident);
+}
  

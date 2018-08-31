@@ -16,7 +16,7 @@
 #include "Predicates.hpp"
 
 
-
+ 
 
 namespace NSParser
 {
@@ -54,7 +54,36 @@ namespace NSParser
 		HGroupLines prev;
 	};
 
+}
 
+namespace CBlocking
+{
+	class CBlockLateInner : public  CBlocking::CBlock
+	{
+	public:
+		NSParser::HGroupLines inner;
+		BlockType type() override { return BlockType::BlockLateInner; }
+		virtual void dump(string ident) override { printf("%s %s\n", ident.c_str(), "Unresolved Inner"); };
+		CBlockLateInner(NSParser::HGroupLines _inner) : inner(_inner) {}
+	};
+	using HBlockLateInner = std::shared_ptr<CBlockLateInner>;
+
+
+	class CBlockLateTerm : public CBlocking::CBlock
+	{
+	public:
+		HTerm inner;
+		BlockType type() override { return BlockType::BlockLateTerm; }
+		virtual void dump(string ident) override { printf("%s %s\n", ident.c_str(), "Unresolved Term"); };
+		CBlockLateTerm(HTerm _inner) : inner(_inner)  {}
+	};
+	using HBlockLateTerm = std::shared_ptr<CBlockLateTerm>;
+
+}
+ 
+
+namespace NSParser
+{
 
 	class ParserResult
 	{
@@ -154,6 +183,10 @@ namespace NSParser
 
 	};
 
+	 
+
+
+
 
 	class CParser
 	{
@@ -175,6 +208,8 @@ namespace NSParser
 
 		std::list<NSTerm::HTerm> ruleList;
 
+		std::list<CBlocking::HBlockBody> lateEvaluations;
+		
 
 		CBlocking::HBlock blank_line;
 
@@ -219,6 +254,8 @@ namespace NSParser
 	{
 		NSParser::HGroupLines  get_identation_groups(CParser *p, string filename, std::vector<string> vlines, ErrorInfo *err);
 		CBlocking::HBlock  parser_text(CParser *p, string str, ErrorInfo *err);
+		 
+		bool process_later_binds(CParser *p );
 		CBlocking::HBlock parser_text(CParser *p, string str, bool dump);
 
 	}
@@ -243,6 +280,8 @@ namespace NSParser
 
 	namespace Expression
 	{
+
+		CBlocking::HBlock parser_expression_later(CParser *p, NSTerm::HTerm term);
 
 		CBlocking::HBlockNoum  parser_noum_expression(CParser *p, std::vector<string> term);
 		CBlocking::HBlockNoum  parser_noum_expression(CParser *p, NSTerm::HTerm term);
@@ -335,6 +374,9 @@ namespace NSParser
 
 	namespace Statement
 	{
+
+		CBlocking::HBlock parser_stmt_list_later(CParser * p, HGroupLines inner); //bloco para ser computado depois
+
 		CBlocking::HBlock parser_stmt(CParser * p , string str, bool dump, ErrorInfo* err);
 		CBlocking::HBlock parser_stmt(CParser * p, NSTerm::HTerm term, HGroupLines inner, ErrorInfo* err);
 

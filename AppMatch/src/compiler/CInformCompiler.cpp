@@ -115,6 +115,11 @@ CompilerFlags process_options(std::vector<std::string> va)
 
 }
 
+
+
+ 
+
+
 HBlockComandList  compile_files(std::vector<std::string> files)
 {
 	HBlockComandList ret = nullptr;
@@ -137,6 +142,13 @@ HBlockComandList  compile_files(std::vector<std::string> files)
 			}
 		}
 	}
+
+	//pos processa todos os late bindings
+
+	
+	NSParser::ParseText::process_later_binds(&parse);
+
+
 	return ret;
 }
 
@@ -171,13 +183,14 @@ int main(int argc, char **argv)
 	 CompilerFlags comp = process_options(vargs);
 
 
-
+	 
 	 
 	if (!comp.files.empty())
 	{
 		//for (auto k = 0; k < 100000; ++k)
 		{
 			auto hcc = compile_files(comp.files);
+			printf("\n\n\n");
 			if (hcc != nullptr)hcc->dump("");
 			write_bytecode(hcc, comp.options["output"]);
 		}

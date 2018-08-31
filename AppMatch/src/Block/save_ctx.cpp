@@ -285,7 +285,8 @@ void raiseError()
   int  save_CBlockPhraseHeader(HBlockPhraseHeader x, SaveContext *ctx);
   int  save_CBlockPhraseDefine(HBlockPhraseDefine x, SaveContext *ctx);
   int  save_CBlockPhraseInvoke(HBlockPhraseInvoke x, SaveContext *ctx);
- 
+  int  save_CBlockBody(HBlockBody x, SaveContext *ctx);
+
   int  save_CBlockMatch_base(HBlockMatch x, SaveContext *ctx);
   int  save_CBlockMatch(HBlockMatch x, SaveContext *ctx);
   int  save_CBlockMatchAny(HBlockMatchAny x, SaveContext *ctx);
@@ -653,7 +654,7 @@ void raiseError()
 	  if (t == BlockType::BlockMatchWhich) return save_CBlockMatchWhich(std::static_pointer_cast < CBlockMatchWhich > (x), ctx);
 	  if (t == BlockType::BlockKindAction) return save_CBlockKindAction(std::static_pointer_cast < CBlockKindAction > (x), ctx);
 	  if (t == BlockType::BlockCompositionRulebook) return save_CBlockCompositionRulebook(std::static_pointer_cast < CBlockCompositionRulebook > (x), ctx);
-
+	  if (t == BlockType::BlockBody) return save_CBlockBody(std::static_pointer_cast < CBlockBody > (x), ctx);
 	  raiseError();
 	  return -1;
   }
@@ -2549,6 +2550,21 @@ void raiseError()
 
   }
 
+ 
+	  int  save_CBlockBody(HBlockBody x, SaveContext *ctx)
+  {
+	  if (x == nullptr) return 0;
+	  lock_ptr(x.get(), ctx);
+
+	  const int _inner = save_CBlock(x->inner(), ctx);
+	  const int slot = alloc_slot(x.get(), ctx);
+	  save_type(x->type(), ctx);
+	  save_id(_inner, ctx);
+	  end_slot(x.get(), ctx);
+	  return  slot;
+
+  }
+
 
 
   int  save_CBlockNoumStr(HBlockNoumStr x, SaveContext *ctx)
@@ -2704,7 +2720,7 @@ int  save_CBlockNoumCompose(HBlockNoumCompose x, SaveContext *ctx)
 	  lock_ptr(x.get(), ctx);
 
 	  const int _eventToObserve = save_CBlockMatchActionCall(x->eventToObserve, ctx);
-	  const int _body = save_CBlockComandList(x->body, ctx);
+	  const int _body = save_CBlock(x->body, ctx);
 	  const int slot = alloc_slot(x.get(), ctx);
 	  save_type(x->type(), ctx);
 	  save_EventHandleStage(x->stage, ctx);

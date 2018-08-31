@@ -71,9 +71,9 @@ namespace CBlocking
 		virtual void dump(string ident) override;
 		virtual BlockType type() override { return BlockType::BlockEventHandle; }
 
-		CBlockEventHandle(EventHandleStage _stage, HBlockMatchActionCall  _eventToObserve, HBlockComandList _body) : eventToObserve(_eventToObserve), body(_body), stage(_stage) {};
+		CBlockEventHandle(EventHandleStage _stage, HBlockMatchActionCall  _eventToObserve, HBlock _body) : eventToObserve(_eventToObserve), body(_body), stage(_stage) {};
 		HBlockMatchActionCall  eventToObserve;
-		HBlockComandList body;
+		HBlock body;
 		EventHandleStage stage;
 	};
 

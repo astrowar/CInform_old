@@ -522,7 +522,8 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch =  parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+				 
+					HBlock executeBlock = Statement::parser_stmt_list_later(p,  inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageBefore, amatch, executeBlock);
@@ -542,7 +543,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch = parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+					HBlock  executeBlock = Statement::parser_stmt_list_later(p, inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageAfter, amatch, executeBlock);
@@ -563,7 +564,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				if (amatch != nullptr)
 				{
 					
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+					HBlock executeBlock = Statement::parser_stmt_list_later(p,  inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageCheck, amatch, executeBlock);
@@ -583,7 +584,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch =  parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+					HBlock executeBlock = Statement::parser_stmt_list_later(p, inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageReport, amatch, executeBlock);
@@ -602,7 +603,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch = parser_actionMatch(p, res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false ,inner, err);
+					HBlock executeBlock = Statement::parser_stmt_list_later(p, inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageInstead, amatch, executeBlock);
@@ -622,7 +623,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch = parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+					HBlock  executeBlock = Statement::parser_stmt_list_later(p,inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageInstead, amatch, executeBlock);
@@ -643,7 +644,7 @@ HBlock NSParser::ParseAction::STMT_Action_Controls(CParser * p, std::vector<HTer
 				HBlockMatchActionCall   amatch =  parser_actionMatch(p,res.matchs["ActionMatch"]);
 				if (amatch != nullptr)
 				{
-					HBlockComandList executeBlock = Statement::parser_stmt_list(p, false,inner, err);
+					HBlock executeBlock = Statement::parser_stmt_list_later(p, inner);
 					if (executeBlock != nullptr)
 					{
 						HBlockEventHandle actionCallEv = std::make_shared<CBlockEventHandle>(EventHandleStage::StageCarryOut, amatch, executeBlock);

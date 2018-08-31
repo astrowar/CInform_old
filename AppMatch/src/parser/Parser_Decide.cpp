@@ -787,7 +787,9 @@ HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::
 				if (a_match)
 				{
 
-					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					//HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression_later(p,res.matchs["RemainBody"]);
+
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
@@ -795,7 +797,8 @@ HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::
 				if (vb_match)
 				{
 
-					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					//HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression_later(p,res.matchs["RemainBody"]);
 					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 				}
 
@@ -804,7 +807,8 @@ HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::
 				if (w_match)
 				{
 
-					HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					//HBlock body = Expression::parser_expression(p, res.matchs["RemainBody"]);
+					HBlock body = Expression::parser_expression_later(p, res.matchs["RemainBody"]);
 					return std::make_shared<CBlockPhraseDefine>(w_match, body);
 
 					//return std::make_shared<CBlockToDecideWhat>(w_match, body);
@@ -831,14 +835,18 @@ HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::
 				HBlockMatchIs a_match = parser_Match_IF_Assertion(p, res.matchs["Match"]);
 				if (a_match != nullptr)
 				{
-					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+				 
+
+					HBlock body = Statement::parser_stmt_list_later(p, inner);
+
 					return std::make_shared<CBlockToDecideIf>(a_match, body);
 				}
 
 	            HBlockPhraseHeader w_match = parser_What_Which_Assertion(p, res.matchs["Match"]);
 				if (w_match != nullptr)
 				{
-					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+					 
+					HBlock body = Statement::parser_stmt_list_later(p, inner);
 					auto h =  std::make_shared<CBlockPhraseDefine >(w_match, body);
 					return h;
 				}
@@ -847,7 +855,8 @@ HBlock  NSParser::ParseDecide::parseAssertion_isDecide_inLine(CParser * p, std::
 				HBlockMatchIs vb_match = parser_What_Which_Verb_Assertion(p, res.matchs["Match"]);
 				if (vb_match != nullptr)
 				{
-					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+				 
+					HBlock body = Statement::parser_stmt_list_later(p, inner);
 					return std::make_shared<CBlockToDecideWhat_FirstNoum>(vb_match, body);
 				}
 
@@ -1008,7 +1017,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<
 			std::pair<HBlockMatchList, HBlockMatchList>  AdjetiveMatch = parser_match_phraseHeader(p, res.matchs["PhaseHeader"],1);
 			if (AdjetiveMatch.first != nullptr)
 			{
-				HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
+				HBlock  body = Statement::parser_stmt_list_later(p,   inner );
 				if (body != nullptr)
 				{
 					HBlockNoum name = p->get_next_headerName();
@@ -1033,33 +1042,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<
 
 
 
-
-	//{
-	//	// to doing somethig with another thing
-	//	CPredSequence predList = pLiteral("to") << pWord("Verb") << pAny("Match_arg1") << pPreposition("pred") << pAny("Match_arg2") << pLiteral(":");
-	//	MatchResult res = CMatch(term, predList);
-	//	if (res.result == Equals)
-	//	{
-	//		HBlockMatch  marg1 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg1"]);
-	//		if (marg1 != nullptr)
-	//		{
-	//			HBlockMatch  marg2 = ExpressionMatch::parser_MatchArgument(p, res.matchs["Match_arg2"]);
-	//			if (marg2 != nullptr)
-	//			{
-
-	//				HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-	//				if (body != nullptr)
-	//				{
-	//					HBlockNoum nVerb = std::make_shared<CBlockNoumStr>(res.matchs["Verb"]->repr());
-	//					HBlockNoum nPred = std::make_shared<CBlockNoumStr>(res.matchs["pred"]->repr());
-	//					HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nPred, marg1, marg2);
-	//					p->phrases.push_back(nheader);
-	//					return std::make_shared<CBlockPhraseDefine>(nheader, body);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+ 
 
 
 	////isso aqui é phase definition
@@ -1115,13 +1098,7 @@ HBlock NSParser::ParseDecide::parseAssertion_isDecide (CParser * p, std::vector<
 
 	//				if (nheader != nullptr)
 	//				{
-	//					HBlockComandList body = Statement::parser_stmt_list(p, false, inner, err);
-	//					if (body != nullptr)
-	//					{
-	//						//HBlockPhraseHeader nheader = std::make_shared<CBlockPhraseHeader>(nVerb, nullptr, nullptr, marg2, nullptr);
-	//						p->phrases.push_back(nheader);
-	//						return std::make_shared<CBlockPhraseDefine>(nheader, body);
-	//					}
+	//				 
 	//				}
 	//			}
 	//		}
@@ -1144,7 +1121,8 @@ HBlock NSParser::ParseDecide::parseAssertion_DecideOn(CParser * p, std::vector<H
 			if (res.result == Equals) 
 			{
 					logMessage((res.matchs["ExpressionBody"]->repr()));
-					HBlock body = Expression::parser_expression(p, res.matchs["ExpressionBody"]);
+					//HBlock body = Expression::parser_expression(p, res.matchs["ExpressionBody"]);
+					HBlock body = Expression::parser_expression_later(p, res.matchs["ExpressionBody"]);
 					return std::make_shared<CBlockToDecideOn>( body);
 			}
 		}

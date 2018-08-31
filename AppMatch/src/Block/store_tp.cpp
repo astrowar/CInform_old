@@ -553,6 +553,8 @@ HBlockToDecideOn  load_CBlockToDecideOn(int tp, LoadContext *ctx);
 HBlockPhraseHeader  load_CBlockPhraseHeader(int tp, LoadContext *ctx);
 HBlockPhraseDefine  load_CBlockPhraseDefine(int tp, LoadContext *ctx);
 HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx);
+
+HBlockBody   load_CBlockBody(int tp, LoadContext *ctx);
  
 HBlockMatch  load_CBlockMatch(int tp, LoadContext *ctx);
 HBlockMatchAny  load_CBlockMatchAny(int tp, LoadContext *ctx);
@@ -918,6 +920,7 @@ HBlock  load_CBlock(int tp, LoadContext *ctx)
 	if (tp == BlockType::BlockUnderstandDynamic) return load_CBlockUnderstandDynamic(tp, ctx);
 	{auto x = load_CBlockComposition(tp, ctx); if (x != nullptr) return x; }
 	 
+	if (tp == BlockType::BlockBody) return load_CBlockBody(tp, ctx);
 
 	return nullptr;
 }
@@ -2251,6 +2254,19 @@ HBlockPhraseInvoke  load_CBlockPhraseInvoke(int tp, LoadContext *ctx)
 }
 
 
+HBlockBody   load_CBlockBody(int tp, LoadContext *ctx)
+{
+	if (tp == -1) tp = load_type(ctx);
+	cmp_type(tp, BlockType::BlockBody );
+	HBlock _body = load_CBlock_slot(load_id(ctx), ctx);	
+	CBlockBody* ret = new CBlockBody(_body);
+	return  std::shared_ptr<CBlockBody>(ret);
+
+}
+
+
+
+
 HBlockVerbDirectRelation  load_CBlockVerbDirectRelation(int tp, LoadContext *ctx)
 {
 	if (tp == -1) tp = load_type(ctx);
@@ -2715,7 +2731,7 @@ HBlockEventHandle  load_CBlockEventHandle(int tp, LoadContext *ctx)
 	cmp_type(tp, BlockType::BlockEventHandle);
 	const EventHandleStage _stage = load_EventHandleStage(ctx);
 	const HBlockMatchActionCall _eventToObserve = load_CBlockMatchActionCall_slot(load_id(ctx), ctx);
-	const HBlockComandList _body = load_CBlockComandList_slot(load_id(ctx), ctx);
+	const HBlock  _body = load_CBlock_slot(load_id(ctx), ctx);
 	CBlockEventHandle* ret = new CBlockEventHandle(_stage, _eventToObserve, _body);
 	return  std::shared_ptr<CBlockEventHandle>(ret);
 
