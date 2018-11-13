@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\interpreterMain\CInformInterpreter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParserPlural_table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser_Eng\Parser_Plurals_En.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser_Eng\Parser_VerbTable_en.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{59CA2F4D-091F-3852-B61F-E5D998F26B7C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

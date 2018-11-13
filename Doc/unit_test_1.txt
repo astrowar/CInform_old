@@ -30,9 +30,6 @@ to decide which door is open by (L) :
    
    
 
-   
-   
-
 unit init:
     marriage relates   person to another
     The verb to  be married to implies the marriage relation
@@ -41,6 +38,7 @@ unit init:
 unit test:
   pass
 
+assert:  (person that   relates to (John) by (marriage ) ) is  Marsha
 assert:  (person that   relates to (John) by (an assimetric only relation) ) is  Marsha
 assert:  adoor is open by  akey
 assert:  adoor open from akey

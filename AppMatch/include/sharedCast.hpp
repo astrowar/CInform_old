@@ -170,6 +170,7 @@ namespace CBlocking
 		HBlockAssertion_isInstanceOf asHBlockAssertion_isInstanceOf(CBlocking::HBlock c);
 		HBlockDinamicDispatch asHBlockDinamicDispatch(CBlocking::HBlock c);
 		HBlockNow asHBlockNow(CBlocking::HBlock c);
+		HBlockBody    asHBlockBody(CBlocking::HBlock  c);
 		HBlockEvery asHBlockEvery(CBlocking::HBlock c);
 
 		HVariableSlotEnum asHVariableSlotEnum(HVariableSlot c);
@@ -288,6 +289,7 @@ namespace CBlocking
 		HBlockAssertion_isInstanceOf    asHBlockAssertion_isInstanceOf(CBlocking::HBlock  c);
 		HBlockDinamicDispatch    asHBlockDinamicDispatch(CBlocking::HBlock  c);
 		HBlockNow    asHBlockNow(CBlocking::HBlock  c);
+		HBlockBody    asHBlockBody(CBlocking::HBlock  c);
 		HBlockControlIF    asHBlockControlIF(CBlocking::HBlock  c);
 		HBlockControlUnless    asHBlockControlUnless(CBlocking::HBlock  c);
 		HBlockControlToken    asHBlockControlToken(CBlocking::HBlock  c);

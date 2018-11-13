@@ -1,0 +1,5890 @@
+Doc\unit_test_1.txt.
+L:A thing is a kind of entity
+L:A person is a kind of thing
+L:John is an person
+L:Marsha is an person
+L:To decide what L is list of ( L) to which/whom (K called X) relates by ( relation  - R) :
+L:   decide on John
+L:to decide what K is (  K ) who relates to (L called Y) by (relation  called R ) :
+L:   decide on Marsha
+L:unit init:
+L:    marriage relates   person to another
+L:    The verb to  be married to implies the marriage relation
+L:    John is married to Marsha
+L:unit test:
+L:  pass
+L:assert:  ( person who relates to John by  marriage  relation ) is  Marsha
+ Assign  
+        A thing 
+ Is 
+          
+           entity
+ Assign  
+        A person 
+ Is 
+          
+           thing
+ Assign  
+        John
+ Is 
+        an person 
+ Assign  
+        Marsha
+ Is 
+        an person 
+list 7bb5b4
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+( 0
+list 1a21bac
+of 1a21ad4
+( 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cb55c
+to 1a21b64
+[ which/whom ( K called X ) relates by ( relation - R ) ] 0
+list 1a21b64
+of 1a21bac
+[ ( L ) ] 7cb31c
+[ to which/whom ] 1a21ad4
+[ ( K called X ) relates by ( relation - R ) ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cb55c
+[ to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ( K ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cb55c
+[ to which/whom ( K called ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ( K called X ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ( K called X ) relates ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ( K called X ) relates by ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( relation ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ( K called X ) relates by ( relation - ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( relation - R ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+list 1a21bac
+of 1a21ad4
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+list 1a21ad4
+of 1a21bac
+[ ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 1a21bac
+[ of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+( 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ] 0
+[ list of ] 1a21bac
+[ ( L ) ] 7cb55c
+to 1a21ad4
+which/whom 1a21b64
+[ ( K called X ) relates by ( relation - R ) ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cae9c
+to 1a21ad4
+[ which/whom ( ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb61c
+to 1a21b64
+[ which/whom ( K ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb31c
+to 1a21ad4
+[ which/whom ( K called ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb67c
+to 1a21b64
+[ which/whom ( K called X ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb55c
+to 1a21ad4
+[ which/whom ( K called X ) ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb31c
+to 1a21b64
+[ which/whom ( K called X ) relates ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cae9c
+to 1a21ad4
+[ which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb55c
+to 1a21b64
+[ which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb61c
+to 1a21ad4
+[ which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb6dc
+to 1a21b64
+[ which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb31c
+to 1a21ad4
+[ which/whom ( K called X ) relates by ( relation - R ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cae9c
+[ to which/whom ] 1a21b64
+( 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb6dc
+[ to which/whom ] 1a21ad4
+[ ( K ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb31c
+[ to which/whom ] 1a21b64
+[ ( K called ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cae9c
+[ to which/whom ] 1a21ad4
+[ ( K called X ] 0
+[ list of ] 1a21ad4
+[ ( L ) ] 7cb6dc
+[ to which/whom ] 1a21b64
+[ ( K called X ) ] 7cb43c
+[ relates by ( relation - R ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ] 1a21b64
+[ ( K called X ) relates ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cae9c
+[ to which/whom ] 1a21da4
+[ ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ] 1a21b64
+[ ( K called X ) relates by ( ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb8bc
+[ to which/whom ] 1a21da4
+[ ( K called X ) relates by ( relation ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ] 1a21b64
+[ ( K called X ) relates by ( relation - ] 0
+[ list of ] 1a21b64
+[ ( L ) ] 7cb43c
+[ to which/whom ] 1a21da4
+[ ( K called X ) relates by ( relation - R ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 1a21da4
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 1a21da4
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 7bb44c
+of 19ea404
+( 0
+list 19ea404
+of 19ea44c
+[ ( L ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( relation - R ) ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ( K ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ( K called X ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+list 19ea44c
+of 19ea404
+[ ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+list 19ea404
+of 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( relation - R ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+list 19ea44c
+[ of ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+( 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cae9c
+to 19ea404
+[ which/whom ( K called X ) relates by ( relation - R ) ] 0
+[ list of ] 19ea404
+[ ( L ) ] 7cb43c
+[ to which/whom ] 19ea44c
+[ ( K called X ) relates by ( relation - R ) ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb8bc
+[ to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb67c
+[ to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb67c
+[ to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb8bc
+[ to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb61c
+[ to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ] 19ea44c
+[ ( L ) ] 7cb43c
+[ to which/whom ( K called X ) relates by ( relation - R ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 19ea44c
+[ ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list ] 8336e4
+[ of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ( relation - R ) ] 0
+[ list ] 8337bc
+[ of ( ] 0
+[ list ] 8337bc
+[ of ( L ] 0
+[ list ] 8337bc
+[ of ( L ) ] 0
+[ list ] 8337bc
+[ of ( L ) to ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list ] 8337bc
+[ of ( L ) to which/whom ( K called X ) relates by ( relation - R ] 0
+[ list of ] 8337bc
+[ ( ] 0
+[ list of ] 8337bc
+[ ( L ] 0
+[ list of ] 8337bc
+[ ( L ) ] 7cae9c
+[ to which/whom ( K called X ) relates by ( relation - R ) ] 0
+[ list of ] 8337bc
+[ ( L ) to ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ] 8337bc
+[ ( L ) to which/whom ( K called X ) relates by ( relation - R ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list ] 7bb884
+[ of ( L ) to which/whom ( K called X ) relates by ( relation - R ) ] 0
+[ list of ] 7bb884
+[ ( L ) to which/whom ( K called X ) relates by ( relation - R ) ] 0
+[ list of ( ] 0
+[ list of ( L ] 0
+[ list of ( L ) ] 0
+[ list of ( L ) to ] 0
+[ list of ( L ) to which/whom ] 0
+[ list of ( L ) to which/whom ( ] 0
+[ list of ( L ) to which/whom ( K ] 0
+[ list of ( L ) to which/whom ( K called ] 0
+[ list of ( L ) to which/whom ( K called X ] 0
+[ list of ( L ) to which/whom ( K called X ) ] 0
+[ list of ( L ) to which/whom ( K called X ) relates ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation - ] 0
+[ list of ( L ) to which/whom ( K called X ) relates by ( relation - R ] 0
+[ list ]  -  [ of ( L ) to which/whom ( K called X ) relates by ( relation - R ) ] 
+[ list of ]  -  [ ( L ) to which/whom ( K called X ) relates by ( relation - R ) ] 
+[ list of ( ]  -  [ L ) to which/whom ( K called X ) relates by ( relation - R ) ] 
+[ list of ( L ]  -  [ ) to which/whom ( K called X ) relates by ( relation - R ) ] 
+[ list of ( L ) ]  -  [ to which/whom ( K called X ) relates by ( relation - R ) ] 
+[ list of ( L ) to ]  -  [ which/whom ( K cal

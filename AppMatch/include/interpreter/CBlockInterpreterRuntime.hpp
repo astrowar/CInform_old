@@ -41,6 +41,7 @@ class PhaseResult
 {
 public:
 	PhaseResult(bool _hasExecuted);
+	PhaseResult(HBlock _result);
 	bool hasExecuted;
 	 HBlock result;
 };

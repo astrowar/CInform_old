@@ -1,0 +1,32 @@
+unit init :
+  room is a kind of entity
+  routing relates a (room called origin) to a (room called destiny) 
+  the verb routes to  implies a  routing relation 
+  garden is a room
+  hall is a room 
+  lab is a room 
+  
+  lab routes to hall
+  garden routes to lab
+
+unit test: 
+   pass
+assert :  (destiny of garden ) is hall    
+assert : (destiny of lab ) is hall 
+assert : (origin of lab) is garden
+
+unit init :
+  the verb ( near to ) implies a dynamic relation  
+  to decide if (room called A) near to ( room called B): 
+    if ((destiny of A ) is B)  or ((destiny of B ) is A): 
+       decide on true
+    else:
+       decide on false
+	
+unit test: 
+   pass
+assert :  hall is near to lab
+assert :  hall is not near to garden   
+     
+ 
+

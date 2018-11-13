@@ -1735,6 +1735,17 @@ namespace CBlocking
 		  return nullptr;
 	  }
 
+	  
+
+		  HBlockBody    asHBlockBody(CBlocking::HBlock  c)
+	  {
+		  if (c == nullptr)   return nullptr;
+		  auto   t = c->type();
+		  if (t == BlockType::BlockBody) return std::static_pointer_cast < CBlockBody > (c);
+		  return nullptr;
+	  }
+
+
 	  HBlockControlIF    asHBlockControlIF(CBlocking::HBlock  c)
 	  {
 		  if (c == nullptr)   return nullptr;

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\CParseAux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseAssertationSecondary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseDictionary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseListAux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParserDynamicDispatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseRelation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseRelationWhen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParserSelectorFunctional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParserStmt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParserTextEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_A.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_ActionControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_ControlFlux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_Decide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_expression_match.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_Plurals_En.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_RegisterVerb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parser_VerbTable_en.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\ParseVerbs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parse_PhraseDeclare.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parse_TokensGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\Parse_verbArray_en.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser\StaticDispatchFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\AppMatch\src\parser_Eng\Predicates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Eraldo.rangel\Source\Repos\CInform\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{202F6933-043C-3E01-943E-7CEC4845894F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

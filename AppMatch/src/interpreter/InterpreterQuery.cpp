@@ -137,6 +137,11 @@ PhaseResult::PhaseResult(bool _hasExecuted): hasExecuted(_hasExecuted)
 {
 	result = nullptr;
 }
+PhaseResult::PhaseResult(HBlock _result) : hasExecuted(true)
+{
+	result = _result;
+}
+
 
 QueryResultContext CBlockInterpreter::query_is_instance_valueSet_valueInstance(HBlockInstance obj, HBlockInstanceNamed   valueName)
 {

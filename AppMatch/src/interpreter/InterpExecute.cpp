@@ -752,32 +752,33 @@ HBlock CBlockInterpreter::disptch_action_call(HBlockPhraseInvoke phr, HRunLocalS
 
 		if (ph->header->name == phr->name)
 		{
-			std::vector<HBlockMatch>  mheader = std::vector<HBlockMatch>(ph->header->matchArguments->matchList.begin() , ph->header->matchArguments->matchList.begin());
+			std::vector<HBlockMatch>  mheader = std::vector<HBlockMatch>(ph->header->matchArguments->matchList.begin(), ph->header->matchArguments->matchList.end());
 			std::vector<HBlock>  minput = std::vector<HBlock>(phr->arguments->lista.begin(), phr->arguments->lista.end());
 
-			if (mheader.size() != minput.size()) return Nothing;;
-
-			HRunLocalScope localstmp = std::make_shared< CRunLocalScope >(localsEntry );
-
-			int n = mheader.size();
-			for (int i = 0; i < n; ++i)
+			if (mheader.size() == minput.size())
 			{
 
-				CResultMatch result_i = this->Match(mheader[i], minput[i], localstmp, stk);
-				if (result_i.hasMatch == false)
+				HRunLocalScope localstmp = std::make_shared< CRunLocalScope >(localsEntry);
+				int n = mheader.size();
+				for (int i = 0; i < n; ++i)
 				{
-					return Nothing;;
-				}
-				else
-				{
-					 localstmp = std::make_shared< CRunLocalScope >(localstmp, result_i.maptch);
-				}
-			} 
 
-			auto q = execute_now(ph->body, localstmp, stk);
-			if (q.hasExecuted)
-			{
-				return q.result;				
+					CResultMatch result_i = this->Match(mheader[i], minput[i], localstmp, stk);
+					if (result_i.hasMatch == false)
+					{
+						continue; //nao bate os argumentos
+					}
+					else
+					{
+						localstmp = std::make_shared< CRunLocalScope >(localstmp, result_i.maptch);
+					}
+				}
+
+				auto q = execute_now(ph->body, localstmp, stk);
+				if (q.hasExecuted)
+				{
+					return q.result;
+				}
 			}
 		}
 	}
@@ -1248,6 +1249,14 @@ HBlock CBlockInterpreter::exec_eval_internal(HBlock c_block, HRunLocalScope loca
 			return xs;
 		}
 	}
+
+
+	if (auto t = asHBlockBody(c_block))
+	{
+		auto r =  exec_eval_internal(t->inner(), localsEntry,stk);		
+		return r;
+	}
+
 
 	return nullptr;
 }
@@ -1929,6 +1938,19 @@ PhaseResult CBlockInterpreter::execute_now(HBlock p , HRunLocalScope localsEntry
 		return qres;
 	}
 
+
+	if (HBlockBody  vBLC = asHBlockBody(p))
+	{
+		return execute_now(vBLC->inner(), localsEntry, stk);
+	}
+
+	if (HBlockToDecideOn  vdct = asHBlockToDecideOn(p))
+	{
+		auto r = exec_eval(vdct->decideBody, localsEntry, stk);
+		//auto dct =  std::make_shared<CBlockToDecideOn>(r);
+	 
+		return PhaseResult(r);
+	}
 
 	return PhaseResult(false);
 

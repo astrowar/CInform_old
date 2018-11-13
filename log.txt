@@ -1,0 +1,169 @@
+Doc\unit_test_relation_3.txt.
+L:unit init :
+L:  room is a kind of entity
+L:  routing relates a (room called origin) to a (room called destiny) 
+L:  the verb routes to  implies a  routing relation 
+L:  garden is a room
+L:  hall is a room 
+L:  lab is a room 
+L:  lab routes to hall
+L:  garden routes to lab
+L:unit test: 
+L:   pass
+L:assert :  (destiny of garden ) is hall    
+L:assert : (destiny of lab ) is hall 
+L:assert : (origin of lab) is garden
+L:unit init :
+L:  the verb ( near to ) implies a dynamic relation  
+L:  to decide if (room called A) near to ( room called B): 
+L:    if ((destiny of A ) is B)  or ((destiny of B ) is A): 
+L:       decide on true
+L:    else:
+L:       decide on false
+L:unit test: 
+L:   pass
+L:assert :  hall is near to lab
+L:assert :  hall is not near to garden   
+ room
+ room
+ B
+ A
+Log true
+Log false
+ CommandList  
+        Unit INIT
+               CommandList  
+                      Assign  
+                             room
+                      Is 
+                             Kind of Named :   entity
+
+                      A Relation  : routing
+                          Argument Named : origin
+                            Kind unknoun Named :   room
+                      To    
+                          Argument Named : destiny
+                            Kind unknoun Named :   room
+
+                      Verb  
+                             List: 
+                                routes
+                                to
+                      Implies Direct
+                             routing
+
+                      Assign  
+                             garden
+                      Is 
+                             room
+
+                      Assign  
+                             hall
+                      Is 
+                             room
+
+                      Assign  
+                             lab
+                      Is 
+                             room
+
+                      Is      routes to
+                             lab
+                      related 
+                             hall
+
+                      Is      routes to
+                             garden
+                      related 
+                             lab
+
+
+        Unit TEST
+               Nothing
+
+        Unit ASSERT
+               Assign  
+                      Property:
+                                destiny
+                            of:
+                                garden
+               Is 
+                      hall
+
+        Unit ASSERT
+               Assign  
+                      Property:
+                                destiny
+                            of:
+                                lab
+               Is 
+                      hall
+
+        Unit ASSERT
+               Assign  
+                      Property:
+                                origin
+                            of:
+                                lab
+               Is 
+                      garden
+
+        Unit INIT
+               CommandList  
+                      Verb  
+                             List: 
+                                near
+                                to
+                      Implies Direct
+                             dynamic
+
+                      Define 
+                             Match verb: near to
+                                    Match As  A
+                                           Match Noum 
+                                                  room
+                                    Match As  B
+                                           Match Noum 
+                                                  room
+                      IF 
+                             IF  
+                                    Boolean OR
+                                           Assign  
+                                                  Property:
+                                                            destiny
+                                                        of:
+                                                            A
+                                           Is 
+                                                  Match Noum 
+                                                         B
+                                           Assign  
+                                                  Property:
+                                                            destiny
+                                                        of:
+                                                            B
+                                           Is 
+                                                  Match Noum 
+                                                         A
+                             THEN  
+                                    DecideOn 
+                                           true
+                             ELSE  
+                                    DecideOn 
+                                           false
+
+
+        Unit TEST
+               Nothing
+
+        Unit ASSERT
+               Is      near to
+                      hall
+               related 
+                      lab
+
+        Unit ASSERT
+               Is  NOT  near to
+                      hall
+               related 
+                      garden
+

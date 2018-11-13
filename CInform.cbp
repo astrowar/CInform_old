@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CInform"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CInformInterpreter">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/CInformInterpreter.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 CInformInterpreter"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CInformInterpreter/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/CInformInterpreter.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 CInformInterpreter/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="BaseLibrary">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libBaseLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 BaseLibrary"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="BaseLibrary/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libBaseLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 BaseLibrary/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="BlockLibrary">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libBlockLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 BlockLibrary"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="BlockLibrary/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libBlockLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 BlockLibrary/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ParseLibrary">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libParseLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 ParseLibrary"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ParseLibrary/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libParseLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 ParseLibrary/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="interpreterRuntimeLibrary">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libinterpreterRuntimeLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 interpreterRuntimeLibrary"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="interpreterRuntimeLibrary/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/libinterpreterRuntimeLibrary.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 interpreterRuntimeLibrary/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CInformCompiler">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/CInformCompiler.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 CInformCompiler"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CInformCompiler/fast">
+				<Option output="C:/Users/Eraldo.rangel/Source/Repos/CInform/CInformCompiler.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../include/c++/5.3.0/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 CInformCompiler/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/Eraldo.rangel/Source/Repos/CInform"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/Eraldo.rangel/Source/Repos/CInform/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/BlockInstance.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/BlockInterpreter.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/BlockTypeEnum.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/BlockisSame.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockAction.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockCommand.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockCompostion.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockDecideIf.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockDumpValues.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockNumber.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/CBlockSerialize.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/dynamicCast.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/save_ctx.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/sharedCast.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/Block/store_tp.cpp">
+			<Option target="BlockLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/base/CBase.cpp">
+			<Option target="BaseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/base/CMatch.cpp">
+			<Option target="BaseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/base/CMatchCombinatoria.cpp">
+			<Option target="BaseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/base/CMatchListValid.cpp">
+			<Option target="BaseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/compiler/CInformCompiler.cpp">
+			<Option target="CInformCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/AssertationDefaultValue.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/AssertationEngine.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/AssertationVerbRelation.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/AssertionValues.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CBlockInterpreterBase.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CBlockInterpreterDecideBody.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CBlockInterpreterRuntime.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CBlockInterpreter_Verb_En.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterEvaluate.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterKindTree.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterRelation.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterResolve.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterResolveMatchSeletor.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CInterpreterRuntimeExecute.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CResultMatch.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CVariableGlobals.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/CreateInstanceInterpreter.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpExecute.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpFunctionsCallcpp.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpreterListedFunctions.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpreterMatch.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpreterQuery.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/InterpreterRelationEngine.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/Interpreter_Adapt_Text.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/QueryItem.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/RuntimeErrors.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreter/interpreterRegex.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreterMain/CInformInterpreter.cpp">
+			<Option target="CInformInterpreter"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/interpreterMain/CInformInterpreter.h">
+			<Option target="CInformInterpreter"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/CParseAux.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseAssertationSecondary.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseDictionary.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseListAux.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseRelation.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseRelationWhen.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseRules.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParseVerbs.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parse_PhraseDeclare.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parse_TokensGroup.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parse_verbArray_en.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParserDynamicDispatch.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParserPlural_table.cpp">
+			<Option target="CInformInterpreter"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParserSelectorFunctional.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParserStmt.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/ParserTextEntry.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_A.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_ActionControl.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_ControlFlux.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_Decide.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_RegisterVerb.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/Parser_expression_match.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser/StaticDispatchFunctions.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser_Eng/LanguageEn.cpp">
+			<Option target="interpreterRuntimeLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser_Eng/Parser_Plurals_En.cpp">
+			<Option target="CInformInterpreter"/>
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser_Eng/Parser_VerbTable_en.cpp">
+			<Option target="CInformInterpreter"/>
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/AppMatch/src/parser_Eng/Predicates.cpp">
+			<Option target="ParseLibrary"/>
+		</Unit>
+		<Unit filename="C:/Users/Eraldo.rangel/Source/Repos/CInform/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
