@@ -5,6 +5,7 @@
 #include "LanguageDepend.h"
 #include "parser/ParserPlural.hpp"
 #include "sharedCast.hpp"
+#include <algorithm>
 
 using namespace CBlocking;
 bool LanguageEn::is_nothing(HBlockNoum noum)

@@ -15,6 +15,7 @@
 
 #include <algorithm>
 
+#include <memory>
 #include "sharedCast.hpp"
 #include <cstring>
 using namespace std;

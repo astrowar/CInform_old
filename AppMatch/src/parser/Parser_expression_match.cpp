@@ -1529,7 +1529,8 @@ HBlockMatchList NSParser::ExpressionMatch::parse_match_list_inn(CParser *p, std:
 		auto plist = std::list<HBlockMatch>();
 		if (CList* listterm = asCList(term_in[0].get()))
 		{
-			return parse_match_list(p, listterm->asVector());
+			auto v = listterm->asVector();
+			return parse_match_list(p, v);
 		}
 	}
 
@@ -2090,7 +2091,8 @@ HBlock  NSParser::Expression::parser_ComponentePhase(CParser *p, HTerm    term_i
 {
 	if (CList* listterm = asCList(term_in.get()))
 	{
-		auto r =  parser_phrase_literal(p, listterm->asVector());
+		auto v = listterm->asVector();
+		auto r =  parser_phrase_literal(p, v);
 		if (r == nullptr)
 		{
 			return nullptr;

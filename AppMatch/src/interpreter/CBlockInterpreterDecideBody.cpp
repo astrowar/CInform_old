@@ -18,12 +18,13 @@
 #include "interpreter/CBlockInterpreterRuntime.hpp"
 #undef PROPAGATE_LETS
 
+#include <memory>
 
 using namespace CBlocking;
 using namespace Interpreter;
 using namespace CBlocking::DynamicCasting;
 using namespace QueryStacking;
-
+using namespace std;
 
 //
 //HRunLocalScope newScope(HRunLocalScope oldEntry ,HRunLocalScope headerEntry )

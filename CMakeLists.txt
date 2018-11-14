@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 project(CInform)
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -fno-exceptions -fno-rtti ")
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 IF    (CMAKE_COMPILER_IS_GNUCC)
     SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++1y -fno-exceptions -fno-rtti")
