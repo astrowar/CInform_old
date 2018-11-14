@@ -21,7 +21,7 @@
 #include "interpreter/CBlockInterpreterRuntime.hpp"
 #include <iostream>
 #include "sharedCast.hpp"
-#include <memory>
+#include "PhaseResult_init.h"
 
 using namespace std;
 

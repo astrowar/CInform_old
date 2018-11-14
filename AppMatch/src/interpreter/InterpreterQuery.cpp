@@ -20,7 +20,7 @@
 #include "CResultMatch.hpp"
 #include "dynamicCast.hpp"
 #include "sharedCast.hpp"
-#include <cassert>
+#include "PhaseResult_init.h"
 
 
 using namespace std;
@@ -132,15 +132,6 @@ QueryResultContext CBlockInterpreter::query_is_same(HBlock c_block, HBlock c_blo
 //	 
 //    return query_is(c_block, c_block1, stk);
 //}
-
-PhaseResult::PhaseResult(bool _hasExecuted): hasExecuted(_hasExecuted)
-{
-	result = nullptr;
-}
-PhaseResult::PhaseResult(HBlock _result) : hasExecuted(true)
-{
-	result = _result;
-}
 
 
 QueryResultContext CBlockInterpreter::query_is_instance_valueSet_valueInstance(HBlockInstance obj, HBlockInstanceNamed   valueName)

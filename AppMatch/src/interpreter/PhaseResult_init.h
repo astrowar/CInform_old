@@ -1,0 +1,8 @@
+//
+// Created by eraldo on 14/11/2018.
+//
+
+#ifndef CINFORM_PHASERESULT_INIT_H
+#define CINFORM_PHASERESULT_INIT_H
+
+#endif //CINFORM_PHASERESULT_INIT_H

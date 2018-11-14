@@ -114,6 +114,7 @@ set( SOURCE_FILES_INTERPRETERRUNTIME
         AppMatch/src/interpreter/QueryItem.cpp
         AppMatch/src/interpreter/RuntimeErrors.cpp
         AppMatch/src/interpreter/CResultMatch.cpp
+        AppMatch/src/interpreter/PhaseResult_init.cpp
         AppMatch/src/interpreter/interpreterRegex.cpp
         AppMatch/src/parser_Eng/LanguageEn.cpp)
 

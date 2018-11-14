@@ -17,7 +17,7 @@
 #include "interpreter/QueryStack.hpp"
 #include "interpreter/CBlockInterpreterRuntime.hpp"
 #include "sharedCast.hpp"
-#include <memory>
+#include "PhaseResult_init.h"
 
 using namespace std;
 using namespace CBlocking;
